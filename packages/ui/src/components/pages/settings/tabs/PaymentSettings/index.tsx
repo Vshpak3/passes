@@ -193,7 +193,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
         <div className="flex items-center justify-start">
           <div className="flex flex-1 flex-row items-center">
             <MetamaskIcon width="40px" />
-            <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
+            <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
               Metamask
             </span>
             <Select
@@ -244,7 +244,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 setValue("metamask", event.target.value)
               }}
               name="metamask"
-              className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
+              className="my-4 w-[130px]"
             />
           </div>
           {watch("metamask") ===
@@ -268,6 +268,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
               }
               tag="button"
               variant="purple-light"
+              className="w-auto px-1 py-2 md:px-4"
             >
               <span className="font-[700]">
                 {isEmbedded ? "Use" : "Set Default"}
@@ -279,7 +280,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
           <div className="flex items-center justify-start">
             <div className="flex flex-1 flex-row items-center">
               <PhantomIcon width="40px" />
-              <span className="mx-4 w-[20%] text-[16px] font-bold text-white">
+              <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
                 Phantom
               </span>
               <Select
@@ -295,7 +296,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                   setValue("phantom", event.target.value)
                 }}
                 name="phantom"
-                className="my-4 w-[130px] border-passes-dark-100 bg-transparent"
+                className="my-4 w-[130px]"
               />
             </div>
             {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
@@ -315,6 +316,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 }
                 tag="button"
                 variant="purple-light"
+                className="w-auto px-1 py-2 md:px-4"
               >
                 <span className="font-[700]">
                   {isEmbedded ? "Use" : "Set Default"}
@@ -374,7 +376,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 </div>
               </div>
 
-              <div className="flex flex-row gap-4">
+              <div className="flex flex-row gap-2 md:gap-4">
                 <div>
                   {item.id === defaultPayinMethod?.cardId ? (
                     <Button tag="button" variant="gray">
