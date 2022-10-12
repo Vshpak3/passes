@@ -10,9 +10,10 @@ import React, {
 import ReactModal from "react-modal"
 
 export interface ModalProps {
-  isOpen: any
-  setOpen: Dispatch<SetStateAction<any>>
+  isOpen: boolean
+  setOpen: Dispatch<SetStateAction<boolean>>
   closable?: boolean
+  shouldCloseOnClickOutside?: boolean
   modalContainerClassname?: string
   childrenClassname?: string
   isNewPost?: boolean
@@ -23,6 +24,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   setOpen,
   children,
   closable = true,
+  shouldCloseOnClickOutside = false,
   modalContainerClassname,
   childrenClassname,
   isNewPost
@@ -30,20 +32,30 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   useEffect(() => {
     ReactModal.setAppElement("body")
   }, [])
+
   return (
     <ReactModal
       isOpen={isOpen}
+      shouldCloseOnOverlayClick={shouldCloseOnClickOutside}
       onRequestClose={() => setOpen(false)}
-      shouldCloseOnOverlayClick={true}
       style={{
         content: {
-          background: "transparent",
-          border: "0px",
-          alignItems: "center",
-          justifyItems: "center",
-          display: "flex"
+          display: "flex",
+          flexGrow: 1,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "fit-content",
+          height: "fit-content",
+
+          // Overrides
+          padding: 0,
+          border: 0
         },
         overlay: {
+          display: "flex",
+          alignItems: "center",
+          justifyItems: "center",
           background: "rgba(0, 0, 0, 0.5)",
           zIndex: 11
         }

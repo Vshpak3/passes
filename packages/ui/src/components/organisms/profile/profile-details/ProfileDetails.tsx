@@ -28,7 +28,11 @@ export const ProfileDetails: FC = () => {
   return (
     <>
       {editProfile && <EditProfile />}
-      <Modal isOpen={isProfilePicModalOpen} setOpen={setIsProfilePicModalOpen}>
+      <Modal
+        isOpen={isProfilePicModalOpen}
+        setOpen={setIsProfilePicModalOpen}
+        shouldCloseOnClickOutside={true}
+      >
         <div className="flex flex-row justify-center">
           <img
             src={ContentService.profileImage(profileUserId || "")}
