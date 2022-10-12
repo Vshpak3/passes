@@ -13,6 +13,7 @@ export const FreeMessagesLeftContainer: FC<Props> = ({ freeMessages }) => {
         </span>
         <span className="text-sm font-medium text-[#FBFBFB]">
           messages left.
+          {freeMessages === 0 ? " You can only send message with tip now." : ""}
         </span>
       </div>
       {/* TODO: this features will be added after backend is ready */}

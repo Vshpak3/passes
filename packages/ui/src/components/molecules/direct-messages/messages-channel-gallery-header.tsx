@@ -1,3 +1,4 @@
+import { ChannelMemberDto } from "@passes/api-client"
 import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
@@ -7,12 +8,18 @@ interface MessagesChannelGalleryHeaderProps {
   setGallery: Dispatch<SetStateAction<any>>
   activeContent: string
   setActiveContent: Dispatch<SetStateAction<any>>
+  selectedChannel: ChannelMemberDto
 }
 
 export const MessagesChannelGalleryHeader: FC<
   MessagesChannelGalleryHeaderProps
-> = ({ gallery, setGallery, activeContent, setActiveContent }) => {
-  const channelName = "TestAccount"
+> = ({
+  gallery,
+  setGallery,
+  activeContent,
+  setActiveContent,
+  selectedChannel
+}) => {
   return (
     <div className="flex w-full  items-center justify-between">
       <div className="flex w-full items-center justify-start pl-2">
@@ -38,12 +45,12 @@ export const MessagesChannelGalleryHeader: FC<
               </span>
             ) : null}
             <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
-              with {channelName}
+              with {selectedChannel.otherUserDisplayName}
             </span>
           </div>
         </div>
       </div>
-      <div className="flex w-full items-center pr-10">
+      <div className="flex w-full items-center pr-10 text-[12px]">
         <div
           onClick={() => setActiveContent("All")}
           className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
