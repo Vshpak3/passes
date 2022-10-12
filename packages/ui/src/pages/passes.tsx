@@ -1,24 +1,7 @@
-import {
-  MyPassGrid,
-  MyPassSearchHeader
-} from "src/components/molecules/pass/MyPasses"
-import { usePasses } from "src/hooks/usePasses"
-import { useUser } from "src/hooks/useUser"
+import { PassHoldingsGrid } from "src/components/molecules/pass/PassHoldingsGrid"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Passes = () => {
-  const { user } = useUser()
-
-  const {
-    filteredActive,
-    passSearchTerm,
-    filteredExpired,
-    onSearchPass,
-    setPassType,
-    passType,
-    lifetimePasses
-  } = usePasses(user?.userId ?? "")
-
   return (
     <div
       className="
@@ -31,17 +14,7 @@ const Passes = () => {
        md:px-5
        sidebar-collapse:max-w-[1100px]"
     >
-      <MyPassSearchHeader
-        onSearchPass={onSearchPass}
-        passSearchTerm={passSearchTerm}
-      />
-      <MyPassGrid
-        activePasses={filteredActive}
-        expiredPasses={filteredExpired}
-        setPassType={setPassType}
-        passType={passType}
-        lifetimePasses={lifetimePasses}
-      />
+      <PassHoldingsGrid />
     </div>
   )
 }

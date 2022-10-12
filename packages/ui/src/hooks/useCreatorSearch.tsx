@@ -1,5 +1,5 @@
 import { UserApi, UserDisplayInfoDto } from "@passes/api-client"
-import { useSearch } from "src/hooks/useSearch"
+import { useSearch } from "src/hooks/search/useSearch"
 
 const api = new UserApi()
 

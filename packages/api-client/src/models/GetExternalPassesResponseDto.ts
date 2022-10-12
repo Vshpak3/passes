@@ -58,11 +58,29 @@ export interface GetExternalPassesResponseDto {
     creatorId?: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetExternalPassesResponseDto
+     */
+    type?: GetExternalPassesResponseDtoTypeEnum;
+    /**
+     * 
      * @type {Array<PassDto>}
      * @memberof GetExternalPassesResponseDto
      */
     data: Array<PassDto>;
 }
+
+
+/**
+ * @export
+ */
+export const GetExternalPassesResponseDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type GetExternalPassesResponseDtoTypeEnum = typeof GetExternalPassesResponseDtoTypeEnum[keyof typeof GetExternalPassesResponseDtoTypeEnum];
+
 
 /**
  * Check if a given object implements the GetExternalPassesResponseDto interface.
@@ -89,6 +107,7 @@ export function GetExternalPassesResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'search': !exists(json, 'search') ? undefined : json['search'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
         'data': ((json['data'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
@@ -107,6 +126,7 @@ export function GetExternalPassesResponseDtoToJSON(value?: GetExternalPassesResp
         'search': value.search,
         'pinned': value.pinned,
         'creatorId': value.creatorId,
+        'type': value.type,
         'data': ((value.data as Array<any>).map(PassDtoToJSON)),
     };
 }

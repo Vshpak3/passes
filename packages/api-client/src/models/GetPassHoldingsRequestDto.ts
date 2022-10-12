@@ -60,6 +60,18 @@ export interface GetPassHoldingsRequestDto {
      * @type {string}
      * @memberof GetPassHoldingsRequestDto
      */
+    passType?: GetPassHoldingsRequestDtoPassTypeEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPassHoldingsRequestDto
+     */
+    expired?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsRequestDto
+     */
     username?: string;
     /**
      * 
@@ -84,6 +96,16 @@ export const GetPassHoldingsRequestDtoOrderEnum = {
     Desc: 'desc'
 } as const;
 export type GetPassHoldingsRequestDtoOrderEnum = typeof GetPassHoldingsRequestDtoOrderEnum[keyof typeof GetPassHoldingsRequestDtoOrderEnum];
+
+/**
+ * @export
+ */
+export const GetPassHoldingsRequestDtoPassTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type GetPassHoldingsRequestDtoPassTypeEnum = typeof GetPassHoldingsRequestDtoPassTypeEnum[keyof typeof GetPassHoldingsRequestDtoPassTypeEnum];
 
 /**
  * @export
@@ -123,6 +145,8 @@ export function GetPassHoldingsRequestDtoFromJSONTyped(json: any, ignoreDiscrimi
         'order': json['order'],
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
+        'passType': !exists(json, 'passType') ? undefined : json['passType'],
+        'expired': !exists(json, 'expired') ? undefined : json['expired'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
@@ -144,6 +168,8 @@ export function GetPassHoldingsRequestDtoToJSON(value?: GetPassHoldingsRequestDt
         'order': value.order,
         'creatorId': value.creatorId,
         'passId': value.passId,
+        'passType': value.passType,
+        'expired': value.expired,
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,

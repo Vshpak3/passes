@@ -24,7 +24,7 @@ interface PassCardProps {
   remainingSupply: number | null
 }
 
-export const PassVideo: FC<PassVideoProps> = ({ img }) => {
+const PassVideo: FC<PassVideoProps> = ({ img }) => {
   return (
     <video autoPlay loop muted>
       <source src={img.url} type="video/mp4" />

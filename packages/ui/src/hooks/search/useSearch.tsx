@@ -1,7 +1,6 @@
 import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
-
-import { useOnClickOutside } from "./useOnClickOutside"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const DEBOUNCE_DELAY = 300
 

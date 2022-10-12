@@ -1,14 +1,15 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
 import { useMemo } from "react"
-import { useSearch } from "src/hooks/useSearch"
 
-export const useFollowSearch = () => {
+import { useSearch } from "./useSearch"
+
+export const useFollowerSearch = () => {
   const api = useMemo(() => new FollowApi(), [])
   return useSearch<ListMemberDto>(async (searchValue: string) => {
     return (
-      await api.searchFollowing({
+      await api.searchFans({
         searchFollowRequestDto: {
-          search: searchValue ? searchValue : undefined,
+          search: searchValue,
           order: "asc",
           orderType: "username"
         }

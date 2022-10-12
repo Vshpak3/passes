@@ -1,27 +1,46 @@
-import { FC } from "react"
-import { SelectPassFilter } from "src/components/atoms/passes/MyPass"
-import { PassCard } from "src/components/molecules/pass/Card"
-import { usePasses } from "src/hooks/usePasses"
-import { useProfile } from "src/hooks/useProfile"
+import {
+  GetPassesRequestDto,
+  GetPassesResponseDto,
+  PassApi,
+  PassDto,
+  PassDtoTypeEnum
+} from "@passes/api-client"
+import { FC, useState } from "react"
+import {
+  ComponentArg,
+  InfiniteScrollPagination
+} from "src/components/atoms/InfiniteScroll"
+import { SelectPassFilter } from "src/components/atoms/passes/SelectPassFilter"
+import { PassCard } from "src/components/molecules/pass/PassCard"
 
-export const PassesFeed: FC = () => {
-  const { profileUserId } = useProfile()
-
-  const { passType, setPassType, filteredCreatorPassesList } = usePasses(
-    profileUserId || ""
-  )
+interface PassesFeedProps {
+  creatorId: string
+}
+export const PassesFeed: FC<PassesFeedProps> = ({
+  creatorId
+}: PassesFeedProps) => {
+  const [passType, setPassType] = useState<PassDtoTypeEnum>()
 
   return (
     <>
       <div className="mt-[34px]">
         <SelectPassFilter setPassType={setPassType} passType={passType} />
       </div>
-      <div className="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3">
-        {filteredCreatorPassesList.length === 0 && <span>No Pass to show</span>}
-        {filteredCreatorPassesList.map((pass, i) => (
-          <PassCard key={i} pass={pass} />
-        ))}
-      </div>
+      <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
+        keyValue={`pass/creator-passes/${creatorId}`}
+        fetch={async (req: GetPassesRequestDto) => {
+          const api = new PassApi()
+          return await api.getCreatorPasses({
+            getPassesRequestDto: req
+          })
+        }}
+        fetchProps={{ creatorId, type: passType }}
+        emptyElement={<span>No Pass to show</span>}
+        KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
+          return <PassCard pass={arg} />
+        }}
+        classes="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
+      />
     </>
   )
 }

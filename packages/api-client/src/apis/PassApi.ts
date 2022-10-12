@@ -223,7 +223,7 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const response = await this.request({
-            path: `/api/pass/created`,
+            path: `/api/pass/creator-passes`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

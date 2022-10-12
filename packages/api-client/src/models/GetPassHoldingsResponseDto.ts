@@ -67,6 +67,18 @@ export interface GetPassHoldingsResponseDto {
      * @type {string}
      * @memberof GetPassHoldingsResponseDto
      */
+    passType?: GetPassHoldingsResponseDtoPassTypeEnum;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPassHoldingsResponseDto
+     */
+    expired?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassHoldingsResponseDto
+     */
     username?: string;
     /**
      * 
@@ -97,6 +109,16 @@ export const GetPassHoldingsResponseDtoOrderEnum = {
     Desc: 'desc'
 } as const;
 export type GetPassHoldingsResponseDtoOrderEnum = typeof GetPassHoldingsResponseDtoOrderEnum[keyof typeof GetPassHoldingsResponseDtoOrderEnum];
+
+/**
+ * @export
+ */
+export const GetPassHoldingsResponseDtoPassTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type GetPassHoldingsResponseDtoPassTypeEnum = typeof GetPassHoldingsResponseDtoPassTypeEnum[keyof typeof GetPassHoldingsResponseDtoPassTypeEnum];
 
 /**
  * @export
@@ -137,6 +159,8 @@ export function GetPassHoldingsResponseDtoFromJSONTyped(json: any, ignoreDiscrim
         'order': json['order'],
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
+        'passType': !exists(json, 'passType') ? undefined : json['passType'],
+        'expired': !exists(json, 'expired') ? undefined : json['expired'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
@@ -159,6 +183,8 @@ export function GetPassHoldingsResponseDtoToJSON(value?: GetPassHoldingsResponse
         'order': value.order,
         'creatorId': value.creatorId,
         'passId': value.passId,
+        'passType': value.passType,
+        'expired': value.expired,
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,

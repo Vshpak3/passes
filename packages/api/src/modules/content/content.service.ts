@@ -188,7 +188,7 @@ export class ContentService {
   }
 
   async preSignPass(userId: string, passId: string) {
-    const pass = await this.passService.findPass(passId)
+    const pass = await this.passService.getPass(passId)
     if (pass.creatorId !== userId) {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }

@@ -31,6 +31,14 @@ export class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
   }
 
+  static passHolderImage(passId: string, passHolderId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/image.jpeg`
+  }
+
+  static passHolderVideo(passId: string, passHolderId: string): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/image.mp4`
+  }
+
   static passImage(passId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/image.jpeg`
   }

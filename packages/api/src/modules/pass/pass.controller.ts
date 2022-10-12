@@ -96,12 +96,12 @@ export class PassController {
     responseDesc: 'A list of creator passes was retrieved',
     role: RoleEnum.NO_AUTH,
   })
-  @Post('created')
+  @Post('creator-passes')
   async getCreatorPasses(
     @Body() getPassesRequestDto: GetPassesRequestDto,
   ): Promise<GetPassesResponseDto> {
     return new GetPassesResponseDto(
-      await this.passService.getPassesByCreator(getPassesRequestDto),
+      await this.passService.getCreatorPasses(getPassesRequestDto),
       getPassesRequestDto,
     )
   }
@@ -136,7 +136,7 @@ export class PassController {
     @Body() getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ): Promise<GetPassHoldingsResponseDto> {
     return new GetPassHoldingsResponseDto(
-      await this.passService.findPassHoldings(
+      await this.passService.getPassHoldings(
         req.user.id,
         getPassHoldingsRequestDto,
       ),

@@ -49,6 +49,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
         <>
           {!loadingProfileInfo && profileUserId && (
             <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+              keyValue={`/feed/creator/${profileUserId}`}
               fetch={async (req: GetProfileFeedRequestDto) => {
                 return await api.getFeedForCreator({
                   getProfileFeedRequestDto: req
@@ -76,6 +77,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
         <>
           {!loadingProfileInfo && (
             <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
+              keyValue={`/fanwall/${profileUserId}`}
               fetch={async (req: GetFanWallRequestDto) => {
                 const api = new FanWallApi()
                 return await api.getFanWallForCreator({
@@ -100,7 +102,13 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
         </>
       )
     case "passes":
-      return <PassesFeed />
+      return (
+        <>
+          {!loadingProfileInfo && (
+            <PassesFeed creatorId={profileUserId ?? ""} />
+          )}
+        </>
+      )
     default:
       return <></>
   }

@@ -2,7 +2,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import {
   CreatePassRequestDtoChainEnum,
   CreatePassRequestDtoTypeEnum,
-  PassApi
+  PassApi,
+  PassDtoTypeEnum
 } from "@passes/api-client"
 import ms from "ms"
 import { useRouter } from "next/router"
@@ -45,11 +46,6 @@ export const createPassSchema = yup.object({
     )
 })
 
-export const PassTypeEnum = {
-  SUBSCRIPTION: "subscription",
-  LIFETIME: "lifetime"
-}
-
 interface CreatePassProps {
   passType: string
 }
@@ -57,8 +53,8 @@ interface CreatePassProps {
 export const useCreatePass = ({ passType }: CreatePassProps) => {
   const [files, setFiles] = useState<File[]>([])
   const [fileUploadError, setFileUploadError] = useState<string | null>(null)
-  const isLifetimePass = passType === PassTypeEnum.LIFETIME
-  const isSubscriptionPass = passType === PassTypeEnum.SUBSCRIPTION
+  const isLifetimePass = passType === PassDtoTypeEnum.Lifetime
+  const isSubscriptionPass = passType === PassDtoTypeEnum.Subscription
   const router = useRouter()
 
   const MAX_FILES = isLifetimePass ? MAX_FILES_LIFETIME : MAX_FILES_SUBSCRIPTION

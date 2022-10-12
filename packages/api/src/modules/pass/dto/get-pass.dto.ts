@@ -2,6 +2,7 @@ import { PickType } from '@nestjs/swagger'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
+import { PassTypeEnum } from '../enum/pass.enum'
 import { PassDto } from './pass.dto'
 
 export class GetPassResponseDto extends PassDto {}
@@ -14,6 +15,9 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
 ]) {
   @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
+
+  @DtoProperty({ custom_type: PassTypeEnum, optional: true })
+  type?: PassTypeEnum
 }
 export class GetPassesResponseDto
   extends GetPassesRequestDto

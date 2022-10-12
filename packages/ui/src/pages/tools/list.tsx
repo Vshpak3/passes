@@ -171,6 +171,7 @@ const FanLists: NextPage = () => {
           </div>
         </li>
         <InfiniteScrollPagination<ListDto, GetListsResponseDto>
+          keyValue="/lists"
           fetch={async (req: GetListsRequestsDto) => {
             return await listApi.getLists({ getListsRequestsDto: req })
           }}

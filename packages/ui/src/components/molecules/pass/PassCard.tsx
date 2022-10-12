@@ -1,13 +1,14 @@
-import { PassDto } from "@passes/api-client"
+import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React, { FC } from "react"
+import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {
   pass: PassDto
 }
 
-const passType: Record<string, string> = {
-  subscription: "Subscription Passes",
+const passType: Record<PassDtoTypeEnum, string> = {
+  subscription: "Subscription Pass",
   lifetime: "Lifetime Pass",
   external: "External"
 }
@@ -15,10 +16,9 @@ const passType: Record<string, string> = {
 export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
-
   return (
-    <div className="min-w-[218px] rounded-[20px] border border-passes-dark-200 bg-[#0E0A0F] px-5 py-4">
-      <div className="h-[122px] rounded-[20px] bg-[#EBCFC2]" />
+    <div className="min-w-[218px] max-w-[218px] rounded-[20px] border border-passes-dark-200 bg-[#0E0A0F] px-5 py-4">
+      <PassMedia passId={pass.passId} />
       <span className="mt-3 inline-block text-sm font-medium leading-4">
         {passType[pass.type] ?? pass.type}
       </span>

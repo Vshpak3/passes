@@ -14,12 +14,14 @@ export interface ComponentArg<A> {
   arg: A
 }
 
-interface Key<T> {
-  key: Partial<T>
+export interface Key<T> {
+  props: Partial<T>
   resets: number
+  keyValue: string
 }
 
 interface InfiniteScrollProps<A, T extends PagedData<A>> {
+  keyValue: string
   fetch: (data: Omit<T, "data">) => Promise<T>
   fetchProps: Partial<T>
   emptyElement?: JSX.Element
@@ -27,6 +29,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   endElement?: JSX.Element
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
+  classes?: string
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -35,6 +38,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
 // Inserts should reset the list
 //   unless inserts are at beginning, then just append
 export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
+  keyValue,
   fetch,
   fetchProps,
   emptyElement,
@@ -42,19 +46,20 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   endElement,
   KeyedComponent,
   resets = 0,
-  children
+  children,
+  classes
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
-      return { key: fetchProps, resets }
+      return { props: fetchProps, resets, keyValue }
     }
     const request: Partial<T> = { ...response }
     request.data = undefined
-    return { key: request, resets: resets }
+    return { props: request, resets, keyValue }
   }
 
-  const fetchData = async ({ key }: Key<T>) => {
-    return await fetch(key as Omit<T, "data">)
+  const fetchData = async ({ props }: Key<T>) => {
+    return await fetch(props as Omit<T, "data">)
   }
 
   const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, {
@@ -90,7 +95,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     <>
       <InfiniteScroll
         dataLength={flattenedData.length}
-        className="w-full"
+        className={"w-full " + classes ?? ""}
         style={{ width: "100%" }}
         next={() => triggerFetch(size + 1)}
         hasMore={!data || !!data[data.length - 1].lastId}

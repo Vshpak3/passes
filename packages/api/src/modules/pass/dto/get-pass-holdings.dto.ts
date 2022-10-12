@@ -8,6 +8,7 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
+import { PassTypeEnum } from '../enum/pass.enum'
 import { PassHolderDto } from './pass-holder.dto'
 
 export class GetPassHoldingsRequestDto extends PickType(PageRequestDto, [
@@ -21,6 +22,12 @@ export class GetPassHoldingsRequestDto extends PickType(PageRequestDto, [
 
   @DtoProperty({ type: 'uuid', optional: true })
   passId?: string
+
+  @DtoProperty({ custom_type: PassTypeEnum, optional: true })
+  passType?: PassTypeEnum
+
+  @DtoProperty({ type: 'boolean', optional: true })
+  expired?: boolean
 
   @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ type: 'string', optional: true })

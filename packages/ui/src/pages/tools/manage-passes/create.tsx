@@ -1,12 +1,15 @@
+import { PassDtoTypeEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
 import {
   CreatePassForm,
   SelectPassType
 } from "src/components/organisms/passes/CreatePass"
-import { PassTypeEnum } from "src/hooks/useCreatePass"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const PASS_TYPES = [PassTypeEnum.LIFETIME, PassTypeEnum.SUBSCRIPTION]
+const PASS_TYPES: string[] = [
+  PassDtoTypeEnum.Lifetime,
+  PassDtoTypeEnum.Subscription
+]
 
 const CreatePass = () => {
   const router = useRouter()

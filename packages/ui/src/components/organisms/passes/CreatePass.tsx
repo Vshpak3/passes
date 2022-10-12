@@ -1,3 +1,4 @@
+import { PassDtoTypeEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
 import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
 import SubscriptionImg from "public/icons/subscription-pass.svg"
@@ -22,11 +23,7 @@ import {
 } from "src/components/molecules/pass/CreatePass"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import {
-  createPassSchema,
-  PassTypeEnum,
-  useCreatePass
-} from "src/hooks/useCreatePass"
+import { createPassSchema, useCreatePass } from "src/hooks/useCreatePass"
 
 interface CreatePassFormProps {
   passType: string
@@ -51,7 +48,7 @@ export const SelectPassType = ({ initialCreation = false }) => {
         title="Subscription"
         subtitle="Subscription Passes are unlimited in quantity and can be paid for
             by fans on a recurring basis before they expire."
-        onGetStarted={redirectToCreatePass(PassTypeEnum.SUBSCRIPTION)}
+        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Subscription)}
       />
       <CreatePassOption
         colStyle="lg:col-[6_/_span_3]"
@@ -60,7 +57,7 @@ export const SelectPassType = ({ initialCreation = false }) => {
         subtitle="Lifetime Passes are limited in quantity which means once they
             sell out they can only be bought on the secondary market. Fans
             can make a one-time payment to buy these."
-        onGetStarted={redirectToCreatePass(PassTypeEnum.LIFETIME)}
+        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Lifetime)}
       />
     </div>
   )

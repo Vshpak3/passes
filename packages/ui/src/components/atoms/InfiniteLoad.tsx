@@ -1,21 +1,10 @@
 import React, { PropsWithChildren, useEffect, useState } from "react"
 import useSWRInfinite from "swr/infinite"
 
-export interface PagedData<A> {
-  data: A[]
-  lastId?: string
-}
+import { ComponentArg, Key, PagedData } from "./InfiniteScroll"
 
-export interface ComponentArg<A> {
-  arg: A
-}
-
-interface Key<T> {
-  key: Partial<T>
-  resets: number
-}
-
-interface InfiniteScrollProps<A, T extends PagedData<A>> {
+interface InfiniteLoadProps<A, T extends PagedData<A>> {
+  keyValue: string
   fetch: (data: Omit<T, "data">) => Promise<T>
   fetchProps: Partial<T>
   emptyElement?: JSX.Element
@@ -31,6 +20,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
 // Inserts should reset the list
 //   unless inserts are at beginning, then just append
 export const InfiniteLoad = <A, T extends PagedData<A>>({
+  keyValue,
   fetch,
   fetchProps,
   emptyElement,
@@ -39,18 +29,18 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   KeyedComponent,
   resets = 0,
   children
-}: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
+}: PropsWithChildren<InfiniteLoadProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
-      return { key: fetchProps, resets }
+      return { props: fetchProps, resets, keyValue }
     }
     const request: Partial<T> = { ...response }
     request.data = undefined
-    return { key: request, resets: resets }
+    return { props: request, resets, keyValue }
   }
   const [hasMore, setHasMore] = useState<boolean>(true)
-  const fetchData = async ({ key }: Key<T>) => {
-    return await fetch(key as Omit<T, "data">)
+  const fetchData = async ({ props }: Key<T>) => {
+    return await fetch(props as Omit<T, "data">)
   }
 
   const { data, size, setSize, isValidating } = useSWRInfinite<T>(

@@ -1,17 +1,15 @@
 import { PassDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useState } from "react"
+import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { CreatorPassModal } from "src/components/organisms/CreatorPassModal"
 
-interface CreatorPassTilesProps {
-  passData: PassDto
+interface PassTilesProps {
+  pass: PassDto
   alternateBg?: boolean
 }
 
-export const CreatorPassTiles: FC<CreatorPassTilesProps> = ({
-  passData,
-  alternateBg = false
-}) => {
+export const PassTile: FC<PassTilesProps> = ({ pass, alternateBg = false }) => {
   const [isModalOpen, setModalOpen] = useState(false)
 
   const handleClick = () => {
@@ -28,22 +26,23 @@ export const CreatorPassTiles: FC<CreatorPassTilesProps> = ({
         )}
         onClick={handleClick}
       >
+        <PassMedia passId={pass.passId} />
         <div className="grid h-full grid-flow-row gap-6 p-2">
           <div className="row-span-1 flex h-[55px] items-start justify-start">
             <span className="text-2xl font-bold text-[#ffff]/90">
-              {passData.title}
+              {pass.title}
             </span>
           </div>
           <div className="row-span-1 flex items-start justify-start text-lg text-[#ffff]/90">
-            <span className="font-bold">{passData.price}.00</span>
-            <span className="ml-2 font-light">/month</span>
+            <span className="font-bold">{pass.price.toFixed(2)}</span>
+            <span className="ml-2 font-light">/30 days</span>
           </div>
         </div>
       </div>
       <CreatorPassModal
         isOpen={isModalOpen}
         setOpen={setModalOpen}
-        passData={passData}
+        pass={pass}
       />
     </>
   )

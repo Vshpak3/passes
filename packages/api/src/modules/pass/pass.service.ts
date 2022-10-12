@@ -302,7 +302,7 @@ export class PassService {
     return new MintPassResponseDto(true)
   }
 
-  async findPass(passId: string): Promise<PassDto> {
+  async getPass(passId: string): Promise<PassDto> {
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
@@ -324,11 +324,11 @@ export class PassService {
     return new PassDto(pass)
   }
 
-  async findPassHoldings(
+  async getPassHoldings(
     userId: string,
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
-    const { creatorId, passId } = getPassHoldingsRequestDto
+    const { creatorId, passId, passType, expired } = getPassHoldingsRequestDto
     let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
@@ -351,6 +351,13 @@ export class PassService {
         `${UserEntity.table}.username as creator_username`,
         `${UserEntity.table}.display_name as creator_display_name`,
       )
+
+    if (passType) {
+      query = query.andWhere(`${PassEntity.table}.type`, passType)
+    }
+    if (expired !== undefined) {
+      query = query.andWhere('expired_at', expired ? '<=' : '>', new Date())
+    }
 
     if (creatorId) {
       query = query.andWhere(`${UserEntity.table}.id`, creatorId)
@@ -416,14 +423,16 @@ export class PassService {
     return passHolders.map((passHolder) => new PassHolderDto(passHolder))
   }
 
-  async getPassesByCreator(getCreatorPassesRequestDto: GetPassesRequestDto) {
-    const { createdAt, search, creatorId, lastId, pinned } =
+  async getCreatorPasses(getCreatorPassesRequestDto: GetPassesRequestDto) {
+    const { createdAt, search, creatorId, lastId, pinned, type } =
       getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
-      .whereNotNull('collection_address')
-      .andWhere({ creator_id: creatorId })
+      .andWhere({ creator_id: creatorId, minted: true })
       .select('*')
 
+    if (type) {
+      query = query.andWhere('type', type)
+    }
     if (pinned) {
       query = query.whereNotNull('pinned_at')
     }

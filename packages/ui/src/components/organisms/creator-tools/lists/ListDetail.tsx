@@ -27,13 +27,13 @@ import { ListMember } from "./ListMember"
 import { SortListPopup } from "./SortListPopup"
 
 type ListDetailProps = {
-  id: string
+  listId: string
 }
 
 const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
-const ListDetail: FC<ListDetailProps> = ({ id }) => {
+const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
   // const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
@@ -60,7 +60,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     try {
       // Get list information by ID
       const listInfoRes: GetListResponseDto = await listApi.getList({
-        listId: id
+        listId
       })
       setListInfo(listInfoRes)
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -108,7 +108,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
     try {
       await listApi.removeListMembers({
         removeListMembersRequestDto: {
-          listId: id,
+          listId,
           userIds: [user_id]
         }
       })
@@ -123,7 +123,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
       try {
         await listApi.addListMembers({
           addListMembersRequestDto: {
-            listId: id,
+            listId,
             userIds: [user_id]
           }
         })
@@ -158,7 +158,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
           const updated = (
             await listApi.editListName({
               editListNameRequestDto: {
-                listId: id,
+                listId,
                 name: listNameRef.current?.value
               }
             })
@@ -174,7 +174,7 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         setIsEditingListName((isEditingListName) => !isEditingListName)
       }
     },
-    [id, isEditingListName]
+    [listId, isEditingListName]
   )
 
   const sortPopperOpen = Boolean(anchorSortPopperEl)
@@ -280,12 +280,13 @@ const ListDetail: FC<ListDetailProps> = ({ id }) => {
         </Popper>
 
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
+          keyValue={`list/list-members/${listId}`}
           fetch={async (req: GetListMembersRequestDto) => {
             return await listApi.getListMembers({
               getListMembersRequestDto: req
             })
           }}
-          fetchProps={{ order, orderType, search, listId: id }}
+          fetchProps={{ order, orderType, search, listId }}
           KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
             return (
               <ListMember

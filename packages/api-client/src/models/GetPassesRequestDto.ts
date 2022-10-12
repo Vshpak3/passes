@@ -49,7 +49,25 @@ export interface GetPassesRequestDto {
      * @memberof GetPassesRequestDto
      */
     creatorId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassesRequestDto
+     */
+    type?: GetPassesRequestDtoTypeEnum;
 }
+
+
+/**
+ * @export
+ */
+export const GetPassesRequestDtoTypeEnum = {
+    Subscription: 'subscription',
+    Lifetime: 'lifetime',
+    External: 'external'
+} as const;
+export type GetPassesRequestDtoTypeEnum = typeof GetPassesRequestDtoTypeEnum[keyof typeof GetPassesRequestDtoTypeEnum];
+
 
 /**
  * Check if a given object implements the GetPassesRequestDto interface.
@@ -75,6 +93,7 @@ export function GetPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
         'search': !exists(json, 'search') ? undefined : json['search'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
     };
 }
 
@@ -92,6 +111,7 @@ export function GetPassesRequestDtoToJSON(value?: GetPassesRequestDto | null): a
         'search': value.search,
         'pinned': value.pinned,
         'creatorId': value.creatorId,
+        'type': value.type,
     };
 }
 

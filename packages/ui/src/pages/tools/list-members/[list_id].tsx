@@ -20,7 +20,9 @@ const FanDetailLists: NextPage = () => {
   }, [router])
   return (
     <>
-      {listId !== undefined && listId.length > 0 && <ListDetail id={listId} />}
+      {listId !== undefined && listId.length > 0 && (
+        <ListDetail listId={listId} />
+      )}
     </>
   )
 }

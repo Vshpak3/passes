@@ -26,9 +26,7 @@ import { EmailService } from '../email/email.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { EthService } from '../eth/eth.service'
 import { MessagesService } from '../messages/messages.service'
-import { PassDto } from '../pass/dto/pass.dto'
 import { PassHolderDto } from '../pass/dto/pass-holder.dto'
-import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassService } from '../pass/pass.service'
 import { PostService } from '../post/post.service'
@@ -2255,45 +2253,25 @@ export class PaymentService {
     const subscriptions = await this.dbReader<SubscriptionEntity>(
       SubscriptionEntity.table,
     )
-      .where({ user_id: userId })
-      .andWhereNot('subscription_status', SubscriptionStatusEnum.CANCELLED)
-      .select('*')
-
-    const passHoldings = await this.dbReader<PassHolderEntity>(
-      PassHolderEntity.table,
-    )
-      .whereIn(
-        'id',
-        subscriptions.map((subscription) => subscription.pass_holder_id),
+      .leftJoin(
+        PassHolderEntity.table,
+        `${SubscriptionEntity.table}.pass_holder_id`,
+        `${PassHolderEntity.table}.id`,
       )
-      .select('*')
-    const passHoldingsMap = passHoldings.reduce((map, passHolding) => {
-      map[passHolding.id] = new PassHolderDto(passHolding as any)
-      return map
-    }, {})
-
-    const passes = await this.dbReader<PassEntity>(PassEntity.table)
-      .where(
-        'id',
-        'in',
-        passHoldings.map((passHolding) => passHolding.pass_id),
+      .where(`${PassHolderEntity}.holder_id`, userId)
+      .where(`${SubscriptionEntity}.user_id`, userId)
+      .select(
+        `${SubscriptionEntity}.*`,
+        `${PassHolderEntity}.pass_id`,
+        `${PassHolderEntity}.expires_at`,
       )
-      .select('*')
-    const passesMap = passes.reduce((map, pass) => {
-      map[pass.id] = new PassDto(pass)
-      return map
-    }, {})
 
-    const subscriptionsDto = subscriptions.map((subscription) => {
+    return subscriptions.map((subscription) => {
+      const subscriptionDto = new SubscriptionDto(subscription)
+      subscriptionDto.passHolder = new PassHolderDto(subscription)
+      subscriptionDto.passHolder.passHolderId = subscription.pass_holder_id
       return new SubscriptionDto(subscription)
     })
-    subscriptionsDto.forEach((subscriptionDto) => {
-      subscriptionDto.passHolder =
-        passHoldingsMap[subscriptionDto.passHolderId as string]
-      subscriptionDto.pass =
-        passesMap[subscriptionDto.passHolder?.passId as string]
-    })
-    return subscriptionsDto
   }
 
   /*

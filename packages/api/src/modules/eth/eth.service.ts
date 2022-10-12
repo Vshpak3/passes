@@ -238,7 +238,6 @@ export class EthService {
     description: string,
     contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const username = (
       await this.dbReader<UserEntity>(UserEntity.table)
         .where({ id: creatorId })
@@ -263,7 +262,7 @@ export class EthService {
       description,
       image: imageUrl,
       animation_url: videoUrl,
-      // external_url: `https://www.passes.com/${username}`,
+      external_url: `https://www.passes.com/${username}`,
     }
 
     await this.s3contentService.putObject({
@@ -342,7 +341,6 @@ export class EthService {
       masterWallet,
     )
 
-    // console.log(contract.address)
     const nonce = await this.getNewNonce(ETH_MASTER_WALLET_LAMBDA_KEY_ID)
     try {
       const contract = await factory.deploy(

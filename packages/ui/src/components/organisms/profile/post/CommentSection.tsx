@@ -7,7 +7,8 @@ import { CommentApi } from "@passes/api-client/apis"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
-import { ComponentArg, InfiniteLoad } from "src/components/atoms/InfiniteLoad"
+import { InfiniteLoad } from "src/components/atoms/InfiniteLoad"
+import { ComponentArg } from "src/components/atoms/InfiniteScroll"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { errorMessage } from "src/helpers/error"
@@ -91,6 +92,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
       })}
 
       <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
+        keyValue={`/comments/${postId}`}
         fetch={async (req: GetCommentsForPostRequestDto) => {
           return await api.findCommentsForPost({
             getCommentsForPostRequestDto: req
