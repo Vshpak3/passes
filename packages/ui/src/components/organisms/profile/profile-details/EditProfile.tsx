@@ -9,6 +9,7 @@ import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
@@ -142,8 +143,13 @@ export const EditProfile: FC<EditProfileProps> = ({
     // TODO: this ends up adding on some extra properties like profile image
     mutateManual(values)
 
+    toast.success("Successfully updated your profile")
+
     if (values.profileImage?.[0]) {
       setProfileImageOverride(URL.createObjectURL(values.profileImage[0]))
+      toast.info(
+        "Please wait up to 10 minutes to see profile picture changes propogate throughout the site"
+      )
     }
   }
 

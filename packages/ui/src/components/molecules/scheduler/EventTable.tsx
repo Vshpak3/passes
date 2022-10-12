@@ -1,25 +1,18 @@
-import { PostApi, PostDto } from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useEffect, useState } from "react"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
-import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { CalendarProps, useScheduledPosts } from "src/hooks/useScheduledPosts"
 
 import { DeleteEventModal } from "./DeleteEventModal"
 
-const postAPI = new PostApi()
+export const EventTable: FC<CalendarProps> = ({ month, year }) => {
+  const { data, setMonthYear, deletePost } = useScheduledPosts()
 
-interface IEventTableProps {
-  month: number
-  year: number
-}
-
-export const EventTable: FC<IEventTableProps> = ({ month, year }) => {
-  const { data, mutate } = useScheduledPosts()
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<string | null>(
     null
   )
   const [isDeletingPost, setIsDeletingPost] = useState<boolean>(false)
-  const [filteredPosts, setFilteredPosts] = useState<PostDto[]>([])
 
   const handleOnDeleteEvent = useCallback((targetId: string) => {
     setSelectEventIdDelete(targetId)
@@ -34,35 +27,21 @@ export const EventTable: FC<IEventTableProps> = ({ month, year }) => {
       return
     }
     setIsDeletingPost(true)
-    await postAPI.removePost({
-      postId: selectEventIdDelete
-    })
-    mutate()
+    await deletePost(selectEventIdDelete)
     setSelectEventIdDelete(null)
     setIsDeletingPost(false)
-  }, [selectEventIdDelete, mutate])
+  }, [selectEventIdDelete, deletePost])
 
   useEffect(() => {
-    if (Array.isArray(data) && data.length > 0) {
-      const posts = data.filter(({ scheduledAt }) => {
-        if (!scheduledAt) {
-          return false
-        }
-        const postMonth = new Date(scheduledAt).getMonth()
-        const postYear = new Date(scheduledAt).getFullYear()
-
-        return postMonth === month && postYear === year
-      })
-      setFilteredPosts(posts)
-    }
-  }, [data, month, year])
+    setMonthYear({ month, year })
+  }, [month, year, setMonthYear])
 
   return (
     <div className="px-[15px] md:px-[30px]">
       <div className="mb-9 select-none text-base font-bold md:text-2xl">
         Scheduled event
       </div>
-      {filteredPosts?.length === 0 ? (
+      {!data?.length ? (
         <div className="mb-[30px] flex h-[295px] w-full flex-col items-center justify-center rounded-[20px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
           <Calendar />
           <span className="mt-3 text-white opacity-50">
@@ -85,7 +64,7 @@ export const EventTable: FC<IEventTableProps> = ({ month, year }) => {
               <th className="pb-1 text-center">Date</th>
               <th className="pb-1">Action</th>
             </tr>
-            {filteredPosts?.map((item) => {
+            {data?.map((item: PostDto) => {
               const { postId, price, text, scheduledAt, paywall } = item
 
               return (

@@ -1,6 +1,7 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
-import { format } from "date-fns"
+import classNames from "classnames"
+import { addMonths, format, startOfMonth } from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useRef, useState } from "react"
@@ -11,17 +12,17 @@ import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { CALENDAR_POPUP_ID } from "./CalendarPicker"
 import { NewPostPopup } from "./NewPostPopup"
 
+const VIEWABLE_THIS_MANY_MONTHS_AGO = 24
+const VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE = 6
+
 interface SchedulerHeaderProps {
   onChangeTime: (month: number, year: number) => void
-  availableFrom: { month: number; year: number }
 }
 
-export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
-  onChangeTime,
-  availableFrom
-}) => {
+export const SchedulerHeader: FC<SchedulerHeaderProps> = ({ onChangeTime }) => {
   const [month, setMonth] = useState<number>(new Date().getMonth())
   const [year, setYear] = useState<number>(new Date().getFullYear())
+
   const popperContainerRef = useRef<HTMLDivElement | null>(null)
   const popperMonthYearPickerRef = useRef<HTMLDivElement | null>(null)
 
@@ -71,31 +72,21 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     [month, onChangeTime, year]
   )
 
-  const handleGoPrevious = useCallback(() => {
-    const previousMonth = month - 1
-    if (previousMonth === -1) {
-      onChangeTime(12, year - 1)
-      setMonth(12)
-      setYear(year - 1)
-    } else {
-      onChangeTime(previousMonth, year)
-      setMonth(previousMonth)
-      setYear(year)
-    }
-  }, [month, year, onChangeTime])
+  const handleGoPrevious = () => {
+    const _month = month === 0 ? 11 : month - 1
+    const _year = month === 0 ? year - 1 : year
+    onChangeTime(_month, _year)
+    setMonth(_month)
+    setYear(_year)
+  }
 
-  const handleGoNext = useCallback(() => {
-    const nextMonth = month + 1
-    if (nextMonth === 12) {
-      onChangeTime(0, year + 1)
-      setMonth(0)
-      setYear(year + 1)
-    } else {
-      onChangeTime(nextMonth, year)
-      setMonth(nextMonth)
-      setYear(year)
-    }
-  }, [month, year, onChangeTime])
+  const handleGoNext = () => {
+    const _month = month === 11 ? 0 : month + 1
+    const _year = month === 11 ? year + 1 : year
+    onChangeTime(_month, _year)
+    setMonth(_month)
+    setYear(_year)
+  }
 
   const dismissCreateSchedulerPopper = useCallback(() => {
     buttonCreateSchedulerEl && setButtonCreateSchedulerEl(null)
@@ -103,15 +94,27 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
   }, [buttonCreateSchedulerEl])
 
   const DateTimeSelected = () => {
+    const disablePast =
+      addMonths(
+        startOfMonth(new Date()),
+        -1 * VIEWABLE_THIS_MANY_MONTHS_AGO + 1
+      ) > new Date(year, month, 1)
+    const disableFuture =
+      addMonths(
+        startOfMonth(new Date()),
+        VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE - 1
+      ) < new Date(year, month, 1)
+
     return (
       <>
-        {availableMonthFrom === month && availableYearFrom === year ? null : (
-          <ChevronLeft
-            size={32}
-            className="cursor-pointer"
-            onClick={handleGoPrevious}
-          />
-        )}
+        <ChevronLeft
+          size={32}
+          className={classNames({
+            "cursor-pointer": !disablePast,
+            "opacity-[0.5]": disablePast
+          })}
+          onClick={!disablePast ? handleGoPrevious : () => undefined}
+        />
         <button
           aria-describedby={monthYearPopperId}
           type="button"
@@ -123,14 +126,15 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
         </button>
         <ChevronRight
           size={32}
-          className="cursor-pointer"
-          onClick={handleGoNext}
+          className={classNames({
+            "cursor-pointer": !disableFuture,
+            "opacity-[0.5]": disableFuture
+          })}
+          onClick={!disableFuture ? handleGoNext : () => undefined}
         />
       </>
     )
   }
-
-  const { month: availableMonthFrom, year: availableYearFrom } = availableFrom
 
   useOnClickOutside(popperMonthYearPickerRef, () => {
     setMonthYearPopperOpen(false)

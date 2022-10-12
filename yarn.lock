@@ -5781,7 +5781,6 @@ __metadata:
     "@typescript-eslint/parser": 5.38.0
     autoprefixer: 10.4.11
     axios: 0.27.2
-    calendar-dates: 2.7.2
     card-validator: 8.1.1
     chart.js: 3.9.1
     classnames: 2.3.2
@@ -9565,13 +9564,6 @@ __metadata:
     normalize-url: ^6.0.1
     responselike: ^2.0.0
   checksum: 6152813982945a5c9989cb457a6c499f12edcc7ade323d2fbfd759abc860bdbd1306e08096916bb413c3c47e812f8e4c0a0cc1e112c8ce94381a960f115bc77f
-  languageName: node
-  linkType: hard
-
-"calendar-dates@npm:2.7.2":
-  version: 2.7.2
-  resolution: "calendar-dates@npm:2.7.2"
-  checksum: e1b0e920bf3c3a341648db9e60da80b4e94c8fc6e38f0f45eccc0a58f8545134fb532f18fe53c17cd127a60d22f08244a68881be9c5e755ad6c2c3cd250a5772
   languageName: node
   linkType: hard
 
