@@ -1,9 +1,9 @@
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 
 import { ProfileContentFeed } from "./feed/ProfileContentFeed"
 import { ProfileNavigation } from "./ProfileNavigation"
 
-export const ProfileContent: FC = () => {
+const UnMemoizedProfileContent: FC = () => {
   const [activeTab, setActiveTab] = useState("post")
 
   return (
@@ -13,3 +13,5 @@ export const ProfileContent: FC = () => {
     </>
   )
 }
+
+export const ProfileContent = memo(UnMemoizedProfileContent)

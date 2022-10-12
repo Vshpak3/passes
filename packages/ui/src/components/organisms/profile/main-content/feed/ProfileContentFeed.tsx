@@ -96,7 +96,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
                 )
               }}
             >
-              <NewFanwallPosts />
+              <NewFanwallPosts profileUserId={profileUserId ?? ""} />
             </InfiniteScrollPagination>
           )}
         </>

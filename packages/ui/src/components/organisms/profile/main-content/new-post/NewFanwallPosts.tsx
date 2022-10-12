@@ -4,13 +4,17 @@ import {
 } from "@passes/api-client"
 import { useState } from "react"
 import { FanWallComment } from "src/components/organisms/profile/main-content/feed/FanWallComment"
-import { useProfile } from "src/hooks/useProfile"
 import { useUser } from "src/hooks/useUser"
 
 import { NewFanwallPost } from "./NewFanwallPost"
 
-export const NewFanwallPosts: React.FC = () => {
-  const { profileUserId } = useProfile()
+interface NewFanwallPosts {
+  profileUserId: string
+}
+
+export const NewFanwallPosts: React.FC<NewFanwallPosts> = ({
+  profileUserId
+}: NewFanwallPosts) => {
   const [newComments, setNewComments] = useState<FanWallCommentDto[]>([])
   const { user } = useUser()
   const createPost = async (
