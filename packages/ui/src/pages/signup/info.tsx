@@ -140,7 +140,7 @@ const SignupInfoPage: FC = () => {
       />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]"></div>
       <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
-        <div className="flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] pt-8 opacity-[60] md:border md:pt-0">
+        <div className="flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] pt-8 opacity-[60] md:border md:py-[3%]">
           <Text
             fontSize={36}
             className="mb-4 w-[360px] text-center font-semibold text-white"
