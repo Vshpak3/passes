@@ -8,6 +8,7 @@ import MonthYearPicker from "react-month-year-picker"
 import { CreateSchedulerPopup } from "src/components/molecules/scheduler/CreateSchedulerPopup"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
+import { CALENDAR_POPUP_ID } from "./CalendarPicker"
 import { NewPostPopup } from "./NewPostPopup"
 
 interface SchedulerHeaderProps {
@@ -135,6 +136,16 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
     setMonthYearPopperOpen(false)
   })
 
+  useOnClickOutside(popperContainerRef, (e) => {
+    const calendarPopup = document.getElementById(CALENDAR_POPUP_ID)
+
+    if (e.target instanceof Node && calendarPopup?.contains(e.target)) {
+      return
+    }
+
+    dismissCreateSchedulerPopper()
+  })
+
   return (
     <>
       {/* create new schedule popup */}
@@ -159,12 +170,14 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
               ref={popperContainerRef}
               className="mr-[25px] w-[320px] rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md md:mr-0 md:w-[480px]"
             >
-              <CreateSchedulerPopup
-                onCancel={dismissCreateSchedulerPopper}
-                setIsNewPostModalOpen={setIsNewPostModalOpen}
-                setSelectionDate={setSelectionDate}
-                selectionDate={selectionDate}
-              />
+              {createScheduleOpen && (
+                <CreateSchedulerPopup
+                  onCancel={dismissCreateSchedulerPopper}
+                  setIsNewPostModalOpen={setIsNewPostModalOpen}
+                  setSelectionDate={setSelectionDate}
+                  selectionDate={selectionDate}
+                />
+              )}
             </div>
           </Fade>
         )}
@@ -206,14 +219,6 @@ export const SchedulerHeader: FC<SchedulerHeaderProps> = ({
           </Fade>
         )}
       </Popper>
-
-      {/* clicking on background hide scheduler popup */}
-      {buttonCreateSchedulerEl && (
-        <div
-          className="bg-black-100 fixed top-0 left-0 z-50 h-screen w-full"
-          onClick={() => dismissCreateSchedulerPopper()}
-        />
-      )}
 
       {/* Create new post */}
       <NewPostPopup

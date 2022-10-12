@@ -9,6 +9,8 @@ import { DayPicker } from "react-day-picker"
 import { TimePicker } from "src/components/atoms/TimePicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
+export const CALENDAR_POPUP_ID = "calendar-popper"
+
 const hoursTo24Hours = (hours: number, timeShift: TimeShiftEnum) => {
   if (timeShift === TimeShiftEnum.PM) {
     return 12 + (hours === 12 ? 0 : hours)
@@ -77,7 +79,7 @@ export const CalendarPicker: FC<{
   })
 
   const open = Boolean(anchorEl)
-  const id = open ? "simple-popper" : undefined
+  const id = open ? CALENDAR_POPUP_ID : undefined
 
   return (
     <>
