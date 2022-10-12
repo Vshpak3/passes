@@ -1,21 +1,19 @@
 import { Dialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import React, { FC, Fragment } from "react"
+import Link from "next/link"
+import { FC, Fragment } from "react"
+import { creatorToolsItems } from "src/layout/Sidebar/sidebarData"
 
 interface CreatorToolsSidebarProps {
-  active: any
-  collapsedAdditionalSidebarOpen: any
-  closeCollapsedAdditionalSidebar: any
-  collapsedNavigation: any
-  setActive: any
+  active: string
+  collapsedAdditionalSidebarOpen: boolean
+  closeCollapsedAdditionalSidebar: () => void
 }
 
 export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
   active,
   collapsedAdditionalSidebarOpen,
-  closeCollapsedAdditionalSidebar,
-  collapsedNavigation,
-  setActive
+  closeCollapsedAdditionalSidebar
 }) => {
   return (
     <>
@@ -50,32 +48,34 @@ export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
               <Dialog.Panel className="relative mt-[10px] ml-[10px] flex max-h-[82vh] w-full max-w-[180px] flex-1 flex-col rounded-lg bg-[#120C14] drop-shadow-sidebar-shadow">
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
                   <nav className="flex flex-col items-start gap-3 p-3 ">
-                    {collapsedNavigation.map((item: any) => (
-                      <Fragment key={`sidebar-${item.id}`}>
-                        <span
-                          onClick={() => setActive(item.id)}
-                          key={item.id}
-                          className={classNames(
-                            item.id === active
-                              ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
-                              : "hover:bg-passes-secondary-color/10 hover:text-white",
-                            "group flex cursor-pointer items-start justify-center rounded-full px-4 py-2 "
-                          )}
-                        >
-                          <a
-                            href={item.href}
+                    {creatorToolsItems.map((item: any) => {
+                      return (
+                        <Fragment key={`sidebar-${item.id}`}>
+                          <span
+                            key={item.id}
                             className={classNames(
                               item.id === active
-                                ? "text-white"
-                                : "text-[#eeedef]/50 group-hover:text-white",
-                              "group flex cursor-pointer items-start text-base font-semibold tracking-[0.003em] text-white "
+                                ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
+                                : "hover:bg-passes-secondary-color/10 hover:text-white",
+                              "group flex cursor-pointer items-start justify-center rounded-full px-4 py-2 "
                             )}
                           >
-                            {item.name}
-                          </a>
-                        </span>
-                      </Fragment>
-                    ))}
+                            <Link
+                              as={item.href}
+                              href={item.href}
+                              className={classNames(
+                                item.id === active
+                                  ? "text-white"
+                                  : "text-[#eeedef]/50 group-hover:text-white",
+                                "group flex cursor-pointer items-start text-base font-semibold tracking-[0.003em] text-white "
+                              )}
+                            >
+                              {item.name}
+                            </Link>
+                          </span>
+                        </Fragment>
+                      )
+                    })}
                   </nav>
                 </div>
               </Dialog.Panel>

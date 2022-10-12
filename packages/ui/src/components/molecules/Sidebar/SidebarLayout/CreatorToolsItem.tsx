@@ -4,8 +4,8 @@ import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import { FC } from "react"
 
 interface CreatorToolsItemProps {
-  active: any
-  openCollapsedAdditionalSidebar: any
+  active: string
+  openCollapsedAdditionalSidebar: () => void
 }
 
 export const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
@@ -16,7 +16,7 @@ export const CreatorToolsItem: FC<CreatorToolsItemProps> = ({
     <Disclosure>
       <Disclosure.Button>
         <span
-          onClick={() => openCollapsedAdditionalSidebar("tools")}
+          onClick={openCollapsedAdditionalSidebar}
           className={classNames(
             active === "tools"
               ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"

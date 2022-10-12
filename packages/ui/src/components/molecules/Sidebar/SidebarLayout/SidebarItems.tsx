@@ -1,33 +1,29 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import Link from "next/link"
+import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
-import React, { FC, Fragment } from "react"
+import { FC, Fragment } from "react"
+
+import { SidebarNavigation } from "./types"
 
 interface SidebarChildItemProps {
-  subItem: any
-  isActive: any
-  setActive: any
+  subItem: SidebarNavigation
+  isActive: boolean
 }
 
 export const SidebarChildItem: FC<SidebarChildItemProps> = ({
   subItem,
-  isActive,
-  setActive
+  isActive
 }) => {
   return (
-    <Link
-      key={subItem.name}
-      href={subItem.href}
-      as={subItem.href}
-      onClick={() => setActive(subItem.id)}
-    >
+    <Link key={subItem.name} href={subItem.href} as={subItem.href}>
       <span
         className={classNames(
           isActive
             ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 py-[10px] px-[26px]"
             : "text-[#eeedef]/50 hover:text-white",
-          "group mb-[19px] hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          "group  mt-[10px] mb-[19px] hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         {subItem.name}
@@ -37,18 +33,12 @@ export const SidebarChildItem: FC<SidebarChildItemProps> = ({
 }
 
 interface SidebarDropdownProps {
-  active: any
-  item: any
-  setActive: any
-  router: any
+  active: string
+  item: SidebarNavigation
 }
 
-export const SidebarDropdown: FC<SidebarDropdownProps> = ({
-  active,
-  item,
-  setActive,
-  router
-}) => {
+export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
+  const router = useRouter()
   const isItemActive = item.id === active
 
   return (
@@ -102,17 +92,17 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({
               static
               className="hidden sidebar-collapse:block sidebar-collapse:pl-[67px]"
             >
-              {item.children.map((subItem: any) => {
-                const isActive = subItem.id === active
-                return (
-                  <SidebarChildItem
-                    key={subItem.id}
-                    subItem={subItem}
-                    isActive={isActive}
-                    setActive={setActive}
-                  />
-                )
-              })}
+              {item.children &&
+                item.children.map((subItem: any) => {
+                  const isActive = subItem.id === active
+                  return (
+                    <SidebarChildItem
+                      key={subItem.id}
+                      subItem={subItem}
+                      isActive={isActive}
+                    />
+                  )
+                })}
             </Disclosure.Panel>
           )}
         </Fragment>
@@ -121,20 +111,14 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({
   )
 }
 
-interface SidebarTabletItemProps {
-  isActive: any
-  item: any
-  setActive: any
+interface SidebarItemProps {
+  isActive: boolean
+  item: SidebarNavigation
 }
 
-export const SidebarTabletItem: FC<SidebarTabletItemProps> = ({
-  isActive,
-  item,
-  setActive
-}) => {
+const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
   return (
     <span
-      onClick={setActive}
       className={classNames(
         isActive
           ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
@@ -167,20 +151,9 @@ export const SidebarTabletItem: FC<SidebarTabletItemProps> = ({
   )
 }
 
-interface SidebarDesktopItemProps {
-  isActive: any
-  item: any
-  setActive: any
-}
-
-export const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
-  isActive,
-  item,
-  setActive
-}) => {
+const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
   return (
     <span
-      onClick={setActive}
       key={item.id}
       className={classNames(
         isActive
@@ -197,7 +170,7 @@ export const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
           "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
-        <a className={classNames("flex flex-row")}>
+        <span className={classNames("flex flex-row")}>
           <item.icon
             className={classNames(
               isActive
@@ -208,35 +181,17 @@ export const SidebarDesktopItem: FC<SidebarDesktopItemProps> = ({
             aria-hidden="true"
           />
           {item.name}
-        </a>
+        </span>
       </Link>
     </span>
   )
 }
 
-interface SidebarItemProps {
-  isActive: any
-  item: any
-  setActive: any
-}
-
-export const SidebarItem: FC<SidebarItemProps> = ({
-  isActive,
-  item,
-  setActive
-}) => {
+export const SidebarItem: FC<SidebarItemProps> = ({ isActive, item }) => {
   return (
     <Fragment>
-      <SidebarTabletItem
-        isActive={isActive}
-        item={item}
-        setActive={setActive}
-      />
-      <SidebarDesktopItem
-        isActive={isActive}
-        item={item}
-        setActive={setActive}
-      />
+      <SidebarTabletItem isActive={isActive} item={item} />
+      <SidebarDesktopItem isActive={isActive} item={item} />
     </Fragment>
   )
 }

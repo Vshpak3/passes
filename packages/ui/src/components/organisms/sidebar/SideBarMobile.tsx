@@ -6,41 +6,26 @@ import {
   SidebarMobileDropdown,
   SidebarMobileItem
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileItems"
+import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
 
 interface SidebarMobileProps {
-  active: any
+  active: string
   navigation: SidebarNavigation[]
-  setActive: any
-  router: any
 }
 
 export const SidebarMobile: FC<SidebarMobileProps> = ({
   active,
-  navigation,
-  setActive,
-  router
+  navigation
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
 
   const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
-      <SidebarMobileItem
-        key={item.id}
-        item={item}
-        active={active}
-        setActive={setActive}
-      />
+      <SidebarMobileItem key={item.id} item={item} active={active} />
     ) : (
-      <SidebarMobileDropdown
-        key={item.id}
-        item={item}
-        active={active}
-        setActive={setActive}
-        router={router}
-      />
+      <SidebarMobileDropdown key={item.id} item={item} active={active} />
     )
 
     return (
@@ -71,9 +56,7 @@ export const SidebarMobile: FC<SidebarMobileProps> = ({
               icon: LogoutIcon,
               href: "/logout"
             }}
-            active={false}
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            setActive={() => {}}
+            active=""
           />
         </AuthWrapper>
       </SidebarMobileContainer>

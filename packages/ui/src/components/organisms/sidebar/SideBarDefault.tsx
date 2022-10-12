@@ -1,7 +1,7 @@
 import { differenceInYears } from "date-fns"
 import dynamic from "next/dynamic"
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
-import { FC } from "react"
+import { useState } from "react"
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { CreatorToolsItem } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsItem"
 import { CreatorToolsSidebar } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsSidebar"
@@ -11,9 +11,10 @@ import {
   SidebarDropdown,
   SidebarItem
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
+import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { MIN_CREATOR_AGE_IN_YEARS } from "src/config/constants"
-import { SidebarNavigation } from "src/layout/Sidebar/sidebarData"
+import { useUser } from "src/hooks/useUser"
 
 const NewPostButton = dynamic(
   () => import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton"),
@@ -21,44 +22,36 @@ const NewPostButton = dynamic(
 )
 
 interface SidebarDefaultProps {
-  active: any
   navigation: SidebarNavigation[]
-  setActive: any
-  router: any
-  openCollapsedAdditionalSidebar: any
-  closeCollapsedAdditionalSidebar: any
-  collapsedAdditionalSidebarOpen: any
-  collapsedNavigation: any
-  user: any
+  active: string
 }
 
-export const SidebarDefault: FC<SidebarDefaultProps> = ({
-  active,
+export const SidebarDefault: React.FC<SidebarDefaultProps> = ({
   navigation,
-  setActive,
-  router,
-  openCollapsedAdditionalSidebar,
-  closeCollapsedAdditionalSidebar,
-  collapsedAdditionalSidebarOpen,
-  collapsedNavigation,
-  user
+  active
 }) => {
+  const { user } = useUser()
+  // TODO: sidebar open will be used for mobile sidebar
+  const [collapsedAdditionalSidebarOpen, setCollapsedAdditionalSidebarOpen] =
+    useState(false)
+
+  const openCollapsedAdditionalSidebar = () => {
+    setCollapsedAdditionalSidebarOpen(true)
+  }
+
+  const closeCollapsedAdditionalSidebar = () => {
+    setCollapsedAdditionalSidebarOpen(false)
+  }
+
   const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
       <SidebarItem
         key={`sidebar-${item.id}`}
         isActive={item.id === active}
         item={item}
-        setActive={() => setActive(item.id)}
       />
     ) : (
-      <SidebarDropdown
-        key={`sidebar-${item.id}`}
-        active={active}
-        item={item}
-        setActive={setActive}
-        router={router}
-      />
+      <SidebarDropdown key={`sidebar-${item.id}`} active={active} item={item} />
     )
 
     return (
@@ -112,8 +105,6 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
                 href: "/logout"
               }}
               isActive={false}
-              // eslint-disable-next-line @typescript-eslint/no-empty-function
-              setActive={() => {}}
             />
           </div>
         </AuthWrapper>
@@ -122,8 +113,6 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
         active={active}
         collapsedAdditionalSidebarOpen={collapsedAdditionalSidebarOpen}
         closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
-        collapsedNavigation={collapsedNavigation}
-        setActive={setActive}
       />
     </>
   )

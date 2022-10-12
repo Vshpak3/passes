@@ -5,11 +5,12 @@ import { PostDto } from "@passes/api-client"
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
 import ms from "ms"
+import { NextPage } from "next"
 import { AppProps } from "next/app"
 import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
-import { FC, useEffect, useState } from "react"
+import { ReactElement, ReactNode, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
@@ -65,7 +66,18 @@ Router.events.on("routeChangeError", () => {
   nprogress.done()
 })
 
-const App: FC<AppProps> = ({ Component, pageProps }) => {
+export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [refresh, setRefresh] = useState(0)
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
@@ -101,7 +113,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     "Have an awesome day :-)"
   ])
 
-  return (
+  const getLayout = Component.getLayout ?? ((page) => page)
+  return getLayout(
     <Providers Component={Component} pageProps={pageProps}>
       <DefaultHead />
       <Script
