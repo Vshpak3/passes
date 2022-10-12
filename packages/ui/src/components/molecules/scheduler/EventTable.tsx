@@ -49,7 +49,7 @@ export const EventTable: FC = () => {
           </span>
         </div>
       ) : (
-        <div className="mb-[30px] w-full rounded-[20px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
+        <div className="mb-[30px] w-full overflow-auto rounded-[20px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
           {selectEventIdDelete && (
             <DeleteEventModal
               isDeleting={isDeletingPost}
@@ -60,22 +60,23 @@ export const EventTable: FC = () => {
           <table className="w-full">
             <tr className="hidden pb-2 text-left text-base font-medium leading-6 text-white opacity-50 md:contents">
               <th className="pl-5 pb-1">Name</th>
-              <th className="pb-1">Content</th>
-              <th className="pb-1">Date</th>
+              <th className="px-3 pb-1">Text</th>
+              <th className="pb-1 text-center">Date</th>
               <th className="pb-1">Action</th>
             </tr>
-            {data?.map((item, index) => {
-              const { postId, price, text, scheduledAt } = item
+            {data?.map((item) => {
+              const { postId, price, text, scheduledAt, paywall } = item
 
               return (
                 <EventTableItem
-                  key={index}
+                  key={postId}
                   id={postId}
                   price={price}
                   text={text}
                   scheduledAt={scheduledAt as Date}
                   data={item}
                   onDeleteEvent={handleOnDeleteEvent}
+                  postUnlocked={!paywall}
                 />
               )
             })}

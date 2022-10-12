@@ -1,11 +1,12 @@
 import { PostApi, PostDto } from "@passes/api-client"
 import { compareAsc, format } from "date-fns"
 import EditIcon from "public/icons/edit.svg"
-import LockedUnlockedIcon from "public/icons/lock-unlocked.svg"
 import TrashIcon from "public/icons/trash.svg"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
+import { PostUnlockButton } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
+import { formatCurrency } from "src/helpers/formatters"
 import { useWindowDimensions } from "src/helpers/hooks/useWindowDimensions"
 import { CACHE_KEY_SCHEDULED_EVENTS } from "src/hooks/useScheduledPosts"
 import { mutate } from "swr"
@@ -17,6 +18,7 @@ interface EventTableItemProps {
   scheduledAt: Date
   onDeleteEvent: (id: string) => void
   data: PostDto
+  postUnlocked: boolean
 }
 
 const postAPI = new PostApi()
@@ -46,6 +48,7 @@ export const EditButtonGroup: FC<any> = ({ id, data }) => {
         initialData={data}
         createPost={handleUpdatePost}
         placeholder="What's on your mind?"
+        onlyText
       />
     </Dialog>
   )
@@ -59,24 +62,31 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   text,
   data,
   scheduledAt,
-  onDeleteEvent
+  onDeleteEvent,
+  postUnlocked
 }) => {
   const { width = 0 } = useWindowDimensions()
+  const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
+
+  // Set image if it exists in post
+  useEffect(() => {
+    if (data.content?.[0]?.contentType === "image") {
+      setShowcaseImg(data.content[0].signedUrl as string)
+    }
+  }, [data.content])
 
   const generateButtonName = useCallback(() => {
-    if (price && price >= 0) {
-      return (
-        <button className="flex min-w-[175px] items-center justify-center gap-3 rounded-[50px] bg-passes-pink-100 py-[6px] text-white md:py-[13px]">
-          <LockedUnlockedIcon /> {price}
-        </button>
-      )
+    if (postUnlocked) {
+      return <div>Unlocked</div>
     }
+
     return (
-      <button className="flex min-w-[175px] items-center justify-center gap-3 rounded-[50px] bg-passes-primary-color py-[6px] text-white md:py-[13px]">
-        {price}
-      </button>
+      <PostUnlockButton
+        name={`${formatCurrency(price ?? 0)}`}
+        className="w-auto cursor-default !px-5 !py-2.5"
+      />
     )
-  }, [price])
+  }, [price, postUnlocked])
 
   const generateActionStatus = useCallback(() => {
     const isPosted = compareAsc(new Date(scheduledAt), today) === -1
@@ -122,12 +132,24 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   return (
     <tr className="px-5 odd:bg-passes-purple-200">
       <td className="my-[6px] flex items-center pl-5">
-        <div className="mr-3 h-[75px] w-[75px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
+        <div className="relative mr-3 h-[75px] w-[75px] overflow-hidden rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]">
+          {showcaseImg && (
+            <img
+              src={showcaseImg}
+              alt="user profile"
+              className="absolute h-full w-full object-cover object-center"
+            />
+          )}
+        </div>
         {generateButtonName()}
       </td>
-      <td className="my-[6px]">{text}</td>
-      <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
-      <td className="my-[6px]">{generateActionStatus()}</td>
+      <td className="my-[6px] max-w-[350px] truncate px-3">{text}</td>
+      <td className="min-w-[150px] text-center">
+        {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
+      </td>
+      <td className="my-[6px] min-w-[170px] whitespace-nowrap px-3">
+        {generateActionStatus()}
+      </td>
     </tr>
   )
 }

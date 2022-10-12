@@ -255,7 +255,9 @@ export const NewPost: FC<NewPostProps> = ({
                   ? "Update Post"
                   : "New post"
               }
-              onClose={() => setExtended(false)}
+              onClose={() => {
+                setExtended(false)
+              }}
               register={register}
               errors={errors}
             />
