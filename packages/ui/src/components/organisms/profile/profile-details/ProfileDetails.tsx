@@ -41,7 +41,7 @@ export const ProfileDetails: FC = () => {
         isProfilePicModalOpen={isProfilePicModalOpen}
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
-      <div className="rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
+      <div className="relative rounded-[20px] md:min-h-12 md:flex md:gap-[40px] md:pb-10">
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
