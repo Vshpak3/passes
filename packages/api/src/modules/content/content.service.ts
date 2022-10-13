@@ -78,8 +78,6 @@ export class ContentService {
         .whereIn('id', contentIds)
         .andWhere({
           user_id: userId,
-          in_message: false,
-          in_post: false,
         })
         .update('deleted_at', new Date())
       if (count != contentIds.length) {
