@@ -326,7 +326,7 @@ export class PassService {
       }
     }
     await this.dbWriter<PassEntity>(PassEntity.table)
-      .update({ collection_address: collectionAddress })
+      .update({ collection_address: collectionAddress, minted: true })
       .where({ id: pass.id })
     return new MintPassResponseDto(true)
   }
