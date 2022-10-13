@@ -1,10 +1,15 @@
+import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
   GetChannelsRequestDtoOrderTypeEnum,
+  GetChannelsResponseDto,
   ListMemberDto
 } from "@passes/api-client/models"
 import React, { FC } from "react"
-import InfiniteScroll from "react-infinite-scroll-component"
+import {
+  ComponentArg,
+  InfiniteScrollPagination
+} from "src/components/atoms/InfiniteScroll"
 import { OrderDropDown } from "src/components/molecules/OrderDropDown"
 
 import { ChannelListItem } from "./ChannelListItem"
@@ -15,10 +20,7 @@ interface ChannelListProps {
   setChannelOrderType: (order: GetChannelsRequestDtoOrderTypeEnum) => void
   onUserSelect: (user: ListMemberDto) => void
   selectedChannel?: ChannelMemberDto
-  channels: Array<ChannelMemberDto>
   onChannelClicked: (channel: ChannelMemberDto) => void
-  hasMore: boolean
-  next: () => void
 }
 
 export const ChannelList: FC<ChannelListProps> = ({
@@ -26,10 +28,7 @@ export const ChannelList: FC<ChannelListProps> = ({
   setChannelOrderType,
   onUserSelect,
   selectedChannel,
-  channels,
-  onChannelClicked,
-  hasMore,
-  next
+  onChannelClicked
 }) => {
   const channelOrders = [
     { id: "recent", name: "Most recent" },
@@ -50,25 +49,52 @@ export const ChannelList: FC<ChannelListProps> = ({
         </div>
         <ChannelSearchInput onUserSelect={onUserSelect} />
       </div>
-      {channels.length > 0 && (
-        <div className="pt-6">
-          <InfiniteScroll
-            dataLength={channels.length}
-            next={next}
-            hasMore={hasMore}
-            loader={<h4>Loading...</h4>} // TODO: loader
-          >
-            {channels.map((channel, index) => (
+
+      <div className="pt-6">
+        <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
+          keyValue="/channels"
+          fetch={({
+            lastId,
+            recent,
+            tip
+          }: {
+            lastId?: string
+            recent?: Date
+            tip?: number
+          } = {}) => {
+            const api = new MessagesApi()
+            return api.getChannels({
+              getChannelsRequestDto: {
+                unreadOnly: false,
+                order: "desc",
+                orderType: channelOrderType,
+                lastId,
+                recent,
+                tip
+              }
+            })
+          }}
+          fetchProps={{
+            unreadOnly: false,
+            order: "desc",
+            orderType: channelOrderType,
+            lastId: undefined,
+            recent: undefined,
+            tip: undefined
+          }}
+          KeyedComponent={({
+            arg: channel
+          }: ComponentArg<ChannelMemberDto>) => {
+            return (
               <ChannelListItem
                 onClick={() => onChannelClicked(channel)}
                 channel={channel}
-                key={index}
                 isSelected={selectedChannel?.channelId === channel.channelId}
               />
-            ))}
-          </InfiniteScroll>
-        </div>
-      )}
+            )
+          }}
+        />
+      </div>
     </div>
   )
 }

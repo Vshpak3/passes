@@ -7,16 +7,13 @@ import {
 import React, { useEffect, useState } from "react"
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
-import { useMessages } from "src/hooks/useMessages"
 import { useUser } from "src/hooks/useUser"
 
 export const MessagesV2 = () => {
   const [channelOrderType, setChannelOrderType] =
     useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
-  const { channels, hasMore, next, createChannel, refresh } = useMessages({
-    channelOrderType
-  })
+
   const [gallery, setGallery] = useState(false)
   const [isCreator, setIsCreator] = useState(true)
 
@@ -33,9 +30,17 @@ export const MessagesV2 = () => {
     }
   }
 
+  const createChannel = (userId: string) => {
+    const api = new MessagesApi()
+    return api.getOrCreateChannel({
+      getChannelRequestDto: {
+        userId
+      }
+    })
+  }
+
   const onUserSelect = async (user: ListMemberDto) => {
     const channel = await createChannel(user.userId)
-    await refresh()
     setSelectedChannel(channel)
   }
 
@@ -65,9 +70,6 @@ export const MessagesV2 = () => {
         setChannelOrderType={setChannelOrderType}
         onUserSelect={onUserSelect}
         selectedChannel={selectedChannel}
-        channels={channels}
-        hasMore={hasMore}
-        next={next}
         onChannelClicked={handleChannelClicked}
       />
       {user && user.userId && (
