@@ -13,7 +13,7 @@ const defaultValues = {
 }
 
 const ProfileSettings = () => {
-  const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
+  const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
 
   const {
@@ -35,7 +35,7 @@ const ProfileSettings = () => {
   }
 
   useEffect(() => {
-    if (isUpdating) {
+    if (isLoading) {
       setIsDisabledBtn(true)
     }
     // if (creatorSettings) {
@@ -51,7 +51,7 @@ const ProfileSettings = () => {
     //     setIsDisabledBtn(false)
     //   }
     // }
-  }, [creatorSettings, isUpdating, values])
+  }, [creatorSettings, isLoading, values])
 
   useEffect(() => {
     if (creatorSettings) {

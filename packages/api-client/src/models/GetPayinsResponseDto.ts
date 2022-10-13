@@ -28,16 +28,40 @@ import {
 export interface GetPayinsResponseDto {
     /**
      * 
-     * @type {number}
+     * @type {Date}
      * @memberof GetPayinsResponseDto
      */
-    count: number;
+    createdAt?: Date;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPayinsResponseDto
+     */
+    lastId?: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPayinsResponseDto
+     */
+    startDate?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPayinsResponseDto
+     */
+    endDate?: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPayinsResponseDto
+     */
+    inProgress?: boolean;
     /**
      * 
      * @type {Array<PayinDto>}
      * @memberof GetPayinsResponseDto
      */
-    payins: Array<PayinDto>;
+    data: Array<PayinDto>;
 }
 
 /**
@@ -45,8 +69,7 @@ export interface GetPayinsResponseDto {
  */
 export function instanceOfGetPayinsResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "count" in value;
-    isInstance = isInstance && "payins" in value;
+    isInstance = isInstance && "data" in value;
 
     return isInstance;
 }
@@ -61,8 +84,12 @@ export function GetPayinsResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
     }
     return {
         
-        'count': json['count'],
-        'payins': ((json['payins'] as Array<any>).map(PayinDtoFromJSON)),
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'startDate': !exists(json, 'startDate') ? undefined : (new Date(json['startDate'])),
+        'endDate': !exists(json, 'endDate') ? undefined : (new Date(json['endDate'])),
+        'inProgress': !exists(json, 'inProgress') ? undefined : json['inProgress'],
+        'data': ((json['data'] as Array<any>).map(PayinDtoFromJSON)),
     };
 }
 
@@ -75,8 +102,12 @@ export function GetPayinsResponseDtoToJSON(value?: GetPayinsResponseDto | null):
     }
     return {
         
-        'count': value.count,
-        'payins': ((value.payins as Array<any>).map(PayinDtoToJSON)),
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'lastId': value.lastId,
+        'startDate': value.startDate === undefined ? undefined : (value.startDate.toISOString()),
+        'endDate': value.endDate === undefined ? undefined : (value.endDate.toISOString()),
+        'inProgress': value.inProgress,
+        'data': ((value.data as Array<any>).map(PayinDtoToJSON)),
     };
 }
 

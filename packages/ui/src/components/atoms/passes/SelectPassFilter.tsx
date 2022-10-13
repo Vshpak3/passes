@@ -37,9 +37,6 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   const menuEl = useRef(null)
 
   const [selectedValue, setSelectedValue] = useState<PassFilterOption>()
-  const filteredOptions = PASS_DROPDOWN_OPTIONS.filter(
-    ({ label }) => label !== selectedValue?.label
-  )
 
   useEffect(() => {
     const [label] = PASS_DROPDOWN_OPTIONS.filter(
@@ -63,12 +60,12 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
       </div>
       {showOptions && (
         <ul className="absolute z-10 w-full translate-y-1.5 space-y-2.5 rounded-md border border-passes-dark-200 bg-passes-dark-700 py-2.5 px-3">
-          {filteredOptions.map(({ value, label }, i) => (
+          {PASS_DROPDOWN_OPTIONS.map(({ value, label }, i) => (
             <li
               key={value}
               className={classNames(
                 "cursor-pointer",
-                i !== filteredOptions.length - 1
+                i !== PASS_DROPDOWN_OPTIONS.length - 1
                   ? "border-b border-passes-dark-200 pb-2.5"
                   : ""
               )}

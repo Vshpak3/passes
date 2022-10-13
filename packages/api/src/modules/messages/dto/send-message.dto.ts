@@ -25,4 +25,7 @@ export class SendMessageRequestDto {
 
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
+
+  @DtoProperty({ type: 'date', optional: true })
+  scheduled_at: Date
 }

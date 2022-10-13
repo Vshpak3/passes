@@ -1,8 +1,16 @@
-import { CircleBankDto, PaymentApi, PayoutMethodDto } from "@passes/api-client"
+import {
+  CircleBankDto,
+  PaymentApi,
+  PayoutMethodDto,
+  WalletDto
+} from "@passes/api-client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 
+import { useUserConnectedWallets } from "./useUserConnectedWallets"
+
 export const usePayoutMethod = () => {
+  const { wallets } = useUserConnectedWallets()
   const api = new PaymentApi()
   const {
     data: payoutMethod,
@@ -23,6 +31,7 @@ export const usePayoutMethod = () => {
   })
 
   const [defaultBank, setDefaultBank] = useState<CircleBankDto>()
+  const [defaultWallet, setDefaultWallet] = useState<WalletDto>()
 
   async function setDefaultPayoutMethod(dto: PayoutMethodDto) {
     await api.setDefaultPayoutMethod({
@@ -49,6 +58,11 @@ export const usePayoutMethod = () => {
   }, [])
 
   useEffect(() => {
+    setDefaultWallet(
+      wallets?.find((wallet) => wallet.walletId === payoutMethod?.walletId)
+    )
+  }, [wallets, payoutMethod])
+  useEffect(() => {
     setDefaultBank(banks?.find((bank) => bank.id === payoutMethod?.bankId))
   }, [banks, payoutMethod])
 
@@ -59,6 +73,8 @@ export const usePayoutMethod = () => {
     isLoadingBanks,
     setDefaultPayoutMethod,
     defaultBank,
-    deleteBank
+    defaultWallet,
+    deleteBank,
+    wallets
   }
 }

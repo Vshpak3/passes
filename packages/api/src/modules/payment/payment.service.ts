@@ -19,6 +19,8 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
+import { createPaginatedQuery } from '../../util/page.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
@@ -33,7 +35,6 @@ import { PostService } from '../post/post.service'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { SOL_ACCOUNT, SOL_NETWORK } from '../sol/sol.accounts'
 import { UserEntity } from '../user/entities/user.entity'
-import { WalletDto } from '../wallet/dto/wallet.dto'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletNotFoundError } from '../wallet/error/wallet.error'
@@ -56,11 +57,8 @@ import { CircleCreateTransferRequestDto } from './dto/circle/create-circle-trans
 import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusResponseDto } from './dto/circle/status.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
-import { GetPayinsRequestDto, GetPayinsResponseDto } from './dto/get-payin.dto'
-import {
-  GetPayoutsRequestDto,
-  GetPayoutsResponseDto,
-} from './dto/get-payout.dto'
+import { GetPayinsRequestDto } from './dto/get-payin.dto'
+import { GetPayoutsRequestDto } from './dto/get-payout.dto'
 import { PayinDto } from './dto/payin.dto'
 import {
   CircleCardPayinEntryRequestDto,
@@ -115,7 +113,6 @@ import {
   InvalidPayinRequestError,
   InvalidPayinStatusError,
   NoPayinMethodError,
-  PayinNotFoundError,
 } from './error/payin.error'
 import {
   NoPayoutMethodExcption,
@@ -140,6 +137,8 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
 const MAX_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 3 days
+const MAX_PAYINS_PER_REQUEST = 20
+const MAX_PAYOUTS_PER_REQUEST = 20
 
 const EXPIRING_DURATION_MS = ms('3 days')
 
@@ -332,7 +331,7 @@ export class PaymentService {
         .select('id')
         .first()
       if (checkPayin) {
-        await this.failPayin(payin.id, payin.userId)
+        await this.failPayin(payin.payinId, payin.userId)
         throw new BadRequestException('Payment for item already in progress')
       }
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
@@ -372,7 +371,7 @@ export class PaymentService {
     const data = {
       id: v4(),
       card_id: card.id,
-      payin_id: payin.id,
+      payin_id: payin.payinId,
       idempotency_key: createCardPaymentDto.idempotencyKey,
       amount: createCardPaymentDto.amount.amount,
       verification: CircleCardVerificationEnum.NONE,
@@ -551,7 +550,7 @@ export class PaymentService {
     const data = {
       id: v4(),
       bank_id: bank.id,
-      payout_id: payout.id,
+      payout_id: payout.payoutId,
       idempotency_key: createPayoutDto.idempotencyKey,
       amount: createPayoutDto.amount.amount,
       status: CircleAccountStatusEnum.PENDING,
@@ -635,7 +634,7 @@ export class PaymentService {
 
     const data = {
       id: v4(),
-      payout_id: payout.id,
+      payout_id: payout.payoutId,
       idempotency_key: createTransferDto.idempotencyKey,
       amount: createTransferDto.amount.amount,
       currency: createTransferDto.amount.currency,
@@ -1153,7 +1152,7 @@ export class PaymentService {
         .update({ payin_status: PayinStatusEnum.CREATED_READY })
         .where({ id: entryDto.payinId })
     } catch (err) {
-      await this.unregisterPayin(payinDto.id, userId)
+      await this.unregisterPayin(payinDto.payinId, userId)
       throw err
     }
 
@@ -1170,7 +1169,7 @@ export class PaymentService {
       entryDto.sessionId,
       payin,
     )
-    return { payinId: payin.id, status }
+    return { payinId: payin.payinId, status }
   }
 
   async entryPhantomCircleUSDC(
@@ -1179,9 +1178,9 @@ export class PaymentService {
     const tokenAddress: string = SOL_ACCOUNT[this.getBlockchainSelector()].USDC
     const networkUrl: string = SOL_NETWORK[this.getBlockchainSelector()]
     const depositAddress = await this.getCircleAddress('USD', 'SOL')
-    await this.linkAddressToPayin(depositAddress, payin.id)
+    await this.linkAddressToPayin(depositAddress, payin.payinId)
     return {
-      payinId: payin.id,
+      payinId: payin.payinId,
       tokenAddress,
       depositAddress,
       networkUrl,
@@ -1194,9 +1193,9 @@ export class PaymentService {
     const chainId = payin.payinMethod.chainId as number
     const tokenAddress = EVM_ADDRESS[chainId].USDC
     const depositAddress = await this.getCircleAddress('USD', 'ETH')
-    await this.linkAddressToPayin(depositAddress, payin.id)
+    await this.linkAddressToPayin(depositAddress, payin.payinId)
     return {
-      payinId: payin.id,
+      payinId: payin.payinId,
       chainId,
       tokenAddress,
       depositAddress,
@@ -1208,8 +1207,8 @@ export class PaymentService {
   ): Promise<MetamaskCircleETHEntryResponseDto> {
     const chainId = payin.payinMethod.chainId as number
     const depositAddress = await this.getCircleAddress('ETH', 'ETH')
-    await this.linkAddressToPayin(depositAddress, payin.id)
-    return { payinId: payin.id, depositAddress, chainId }
+    await this.linkAddressToPayin(depositAddress, payin.payinId)
+    return { payinId: payin.payinId, depositAddress, chainId }
   }
 
   /*
@@ -1666,9 +1665,11 @@ export class PaymentService {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
-        .select(['id', 'callback', 'callback_input_json'])
+        .select('*')
         .first()
-      await handleUncreateCallback(payin, this, this.dbWriter)
+      if (payin) {
+        await handleUncreateCallback(payin, this, this.dbWriter)
+      }
     }
   }
 
@@ -1688,9 +1689,11 @@ export class PaymentService {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
-        .select(['id', 'callback', 'callback_input_json'])
+        .select('*')
         .first()
-      await handleFailedCallback(payin, this, this.dbWriter)
+      if (payin) {
+        await handleFailedCallback(payin, this, this.dbWriter)
+      }
     }
   }
 
@@ -1710,16 +1713,10 @@ export class PaymentService {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
-        .select([
-          'id',
-          'callback',
-          'callback_input_json',
-          'amount',
-          'payin_method',
-        ])
+        .select('*')
         .first()
       if (!payin) {
-        throw new PayinNotFoundError('payin not found')
+        throw new InternalServerErrorException('payin not found')
       }
       await handleSuccesfulCallback(payin, this, this.dbWriter)
       const creatorShares = await this.dbReader<CreatorShareEntity>(
@@ -1751,57 +1748,57 @@ export class PaymentService {
   async getPayins(
     userId: string,
     getPayinsRequest: GetPayinsRequestDto,
-  ): Promise<GetPayinsResponseDto> {
+  ): Promise<PayinDto[]> {
+    const { startDate, endDate, lastId, createdAt, inProgress } =
+      getPayinsRequest
+
     let query = this.dbReader<PayinEntity>(PayinEntity.table)
-      .where({ user_id: userId })
-      .andWhere('payin_status', 'not in', [
+      .leftJoin(
+        CircleCardEntity.table,
+        `${PayinEntity.table}.card_id`,
+        `${CircleCardEntity.table}.id`,
+      )
+      .where(`${PayinEntity.table}.user_id`, userId)
+      .andWhere(`${PayinEntity.table}.payin_status`, 'not in', [
         PayinStatusEnum.REGISTERED,
         PayinStatusEnum.UNREGISTERED,
+        PayinStatusEnum.UNCREATED,
+        PayinStatusEnum.UNCREATED_READY,
+        PayinStatusEnum.CREATED_READY,
       ])
-      .select('*')
+      .select(`${PayinEntity.table}.*`, `${CircleCardEntity.table}.card_number`)
       .orderBy('created_at', 'desc')
-      .offset(getPayinsRequest.offset)
-      .limit(getPayinsRequest.limit)
-    if (getPayinsRequest.inProgress) {
-      query = query.whereIn('payin_status', [
+
+    if (startDate) {
+      query = query.where(`${PayinEntity.table}.created_at`, '>', startDate)
+    }
+    if (endDate) {
+      query = query.where(`${PayinEntity.table}.created_at`, '<', endDate)
+    }
+    if (inProgress) {
+      query = query.whereIn(`${PayinEntity.table}.payin_status`, [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
         PayinStatusEnum.SUCCESSFUL_READY,
       ])
     }
-    const payins = await query
-    const count = await this.dbReader<PayinEntity>(PayinEntity.table)
-      .where({ user_id: userId })
-      .andWhere('payin_status', 'not in', [
-        PayinStatusEnum.REGISTERED,
-        PayinStatusEnum.UNREGISTERED,
-      ])
-      .count()
-
-    const cards = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
-      .where(
-        'id',
-        'in',
-        payins.map((payin) => payin.card_id),
-      )
-      .select('*')
-    const cardsMap = cards.reduce((map, card) => {
-      map[card.id] = new CircleCardDto(card)
-      return map
-    }, {})
-
-    const payinsDto = payins.map((payin) => {
-      return new PayinDto(payin)
-    })
-    payinsDto.forEach((payinDto) => {
-      if (payinDto.payinMethod.method === PayinMethodEnum.CIRCLE_CARD) {
-        payinDto.card = cardsMap[payinDto.payinMethod.cardId as string]
+    query = createPaginatedQuery(
+      query,
+      PayinEntity.table,
+      PayinEntity.table,
+      'created_at',
+      OrderEnum.DESC,
+      createdAt,
+      lastId,
+    )
+    const payins = await query.limit(MAX_PAYINS_PER_REQUEST)
+    const ret = payins.map((payin) => new PayinDto(payin))
+    ret.forEach((payin) => {
+      if (payin.payinMethod.chainId) {
+        payin.payinMethod.chain = this.getEvmChain(payin.payinMethod.chainId)
       }
     })
-    return {
-      count: count[0]['count(*)'] as number,
-      payins: payinsDto,
-    }
+    return payins.map((payin) => new PayinDto(payin))
   }
 
   async failStalePayins() {
@@ -1947,7 +1944,11 @@ export class PaymentService {
 
     try {
       await this.creatorStatsService.handlePayout(userId, availableBalance)
-
+      if (availableBalance < MIN_PAYOUT_AMOUNT) {
+        throw new PayoutAmountException(
+          `${availableBalance} is not enough to payout`,
+        )
+      }
       const data = {
         id: v4(),
         user_id: userId,
@@ -1958,14 +1959,9 @@ export class PaymentService {
         amount: availableBalance,
       }
       await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
-
-      if (availableBalance < MIN_PAYOUT_AMOUNT) {
-        throw new PayoutAmountException(
-          `${availableBalance} is not enough to payout`,
-        )
-      }
       await this.submitPayout(data.id)
     } catch (err) {
+      await this.lockService.unlock(redisKey)
       await this.creatorStatsService.handlePayoutFail(userId, availableBalance)
     }
   }
@@ -2002,56 +1998,48 @@ export class PaymentService {
   async getPayouts(
     userId: string,
     getPayoutsRequest: GetPayoutsRequestDto,
-  ): Promise<GetPayoutsResponseDto> {
-    const payouts = await this.dbReader<PayoutEntity>(PayoutEntity.table)
-      .where({ user_id: userId })
-      .select('*')
+  ): Promise<PayoutDto[]> {
+    const { startDate, endDate, lastId, createdAt } = getPayoutsRequest
+    let query = this.dbReader<PayoutEntity>(PayoutEntity.table)
+      .leftJoin(
+        CircleBankEntity.table,
+        `${PayoutEntity.table}.bank_id`,
+        `${CircleBankEntity.table}.id`,
+      )
+      .leftJoin(
+        WalletEntity.table,
+        `${PayoutEntity.table}.wallet_id`,
+        `${WalletEntity.table}.id`,
+      )
+      .where(`${PayoutEntity.table}.user_id`, userId)
+      .select(
+        `${PayoutEntity.table}.*`,
+        `${CircleBankEntity.table}.description as bank_description`,
+        `${WalletEntity.table}.address`,
+        `${WalletEntity.table}.chain`,
+      )
       .orderBy('created_at', 'desc')
-      .offset(getPayoutsRequest.offset)
-      .limit(getPayoutsRequest.limit)
-    const count = await this.dbReader<PayoutEntity>(PayoutEntity.table)
-      .where({ user_id: userId })
-      .count()
+    if (startDate) {
+      query = query.where(`${PayoutEntity.table}.created_at`, '>', startDate)
+    }
+    if (endDate) {
+      query = query.where(`${PayoutEntity.table}.created_at`, '<', endDate)
+    }
 
-    const banks = await this.dbReader<CircleBankEntity>(CircleBankEntity.table)
-      .where(
-        'id',
-        'in',
-        payouts.map((payout) => payout.bank_id),
-      )
-      .select('*')
-    const banksMap = banks.reduce((map, bank) => {
-      map[bank.id] = new CircleBankDto(bank)
-      return map
-    }, {})
-    const wallets = await this.dbReader<WalletEntity>(WalletEntity.table)
-      .where(
-        'id',
-        'in',
-        payouts.map((payout) => payout.wallet_id),
-      )
-      .select('*')
-    const walletsMap = wallets.reduce((map, wallet) => {
-      map[wallet.id] = new WalletDto(wallet)
-      return map
-    }, {})
+    query = createPaginatedQuery(
+      query,
+      PayoutEntity.table,
+      PayoutEntity.table,
+      'created_at',
+      OrderEnum.DESC,
+      createdAt,
+      lastId,
+    )
 
-    const payoutsDto = payouts.map((payout) => {
+    const payouts = await query.limit(MAX_PAYOUTS_PER_REQUEST)
+    return payouts.map((payout) => {
       return new PayoutDto(payout)
     })
-    payoutsDto.forEach((payoutDto) => {
-      if (payoutDto.payoutMethod.method === PayoutMethodEnum.CIRCLE_WIRE) {
-        payoutDto.bank = banksMap[payoutDto.payoutMethod.bankId as string]
-      } else if (
-        payoutDto.payoutMethod.method === PayoutMethodEnum.CIRCLE_USDC
-      ) {
-        payoutDto.wallet = walletsMap[payoutDto.payoutMethod.walletId as string]
-      }
-    })
-    return {
-      count: count[0]['count(*)'] as number,
-      payouts: payoutsDto,
-    }
   }
 
   /*
@@ -2258,12 +2246,12 @@ export class PaymentService {
         `${SubscriptionEntity.table}.pass_holder_id`,
         `${PassHolderEntity.table}.id`,
       )
-      .where(`${PassHolderEntity}.holder_id`, userId)
-      .where(`${SubscriptionEntity}.user_id`, userId)
+      .where(`${PassHolderEntity.table}.holder_id`, userId)
+      .where(`${SubscriptionEntity.table}.user_id`, userId)
       .select(
-        `${SubscriptionEntity}.*`,
-        `${PassHolderEntity}.pass_id`,
-        `${PassHolderEntity}.expires_at`,
+        `${SubscriptionEntity.table}.*`,
+        `${PassHolderEntity.table}.pass_id`,
+        `${PassHolderEntity.table}.expires_at`,
       )
 
     return subscriptions.map((subscription) => {

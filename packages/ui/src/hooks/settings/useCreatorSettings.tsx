@@ -1,69 +1,82 @@
 import {
   CreatorSettingsApi,
   GetCreatorSettingsResponseDto,
-  UpdateCreatorSettingsRequestDto
+  GetCreatorSettingsResponseDtoPayoutFrequencyEnum,
+  UpdateCreatorSettingsRequestDto,
+  UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
 } from "@passes/api-client"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { toast } from "react-toastify"
 import { errorMessage } from "src/helpers/error"
+import useSWR, { useSWRConfig } from "swr"
 
 type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto
   | UpdateCreatorSettingsRequestDto
 
+export type PayoutFrequencyEnum =
+  | GetCreatorSettingsResponseDtoPayoutFrequencyEnum
+  | UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
+
+const CACHE_KEY_NOTIFICATIONS = "/creator-settings"
+
 export const useCreatorSettings = () => {
   const api = new CreatorSettingsApi()
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isUpdating, setIsUpdating] = useState<boolean>(false)
-  const [creatorSettings, setCreatorSettings] = useState<CreatorSettingsDto>({})
 
-  async function getCreatorSettings() {
-    try {
-      setIsLoading(true)
-      const response = await api.getCreatorSettings()
-      setCreatorSettings(response)
-    } catch (error: any) {
-      errorMessage(error, true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
+  const {
+    data: creatorSettings,
+    isValidating: isLoading,
+    mutate
+  } = useSWR<CreatorSettingsDto>(CACHE_KEY_NOTIFICATIONS, async () => {
+    return await api.getCreatorSettings()
+  })
+
+  const { mutate: _mutateManual } = useSWRConfig()
+
+  const mutateManual = (update: UpdateCreatorSettingsRequestDto) =>
+    _mutateManual(CACHE_KEY_NOTIFICATIONS, update, {
+      populateCache: (
+        update: UpdateCreatorSettingsRequestDto,
+        original: GetCreatorSettingsResponseDto
+      ) => {
+        return Object.assign(original, update)
+      },
+      revalidate: false
+    })
 
   async function updateCreatorSettings(
     newSettings: CreatorSettingsDto,
     successToastMessage = ""
   ) {
     try {
-      setIsUpdating(true)
       const result = await api.updateCreatorSettings({
         updateCreatorSettingsRequestDto: newSettings
       })
+
       if (result.value) {
         if (successToastMessage) {
+          mutateManual(newSettings)
           toast.success(successToastMessage)
         }
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        await getCreatorSettings()
       } else {
         toast.error("Failed to update")
       }
     } catch (error: any) {
       errorMessage(error, true)
-    } finally {
-      setIsUpdating(false)
     }
   }
 
   useEffect(() => {
-    getCreatorSettings()
+    if (!creatorSettings) {
+      mutate()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
     isLoading,
-    isUpdating,
     creatorSettings,
-    getCreatorSettings,
+    getCreatorSettings: mutate,
     updateCreatorSettings
   }
 }

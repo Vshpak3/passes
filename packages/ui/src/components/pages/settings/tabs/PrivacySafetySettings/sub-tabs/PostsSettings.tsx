@@ -11,7 +11,7 @@ const defaultValues = {
 }
 
 const PostsSettings = () => {
-  const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
+  const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
   const {
     register,
@@ -61,7 +61,7 @@ const PostsSettings = () => {
             variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
-            disabled={isUpdating || isSubmitSuccessful}
+            disabled={isLoading || isSubmitSuccessful}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

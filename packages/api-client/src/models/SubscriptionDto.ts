@@ -49,7 +49,7 @@ export interface SubscriptionDto {
      * @type {string}
      * @memberof SubscriptionDto
      */
-    id: string;
+    subscriptionId: string;
     /**
      * 
      * @type {string}
@@ -118,7 +118,7 @@ export type SubscriptionDtoSubscriptionStatusEnum = typeof SubscriptionDtoSubscr
  */
 export function instanceOfSubscriptionDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "subscriptionId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "payinMethod" in value;
     isInstance = isInstance && "subscriptionStatus" in value;
@@ -137,7 +137,7 @@ export function SubscriptionDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
-        'id': json['id'],
+        'subscriptionId': json['subscriptionId'],
         'userId': json['userId'],
         'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'subscriptionStatus': json['subscriptionStatus'],
@@ -158,7 +158,7 @@ export function SubscriptionDtoToJSON(value?: SubscriptionDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'subscriptionId': value.subscriptionId,
         'userId': value.userId,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'subscriptionStatus': value.subscriptionStatus,

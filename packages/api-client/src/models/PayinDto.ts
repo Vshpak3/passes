@@ -13,12 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { CircleCardDto } from './CircleCardDto';
-import {
-    CircleCardDtoFromJSON,
-    CircleCardDtoFromJSONTyped,
-    CircleCardDtoToJSON,
-} from './CircleCardDto';
 import type { PayinMethodDto } from './PayinMethodDto';
 import {
     PayinMethodDtoFromJSON,
@@ -37,7 +31,7 @@ export interface PayinDto {
      * @type {string}
      * @memberof PayinDto
      */
-    id: string;
+    payinId: string;
     /**
      * 
      * @type {string}
@@ -76,10 +70,16 @@ export interface PayinDto {
     callback: PayinDtoCallbackEnum;
     /**
      * 
-     * @type {CircleCardDto}
+     * @type {string}
      * @memberof PayinDto
      */
-    card?: CircleCardDto;
+    firstDigit: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PayinDto
+     */
+    fourDigits: string;
     /**
      * 
      * @type {string}
@@ -151,13 +151,15 @@ export type PayinDtoCallbackEnum = typeof PayinDtoCallbackEnum[keyof typeof Payi
  */
 export function instanceOfPayinDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "payinId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "payinMethod" in value;
     isInstance = isInstance && "payinStatus" in value;
     isInstance = isInstance && "amount" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "callback" in value;
+    isInstance = isInstance && "firstDigit" in value;
+    isInstance = isInstance && "fourDigits" in value;
     isInstance = isInstance && "transactionHash" in value;
     isInstance = isInstance && "address" in value;
     isInstance = isInstance && "callbackOutputJSON" in value;
@@ -176,14 +178,15 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
-        'id': json['id'],
+        'payinId': json['payinId'],
         'userId': json['userId'],
         'payinMethod': PayinMethodDtoFromJSON(json['payinMethod']),
         'payinStatus': json['payinStatus'],
         'amount': json['amount'],
         'createdAt': (new Date(json['createdAt'])),
         'callback': json['callback'],
-        'card': !exists(json, 'card') ? undefined : CircleCardDtoFromJSON(json['card']),
+        'firstDigit': json['firstDigit'],
+        'fourDigits': json['fourDigits'],
         'transactionHash': json['transactionHash'],
         'address': json['address'],
         'callbackOutputJSON': json['callbackOutputJSON'],
@@ -200,14 +203,15 @@ export function PayinDtoToJSON(value?: PayinDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'payinId': value.payinId,
         'userId': value.userId,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
         'payinStatus': value.payinStatus,
         'amount': value.amount,
         'createdAt': (value.createdAt.toISOString()),
         'callback': value.callback,
-        'card': CircleCardDtoToJSON(value.card),
+        'firstDigit': value.firstDigit,
+        'fourDigits': value.fourDigits,
         'transactionHash': value.transactionHash,
         'address': value.address,
         'callbackOutputJSON': value.callbackOutputJSON,

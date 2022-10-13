@@ -1,16 +1,15 @@
 import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { WalletDto } from '../../wallet/dto/wallet.dto'
+import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { TRANSACTION_HASH_LENGTH } from '../constants/schema'
 import { PayoutEntity } from '../entities/payout.entity'
 import { PayoutStatusEnum } from '../enum/payout.status.enum'
-import { CircleBankDto } from './circle/circle-bank.dto'
 import { PayoutMethodDto } from './payout-method.dto'
 
 export class PayoutDto {
   @DtoProperty({ type: 'uuid' })
-  id: string
+  payoutId: string
 
   @DtoProperty({ type: 'uuid' })
   userId: string
@@ -32,15 +31,26 @@ export class PayoutDto {
   @DtoProperty({ type: 'string', nullable: true, optional: true })
   transactionHash?: string | null
 
-  @DtoProperty({ custom_type: CircleBankDto, optional: true })
-  bank?: CircleBankDto
+  @DtoProperty({ type: 'string', optional: true })
+  bank_description?: string
 
-  @DtoProperty({ custom_type: WalletDto, optional: true })
-  wallet?: WalletDto
+  @DtoProperty({ type: 'string', optional: true })
+  address?: string
 
-  constructor(payout: PayoutEntity | undefined) {
+  @DtoProperty({ custom_type: ChainEnum, optional: true })
+  chain?: ChainEnum
+
+  constructor(
+    payout:
+      | (PayoutEntity & {
+          bank_description?: string
+          address?: string
+          chain?: ChainEnum
+        })
+      | undefined,
+  ) {
     if (payout) {
-      this.id = payout.id
+      this.payoutId = payout.id
       this.userId = payout.user_id
 
       this.payoutMethod = {
@@ -52,6 +62,15 @@ export class PayoutDto {
       this.createdAt = payout.created_at
       this.payoutStatus = payout.payout_status
       this.transactionHash = payout.transaction_hash
+      if (payout.bank_description) {
+        this.bank_description = payout.bank_description
+      }
+      if (payout.address) {
+        this.bank_description = payout.address
+      }
+      if (payout.chain) {
+        this.chain = payout.chain
+      }
     }
   }
 }

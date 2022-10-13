@@ -62,6 +62,12 @@ export interface SendMessageRequestDto {
      * @memberof SendMessageRequestDto
      */
     payinMethod?: PayinMethodDto;
+    /**
+     * 
+     * @type {Date}
+     * @memberof SendMessageRequestDto
+     */
+    scheduledAt?: Date;
 }
 
 /**
@@ -93,6 +99,7 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'tipAmount': json['tipAmount'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
+        'scheduledAt': !exists(json, 'scheduled_at') ? undefined : (new Date(json['scheduled_at'])),
     };
 }
 
@@ -111,6 +118,7 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
         'tipAmount': value.tipAmount,
         'price': value.price,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
+        'scheduled_at': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

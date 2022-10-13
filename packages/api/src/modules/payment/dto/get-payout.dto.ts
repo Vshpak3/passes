@@ -1,23 +1,36 @@
-import { Min } from 'class-validator'
+import { PickType } from '@nestjs/swagger'
 
+import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { PayoutDto } from './payout.dto'
+export class GetPayoutsRequestDto extends PickType(PageRequestDto, [
+  'lastId',
+  'createdAt',
+]) {
+  @DtoProperty({ type: 'date', optional: true })
+  startDate?: Date
 
-export class GetPayoutsRequestDto {
-  @Min(0)
-  @DtoProperty({ type: 'number' })
-  offset: number
-
-  @Min(1)
-  @DtoProperty({ type: 'number' })
-  limit: number
+  @DtoProperty({ type: 'date', optional: true })
+  endDate?: Date
 }
 
-export class GetPayoutsResponseDto {
-  @Min(0)
-  @DtoProperty({ type: 'number' })
-  count: number
-
+export class GetPayoutsResponseDto
+  extends GetPayoutsRequestDto
+  implements PageResponseDto<PayoutDto>
+{
   @DtoProperty({ custom_type: [PayoutDto] })
-  payouts: PayoutDto[]
+  data: PayoutDto[]
+
+  constructor(payins: PayoutDto[], requestDto: GetPayoutsRequestDto) {
+    super()
+    for (const key in requestDto) {
+      this[key] = requestDto[key]
+    }
+    this.lastId = undefined
+    this.data = payins
+    if (payins.length > 0) {
+      this.lastId = payins[payins.length - 1].payoutId
+      this.createdAt = payins[payins.length - 1].createdAt
+    }
+  }
 }

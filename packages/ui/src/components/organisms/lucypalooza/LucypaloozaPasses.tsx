@@ -99,7 +99,7 @@ export const Passes = () => {
 
     if (payin) {
       await api.cancelPayin({
-        payinId: payin.id
+        payinId: payin.payinId
       })
       setIsPaying(false)
     }
@@ -124,9 +124,9 @@ export const Passes = () => {
     })
     setPassHolder(passHoldings.length > 0 ? passHoldings[0] : undefined)
     const payins = await api.getPayins({
-      getPayinsRequestDto: { limit: 10, offset: 0 }
+      getPayinsRequestDto: {}
     })
-    const paying = payins.payins.filter(
+    const paying = payins.data.filter(
       (payin) =>
         payin.payinStatus === PayinDtoPayinStatusEnum.CreatedReady ||
         payin.payinStatus === PayinDtoPayinStatusEnum.Created ||
@@ -134,7 +134,7 @@ export const Passes = () => {
         payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
     )
     if (paying[0]) {
-      setPayin(payins.payins[0])
+      setPayin(payins.data[0])
     }
     if (Date.now() - lastUpdated.valueOf() > ms("1 second")) {
       setIsPaying(paying.length > 0)

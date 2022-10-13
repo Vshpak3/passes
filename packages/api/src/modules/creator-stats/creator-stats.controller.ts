@@ -40,6 +40,20 @@ export class CreatorStatsController {
   }
 
   @ApiEndpoint({
+    summary: 'Get available balance',
+    responseStatus: HttpStatus.OK,
+    responseType: GetCreatorEarningResponseDto,
+    responseDesc: 'Available Balance was retrieved',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Get('available-balance')
+  async getAvailableBalance(
+    @Req() req: RequestWithUser,
+  ): Promise<GetCreatorEarningResponseDto> {
+    return await this.creatorStatsService.getAvailableBalance(req.user.id)
+  }
+
+  @ApiEndpoint({
     summary: 'Get earnings history',
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorEarningsResponseDto,

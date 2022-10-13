@@ -25,4 +25,10 @@ export class PaidMessageEntity extends BaseEntity {
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   earnings_purchases: number
+
+  @Property()
+  scheduled_at: Date | null
+
+  @Property({ default: 0 })
+  sent_to: number
 }

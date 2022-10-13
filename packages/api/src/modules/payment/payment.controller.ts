@@ -455,7 +455,10 @@ export class PaymentController {
     @Req() req: RequestWithUser,
     @Body() getPayinsRequest: GetPayinsRequestDto,
   ): Promise<GetPayinsResponseDto> {
-    return await this.paymentService.getPayins(req.user.id, getPayinsRequest)
+    return new GetPayinsResponseDto(
+      await this.paymentService.getPayins(req.user.id, getPayinsRequest),
+      getPayinsRequest,
+    )
   }
   /*
   -------------------------------------------------------------------------------
@@ -475,7 +478,10 @@ export class PaymentController {
     @Req() req: RequestWithUser,
     @Body() getPayoutsRequest: GetPayoutsRequestDto,
   ): Promise<GetPayoutsResponseDto> {
-    return await this.paymentService.getPayouts(req.user.id, getPayoutsRequest)
+    return new GetPayoutsResponseDto(
+      await this.paymentService.getPayouts(req.user.id, getPayoutsRequest),
+      getPayoutsRequest,
+    )
   }
 
   @ApiEndpoint({

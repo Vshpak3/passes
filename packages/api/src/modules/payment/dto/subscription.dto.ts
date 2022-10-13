@@ -10,7 +10,7 @@ import { PayinMethodDto } from './payin-method.dto'
 
 export class SubscriptionDto {
   @DtoProperty({ type: 'uuid' })
-  id: string
+  subscriptionId: string
 
   @DtoProperty({ type: 'uuid' })
   userId: string
@@ -39,7 +39,7 @@ export class SubscriptionDto {
 
   constructor(subscription: SubscriptionEntity | undefined) {
     if (subscription) {
-      this.id = subscription.id
+      this.subscriptionId = subscription.id
       this.userId = subscription.user_id
       this.payinMethod = {
         method: subscription.payin_method,

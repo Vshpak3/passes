@@ -13,24 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { CircleBankDto } from './CircleBankDto';
-import {
-    CircleBankDtoFromJSON,
-    CircleBankDtoFromJSONTyped,
-    CircleBankDtoToJSON,
-} from './CircleBankDto';
 import type { PayoutMethodDto } from './PayoutMethodDto';
 import {
     PayoutMethodDtoFromJSON,
     PayoutMethodDtoFromJSONTyped,
     PayoutMethodDtoToJSON,
 } from './PayoutMethodDto';
-import type { WalletDto } from './WalletDto';
-import {
-    WalletDtoFromJSON,
-    WalletDtoFromJSONTyped,
-    WalletDtoToJSON,
-} from './WalletDto';
 
 /**
  * 
@@ -43,7 +31,7 @@ export interface PayoutDto {
      * @type {string}
      * @memberof PayoutDto
      */
-    id: string;
+    payoutId: string;
     /**
      * 
      * @type {string}
@@ -82,16 +70,22 @@ export interface PayoutDto {
     transactionHash?: string | null;
     /**
      * 
-     * @type {CircleBankDto}
+     * @type {string}
      * @memberof PayoutDto
      */
-    bank?: CircleBankDto;
+    bankDescription?: string;
     /**
      * 
-     * @type {WalletDto}
+     * @type {string}
      * @memberof PayoutDto
      */
-    wallet?: WalletDto;
+    address?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PayoutDto
+     */
+    chain?: PayoutDtoChainEnum;
 }
 
 
@@ -106,13 +100,24 @@ export const PayoutDtoPayoutStatusEnum = {
 } as const;
 export type PayoutDtoPayoutStatusEnum = typeof PayoutDtoPayoutStatusEnum[keyof typeof PayoutDtoPayoutStatusEnum];
 
+/**
+ * @export
+ */
+export const PayoutDtoChainEnum = {
+    Eth: 'eth',
+    Sol: 'sol',
+    Avax: 'avax',
+    Matic: 'matic'
+} as const;
+export type PayoutDtoChainEnum = typeof PayoutDtoChainEnum[keyof typeof PayoutDtoChainEnum];
+
 
 /**
  * Check if a given object implements the PayoutDto interface.
  */
 export function instanceOfPayoutDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "id" in value;
+    isInstance = isInstance && "payoutId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "payoutMethod" in value;
     isInstance = isInstance && "payoutStatus" in value;
@@ -132,15 +137,16 @@ export function PayoutDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     }
     return {
         
-        'id': json['id'],
+        'payoutId': json['payoutId'],
         'userId': json['userId'],
         'payoutMethod': PayoutMethodDtoFromJSON(json['payoutMethod']),
         'payoutStatus': json['payoutStatus'],
         'amount': json['amount'],
         'createdAt': (new Date(json['createdAt'])),
         'transactionHash': !exists(json, 'transactionHash') ? undefined : json['transactionHash'],
-        'bank': !exists(json, 'bank') ? undefined : CircleBankDtoFromJSON(json['bank']),
-        'wallet': !exists(json, 'wallet') ? undefined : WalletDtoFromJSON(json['wallet']),
+        'bankDescription': !exists(json, 'bank_description') ? undefined : json['bank_description'],
+        'address': !exists(json, 'address') ? undefined : json['address'],
+        'chain': !exists(json, 'chain') ? undefined : json['chain'],
     };
 }
 
@@ -153,15 +159,16 @@ export function PayoutDtoToJSON(value?: PayoutDto | null): any {
     }
     return {
         
-        'id': value.id,
+        'payoutId': value.payoutId,
         'userId': value.userId,
         'payoutMethod': PayoutMethodDtoToJSON(value.payoutMethod),
         'payoutStatus': value.payoutStatus,
         'amount': value.amount,
         'createdAt': (value.createdAt.toISOString()),
         'transactionHash': value.transactionHash,
-        'bank': CircleBankDtoToJSON(value.bank),
-        'wallet': WalletDtoToJSON(value.wallet),
+        'bank_description': value.bankDescription,
+        'address': value.address,
+        'chain': value.chain,
     };
 }
 

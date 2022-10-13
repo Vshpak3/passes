@@ -45,6 +45,37 @@ export interface GetEarningsHistoryRequest {
 export class CreatorStatsApi extends runtime.BaseAPI {
 
     /**
+     * Get available balance
+     */
+    async getAvailableBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/creator-stats/available-balance`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorEarningResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get available balance
+     */
+    async getAvailableBalance(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningResponseDto> {
+        const response = await this.getAvailableBalanceRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get balance
      */
     async getBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {

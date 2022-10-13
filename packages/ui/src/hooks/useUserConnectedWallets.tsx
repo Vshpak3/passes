@@ -1,4 +1,5 @@
 import { WalletApi } from "@passes/api-client"
+import { useEffect } from "react"
 import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
@@ -15,6 +16,13 @@ export const useUserConnectedWallets = () => {
     const api = new WalletApi()
     return (await api.getWallets()).wallets
   })
+
+  useEffect(() => {
+    if (!wallets) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return { wallets, loading, mutate }
 }

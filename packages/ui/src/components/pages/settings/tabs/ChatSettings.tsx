@@ -1,5 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
+import {
+  GetCreatorSettingsResponseDto,
+  UpdateCreatorSettingsRequestDto
+} from "@passes/api-client"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -19,7 +22,7 @@ const defaultValues = {
 }
 
 const ChatSettings = () => {
-  const { creatorSettings, isLoading, isUpdating, updateCreatorSettings } =
+  const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
   const {
     register,
@@ -57,13 +60,14 @@ const ChatSettings = () => {
 
   useEffect(() => {
     // inject already saved values in fields
-    const { welcomeMessage, minimumTipAmount } = creatorSettings
+    const { welcomeMessage, minimumTipAmount } =
+      creatorSettings as GetCreatorSettingsResponseDto
 
-    if (welcomeMessage) {
+    if (creatorSettings?.welcomeMessage) {
       setValue("showWelcomeMessageInput", true)
     }
 
-    if (minimumTipAmount) {
+    if (creatorSettings?.minimumTipAmount) {
       setValue("isWithoutTip", false)
     }
 
@@ -73,7 +77,7 @@ const ChatSettings = () => {
 
   useEffect(() => {
     // all of the below code is just for validation and disable save button
-    if (isUpdating) {
+    if (isLoading) {
       setIsDisabledBtn(false)
       return
     }
@@ -114,7 +118,7 @@ const ChatSettings = () => {
       .catch(() => {
         setIsDisabledBtn(true)
       })
-  }, [values, creatorSettings, isUpdating])
+  }, [values, creatorSettings, isLoading])
 
   return (
     <>

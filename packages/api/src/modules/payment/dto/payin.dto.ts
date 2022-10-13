@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable no-magic-numbers */
 import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
@@ -7,12 +9,11 @@ import { SHA256_LENGTH, TRANSACTION_HASH_LENGTH } from '../constants/schema'
 import { PayinEntity } from '../entities/payin.entity'
 import { PayinCallbackEnum } from '../enum/payin.callback.enum'
 import { PayinStatusEnum } from '../enum/payin.status.enum'
-import { CircleCardDto } from './circle/circle-card.dto'
 import { PayinMethodDto } from './payin-method.dto'
 
 export class PayinDto {
   @DtoProperty({ type: 'uuid' })
-  id: string
+  payinId: string
 
   @DtoProperty({ type: 'uuid' })
   userId: string
@@ -33,8 +34,13 @@ export class PayinDto {
   @DtoProperty({ custom_type: PayinCallbackEnum })
   callback: PayinCallbackEnum
 
-  @DtoProperty({ custom_type: CircleCardDto, optional: true })
-  card?: CircleCardDto
+  @Length(1, 1)
+  @DtoProperty({ type: 'string' })
+  firstDigit: string
+
+  @Length(4, 4)
+  @DtoProperty({ type: 'string' })
+  fourDigits: string
 
   @Length(1, TRANSACTION_HASH_LENGTH)
   @DtoProperty({ type: 'string', nullable: true })
@@ -51,9 +57,11 @@ export class PayinDto {
   @DtoProperty({ type: 'string', nullable: true })
   target: string | null
 
-  constructor(payin: PayinEntity | undefined) {
+  constructor(
+    payin: (PayinEntity & { card_number?: string; chain?: string }) | undefined,
+  ) {
     if (payin) {
-      this.id = payin.id
+      this.payinId = payin.id
       this.userId = payin.user_id
       this.payinMethod = {
         method: payin.payin_method,
@@ -68,6 +76,10 @@ export class PayinDto {
       this.transactionHash = payin.transaction_hash
       this.callbackOutputJSON = payin.callback_output_json
       this.target = payin.target
+      if (payin.card_number) {
+        this.firstDigit = payin.card_number.slice(0, 1)
+        this.fourDigits = payin.card_number.slice(payin.card_number.length - 4)
+      }
     }
   }
 }

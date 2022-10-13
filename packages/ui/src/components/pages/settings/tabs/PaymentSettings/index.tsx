@@ -154,6 +154,16 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
 
   return (
     <>
+      {!isEmbedded && (
+        <Button
+          variant="pink"
+          tag="button"
+          className="mt-5 mb-6"
+          onClick={() => addOrPopStackHandler(SubTabsEnum.PaymentHistory)}
+        >
+          Payment History
+        </Button>
+      )}
       {isEmbedded && (
         <Modal isOpen={open} setOpen={setOpen}>
           <AddCard

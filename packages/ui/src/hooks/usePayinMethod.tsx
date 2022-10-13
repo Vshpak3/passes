@@ -4,13 +4,12 @@ import useSWR from "swr"
 
 export const usePayinMethod = () => {
   const api = new PaymentApi()
-  // TODO: use SWR
+
   const {
     data: payinMethod,
     isValidating: isLoadingPayinMethod,
     mutate: mutatePayinMethod
   } = useSWR<PayinMethodDto>("/payment/default-payin-method", async () => {
-    setTimeout(() => undefined, 500)
     return await api.getDefaultPayinMethod()
   })
 
@@ -29,6 +28,7 @@ export const usePayinMethod = () => {
     await api.setDefaultPayinMethod({
       setPayinMethodRequestDto: dto
     })
+    setTimeout(() => undefined, 500)
     mutatePayinMethod()
   }
 

@@ -1,3 +1,5 @@
+import { InternalServerErrorException } from '@nestjs/common'
+
 import { DatabaseService } from '../../database/database.service'
 import { PayinEntity } from './entities/payin.entity'
 import { PayinStatusEnum } from './enum/payin.status.enum'
@@ -5,13 +7,16 @@ import { functionMapping } from './payin.callback'
 import { PaymentService } from './payment.service'
 
 async function handleCallback(
-  payin,
+  payin: PayinEntity,
   payService: PaymentService,
   db: DatabaseService['knex'],
   successfulCallbackStatus: PayinStatusEnum,
   failedCallbackStatus: PayinStatusEnum,
   selector: string,
 ): Promise<void> {
+  if (!payin) {
+    throw new InternalServerErrorException('Payin not found during callback')
+  }
   try {
     const func = functionMapping(payin.callback)[selector]
     type params = Parameters<typeof func>
@@ -42,7 +47,7 @@ async function handleCallback(
 }
 
 export const handleSuccesfulCallback = async (
-  payin,
+  payin: PayinEntity,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
@@ -57,7 +62,7 @@ export const handleSuccesfulCallback = async (
 }
 
 export const handleFailedCallback = async (
-  payin,
+  payin: PayinEntity,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
@@ -72,7 +77,7 @@ export const handleFailedCallback = async (
 }
 
 export const handleUncreateCallback = async (
-  payin,
+  payin: PayinEntity,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {
@@ -87,7 +92,7 @@ export const handleUncreateCallback = async (
 }
 
 export const handleCreationCallback = async (
-  payin,
+  payin: PayinEntity,
   payService: PaymentService,
   db: DatabaseService['knex'],
 ) => {

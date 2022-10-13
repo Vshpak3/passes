@@ -21,16 +21,28 @@ import { exists, mapValues } from '../runtime';
 export interface GetPayinsRequestDto {
     /**
      * 
-     * @type {number}
+     * @type {Date}
      * @memberof GetPayinsRequestDto
      */
-    offset: number;
+    createdAt?: Date;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof GetPayinsRequestDto
      */
-    limit: number;
+    lastId?: string;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPayinsRequestDto
+     */
+    startDate?: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPayinsRequestDto
+     */
+    endDate?: Date;
     /**
      * 
      * @type {boolean}
@@ -44,8 +56,6 @@ export interface GetPayinsRequestDto {
  */
 export function instanceOfGetPayinsRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "offset" in value;
-    isInstance = isInstance && "limit" in value;
 
     return isInstance;
 }
@@ -60,8 +70,10 @@ export function GetPayinsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
     }
     return {
         
-        'offset': json['offset'],
-        'limit': json['limit'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'startDate': !exists(json, 'startDate') ? undefined : (new Date(json['startDate'])),
+        'endDate': !exists(json, 'endDate') ? undefined : (new Date(json['endDate'])),
         'inProgress': !exists(json, 'inProgress') ? undefined : json['inProgress'],
     };
 }
@@ -75,8 +87,10 @@ export function GetPayinsRequestDtoToJSON(value?: GetPayinsRequestDto | null): a
     }
     return {
         
-        'offset': value.offset,
-        'limit': value.limit,
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'lastId': value.lastId,
+        'startDate': value.startDate === undefined ? undefined : (value.startDate.toISOString()),
+        'endDate': value.endDate === undefined ? undefined : (value.endDate.toISOString()),
         'inProgress': value.inProgress,
     };
 }

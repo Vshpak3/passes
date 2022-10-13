@@ -20,6 +20,7 @@ import {
   TipPostCallbackOutput,
 } from './callback.types'
 import { PayinDto } from './dto/payin.dto'
+import { PayinEntity } from './entities/payin.entity'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { NoPayinMethodError } from './error/payin.error'
 import { PaymentService } from './payment.service'
@@ -75,7 +76,7 @@ export const functionMapping = (payinCallbackEnum: PayinCallbackEnum) => {
 }
 
 const empty = async (
-  payin: any,
+  payin: PayinEntity,
   input: PayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -114,7 +115,7 @@ async function tippedMessageCreationCallback(
 }
 
 async function tippedMessageFailureCallback(
-  payin: any,
+  payin: PayinEntity,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -124,7 +125,7 @@ async function tippedMessageFailureCallback(
 }
 
 async function tippedMessageSuccessCallback(
-  payin: any,
+  payin: PayinEntity,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -139,7 +140,7 @@ async function tippedMessageSuccessCallback(
 }
 
 async function createNftPassCreationCallback(
-  payin: any,
+  payin: PayinEntity,
   input: CreateNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -149,7 +150,7 @@ async function createNftPassCreationCallback(
 }
 
 async function createNftPassFailureCallback(
-  payin: any,
+  payin: PayinEntity,
   input: CreateNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -159,7 +160,7 @@ async function createNftPassFailureCallback(
 }
 
 async function createNftPassSuccessCallback(
-  payin: any,
+  payin: PayinEntity,
   input: CreateNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -188,7 +189,7 @@ async function createNftPassSuccessCallback(
 }
 
 async function renewNftPassSuccessCallback(
-  payin: any,
+  payin: PayinEntity,
   input: RenewNftPassPayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -201,7 +202,7 @@ async function renewNftPassSuccessCallback(
 }
 
 async function purchasePostSuccessfulCallback(
-  payin: any,
+  payin: PayinEntity,
   input: PurchasePostCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -216,7 +217,7 @@ async function purchasePostSuccessfulCallback(
 }
 
 async function purchaseMessageSuccessfulCallback(
-  payin: any,
+  payin: PayinEntity,
   input: PurchaseMessageCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
@@ -231,7 +232,7 @@ async function purchaseMessageSuccessfulCallback(
 }
 
 async function tipPostSuccessfulCallback(
-  payin: any,
+  payin: PayinEntity,
   input: TipPostCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],

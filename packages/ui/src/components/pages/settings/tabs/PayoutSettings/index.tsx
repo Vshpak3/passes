@@ -13,7 +13,6 @@ import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { useUser } from "src/hooks/useUser"
-import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { BankIcon } from "src/icons/bank-icon"
 import { WalletIcon } from "src/icons/wallet-icon"
 
@@ -24,14 +23,10 @@ const PayoutSettings = () => {
     defaultBank,
     setDefaultPayoutMethod,
     defaultPayoutMethod,
-    deleteBank
+    deleteBank,
+    defaultWallet,
+    wallets
   } = usePayoutMethod()
-
-  const { wallets } = useUserConnectedWallets()
-
-  const payoutWallet = wallets?.find(
-    (wallet) => wallet.walletId === defaultPayoutMethod?.walletId
-  )
 
   const { user, loading } = useUser()
   const router = useRouter()
@@ -50,10 +45,10 @@ const PayoutSettings = () => {
       <div>
         <span className="text-[16px]">
           {defaultBank?.description.split(",")[0]}
-          {payoutWallet?.address && (
+          {defaultWallet?.address && (
             <div className="flex flex-col text-[12px] md:flex-row md:text-[16px]">
-              <span className="mr-2">Wallet:</span>
-              <span>{payoutWallet.address}</span>
+              <span className="mr-4">Wallet:</span>
+              <span>{defaultWallet.address}</span>
             </div>
           )}
         </span>
@@ -145,7 +140,7 @@ const PayoutSettings = () => {
                   </span>
                   <span className="basis-1/4 text-center">
                     <Button
-                      disabled={payoutWallet?.walletId === wallet.walletId}
+                      disabled={defaultWallet?.walletId === wallet.walletId}
                       variant="pink"
                       className="w-auto"
                       onClick={async () => {
@@ -155,7 +150,7 @@ const PayoutSettings = () => {
                         })
                       }}
                     >
-                      {payoutWallet?.walletId === wallet.walletId
+                      {defaultWallet?.walletId === wallet.walletId
                         ? "Default"
                         : "Set Payout Default"}
                     </Button>
