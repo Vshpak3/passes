@@ -1,29 +1,27 @@
 import { ContentDto } from "@passes/api-client"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 
-// TODO: use this once date is available in API
-// const MONTHS = [
-//   "Jan",
-//   "Feb",
-//   "Mar",
-//   "Apr",
-//   "May",
-//   "Jun",
-//   "Jul",
-//   "Aug",
-//   "Sep",
-//   "Oct",
-//   "Nov",
-//   "Dec"
-// ]
-// function composeDateValue(dateVal: number) {
-//   const d = new Date(dateVal * 1000)
-//   return {
-//     day: d.getDate(),
-//     month: MONTHS[d.getMonth()]
-//   }
-// }
-const INITIAL_DATE = { day: "1", month: "Jan" }
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec"
+]
+
+function composeDateValue(dateVal: Date) {
+  return {
+    day: dateVal.getDate(),
+    month: MONTHS[dateVal.getMonth()]
+  }
+}
 
 interface UseVaultSelectProps {
   selectedItems: Array<string>
@@ -36,8 +34,7 @@ export const useVaultSelect = ({
   setSelectedItems,
   content
 }: UseVaultSelectProps) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [date, setDate] = useState(INITIAL_DATE)
+  const date = composeDateValue(new Date(content.createdAt))
 
   const isSelected = selectedItems.includes(content.contentId)
 
@@ -52,13 +49,6 @@ export const useVaultSelect = ({
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
   const opacityStyle =
     selectedItems.length > 0 && !isSelected ? "opacity-50" : "opacity-100"
-
-  // TODO: use this once date is available in API
-  // useEffect(() => {
-  // if (!itemData.date) return setDate(INITIAL_DATE)
-  // const createdAt = composeDateValue(itemData.date)
-  // setDate(createdAt)
-  // }, [itemData.date])
 
   return { date, isSelected, onSelectItem, opacityStyle }
 }

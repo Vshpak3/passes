@@ -59,13 +59,19 @@ export const VaultDeselectButton = ({
   </div>
 )
 
-export const VaultItemDate: FC<VaultItemDateProps> = ({ date }) => (
-  <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
-    <div className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block">
-      {date}
+export const VaultItemDate: FC<VaultItemDateProps> = ({ date }) => {
+  return (
+    <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
+      <div
+        onMouseDown={(e) => e.preventDefault()}
+        onCopy={(e) => e.preventDefault()}
+        className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block"
+      >
+        {date}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
   buttonStyle,
