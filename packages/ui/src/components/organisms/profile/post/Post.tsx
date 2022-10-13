@@ -67,6 +67,8 @@ export const Post: React.FC<PostProps> = ({ post }) => {
     username
   } = post
 
+  const setPostHandler = () => setPost({ ...post, setIsRemoved })
+
   return (
     <ConditionRendering condition={!isRemoved}>
       <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
@@ -87,14 +89,11 @@ export const Post: React.FC<PostProps> = ({ post }) => {
             totalTipAmount
           }}
         />
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            setPost({ ...post, setIsRemoved })
-          }}
-        >
+        <div className="cursor-pointer">
           <PostTextContent text={text} />
-          {!paywall && <PostMedia content={content} />}
+          {!paywall && (
+            <PostMedia content={content} setPostHandler={setPostHandler} />
+          )}
         </div>
         {paywall && <LockedMedia post={post} />}
         <PostEngagement
