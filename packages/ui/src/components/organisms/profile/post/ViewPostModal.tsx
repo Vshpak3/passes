@@ -34,7 +34,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
-  const { removePost } = usePost(post.postId)
+  const { removePost } = usePost()
 
   // Set image if it exists in post
   useEffect(() => {

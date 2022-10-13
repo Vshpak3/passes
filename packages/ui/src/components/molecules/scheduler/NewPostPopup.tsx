@@ -28,7 +28,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
       <NewPost
         passes={[]}
         initialData={{ scheduledAt: selectionDate }}
-        createPost={handleCreatePost}
+        handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"
         isExtended
       />

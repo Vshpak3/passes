@@ -36,7 +36,7 @@ export const NewPostButton = () => {
       <NewPost
         passes={[]}
         initialData={{}}
-        createPost={handleCreatePost}
+        handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"
       />
     </Dialog>

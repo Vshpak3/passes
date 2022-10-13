@@ -1,5 +1,7 @@
 import { FC } from "react"
+import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
+import { Text } from "src/components/atoms/Text"
 
 import { CalendarSelector } from "./CalendarPicker"
 import { MediaSelector } from "./MediaSelector"
@@ -36,13 +38,17 @@ export const PostFooter: FC<PostFooterProps> = ({
           </div>
         </div>
 
-        <button
-          type="submit"
-          disabled={disableForm}
+        <Button
           className="flex items-center justify-center rounded-[30px] bg-passes-pink-100 px-4 py-2 text-base font-bold text-[#ffffff]/90 sm:rounded-[50px] sm:py-2.5 sm:px-8"
+          tag="button"
+          type={ButtonTypeEnum.SUBMIT}
+          disabled={disableForm}
+          disabledClass="opacity-[0.5]"
         >
-          Post
-        </button>
+          <Text fontSize={16} className="font-bold">
+            Post
+          </Text>
+        </Button>
       </div>
     </div>
   )

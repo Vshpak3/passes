@@ -4,9 +4,9 @@ import { EventTable } from "src/components/molecules/scheduler/EventTable"
 import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHeader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const today = new Date()
-
 const SchedulerPage = () => {
+  const today = new Date()
+
   const [month, setMonth] = useState<number>(today.getMonth())
   const [year, setYear] = useState<number>(today.getFullYear())
 

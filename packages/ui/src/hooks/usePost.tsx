@@ -1,41 +1,23 @@
-import { PostApi } from "@passes/api-client"
-import { useEffect, useState } from "react"
-import { toast } from "react-toastify"
-import useSWR from "swr"
+import {
+  CreatePostRequestDto,
+  PostApi,
+  UpdatePostRequestDto
+} from "@passes/api-client"
 
-export const usePost = (postId: string) => {
+export const usePost = () => {
   const api = new PostApi()
 
-  // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
-  const {
-    data: post,
-    isValidating: loading,
-    mutate
-  } = useSWR(postId ? "/posts" + "/" + postId : null, async () => {
-    if (!postId) {
-      return null
-    }
-    setHasInitialFetch(true)
-    return await api.findPost({
-      postId: postId
-    })
-  })
-
-  // For a brief moment during rendering, loadingProfileInfo will be set false
-  // before the loading begins. This boolean is needed to handle showing the
-  // initial state properly before the loading begins.
-  const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(!!post)
-
-  const removePost = async (postId: string) => {
-    const api = new PostApi()
-    await api.removePost({ postId }).catch((error) => toast(error))
+  const createPost = async (post: CreatePostRequestDto) => {
+    return await api.createPost({ createPostRequestDto: post })
   }
 
-  useEffect(() => {
-    if (post === undefined) {
-      mutate()
-    }
-  }, [mutate, post])
+  const updatePost = async (postId: string, data: UpdatePostRequestDto) => {
+    await api.updatePost({ postId, updatePostRequestDto: data })
+  }
 
-  return { post, loading, mutate, hasInitialFetch, removePost }
+  const removePost = async (postId: string) => {
+    await api.removePost({ postId })
+  }
+
+  return { createPost, updatePost, removePost }
 }

@@ -1,4 +1,4 @@
-import { PostApi, PostDto } from "@passes/api-client"
+import { PostApi, PostDto, UpdatePostRequestDto } from "@passes/api-client"
 import { compareAsc, format } from "date-fns"
 import EditIcon from "public/icons/edit.svg"
 import TrashIcon from "public/icons/trash.svg"
@@ -23,14 +23,11 @@ interface EventTableItemProps {
 
 const postAPI = new PostApi()
 
-export const EditButtonGroup: FC<any> = ({ id, data }) => {
+export const EditButtonGroup: FC<any> = ({ postId, data }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
 
-  const handleUpdatePost = async (values: any) => {
-    await postAPI.updatePost({
-      postId: id,
-      updatePostRequestDto: values
-    })
+  const handleUpdatePost = async (values: UpdatePostRequestDto) => {
+    await postAPI.updatePost({ postId, updatePostRequestDto: values })
     setIsNewPostModalOpen(false)
     mutate(CACHE_KEY_SCHEDULED_EVENTS)
   }
@@ -46,7 +43,7 @@ export const EditButtonGroup: FC<any> = ({ id, data }) => {
         isExtended
         passes={[]}
         initialData={data}
-        createPost={handleUpdatePost}
+        handleCreatePost={handleUpdatePost}
         placeholder="What's on your mind?"
         onlyText
       />

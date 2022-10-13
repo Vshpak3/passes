@@ -1,4 +1,4 @@
-import { CreatePostRequestDto, PostApi } from "@passes/api-client"
+import { CreatePostRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import _ from "lodash"
 import dynamic from "next/dynamic"
@@ -17,8 +17,7 @@ import { NewPostModal } from "src/components/organisms/NewPostModal"
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers/content"
-import { CACHE_KEY_SCHEDULED_EVENTS } from "src/hooks/useScheduledPosts"
-import { mutate } from "swr"
+import { usePost } from "src/hooks/usePost"
 
 import { NewPostDropdown } from "./audience-dropdown"
 import { MediaFile } from "./media"
@@ -72,21 +71,23 @@ interface NewPostFormProps {
 interface NewPostProps {
   passes?: any
   placeholder: any
-  createPost: (
+  handleCreatePost: (
     arg: CreatePostRequestDto,
     postId: string
   ) => void | Promise<void>
-  onlyText?: boolean
   initialData: Record<string, any>
+  shouldCreate?: boolean
+  onlyText?: boolean
   isExtended?: boolean
 }
 
 export const NewPost: FC<NewPostProps> = ({
   passes = [], // TODO: use passes search bar
   placeholder,
-  createPost,
-  onlyText = false,
+  handleCreatePost,
   initialData = {},
+  shouldCreate = true,
+  onlyText = false,
   isExtended = false
 }) => {
   const [files, setFiles] = useState<File[]>([])
@@ -97,6 +98,9 @@ export const NewPost: FC<NewPostProps> = ({
   const [isReset, setIsReset] = useState(false)
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState(passes)
+
+  const { createPost } = usePost()
+
   const START_SLIDER_AFTER_FILES_LENGTH = 2
 
   const {
@@ -143,6 +147,9 @@ export const NewPost: FC<NewPostProps> = ({
       toast.error("Must add either text or content")
       return
     }
+    if (files.length > 0) {
+      toast.info("Please wait a moment as your content is uploaded")
+    }
     const content = await new ContentService().uploadContent(files, undefined, {
       inPost: true,
       inMessage: false
@@ -155,21 +162,23 @@ export const NewPost: FC<NewPostProps> = ({
       passIds: [], // TODO: add in passes
       scheduledAt: values.scheduledAt,
       expiresAt: values.expiresAt,
-      price: isPaid ? parseInt(values.price) : 0,
+      price: values.isPaid ? parseInt(values.price) : 0,
       contentIds: content.map((c: any) => c.id)
     }
 
-    const api = new PostApi()
-    const response = await api.createPost({
-      createPostRequestDto: post
-    })
-    const postId = response.postId
+    // TODO: make this less hacky
+    if (shouldCreate) {
+      const res = await createPost(post)
+      await handleCreatePost(post, res.postId)
+    } else {
+      await handleCreatePost(post, "")
+    }
 
-    await createPost(post, postId)
-    mutate(CACHE_KEY_SCHEDULED_EVENTS)
     reset()
     setFiles([])
     setIsReset(true)
+
+    toast.dismiss()
   }
 
   const onFileInputChange = (event: any) => {
@@ -186,8 +195,6 @@ export const NewPost: FC<NewPostProps> = ({
   }
 
   const onMediaChange = (fileProps: File[]) => {
-    let _containsVideo = containsVideo
-
     // Validate properties of each file
     for (const file of fileProps) {
       const isVideo = (file as File).type.startsWith("video/")
@@ -211,7 +218,7 @@ export const NewPost: FC<NewPostProps> = ({
           toast.error(`Videos cannot be larger than ${MAX_VIDEO_SIZE_NAME}`)
           return
         }
-        _containsVideo = true
+        setContainsVideo(true)
       }
 
       if (type === "image") {
@@ -229,8 +236,6 @@ export const NewPost: FC<NewPostProps> = ({
         }
       }
     }
-
-    setContainsVideo(_containsVideo)
 
     setFiles([...files, ...fileProps])
   }

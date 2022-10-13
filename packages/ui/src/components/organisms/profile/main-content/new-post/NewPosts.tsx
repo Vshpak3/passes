@@ -9,7 +9,7 @@ export const NewPosts: React.FC = () => {
   const { profileInfo, profileUsername } = useProfile()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
-  const createPost = async (
+  const handleCreatePost = async (
     createPost: CreatePostRequestDto,
     postId: string
   ) => {
@@ -45,7 +45,7 @@ export const NewPosts: React.FC = () => {
     <>
       <NewPost
         // TODO: passes={profileInfo?.passes}
-        createPost={createPost}
+        handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"
         initialData={{}}
       />
