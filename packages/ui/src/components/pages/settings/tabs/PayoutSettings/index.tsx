@@ -5,6 +5,7 @@ import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import Clipboard from "public/icons/clipboard.svg"
+import DeleteIcon from "public/icons/delete-outline.svg"
 import { useEffect } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -40,19 +41,45 @@ const PayoutSettings = () => {
     }
   }, [router, user, loading])
 
+  const renderDefaultBank = () => (
+    <div className="flex basis-3/4 flex-col justify-between">
+      <span className="mb-4 font-[700]">
+        {defaultBank?.description.split(",")[0]}
+      </span>
+      <div className="flex flex-row">
+        <span className="mr-6 font-[500]">
+          {defaultBank?.description.split(",")[1]}
+        </span>
+        <div className="mr-6">
+          <span className="mr-2 text-[12px] font-[500] opacity-50">
+            Transfer type
+          </span>
+          <span className="text-[16px] font-[500]">
+            {defaultBank?.country === "US" ? "Domestic" : "International"}
+          </span>
+        </div>
+        <div className="flex flex-row">
+          <span className="mr-2 text-[12px] font-[500] opacity-50">
+            Bank country
+          </span>
+          <span className="text-[16px] font-[500]">{defaultBank?.country}</span>
+        </div>
+      </div>
+    </div>
+  )
   const renderDefaultPayoutMethod = () => {
     return (
       <div>
-        <span className="text-[16px]">
-          {defaultBank?.description.split(",")[0]}
-          {defaultWallet?.address && (
+        <div className="text-[16px]">
+          {defaultWallet?.address ? (
             <div className="flex flex-col text-[12px] md:flex-row md:text-[16px]">
               <span className="mr-4">Wallet:</span>
               <span>{defaultWallet.address}</span>
             </div>
+          ) : (
+            renderDefaultBank()
           )}
-        </span>
-        <span className="text-[16px]">{defaultBank?.country}</span>
+        </div>
       </div>
     )
   }
@@ -135,7 +162,7 @@ const PayoutSettings = () => {
                     })}
                     <Clipboard
                       width="12px"
-                      className="invisible ml-2 group-hover:visible group-hover:visible"
+                      className="invisible ml-2 group-hover:visible"
                     />
                   </span>
                   <span className="basis-1/4 text-center">
@@ -179,61 +206,42 @@ const PayoutSettings = () => {
         {banks?.map((bank) => (
           <div
             key={bank.id}
-            className="mb-6 mt-6 flex flex-col gap-5 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7"
+            className="my-6 flex flex-row gap-5 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-7"
           >
-            <div className="flex flex-row justify-between">
-              <div className="flex flex-col">
-                <span className="text-[24px] font-[700]">
-                  {bank.description.split(",")[0]}
-                </span>
-                <span className="text-[16px] font-[500]">
+            <div className="flex basis-3/4 flex-col justify-between">
+              <span className="mb-6 font-[700]">
+                {bank.description.split(",")[0]}
+              </span>
+              <div className="flex flex-row">
+                <span className="mr-6 font-[500]">
                   {bank.description.split(",")[1]}
                 </span>
-              </div>
-              <div className="flex w-[241px] flex-col">
-                <span className="text-[16px] font-[500]">
-                  We&apos;ll use this bank account for:
-                </span>
-                <span className="text-[12px] font-[500] opacity-50">
-                  Transfers to this account will always be made in IDR.
-                </span>
+                <div className="mr-6">
+                  <span className="mr-2 text-[12px] font-[500] opacity-50">
+                    Transfer type
+                  </span>
+                  <span className="text-[16px] font-[500]">
+                    {bank.country === "US" ? "Domestic" : "International"}
+                  </span>
+                </div>
+                <div className="flex flex-row">
+                  <span className="mr-2 text-[12px] font-[500] opacity-50">
+                    Bank country
+                  </span>
+                  <span className="text-[16px] font-[500]">{bank.country}</span>
+                </div>
               </div>
             </div>
+
             <div className="flex flex-col gap-6 xl:flex-row">
-              <div className="flex flex-[0.2] flex-col">
-                <span className="text-[12px] font-[500] opacity-50">
-                  Transfer type
-                </span>
-                <span className="text-[16px] font-[500]">
-                  {bank.country === "US" ? "Domestic" : "International"}
-                </span>
-              </div>
-              <div className="flex flex-[0.2] flex-col">
-                <span className="text-[12px] font-[500] opacity-50">
-                  Bank country
-                </span>
-                <span className="text-[16px] font-[500]">{bank.country}</span>
-              </div>
-              <div className="flex flex-[0.4] flex-col">
-                <span className="text-[12px] font-[500] opacity-50">
-                  We&apos;ll use this bank account for:
-                </span>
-                <span className="text-[14px] font-[500]">
-                  Transfers to this account will always be made in IDR.
-                </span>
-              </div>
-              <div className="flex flex-[0.4] flex-col">
-                <span className="text-[12px] font-[500] opacity-50">
-                  Set Default
-                </span>
+              <div className="flex flex-col">
                 <div className="flex flex-row gap-2">
-                  <button
+                  <Button
                     disabled={defaultBank?.id === bank.id}
-                    className={
-                      defaultBank?.id === bank.id
-                        ? "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-[6px] border border-white/70 bg-transparent px-2 text-white"
-                        : "flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-passes-primary-color bg-passes-primary-color px-2 text-white"
+                    variant={
+                      defaultBank?.id === bank.id ? "pink" : "purple-light"
                     }
+                    className="w-auto"
                     onClick={() =>
                       setDefaultPayoutMethod({
                         bankId: bank.id,
@@ -242,16 +250,16 @@ const PayoutSettings = () => {
                     }
                   >
                     <span className="text-[16px] font-[500]">
-                      {defaultBank?.id === bank?.id ? "Default" : "Set Default"}
+                      {defaultBank?.id === bank?.id
+                        ? "Default"
+                        : "Set Payout Default"}
                     </span>
-                  </button>
-
+                  </Button>
                   <button
-                    className="flex h-[44px] shrink-0 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/10 px-2 text-white"
                     onClick={() => deleteBank(bank.id)}
+                    className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10"
                   >
-                    <BankIcon width={25} height={25} />
-                    <span className="text-[16px] font-[500]">Delete</span>
+                    <DeleteIcon width="25px" height="25px" />
                   </button>
                 </div>
               </div>

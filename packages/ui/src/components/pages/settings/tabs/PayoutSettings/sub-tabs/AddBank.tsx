@@ -35,7 +35,7 @@ const AddBank = () => {
     watch,
     formState: { errors }
   } = useForm<{ "bank-country": string; country: string }>({
-    defaultValues: { country: COUNTRIES[0] }
+    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
   })
   const countrySelected = watch("country")
 
@@ -158,9 +158,6 @@ const AddBank = () => {
         type="text"
         name="bank-name"
         placeholder="Bank Name"
-        options={{
-          required: { message: "Bank name is required", value: true }
-        }}
         errors={errors}
       />
       <FormInput
@@ -168,9 +165,6 @@ const AddBank = () => {
         type="text"
         name="bank-city"
         placeholder="Bank City"
-        options={{
-          required: { message: "City is required", value: true }
-        }}
         errors={errors}
         className="mt-4"
       />

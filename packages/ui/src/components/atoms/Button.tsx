@@ -131,7 +131,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
         (className && ` ${className} `) +
-        (disabled && `${disabledClass ?? " border-[#3333]/80 bg-[#3333]/80 "}`)
+        (disabled &&
+          `${disabledClass ?? " cursor-auto border-[#3333]/80 bg-[#3333]/80"}`)
       }
       role={tag === "a" ? "button" : undefined}
       tabIndex={tag === "a" ? 0 : undefined}
