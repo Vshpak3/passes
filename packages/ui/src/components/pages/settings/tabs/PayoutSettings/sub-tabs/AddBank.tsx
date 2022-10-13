@@ -33,12 +33,11 @@ const AddBank = () => {
     getValues,
     setValue,
     watch,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors }
   } = useForm<{ "bank-country": string; country: string }>({
     defaultValues: { country: COUNTRIES[0] }
   })
   const countrySelected = watch("country")
-  const onSubmitHandler = () => !isSubmitSuccessful && handleSubmit(onSubmit)
 
   const onSubmit = async () => {
     try {
@@ -81,7 +80,7 @@ const AddBank = () => {
   return (
     <Tab title="Add Bank" withBack>
       <div className="mt-4 flex flex-col">
-        <span className="text-[16px] font-[500] text-[#767676]">
+        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Type of Bank Account
         </span>
         <Select
@@ -101,7 +100,6 @@ const AddBank = () => {
           }}
           name="bank-country"
           errors={errors}
-          className="mt-4 mb-4"
         />
       </div>
       <ConditionRendering
@@ -109,7 +107,7 @@ const AddBank = () => {
           bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
         }
       >
-        <span className="text-[16px] font-[500] text-[#767676]">
+        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Routing Number
         </span>
         <FormInput
@@ -118,10 +116,12 @@ const AddBank = () => {
           name="routing-number"
           placeholder="4444 1902 0192 0100"
           errors={errors}
-          className="mt-2 mb-4"
+          options={{
+            required: { message: "Routing number is required", value: true }
+          }}
         />
 
-        <span className="text-[16px] font-[500] text-[#767676]">
+        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Account Number
         </span>
         <FormInput
@@ -130,31 +130,38 @@ const AddBank = () => {
           name="account-number"
           placeholder="-"
           errors={errors}
-          className="mt-2 mb-4"
+          options={{
+            required: { message: "Account number is required", value: true }
+          }}
         />
       </ConditionRendering>
       <ConditionRendering condition={bankType === BankTypeEnum.IBAN}>
-        <span className="text-[16px] font-[500] text-[#767676]">Iban</span>
+        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
+          IBAN
+        </span>
         <FormInput
           register={register}
           type="text"
           name="iban"
           placeholder="IBAN"
           errors={errors}
-          className="mt-2 mb-4"
+          options={{
+            required: { message: "IBAN is required", value: true }
+          }}
         />
       </ConditionRendering>
-      <span className="text-[16px] font-[500]">Bank Info</span>
+      <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
+        Bank Info
+      </span>
       <FormInput
         register={register}
         type="text"
         name="bank-name"
         placeholder="Bank Name"
         options={{
-          required: { message: "need a a bank name", value: true }
+          required: { message: "Bank name is required", value: true }
         }}
         errors={errors}
-        className="mt-4"
       />
       <FormInput
         register={register}
@@ -162,7 +169,7 @@ const AddBank = () => {
         name="bank-city"
         placeholder="Bank City"
         options={{
-          required: { message: "need a bank city", value: true }
+          required: { message: "City is required", value: true }
         }}
         errors={errors}
         className="mt-4"
@@ -174,6 +181,9 @@ const AddBank = () => {
         name="bank-country"
         errors={errors}
         className="mt-4"
+        options={{
+          required: { message: "Country is required", value: true }
+        }}
       />
 
       <div className="mt-4">
@@ -185,9 +195,9 @@ const AddBank = () => {
           placeholder="Name"
           errors={errors}
           options={{
-            required: { message: "name is required", value: true }
+            required: { message: "Name is required", value: true }
           }}
-          className="mt-2 mb-4"
+          className="mt-4"
         />
         <FormInput
           register={register}
@@ -198,7 +208,7 @@ const AddBank = () => {
           options={{
             required: { message: "Address is required", value: true }
           }}
-          className="mt-2 mb-4"
+          className="mt-4"
         />
         <FormInput
           register={register}
@@ -206,7 +216,7 @@ const AddBank = () => {
           name="address2"
           placeholder="Address 2"
           errors={errors}
-          className="mt-2 mb-4"
+          className="mt-4"
         />
         <FormInput
           register={register}
@@ -214,7 +224,10 @@ const AddBank = () => {
           selectOptions={COUNTRIES}
           name="country"
           errors={errors}
-          className="mt-2 mb-4"
+          className="mt-4"
+          options={{
+            required: { message: "Country is required", value: true }
+          }}
         />
         <FormInput
           register={register}
@@ -225,7 +238,7 @@ const AddBank = () => {
           options={{
             required: { message: "City is required", value: true }
           }}
-          className="mt-2 mb-2"
+          className="mt-4"
         />
         <div className="flex gap-4">
           {countrySelected === COUNTRIES[0] ? (
@@ -238,7 +251,7 @@ const AddBank = () => {
                 required: { message: "State is required", value: true }
               }}
               name="district"
-              className="mt-2"
+              className="mt-4"
             />
           ) : (
             <FormInput
@@ -256,7 +269,10 @@ const AddBank = () => {
                 </div>
               }
               errors={errors}
-              className="mt-2 mb-4"
+              className="mt-4"
+              options={{
+                required: { message: "State is required", value: true }
+              }}
             />
           )}
           <FormInput
@@ -268,13 +284,13 @@ const AddBank = () => {
             options={{
               required: { message: "Postal Code is required", value: true }
             }}
-            className="mt-2 mb-4"
+            className="mt-4"
           />
         </div>
       </div>
       <button
-        className="mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
-        onClick={onSubmitHandler}
+        className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
+        onClick={handleSubmit(onSubmit)}
       >
         <span className="text-[16px] font-[500]">Confirm and Continue</span>
       </button>
