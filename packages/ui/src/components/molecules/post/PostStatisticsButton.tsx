@@ -18,13 +18,13 @@ export const PostStatisticsButton: React.FC<PostStatisticsButtonProps> = (
   return (
     <div className="relative flex-shrink-0">
       <button
-        className="flex items-center space-x-2.5 rounded-lg bg-white/10 py-[5px] px-2.5"
+        className="flex items-center rounded-lg bg-white/10 py-[5px] px-2.5"
         onClick={toggleMenu}
       >
-        <span className="whitespace-nowrap text-xs font-medium leading-[22px]">
+        <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
           Post Statistics
         </span>
-        <span className="flex-shrink-0">
+        <span className="flex-shrink-0 md:ml-2">
           <GraphIcon />
         </span>
       </button>
