@@ -3,7 +3,7 @@ import classNames from "classnames"
 import { FC } from "react"
 interface VaultMediaItemProps {
   content: ContentDto
-  selectedItems: Array<string>
+  selectedItems: string[]
   setSelectedItems: (items: string[]) => void
 }
 

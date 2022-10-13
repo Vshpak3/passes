@@ -1,4 +1,7 @@
-import { GetVaultQueryRequestDtoOrderEnum } from "@passes/api-client"
+import {
+  ContentApi,
+  GetVaultQueryRequestDtoOrderEnum
+} from "@passes/api-client"
 import { FC, useState } from "react"
 import { VaultDeleteButton } from "src/components/atoms/vault"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
@@ -9,7 +12,7 @@ import { VaultSortDropdown } from "src/components/molecules/vault/VaultSort"
 import { TVaultCategory, TVaultType } from "src/components/pages/tools/Vault"
 
 interface VaultNavigationProps {
-  selectedItems: Array<string>
+  selectedItems: string[]
   setSelectedItems: (items: string[]) => void
   setVaultType: (type: TVaultType) => void
   setVaultCategory: (category: TVaultCategory) => void
@@ -17,8 +20,10 @@ interface VaultNavigationProps {
   vaultType: TVaultType
   vaultCategory: TVaultCategory
   pushToMessages: () => void
-  embedded?: boolean
   order: GetVaultQueryRequestDtoOrderEnum
+  deletedItems: string[]
+  setDeletedItems: (items: string[]) => void
+  embedded?: boolean
 }
 
 export const VaultNavigation: FC<VaultNavigationProps> = ({
@@ -30,8 +35,10 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   setOrder,
   setSelectedItems,
   pushToMessages,
-  embedded = false,
-  order
+  order,
+  deletedItems,
+  setDeletedItems,
+  embedded = false
 }) => {
   const deselectAll = () => setSelectedItems([])
   const [deleteModalActive, setDeleteModalActive] = useState(false)
@@ -76,7 +83,13 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         deleteModalActive={deleteModalActive}
         // TODO: connect with API to get selected items and delete items
         // eslint-disable-next-line no-console
-        onDeleteVaultItems={() => console.log("delete items")}
+        onDeleteVaultItems={async () => {
+          const api = new ContentApi()
+          await api.deleteContent({
+            deleteContentRequestDto: { contentIds: selectedItems }
+          })
+          setDeletedItems([...deletedItems, ...selectedItems])
+        }}
         setDeleteModalActive={setDeleteModalActive}
       />
     </div>

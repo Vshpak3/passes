@@ -20,6 +20,7 @@ export type TVaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
 
 export const Vault = ({ passSelectedItems }: VaultProps) => {
   const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+  const [deletedItems, setDeletedItems] = useState<Array<string>>([])
   const [vaultType, setVaultType] = useState<
     GetVaultQueryRequestDtoTypeEnum | undefined
   >(undefined)
@@ -62,11 +63,14 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
         embedded={!!passSelectedItems}
         setOrder={setOrder}
         order={order}
+        deletedItems={deletedItems}
+        setDeletedItems={setDeletedItems}
       />
 
       <VaultMediaGrid
         selectedItems={selectedItems}
         setSelectedItems={setItems}
+        deletedItems={deletedItems}
         order={order}
         category={vaultCategory}
         type={vaultType}

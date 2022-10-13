@@ -19,6 +19,7 @@ interface VaultMediaGridProps {
   order: GetVaultQueryRequestDtoOrderEnum
   category?: TVaultCategory
   type?: TVaultType
+  deletedItems: string[]
 }
 
 export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
@@ -26,7 +27,8 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   setSelectedItems,
   category,
   type,
-  order
+  order,
+  deletedItems
 }) => {
   return (
     <div className="max-h-[65vh] justify-center overflow-y-scroll">
@@ -49,11 +51,15 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
           }
           KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
             return (
-              <VaultMediaItem
-                content={arg}
-                setSelectedItems={setSelectedItems}
-                selectedItems={selectedItems}
-              />
+              <>
+                {deletedItems.includes(arg.contentId) && (
+                  <VaultMediaItem
+                    content={arg}
+                    setSelectedItems={setSelectedItems}
+                    selectedItems={selectedItems}
+                  />
+                )}
+              </>
             )
           }}
           classes="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
