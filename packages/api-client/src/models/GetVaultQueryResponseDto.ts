@@ -43,6 +43,12 @@ export interface GetVaultQueryResponseDto {
      * @type {string}
      * @memberof GetVaultQueryResponseDto
      */
+    order: GetVaultQueryResponseDtoOrderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetVaultQueryResponseDto
+     */
     category?: GetVaultQueryResponseDtoCategoryEnum;
     /**
      * 
@@ -58,6 +64,15 @@ export interface GetVaultQueryResponseDto {
     data: Array<ContentDto>;
 }
 
+
+/**
+ * @export
+ */
+export const GetVaultQueryResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetVaultQueryResponseDtoOrderEnum = typeof GetVaultQueryResponseDtoOrderEnum[keyof typeof GetVaultQueryResponseDtoOrderEnum];
 
 /**
  * @export
@@ -86,6 +101,7 @@ export type GetVaultQueryResponseDtoTypeEnum = typeof GetVaultQueryResponseDtoTy
  */
 export function instanceOfGetVaultQueryResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
     isInstance = isInstance && "data" in value;
 
     return isInstance;
@@ -103,6 +119,7 @@ export function GetVaultQueryResponseDtoFromJSONTyped(json: any, ignoreDiscrimin
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'order': json['order'],
         'category': !exists(json, 'category') ? undefined : json['category'],
         'type': !exists(json, 'type') ? undefined : json['type'],
         'data': ((json['data'] as Array<any>).map(ContentDtoFromJSON)),
@@ -120,6 +137,7 @@ export function GetVaultQueryResponseDtoToJSON(value?: GetVaultQueryResponseDto 
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'order': value.order,
         'category': value.category,
         'type': value.type,
         'data': ((value.data as Array<any>).map(ContentDtoToJSON)),

@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { VaultFilterOption } from "src/components/atoms/vault"
-import { TVaultCategory, TVaultType } from "src/hooks/vault/useVaultGallery"
+import { TVaultCategory, TVaultType } from "src/components/pages/tools/Vault"
 
 interface TypeFilterButton {
   id: TVaultType
@@ -30,8 +30,8 @@ const filterStyles = {
 }
 
 interface VaultFilterContainerProps {
-  fetchVaultType: (type: TVaultType) => void
-  fetchVaultCategory: (category: TVaultCategory) => void
+  setVaultType: (type: TVaultType) => void
+  setVaultCategory: (category: TVaultCategory) => void
   vaultType: TVaultType
   vaultCategory: TVaultCategory
 }
@@ -39,22 +39,20 @@ interface VaultFilterContainerProps {
 export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
   vaultType,
   vaultCategory,
-  fetchVaultType,
-  fetchVaultCategory
+  setVaultType,
+  setVaultCategory
 }) => {
   return (
     <div className="items-align align-center flex">
       <div className="align-items mt-5 flex w-full flex-col justify-start">
         <div className="mb-[15px] flex items-start">
           {VAULT_CATEGORY_OPTIONS.map((category, index) => {
-            const isActive = category.id === vaultCategory
-            const onClick = () => fetchVaultCategory(category.id)
             return (
               <VaultFilterOption
                 buttonStyle={filterStyles.button}
-                onClick={onClick}
+                onClick={() => setVaultCategory(category.id)}
                 key={index}
-                isActive={isActive}
+                isActive={category.id === vaultCategory}
                 label={category.label}
               />
             )
@@ -62,14 +60,12 @@ export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
         </div>
         <div className="flex items-center">
           {VAULT_TYPE_OPTIONS.map((type, index) => {
-            const isActive = type.id === vaultType
-            const onClick = () => fetchVaultType(type.id)
             return (
               <VaultFilterOption
                 buttonStyle={filterStyles.media}
-                onClick={onClick}
+                onClick={() => setVaultType(type.id)}
                 key={index}
-                isActive={isActive}
+                isActive={type.id === vaultType}
                 label={type.label}
               />
             )

@@ -36,6 +36,12 @@ export interface GetVaultQueryRequestDto {
      * @type {string}
      * @memberof GetVaultQueryRequestDto
      */
+    order: GetVaultQueryRequestDtoOrderEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetVaultQueryRequestDto
+     */
     category?: GetVaultQueryRequestDtoCategoryEnum;
     /**
      * 
@@ -45,6 +51,15 @@ export interface GetVaultQueryRequestDto {
     type?: GetVaultQueryRequestDtoTypeEnum;
 }
 
+
+/**
+ * @export
+ */
+export const GetVaultQueryRequestDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetVaultQueryRequestDtoOrderEnum = typeof GetVaultQueryRequestDtoOrderEnum[keyof typeof GetVaultQueryRequestDtoOrderEnum];
 
 /**
  * @export
@@ -73,6 +88,7 @@ export type GetVaultQueryRequestDtoTypeEnum = typeof GetVaultQueryRequestDtoType
  */
 export function instanceOfGetVaultQueryRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
 
     return isInstance;
 }
@@ -89,6 +105,7 @@ export function GetVaultQueryRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
+        'order': json['order'],
         'category': !exists(json, 'category') ? undefined : json['category'],
         'type': !exists(json, 'type') ? undefined : json['type'],
     };
@@ -105,6 +122,7 @@ export function GetVaultQueryRequestDtoToJSON(value?: GetVaultQueryRequestDto | 
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
+        'order': value.order,
         'category': value.category,
         'type': value.type,
     };

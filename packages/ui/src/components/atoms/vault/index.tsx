@@ -16,10 +16,6 @@ interface VaultDeselectButtonProps {
   deselectAll: () => void
 }
 
-interface VaultItemDateProps {
-  date: string
-}
-
 interface VaultSelectLabelProps {
   selectedItemsLength: number
 }
@@ -40,13 +36,6 @@ interface VaultDeleteButtonProps {
   toggleDeleteModal: () => void
 }
 
-interface VaultSortItemProps {
-  label?: string
-  onClick?: () => void
-  sortedItem: string
-  name: string
-}
-
 export const VaultDeselectButton = ({
   isVisible,
   deselectAll
@@ -58,20 +47,6 @@ export const VaultDeselectButton = ({
     {isVisible && <ExitIcon />}
   </div>
 )
-
-export const VaultItemDate: FC<VaultItemDateProps> = ({ date }) => {
-  return (
-    <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
-      <div
-        onMouseDown={(e) => e.preventDefault()}
-        onCopy={(e) => e.preventDefault()}
-        className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block"
-      >
-        {date}
-      </div>
-    </div>
-  )
-}
 
 export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
   buttonStyle,
@@ -114,23 +89,6 @@ export const VaultAddToItem: FC<VaultAddToItemProps> = ({ label, onClick }) => (
   >
     <AddToIcon />
     <div className="ml-3">{label}</div>
-  </div>
-)
-
-export const VaultSortItem = ({
-  sortedItem,
-  onClick,
-  name,
-  label
-}: VaultSortItemProps) => (
-  <div
-    onClick={onClick}
-    className={classNames(
-      sortedItem === name ? "bg-[#9C4DC1]" : "bg-transparent",
-      "flex w-full cursor-pointer rounded p-1 text-base text-[#FFFF] ring-0 focus:shadow-none focus:ring-0 focus:ring-offset-0"
-    )}
-  >
-    {label}
   </div>
 )
 

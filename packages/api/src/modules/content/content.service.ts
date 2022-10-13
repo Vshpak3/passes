@@ -14,7 +14,6 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassMediaEnum } from '../pass/enum/pass-media.enum'
@@ -87,9 +86,9 @@ export class ContentService {
     return true
   }
 
-  async findContent(id: string): Promise<GetContentResponseDto> {
+  async findContent(contentId: string): Promise<GetContentResponseDto> {
     const content = await this.dbReader<ContentEntity>(ContentEntity.table)
-      .where({ id: id })
+      .where({ id: contentId })
       .select('*')
       .first()
     if (!content) {
@@ -103,7 +102,7 @@ export class ContentService {
     userId: string,
     getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ) {
-    const { category, type, lastId, createdAt } = getVaultQueryRequestDto
+    const { category, type, lastId, createdAt, order } = getVaultQueryRequestDto
     let query = this.dbReader<ContentEntity>(ContentEntity.table)
       .whereNull('deleted_at')
       .andWhere({
@@ -136,7 +135,7 @@ export class ContentService {
       ContentEntity.table,
       ContentEntity.table,
       'created_at',
-      OrderEnum.DESC,
+      order,
       createdAt,
       lastId,
     )

@@ -9,6 +9,7 @@ import { ContentDto } from './content.dto'
 export class GetVaultQueryRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',
+  'order',
 ]) {
   @DtoProperty({ custom_type: VaultCategoryEnum, optional: true })
   category?: VaultCategoryEnum
