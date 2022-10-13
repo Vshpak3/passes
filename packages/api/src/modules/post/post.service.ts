@@ -184,20 +184,24 @@ export class PostService {
           map[passHolder.holder_id].push(passHolder.id)
           return map
         }, {})
-        await trx<PostUserAccessEntity>(PostUserAccessEntity.table).insert(
-          Object.keys(userToPassHolders).map((userId) => {
-            return {
-              post_id: postId,
-              user_id: userId,
-              pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
-            }
-          }),
-        )
-        await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
-          createPostDto.passIds.map((passId) => {
-            return { post_id: postId, pass_id: passId }
-          }),
-        )
+        if (Object.keys(userToPassHolders).length) {
+          await trx<PostUserAccessEntity>(PostUserAccessEntity.table).insert(
+            Object.keys(userToPassHolders).map((userId) => {
+              return {
+                post_id: postId,
+                user_id: userId,
+                pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
+              }
+            }),
+          )
+        }
+        if (createPostDto.passIds.length) {
+          await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
+            createPostDto.passIds.map((passId) => {
+              return { post_id: postId, pass_id: passId }
+            }),
+          )
+        }
       })
       .catch((err) => {
         this.logger.error(err)
