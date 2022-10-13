@@ -22,6 +22,7 @@ import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
+import { FULL_NAME_REGEX } from "src/helpers/validation"
 import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
@@ -37,7 +38,12 @@ export type SignupInfoPageSchema = {
 }
 
 const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
-  legalFullName: string().required("Enter your full name"),
+  legalFullName: string()
+    .required("Enter your full name")
+    .matches(
+      FULL_NAME_REGEX,
+      "Only letters and symbols (- , ') are allowed for your name"
+    ),
   username: string().required("Enter a username"),
   birthday: string()
     .required("Enter your birthday")

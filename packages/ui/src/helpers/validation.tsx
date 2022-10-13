@@ -14,6 +14,8 @@ export const getYupRequiredStringSchema = ({
   })
 }
 
+export const FULL_NAME_REGEX = /^[A-Za-z-,'\s]+$/
+
 export const SOCIAL_MEDIA_USERNAME_REGEX = {
   discord: /^.{2,32}#\d{4}$/,
   facebook: /^[a-zA-Z\d.]{5,}$/,
