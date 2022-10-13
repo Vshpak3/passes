@@ -42,7 +42,8 @@ jobs:
           cache: yarn
       - run: yarn install --frozen-lockfile
       - run: yarn workspace @passes/ui ts:check
-      - run: yarn workspace @passes/ui build
+      # ts:check should be sufficient for now
+      # - run: yarn workspace @passes/ui build
 
   # API (backend)
 

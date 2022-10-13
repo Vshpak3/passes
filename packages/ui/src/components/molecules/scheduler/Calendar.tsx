@@ -1,6 +1,5 @@
 import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
-import { differenceInDays } from "date-fns"
 import { flatten } from "lodash"
 import { FC, useEffect, useState } from "react"
 import { CalendarProps, useScheduledPosts } from "src/hooks/useScheduledPosts"
