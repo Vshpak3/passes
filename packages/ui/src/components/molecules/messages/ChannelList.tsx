@@ -1,6 +1,7 @@
 import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
+  GetChannelsRequestDto,
   GetChannelsRequestDtoOrderTypeEnum,
   GetChannelsResponseDto,
   ListMemberDto
@@ -53,34 +54,14 @@ export const ChannelList: FC<ChannelListProps> = ({
       <div className="pt-6">
         <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
           keyValue="/channels"
-          fetch={({
-            lastId,
-            recent,
-            tip
-          }: {
-            lastId?: string
-            recent?: Date
-            tip?: number
-          } = {}) => {
+          fetch={async (req: GetChannelsRequestDto) => {
             const api = new MessagesApi()
-            return api.getChannels({
-              getChannelsRequestDto: {
-                unreadOnly: false,
-                order: "desc",
-                orderType: channelOrderType,
-                lastId,
-                recent,
-                tip
-              }
-            })
+            return await api.getChannels({ getChannelsRequestDto: req })
           }}
           fetchProps={{
             unreadOnly: false,
             order: "desc",
-            orderType: channelOrderType,
-            lastId: undefined,
-            recent: undefined,
-            tip: undefined
+            orderType: channelOrderType
           }}
           KeyedComponent={({
             arg: channel
