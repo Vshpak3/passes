@@ -1,20 +1,10 @@
-import {
-  ContentDto,
-  ContentDtoContentTypeEnum,
-  GetFeedResponseDto,
-  PostDto
-} from "@passes/api-client"
-import dynamic from "next/dynamic"
+import { ContentDto, GetFeedResponseDto, PostDto } from "@passes/api-client"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import Slider from "react-slick"
+import { PostContent } from "src/components/molecules/PostContent"
 import { KeyedMutator } from "swr"
-
-const PostVideo = dynamic(
-  () => import("src/components/molecules/post/PostVideo"),
-  { ssr: false }
-)
 
 interface PostMediaProps {
   content: PostDto["content"]
@@ -74,7 +64,7 @@ export const PostMedia: FC<PostMediaProps> = ({
       {!!content?.length &&
         (isLoading ? (
           <span>Please wait! Your content is being uploaded</span>
-        ) : content.length >= 2 ? (
+        ) : content.length > 1 ? (
           <div className="relative w-[100%]">
             {activeSlideIndex !== content.length - 1 && (
               <button
@@ -91,26 +81,16 @@ export const PostMedia: FC<PostMediaProps> = ({
               ref={(ref) => (sliderRef.current = ref)}
               {...sliderSettings}
             >
-              {content.map((c: ContentDto) => {
-                if (c.contentType === ContentDtoContentTypeEnum.Image) {
-                  return (
-                    <img
-                      onClick={setPostHandler}
-                      ref={imgRef}
-                      onLoad={startLoadingHandler}
-                      key={c.contentId}
-                      src={c.signedUrl}
-                      alt="postImg"
-                      className="h-[375px] w-full rounded-[20px] object-cover shadow-xl"
-                    />
-                  )
-                } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
-                  return (
-                    <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
-                  )
-                } else {
-                  console.error("Unsupported media type")
-                }
+              {content.map((c: ContentDto, index: number) => {
+                return (
+                  <PostContent
+                    key={index}
+                    content={c}
+                    ref={imgRef}
+                    startLoadingHandler={startLoadingHandler}
+                    setPostHandler={setPostHandler}
+                  />
+                )
               })}
             </Slider>
             {activeSlideIndex !== 0 && (
@@ -123,26 +103,12 @@ export const PostMedia: FC<PostMediaProps> = ({
             )}
           </div>
         ) : (
-          content.map((c: ContentDto) => {
-            if (c.contentType === ContentDtoContentTypeEnum.Image) {
-              return (
-                <img
-                  ref={imgRef}
-                  onLoad={startLoadingHandler}
-                  key={c.contentId}
-                  src={c.signedUrl}
-                  alt=""
-                  className="w-full rounded-[20px] object-cover shadow-xl"
-                />
-              )
-            } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
-              return (
-                <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
-              )
-            } else {
-              console.error("Unsupported media type")
-            }
-          })
+          <PostContent
+            content={content[0]}
+            ref={imgRef}
+            startLoadingHandler={startLoadingHandler}
+            setPostHandler={setPostHandler}
+          />
         ))}
     </div>
   )

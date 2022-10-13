@@ -83,15 +83,13 @@ export const SidebarDefault: React.FC<SidebarDefaultProps> = ({
                 openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
               />
             </AuthWrapper>
-            {user ? (
-              <AuthWrapper>
-                {user?.isCreator ? (
-                  <NewPostButton />
-                ) : isOver18 ? (
-                  <BecomeCreatorButton />
-                ) : null}
-              </AuthWrapper>
-            ) : null}
+            <AuthWrapper>
+              {user?.isCreator ? (
+                <NewPostButton />
+              ) : isOver18 ? (
+                <BecomeCreatorButton />
+              ) : null}
+            </AuthWrapper>
           </nav>
         </div>
         <AuthWrapper>

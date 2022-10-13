@@ -1,26 +1,47 @@
-import { useState } from "react"
+import React, { useState } from "react"
+import { Loader } from "src/components/atoms/Loader"
 import { Calendar } from "src/components/molecules/scheduler/Calendar"
 import { EventTable } from "src/components/molecules/scheduler/EventTable"
 import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHeader"
+import { useScheduledPosts } from "src/hooks/useScheduledPosts"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
+
+export const SchedulerContext = React.createContext({
+  month: 0,
+  year: 0,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  setMonth: (_: number) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  setYear: (_: number) => {}
+})
 
 const SchedulerPage = () => {
   const today = new Date()
+  const defaultDate = { month: today.getMonth(), year: today.getFullYear() }
 
-  const [month, setMonth] = useState<number>(today.getMonth())
-  const [year, setYear] = useState<number>(today.getFullYear())
+  const [month, setMonth] = useState<number>(defaultDate.month)
+  const [year, setYear] = useState<number>(defaultDate.year)
 
-  const handleChangeTime = (newMonth: number, newYear: number) => {
-    setMonth(newMonth)
-    setYear(newYear)
-  }
+  const contextValue = { month, year, setMonth, setYear }
+
+  const { data, hasInitialFetch } = useScheduledPosts(defaultDate)
 
   return (
-    <div className="bg-black">
-      <SchedulerHeader onChangeTime={handleChangeTime} />
-      <Calendar month={month} year={year} />
-      <EventTable month={month} year={year} />
-    </div>
+    <SchedulerContext.Provider value={contextValue}>
+      <div className="bg-black">
+        <SchedulerHeader />
+        {!hasInitialFetch && !data ? (
+          <div className="pt-[100px]">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            <Calendar />
+            <EventTable />
+          </>
+        )}
+      </div>
+    </SchedulerContext.Provider>
   )
 }
 

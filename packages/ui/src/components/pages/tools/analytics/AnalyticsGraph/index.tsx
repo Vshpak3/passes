@@ -82,7 +82,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     <div className="flex flex-col gap-[32px]">
       <div className="flex flex-col gap-[8px]">
         <h3 className="text-2xl font-bold">
-          Last {dateDiff(dateRange.startDate, dateRange.endDate)} Days
+          {dateDiff(dateRange.startDate, dateRange.endDate)} Days
         </h3>
         <label
           htmlFor="calender-modal"

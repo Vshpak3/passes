@@ -1,14 +1,21 @@
 import { PostDto } from "@passes/api-client"
 import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
-import { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
-import { CalendarProps, useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { SchedulerContext } from "src/pages/tools/scheduler"
 
 import { DeleteEventModal } from "./DeleteEventModal"
 
-export const EventTable: FC<CalendarProps> = ({ month, year }) => {
+export const EventTable: FC = () => {
+  const { month, year } = useContext(SchedulerContext)
+
   const { data, setMonthYear, deletePost } = useScheduledPosts()
+
+  useEffect(() => {
+    setMonthYear({ month, year })
+  }, [month, year, setMonthYear])
 
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<string | null>(
     null
@@ -32,10 +39,6 @@ export const EventTable: FC<CalendarProps> = ({ month, year }) => {
     setSelectEventIdDelete(null)
     setIsDeletingPost(false)
   }, [selectEventIdDelete, deletePost])
-
-  useEffect(() => {
-    setMonthYear({ month, year })
-  }, [month, year, setMonthYear])
 
   return (
     <div className="px-[15px] md:px-[30px]">

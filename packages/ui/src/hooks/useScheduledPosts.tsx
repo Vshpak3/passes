@@ -1,19 +1,24 @@
 import { PostApi } from "@passes/api-client"
 import { addSeconds } from "date-fns"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import useSWR from "swr"
 
-export type CalendarProps = {
+export type DateProps = {
   month: number
   year: number
 }
 
 export const CACHE_KEY_SCHEDULED_EVENTS = "/posts/scheduled"
 
-export const useScheduledPosts = () => {
+export const useScheduledPosts = (defaultDate?: DateProps) => {
   const api = new PostApi()
 
-  const [monthYear, setMonthYear] = useState<CalendarProps>()
+  const [monthYear, setMonthYear] = useState<DateProps | undefined>(defaultDate)
+
+  // For a brief moment during rendering, data will be set undefined
+  // before the loading begins. This boolean is needed to handle showing
+  // the initial state properly before the loading begins.
+  const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(false)
 
   const {
     data,
@@ -25,6 +30,7 @@ export const useScheduledPosts = () => {
       if (!monthYear) {
         return
       }
+      setHasInitialFetch(true)
       return (
         await api.getPostsScheduled({
           getPostsRangeRequestDto: {
@@ -38,6 +44,13 @@ export const useScheduledPosts = () => {
       ).data
     }
   )
+
+  useEffect(() => {
+    if (!hasInitialFetch && monthYear) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const deletePost = async (postId: string) => {
     await api.removePost({ postId })
@@ -60,7 +73,7 @@ export const useScheduledPosts = () => {
     data,
     loading,
     mutate,
-    // mutateManual,
+    hasInitialFetch,
     setMonthYear,
     deletePost
   }

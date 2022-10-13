@@ -1,0 +1,62 @@
+import classNames from "classnames"
+import { addMonths, format, startOfMonth } from "date-fns"
+import { ChevronLeft, ChevronRight } from "lucide-react"
+import { FC, useContext } from "react"
+import { SchedulerContext } from "src/pages/tools/scheduler"
+
+const VIEWABLE_THIS_MANY_MONTHS_AGO = 24
+const VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE = 6
+
+interface DateTimeSelectedProps {
+  showDateYearModal: (event: React.MouseEvent<HTMLElement>) => void
+}
+
+export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
+  showDateYearModal
+}) => {
+  const { month, year, setMonth, setYear } = useContext(SchedulerContext)
+
+  const previousMonth = () => {
+    setMonth(month === 0 ? 11 : month - 1)
+    setYear(month === 0 ? year - 1 : year)
+  }
+
+  const nextMonth = () => {
+    setMonth(month === 11 ? 0 : month + 1)
+    setYear(month === 11 ? year + 1 : year)
+  }
+
+  const disablePast =
+    addMonths(startOfMonth(new Date()), -1 * VIEWABLE_THIS_MANY_MONTHS_AGO) >=
+    new Date(year, month, 1)
+
+  const disableFuture =
+    addMonths(startOfMonth(new Date()), VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE) <=
+    new Date(year, month, 1)
+
+  return (
+    <>
+      <ChevronLeft
+        size={32}
+        className={classNames({
+          "cursor-pointer": !disablePast,
+          "opacity-[0.5]": disablePast
+        })}
+        onClick={!disablePast ? previousMonth : () => undefined}
+      />
+      <button type="button" onClick={showDateYearModal}>
+        <span className="w-[100px] select-none">
+          {format(new Date(year, month, 1), "MMMM yyyy")}
+        </span>
+      </button>
+      <ChevronRight
+        size={32}
+        className={classNames({
+          "cursor-pointer": !disableFuture,
+          "opacity-[0.5]": disableFuture
+        })}
+        onClick={!disableFuture ? nextMonth : () => undefined}
+      />
+    </>
+  )
+}

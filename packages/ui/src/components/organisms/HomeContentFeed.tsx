@@ -12,14 +12,19 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { Post } from "src/components/organisms/profile/post/Post"
 
+// TODO: fix formatting
 const ContentFeedEmpty = (
   <div className="my-40 mx-auto flex flex-row items-center justify-center rounded-sm border border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">
     <InfoIcon className="mr-2" />
     Posts of the creators you follow will be shown here.
-  </div> // TODO: fix formatting
+  </div>
 )
 
-const ContentFeedLoading = <Loader />
+const ContentFeedLoading = (
+  <div className="my-[40px] flex justify-center">
+    <Loader />
+  </div>
+)
 
 const ContentFeedEnd = (
   <div className="mt-[15px] flex justify-center">

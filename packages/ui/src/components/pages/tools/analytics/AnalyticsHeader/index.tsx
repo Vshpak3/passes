@@ -1,6 +1,5 @@
-import React, { FC } from "react"
+import { FC } from "react"
 import { formatCurrency } from "src/helpers/formatters"
-import { Caret } from "src/icons/caret"
 
 interface AnalyticsHeaderProps {
   balance?: number
@@ -17,9 +16,6 @@ export const AnalyticsHeader: FC<AnalyticsHeaderProps> = ({ balance }) => {
         </h4>
         <div className="g flex flex-row gap-[16px]">
           <p className="text-[#ccc]">Balance available</p>
-          <a className="flex cursor-pointer flex-row items-center gap-[8px] hover:underline">
-            Request Payment <Caret className="-rotate-90" />
-          </a>
         </div>
       </div>
     </div>
