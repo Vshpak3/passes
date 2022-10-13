@@ -246,7 +246,7 @@ export const NewPost: FC<NewPostProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-2 py-2 backdrop-blur-[100px] md:px-7 md:py-5">
+      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
           <>
             <PostHeader
@@ -409,7 +409,7 @@ export const NewPost: FC<NewPostProps> = ({
                               type="file"
                               multiple={true}
                               trigger={
-                                <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border-[1px] border border-passes-secondary-color bg-transparent">
+                                <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border border-passes-secondary-color bg-transparent">
                                   <PlusIcon />
                                 </div>
                               }

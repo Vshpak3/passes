@@ -18,7 +18,7 @@ export const MediaSelector: FC<MediaSelectorProps> = ({
         activeHeader === name
           ? " bg-[rgba(191,122,240,0.1)] "
           : "hover:bg-[rgba(191,122,240,0.1)]",
-        "group flex flex-shrink-0 items-center rounded-[56px] py-3 px-3 text-sm leading-4 text-passes-secondary-color sm:px-4"
+        "group flex flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-passes-secondary-color sm:px-4 sm:py-3"
       )}
       onClick={() => undefined}
     >
@@ -27,7 +27,7 @@ export const MediaSelector: FC<MediaSelectorProps> = ({
         <span
           className={classNames(
             activeHeader === name ? "block" : "hidden group-hover:block",
-            "block"
+            "block text-sm xs:text-base"
           )}
         >
           {name}

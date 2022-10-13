@@ -65,7 +65,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-2 py-2 backdrop-blur-[100px] md:px-7 md:py-5">
+      <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
           <>
             <PostHeader onClose={() => setExtended(false)} />

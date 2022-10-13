@@ -23,8 +23,8 @@ export const PostFooter: FC<PostFooterProps> = ({
           onRemoveScheduledPostTime={() => setScheduledTime(null)}
         />
       )}
-      <div className="mt-4 flex items-center justify-end gap-[10px]">
-        <div className="flex items-center">
+      <div className="mt-4 flex justify-end gap-[10px]">
+        <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
             <MediaSelector name="Media" activeHeader="Media" />
             <CalendarSelector
@@ -39,7 +39,7 @@ export const PostFooter: FC<PostFooterProps> = ({
         <button
           type="submit"
           disabled={disableForm}
-          className="flex items-center justify-center rounded-[50px] bg-passes-pink-100 px-[30px] py-[10px] text-base font-bold text-[#ffffff]/90"
+          className="flex items-center justify-center rounded-[30px] bg-passes-pink-100 px-4 py-2 text-base font-bold text-[#ffffff]/90 sm:rounded-[50px] sm:py-2.5 sm:px-8"
         >
           Post
         </button>
