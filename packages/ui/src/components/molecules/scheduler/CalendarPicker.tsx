@@ -32,15 +32,29 @@ const defaultTime = {
   timeShift: new Date().getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
 }
 
+const getTime = (date?: Date | null) => {
+  return {
+    hours: (date || new Date()).getHours() % 12 || 12,
+    minutes: (date || new Date()).getMinutes(),
+    timeShift:
+      (date || new Date()).getHours() >= 12
+        ? TimeShiftEnum.PM
+        : TimeShiftEnum.AM
+  }
+}
+
 export const CalendarPicker: FC<{
   children: React.ReactNode
   onSave: (date: Date | null) => void
   toDate?: Date
-}> = ({ children, onSave, toDate }) => {
-  const [month, setMonth] = useState<Date>(today)
-  const [selectionDate, setSelectionDate] = useState<Date | undefined>(today)
+  scheduledTime?: Date | null
+}> = ({ children, onSave, toDate, scheduledTime }) => {
+  const [month, setMonth] = useState<Date>(scheduledTime || today)
+  const [selectionDate, setSelectionDate] = useState<Date | undefined>(
+    scheduledTime || today
+  )
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [time, setTime] = useState<Time>(defaultTime)
+  const [time, setTime] = useState<Time>(getTime(scheduledTime))
 
   const calenderRef = useRef(null)
 

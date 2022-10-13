@@ -31,6 +31,7 @@ export const PostFooter: FC<PostFooterProps> = ({
               name="Schedule"
               activeHeader="Schedule"
               setScheduledTime={setScheduledTime}
+              scheduledTime={scheduledTime}
             />
           </div>
         </div>
