@@ -21,6 +21,8 @@ import {
   PASS_TITLE_LENGTH,
 } from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
+import { PassAnimationEnum } from '../enum/pass-animation.enum'
+import { PassImageEnum } from '../enum/pass-image.enum'
 
 @Entity({ tableName: 'pass' })
 export class PassEntity extends BaseEntity {
@@ -76,4 +78,10 @@ export class PassEntity extends BaseEntity {
 
   @Property({ default: 0 })
   royalties: number
+
+  @Enum(() => PassAnimationEnum)
+  animation_type: PassAnimationEnum | null
+
+  @Enum({ items: () => PassImageEnum, default: PassImageEnum.PNG })
+  image_type: PassImageEnum
 }

@@ -23,7 +23,6 @@ import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { validateAddress } from '../../util/wallet.util'
-import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { EthService } from '../eth/eth.service'
 import {
   CreateNftPassPayinCallbackInput,
@@ -40,6 +39,10 @@ import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
+import {
+  getCollectionMediaUri,
+  getNftMediaUri,
+} from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { SolService } from '../sol/sol.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -63,6 +66,8 @@ import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { PassTypeEnum } from './enum/pass.enum'
+import { PassAnimationEnum } from './enum/pass-animation.enum'
+import { PassImageEnum } from './enum/pass-image.enum'
 import {
   BadPassPropertiesException,
   ForbiddenPassException,
@@ -84,6 +89,7 @@ const MAX_PASSES_PER_WEEK = 5
 @Injectable()
 export class PassService {
   private env: string
+  private nftS3Bucket: string
 
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -104,6 +110,7 @@ export class PassService {
     private readonly s3ContentService: S3ContentService,
   ) {
     this.env = this.configService.get('infra.env') as string
+    this.nftS3Bucket = configService.get('s3_bucket.nft') as string
   }
 
   async manualPass(
@@ -139,6 +146,8 @@ export class PassService {
       chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
       royalties: createPassDto.royalties,
+      animation_type: createPassDto.animationType,
+      image_type: createPassDto.imageType,
     } as PassEntity
     switch (data.chain) {
       case ChainEnum.SOL:
@@ -149,8 +158,8 @@ export class PassService {
             data.title,
             'PASS',
             data.description,
-            'video',
-            ContentFormatEnum.VIDEO,
+            createPassDto.imageType,
+            createPassDto.animationType ?? undefined,
           )
         ).passPubKey
         break
@@ -224,6 +233,8 @@ export class PassService {
       chain: createPassDto.chain,
       symbol: DEFAULT_PASS_SYMBOL,
       royalties: createPassDto.royalties,
+      animation_type: createPassDto.animationType,
+      image_type: createPassDto.imageType,
     }
     if (
       createPassDto.chain !== ChainEnum.SOL &&
@@ -262,13 +273,22 @@ export class PassService {
       throw new NotFoundException('No pass found')
     }
 
-    // if (
-    //   !(await this.s3ContentService.doesObjectExist(
-    //     getCollectionImageUri(null, pass.id, ContentFormatEnum.IMAGE),
-    //   ))
-    // ) {
-    //   throw new NotFoundException('Image is not uploaded')
-    // }
+    if (
+      !(await this.s3ContentService.doesObjectExist(
+        getCollectionMediaUri(null, pass.id, pass.image_type),
+      ))
+    ) {
+      throw new NotFoundException('Image is not uploaded')
+    }
+
+    if (
+      pass.animation_type &&
+      !(await this.s3ContentService.doesObjectExist(
+        getCollectionMediaUri(null, pass.id, pass.animation_type),
+      ))
+    ) {
+      throw new NotFoundException('Image is not uploaded')
+    }
 
     if (!pass || pass.collection_address) {
       throw new NotFoundException('Pass can not be minted')
@@ -286,10 +306,19 @@ export class PassService {
               pass.title,
               'PASS',
               pass.description,
+              pass.image_type,
+              pass.animation_type ?? undefined,
             )
           ).passPubKey
           break
-        case ChainEnum.ETH: // TODO
+        case ChainEnum.ETH:
+          collectionAddress = await this.ethService.createEthNftCollection(
+            pass.id,
+            pass.title,
+            'PASS',
+            pass.royalties,
+          )
+          break
         default:
           throw new UnsupportedChainPassError(
             `can not create a pass on chain ${pass.chain}`,
@@ -598,7 +627,16 @@ export class PassService {
       expires_at: expiresAt,
       messages: pass.messages,
       chain: pass.chain,
+      image_type: pass.image_type,
+      animation_type: pass.animation_type,
     } as PassHolderEntity
+
+    await this.copyNftObject(
+      pass.id,
+      data.id,
+      pass.image_type,
+      pass.animation_type ?? undefined,
+    )
 
     switch (pass.chain) {
       case ChainEnum.SOL:
@@ -611,8 +649,8 @@ export class PassService {
             pass.description,
             walletAddress,
             pass.royalties,
-            'video', // TODO: be dynamic
-            ContentFormatEnum.VIDEO,
+            pass.image_type,
+            pass.animation_type ?? undefined,
           )
         ).mintPubKey
         break
@@ -642,7 +680,8 @@ export class PassService {
           pass.description,
           pass.collection_address ?? '',
           walletAddress,
-          ContentFormatEnum.VIDEO, // TODO: be dynamic
+          pass.image_type,
+          pass.animation_type ?? undefined, // TODO: be dynamic
         )
         break
       default:
@@ -659,6 +698,34 @@ export class PassService {
       passId: pass.id,
       holderId: userId,
       expiresAt,
+    }
+  }
+
+  async copyNftObject(
+    passId: string,
+    passHolderId: string,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
+  ) {
+    await this.s3ContentService.copyObject({
+      Bucket: this.nftS3Bucket,
+      Key: getNftMediaUri(null, passId, passHolderId, imageType),
+      CopySource: `/${this.nftS3Bucket}/${getCollectionMediaUri(
+        null,
+        passId,
+        imageType,
+      )}`,
+    })
+    if (animationType) {
+      await this.s3ContentService.copyObject({
+        Bucket: this.nftS3Bucket,
+        Key: getNftMediaUri(null, passId, passHolderId, animationType),
+        CopySource: `/${this.nftS3Bucket}/${getCollectionMediaUri(
+          null,
+          passId,
+          animationType,
+        )}`,
+      })
     }
   }
 

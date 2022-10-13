@@ -15,4 +15,10 @@ export class PaidMessageHistoryEntity extends BaseEntity {
 
   @Property({ columnType: USD_AMOUNT_TYPE })
   earnings_purchases: number
+
+  @Property({ default: 0 })
+  sent_to: number
+
+  @Property({ default: 0 })
+  paid: number
 }

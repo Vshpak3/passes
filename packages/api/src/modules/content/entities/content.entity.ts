@@ -17,4 +17,7 @@ export class ContentEntity extends BaseEntity {
 
   @Property({ default: false })
   in_post: boolean
+
+  @Property()
+  deleted_at: Date | null
 }

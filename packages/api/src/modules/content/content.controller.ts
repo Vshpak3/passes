@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpStatus,
-  Param,
   Post,
   Req,
 } from '@nestjs/common'
@@ -22,6 +21,7 @@ import {
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
 } from './dto/get-vault-query-dto'
+import { PresignPassRequestDto } from './dto/presign-pass.dto'
 
 @ApiTags('content')
 @Controller('content')
@@ -109,12 +109,16 @@ export class ContentController {
     responseDesc: 'Pass image was signed',
     role: RoleEnum.GENERAL,
   })
-  @Get('sign/pass/:passId')
+  @Post('sign/pass')
   async preSignPass(
     @Req() req: RequestWithUser,
-    @Param('passId') passId: string,
+    @Body() presignPassRequestDto: PresignPassRequestDto,
   ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignPass(req.user.id, passId)
+    const url = await this.contentService.preSignPass(
+      req.user.id,
+      presignPassRequestDto.passId,
+      presignPassRequestDto.type,
+    )
     return { url }
   }
 

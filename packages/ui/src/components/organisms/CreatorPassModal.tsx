@@ -23,7 +23,11 @@ export const CreatorPassModal: FC<CreatorPassModalProps> = ({
             <span className="text-[#ffff]/90">{pass.title}</span>
           </div>
         </div>
-        <PassMedia passId={pass.passId} />
+        <PassMedia
+          passId={pass.passId}
+          imageType={pass.imageType}
+          animationType={pass.animationType}
+        />
         <div className="h-0 basis-full"></div>
         <div className="flex w-full justify-between">
           <div className="flex flex-col">

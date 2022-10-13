@@ -26,13 +26,15 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
-import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { PassAnimationEnum } from '../pass/enum/pass-animation.enum'
+import { PassImageEnum } from '../pass/enum/pass-image.enum'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import {
-  getCollectionImageUri,
+  getCollectionMediaUri,
   getCollectionMetadataUri,
+  getNftMediaUri,
   getNftMetadataUri,
 } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
@@ -240,14 +242,14 @@ export class SolService {
     description: string,
     royalties: number,
     passPubKey: PublicKey,
-    contentString: 'image' | 'video' = 'image',
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ) {
-    const imageUrl = getCollectionImageUri(
-      // TODO: change to nft image uri
+    const imageUrl = getNftMediaUri(
       this.cloudfrontUrl,
       passId,
-      contentType,
+      passHolderId,
+      imageType,
     )
 
     const jsonMetadata: JsonMetadata = {
@@ -259,11 +261,11 @@ export class SolService {
       properties: {
         files: [
           {
-            type: `${contentString}/${contentType}`,
+            type: `image/${imageType}`,
             uri: imageUrl,
           },
         ],
-        category: contentString,
+        category: 'image',
         creators: [
           {
             address: passPubKey.toString(),
@@ -271,6 +273,21 @@ export class SolService {
           },
         ],
       },
+    }
+
+    if (animationType) {
+      const animationUrl = getNftMediaUri(
+        this.cloudfrontUrl,
+        passId,
+        passHolderId,
+        animationType,
+      )
+      jsonMetadata.external_url = animationUrl
+      jsonMetadata.properties.category = 'video'
+      jsonMetadata.properties.files.push({
+        uri: animationUrl,
+        type: `video/${animationType}`,
+      })
     }
 
     await this.s3contentService.putObject({
@@ -293,8 +310,8 @@ export class SolService {
     description: string,
     ownerAddress: string,
     royalties: number,
-    contentString: 'image' | 'video' = 'image',
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ): Promise<GetSolNftResponseDto> {
     if (localMockedAwsDev()) {
       return { mintPubKey: uuid.v4(), transactionHash: '' }
@@ -329,8 +346,8 @@ export class SolService {
       description,
       royalties,
       passPubKey,
-      contentString,
-      contentType,
+      imageType,
+      animationType,
     )
 
     const transaction = await createNftTransaction(
@@ -360,8 +377,8 @@ export class SolService {
     symbol: string,
     description: string,
     walletPubKey: PublicKey,
-    contentString: 'image' | 'video' = 'image',
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ) {
     const username = (
       await this.dbReader<UserEntity>(UserEntity.table)
@@ -369,10 +386,10 @@ export class SolService {
         .first()
     )?.username
 
-    const imageUrl = getCollectionImageUri(
+    const imageUrl = getCollectionMediaUri(
       this.cloudfrontUrl,
       passId,
-      contentType,
+      imageType,
     )
 
     const metadataJson: JsonMetadata = {
@@ -392,11 +409,25 @@ export class SolService {
         files: [
           {
             uri: imageUrl,
-            type: `${contentString}/${contentType}`,
+            type: `image/${imageType}`,
           },
         ],
-        category: contentString,
+        category: 'image',
       },
+    }
+
+    if (animationType) {
+      const animationUrl = getCollectionMediaUri(
+        this.cloudfrontUrl,
+        passId,
+        animationType,
+      )
+      metadataJson.external_url = animationUrl
+      metadataJson.properties.category = 'video'
+      metadataJson.properties.files.push({
+        uri: animationUrl,
+        type: `video/${animationType}`,
+      })
     }
 
     await this.s3contentService.putObject({
@@ -414,8 +445,8 @@ export class SolService {
     name: string,
     symbol: string,
     description: string,
-    contentString: 'image' | 'video' = 'image',
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ): Promise<GetSolNftCollectionResponseDto> {
     if (localMockedAwsDev()) {
       return {
@@ -445,8 +476,8 @@ export class SolService {
       symbol,
       description,
       walletPubKey,
-      contentString,
-      contentType,
+      imageType,
+      animationType,
     )
 
     const metadata: DataV2 = {

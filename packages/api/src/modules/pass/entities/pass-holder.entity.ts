@@ -13,6 +13,8 @@ import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
 import { WalletEntity } from '../../wallet/entities/wallet.entity'
 import { ChainEnum } from '../../wallet/enum/chain.enum'
 import { TOKEN_ID_LENGTH } from '../constants/schema'
+import { PassAnimationEnum } from '../enum/pass-animation.enum'
+import { PassImageEnum } from '../enum/pass-image.enum'
 import { PassEntity } from './pass.entity'
 
 @Entity({ tableName: 'pass_holder' })
@@ -49,4 +51,10 @@ export class PassHolderEntity extends BaseEntity {
 
   @Property({ default: false })
   ignored: boolean
+
+  @Enum(() => PassAnimationEnum)
+  animation_type: PassAnimationEnum | null
+
+  @Enum({ items: () => PassImageEnum, default: PassImageEnum.PNG })
+  image_type: PassImageEnum
 }

@@ -1,4 +1,6 @@
 import {
+  CopyObjectCommand,
+  CopyObjectCommandInput,
   HeadObjectCommand,
   PutObjectCommand,
   PutObjectCommandInput,
@@ -6,7 +8,12 @@ import {
 } from '@aws-sdk/client-s3'
 import { getSignedCookies, getSignedUrl } from '@aws-sdk/cloudfront-signer'
 import { getSignedUrl as getPresignedUrl } from '@aws-sdk/s3-request-presigner'
-import { BadRequestException, HttpStatus, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { CookieOptions, Response } from 'express'
 
@@ -222,5 +229,20 @@ export class S3ContentService {
    */
   putObject(input: PutObjectCommandInput) {
     return this.s3Client.send(new PutObjectCommand(input))
+  }
+
+  /**
+   * S3Client CopyObject function. Copys an object to a bucket
+   * @param input.Bucket bucket name
+   * @param input.Body object data
+   * @param input.Key object key
+   */
+  copyObject(input: CopyObjectCommandInput) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return this.s3Client.send(new CopyObjectCommand(input), (err, _data) => {
+      if (err) {
+        throw new InternalServerErrorException('failed to copy file')
+      }
+    })
   }
 }

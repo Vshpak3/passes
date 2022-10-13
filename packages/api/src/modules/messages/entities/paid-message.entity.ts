@@ -28,4 +28,7 @@ export class PaidMessageEntity extends BaseEntity {
 
   @Property({ default: 0 })
   sent_to: number
+
+  @Property({ default: false })
+  unsent: boolean
 }

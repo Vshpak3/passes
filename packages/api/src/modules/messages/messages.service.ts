@@ -276,6 +276,7 @@ export class MessagesService {
     text: string,
     contentIds: string[],
     price: number,
+    sentTo: number,
   ): Promise<string> {
     await this.contentService.validateContentIds(userId, contentIds)
     const data = {
@@ -284,6 +285,7 @@ export class MessagesService {
       text,
       price,
       content_ids: JSON.stringify(contentIds),
+      sent_to: sentTo,
     }
     await this.dbWriter.transaction(async (trx) => {
       await trx<PaidMessageEntity>(PaidMessageEntity.table).insert(data)
@@ -303,12 +305,6 @@ export class MessagesService {
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
-    const paidMessageId = await this.createPaidMessage(
-      userId,
-      text,
-      contentIds,
-      price ? 0 : (price as number),
-    )
 
     await this.passService.validatePassIds(userId, passIds)
 
@@ -354,6 +350,13 @@ export class MessagesService {
 
     const finalUserIds = userIds.filter(
       (userId) => !removeUserIds.has(userId) && !exclude.has(userId),
+    )
+    const paidMessageId = await this.createPaidMessage(
+      userId,
+      text,
+      contentIds,
+      price ? 0 : (price as number),
+      finalUserIds.length,
     )
     await this.batchSendMessage(
       finalUserIds,
@@ -451,6 +454,7 @@ export class MessagesService {
           text,
           contentIds,
           price ? 0 : (price as number),
+          1,
         )
       }
       await this.createMessage(
@@ -826,8 +830,6 @@ export class MessagesService {
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
         .increment('num_purchases', 1)
-      await trx<PaidMessageEntity>(PaidMessageEntity.table)
-        .where({ id: paidMessageId })
         .increment('earnings_purchases', earnings)
       const message = await trx<MessageEntity>(MessageEntity.table)
         .where({ id: messageId })
@@ -847,6 +849,22 @@ export class MessagesService {
             .ignore()
         }),
       )
+    })
+  }
+
+  async revertMessagePurchase(
+    messageId: string,
+    paidMessageId: string,
+    amount: number,
+  ) {
+    await this.dbWriter.transaction(async (trx) => {
+      await trx<MessageEntity>(MessageEntity.table)
+        .update({ paid: false })
+        .where({ id: messageId })
+      await trx<PaidMessageEntity>(PaidMessageEntity.table)
+        .where({ id: paidMessageId })
+        .decrement('num_purchases', 1)
+        .decrement('earnings_purchases', amount)
     })
   }
 
@@ -1041,11 +1059,13 @@ export class MessagesService {
   async createMessageHistory() {
     await this.dbWriter
       .from(
-        this.dbWriter.raw('?? (??, ??, ??)', [
+        this.dbWriter.raw('?? (??, ??, ??, ??, ??)', [
           PaidMessageHistoryEntity.table,
           'paid_message_id',
           'num_purchases',
           'earnings_purchases',
+          'sent_to',
+          'paid',
         ]),
       )
       .insert(
@@ -1053,6 +1073,8 @@ export class MessagesService {
           'id as paid_message_id',
           'num_purchases',
           'earnings_purchases',
+          'sent_to',
+          'paid',
         ]),
       )
   }

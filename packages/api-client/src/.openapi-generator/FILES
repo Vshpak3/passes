@@ -173,6 +173,7 @@ models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/PostDto.ts
 models/PostHistoryDto.ts
+models/PresignPassRequestDto.ts
 models/PurchaseMessageRequestDto.ts
 models/PurchasePostRequestDto.ts
 models/RawFacebookDeletionRequestDto.ts

@@ -1,61 +1,54 @@
-import { FC, useState } from "react"
+import {
+  PassDtoAnimationTypeEnum,
+  PassDtoImageTypeEnum
+} from "@passes/api-client"
+import { FC } from "react"
 import { ContentService } from "src/helpers/content"
 
 interface PassMediaProps {
   passHolderId?: string
   passId: string
-}
-enum PassMediaState {
-  HOLDER_VIDEO,
-  HOLDER_IMAGE,
-  PASS_VIDEO,
-  PASS_IMAGE
+  imageType: PassDtoImageTypeEnum
+  animationType?: PassDtoAnimationTypeEnum
 }
 
 export const PassMedia: FC<PassMediaProps> = ({
   passId,
-  passHolderId
+  passHolderId,
+  imageType,
+  animationType
 }: PassMediaProps) => {
-  const [state, setState] = useState<PassMediaState>(
-    passHolderId ? PassMediaState.HOLDER_VIDEO : PassMediaState.PASS_VIDEO
-  )
-  switch (state) {
-    case PassMediaState.HOLDER_VIDEO:
-      return (
-        <video
-          autoPlay
-          loop
-          muted
-          onError={() => setState(PassMediaState.HOLDER_IMAGE)}
-        >
-          <source
-            src={ContentService.passHolderVideo(passId, passHolderId ?? "")}
-            type="video/mp4"
-          />
-        </video>
-      )
-    case PassMediaState.HOLDER_IMAGE:
-      return (
-        <img
-          src={ContentService.passHolderImage(passId, passHolderId ?? "")}
-          onError={() => setState(PassMediaState.PASS_VIDEO)}
-          alt="no media exists"
+  if (passHolderId) {
+    return animationType ? (
+      <video autoPlay loop muted>
+        <source
+          src={ContentService.passHolderAnimation(
+            passId,
+            passHolderId,
+            animationType
+          )}
+          type="video/mp4"
         />
-      )
-    case PassMediaState.PASS_VIDEO:
-      return (
-        <video
-          autoPlay
-          loop
-          muted
-          onError={() => setState(PassMediaState.PASS_IMAGE)}
-        >
-          <source src={ContentService.passVideo(passId)} type="video/mp4" />
-        </video>
-      )
-    case PassMediaState.PASS_IMAGE:
-      return (
-        <img src={ContentService.passImage(passId)} alt="no media exists" />
-      )
+      </video>
+    ) : (
+      <img
+        src={ContentService.passHolderImage(passId, passHolderId, imageType)}
+        alt="no media exists"
+      />
+    )
+  } else {
+    return animationType ? (
+      <video autoPlay loop muted>
+        <source
+          src={ContentService.passAnimation(passId, animationType)}
+          type="video/mp4"
+        />
+      </video>
+    ) : (
+      <img
+        src={ContentService.passImage(passId, imageType)}
+        alt="no media exists"
+      />
+    )
   }
 }

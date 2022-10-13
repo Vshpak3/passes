@@ -26,7 +26,11 @@ export const PassTile: FC<PassTilesProps> = ({ pass, alternateBg = false }) => {
         )}
         onClick={handleClick}
       >
-        <PassMedia passId={pass.passId} />
+        <PassMedia
+          passId={pass.passId}
+          imageType={pass.imageType}
+          animationType={pass.animationType}
+        />
         <div className="grid h-full grid-flow-row gap-6 p-2">
           <div className="row-span-1 flex h-[55px] items-start justify-start">
             <span className="text-2xl font-bold text-[#ffff]/90">

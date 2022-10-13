@@ -17,7 +17,9 @@ import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
+import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 import { PassService } from '../pass/pass.service'
+import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
@@ -79,7 +81,7 @@ export class ContentService {
           in_message: false,
           in_post: false,
         })
-        .delete()
+        .update('deleted_at', new Date())
       if (count != contentIds.length) {
         throw new ContentDeleteError('could not delete all contents')
       }
@@ -104,9 +106,11 @@ export class ContentService {
     getVaultQueryRequestDto: GetVaultQueryRequestDto,
   ) {
     const { category, type, lastId, createdAt } = getVaultQueryRequestDto
-    let query = this.dbReader<ContentEntity>(ContentEntity.table).where({
-      user_id: userId,
-    })
+    let query = this.dbReader<ContentEntity>(ContentEntity.table)
+      .whereNull('deleted_at')
+      .andWhere({
+        user_id: userId,
+      })
     switch (category) {
       // filter content that has been used in messages
       case VaultCategoryEnum.MESSAGES: //TOODO
@@ -187,14 +191,14 @@ export class ContentService {
     )
   }
 
-  async preSignPass(userId: string, passId: string) {
+  async preSignPass(userId: string, passId: string, type: PassMediaEnum) {
     const pass = await this.passService.getPass(passId)
     if (pass.creatorId !== userId) {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
     }
 
     return this.s3contentService.signUrlForContentUpload(
-      `pass/upload/${userId}/${pass.passId}.${ContentFormatEnum.IMAGE}`,
+      getCollectionMediaUri(null, passId, type),
     )
   }
 

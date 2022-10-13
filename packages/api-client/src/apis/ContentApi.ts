@@ -21,6 +21,7 @@ import type {
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
+  PresignPassRequestDto,
 } from '../models';
 import {
     BooleanResponseDtoFromJSON,
@@ -35,6 +36,8 @@ import {
     GetVaultQueryRequestDtoToJSON,
     GetVaultQueryResponseDtoFromJSON,
     GetVaultQueryResponseDtoToJSON,
+    PresignPassRequestDtoFromJSON,
+    PresignPassRequestDtoToJSON,
 } from '../models';
 
 export interface CreateContentRequest {
@@ -54,7 +57,7 @@ export interface PreSignContentRequest {
 }
 
 export interface PreSignPassRequest {
-    passId: string;
+    presignPassRequestDto: PresignPassRequestDto;
 }
 
 /**
@@ -217,13 +220,15 @@ export class ContentApi extends runtime.BaseAPI {
      * Get pre signed url for pass image
      */
     async preSignPassRaw(requestParameters: PreSignPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
-        if (requestParameters.passId === null || requestParameters.passId === undefined) {
-            throw new runtime.RequiredError('passId','Required parameter requestParameters.passId was null or undefined when calling preSignPass.');
+        if (requestParameters.presignPassRequestDto === null || requestParameters.presignPassRequestDto === undefined) {
+            throw new runtime.RequiredError('presignPassRequestDto','Required parameter requestParameters.presignPassRequestDto was null or undefined when calling preSignPass.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
 
@@ -231,10 +236,11 @@ export class ContentApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/content/sign/pass/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
-            method: 'GET',
+            path: `/api/content/sign/pass`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: PresignPassRequestDtoToJSON(requestParameters.presignPassRequestDto),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => GetSignedUrlResponseDtoFromJSON(jsonValue));

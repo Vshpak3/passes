@@ -20,16 +20,13 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { ContentFormatEnum } from '../content/enums/content-format.enum'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { PassAnimationEnum } from '../pass/enum/pass-animation.enum'
+import { PassImageEnum } from '../pass/enum/pass-image.enum'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
-import {
-  getCollectionImageUri,
-  getNftMetadataPath,
-  getNftMetadataUri,
-} from '../s3content/s3.nft.helper'
+import { getNftMediaUri, getNftMetadataUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
@@ -236,7 +233,8 @@ export class EthService {
     name: string,
     symbol: string,
     description: string,
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ) {
     const username = (
       await this.dbReader<UserEntity>(UserEntity.table)
@@ -244,25 +242,29 @@ export class EthService {
         .first()
     )?.username
 
-    const imageUrl = getCollectionImageUri(
+    const imageUrl = getNftMediaUri(
       this.cloudfrontUrl,
+      passHolderId,
       passId,
-      ContentFormatEnum.IMAGE,
+      imageType,
     )
 
-    const videoUrl = getCollectionImageUri(
-      this.cloudfrontUrl,
-      passId,
-      contentType,
-    )
-
-    const metadataJson = {
+    const metadataJson: any = {
       name,
       symbol,
       description,
       image: imageUrl,
-      animation_url: videoUrl,
       external_url: `https://www.passes.com/${username}`,
+    }
+
+    if (animationType) {
+      const videoUrl = getNftMediaUri(
+        this.cloudfrontUrl,
+        passId,
+        passHolderId,
+        animationType,
+      )
+      metadataJson.animation_url = videoUrl
     }
 
     await this.s3contentService.putObject({
@@ -271,7 +273,7 @@ export class EthService {
       Key: getNftMetadataUri(null, passId, passHolderId),
     })
 
-    return getNftMetadataPath(passId, passHolderId)
+    return getNftMetadataUri(null, passId, passHolderId)
   }
 
   async createEthNft(
@@ -283,7 +285,8 @@ export class EthService {
     description: string,
     contractAddress: string,
     ownerAddress: string,
-    contentType: ContentFormatEnum = ContentFormatEnum.IMAGE,
+    imageType: PassImageEnum,
+    animationType?: PassAnimationEnum,
   ): Promise<string> {
     const masterWallet = new InternalSigner(
       ETH_MASTER_WALLET_LAMBDA_KEY_ID,
@@ -303,7 +306,8 @@ export class EthService {
       name,
       symbol,
       description,
-      contentType,
+      imageType,
+      animationType,
     )
     const nonce = await this.getNewNonce(ETH_MASTER_WALLET_LAMBDA_KEY_ID)
     try {

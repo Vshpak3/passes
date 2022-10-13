@@ -96,6 +96,7 @@ async function tippedMessageCreationCallback(
       input.text,
       input.contentIds,
       input.price ? 0 : (input.price as number),
+      1,
     )
   }
 

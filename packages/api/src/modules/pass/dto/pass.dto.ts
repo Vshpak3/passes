@@ -14,6 +14,8 @@ import {
 } from '../constants/schema'
 import { PassEntity } from '../entities/pass.entity'
 import { PassTypeEnum } from '../enum/pass.enum'
+import { PassAnimationEnum } from '../enum/pass-animation.enum'
+import { PassImageEnum } from '../enum/pass-image.enum'
 export class PassDto {
   @DtoProperty({ type: 'uuid' })
   passId: string
@@ -80,6 +82,12 @@ export class PassDto {
   @DtoProperty({ type: 'string', optional: true })
   creatorDisplayName?: string
 
+  @DtoProperty({ custom_type: PassImageEnum })
+  imageType: PassImageEnum
+
+  @DtoProperty({ custom_type: PassAnimationEnum, nullable: true })
+  animationType: PassAnimationEnum | null
+
   constructor(
     pass:
       | (PassEntity & {
@@ -106,6 +114,8 @@ export class PassDto {
       this.chain = pass.chain
       this.collectionAddress = pass.collection_address
       this.ethPrice = pass.eth_price
+      this.imageType = pass.image_type
+      this.animationType = pass.animation_type
 
       this.creatorUsername = pass.creator_username
       this.creatorDisplayName = pass.creator_display_name

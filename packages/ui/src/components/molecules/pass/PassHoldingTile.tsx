@@ -40,6 +40,8 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
       <PassMedia
         passId={passHolder.passId}
         passHolderId={passHolder.passHolderId}
+        imageType={passHolder.imageType}
+        animationType={passHolder.animationType}
       />
       <div
         className={classNames(

@@ -1,59 +1,35 @@
-import { ContentFormatEnum } from '../content/enums/content-format.enum'
+import { PassAnimationEnum } from '../pass/enum/pass-animation.enum'
+import { PassImageEnum } from '../pass/enum/pass-image.enum'
+import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 
 function getPath(cloudfrontUrl: string | null, path: string): string {
   return cloudfrontUrl ? `${cloudfrontUrl}/${path}` : path
 }
 
-export function getCollectionImagePath(
-  passId: string,
-  contentType: ContentFormatEnum,
-): string {
-  return `nft/${passId}/image.${contentType}`
-}
-
-export function getCollectionMetadataPath(passId: string): string {
-  return `nft/${passId}/metadata.json`
-}
-
-export function getNftImagePath(
-  passId: string,
-  passHolderId: string,
-  contentType: ContentFormatEnum,
-): string {
-  return `nft/${passId}/${passHolderId}/image.${contentType}`
-}
-
-export function getNftMetadataPath(
-  passId: string,
-  passHolderId: string,
-): string {
-  return `nft/${passId}/${passHolderId}/metadata.json`
-}
-
-export function getCollectionImageUri(
+export function getCollectionMediaUri(
   cloudfrontUrl: string | null,
   passId: string,
-  contentType: ContentFormatEnum,
+  contentType: PassMediaEnum | PassImageEnum | PassAnimationEnum,
 ): string {
-  return getPath(cloudfrontUrl, getCollectionImagePath(passId, contentType))
+  return getPath(cloudfrontUrl, `nft/${passId}/media.${contentType}`)
 }
 
 export function getCollectionMetadataUri(
   cloudfrontUrl: string | null,
   passId: string,
 ): string {
-  return getPath(cloudfrontUrl, getCollectionMetadataPath(passId))
+  return getPath(cloudfrontUrl, `nft/${passId}/metadata.json`)
 }
 
-export function getNftImageUri(
+export function getNftMediaUri(
   cloudfrontUrl: string | null,
   passId: string,
   passHolderId: string,
-  contentType: ContentFormatEnum,
+  contentType: PassMediaEnum | PassImageEnum | PassAnimationEnum,
 ): string {
   return getPath(
     cloudfrontUrl,
-    getNftImagePath(passId, passHolderId, contentType),
+    `nft/${passId}/${passHolderId}/media.${contentType}`,
   )
 }
 
@@ -62,5 +38,5 @@ export function getNftMetadataUri(
   passId: string,
   passHolderId: string,
 ): string {
-  return getPath(cloudfrontUrl, getNftMetadataPath(passId, passHolderId))
+  return getPath(cloudfrontUrl, `nft/${passId}/${passHolderId}/metadata.json`)
 }

@@ -2330,10 +2330,16 @@ export class PaymentService {
           await this.passService.revertPassHolder(payinOutput.passHolderId)
           break
         case PayinCallbackEnum.PURCHASE_POST:
-        case PayinCallbackEnum.PURCHASE_DM:
           await this.postService.revertPostPurchase(
             payinInput.postId,
             payin.id,
+            await this.getTotalEarnings(payin.id),
+          )
+          break
+        case PayinCallbackEnum.PURCHASE_DM:
+          await this.messagesService.revertMessagePurchase(
+            payinInput.messageId,
+            payinInput.paidMessageId,
             await this.getTotalEarnings(payin.id),
           )
           break

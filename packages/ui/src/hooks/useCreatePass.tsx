@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
   CreatePassRequestDtoChainEnum,
+  CreatePassRequestDtoImageTypeEnum,
   CreatePassRequestDtoTypeEnum,
   PassApi,
   PassDtoTypeEnum
@@ -10,7 +11,7 @@ import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { ContentService } from "src/helpers/content"
+// import { ContentService } from "src/helpers/content"
 import * as yup from "yup"
 
 const MB = 1048576
@@ -75,10 +76,6 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
   } = useForm({
     resolver: yupResolver(createPassSchema)
   })
-
-  const setPassPicture = async (picture: File, passId: string) => {
-    return await new ContentService().uploadPassImage(picture, passId)
-  }
 
   const newPassType = (value: string) => {
     switch (value) {
@@ -149,6 +146,11 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
       return
     }
 
+    // TODO:
+    // 1. allow video upload (but ensure that image also gets uploaded)
+    // 2. get media type of video and image
+    // 3. use type in creation
+
     const newPassRequestConfig = {
       title: data.passName,
       description: data.passDescription,
@@ -159,7 +161,8 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
       messages: parseInt(data["free-dms-month"]),
       duration: DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
-      royalties: data.royalties * 100
+      royalties: data.royalties * 100,
+      imageType: CreatePassRequestDtoImageTypeEnum.Jpeg
     }
 
     const passId = await passApi
@@ -169,9 +172,9 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
       .then(({ passId }) => passId)
       .catch(({ message }) => toast(message))
 
-    setPassPicture(data.passFile, `${passId}`).catch(({ message }) =>
-      toast(message)
-    )
+    // setPassMedia(data.passFile, `${passId}`).catch(({ message }) =>
+    //   toast(message)
+    // )
 
     passApi
       .mintPass({

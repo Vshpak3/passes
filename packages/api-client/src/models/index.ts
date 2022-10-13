@@ -147,6 +147,7 @@ export * from './PhantomCircleUSDCEntryRequestDto';
 export * from './PhantomCircleUSDCEntryResponseDto';
 export * from './PostDto';
 export * from './PostHistoryDto';
+export * from './PresignPassRequestDto';
 export * from './PurchaseMessageRequestDto';
 export * from './PurchasePostRequestDto';
 export * from './RawFacebookDeletionRequestDto';

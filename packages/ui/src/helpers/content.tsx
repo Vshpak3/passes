@@ -1,4 +1,9 @@
-import { ContentApi, ContentDtoContentTypeEnum } from "@passes/api-client"
+import {
+  ContentApi,
+  ContentDtoContentTypeEnum,
+  PassDtoAnimationTypeEnum,
+  PassDtoImageTypeEnum
+} from "@passes/api-client"
 
 import { isDev } from "./env"
 
@@ -31,20 +36,31 @@ export class ContentService {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
   }
 
-  static passHolderImage(passId: string, passHolderId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/image.jpeg`
+  static passHolderImage(
+    passId: string,
+    passHolderId: string,
+    imageType: PassDtoImageTypeEnum
+  ): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/media.${imageType}`
   }
 
-  static passHolderVideo(passId: string, passHolderId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/image.mp4`
+  static passHolderAnimation(
+    passId: string,
+    passHolderId: string,
+    animationType: PassDtoAnimationTypeEnum
+  ): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/media.${animationType}`
   }
 
-  static passImage(passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/image.jpeg`
+  static passImage(passId: string, imageType: PassDtoImageTypeEnum): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/media.${imageType}`
   }
 
-  static passVideo(passId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/image.mp4`
+  static passAnimation(
+    passId: string,
+    animationType: PassDtoAnimationTypeEnum
+  ): string {
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/media.${animationType}`
   }
 
   static w9Pdf(userId: string): string {
@@ -85,7 +101,7 @@ export class ContentService {
   }
 
   private async preSignUrl(
-    type: "profile" | "banner" | "pass" | "content" | "w9",
+    type: "profile" | "banner" | "content" | "w9",
     params?: any
   ) {
     switch (type) {
@@ -95,10 +111,6 @@ export class ContentService {
       }
       case "banner": {
         const { url } = await this.contentApi.preSignProfileBanner()
-        return url
-      }
-      case "pass": {
-        const { url } = await this.contentApi.preSignPass(params)
         return url
       }
       case "content": {
@@ -139,8 +151,14 @@ export class ContentService {
     return this.uploadFile(url, file)
   }
 
-  async uploadPassImage(file: File, passId: string) {
-    const url = await this.preSignUrl("pass", { passId })
+  async uploadPassMedia(
+    file: File,
+    passId: string,
+    type: PassDtoImageTypeEnum | PassDtoAnimationTypeEnum
+  ) {
+    const { url } = await this.contentApi.preSignPass({
+      presignPassRequestDto: { passId, type }
+    })
     return this.uploadFile(url, file)
   }
 

@@ -132,6 +132,18 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
+    imageType: PassHolderDtoImageTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
+    animationType: PassHolderDtoAnimationTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
     passHolderId: string;
     /**
      * 
@@ -205,6 +217,25 @@ export const PassHolderDtoChainEnum = {
 } as const;
 export type PassHolderDtoChainEnum = typeof PassHolderDtoChainEnum[keyof typeof PassHolderDtoChainEnum];
 
+/**
+ * @export
+ */
+export const PassHolderDtoImageTypeEnum = {
+    Jpeg: 'jpeg',
+    Png: 'png',
+    Gif: 'gif'
+} as const;
+export type PassHolderDtoImageTypeEnum = typeof PassHolderDtoImageTypeEnum[keyof typeof PassHolderDtoImageTypeEnum];
+
+/**
+ * @export
+ */
+export const PassHolderDtoAnimationTypeEnum = {
+    Mp4: 'mp4',
+    Mov: 'mov'
+} as const;
+export type PassHolderDtoAnimationTypeEnum = typeof PassHolderDtoAnimationTypeEnum[keyof typeof PassHolderDtoAnimationTypeEnum];
+
 
 /**
  * Check if a given object implements the PassHolderDto interface.
@@ -224,6 +255,8 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "imageType" in value;
+    isInstance = isInstance && "animationType" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
 
@@ -258,6 +291,8 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'createdAt': (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
+        'imageType': json['imageType'],
+        'animationType': json['animationType'],
         'passHolderId': json['passHolderId'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'walletId': !exists(json, 'walletId') ? undefined : json['walletId'],
@@ -297,6 +332,8 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
+        'imageType': value.imageType,
+        'animationType': value.animationType,
         'passHolderId': value.passHolderId,
         'holderId': value.holderId,
         'walletId': value.walletId,

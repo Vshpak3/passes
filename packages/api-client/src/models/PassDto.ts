@@ -127,6 +127,18 @@ export interface PassDto {
      * @memberof PassDto
      */
     creatorDisplayName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassDto
+     */
+    imageType: PassDtoImageTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassDto
+     */
+    animationType: PassDtoAnimationTypeEnum;
 }
 
 
@@ -151,6 +163,25 @@ export const PassDtoChainEnum = {
 } as const;
 export type PassDtoChainEnum = typeof PassDtoChainEnum[keyof typeof PassDtoChainEnum];
 
+/**
+ * @export
+ */
+export const PassDtoImageTypeEnum = {
+    Jpeg: 'jpeg',
+    Png: 'png',
+    Gif: 'gif'
+} as const;
+export type PassDtoImageTypeEnum = typeof PassDtoImageTypeEnum[keyof typeof PassDtoImageTypeEnum];
+
+/**
+ * @export
+ */
+export const PassDtoAnimationTypeEnum = {
+    Mp4: 'mp4',
+    Mov: 'mov'
+} as const;
+export type PassDtoAnimationTypeEnum = typeof PassDtoAnimationTypeEnum[keyof typeof PassDtoAnimationTypeEnum];
+
 
 /**
  * Check if a given object implements the PassDto interface.
@@ -170,6 +201,8 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "freetrial" in value;
     isInstance = isInstance && "collectionAddress" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "imageType" in value;
+    isInstance = isInstance && "animationType" in value;
 
     return isInstance;
 }
@@ -202,6 +235,8 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'createdAt': (new Date(json['createdAt'])),
         'creatorUsername': !exists(json, 'creatorUsername') ? undefined : json['creatorUsername'],
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
+        'imageType': json['imageType'],
+        'animationType': json['animationType'],
     };
 }
 
@@ -232,6 +267,8 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'creatorUsername': value.creatorUsername,
         'creatorDisplayName': value.creatorDisplayName,
+        'imageType': value.imageType,
+        'animationType': value.animationType,
     };
 }
 

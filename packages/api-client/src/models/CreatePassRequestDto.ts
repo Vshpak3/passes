@@ -79,6 +79,18 @@ export interface CreatePassRequestDto {
      * @memberof CreatePassRequestDto
      */
     royalties: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePassRequestDto
+     */
+    animationType?: CreatePassRequestDtoAnimationTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePassRequestDto
+     */
+    imageType: CreatePassRequestDtoImageTypeEnum;
 }
 
 
@@ -103,6 +115,25 @@ export const CreatePassRequestDtoChainEnum = {
 } as const;
 export type CreatePassRequestDtoChainEnum = typeof CreatePassRequestDtoChainEnum[keyof typeof CreatePassRequestDtoChainEnum];
 
+/**
+ * @export
+ */
+export const CreatePassRequestDtoAnimationTypeEnum = {
+    Mp4: 'mp4',
+    Mov: 'mov'
+} as const;
+export type CreatePassRequestDtoAnimationTypeEnum = typeof CreatePassRequestDtoAnimationTypeEnum[keyof typeof CreatePassRequestDtoAnimationTypeEnum];
+
+/**
+ * @export
+ */
+export const CreatePassRequestDtoImageTypeEnum = {
+    Jpeg: 'jpeg',
+    Png: 'png',
+    Gif: 'gif'
+} as const;
+export type CreatePassRequestDtoImageTypeEnum = typeof CreatePassRequestDtoImageTypeEnum[keyof typeof CreatePassRequestDtoImageTypeEnum];
+
 
 /**
  * Check if a given object implements the CreatePassRequestDto interface.
@@ -116,6 +147,7 @@ export function instanceOfCreatePassRequestDto(value: object): boolean {
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "royalties" in value;
+    isInstance = isInstance && "imageType" in value;
 
     return isInstance;
 }
@@ -140,6 +172,8 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
         'chain': json['chain'],
         'royalties': json['royalties'],
+        'animationType': !exists(json, 'animationType') ? undefined : json['animationType'],
+        'imageType': json['imageType'],
     };
 }
 
@@ -162,6 +196,8 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         'messages': value.messages,
         'chain': value.chain,
         'royalties': value.royalties,
+        'animationType': value.animationType,
+        'imageType': value.imageType,
     };
 }
 

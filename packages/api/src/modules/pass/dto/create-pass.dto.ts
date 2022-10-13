@@ -9,6 +9,8 @@ import {
   PASS_TITLE_LENGTH,
 } from '../constants/schema'
 import { PassTypeEnum } from '../enum/pass.enum'
+import { PassAnimationEnum } from '../enum/pass-animation.enum'
+import { PassImageEnum } from '../enum/pass-image.enum'
 
 export class CreatePassRequestDto {
   @Length(1, PASS_TITLE_LENGTH)
@@ -47,6 +49,16 @@ export class CreatePassRequestDto {
   @Max(PASS_MAX_ROYALTIES)
   @DtoProperty({ type: 'number' })
   royalties: number
+
+  @DtoProperty({
+    custom_type: PassAnimationEnum,
+    optional: true,
+    nullable: true,
+  })
+  animationType?: PassAnimationEnum | null
+
+  @DtoProperty({ custom_type: PassImageEnum })
+  imageType: PassImageEnum
 }
 
 export class CreatePassResponseDto {
