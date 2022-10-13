@@ -31,10 +31,8 @@ import {
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { PayinEntity } from '../payment/entities/payin.entity'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
-import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
@@ -913,16 +911,6 @@ export class PassService {
       CryptoJS.enc.Hex,
     )
 
-    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
-      .whereIn('payin_status', [
-        PayinStatusEnum.CREATED,
-        PayinStatusEnum.CREATED_READY,
-        PayinStatusEnum.PENDING,
-        PayinStatusEnum.SUCCESSFUL_READY,
-      ])
-      .andWhere({ target: target })
-      .select('id')
-      .first()
     const checkHolder = await this.dbReader<PassHolderEntity>(
       PassHolderEntity.table,
     )
@@ -941,7 +929,7 @@ export class PassService {
     let blocked: BlockedReasonEnum | undefined = undefined
     if (await this.payService.checkPayinBlocked(userId)) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
-    } else if (checkPayin !== undefined) {
+    } else if (await this.payService.checkPayinTargetBlocked(target)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkHolder.holder_id !== userId) {
       blocked = BlockedReasonEnum.IS_NOT_PASSHOLDER
@@ -1044,16 +1032,6 @@ export class PassService {
       throw new PassNotFoundException(`pass ${passId} not found`)
     }
 
-    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
-      .whereIn('payin_status', [
-        PayinStatusEnum.CREATED,
-        PayinStatusEnum.CREATED_READY,
-        PayinStatusEnum.PENDING,
-        PayinStatusEnum.SUCCESSFUL_READY,
-      ])
-      .andWhere({ target: target })
-      .select('id')
-      .first()
     const checkHolder = await this.dbReader<PassHolderEntity>(
       PassHolderEntity.table,
     )
@@ -1067,7 +1045,7 @@ export class PassService {
     let blocked: BlockedReasonEnum | undefined = undefined
     if (await this.payService.checkPayinBlocked(userId)) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
-    } else if (checkPayin) {
+    } else if (await this.payService.checkPayinTargetBlocked(target)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkHolder) {
       blocked = BlockedReasonEnum.ALREADY_OWNS_PASS

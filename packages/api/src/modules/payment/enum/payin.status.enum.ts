@@ -22,3 +22,28 @@ export enum PayinStatusEnum {
   SUCCESS_CALLBACK_FAILED = 'success_callback_failed', // should not happen, but helps debug callbacks
   CREATE_CALLBACK_FAILED = 'create_callback_failed', // should not happen, but helps debug callbacks
 }
+
+export const PAYIN_TARGET_BLOCKING_STATUSES = [
+  PayinStatusEnum.CREATED_READY,
+  PayinStatusEnum.CREATED,
+  PayinStatusEnum.PENDING,
+  PayinStatusEnum.SUCCESSFUL_READY,
+  PayinStatusEnum.FAILED_READY,
+  PayinStatusEnum.ACTION_REQUIRED,
+]
+
+export const PAYIN_INVISIBLE_STATUSES = [
+  PayinStatusEnum.REGISTERED,
+  PayinStatusEnum.UNREGISTERED,
+  PayinStatusEnum.UNCREATED,
+  PayinStatusEnum.UNCREATED_READY,
+  PayinStatusEnum.CREATED_READY,
+]
+
+export const PAYIN_IN_PROGRESS_STATUSES = [
+  PayinStatusEnum.CREATED_READY,
+  PayinStatusEnum.CREATED,
+  PayinStatusEnum.PENDING,
+  PayinStatusEnum.SUCCESSFUL_READY,
+  PayinStatusEnum.ACTION_REQUIRED,
+]

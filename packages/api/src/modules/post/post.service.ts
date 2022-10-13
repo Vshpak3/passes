@@ -40,10 +40,8 @@ import {
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
-import { PayinEntity } from '../payment/entities/payin.entity'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
-import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -648,16 +646,7 @@ export class PostService {
     if (!post) {
       throw new PostNotFoundException(`post ${postId} not found`)
     }
-    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
-      .whereIn('payin_status', [
-        PayinStatusEnum.CREATED,
-        PayinStatusEnum.CREATED_READY,
-        PayinStatusEnum.PENDING,
-        PayinStatusEnum.SUCCESSFUL_READY,
-      ])
-      .where({ target: target })
-      .select('id')
-      .first()
+
     const checkAccess = await this.dbReader<PostUserAccessEntity>(
       PostUserAccessEntity.table,
     )
@@ -673,7 +662,7 @@ export class PostService {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
     } else if (post.price === undefined || post.price === 0) {
       blocked = BlockedReasonEnum.NO_PRICE
-    } else if (checkPayin !== undefined) {
+    } else if (await this.payService.checkPayinTargetBlocked(target)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkAccess !== undefined) {
       blocked = BlockedReasonEnum.ALREADY_HAS_ACCESS

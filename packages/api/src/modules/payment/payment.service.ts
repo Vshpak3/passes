@@ -99,7 +99,12 @@ import { CircleCardVerificationEnum } from './enum/circle-card.verification.enum
 import { CircleNotificationTypeEnum } from './enum/circle-notificiation.type.enum'
 import { CirclePaymentStatusEnum } from './enum/circle-payment.status.enum'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
-import { PayinStatusEnum } from './enum/payin.status.enum'
+import {
+  PAYIN_IN_PROGRESS_STATUSES,
+  PAYIN_INVISIBLE_STATUSES,
+  PAYIN_TARGET_BLOCKING_STATUSES,
+  PayinStatusEnum,
+} from './enum/payin.status.enum'
 import { PayinMethodEnum } from './enum/payin-method.enum'
 import { PayoutStatusEnum } from './enum/payout.status.enum'
 import { PayoutMethodEnum } from './enum/payout-method.enum'
@@ -319,17 +324,7 @@ export class PaymentService {
     }
     // save metadata into subscription for repeat purchases
     if (payin.target) {
-      const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
-        .whereIn('payin_status', [
-          PayinStatusEnum.CREATED,
-          PayinStatusEnum.CREATED_READY,
-          PayinStatusEnum.PENDING,
-          PayinStatusEnum.SUCCESSFUL_READY,
-        ])
-        .andWhere({ target: payin.target })
-        .select('id')
-        .first()
-      if (checkPayin) {
+      if (await this.checkPayinTargetBlocked(payin.target)) {
         await this.failPayin(payin.payinId, payin.userId)
         throw new BadRequestException('Payment for item already in progress')
       }
@@ -1473,7 +1468,18 @@ export class PaymentService {
       .first()
     return !user || user.payment_blocked
   }
+
+  async checkPayinTargetBlocked(target: string): Promise<boolean> {
+    const checkPayin = await this.dbReader<PayinEntity>(PayinEntity.table)
+      .whereIn('payin_status', PAYIN_TARGET_BLOCKING_STATUSES)
+      .andWhere({ target: target })
+      .select('id')
+      .first()
+    return !!checkPayin
+  }
+
   /**
+   *
    * Step 1 of payin process
    * Called INTERNALLY from other services
    *
@@ -1655,7 +1661,7 @@ export class PaymentService {
     const rows = await this.dbWriter<PayinEntity>(PayinEntity.table)
       .where({ id: payinId })
       .andWhere({ user_id: userId })
-      .andWhere('payin_status', 'in', [PayinStatusEnum.CREATED])
+      .andWhere('payin_status', PayinStatusEnum.CREATED)
       .update({
         payin_status: PayinStatusEnum.UNCREATED_READY,
       })
@@ -1701,6 +1707,8 @@ export class PaymentService {
       .where({ id: payinId })
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
+        PayinStatusEnum.ACTION_REQUIRED,
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
@@ -1758,13 +1766,11 @@ export class PaymentService {
         `${CircleCardEntity.table}.id`,
       )
       .where(`${PayinEntity.table}.user_id`, userId)
-      .andWhere(`${PayinEntity.table}.payin_status`, 'not in', [
-        PayinStatusEnum.REGISTERED,
-        PayinStatusEnum.UNREGISTERED,
-        PayinStatusEnum.UNCREATED,
-        PayinStatusEnum.UNCREATED_READY,
-        PayinStatusEnum.CREATED_READY,
-      ])
+      .andWhere(
+        `${PayinEntity.table}.payin_status`,
+        'not in',
+        PAYIN_INVISIBLE_STATUSES,
+      )
       .select(`${PayinEntity.table}.*`, `${CircleCardEntity.table}.card_number`)
       .orderBy('created_at', 'desc')
 
@@ -1775,11 +1781,10 @@ export class PaymentService {
       query = query.where(`${PayinEntity.table}.created_at`, '<', endDate)
     }
     if (inProgress) {
-      query = query.whereIn(`${PayinEntity.table}.payin_status`, [
-        PayinStatusEnum.CREATED,
-        PayinStatusEnum.PENDING,
-        PayinStatusEnum.SUCCESSFUL_READY,
-      ])
+      query = query.whereIn(
+        `${PayinEntity.table}.payin_status`,
+        PAYIN_IN_PROGRESS_STATUSES,
+      )
     }
     query = createPaginatedQuery(
       query,
