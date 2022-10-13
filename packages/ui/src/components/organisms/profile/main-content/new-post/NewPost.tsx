@@ -307,7 +307,7 @@ export const NewPost: FC<NewPostProps> = ({
                     files.length <= START_SLIDER_AFTER_FILES_LENGTH && "flex"
                   } w-full flex-col items-${
                     containsVideo ? "center" : "start"
-                  } justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-[480px] md:p-9`}
+                  } justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9`}
                 >
                   {selectedMedia && (
                     <NewPostModal
