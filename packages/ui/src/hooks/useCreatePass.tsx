@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import {
+  CreatePassRequestDtoAccessTypeEnum,
   CreatePassRequestDtoChainEnum,
   CreatePassRequestDtoImageTypeEnum,
   CreatePassRequestDtoTypeEnum,
@@ -162,7 +163,8 @@ export const useCreatePass = ({ passType }: CreatePassProps) => {
       duration: DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
       royalties: data.royalties * 100,
-      imageType: CreatePassRequestDtoImageTypeEnum.Jpeg
+      imageType: CreatePassRequestDtoImageTypeEnum.Jpeg,
+      accessType: CreatePassRequestDtoAccessTypeEnum.PassAccess
     }
 
     const passId = await passApi

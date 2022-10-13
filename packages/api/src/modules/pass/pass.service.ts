@@ -37,7 +37,6 @@ import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PayinStatusEnum } from '../payment/enum/payin.status.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
-import { PostPassHolderAccessEntity } from '../post/entities/post-passholder-access.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import {
   getCollectionMediaUri,
@@ -65,6 +64,7 @@ import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
 import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { UserExternalPassEntity } from './entities/user-external-pass.entity'
+import { AccessTypeEnum } from './enum/access.enum'
 import { PassTypeEnum } from './enum/pass.enum'
 import { PassAnimationEnum } from './enum/pass-animation.enum'
 import { PassImageEnum } from './enum/pass-image.enum'
@@ -148,6 +148,7 @@ export class PassService {
       royalties: createPassDto.royalties,
       animation_type: createPassDto.animationType,
       image_type: createPassDto.imageType,
+      access_type: createPassDto.accessType,
     } as PassEntity
     switch (data.chain) {
       case ChainEnum.SOL:
@@ -235,6 +236,7 @@ export class PassService {
       royalties: createPassDto.royalties,
       animation_type: createPassDto.animationType,
       image_type: createPassDto.imageType,
+      access_type: createPassDto.accessType,
     }
     if (
       createPassDto.chain !== ChainEnum.SOL &&
@@ -629,6 +631,7 @@ export class PassService {
       chain: pass.chain,
       image_type: pass.image_type,
       animation_type: pass.animation_type,
+      access_type: pass.access_type,
     } as PassHolderEntity
 
     await this.copyNftObject(
@@ -798,6 +801,7 @@ export class PassService {
       .select([
         `${PassHolderEntity.table}.id`,
         `${PassHolderEntity.table}.expires_at`,
+        `${PassHolderEntity.table}.access_type`,
         `${PassEntity.table}.type`,
         `${PassEntity.table}.duration`,
       ])
@@ -807,42 +811,47 @@ export class PassService {
       throw new ForbiddenPassException("can't extend non subscription pass")
     }
 
-    if (passHolder.type === PassTypeEnum.LIFETIME) {
-      await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
-        .update({ expires_at: new Date(0) })
-        .where({ id: passHolderId })
-    } else if (passHolder.type === PassTypeEnum.SUBSCRIPTION) {
-      const oldDate = passHolder.expires_at
-      const newDate = new Date(oldDate.valueOf() - passHolder.duration)
+    let oldDate = new Date(Date.now() + ms('1 year'))
+    let newDate = new Date(0)
+    if (passHolder.type === PassTypeEnum.SUBSCRIPTION) {
+      oldDate = passHolder.expires_at
+      newDate = new Date(oldDate.valueOf() - passHolder.duration)
       await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
         .update({ expires_at: newDate })
         .where({ id: passHolderId })
-      const filteredIds = (
-        await this.dbReader<PostPassHolderAccessEntity>(
-          PostPassHolderAccessEntity.table,
-        )
-          .where({ pass_holder_id: passHolderId })
-          .andWhere('created_at', '>=', newDate)
-          .andWhere('created_at', '<=', oldDate)
-          .select('post_user_access_id')
-      ).map((postPassHolderAccess) => postPassHolderAccess.post_user_access_id)
-      await this.dbWriter<PostPassHolderAccessEntity>(
-        PostPassHolderAccessEntity.table,
+    }
+
+    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+      .update({ expires_at: newDate })
+      .where({ id: passHolderId })
+
+    if (passHolder.access_type === AccessTypeEnum.ACCOUNT_ACCESS) {
+      const accesses = await this.dbReader<PostUserAccessEntity>(
+        PostUserAccessEntity.table,
       )
-        .where({ pass_holder_id: passHolderId })
+        .whereLike({ pass_holder_ids: `%${passHolderId}$` })
         .andWhere('created_at', '>=', newDate)
         .andWhere('created_at', '<=', oldDate)
-        .delete()
-      await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
-        .leftJoin(
-          PostPassHolderAccessEntity.table,
-          `${PostPassHolderAccessEntity.table}.post_user_access_id`,
-          `${PostUserAccessEntity.table}.id`,
-        )
-        .whereIn(`${PostUserAccessEntity.table}.id`, filteredIds)
-        .whereNull(`${PostPassHolderAccessEntity.table}.id`)
-        .whereNull(`${PostUserAccessEntity.table}.payin_id`)
-        .delete()
+        .select('id', 'pass_holder_ids', 'payin_id')
+      await Promise.all(
+        accesses.map(async (access) => {
+          let ids: string[] = JSON.parse(access.pass_holder_ids)
+          ids = ids.filter((id) => id !== passHolder.id)
+          if (!access.payin_id && !ids.length) {
+            await this.dbWriter<PostUserAccessEntity>(
+              PostUserAccessEntity.table,
+            )
+              .where({ id: access.id })
+              .delete()
+          } else {
+            await this.dbWriter<PostUserAccessEntity>(
+              PostUserAccessEntity.table,
+            )
+              .where({ id: access.id })
+              .update({ pass_holder_ids: JSON.stringify(ids) })
+          }
+        }),
+      )
     }
   }
 

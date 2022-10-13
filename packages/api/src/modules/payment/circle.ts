@@ -30,7 +30,7 @@ export class CircleConnector {
       function (error) {
         const status = error['response']['status']
         const message = error['response']['data']['message']
-        return Promise.reject(new CircleResponseStatusError(message, status))
+        throw new CircleResponseStatusError(message, status)
       },
     )
   }

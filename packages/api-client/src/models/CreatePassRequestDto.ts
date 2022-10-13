@@ -91,6 +91,12 @@ export interface CreatePassRequestDto {
      * @memberof CreatePassRequestDto
      */
     imageType: CreatePassRequestDtoImageTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreatePassRequestDto
+     */
+    accessType: CreatePassRequestDtoAccessTypeEnum;
 }
 
 
@@ -134,6 +140,15 @@ export const CreatePassRequestDtoImageTypeEnum = {
 } as const;
 export type CreatePassRequestDtoImageTypeEnum = typeof CreatePassRequestDtoImageTypeEnum[keyof typeof CreatePassRequestDtoImageTypeEnum];
 
+/**
+ * @export
+ */
+export const CreatePassRequestDtoAccessTypeEnum = {
+    PassAccess: 'pass access',
+    AccountAccess: 'account_access'
+} as const;
+export type CreatePassRequestDtoAccessTypeEnum = typeof CreatePassRequestDtoAccessTypeEnum[keyof typeof CreatePassRequestDtoAccessTypeEnum];
+
 
 /**
  * Check if a given object implements the CreatePassRequestDto interface.
@@ -148,6 +163,7 @@ export function instanceOfCreatePassRequestDto(value: object): boolean {
     isInstance = isInstance && "chain" in value;
     isInstance = isInstance && "royalties" in value;
     isInstance = isInstance && "imageType" in value;
+    isInstance = isInstance && "accessType" in value;
 
     return isInstance;
 }
@@ -174,6 +190,7 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'royalties': json['royalties'],
         'animationType': !exists(json, 'animationType') ? undefined : json['animationType'],
         'imageType': json['imageType'],
+        'accessType': json['accessType'],
     };
 }
 
@@ -198,6 +215,7 @@ export function CreatePassRequestDtoToJSON(value?: CreatePassRequestDto | null):
         'royalties': value.royalties,
         'animationType': value.animationType,
         'imageType': value.imageType,
+        'accessType': value.accessType,
     };
 }
 

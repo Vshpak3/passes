@@ -107,7 +107,6 @@ import { SubscriptionStatusEnum } from './enum/subscription.status.enum'
 import {
   CircleNotificationError,
   CircleRequestError,
-  CircleResponseError,
 } from './error/circle.error'
 import {
   InvalidPayinRequestError,
@@ -726,7 +725,7 @@ export class PaymentService {
           )
           break
         default:
-          throw new CircleResponseError(
+          throw new CircleNotificationError(
             "notification type unrecognized: API might've updated",
           )
       }

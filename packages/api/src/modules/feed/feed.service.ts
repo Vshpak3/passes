@@ -62,7 +62,7 @@ export class FeedService {
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.post_id as access`,
+        `${PostUserAccessEntity.table}.id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
@@ -132,7 +132,7 @@ export class FeedService {
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.post_id as access`,
+        `${PostUserAccessEntity.table}.id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
       .where(`${PostEntity.table}.user_id`, creatorId)

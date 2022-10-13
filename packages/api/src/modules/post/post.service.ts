@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
 import { addMonths } from 'date-fns'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -30,6 +31,7 @@ import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity
 import { LikeEntity } from '../likes/entities/like.entity'
 import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
+import { AccessTypeEnum } from '../pass/enum/access.enum'
 import { PassService } from '../pass/pass.service'
 import {
   PurchasePostCallbackInput,
@@ -56,12 +58,11 @@ import { GetPostsRangeRequestDto } from './dto/get-posts-range.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
-import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
+// import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostContentEntity } from './entities/post-content.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
-import { PostPassHolderAccessEntity } from './entities/post-passholder-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 import {
@@ -73,6 +74,7 @@ import {
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 const MAX_SCHEDULED_AT_MONTHS = 6
 const MAX_PINNED_POST = 3
+const POST_SCHEDULE_BUFFER = ms('5 minutes')
 @Injectable()
 export class PostService {
   constructor(
@@ -94,7 +96,7 @@ export class PostService {
     if (!scheduledAt) {
       return
     }
-    if (scheduledAt < new Date()) {
+    if (scheduledAt.valueOf() + POST_SCHEDULE_BUFFER < new Date().valueOf()) {
       throw new BadPostPropertiesException(
         'Cannot schedule a post for the past',
       )
@@ -164,10 +166,14 @@ export class PostService {
         // TODO: schedule access add
         const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)
           .whereIn('pass_id', createPostDto.passIds)
-          .whereNotNull('expires_at')
+          .andWhere(function () {
+            return this.where('expires_at', '>', new Date()).orWhereNull(
+              'expires_at',
+            )
+          })
+          .andWhere('access_type', AccessTypeEnum.ACCOUNT_ACCESS)
           .whereNotNull('holder_id')
-          .andWhere('expires_at', '>', new Date())
-          .select(['holder_id', 'id'])
+          .select('holder_id', 'id')
         const userToPassHolders = passHolders.reduce((map, passHolder) => {
           if (!passHolder.holder_id) {
             return map
@@ -178,61 +184,25 @@ export class PostService {
           map[passHolder.holder_id].push(passHolder.id)
           return map
         }, {})
-        await Promise.all(
-          Object.keys(userToPassHolders).map(async (userId) => {
-            const postUserAccess = {
-              id: v4(),
+        await trx<PostUserAccessEntity>(PostUserAccessEntity.table).insert(
+          Object.keys(userToPassHolders).map((userId) => {
+            return {
               post_id: postId,
               user_id: userId,
+              pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
             }
-            await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
-              .insert(postUserAccess)
-              .onConflict(['post_id', 'user_id'])
-              .ignore()
-            await Promise.all(
-              userToPassHolders[userId].map(async (passHolderId) => {
-                await trx<PostPassHolderAccessEntity>(
-                  PostPassHolderAccessEntity.table,
-                )
-                  .insert({
-                    post_user_access_id: postUserAccess.id,
-                    pass_holder_id: passHolderId,
-                  })
-                  .onConflict(['post_user_access_id', 'pass_holder_id'])
-                  .ignore()
-              }),
-            )
           }),
         )
-
-        for (let i = 0; i < createPostDto.passIds.length; ++i) {
-          const postPassAccess = {
-            post_id: postId,
-            pass_id: createPostDto.passIds[i],
-          }
-          await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
-            postPassAccess,
-          )
-        }
+        await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
+          createPostDto.passIds.map((passId) => {
+            return { post_id: postId, pass_id: passId }
+          }),
+        )
       })
       .catch((err) => {
         this.logger.error(err)
         throw err
       })
-    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-      .where({ user_id: userId })
-      .update(
-        'num_media',
-        this.dbWriter<ContentEntity>(ContentEntity.table)
-          .where({
-            user_id: userId,
-            in_post: true,
-          })
-          .count(),
-      )
-    // await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-    //   .where({ user_id: userId })
-    //   .increment('num_posts')
     return { postId }
   }
 
@@ -263,7 +233,7 @@ export class PostService {
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.post_id as access`,
+        `${PostUserAccessEntity.table}.id as access`,
         `${LikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
@@ -336,7 +306,17 @@ export class PostService {
         posts.map((post) => post.id),
       )
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
-      .whereNull(`${PassHolderEntity.table}.expires_at`)
+      .andWhere(
+        `${PassHolderEntity.table}.access_type`,
+        AccessTypeEnum.PASS_ACCESS,
+      )
+      .andWhere(function () {
+        return this.where(
+          `${PassHolderEntity.table}.expires_at`,
+          '>',
+          new Date(),
+        ).orWhereNull(`${PassHolderEntity.table}.expires_at`)
+      })
       .select('post_id')
     const postsFromPass = new Set(
       passAccesses.map((passAccess) => passAccess.post_id),
@@ -441,45 +421,34 @@ export class PostService {
     return updated === 1
   }
 
-  async updatePostContent(
-    userId: string,
-    postId: string,
-    updatePostDto: UpdatePostContentRequestDto,
-  ) {
-    await this.dbWriter.transaction(async (trx) => {
-      await trx<PostContentEntity>(PostContentEntity.table)
-        .where({ post_id: postId })
-        .delete()
-      const postContent = updatePostDto.contentIds.map(function (
-        contentId,
-        index,
-      ) {
-        return {
-          content_id: contentId,
-          post_id: postId,
-          index,
-        }
-      })
+  // async updatePostContent(
+  //   userId: string,
+  //   postId: string,
+  //   updatePostDto: UpdatePostContentRequestDto,
+  // ) {
+  //   await this.dbWriter.transaction(async (trx) => {
+  //     await trx<PostContentEntity>(PostContentEntity.table)
+  //       .where({ post_id: postId })
+  //       .delete()
+  //     const postContent = updatePostDto.contentIds.map(function (
+  //       contentId,
+  //       index,
+  //     ) {
+  //       return {
+  //         content_id: contentId,
+  //         post_id: postId,
+  //         index,
+  //       }
+  //     })
 
-      if (postContent.length) {
-        await trx<PostContentEntity>(PostContentEntity.table).insert(
-          postContent,
-        )
-      }
-    })
-    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-      .where({ user_id: userId })
-      .update(
-        'num_media',
-        this.dbWriter<ContentEntity>(ContentEntity.table)
-          .where({
-            user_id: userId,
-            in_post: true,
-          })
-          .count(),
-      )
-    return true
-  }
+  //     if (postContent.length) {
+  //       await trx<PostContentEntity>(PostContentEntity.table).insert(
+  //         postContent,
+  //       )
+  //     }
+  //   })
+  //   return true
+  // }
 
   async removePost(userId: string, postId: string) {
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
@@ -534,32 +503,26 @@ export class PostService {
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
-    const id = (
-      await this.dbReader<PostUserAccessEntity>(PostUserAccessEntity.table)
-        .where({ payin_id: payinId })
-        .select('id')
-        .first()
-    )?.id
-    if (!id) {
+    const access = await this.dbReader<PostUserAccessEntity>(
+      PostUserAccessEntity.table,
+    )
+      .where({ payin_id: payinId })
+      .select('id', 'pass_holder_ids')
+      .first()
+    if (!access) {
       throw new ForbiddenPostException(
         `cant find post access for payinId ${payinId}`,
       )
     }
-
-    const passAccess = await this.dbReader<PostPassHolderAccessEntity>(
-      PostPassHolderAccessEntity.table,
-    )
-      .where({ post_user_access_id: id })
-      .first()
-
+    await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
+      .update({ payin_id: undefined })
+      .where({ id: access.id })
+    if (!JSON.parse(access.pass_holder_ids).length) {
+      await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
+        .where({ id: access.id })
+        .delete()
+    }
     await this.dbWriter.transaction(async (trx) => {
-      if (passAccess) {
-        await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
-          .update({ payin_id: undefined })
-          .where({ id: id })
-      } else {
-        await trx<PostEntity>(PostEntity.table).where({ id: id }).delete()
-      }
       await trx<PostEntity>(PostEntity.table)
         .where({ id: postId })
         .decrement('num_purchases', 1)

@@ -139,6 +139,12 @@ export interface PassDto {
      * @memberof PassDto
      */
     animationType: PassDtoAnimationTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassDto
+     */
+    accessType: PassDtoAccessTypeEnum;
 }
 
 
@@ -182,6 +188,15 @@ export const PassDtoAnimationTypeEnum = {
 } as const;
 export type PassDtoAnimationTypeEnum = typeof PassDtoAnimationTypeEnum[keyof typeof PassDtoAnimationTypeEnum];
 
+/**
+ * @export
+ */
+export const PassDtoAccessTypeEnum = {
+    PassAccess: 'pass access',
+    AccountAccess: 'account_access'
+} as const;
+export type PassDtoAccessTypeEnum = typeof PassDtoAccessTypeEnum[keyof typeof PassDtoAccessTypeEnum];
+
 
 /**
  * Check if a given object implements the PassDto interface.
@@ -203,6 +218,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "animationType" in value;
+    isInstance = isInstance && "accessType" in value;
 
     return isInstance;
 }
@@ -237,6 +253,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
         'imageType': json['imageType'],
         'animationType': json['animationType'],
+        'accessType': json['accessType'],
     };
 }
 
@@ -269,6 +286,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'creatorDisplayName': value.creatorDisplayName,
         'imageType': value.imageType,
         'animationType': value.animationType,
+        'accessType': value.accessType,
     };
 }
 

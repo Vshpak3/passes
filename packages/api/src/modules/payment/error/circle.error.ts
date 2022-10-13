@@ -1,11 +1,6 @@
-export class CircleResponseError extends Error {
-  constructor(msg: string) {
-    super('bad circle response: ' + msg)
-    Object.setPrototypeOf(this, CircleResponseError.prototype)
-  }
-}
+import { BadRequestException } from '@nestjs/common'
 
-export class CircleResponseStatusError extends CircleResponseError {
+export class CircleResponseStatusError extends BadRequestException {
   constructor(msg: string, status: number) {
     super('status ' + status + ' - ' + msg)
     Object.setPrototypeOf(this, CircleResponseStatusError.prototype)

@@ -144,6 +144,12 @@ export interface PassHolderDto {
      * @type {string}
      * @memberof PassHolderDto
      */
+    accessType: PassHolderDtoAccessTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof PassHolderDto
+     */
     passHolderId: string;
     /**
      * 
@@ -236,6 +242,15 @@ export const PassHolderDtoAnimationTypeEnum = {
 } as const;
 export type PassHolderDtoAnimationTypeEnum = typeof PassHolderDtoAnimationTypeEnum[keyof typeof PassHolderDtoAnimationTypeEnum];
 
+/**
+ * @export
+ */
+export const PassHolderDtoAccessTypeEnum = {
+    PassAccess: 'pass access',
+    AccountAccess: 'account_access'
+} as const;
+export type PassHolderDtoAccessTypeEnum = typeof PassHolderDtoAccessTypeEnum[keyof typeof PassHolderDtoAccessTypeEnum];
+
 
 /**
  * Check if a given object implements the PassHolderDto interface.
@@ -257,6 +272,7 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "animationType" in value;
+    isInstance = isInstance && "accessType" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
 
@@ -293,6 +309,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'creatorDisplayName': !exists(json, 'creatorDisplayName') ? undefined : json['creatorDisplayName'],
         'imageType': json['imageType'],
         'animationType': json['animationType'],
+        'accessType': json['accessType'],
         'passHolderId': json['passHolderId'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'walletId': !exists(json, 'walletId') ? undefined : json['walletId'],
@@ -334,6 +351,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'creatorDisplayName': value.creatorDisplayName,
         'imageType': value.imageType,
         'animationType': value.animationType,
+        'accessType': value.accessType,
         'passHolderId': value.passHolderId,
         'holderId': value.holderId,
         'walletId': value.walletId,

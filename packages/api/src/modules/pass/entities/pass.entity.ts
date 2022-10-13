@@ -20,6 +20,7 @@ import {
   PASS_SYMBOL_LENGTH,
   PASS_TITLE_LENGTH,
 } from '../constants/schema'
+import { AccessTypeEnum } from '../enum/access.enum'
 import { PassTypeEnum } from '../enum/pass.enum'
 import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
@@ -84,4 +85,7 @@ export class PassEntity extends BaseEntity {
 
   @Enum({ items: () => PassImageEnum, default: PassImageEnum.PNG })
   image_type: PassImageEnum
+
+  @Enum(() => AccessTypeEnum)
+  access_type: AccessTypeEnum
 }

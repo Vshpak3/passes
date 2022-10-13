@@ -13,6 +13,7 @@ import {
   PASS_TITLE_LENGTH,
 } from '../constants/schema'
 import { PassEntity } from '../entities/pass.entity'
+import { AccessTypeEnum } from '../enum/access.enum'
 import { PassTypeEnum } from '../enum/pass.enum'
 import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
@@ -88,6 +89,9 @@ export class PassDto {
   @DtoProperty({ custom_type: PassAnimationEnum, nullable: true })
   animationType: PassAnimationEnum | null
 
+  @DtoProperty({ custom_type: AccessTypeEnum })
+  accessType: AccessTypeEnum
+
   constructor(
     pass:
       | (PassEntity & {
@@ -116,6 +120,7 @@ export class PassDto {
       this.ethPrice = pass.eth_price
       this.imageType = pass.image_type
       this.animationType = pass.animation_type
+      this.accessType = pass.access_type
 
       this.creatorUsername = pass.creator_username
       this.creatorDisplayName = pass.creator_display_name
