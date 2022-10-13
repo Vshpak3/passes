@@ -103,6 +103,7 @@ export const CalendarPicker: FC<{
       <Popper
         id={id}
         open={open}
+        placement="right"
         anchorEl={anchorEl}
         transition
         disablePortal={false}
