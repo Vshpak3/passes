@@ -66,42 +66,40 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
 
   return (
     <ConditionRendering condition={!removed}>
-      <div className="flex w-full justify-between border-b-[1px] border-b-gray-300/10 py-2">
-        <div className="flex w-full">
-          <div className="h-[40px] min-h-[40px] w-[40px] min-w-[40px] items-start justify-start rounded-full">
-            <ProfileThumbnail userId={comment.commenterId} />
-            <div className="flex items-center gap-[15px]">
-              <PostDropdown
-                items={dropdownOptions}
-                username={commenterUsername}
-                postId={postId}
-              />
-            </div>
-          </div>
-          <div className="ml-4 flex max-w-[100%] flex-col flex-wrap">
-            <div className="flex gap-x-2">
-              {comment.commenterDisplayName && (
-                <Text fontSize={14} className="mb-1 font-bold">
-                  {comment.commenterDisplayName}
-                </Text>
-              )}
-              <Text fontSize={14} className="mb-1 text-gray-500">
-                @{comment.commenterUsername}
+      <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
+        <div>
+          <ProfileThumbnail userId={comment.commenterId} />
+        </div>
+        <div className="flex grow flex-col">
+          <div className="mb-1 flex gap-x-2">
+            {comment.commenterDisplayName && (
+              <Text fontSize={14} className="font-bold">
+                {comment.commenterDisplayName}
               </Text>
-            </div>
-            <Text
-              fontSize={14}
-              className="whitespace-pre-wrap break-normal break-all text-start font-light"
-            >
-              {comment.text}
+            )}
+            <Text fontSize={14} className="text-gray-500">
+              @{comment.commenterUsername}
             </Text>
           </div>
+          <Text
+            fontSize={14}
+            className="whitespace-pre-wrap break-all font-light"
+          >
+            {comment.text}
+          </Text>
         </div>
         <TimeAgo
-          className="ml-4 shrink-0 text-[12px] text-gray-300/60"
+          className="shrink-0 text-[12px] text-gray-300/60"
           date={comment.createdAt}
           live={false}
         />
+        <div className="shrink-0">
+          <PostDropdown
+            items={dropdownOptions}
+            username={commenterUsername}
+            postId={postId}
+          />
+        </div>
       </div>
     </ConditionRendering>
   )
