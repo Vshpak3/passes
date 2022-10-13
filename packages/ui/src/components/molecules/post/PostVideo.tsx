@@ -10,6 +10,7 @@ interface PostVideoProps {
 export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
   const videoJsOptions: VideoJsPlayerOptions = {
     controls: true,
+    aspectRatio: "16:9",
     responsive: true,
     fluid: true,
     sources: [
