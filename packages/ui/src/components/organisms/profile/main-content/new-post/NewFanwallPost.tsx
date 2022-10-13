@@ -1,10 +1,10 @@
 import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
+import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { useProfile } from "src/hooks/useProfile"
 
 const CustomMentionEditor = dynamic(
@@ -67,9 +67,11 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
-          <>
-            <PostHeader onClose={() => setExtended(false)} />
-          </>
+          <div className="w-full border-b border-[#2B282D] pb-4">
+            <button onClick={() => setExtended(false)} type="button">
+              <CloseIcon />
+            </button>
+          </div>
         )}
 
         <div

@@ -11,7 +11,7 @@ interface PostHeaderProps {
   title?: string
   onClose: () => void
   messages?: boolean
-  register?: FormRegister
+  register: FormRegister
   errors?: FormErrors
   options?: FormOptions
 }
@@ -33,7 +33,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
         <h4 className="text-xl font-bold leading-4">{title || "New Post"}</h4>
       </div>
 
-      {!messages && register && (
+      {!messages && (
         <FormInput
           label="Paid"
           type="toggle"
