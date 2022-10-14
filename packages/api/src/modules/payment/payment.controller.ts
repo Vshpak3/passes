@@ -27,7 +27,12 @@ import {
   GetCircleCardsResponseDto,
 } from './dto/circle/get-card.dto'
 import { CircleStatusResponseDto } from './dto/circle/status.dto'
-import { GetPayinsRequestDto, GetPayinsResponseDto } from './dto/get-payin.dto'
+import {
+  GetPayinRequestDto,
+  GetPayinResponseDto,
+  GetPayinsRequestDto,
+  GetPayinsResponseDto,
+} from './dto/get-payin.dto'
 import {
   GetPayoutsRequestDto,
   GetPayoutsResponseDto,
@@ -459,6 +464,21 @@ export class PaymentController {
       await this.paymentService.getPayins(req.user.id, getPayinsRequest),
       getPayinsRequest,
     )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get payin',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPayinResponseDto,
+    responseDesc: 'Payins were retrieved',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('payin-info')
+  async getPayin(
+    @Req() req: RequestWithUser,
+    @Body() getPayinRequest: GetPayinRequestDto,
+  ): Promise<GetPayinResponseDto> {
+    return await this.paymentService.getPayin(req.user.id, getPayinRequest)
   }
   /*
   -------------------------------------------------------------------------------

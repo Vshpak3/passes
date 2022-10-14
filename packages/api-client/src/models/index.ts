@@ -95,6 +95,8 @@ export * from './GetPassHoldingsResponseDto';
 export * from './GetPassesRequestDto';
 export * from './GetPassesResponseDto';
 export * from './GetPayinMethodResponseDto';
+export * from './GetPayinRequestDto';
+export * from './GetPayinResponseDto';
 export * from './GetPayinsRequestDto';
 export * from './GetPayinsResponseDto';
 export * from './GetPayoutMethodResponseDto';

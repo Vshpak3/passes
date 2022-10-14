@@ -23,91 +23,91 @@ import {
 /**
  * 
  * @export
- * @interface PayinDto
+ * @interface GetPayinResponseDto
  */
-export interface PayinDto {
+export interface GetPayinResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     payinId: string;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     userId: string;
     /**
      * 
      * @type {PayinMethodDto}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     payinMethod: PayinMethodDto;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
-    payinStatus: PayinDtoPayinStatusEnum;
+    payinStatus: GetPayinResponseDtoPayinStatusEnum;
     /**
      * 
      * @type {number}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     amount: number;
     /**
      * 
      * @type {Date}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     createdAt: Date;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
-    callback: PayinDtoCallbackEnum;
+    callback: GetPayinResponseDtoCallbackEnum;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     firstDigit: string;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     fourDigits: string;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     transactionHash: string | null;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     address: string;
     /**
      * 
      * @type {object}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     callbackOutputJSON: object;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     target: string | null;
     /**
      * 
      * @type {string}
-     * @memberof PayinDto
+     * @memberof GetPayinResponseDto
      */
     redirectUrl: string | null;
 }
@@ -116,7 +116,7 @@ export interface PayinDto {
 /**
  * @export
  */
-export const PayinDtoPayinStatusEnum = {
+export const GetPayinResponseDtoPayinStatusEnum = {
     Registered: 'registered',
     CreatedReady: 'created_ready',
     Created: 'created',
@@ -134,12 +134,12 @@ export const PayinDtoPayinStatusEnum = {
     SuccessCallbackFailed: 'success_callback_failed',
     CreateCallbackFailed: 'create_callback_failed'
 } as const;
-export type PayinDtoPayinStatusEnum = typeof PayinDtoPayinStatusEnum[keyof typeof PayinDtoPayinStatusEnum];
+export type GetPayinResponseDtoPayinStatusEnum = typeof GetPayinResponseDtoPayinStatusEnum[keyof typeof GetPayinResponseDtoPayinStatusEnum];
 
 /**
  * @export
  */
-export const PayinDtoCallbackEnum = {
+export const GetPayinResponseDtoCallbackEnum = {
     TippedMessage: 'tipped_message',
     CreateNftLifetimePass: 'create_nft_lifetime_pass',
     CreateNftSubscriptionPass: 'create_nft_subscription_pass',
@@ -149,13 +149,13 @@ export const PayinDtoCallbackEnum = {
     TipPost: 'tip_post',
     Example: 'example'
 } as const;
-export type PayinDtoCallbackEnum = typeof PayinDtoCallbackEnum[keyof typeof PayinDtoCallbackEnum];
+export type GetPayinResponseDtoCallbackEnum = typeof GetPayinResponseDtoCallbackEnum[keyof typeof GetPayinResponseDtoCallbackEnum];
 
 
 /**
- * Check if a given object implements the PayinDto interface.
+ * Check if a given object implements the GetPayinResponseDto interface.
  */
-export function instanceOfPayinDto(value: object): boolean {
+export function instanceOfGetPayinResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "payinId" in value;
     isInstance = isInstance && "userId" in value;
@@ -175,11 +175,11 @@ export function instanceOfPayinDto(value: object): boolean {
     return isInstance;
 }
 
-export function PayinDtoFromJSON(json: any): PayinDto {
-    return PayinDtoFromJSONTyped(json, false);
+export function GetPayinResponseDtoFromJSON(json: any): GetPayinResponseDto {
+    return GetPayinResponseDtoFromJSONTyped(json, false);
 }
 
-export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PayinDto {
+export function GetPayinResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPayinResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -202,7 +202,7 @@ export function PayinDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     };
 }
 
-export function PayinDtoToJSON(value?: PayinDto | null): any {
+export function GetPayinResponseDtoToJSON(value?: GetPayinResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }

@@ -25,6 +25,8 @@ import type {
   GetCircleCardResponseDto,
   GetCircleCardsResponseDto,
   GetPayinMethodResponseDto,
+  GetPayinRequestDto,
+  GetPayinResponseDto,
   GetPayinsRequestDto,
   GetPayinsResponseDto,
   GetPayoutMethodResponseDto,
@@ -63,6 +65,10 @@ import {
     GetCircleCardsResponseDtoToJSON,
     GetPayinMethodResponseDtoFromJSON,
     GetPayinMethodResponseDtoToJSON,
+    GetPayinRequestDtoFromJSON,
+    GetPayinRequestDtoToJSON,
+    GetPayinResponseDtoFromJSON,
+    GetPayinResponseDtoToJSON,
     GetPayinsRequestDtoFromJSON,
     GetPayinsRequestDtoToJSON,
     GetPayinsResponseDtoFromJSON,
@@ -139,6 +145,10 @@ export interface EntryPhantomCircleUSDCRequest {
 
 export interface GetCircleCardRequest {
     cardId: string;
+}
+
+export interface GetPayinRequest {
+    getPayinRequestDto: GetPayinRequestDto;
 }
 
 export interface GetPayinsRequest {
@@ -725,6 +735,44 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async getDefaultPayoutMethod(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPayoutMethodResponseDto> {
         const response = await this.getDefaultPayoutMethodRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get payin
+     */
+    async getPayinRaw(requestParameters: GetPayinRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPayinResponseDto>> {
+        if (requestParameters.getPayinRequestDto === null || requestParameters.getPayinRequestDto === undefined) {
+            throw new runtime.RequiredError('getPayinRequestDto','Required parameter requestParameters.getPayinRequestDto was null or undefined when calling getPayin.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/payment/payin-info`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPayinRequestDtoToJSON(requestParameters.getPayinRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPayinResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get payin
+     */
+    async getPayin(requestParameters: GetPayinRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPayinResponseDto> {
+        const response = await this.getPayinRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

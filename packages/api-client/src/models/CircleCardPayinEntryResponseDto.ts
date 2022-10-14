@@ -38,6 +38,12 @@ export interface CircleCardPayinEntryResponseDto {
      * @memberof CircleCardPayinEntryResponseDto
      */
     status: CircleStatusResponseDto;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CircleCardPayinEntryResponseDto
+     */
+    actionRequired: boolean;
 }
 
 /**
@@ -47,6 +53,7 @@ export function instanceOfCircleCardPayinEntryResponseDto(value: object): boolea
     let isInstance = true;
     isInstance = isInstance && "payinId" in value;
     isInstance = isInstance && "status" in value;
+    isInstance = isInstance && "actionRequired" in value;
 
     return isInstance;
 }
@@ -63,6 +70,7 @@ export function CircleCardPayinEntryResponseDtoFromJSONTyped(json: any, ignoreDi
         
         'payinId': json['payinId'],
         'status': CircleStatusResponseDtoFromJSON(json['status']),
+        'actionRequired': json['actionRequired'],
     };
 }
 
@@ -77,6 +85,7 @@ export function CircleCardPayinEntryResponseDtoToJSON(value?: CircleCardPayinEnt
         
         'payinId': value.payinId,
         'status': CircleStatusResponseDtoToJSON(value.status),
+        'actionRequired': value.actionRequired,
     };
 }
 

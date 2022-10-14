@@ -36,6 +36,18 @@ export interface CircleCardPayinEntryRequestDto {
      * @type {string}
      * @memberof CircleCardPayinEntryRequestDto
      */
+    successUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CircleCardPayinEntryRequestDto
+     */
+    failureUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CircleCardPayinEntryRequestDto
+     */
     sessionId: string;
 }
 
@@ -63,6 +75,8 @@ export function CircleCardPayinEntryRequestDtoFromJSONTyped(json: any, ignoreDis
         
         'payinId': json['payinId'],
         'ip': json['ip'],
+        'successUrl': !exists(json, 'successUrl') ? undefined : json['successUrl'],
+        'failureUrl': !exists(json, 'failureUrl') ? undefined : json['failureUrl'],
         'sessionId': json['sessionId'],
     };
 }
@@ -78,6 +92,8 @@ export function CircleCardPayinEntryRequestDtoToJSON(value?: CircleCardPayinEntr
         
         'payinId': value.payinId,
         'ip': value.ip,
+        'successUrl': value.successUrl,
+        'failureUrl': value.failureUrl,
         'sessionId': value.sessionId,
     };
 }

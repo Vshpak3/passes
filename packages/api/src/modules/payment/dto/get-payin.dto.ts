@@ -4,6 +4,12 @@ import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { PayinDto } from './payin.dto'
 
+export class GetPayinRequestDto {
+  @DtoProperty({ type: 'uuid' })
+  payinId: string
+}
+
+export class GetPayinResponseDto extends PayinDto {}
 export class GetPayinsRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',

@@ -2,12 +2,15 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import {
   PayinDataDto,
   PayinDataDtoBlockedEnum,
+  PayinDtoPayinStatusEnum,
   PayinMethodDtoMethodEnum,
   PaymentApi,
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import { useState } from "react"
+import ms from "ms"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
@@ -17,6 +20,7 @@ import {
   executeMetamaskUSDCProvider,
   executePhantomUSDCProvider
 } from "src/helpers/payment/wallet-setup"
+import { sleep } from "src/helpers/sleep"
 import { accessTokenKey } from "src/helpers/token"
 
 import { useLocalStorage } from "./useLocalStorage"
@@ -32,9 +36,51 @@ export const usePay = (
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
     undefined
   )
-
   const paymentApi = new PaymentApi()
   const [accessToken] = useLocalStorage(accessTokenKey, "")
+  const [waiting, setWaiting] = useState<Date>()
+  const [count, setCount] = useState(0)
+  const [payinId, setPayinId] = useState<string>()
+  useEffect(() => {
+    const fetch = async () => {
+      const paymentApi = new PaymentApi()
+      await sleep("3 seconds")
+      if (waiting && payinId) {
+        if (waiting.valueOf() + ms("10 minutes") < Date.now()) {
+          try {
+            const payin = await paymentApi.getPayin({
+              getPayinRequestDto: { payinId }
+            })
+            if (payin.redirectUrl) {
+              window.location.href = payin.redirectUrl
+            } else if (
+              payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
+              payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
+            ) {
+              setWaiting(undefined)
+            } else if (
+              payin.payinStatus !== PayinDtoPayinStatusEnum.Pending &&
+              payin.payinStatus !== PayinDtoPayinStatusEnum.Created &&
+              payin.payinStatus !== PayinDtoPayinStatusEnum.ActionRequired
+            ) {
+              setWaiting(undefined)
+              toast.error(
+                "Payment failure: an error has occured - please contact support"
+              )
+            }
+          } catch (error: any) {
+            setWaiting(undefined)
+            errorMessage(error, true)
+          }
+        } else {
+          setWaiting(undefined)
+          toast.error("Payment failure: no three d verification link")
+        }
+      }
+      setCount(count + 1)
+    }
+    fetch()
+  }, [count, payinId, waiting])
 
   const handleCircleCard = async (
     registerResponse: RegisterPayinResponseDto,
@@ -42,13 +88,18 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     try {
-      await paymentApi.entryCircleCard({
+      const response = await paymentApi.entryCircleCard({
         circleCardPayinEntryRequestDto: {
           payinId: registerResponse.payinId,
           ip: "",
-          sessionId: SHA256(accessToken).toString().substr(0, 50)
+          sessionId: SHA256(accessToken).toString().substr(0, 50),
+          successUrl: window.location.href,
+          failureUrl: window.location.href
         }
       })
+      if (response.actionRequired) {
+        setWaiting(new Date())
+      }
     } catch (error: any) {
       await cancelPayinCallback()
       errorMessage(error, true)
@@ -135,6 +186,7 @@ export const usePay = (
     setLoading(true)
     try {
       const registerResponse = await registerPaymentFunc()
+      setPayinId(registerResponse.payinId)
       const cancelPayin = async () => {
         await paymentApi.cancelPayin({
           payinId: registerResponse.payinId
@@ -181,6 +233,7 @@ export const usePay = (
     submitting,
     loading,
     submit,
-    submitData
+    submitData,
+    waiting
   }
 }

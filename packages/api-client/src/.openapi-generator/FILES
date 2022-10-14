@@ -121,6 +121,8 @@ models/GetPassHoldingsResponseDto.ts
 models/GetPassesRequestDto.ts
 models/GetPassesResponseDto.ts
 models/GetPayinMethodResponseDto.ts
+models/GetPayinRequestDto.ts
+models/GetPayinResponseDto.ts
 models/GetPayinsRequestDto.ts
 models/GetPayinsResponseDto.ts
 models/GetPayoutMethodResponseDto.ts

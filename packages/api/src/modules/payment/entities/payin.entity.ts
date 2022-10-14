@@ -9,7 +9,10 @@ import {
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
-import { BLOCKCHAIN_ADDRESS_LENGTH } from '../../wallet/constants/schema'
+import {
+  BLOCKCHAIN_ADDRESS_LENGTH,
+  EXTERNAL_URL_LENGTH,
+} from '../../wallet/constants/schema'
 import { PayinCallbackInput, PayinCallbackOutput } from '../callback.types'
 import {
   ETH_AMOUNT_TYPE,
@@ -63,6 +66,9 @@ export class PayinEntity extends BaseEntity {
 
   @Property({ type: types.json })
   callback_output_json: PayinCallbackOutput | null
+
+  @Property({ length: EXTERNAL_URL_LENGTH })
+  redirect_url: string | null
 
   // payin target
 

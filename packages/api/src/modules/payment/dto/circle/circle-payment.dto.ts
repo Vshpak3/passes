@@ -1,5 +1,6 @@
 import { DtoProperty } from '../../../../web/dto.web'
 import { CirclePaymentStatusEnum } from '../../enum/circle-payment.status.enum'
+import { CircleRequiredActionDto } from './circle-required-action.dto'
 import { CircleAmountDto, CircleSourceDto } from './circle-utils.dto'
 
 export class CirclePaymentDto {
@@ -26,4 +27,7 @@ export class CirclePaymentDto {
 
   @DtoProperty({ type: 'string', optional: true })
   description?: string
+
+  @DtoProperty({ custom_type: CircleRequiredActionDto, optional: true })
+  requiredAction?: CircleRequiredActionDto
 }

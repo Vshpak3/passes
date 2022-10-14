@@ -57,7 +57,7 @@ import { CircleCreateTransferRequestDto } from './dto/circle/create-circle-trans
 import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
 import { CircleStatusResponseDto } from './dto/circle/status.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
-import { GetPayinsRequestDto } from './dto/get-payin.dto'
+import { GetPayinRequestDto, GetPayinsRequestDto } from './dto/get-payin.dto'
 import { GetPayoutsRequestDto } from './dto/get-payout.dto'
 import { PayinDto } from './dto/payin.dto'
 import {
@@ -311,6 +311,9 @@ export class PaymentService {
     ipAddress: string,
     sessionId: string,
     payin: PayinDto,
+    threeDS: boolean,
+    successUrl?: string,
+    failureUrl?: string,
   ): Promise<CircleStatusResponseDto> {
     if (!payin.payinMethod.cardId) {
       throw new NoPayinMethodError('Card not selected')
@@ -359,7 +362,14 @@ export class PaymentService {
         email: user.email,
         sessionId: sessionId,
       },
-      verification: 'none',
+      verification: threeDS ? 'three_d_secure' : 'none',
+    }
+
+    if (successUrl) {
+      createCardPaymentDto.verificationSuccessUrl = successUrl
+    }
+    if (failureUrl) {
+      createCardPaymentDto.verificationSuccessUrl = failureUrl
     }
 
     const data = {
@@ -856,6 +866,7 @@ export class PaymentService {
         await this.dbWriter<PayinEntity>(PayinEntity.table)
           .update({
             payin_status: PayinStatusEnum.ACTION_REQUIRED,
+            redirect_url: paymentDto.requiredAction?.redirectUrl,
           })
           .where({ id: payin.id })
         break
@@ -1158,12 +1169,18 @@ export class PaymentService {
     payin: PayinDto,
     entryDto: CircleCardPayinEntryRequestDto,
   ): Promise<CircleCardPayinEntryResponseDto> {
+    const threeDS =
+      payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS ||
+      payin.callback === PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS
     const status = await this.makeCircleCardPayment(
       entryDto.ip,
       entryDto.sessionId,
       payin,
+      threeDS,
+      entryDto.successUrl,
+      entryDto.failureUrl,
     )
-    return { payinId: payin.payinId, status }
+    return { payinId: payin.payinId, status, actionRequired: threeDS }
   }
 
   async entryPhantomCircleUSDC(
@@ -1743,6 +1760,20 @@ export class PaymentService {
         ),
       )
     }
+  }
+
+  async getPayin(
+    userId: string,
+    getPayinRequest: GetPayinRequestDto,
+  ): Promise<PayinDto> {
+    const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
+      .where({
+        user_id: userId,
+        id: getPayinRequest.payinId,
+      })
+      .select('*')
+      .first()
+    return new PayinDto(payin)
   }
 
   /**
