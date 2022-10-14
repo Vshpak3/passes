@@ -9,6 +9,7 @@ import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
+import helmet from 'helmet'
 import { WinstonModule } from 'nest-winston'
 import passport from 'passport'
 
@@ -54,6 +55,9 @@ export class App {
     )
     this.app.enableCors()
     this.app.use(cookieParser())
+
+    // Adds protection against well-known web vulnerabilities by setting HTTP headers appropriately.
+    this.app.use(helmet())
 
     // For Twitter OAuth 1.0
     this.app.use(

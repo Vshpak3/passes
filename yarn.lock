@@ -5686,6 +5686,7 @@ __metadata:
     ethers: 5.7.1
     express: 4.18.1
     express-session: 1.17.3
+    helmet: 6.0.0
     hot-shots: 9.2.0
     ioredis: 5.2.3
     iso-3166-1-alpha-2: 1.0.0
@@ -13727,6 +13728,13 @@ __metadata:
     inherits: ^2.0.3
     minimalistic-assert: ^1.0.1
   checksum: e350096e659c62422b85fa508e4b3669017311aa4c49b74f19f8e1bc7f3a54a584fdfd45326d4964d6011f2b2d882e38bea775a96046f2a61b7779a979629d8f
+  languageName: node
+  linkType: hard
+
+"helmet@npm:6.0.0":
+  version: 6.0.0
+  resolution: "helmet@npm:6.0.0"
+  checksum: 0dd89d5b77c5334e815f5d29376ca7af0ad1007136890f497be3455d9ed9734e7203e13d9931e29e4d2ced1c632c52440f16d2a02e8835fd8b8706a12052faad
   languageName: node
   linkType: hard
 
