@@ -139,6 +139,10 @@ export const NewPost: FC<NewPostProps> = ({
       toast.error("Must add either text or content")
       return
     }
+    if (files.length === 0 && isPaid) {
+      toast.error("You cannot create a paid post without media content")
+      return
+    }
     if (files.length > 0) {
       toast.info("Please wait a moment as your content is uploaded")
     }

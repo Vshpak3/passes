@@ -142,7 +142,8 @@ export class PostDto {
       this.purchasable =
         !isOwner &&
         !!contents &&
-        !!contents.filter((content) => content.signedUrl).length
+        !!contents.length &&
+        !contents.filter((content) => content.signedUrl).length
     }
   }
 }

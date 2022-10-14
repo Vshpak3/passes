@@ -54,7 +54,6 @@ export const Post: React.FC<PostProps> = ({ post }) => {
     createdAt,
     displayName,
     earningsPurchases,
-    isLiked,
     isOwner,
     numComments,
     numLikes,
@@ -96,15 +95,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
           )}
         </div>
         {purchasable && <LockedMedia post={post} />}
-        <PostEngagement
-          isLiked={isLiked}
-          isOwner={isOwner}
-          numLikes={numLikes}
-          numComments={numComments}
-          postId={postId}
-          purchasable={purchasable}
-          username={username}
-        />
+        <PostEngagement post={post} />
       </FormContainer>
     </ConditionRendering>
   )

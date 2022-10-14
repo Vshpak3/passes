@@ -234,14 +234,14 @@ export class ContentService {
     accessible: boolean,
     userId: string,
     previewIndex: number,
-    isOwner?: boolean,
+    isOwner?: boolean, // eslint-disable-line @typescript-eslint/no-unused-vars
   ): ContentDto[] {
     return contents.map((content, index) => {
       return {
         contentId: content.contentId,
         userId,
         signedUrl:
-          (index < previewIndex || accessible) && !isOwner
+          index < previewIndex || accessible
             ? this.preSignMediaContent(
                 userId,
                 content.contentId,

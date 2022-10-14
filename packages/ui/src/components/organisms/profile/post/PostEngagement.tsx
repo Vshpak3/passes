@@ -14,26 +14,23 @@ const TipPostModal = dynamic(
   { ssr: false }
 )
 
-type PostEngagementProps = Pick<
-  PostDto,
-  | "numLikes"
-  | "numComments"
-  | "isLiked"
-  | "isOwner"
-  | "postId"
-  | "purchasable"
-  | "username"
->
+interface PostEngagementProps {
+  post: PostDto
+}
 
-export const PostEngagement: FC<PostEngagementProps> = ({
-  numLikes,
-  numComments: initialNumComments,
-  isLiked,
-  isOwner,
-  postId,
-  purchasable,
-  username
-}) => {
+export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
+  const {
+    isLiked,
+    isOwner,
+    numComments: initialNumComments,
+    numLikes,
+    purchasable,
+    postId,
+    username,
+    price,
+    passIds
+  } = post
+
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numComments, setNumComments] = useState(initialNumComments)
   const [showCommentSection, setShowCommentSection] = useState(false)
@@ -83,12 +80,26 @@ export const PostEngagement: FC<PostEngagementProps> = ({
             <ShareIcon onClick={() => copyLinkToClipboard(username, postId)} />
           </button>
         </div>
-        <div
-          onClick={() => setIsTipsModalOpen((prev) => !prev)}
-          className="flex cursor-pointer items-center gap-2 pr-2 text-passes-gray-100"
-        >
-          <CostIcon />
-        </div>
+        {/* or {passIds} */}
+
+        {isOwner ? (
+          <div className="text-sm font-normal text-gray-500">
+            {price && !passIds.length
+              ? `Viewable for $${price}`
+              : !price && passIds.length
+              ? "Requires a pass to view"
+              : price && passIds.length
+              ? `Viewable for $${price} or with pass`
+              : "Free"}
+          </div>
+        ) : (
+          <div
+            onClick={() => setIsTipsModalOpen((prev) => !prev)}
+            className="flex cursor-pointer items-center gap-2 pr-2 text-passes-gray-100"
+          >
+            <CostIcon />
+          </div>
+        )}
       </div>
       {showCommentSection && (
         <CommentSection
