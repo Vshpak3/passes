@@ -52,7 +52,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
           KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
             return (
               <>
-                {deletedItems.includes(arg.contentId) && (
+                {!deletedItems.includes(arg.contentId) && (
                   <VaultMediaItem
                     content={arg}
                     setSelectedItems={setSelectedItems}
