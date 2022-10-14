@@ -15,19 +15,24 @@ interface AuthWrapperProps {
   isPage?: boolean
   skipAuth?: boolean
   creatorOnly?: boolean
+  hasRefreshed?: boolean
 }
 
 export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   children,
   isPage,
   skipAuth,
-  creatorOnly
+  creatorOnly,
+  hasRefreshed = true
 }) => {
   const { user, userClaims } = useUser()
   const router = useRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
   useEffect(() => {
+    if (!hasRefreshed) {
+      return
+    }
     if (!router.isReady) {
       return
     }
@@ -57,7 +62,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isPage && !_authed) {
       authRouter(router, userClaims)
     }
-  }, [isPage, skipAuth, creatorOnly, router, user, userClaims])
+  }, [isPage, skipAuth, creatorOnly, router, user, userClaims, hasRefreshed])
 
   return authed ? <>{children}</> : <></>
 }

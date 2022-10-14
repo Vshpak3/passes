@@ -11,7 +11,7 @@ const Analytics: NextPage = () => {
   const [analyticsTab, setAnalyticsTab] = useState("earnings")
   const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
     const api = new CreatorStatsApi()
-    return await api.getBalance()
+    return await api.getAvailableBalance()
   })
   const handleAnalyticsTabClick = (value: string) => {
     setAnalyticsTab(value)
@@ -43,12 +43,12 @@ const ANALYTICS_OPTIONS = [
     value: "earnings"
   },
   {
-    label: "Payout requests",
-    value: "payout-requests"
+    label: "Posts",
+    value: "posts"
   },
   {
-    label: "Chargebacks",
-    value: "chargebacks"
+    label: "Messages",
+    value: "messages"
   }
 ]
 

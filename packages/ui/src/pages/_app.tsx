@@ -70,7 +70,7 @@ export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
 > & {
-  getLayout?: (page: ReactElement) => ReactNode
+  getLayout?: (page: ReactElement, hasRefreshed: boolean) => ReactNode
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -79,6 +79,7 @@ type AppPropsWithLayout = AppProps & {
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [refresh, setRefresh] = useState(0)
+  const [hasRefreshed, setHasRefreshed] = useState(false)
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
@@ -88,8 +89,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   // Refresh once on page load then repeatedly
   useEffect(() => {
-    const refreshAuth = () => {
-      refreshAccessToken()
+    const refreshAuth = async () => {
+      await refreshAccessToken()
         .then((r) => {
           if (r) {
             setAccessToken(r)
@@ -97,6 +98,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           return r
         })
         .catch(() => undefined)
+      setHasRefreshed(true)
     }
 
     refreshAuth()
@@ -107,7 +109,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
     return () => clearInterval(interval)
   }, [refresh, router, setAccessToken])
-
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
@@ -169,7 +170,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           </ViewPostModalContext.Provider>
         </DndProvider>
       </SWRConfig>
-    </Providers>
+    </Providers>,
+    hasRefreshed
   )
 }
 

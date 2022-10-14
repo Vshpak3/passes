@@ -23,6 +23,7 @@ import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity
 import { FanWallCommentEntity } from '../fan-wall/entities/fan-wall-comment.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
 import { createGetMemberQuery } from '../list/list.util'
+import { PaidMessageEntity } from '../messages/entities/paid-message.entity'
 import { MessagesService } from '../messages/messages.service'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostService } from '../post/post.service'
@@ -155,6 +156,9 @@ export class FollowService {
             welcomeMessage.price,
             welcomeMessage.paidMessageId,
           )
+          await this.dbWriter<PaidMessageEntity>(PaidMessageEntity.table)
+            .increment('sent_to', 1)
+            .where('id', welcomeMessage.paidMessageId)
         }
       }
     } catch (err) {

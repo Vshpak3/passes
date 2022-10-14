@@ -44,7 +44,7 @@ interface EarningsGraphProps {
 export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const [activeTab, setActiveTab] = React.useState("total")
   const [dateRange, setDateRange] = React.useState({
-    startDate: new Date(),
+    startDate: new Date(Date.now() - ms("1 week")),
     endDate: new Date(),
     key: "selection"
   })

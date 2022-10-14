@@ -6,12 +6,12 @@ import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 
 export const creatorToolsItems: SidebarNavigation[] = [
-  {
-    id: "manage-passes",
-    name: "Manage Passes",
-    href: "/tools/manage-passes",
-    creatorOnly: true
-  },
+  // {
+  //   id: "manage-passes",
+  //   name: "Manage Passes",
+  //   href: "/tools/manage-passes",
+  //   creatorOnly: true
+  // },
   {
     id: "list",
     name: "List",
@@ -25,9 +25,9 @@ export const creatorToolsItems: SidebarNavigation[] = [
     creatorOnly: true
   },
   {
-    id: "earnings",
-    name: "Earnings",
-    href: "/tools/earnings",
+    id: "analytics",
+    name: "Analytics",
+    href: "/tools/analytics",
     creatorOnly: true
   },
   {

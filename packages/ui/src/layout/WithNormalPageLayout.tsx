@@ -29,7 +29,7 @@ export const WithNormalPageLayout = (
   return {
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
-    getLayout: (page: ReactElement) => (
+    getLayout: (page: ReactElement, hasRefreshed: boolean) => (
       <div className="relative flex min-h-screen w-full bg-black">
         {options.sidebar && <Sidebar />}
         <main className="w-full bg-[#000]">
@@ -43,6 +43,7 @@ export const WithNormalPageLayout = (
               isPage
               skipAuth={!!options.skipAuth}
               creatorOnly={!!options.creatorOnly}
+              hasRefreshed={hasRefreshed}
             >
               {page}
             </AuthWrapper>

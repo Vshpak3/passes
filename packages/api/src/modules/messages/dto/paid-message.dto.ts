@@ -34,6 +34,9 @@ export class PaidMessageDto {
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  isWelcomeMesage: boolean
+
   constructor(paidMessage: PaidMessageEntity | undefined) {
     if (paidMessage) {
       this.paidMessageId = paidMessage.id
@@ -44,6 +47,7 @@ export class PaidMessageDto {
       this.numPurchases = paidMessage.num_purchases
       this.earningsPurchases = paidMessage.earnings_purchases
       this.createdAt = paidMessage.created_at
+      this.isWelcomeMesage = paidMessage.is_welcome_message
     }
   }
 }
