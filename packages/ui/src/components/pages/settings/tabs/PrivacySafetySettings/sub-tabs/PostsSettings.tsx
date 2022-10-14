@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -13,16 +13,12 @@ const defaultValues = {
 const PostsSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    formState: { isSubmitSuccessful }
-  } = useForm<typeof defaultValues>({
+  const { register, setValue, handleSubmit, watch } = useForm<
+    typeof defaultValues
+  >({
     defaultValues
   })
-
-  // const values = watch()
+  const [flipped, setFlipped] = useState<boolean>(false)
 
   const savePostsSettingsHandler = async (values: typeof defaultValues) => {
     await updateCreatorSettings(
@@ -31,7 +27,13 @@ const PostsSettings = () => {
         values.enableComments ? "allowed" : "disallowed"
       } for post`
     )
+    setFlipped(true)
   }
+
+  const values = watch("enableComments")
+  useEffect(() => {
+    setFlipped(false)
+  }, [values])
 
   useEffect(() => {
     if (creatorSettings) {
@@ -61,7 +63,7 @@ const PostsSettings = () => {
             variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
-            disabled={isLoading || isSubmitSuccessful}
+            disabled={isLoading || flipped}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

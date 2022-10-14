@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -16,42 +16,13 @@ const ProfileSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    setValue,
-    formState: { isSubmitSuccessful }
-  } = useForm<typeof defaultValues>({
+  const { register, handleSubmit, setValue } = useForm<typeof defaultValues>({
     defaultValues
   })
-  const values = watch()
-  const [isDisableBtn, setIsDisabledBtn] = useState(false)
 
   const saveProfileSettingsHandler = async (values: typeof defaultValues) => {
-    // const { fullPrivateProfile, ...countSettings } = values
-    // await privateProfileHandler(fullPrivateProfile)
     await updateCreatorSettings(values, "email notifications has been changed")
   }
-
-  useEffect(() => {
-    if (isLoading) {
-      setIsDisabledBtn(true)
-    }
-    // if (creatorSettings) {
-    //   const { showLikeCount, showPostCount } = creatorSettings
-
-    //   if (
-    //     // values.fullPrivateProfile === true &&
-    //     values.showLikeCount === showLikeCount &&
-    //     values.showPostCount === showPostCount
-    //   ) {
-    //     setIsDisabledBtn(true)
-    //   } else {
-    //     setIsDisabledBtn(false)
-    //   }
-    // }
-  }, [creatorSettings, isLoading, values])
 
   useEffect(() => {
     if (creatorSettings) {
@@ -124,7 +95,7 @@ const ProfileSettings = () => {
             variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
             tag="button"
-            disabled={isDisableBtn || isSubmitSuccessful}
+            disabled={isLoading}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

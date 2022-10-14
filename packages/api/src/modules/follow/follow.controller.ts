@@ -51,7 +51,7 @@ export class FollowController {
     responseDesc: 'A follow was created',
     role: RoleEnum.GENERAL,
   })
-  @Post(':creatorId')
+  @Post('follow/:creatorId')
   async followCreator(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
