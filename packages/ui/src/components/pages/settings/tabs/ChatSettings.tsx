@@ -44,9 +44,9 @@ const ChatSettings = () => {
     }
 
     if (values.showWelcomeMessageInput) {
-      data.welcomeMessage = values.welcomeMessage
+      data.welcomeMessage = true
     } else {
-      data.welcomeMessage = null
+      data.welcomeMessage = false
     }
 
     await updateCreatorSettings(
@@ -67,7 +67,7 @@ const ChatSettings = () => {
     }
 
     setValue("minimumTipAmount", creatorSettings?.minimumTipAmount || "")
-    setValue("welcomeMessage", creatorSettings?.welcomeMessage || "")
+    setValue("welcomeMessage", "")
   }, [creatorSettings, setValue])
 
   useEffect(() => {

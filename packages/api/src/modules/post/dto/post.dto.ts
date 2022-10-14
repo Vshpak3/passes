@@ -110,7 +110,6 @@ export class PostDto {
     contents?: ContentDto[],
   ) {
     if (post) {
-      // only content gets paywalled
       this.text = post.text
       this.numLikes = post.num_likes
       this.numComments = post.num_comments

@@ -15,13 +15,14 @@ export const NewPosts: React.FC = () => {
   ) => {
     const post: PostDto = {
       postId,
-      paywall: false,
+      purchasable: false,
       userId: profileInfo?.userId || "",
       username: profileUsername || "",
       displayName: profileInfo?.displayName ?? "",
       text: createPost.text,
       tags: createPost.tags,
-      content: undefined, // TODO: grab content through swr or endpoint
+      contents: [], // TODO: grab content through swr or endpoint
+      previewIndex: 0,
       passIds: createPost.passIds,
       numLikes: 0,
       numComments: 0,

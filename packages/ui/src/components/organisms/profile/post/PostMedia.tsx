@@ -7,13 +7,13 @@ import { PostContent } from "src/components/molecules/PostContent"
 import { KeyedMutator } from "swr"
 
 interface PostMediaProps {
-  content: PostDto["content"]
+  contents: PostDto["contents"]
   mutatePosts?: KeyedMutator<GetFeedResponseDto>
   setPostHandler?: () => void
 }
 
 export const PostMedia: FC<PostMediaProps> = ({
-  content,
+  contents,
   mutatePosts,
   setPostHandler
 }) => {
@@ -61,12 +61,12 @@ export const PostMedia: FC<PostMediaProps> = ({
 
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
-      {!!content?.length &&
+      {!!contents?.length &&
         (isLoading ? (
           <span>Please wait! Your content is being uploaded</span>
-        ) : content.length > 1 ? (
+        ) : contents.length > 1 ? (
           <div className="relative w-[100%]">
-            {activeSlideIndex !== content.length - 1 && (
+            {activeSlideIndex !== contents.length - 1 && (
               <button
                 className="absolute right-[15px] bottom-[50%] z-[3] translate-y-[50%]"
                 onClick={() => sliderRef.current?.slickNext()}
@@ -75,13 +75,13 @@ export const PostMedia: FC<PostMediaProps> = ({
               </button>
             )}
             <div className="absolute right-[10px] top-[14px] z-[2] w-fit rounded-[24px] bg-black/[0.15] px-[16px] py-[6px]">
-              {activeSlideIndex + 1}/{content.length}
+              {activeSlideIndex + 1}/{contents.length}
             </div>
             <Slider
               ref={(ref) => (sliderRef.current = ref)}
               {...sliderSettings}
             >
-              {content.map((c: ContentDto, index: number) => {
+              {contents.map((c: ContentDto, index: number) => {
                 return (
                   <PostContent
                     key={index}
@@ -104,7 +104,7 @@ export const PostMedia: FC<PostMediaProps> = ({
           </div>
         ) : (
           <PostContent
-            content={content[0]}
+            content={contents[0]}
             ref={imgRef}
             startLoadingHandler={startLoadingHandler}
             setPostHandler={setPostHandler}

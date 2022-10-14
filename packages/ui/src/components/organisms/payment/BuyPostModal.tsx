@@ -23,7 +23,7 @@ export const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const { externalPasses } = useExternalPasses()
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
-  const { images, video } = contentTypeCounter(post?.content)
+  const { images, video } = contentTypeCounter(post?.contents)
 
   const onSuccessHandler = () => {
     setPost(null)

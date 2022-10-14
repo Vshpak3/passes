@@ -69,7 +69,7 @@ export const EventTable: FC = () => {
               <th className="pb-1">Action</th>
             </tr>
             {data?.map((item: PostDto) => {
-              const { postId, price, text, scheduledAt, paywall } = item
+              const { postId, price, text, scheduledAt, purchasable } = item
 
               return (
                 <EventTableItem
@@ -80,7 +80,7 @@ export const EventTable: FC = () => {
                   scheduledAt={scheduledAt as Date}
                   data={item}
                   onDeleteEvent={handleOnDeleteEvent}
-                  postUnlocked={!paywall}
+                  postUnlocked={!purchasable}
                 />
               )
             })}

@@ -9,7 +9,7 @@ export class GetGalleryViewDto {
   unpaid: PostDto[]
 
   constructor(posts: PostDto[]) {
-    this.paid = posts.filter((post) => !post.paywall)
-    this.unpaid = posts.filter((post) => post.paywall)
+    this.paid = posts.filter((post) => !post.purchasable)
+    this.unpaid = posts.filter((post) => post.purchasable)
   }
 }

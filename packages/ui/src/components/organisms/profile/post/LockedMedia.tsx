@@ -12,14 +12,14 @@ interface LockedMediaProps {
 
 export const LockedMedia: React.FC<LockedMediaProps> = ({ post }) => {
   const { setPost } = useBuyPostModal()
-  const { content, price } = post
-  const { images, video } = contentTypeCounter(content)
+  const { contents, price } = post
+  const { images, video } = contentTypeCounter(contents)
 
   const showcaseImg = useMemo(() => {
-    if (content?.[0]?.contentType === "image") {
-      return content[0].signedUrl as string
+    if (contents?.[0]?.contentType === "image") {
+      return contents[0].signedUrl as string
     }
-  }, [content])
+  }, [contents])
 
   return (
     <div className="relative mt-3 min-h-[200px] p-16">

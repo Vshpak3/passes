@@ -30,7 +30,8 @@ export const InputMessage: FC<InputMessageProps> = ({ channelId }) => {
           text: message,
           contentIds: [],
           channelId,
-          tipAmount: 0
+          tipAmount: 0,
+          previewIndex: 0
         }
       })
 

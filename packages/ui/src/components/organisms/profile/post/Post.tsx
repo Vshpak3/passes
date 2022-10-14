@@ -50,7 +50,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
   ]
 
   const {
-    content,
+    contents,
     createdAt,
     displayName,
     earningsPurchases,
@@ -59,7 +59,7 @@ export const Post: React.FC<PostProps> = ({ post }) => {
     numComments,
     numLikes,
     numPurchases,
-    paywall,
+    purchasable,
     postId,
     text,
     totalTipAmount,
@@ -91,18 +91,18 @@ export const Post: React.FC<PostProps> = ({ post }) => {
         />
         <div className="cursor-pointer">
           <PostTextContent text={text} />
-          {!paywall && (
-            <PostMedia content={content} setPostHandler={setPostHandler} />
+          {!purchasable && (
+            <PostMedia contents={contents} setPostHandler={setPostHandler} />
           )}
         </div>
-        {paywall && <LockedMedia post={post} />}
+        {purchasable && <LockedMedia post={post} />}
         <PostEngagement
           isLiked={isLiked}
           isOwner={isOwner}
           numLikes={numLikes}
           numComments={numComments}
           postId={postId}
-          paywall={paywall}
+          purchasable={purchasable}
           username={username}
         />
       </FormContainer>

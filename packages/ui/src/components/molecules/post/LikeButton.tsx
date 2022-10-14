@@ -6,13 +6,13 @@ import { compactNumberFormatter } from "src/helpers/formatters"
 
 type LikeButtonProps = Pick<
   PostDto,
-  "isLiked" | "numLikes" | "paywall" | "postId"
+  "isLiked" | "numLikes" | "purchasable" | "postId"
 >
 
 export const LikeButton: React.FC<LikeButtonProps> = ({
   isLiked: initialIsLiked,
   numLikes: initialNumLikes,
-  paywall,
+  purchasable,
   postId
 }) => {
   const [isLiked, setIsLiked] = useState(initialIsLiked)
@@ -49,7 +49,7 @@ export const LikeButton: React.FC<LikeButtonProps> = ({
     <button
       type="button"
       aria-label="Toggle like"
-      disabled={paywall}
+      disabled={purchasable}
       onClick={toggleLike}
       className="flex cursor-pointer items-center gap-[5px] p-0"
     >

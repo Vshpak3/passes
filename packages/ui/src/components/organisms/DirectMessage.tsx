@@ -146,7 +146,8 @@ export const DirectMessage: FC<DirectMessagesProps> = ({
         passIds: [],
         contentIds: _contentIds || [],
         text: values?.text || "",
-        price: values.postPrice ? parseInt(values.postPrice) : 0
+        price: values.postPrice ? parseInt(values.postPrice) : 0,
+        previewIndex: 0 // TODO: add previewing FE
       }
     })
   }

@@ -34,7 +34,8 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
         contentIds: [],
         channelId,
         tipAmount: tip,
-        payinMethod
+        payinMethod,
+        previewIndex: 0
       }
     })
   }
@@ -46,7 +47,8 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
         contentIds: [],
         channelId,
         tipAmount: tip,
-        payinMethod
+        payinMethod,
+        previewIndex: 0
       }
     })
   }

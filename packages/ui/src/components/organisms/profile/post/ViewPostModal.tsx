@@ -28,7 +28,7 @@ export interface ViewPostModalProps {
 }
 
 export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
-  const { images, video } = contentTypeCounter(post.content)
+  const { images, video } = contentTypeCounter(post.contents)
   const { data } = useComments(post.postId)
   const { setPost: setBuyPost } = useBuyPostModal()
   const { setIsReportModalOpen } = useReportModal()
@@ -38,12 +38,12 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   // Set image if it exists in post
   useEffect(() => {
-    if (post.content?.[0]?.contentType === "image") {
-      setShowcaseImg(post.content[0].signedUrl as string)
+    if (post.contents?.[0]?.contentType === "image") {
+      setShowcaseImg(post.contents[0].signedUrl as string)
     }
-  }, [post.content])
+  }, [post.contents])
 
-  const postUnlocked = !post.paywall
+  const postUnlocked = !post.purchasable
 
   const dropdownOptions: DropdownOption[] = [
     {
@@ -75,7 +75,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     numLikes,
     numPurchases,
     numComments,
-    paywall,
+    purchasable,
     postId,
     totalTipAmount,
     username
@@ -128,7 +128,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               <LikeButton
                 isLiked={isLiked}
                 numLikes={numLikes}
-                paywall={paywall}
+                purchasable={purchasable}
                 postId={postId}
               />
               <div className="flex items-center space-x-[5px]">

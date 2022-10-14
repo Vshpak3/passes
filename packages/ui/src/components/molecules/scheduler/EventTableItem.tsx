@@ -67,10 +67,10 @@ export const EventTableItem: FC<EventTableItemProps> = ({
 
   // Set image if it exists in post
   useEffect(() => {
-    if (data.content?.[0]?.contentType === "image") {
-      setShowcaseImg(data.content[0].signedUrl as string)
+    if (data.contents?.[0]?.contentType === "image") {
+      setShowcaseImg(data.contents[0].signedUrl as string)
     }
-  }, [data.content])
+  }, [data.contents])
 
   const generateButtonName = useCallback(() => {
     if (postUnlocked) {

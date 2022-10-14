@@ -140,7 +140,8 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
           contentIds: contentIdsToUpload,
           channelId,
           tipAmount: 0,
-          price: postPrice == null ? 0 : parseInt(postPrice)
+          price: postPrice == null ? 0 : parseInt(postPrice),
+          previewIndex: 0 // TODO: add previewing FE
         }
       })
       setLoading(false)

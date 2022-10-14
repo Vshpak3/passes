@@ -21,7 +21,7 @@ type PostEngagementProps = Pick<
   | "isLiked"
   | "isOwner"
   | "postId"
-  | "paywall"
+  | "purchasable"
   | "username"
 >
 
@@ -31,7 +31,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({
   isLiked,
   isOwner,
   postId,
-  paywall,
+  purchasable,
   username
 }) => {
   const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
@@ -60,13 +60,13 @@ export const PostEngagement: FC<PostEngagementProps> = ({
           <LikeButton
             isLiked={isLiked}
             numLikes={numLikes}
-            paywall={paywall}
+            purchasable={purchasable}
             postId={postId}
           />
           <button
             type="button"
             aria-label="Toggle comments"
-            disabled={paywall}
+            disabled={purchasable}
             onClick={() => setShowCommentSection((prev) => !prev)}
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >

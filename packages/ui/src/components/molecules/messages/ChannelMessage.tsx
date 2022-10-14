@@ -75,7 +75,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 </div>
                 <div className="pt-2">
                   <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
-                    {messageContent[0].createdAt.toLocaleString("en-US", {
+                    {messageContent[0].createdAt?.toLocaleString("en-US", {
                       hour: "numeric",
                       minute: "numeric",
                       hour12: true

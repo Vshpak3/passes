@@ -12,7 +12,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   selectedItems,
   setSelectedItems
 }) => {
-  const date = content.createdAt.toDateString().slice(5, 11)
+  const date = content.createdAt?.toDateString().slice(5, 11)
 
   const isSelected = selectedItems.includes(content.contentId)
 
