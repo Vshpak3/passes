@@ -243,6 +243,9 @@ export class FollowService {
   }
 
   async blockFollower(creatorId: string, followerId: string): Promise<void> {
+    if (creatorId === followerId) {
+      throw new BadRequestException('You cannot block yourself')
+    }
     const query = this.dbWriter<FollowBlockEntity>(
       FollowBlockEntity.table,
     ).insert({
@@ -262,6 +265,9 @@ export class FollowService {
   }
 
   async unblockFollower(creatorId: string, followerId: string): Promise<void> {
+    if (creatorId === followerId) {
+      throw new BadRequestException('You cannot unblock yourself')
+    }
     await this.dbWriter<FollowBlockEntity>(FollowBlockEntity.table)
       .where(`${FollowBlockEntity.table}.creator_id`, creatorId)
       .where(`${FollowBlockEntity.table}.follower_id`, followerId)
