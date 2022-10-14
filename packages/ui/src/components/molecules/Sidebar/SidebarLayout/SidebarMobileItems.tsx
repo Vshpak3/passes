@@ -7,24 +7,25 @@ import { FC, Fragment } from "react"
 
 import { SidebarNavigation } from "./types"
 
-interface SidebarMobileChildItemProps {
+interface SidebarMobileItemBaseProps {
+  item: SidebarNavigation
   active: string
-  subItem: SidebarNavigation
 }
 
-export const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
+interface SidebarMobileItemProps extends SidebarMobileItemBaseProps {
+  onClick: () => void
+}
+
+export const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
   active,
-  subItem
+  item,
+  onClick
 }) => {
-  const isActive = subItem.id === active
+  const isActive = item.id === active
   return (
-    <Link
-      key={subItem.name}
-      as={subItem.href}
-      href={subItem.href}
-      // className={classNames(isActive ? "" : "", "")}
-    >
+    <Link key={item.name} as={item.href} href={item.href}>
       <span
+        onClick={onClick}
         className={classNames(
           isActive
             ? "rounded-[56px] bg-[#FFFEFF]/10 text-white"
@@ -32,18 +33,13 @@ export const SidebarMobileChildItem: FC<SidebarMobileChildItemProps> = ({
           "group group ml-5 flex flex cursor-pointer cursor-pointer items-center items-center py-[10px] px-[20px] text-base font-semibold tracking-[0.003em] text-white"
         )}
       >
-        {subItem.name}
+        {item.name}
       </span>
     </Link>
   )
 }
 
-interface SidebarMobileItemProps {
-  item: SidebarNavigation
-  active: string
-}
-
-export const SidebarMobileItemInner: React.FC<SidebarMobileItemProps> = ({
+export const SidebarMobileItemInner: React.FC<SidebarMobileItemBaseProps> = ({
   item,
   active
 }) => (
@@ -74,7 +70,8 @@ export const SidebarMobileItemInner: React.FC<SidebarMobileItemProps> = ({
 
 export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({
   item,
-  active
+  active,
+  onClick
 }) => {
   const router = useRouter()
   return (
@@ -106,8 +103,9 @@ export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({
               {item.children &&
                 item.children.map((subItem: any) => (
                   <SidebarMobileChildItem
+                    onClick={onClick}
                     key={subItem.id}
-                    subItem={subItem}
+                    item={subItem}
                     active={active}
                   />
                 ))}
@@ -121,10 +119,12 @@ export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({
 
 export const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
   item,
-  active
+  active,
+  onClick
 }) => {
   return (
     <span
+      onClick={onClick}
       key={item.id}
       className={classNames(
         item.id === active

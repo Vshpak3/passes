@@ -1,5 +1,6 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
-import { FC, useState } from "react"
+import { createElement, FC, useState } from "react"
+import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { MobileNavbar } from "src/components/molecules/Sidebar/SidebarLayout/MobileNavbar"
 import { SidebarMobileContainer } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileContainer"
 import {
@@ -8,24 +9,37 @@ import {
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
+import { isOver18 } from "src/helpers/user"
+import { useUser } from "src/hooks/useUser"
 
-interface SidebarMobileProps {
-  active: string
-  navigation: SidebarNavigation[]
-}
+import { SidebarDefaultProps } from "./types"
 
-export const SidebarMobile: FC<SidebarMobileProps> = ({
+export const SidebarMobile: FC<SidebarDefaultProps> = ({
   active,
-  navigation
+  navigation,
+  newPostButton
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const toggleSidebar = () => setMobileSidebarOpen((s) => !s)
+  const { user } = useUser()
+  const toggleSidebar = () => {
+    setMobileSidebarOpen(!mobileSidebarOpen)
+  }
 
   const renderSidebarItems = navigation.map((item: SidebarNavigation) => {
     const child = !item.children ? (
-      <SidebarMobileItem key={item.id} item={item} active={active} />
+      <SidebarMobileItem
+        onClick={toggleSidebar}
+        key={item.id}
+        item={item}
+        active={active}
+      />
     ) : (
-      <SidebarMobileDropdown key={item.id} item={item} active={active} />
+      <SidebarMobileDropdown
+        onClick={toggleSidebar}
+        key={item.id}
+        item={item}
+        active={active}
+      />
     )
 
     return (
@@ -47,8 +61,18 @@ export const SidebarMobile: FC<SidebarMobileProps> = ({
         toggleSidebar={toggleSidebar}
       >
         {renderSidebarItems}
+        {user ? (
+          <AuthWrapper>
+            {user?.isCreator ? (
+              createElement(newPostButton, { isMobile: true })
+            ) : isOver18(user) ? (
+              <BecomeCreatorButton />
+            ) : null}
+          </AuthWrapper>
+        ) : null}
         <AuthWrapper>
           <SidebarMobileItem
+            onClick={toggleSidebar}
             key={`sidebar-logout`}
             item={{
               name: "Logout",

@@ -21,9 +21,9 @@ export const SidebarChildItem: FC<SidebarChildItemProps> = ({
       <span
         className={classNames(
           isActive
-            ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 py-[10px] px-[26px]"
+            ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 px-[25px]"
             : "text-[#eeedef]/50 hover:text-white",
-          "group  mt-[10px] mb-[19px] hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          "group hidden cursor-pointer items-center py-[10px] text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         {subItem.name}
@@ -45,7 +45,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
     <Disclosure
       as={Fragment}
       key={item.name}
-      defaultOpen={router.asPath.startsWith(`/${item.id}/`)}
+      defaultOpen={router?.asPath.startsWith(`/${item.id}/`)}
     >
       {({ open }) => (
         <Fragment>

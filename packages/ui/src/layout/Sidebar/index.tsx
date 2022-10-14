@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import { useEffect, useState } from "react"
@@ -6,6 +7,11 @@ import { SidebarMobile } from "src/components/organisms/sidebar/SideBarMobile"
 import { useUser } from "src/hooks/useUser"
 
 import { navigation as _navigation } from "./sidebarData"
+
+const NewPostButton = dynamic(
+  () => import("src/components/molecules/Sidebar/SidebarButtons/NewPostButton"),
+  { ssr: false }
+)
 
 export const Sidebar = () => {
   const router = useRouter()
@@ -58,8 +64,16 @@ export const Sidebar = () => {
 
   return (
     <>
-      <SidebarDefault navigation={navigation} active={active} />
-      <SidebarMobile navigation={navigation} active={active} />
+      <SidebarDefault
+        newPostButton={NewPostButton}
+        navigation={navigation}
+        active={active}
+      />
+      <SidebarMobile
+        newPostButton={NewPostButton}
+        navigation={navigation}
+        active={active}
+      />
     </>
   )
 }
