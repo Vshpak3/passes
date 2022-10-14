@@ -126,7 +126,14 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
     setLoading(true)
     let contentIdsToUpload: any[] = []
     if (files.length > 0) {
-      const content = await new ContentService().uploadContent(files)
+      const content = await new ContentService().uploadContent(
+        files,
+        undefined,
+        {
+          inPost: false,
+          inMessage: true
+        }
+      )
       const uploadedContentIds = content.map((c: any) => c.id)
       contentIdsToUpload = [...uploadedContentIds, ...contentIds]
     }
