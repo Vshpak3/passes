@@ -24,7 +24,7 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentService } from '../content/content.service'
-import { ContentDto } from '../content/dto/content.dto'
+import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { ContentTypeEnum } from '../content/enums/content-type.enum'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
@@ -58,7 +58,6 @@ import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 // import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
-import { PostContentEntity } from './entities/post-content.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
@@ -121,14 +120,14 @@ export class PostService {
       )
     }
     await this.passService.validatePassIds(userId, createPostDto.passIds)
-    await this.contentService.validateContentIds(
+    const contents = await this.contentService.validateContentIds(
       userId,
       createPostDto.contentIds,
     )
     this.checkScheduledAt(createPostDto.scheduledAt)
     await this.dbWriter
       .transaction(async (trx) => {
-        const post = {
+        await trx<PostEntity>(PostEntity.table).insert({
           id: postId,
           user_id: userId,
           text: createPostDto.text,
@@ -137,26 +136,9 @@ export class PostService {
           expires_at: createPostDto.expiresAt,
           scheduled_at: createPostDto.scheduledAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
-        }
-
-        await trx<PostEntity>(PostEntity.table).insert(post)
-
-        const postContent = createPostDto.contentIds.map(function (
-          contentId,
-          index,
-        ) {
-          return {
-            content_id: contentId,
-            post_id: postId,
-            index,
-          }
+          contents: JSON.stringify(contents),
         })
 
-        if (postContent.length) {
-          await trx<PostContentEntity>(PostContentEntity.table).insert(
-            postContent,
-          )
-        }
         await trx<ContentEntity>(ContentEntity.table)
           .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
@@ -324,75 +306,23 @@ export class PostService {
       passAccesses.map((passAccess) => passAccess.post_id),
     )
 
-    const accessiblePosts = posts.filter(
-      (post) =>
-        post.access || // single post purchase
-        postsFromPass.has(post.id) || // owns pass that gives access
-        post.user_id === userId || // user made post
-        !post.price || // no price on post
-        post.price === 0, // price of post is 0
-    )
-
-    const accessiblePostIds = new Set(accessiblePosts.map((post) => post.id))
-
-    const contentLookup = await this.getContentLookupForPosts(
-      posts.map((post) => post.id),
-      accessiblePostIds as Set<string>,
-    )
-
     return posts.map(
       (post) =>
         new PostDto(
           post,
-          !accessiblePostIds.has(post.id) &&
-            contentLookup[post.id] !== undefined,
           post.user_id === userId,
-          contentLookup[post.id],
+          this.contentService.getContentDtosFromBare(
+            JSON.parse(post.contents),
+            post.access || // single post purchase
+              postsFromPass.has(post.id) || // owns pass that gives access
+              post.user_id === userId || // user made post
+              !post.price || // no price on post
+              post.price === 0, // price of post is 0
+            post.user_id,
+            post.preview_index,
+          ),
         ),
     )
-  }
-
-  private async getContentLookupForPosts(
-    postIds: string[],
-    accessiblePostIds: Set<string>,
-  ): Promise<Record<string, ContentDto[]>> {
-    const postContents = await this.dbReader<PostContentEntity>(
-      PostContentEntity.table,
-    )
-      .innerJoin(
-        ContentEntity.table,
-        `${ContentEntity.table}.id`,
-        `${PostContentEntity.table}.content_id`,
-      )
-      .whereIn(`${PostContentEntity.table}.post_id`, postIds)
-      .select([
-        `${PostContentEntity.table}.post_id`,
-        `${ContentEntity.table}.*`,
-      ])
-    const map = postContents.reduce(async (map, postContent) => {
-      map = await map
-
-      if (!map[postContent.post_id]) {
-        map[postContent.post_id] = []
-      }
-      map[postContent.post_id].push(
-        new ContentDto(
-          postContent,
-          accessiblePostIds.has(postContent.post_id)
-            ? await this.contentService.preSignMediaContent(
-                postContent.user_id,
-                postContent.id,
-                postContent.content_type,
-              )
-            : undefined,
-        ),
-      )
-      return map
-    }, {})
-    Object.keys(map).forEach((key) =>
-      map[key].sort((a, b) => a.order - b.order),
-    )
-    return map
   }
 
   async updatePost(
@@ -422,35 +352,6 @@ export class PostService {
       })
     return updated === 1
   }
-
-  // async updatePostContent(
-  //   userId: string,
-  //   postId: string,
-  //   updatePostDto: UpdatePostContentRequestDto,
-  // ) {
-  //   await this.dbWriter.transaction(async (trx) => {
-  //     await trx<PostContentEntity>(PostContentEntity.table)
-  //       .where({ post_id: postId })
-  //       .delete()
-  //     const postContent = updatePostDto.contentIds.map(function (
-  //       contentId,
-  //       index,
-  //     ) {
-  //       return {
-  //         content_id: contentId,
-  //         post_id: postId,
-  //         index,
-  //       }
-  //     })
-
-  //     if (postContent.length) {
-  //       await trx<PostContentEntity>(PostContentEntity.table).insert(
-  //         postContent,
-  //       )
-  //     }
-  //   })
-  //   return true
-  // }
 
   async removePost(userId: string, postId: string) {
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
@@ -484,18 +385,21 @@ export class PostService {
         .where({ id: postId })
         .increment('earnings_purchases', earnings)
 
-      const contentIds = (
-        await trx<PostContentEntity>(PostContentEntity.table)
-          .where({ post_id: postId })
-          .select('content_id')
-      ).map((postContent) => postContent.content_id)
+      const contents: ContentBareDto[] = JSON.parse(
+        (
+          await trx<PostEntity>(PostEntity.table)
+            .where({ id: postId })
+            .select('contents')
+            .first()
+        )?.contents ?? '[]',
+      )
 
       await Promise.all(
-        contentIds.map(async (contentId) => {
+        contents.map(async (content) => {
           await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
             .insert({
               user_id: userId,
-              content_id: contentId,
+              content_id: content.contentId,
             })
             .onConflict()
             .ignore()
@@ -816,14 +720,17 @@ export class PostService {
       )
     }
 
-    const contentIds = await this.dbReader<PostContentEntity>(
-      PostContentEntity.table,
-    )
-      .where({ post_id: postId })
-      .select('content_id')
+    const contentIds = (
+      await this.dbReader<PostEntity>(PostEntity.table)
+        .where({ id: postId })
+        .select('content_ids')
+        .first()
+    )?.content_ids
 
     // TODO: join on content entity to get type
-
+    if (!contentIds) {
+      return true
+    }
     const results = await Promise.all(
       contentIds.map(async (contentId) => {
         return await this.contentService.preSignMediaContent(

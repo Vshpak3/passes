@@ -40,6 +40,12 @@ export interface CreatePostRequestDto {
     tags: Array<TagDto>;
     /**
      * 
+     * @type {number}
+     * @memberof CreatePostRequestDto
+     */
+    previewIndex: number;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof CreatePostRequestDto
      */
@@ -77,6 +83,7 @@ export function instanceOfCreatePostRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "passIds" in value;
     isInstance = isInstance && "contentIds" in value;
 
@@ -95,6 +102,7 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
+        'previewIndex': json['previewIndex'],
         'passIds': json['passIds'],
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (json['scheduledAt'] === null ? null : new Date(json['scheduledAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
@@ -114,6 +122,7 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
+        'previewIndex': value.previewIndex,
         'passIds': value.passIds,
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt === null ? null : value.scheduledAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),

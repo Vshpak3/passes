@@ -42,6 +42,7 @@ import { PaymentService } from '../payment/payment.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChannelMemberDto } from './dto/channel-member.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
+import { CreateWelcomeMessageRequestDto } from './dto/create-welcome-message.dto'
 import {
   GetChannelRequestDto,
   GetChannelsRequestDto,
@@ -275,31 +276,50 @@ export class MessagesService {
     contentIds: string[],
     price: number,
     sentTo: number,
-  ): Promise<string> {
-    await this.contentService.validateContentIds(userId, contentIds)
+    previewIndex: number,
+    isWelcomeMessage?: boolean,
+  ): Promise<{ paidMessageId?: string; contents: string }> {
+    const contents = await this.contentService.validateContentIds(
+      userId,
+      contentIds,
+    )
     const data = {
       id: v4(),
       creator_id: userId,
       text,
       price,
-      content_ids: JSON.stringify(contentIds),
+      contents: JSON.stringify(contents),
       sent_to: sentTo,
+      preview_index: previewIndex,
+      is_welcome_message: isWelcomeMessage,
     }
-    await this.dbWriter.transaction(async (trx) => {
-      await trx<PaidMessageEntity>(PaidMessageEntity.table).insert(data)
-      await trx<ContentEntity>(ContentEntity.table)
-        .update({ in_message: true })
-        .whereIn('id', contentIds)
-    })
-    return data.id
+    if (price) {
+      await this.dbWriter.transaction(async (trx) => {
+        await trx<PaidMessageEntity>(PaidMessageEntity.table).insert(data)
+        await trx<ContentEntity>(ContentEntity.table)
+          .update({ in_message: true })
+          .whereIn('id', contentIds)
+      })
+    }
+    return {
+      paidMessageId: price ? data.id : undefined,
+      contents: data.contents,
+    }
   }
 
   async createBatchMessage(
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
-    const { includeListIds, excludeListIds, passIds, contentIds, price, text } =
-      createBatchMessageDto
+    const {
+      includeListIds,
+      excludeListIds,
+      passIds,
+      contentIds,
+      price,
+      text,
+      previewIndex,
+    } = createBatchMessageDto
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
@@ -349,48 +369,32 @@ export class MessagesService {
     const finalUserIds = userIds.filter(
       (userId) => !removeUserIds.has(userId) && !exclude.has(userId),
     )
-    const paidMessageId = await this.createPaidMessage(
+    const { paidMessageId, contents } = await this.createPaidMessage(
       userId,
       text,
       contentIds,
-      price ? 0 : (price as number),
+      price ?? 0,
       finalUserIds.length,
+      previewIndex,
     )
-    await this.batchSendMessage(
-      finalUserIds,
-      paidMessageId,
-      userId,
-      text,
-      price,
-      contentIds,
-    )
-  }
 
-  async batchSendMessage(
-    userIds: string[],
-    paidMessageId: string,
-    creatorId: string,
-    text: string,
-    price?: number,
-    contentIds?: string[],
-  ): Promise<void> {
     await Promise.all(
-      userIds.map(async (userId) => {
+      finalUserIds.map(async (otherUserId) => {
         const channelId = (
           await this.createChannel(userId, {
-            userId: creatorId as string,
+            userId: otherUserId,
           })
         ).channelId
         try {
           await this.createMessage(
-            creatorId,
+            userId,
             text,
             channelId,
             0,
             false,
+            contents,
             price,
             paidMessageId,
-            contentIds,
           )
         } catch (err) {
           this.logger.error(
@@ -406,7 +410,8 @@ export class MessagesService {
     userId: string,
     sendMessageDto: SendMessageRequestDto,
   ) {
-    const { text, contentIds, channelId, tipAmount, price } = sendMessageDto
+    const { text, contentIds, channelId, tipAmount, price, previewIndex } =
+      sendMessageDto
     if (contentIds.length == 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
@@ -430,12 +435,16 @@ export class MessagesService {
       throw new MessageSendError(blocked)
     }
     if (amount !== 0) {
+      if (price) {
+        throw new MessageSendError('can not send priced message with tip')
+      }
       const callbackInput: MessagePayinCallbackInput = {
         userId,
         text: text,
         channelId: channelId,
-        contentIds: contentIds,
-        price: price,
+        contents: JSON.stringify(
+          this.contentService.validateContentIds(userId, contentIds),
+        ),
       }
       return await this.payService.registerPayin({
         userId,
@@ -445,25 +454,23 @@ export class MessagesService {
         creatorId: channelMember.other_user_id,
       })
     } else {
-      let paidMessageId: string | undefined = undefined
-      if (price && price > 0) {
-        paidMessageId = await this.createPaidMessage(
-          userId,
-          text,
-          contentIds,
-          price ? 0 : (price as number),
-          1,
-        )
-      }
+      const { paidMessageId, contents } = await this.createPaidMessage(
+        userId,
+        text,
+        contentIds,
+        price ?? 0,
+        1,
+        previewIndex,
+      )
       await this.createMessage(
         userId,
         text,
         channelId,
         tipAmount,
         false,
+        contents,
         price,
         paidMessageId,
-        contentIds,
       )
       await this.removeFreeMessage(userId, sendMessageDto.channelId)
       return new RegisterPayinResponseDto()
@@ -670,9 +677,9 @@ export class MessagesService {
     channelId: string,
     tipAmount: number,
     pending: boolean,
+    contents: string,
     price?: number,
     paidMessageId?: string,
-    contentIds?: string[],
   ): Promise<string> {
     const data = {
       id: v4(),
@@ -683,8 +690,9 @@ export class MessagesService {
       pending,
       price: price ?? 0,
       paid_message_id: paidMessageId ?? null,
-      content_ids: JSON.stringify(contentIds ? contentIds : []),
-      has_content: (contentIds?.length ?? 0) > 0,
+      contents,
+      // eslint-disable-next-line no-magic-numbers
+      has_content: contents.length > 8,
     }
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
@@ -978,13 +986,8 @@ export class MessagesService {
     }
 
     const messages = await query
-    const contents = await this.getContentLookupForMessages(
-      messages.map((message) => message.sender_id),
-      messages.map((message) => JSON.parse(message.content_ids)),
-      messages.map((message) => message.paid || message.sender_id == userId),
-    )
-    return messages.map((message, ind) => {
-      return new MessageDto(message, contents[ind])
+    return messages.map((message) => {
+      return new MessageDto(message, this.getContents(message))
     })
   }
 
@@ -999,47 +1002,15 @@ export class MessagesService {
       .andWhere(`${ChannelMemberEntity.table}.user_id`, userId)
       .select(`${MessageEntity.table}.*`)
       .first()
-    return new MessageDto(
-      message,
-      await this.getContentLookupForMessages(
-        [message.sender_id],
-        [JSON.parse(message.contentIds)],
-        [message.paid || message.sender_id == userId],
-      )[0],
-    )
+    return new MessageDto(message, this.getContents(message))
   }
 
-  private async getContentLookupForMessages(
-    senderIds: string[],
-    contentIds: string[][],
-    paid: boolean[],
-  ): Promise<ContentDto[][]> {
-    const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
-      .whereIn(
-        'id',
-        contentIds.reduce((acc, ids) => acc.concat(ids), []),
-      )
-      .select('*')
-    const contentMap = {}
-    contents.forEach((content) => (contentMap[content.id] = content))
-
-    return await Promise.all(
-      contentIds.map(async (contentIdsInner, ind) => {
-        return await Promise.all(
-          contentIdsInner.map(async (contentId) => {
-            return new ContentDto(
-              contentMap[contentId],
-              paid[ind]
-                ? await this.contentService.preSignMediaContent(
-                    contentMap[contentId].user_id,
-                    contentMap[contentId].id,
-                    contentMap[contentId].content_type,
-                  )
-                : undefined,
-            )
-          }),
-        )
-      }),
+  getContents(message: MessageEntity): ContentDto[] {
+    return this.contentService.getContentDtosFromBare(
+      JSON.parse(message.contents),
+      message.paid && !!message.price,
+      message.sender_id,
+      message.preview_index,
     )
   }
 
@@ -1113,5 +1084,37 @@ export class MessagesService {
     )
     const paidMessages = await query
     return paidMessages.map((paidMessage) => new PaidMessageDto(paidMessage))
+  }
+
+  async getWelcomeMessage(userId: string) {
+    const welcomeMessage = await this.dbReader<PaidMessageEntity>(
+      PaidMessageEntity.table,
+    )
+      .where({
+        is_welcome_message: true,
+        creator_id: userId,
+      })
+      .orderBy('created_at', 'desc')
+      .limit(1)
+      .first()
+    return new PaidMessageDto(welcomeMessage)
+  }
+
+  async createWelcomeMessage(
+    userId: string,
+    createWelcomeMessageRequestDto: CreateWelcomeMessageRequestDto,
+  ) {
+    const { text, contentIds, price, previewIndex } =
+      createWelcomeMessageRequestDto
+    await this.createPaidMessage(
+      userId,
+      text,
+      contentIds,
+      price ?? 0,
+      0,
+      previewIndex,
+      true,
+    )
+    return true
   }
 }

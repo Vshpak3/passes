@@ -1,6 +1,7 @@
 import { Entity, Index, ManyToOne, Property, types } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { CONTENTS_LENGTH } from '../../content/constants/schema'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import {
@@ -19,6 +20,12 @@ export class PostEntity extends BaseEntity {
 
   @Property({ length: POST_TAGS_LENGTH, default: '[]' })
   tags: string
+
+  @Property({ length: CONTENTS_LENGTH, default: '[]' })
+  contents: string
+
+  @Property({ default: 0 })
+  preview_index: number
 
   @Index()
   @Property({ default: 0 })

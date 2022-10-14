@@ -36,6 +36,12 @@ export interface CreateBatchMessageRequestDto {
      * @type {number}
      * @memberof CreateBatchMessageRequestDto
      */
+    previewIndex: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateBatchMessageRequestDto
+     */
     price?: number;
     /**
      * 
@@ -64,6 +70,7 @@ export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "contentIds" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "includeListIds" in value;
     isInstance = isInstance && "excludeListIds" in value;
     isInstance = isInstance && "passIds" in value;
@@ -83,6 +90,7 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
         
         'text': json['text'],
         'contentIds': json['contentIds'],
+        'previewIndex': json['previewIndex'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'includeListIds': json['includeListIds'],
         'excludeListIds': json['excludeListIds'],
@@ -101,6 +109,7 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
         
         'text': value.text,
         'contentIds': value.contentIds,
+        'previewIndex': value.previewIndex,
         'price': value.price,
         'includeListIds': value.includeListIds,
         'excludeListIds': value.excludeListIds,

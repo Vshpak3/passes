@@ -33,10 +33,10 @@ export interface UpdateCreatorSettingsRequestDto {
     payoutFrequency?: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof UpdateCreatorSettingsRequestDto
      */
-    welcomeMessage?: string | null;
+    welcomeMessage?: boolean;
     /**
      * 
      * @type {boolean}

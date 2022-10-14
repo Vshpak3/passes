@@ -15,7 +15,9 @@
 
 import * as runtime from '../runtime';
 import type {
+  BooleanResponseDto,
   CreateBatchMessageRequestDto,
+  CreateWelcomeMessageRequestDto,
   GetChannelRequestDto,
   GetChannelResponseDto,
   GetChannelsRequestDto,
@@ -28,6 +30,7 @@ import type {
   GetPaidMessageHistoryResponseDto,
   GetPaidMessagesRequestDto,
   GetPaidMessagesResponseDto,
+  GetWelcomeMessageResponseDto,
   PayinDataDto,
   PurchaseMessageRequestDto,
   RegisterPayinResponseDto,
@@ -35,8 +38,12 @@ import type {
   UpdateChannelSettingsRequestDto,
 } from '../models';
 import {
+    BooleanResponseDtoFromJSON,
+    BooleanResponseDtoToJSON,
     CreateBatchMessageRequestDtoFromJSON,
     CreateBatchMessageRequestDtoToJSON,
+    CreateWelcomeMessageRequestDtoFromJSON,
+    CreateWelcomeMessageRequestDtoToJSON,
     GetChannelRequestDtoFromJSON,
     GetChannelRequestDtoToJSON,
     GetChannelResponseDtoFromJSON,
@@ -61,6 +68,8 @@ import {
     GetPaidMessagesRequestDtoToJSON,
     GetPaidMessagesResponseDtoFromJSON,
     GetPaidMessagesResponseDtoToJSON,
+    GetWelcomeMessageResponseDtoFromJSON,
+    GetWelcomeMessageResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
     PurchaseMessageRequestDtoFromJSON,
@@ -72,6 +81,10 @@ import {
     UpdateChannelSettingsRequestDtoFromJSON,
     UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
+
+export interface CreateWelcomeMessageRequest {
+    createWelcomeMessageRequestDto: CreateWelcomeMessageRequestDto;
+}
 
 export interface GetChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
@@ -137,6 +150,44 @@ export interface UpdateChannelSettingsRequest {
  * 
  */
 export class MessagesApi extends runtime.BaseAPI {
+
+    /**
+     * Create welcome message
+     */
+    async createWelcomeMessageRaw(requestParameters: CreateWelcomeMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.createWelcomeMessageRequestDto === null || requestParameters.createWelcomeMessageRequestDto === undefined) {
+            throw new runtime.RequiredError('createWelcomeMessageRequestDto','Required parameter requestParameters.createWelcomeMessageRequestDto was null or undefined when calling createWelcomeMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/welcome-message`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateWelcomeMessageRequestDtoToJSON(requestParameters.createWelcomeMessageRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Create welcome message
+     */
+    async createWelcomeMessage(requestParameters: CreateWelcomeMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.createWelcomeMessageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Gets a channel
@@ -433,6 +484,37 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getPaidMessages(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
         const response = await this.getPaidMessagesRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get welcome message
+     */
+    async getWelcomeMessageRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWelcomeMessageResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/welcome-message`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetWelcomeMessageResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get welcome message
+     */
+    async getWelcomeMessage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWelcomeMessageResponseDto> {
+        const response = await this.getWelcomeMessageRaw(initOverrides);
         return await response.value();
     }
 

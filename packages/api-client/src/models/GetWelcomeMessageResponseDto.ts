@@ -23,63 +23,63 @@ import {
 /**
  * 
  * @export
- * @interface PaidMessageDto
+ * @interface GetWelcomeMessageResponseDto
  */
-export interface PaidMessageDto {
+export interface GetWelcomeMessageResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     paidMessageId: string;
     /**
      * 
      * @type {string}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     creatorId: string;
     /**
      * 
      * @type {string}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     text?: string;
     /**
      * 
      * @type {number}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     price: number;
     /**
      * 
      * @type {Array<ContentBareDto>}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     bareContents: Array<ContentBareDto>;
     /**
      * 
      * @type {number}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     numPurchases: number;
     /**
      * 
      * @type {number}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     earningsPurchases: number;
     /**
      * 
      * @type {Date}
-     * @memberof PaidMessageDto
+     * @memberof GetWelcomeMessageResponseDto
      */
     createdAt: Date;
 }
 
 /**
- * Check if a given object implements the PaidMessageDto interface.
+ * Check if a given object implements the GetWelcomeMessageResponseDto interface.
  */
-export function instanceOfPaidMessageDto(value: object): boolean {
+export function instanceOfGetWelcomeMessageResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "paidMessageId" in value;
     isInstance = isInstance && "creatorId" in value;
@@ -92,11 +92,11 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     return isInstance;
 }
 
-export function PaidMessageDtoFromJSON(json: any): PaidMessageDto {
-    return PaidMessageDtoFromJSONTyped(json, false);
+export function GetWelcomeMessageResponseDtoFromJSON(json: any): GetWelcomeMessageResponseDto {
+    return GetWelcomeMessageResponseDtoFromJSONTyped(json, false);
 }
 
-export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): PaidMessageDto {
+export function GetWelcomeMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetWelcomeMessageResponseDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -113,7 +113,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
     };
 }
 
-export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
+export function GetWelcomeMessageResponseDtoToJSON(value?: GetWelcomeMessageResponseDto | null): any {
     if (value === undefined) {
         return undefined;
     }

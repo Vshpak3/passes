@@ -1,7 +1,8 @@
 import { Length, Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { CONTENT_IDS_LENGTH, MESSAGE_LENGTH } from '../constants/schema'
+import { ContentBareDto } from '../../content/dto/content-bare'
+import { MESSAGE_LENGTH } from '../constants/schema'
 import { PaidMessageEntity } from '../entities/paid-message.entity'
 
 export class PaidMessageDto {
@@ -19,9 +20,8 @@ export class PaidMessageDto {
   @DtoProperty({ type: 'currency' })
   price: number
 
-  @Length(1, CONTENT_IDS_LENGTH)
-  @DtoProperty({ type: 'uuid[]' })
-  contentIds: string
+  @DtoProperty({ custom_type: [ContentBareDto] })
+  bareContents: ContentBareDto[]
 
   @Min(0)
   @DtoProperty({ type: 'number' })
@@ -40,7 +40,7 @@ export class PaidMessageDto {
       this.creatorId = paidMessage.creator_id
       this.text = paidMessage.text
       this.price = paidMessage.price
-      this.contentIds = paidMessage.content_ids
+      this.bareContents = JSON.parse(paidMessage.contents)
       this.numPurchases = paidMessage.num_purchases
       this.earningsPurchases = paidMessage.earnings_purchases
       this.createdAt = paidMessage.created_at

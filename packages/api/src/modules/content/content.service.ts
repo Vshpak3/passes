@@ -22,6 +22,7 @@ import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
+import { ContentBareDto } from './dto/content-bare'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
@@ -154,7 +155,7 @@ export class ContentService {
     )
   }
 
-  async preSignMediaContent(
+  preSignMediaContent(
     userId: string,
     contentId: string,
     contentType: ContentTypeEnum,
@@ -164,7 +165,7 @@ export class ContentService {
     )
   }
 
-  async preSignMediaContentThumbnail(userId: string, contentId: string) {
+  preSignMediaContentThumbnail(userId: string, contentId: string) {
     return this.s3contentService.signUrlForContentViewing(
       `media/${userId}/${contentId}-thumbnail.jpeg`, // all thumbnails are jpeg
     )
@@ -182,7 +183,7 @@ export class ContentService {
     )
   }
 
-  async preSignProfileImage(userId: string, type: 'profile' | 'banner') {
+  preSignProfileImage(userId: string, type: 'profile' | 'banner') {
     return this.s3contentService.signUrlForContentUpload(
       `profile/upload/${userId}/${type}.${ContentFormatEnum.IMAGE}`,
     )
@@ -199,26 +200,54 @@ export class ContentService {
     )
   }
 
-  async preSignW9(userId: string) {
+  preSignW9(userId: string) {
     return this.s3contentService.signUrlForContentUpload(
       `w9/${userId}/upload.pdf`,
     )
   }
 
-  async validateContentIds(userId: string, contentIds: string[]) {
+  async validateContentIds(
+    userId: string,
+    contentIds: string[],
+  ): Promise<ContentBareDto[]> {
     const filteredContent = await this.dbReader<ContentEntity>(
       ContentEntity.table,
     )
       .whereIn('id', contentIds)
       .andWhere({ user_id: userId })
-      .select('id')
-    const filteredContentIds = new Set(
-      filteredContent.map((content) => content.id),
-    )
+      .select('id', 'content_type')
+    const content: Record<string, ContentTypeEnum> = {}
 
-    contentIds.forEach((contentId) => {
-      if (!filteredContentIds.has(contentId)) {
+    filteredContent.forEach(
+      (content) => (content[content.id] = content.content_type),
+    )
+    return contentIds.map((contentId) => {
+      if (!content[contentId]) {
         throw new NoContentError('cant find content for user')
+      }
+      return new ContentBareDto(contentId, content[contentId])
+    })
+  }
+
+  getContentDtosFromBare(
+    contents: ContentBareDto[],
+    accessible: boolean,
+    userId: string,
+    previewIndex: number,
+  ): ContentDto[] {
+    return contents.map((content, index) => {
+      return {
+        contentId: content.contentId,
+        userId,
+        signedUrl:
+          index < previewIndex || accessible
+            ? this.preSignMediaContent(
+                userId,
+                content.contentId,
+                content.contentType,
+              )
+            : undefined,
+        contentType: content.contentType,
       }
     })
   }

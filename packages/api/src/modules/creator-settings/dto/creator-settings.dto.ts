@@ -1,7 +1,6 @@
-import { Length, Min } from 'class-validator'
+import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { WELCOME_MESSAGE_MAX_LENGTH } from '../constants/schema'
 import { CreatorSettingsEntity } from '../entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
@@ -13,9 +12,8 @@ export class CreatorSettingsDto {
   @DtoProperty({ custom_type: PayoutFrequencyEnum })
   payoutFrequency: PayoutFrequencyEnum
 
-  @Length(1, WELCOME_MESSAGE_MAX_LENGTH)
-  @DtoProperty({ type: 'string', nullable: true })
-  welcomeMessage: string | null
+  @DtoProperty({ type: 'boolean' })
+  welcomeMessage: boolean
 
   @DtoProperty({ type: 'boolean' })
   allowCommentsOnPosts: boolean

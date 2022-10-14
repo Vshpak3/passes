@@ -33,10 +33,10 @@ export interface GetCreatorSettingsResponseDto {
     payoutFrequency: GetCreatorSettingsResponseDtoPayoutFrequencyEnum;
     /**
      * 
-     * @type {string}
+     * @type {boolean}
      * @memberof GetCreatorSettingsResponseDto
      */
-    welcomeMessage: string | null;
+    welcomeMessage: boolean;
     /**
      * 
      * @type {boolean}

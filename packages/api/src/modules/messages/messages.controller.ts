@@ -11,11 +11,13 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
+import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { PayinDataDto } from '../payment/dto/payin-data.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
+import { CreateWelcomeMessageRequestDto } from './dto/create-welcome-message.dto'
 import {
   GetChannelRequestDto,
   GetChannelResponseDto,
@@ -36,6 +38,7 @@ import {
   GetPaidMessageHistoryRequestDto,
   GetPaidMessageHistoryResponseDto,
 } from './dto/get-paid-message-history.dto'
+import { GetWelcomeMessageResponseDto } from './dto/get-welcome-message.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
@@ -342,6 +345,40 @@ export class MessagesController {
         getPaidMessagesRequestDto,
       ),
       getPaidMessagesRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get welcome message',
+    responseStatus: HttpStatus.OK,
+    responseType: GetWelcomeMessageResponseDto,
+    responseDesc: 'Welcome message was retrieved',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Get('welcome-message')
+  async getWelcomeMessage(
+    @Req() req: RequestWithUser,
+  ): Promise<GetWelcomeMessageResponseDto> {
+    return await this.messagesService.getWelcomeMessage(req.user.id)
+  }
+
+  @ApiEndpoint({
+    summary: 'Create welcome message',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'Welcome message was created',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('welcome-message')
+  async createWelcomeMessage(
+    @Req() req: RequestWithUser,
+    @Body() createWelcomeMessageRequestDto: CreateWelcomeMessageRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.messagesService.createWelcomeMessage(
+        req.user.id,
+        createWelcomeMessageRequestDto,
+      ),
     )
   }
 }

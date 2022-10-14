@@ -40,6 +40,12 @@ export interface SendMessageRequestDto {
     contentIds: Array<string>;
     /**
      * 
+     * @type {number}
+     * @memberof SendMessageRequestDto
+     */
+    previewIndex: number;
+    /**
+     * 
      * @type {string}
      * @memberof SendMessageRequestDto
      */
@@ -77,6 +83,7 @@ export function instanceOfSendMessageRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "contentIds" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "tipAmount" in value;
 
@@ -95,6 +102,7 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         
         'text': json['text'],
         'contentIds': json['contentIds'],
+        'previewIndex': json['previewIndex'],
         'channelId': json['channelId'],
         'tipAmount': json['tipAmount'],
         'price': !exists(json, 'price') ? undefined : json['price'],
@@ -114,6 +122,7 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
         
         'text': value.text,
         'contentIds': value.contentIds,
+        'previewIndex': value.previewIndex,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'price': value.price,

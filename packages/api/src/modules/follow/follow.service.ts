@@ -133,24 +133,29 @@ export class FollowService {
     )
 
     try {
-      if (
-        creatorSettings?.welcome_message &&
-        creatorSettings.welcome_message != ''
-      ) {
-        await this.dbWriter<WelcomeMessaged>(WelcomeMessaged.table).insert({
-          follower_id: userId,
-          creator_id: creatorId,
-        })
-        const channel = await this.messagesService.createChannel(userId, {
-          userId: creatorId,
-        })
-        await this.messagesService.createMessage(
-          creator.id,
-          creatorSettings.welcome_message,
-          channel.channelId,
-          0,
-          false,
+      if (creatorSettings?.welcome_message) {
+        const welcomeMessage = await this.messagesService.getWelcomeMessage(
+          creatorId,
         )
+        if (welcomeMessage.paidMessageId) {
+          await this.dbWriter<WelcomeMessaged>(WelcomeMessaged.table).insert({
+            follower_id: userId,
+            creator_id: creatorId,
+          })
+          const channel = await this.messagesService.createChannel(userId, {
+            userId: creatorId,
+          })
+          await this.messagesService.createMessage(
+            creatorId,
+            welcomeMessage.text,
+            channel.channelId,
+            0,
+            false,
+            JSON.stringify(welcomeMessage.bareContents),
+            welcomeMessage.price,
+            welcomeMessage.paidMessageId,
+          )
+        }
       }
     } catch (err) {
       this.logger.error('failed to send welcome message', err)

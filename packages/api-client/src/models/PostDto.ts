@@ -43,7 +43,7 @@ export interface PostDto {
      * @type {boolean}
      * @memberof PostDto
      */
-    paywall: boolean;
+    purchasable: boolean;
     /**
      * 
      * @type {string}
@@ -79,7 +79,13 @@ export interface PostDto {
      * @type {Array<ContentDto>}
      * @memberof PostDto
      */
-    content?: Array<ContentDto>;
+    contents?: Array<ContentDto>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostDto
+     */
+    previewIndex: number;
     /**
      * 
      * @type {Array<string>}
@@ -166,12 +172,13 @@ export interface PostDto {
 export function instanceOfPostDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "postId" in value;
-    isInstance = isInstance && "paywall" in value;
+    isInstance = isInstance && "purchasable" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "passIds" in value;
     isInstance = isInstance && "numLikes" in value;
     isInstance = isInstance && "numComments" in value;
@@ -195,13 +202,14 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
     return {
         
         'postId': json['postId'],
-        'paywall': json['paywall'],
+        'purchasable': json['purchasable'],
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
-        'content': !exists(json, 'content') ? undefined : ((json['content'] as Array<any>).map(ContentDtoFromJSON)),
+        'contents': !exists(json, 'contents') ? undefined : ((json['contents'] as Array<any>).map(ContentDtoFromJSON)),
+        'previewIndex': json['previewIndex'],
         'passIds': json['passIds'],
         'numLikes': json['numLikes'],
         'numComments': json['numComments'],
@@ -228,13 +236,14 @@ export function PostDtoToJSON(value?: PostDto | null): any {
     return {
         
         'postId': value.postId,
-        'paywall': value.paywall,
+        'purchasable': value.purchasable,
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
-        'content': value.content === undefined ? undefined : ((value.content as Array<any>).map(ContentDtoToJSON)),
+        'contents': value.contents === undefined ? undefined : ((value.contents as Array<any>).map(ContentDtoToJSON)),
+        'previewIndex': value.previewIndex,
         'passIds': value.passIds,
         'numLikes': value.numLikes,
         'numComments': value.numComments,

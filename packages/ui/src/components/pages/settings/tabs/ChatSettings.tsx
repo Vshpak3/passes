@@ -1,8 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import {
-  GetCreatorSettingsResponseDto,
-  UpdateCreatorSettingsRequestDto
-} from "@passes/api-client"
+import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -29,7 +26,7 @@ const ChatSettings = () => {
     watch,
     handleSubmit,
     setValue,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors }
   } = useForm<typeof defaultValues>({
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
@@ -60,8 +57,6 @@ const ChatSettings = () => {
 
   useEffect(() => {
     // inject already saved values in fields
-    const { welcomeMessage, minimumTipAmount } =
-      creatorSettings as GetCreatorSettingsResponseDto
 
     if (creatorSettings?.welcomeMessage) {
       setValue("showWelcomeMessageInput", true)
@@ -71,45 +66,11 @@ const ChatSettings = () => {
       setValue("isWithoutTip", false)
     }
 
-    setValue("minimumTipAmount", minimumTipAmount || "")
-    setValue("welcomeMessage", welcomeMessage || "")
+    setValue("minimumTipAmount", creatorSettings?.minimumTipAmount || "")
+    setValue("welcomeMessage", creatorSettings?.welcomeMessage || "")
   }, [creatorSettings, setValue])
 
   useEffect(() => {
-    // all of the below code is just for validation and disable save button
-    if (isLoading) {
-      setIsDisabledBtn(false)
-      return
-    }
-    // if (creatorSettings) {
-    //   const { welcomeMessage, minimumTipAmount } = creatorSettings
-
-    //   const formattedValues = {
-    //     isWithoutTip: values.isWithoutTip,
-    //     showWelcomeMessageInput: values.showWelcomeMessageInput,
-    //     minimumTipAmount: values.isWithoutTip
-    //       ? minimumTipAmount || ""
-    //       : +values.minimumTipAmount,
-    //     welcomeMessage: values.showWelcomeMessageInput
-    //       ? values.welcomeMessage
-    //       : welcomeMessage || ""
-    //   }
-
-    //   // making copy of saved data to compare it with current data
-    //   const savedData = {
-    //     isWithoutTip: !minimumTipAmount,
-    //     showWelcomeMessageInput: !!welcomeMessage,
-    //     minimumTipAmount: minimumTipAmount || "",
-    //     welcomeMessage: welcomeMessage || ""
-    //   }
-
-    //   if (_.isEqual(savedData, formattedValues)) {
-    //     setIsDisabledBtn(true)
-    //     return
-    //   }
-    // }
-
-    // if fields does not satisfy schema, disable the button
     chatSettingsSchema
       .validate(values)
       .then(() => {
@@ -118,7 +79,7 @@ const ChatSettings = () => {
       .catch(() => {
         setIsDisabledBtn(true)
       })
-  }, [values, creatorSettings, isLoading])
+  }, [values, creatorSettings])
 
   return (
     <>
@@ -189,7 +150,7 @@ const ChatSettings = () => {
             variant="pink"
             className="mt-6 w-auto !px-[52px]"
             tag="button"
-            disabled={!isDisableBtn || isSubmitSuccessful}
+            disabled={!isDisableBtn || isLoading}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >

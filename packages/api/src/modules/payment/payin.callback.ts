@@ -89,26 +89,13 @@ async function tippedMessageCreationCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  let paidMessageId: string | undefined = undefined
-  if (input.price && input.price > 0) {
-    paidMessageId = await payService.messagesService.createPaidMessage(
-      input.userId,
-      input.text,
-      input.contentIds,
-      input.price ? 0 : (input.price as number),
-      1,
-    )
-  }
-
   const messageId = await payService.messagesService.createMessage(
     input.userId,
     input.text,
     input.channelId,
     payin.amount,
     true,
-    input.price,
-    paidMessageId,
-    input.contentIds,
+    input.contents,
   )
   input.messageId = messageId
   await payService.updateInputJSON(payin.id, input)

@@ -45,28 +45,22 @@ export interface ContentDto {
     contentType: ContentDtoContentTypeEnum;
     /**
      * 
-     * @type {number}
-     * @memberof ContentDto
-     */
-    index: number;
-    /**
-     * 
      * @type {Date}
      * @memberof ContentDto
      */
-    createdAt: Date;
+    createdAt?: Date;
     /**
      * 
      * @type {boolean}
      * @memberof ContentDto
      */
-    inPost: boolean;
+    inPost?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ContentDto
      */
-    inMessage: boolean;
+    inMessage?: boolean;
 }
 
 
@@ -90,10 +84,6 @@ export function instanceOfContentDto(value: object): boolean {
     isInstance = isInstance && "contentId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "contentType" in value;
-    isInstance = isInstance && "index" in value;
-    isInstance = isInstance && "createdAt" in value;
-    isInstance = isInstance && "inPost" in value;
-    isInstance = isInstance && "inMessage" in value;
 
     return isInstance;
 }
@@ -112,10 +102,9 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'userId': json['userId'],
         'signedUrl': !exists(json, 'signedUrl') ? undefined : json['signedUrl'],
         'contentType': json['contentType'],
-        'index': json['index'],
-        'createdAt': (new Date(json['createdAt'])),
-        'inPost': json['inPost'],
-        'inMessage': json['inMessage'],
+        'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'inPost': !exists(json, 'inPost') ? undefined : json['inPost'],
+        'inMessage': !exists(json, 'inMessage') ? undefined : json['inMessage'],
     };
 }
 
@@ -132,8 +121,7 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'userId': value.userId,
         'signedUrl': value.signedUrl,
         'contentType': value.contentType,
-        'index': value.index,
-        'createdAt': (value.createdAt.toISOString()),
+        'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'inPost': value.inPost,
         'inMessage': value.inMessage,
     };

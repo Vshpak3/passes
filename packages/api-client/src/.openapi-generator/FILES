@@ -48,6 +48,7 @@ models/CircleMetaDataDto.ts
 models/CircleStatusResponseDto.ts
 models/CommentDto.ts
 models/ConfirmResetPasswordRequestDto.ts
+models/ContentBareDto.ts
 models/ContentDto.ts
 models/CreateBatchMessageRequestDto.ts
 models/CreateCommentRequestDto.ts
@@ -67,6 +68,7 @@ models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
+models/CreateWelcomeMessageRequestDto.ts
 models/CreatorEarningDto.ts
 models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
@@ -147,6 +149,7 @@ models/GetVaultQueryRequestDto.ts
 models/GetVaultQueryResponseDto.ts
 models/GetWalletResponseDto.ts
 models/GetWalletsResponseDto.ts
+models/GetWelcomeMessageResponseDto.ts
 models/ImpersonateUserRequestDto.ts
 models/InitResetPasswordRequestDto.ts
 models/IsFollowingDto.ts

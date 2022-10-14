@@ -3,7 +3,6 @@ import { Entity, Enum, OneToOne, Property } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
-import { WELCOME_MESSAGE_MAX_LENGTH } from '../constants/schema'
 import { MINIMUM_MESSAGE_TIP_AMOUNT } from '../creator-settings.service'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
@@ -18,8 +17,8 @@ export class CreatorSettingsEntity extends BaseEntity {
   })
   minimum_tip_amount: number | null
 
-  @Property({ length: WELCOME_MESSAGE_MAX_LENGTH })
-  welcome_message: string | null
+  @Property({ default: false })
+  welcome_message: boolean
 
   @Property({ default: true })
   allow_comments_on_posts: boolean

@@ -1,7 +1,4 @@
-import { Min } from 'class-validator'
-
 import { DtoProperty } from '../../../web/dto.web'
-import { PostContentEntity } from '../../post/entities/post-content.entity'
 import { ContentEntity } from '../entities/content.entity'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
@@ -18,23 +15,16 @@ export class ContentDto {
   @DtoProperty({ custom_type: ContentTypeEnum })
   contentType: ContentTypeEnum
 
-  @Min(0)
-  @DtoProperty({ type: 'number' })
-  index: number
+  @DtoProperty({ type: 'date', optional: true })
+  createdAt?: Date
 
-  @DtoProperty({ type: 'date' })
-  createdAt: Date
+  @DtoProperty({ type: 'boolean', optional: true })
+  inPost?: boolean
 
-  @DtoProperty({ type: 'boolean' })
-  inPost: boolean
+  @DtoProperty({ type: 'boolean', optional: true })
+  inMessage?: boolean
 
-  @DtoProperty({ type: 'boolean' })
-  inMessage: boolean
-
-  constructor(
-    content: ContentEntity & Partial<PostContentEntity>,
-    signedUrl?: string,
-  ) {
+  constructor(content: ContentEntity, signedUrl?: string) {
     if (content) {
       this.contentId = content.id
       this.userId = content.user_id
@@ -43,9 +33,6 @@ export class ContentDto {
       this.createdAt = content.created_at
       this.inPost = content.in_post
       this.inMessage = content.in_message
-      if (content.index) {
-        this.index = content.index
-      }
     }
   }
 }

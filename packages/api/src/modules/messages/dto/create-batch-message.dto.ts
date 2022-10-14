@@ -5,7 +5,7 @@ import { SendMessageRequestDto } from './send-message.dto'
 
 export class CreateBatchMessageRequestDto extends PickType(
   SendMessageRequestDto,
-  ['price', 'contentIds', 'text'],
+  ['price', 'contentIds', 'text', 'previewIndex'],
 ) {
   @DtoProperty({ type: 'uuid[]' })
   includeListIds: string[]

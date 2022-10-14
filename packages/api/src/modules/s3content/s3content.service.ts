@@ -151,7 +151,7 @@ export class S3ContentService {
    * @param path
    * @returns
    */
-  async signUrlForContentViewing(path: string): Promise<string> {
+  signUrlForContentViewing(path: string): string {
     const url = this.cloudfrontUrl + '/' + path
 
     if (this.env === 'dev') {

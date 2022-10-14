@@ -12,6 +12,9 @@ export class SendMessageRequestDto {
   @DtoProperty({ type: 'uuid[]' })
   contentIds: string[]
 
+  @DtoProperty({ type: 'number' })
+  previewIndex: number
+
   @DtoProperty({ type: 'uuid' })
   channelId: string
 

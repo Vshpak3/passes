@@ -26,7 +26,7 @@ export class PostDto {
   postId: string
 
   @DtoProperty({ type: 'boolean' })
-  paywall: boolean
+  purchasable: boolean
 
   @DtoProperty({ type: 'uuid' })
   userId: string
@@ -50,7 +50,10 @@ export class PostDto {
   tags: TagDto[]
 
   @DtoProperty({ custom_type: [ContentDto], optional: true })
-  content?: ContentDto[]
+  contents?: ContentDto[]
+
+  @DtoProperty({ type: 'number' })
+  previewIndex: number
 
   @DtoProperty({ type: 'uuid[]' })
   passIds: string[]
@@ -103,9 +106,8 @@ export class PostDto {
       username: string
       display_name: string
     },
-    paywall,
     isOwner,
-    content?: ContentDto[],
+    contents?: ContentDto[],
   ) {
     if (post) {
       // only content gets paywalled
@@ -121,9 +123,9 @@ export class PostDto {
       this.displayName = post.display_name
       this.createdAt = post.created_at
       this.price = post.price
-      this.paywall = paywall
       this.tags = JSON.parse(post.tags)
       this.passIds = JSON.parse(post.pass_ids)
+      this.previewIndex = post.preview_index
       if (isOwner) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount
@@ -131,9 +133,13 @@ export class PostDto {
         this.numPurchases = post.num_purchases
       }
       this.isOwner = isOwner
-      if (content) {
-        this.content = content
+      if (contents) {
+        this.contents = contents
       }
+      this.purchasable =
+        !isOwner &&
+        !!contents &&
+        !!contents.filter((content) => content.signedUrl).length
     }
   }
 }

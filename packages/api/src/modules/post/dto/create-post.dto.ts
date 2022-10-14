@@ -10,6 +10,7 @@ export class CreatePostRequestDto extends PickType(PostDto, [
   'price',
   'expiresAt',
   'scheduledAt',
+  'previewIndex',
 ]) {
   @DtoProperty({ type: 'uuid[]' })
   contentIds: string[]

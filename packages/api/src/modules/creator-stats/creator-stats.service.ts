@@ -13,7 +13,6 @@ import { CreatorSettingsEntity } from '../creator-settings/entities/creator-sett
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
-import { PostContentEntity } from '../post/entities/post-content.entity'
 import { NEGATIVE_AMOUNT } from './constants/error'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
 import { CreatorStatDto } from './dto/creator-stat.dto'
@@ -208,25 +207,6 @@ export class CreatorStatsService {
   }
 
   async refreshCreatorsStats() {
-    await this.dbWriter.transaction(async (trx) => {
-      await trx<ContentEntity>(ContentEntity.table).update({
-        in_post: false,
-      })
-      await trx<ContentEntity>(ContentEntity.table)
-        .innerJoin(
-          PostContentEntity.table,
-          `${PostContentEntity.table}.content_id`,
-          `${ContentEntity.table}.id`,
-        )
-        .innerJoin(
-          PostEntity.table,
-          `${PostContentEntity.table}.post_id`,
-          `${PostEntity.table}.id`,
-        )
-        .whereNull(`${PostEntity.table}.deleted_at`)
-        .update(`${ContentEntity.table}.in_post`, true)
-    })
-
     const creators = await this.dbReader<CreatorStatEntity>(
       CreatorStatEntity.table,
     ).select('user_id')
