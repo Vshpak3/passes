@@ -2,7 +2,6 @@ import classNames from "classnames"
 import ScheduledCalendar from "public/icons/calendar-scheduled-purple-icon.svg"
 import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
-import PaidIcon from "public/icons/paid-content-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -33,17 +32,6 @@ const messagesMediaTypes = [
     Icon: VaultIcon,
     accept: [".mp4", ".mov", ".qt"],
     type: "button"
-  },
-  {
-    name: "Message Price",
-    Icon: PaidIcon,
-    accept: [".mp4", ".mov", ".qt"],
-    type: "button"
-  },
-  {
-    name: "Schedule",
-    Icon: ScheduledCalendar,
-    type: "schedule"
   }
 ]
 

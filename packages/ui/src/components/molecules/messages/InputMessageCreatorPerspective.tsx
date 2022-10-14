@@ -4,10 +4,9 @@ import PlusIcon from "public/icons/post-plus-icon.svg"
 import { FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
-import { MessagePriceAlert } from "src/components/atoms/MessagePriceAlert"
-import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
+// import { MessagePriceAlert } from "src/components/atoms/MessagePriceAlert"
+// import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
-import { Dialog } from "src/components/organisms/Dialog"
 import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
@@ -44,43 +43,33 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
   const [contentIds, setContentIds] = useState<any[]>([])
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
-  const [hasPrice, setHasPrice] = useState(false)
-  const [scheduled, setScheduled] = useState<any>()
-
-  const [targetAcquired, setTargetAcquired] = useState(false)
+  // const [scheduled, setScheduled] = useState<any>()
+  const [postPrice, setPostPrice] = useState<number>(0)
   const [loading, setLoading] = useState(false)
-  const postPrice = watch("postPrice")
+  const isPaid = watch("isPaid")
 
   const onMediaHeaderChange = (prop: any) => {
-    if (Object.prototype.toString.call(prop) === "[object Date]") {
-      setScheduled(prop)
-      return
-    }
-
+    // if (Object.prototype.toString.call(prop) === "[object Date]") {
+    //   setScheduled(prop)
+    //   return
+    // }
+    // TODO: Scheduled message will be added later
     if (prop?.target?.files.length > 0) {
       return onFileInputChange(prop)
+    } else if (prop === "Vault") {
+      setHasVault(true)
     }
-    switch (prop) {
-      case "Vault":
-        setHasVault(true)
-        break
-      case "Message Price":
-        setHasPrice(true)
-        break
-      default:
-        setActiveMediaHeader(prop)
-        break
-    }
+    setActiveMediaHeader(prop)
   }
 
-  const onTargetAcquired = () => {
-    setHasPrice(false)
-    setTargetAcquired(true)
+  const handleChange = (event: any) => {
+    const limit = 5
+    setPostPrice(event.target.value.slice(0, limit))
   }
-
-  const onDeletePostPrice = () => {
-    setHasPrice(false)
-    setTargetAcquired(false)
+  const preventMinus = (e: any) => {
+    if (e.code === "Minus") {
+      e.preventDefault()
+    }
   }
 
   const onFileInputChange = (event: any) => {
@@ -115,9 +104,9 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
   const onRemove = (index: any) => {
     setFiles(files.filter((_: any, i: any) => i !== index))
   }
-  const handleRemoveScheduledMessageTime = () => {
-    setScheduled(null)
-  }
+  // const handleRemoveScheduledMessageTime = () => {
+  //   setScheduled(null)
+  // }
 
   const submitMessage = async ({ message }: any) => {
     if (!channelId) {
@@ -147,15 +136,14 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
           contentIds: contentIdsToUpload,
           channelId,
           tipAmount: 0,
-          price: postPrice == null ? 0 : parseInt(postPrice),
+          price: postPrice,
           previewIndex: 0 // TODO: add previewing FE
         }
       })
       setLoading(false)
       setFiles([])
-      onDeletePostPrice()
+      setPostPrice(0)
       setContentIds([])
-      setScheduled(false)
       reset()
     } catch (error) {
       setError("submitError", {
@@ -173,19 +161,45 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
     }
   }
   const { submitError } = errors
-
+  const options = {}
   return (
     <form
-      className="flex flex-col items-end border-t border-[#fff]/10 p-5 pb-0"
+      className="flex flex-col  border-t border-[#fff]/10 p-5 pb-0"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full  items-center justify-end gap-3">
-        {targetAcquired && (
-          <MessagePriceAlert
-            price={postPrice}
-            onRemovePrice={onDeletePostPrice}
-          />
-        )}
+      <div className="flex min-h-[37px] items-center justify-start gap-4">
+        <FormInput
+          label="Pay to View"
+          type="toggle"
+          register={register}
+          errors={errors}
+          options={options}
+          name="isPaid"
+          className="group"
+        />
+        {isPaid ? (
+          <div className="relative flex items-center rounded-md shadow-sm">
+            <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
+              Price
+            </div>
+            <input
+              type="number"
+              value={postPrice}
+              name="postPrice"
+              autoFocus
+              id="postPrice"
+              placeholder="$"
+              aria-placeholder="$"
+              onKeyPress={preventMinus}
+              min="0"
+              max="9999"
+              onChange={(event) => handleChange(event)}
+              className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-dark-200 focus:ring-0"
+            />
+          </div>
+        ) : null}
+      </div>
+      {/* <div className="flex w-full  items-center justify-end gap-3">
         {scheduled && (
           <div className="-mt-3 flex items-center justify-end">
             <PostScheduleAlert
@@ -194,8 +208,8 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
             />
           </div>
         )}
-      </div>
-
+      </div> */}
+      {/* TODO: Schedule will be added on the future */}
       {(files.length > 0 || contentIds.length > 0) && (
         <div className=" w-full items-center self-start overflow-y-auto pt-1">
           <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1">
@@ -268,7 +282,7 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
         {...register("message", { required: true })}
         className={classNames(
           errors.message && "border-b-red",
-          "w-full resize-none border-x-0 border-b border-t-0 bg-black py-5 focus:border-b-passes-primary-color focus:ring-0"
+          "w-full resize-none border-x-0 border-b border-t-0 bg-black pb-5 pt-3 pl-0 focus:border-b-passes-primary-color focus:ring-0"
         )}
         autoComplete="off"
         onKeyDown={submitOnEnter}
@@ -301,49 +315,6 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
         )}
       </div>
       <>
-        {hasPrice && (
-          <Dialog
-            className="flex w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"
-            open={true}
-            title={
-              <div>
-                <div className="relative h-full">
-                  <div className="flex flex-col items-start justify-start gap-3">
-                    <div>POST PRICE</div>
-                    <div className="flex w-full items-center justify-center rounded-md shadow-sm">
-                      <FormInput
-                        register={register}
-                        type="text"
-                        name="postPrice"
-                        placeholder={"Minimum $3 USD or free"}
-                        className="w-full rounded-md border-passes-dark-200 bg-[#100C11]  pl-4 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
-                      />
-                    </div>
-                    <div className="flex w-full items-end justify-end gap-3">
-                      <button
-                        className="rounded-full bg-passes-secondary-color py-2 px-6"
-                        type="button"
-                        onClick={() => onTargetAcquired()}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className={classNames(
-                          !(postPrice > 10) ? "opacity-50" : "",
-                          "rounded-full bg-passes-secondary-color py-2 px-6"
-                        )}
-                        type="button"
-                        onClick={() => onTargetAcquired()}
-                      >
-                        Apply
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-          ></Dialog>
-        )}
         {hasVault && (
           <MessagesVaultDialog
             hasVault={hasVault}
