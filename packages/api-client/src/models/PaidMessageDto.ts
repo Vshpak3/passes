@@ -74,6 +74,12 @@ export interface PaidMessageDto {
      * @memberof PaidMessageDto
      */
     createdAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PaidMessageDto
+     */
+    isWelcomeMesage: boolean;
 }
 
 /**
@@ -88,6 +94,7 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     isInstance = isInstance && "numPurchases" in value;
     isInstance = isInstance && "earningsPurchases" in value;
     isInstance = isInstance && "createdAt" in value;
+    isInstance = isInstance && "isWelcomeMesage" in value;
 
     return isInstance;
 }
@@ -110,6 +117,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'numPurchases': json['numPurchases'],
         'earningsPurchases': json['earningsPurchases'],
         'createdAt': (new Date(json['createdAt'])),
+        'isWelcomeMesage': json['isWelcomeMesage'],
     };
 }
 
@@ -130,6 +138,7 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'numPurchases': value.numPurchases,
         'earningsPurchases': value.earningsPurchases,
         'createdAt': (value.createdAt.toISOString()),
+        'isWelcomeMesage': value.isWelcomeMesage,
     };
 }
 
