@@ -1,14 +1,26 @@
+import { PassDto } from "@passes/api-client"
 import AudienceChevronIcon from "public/icons/post-audience-chevron-icon.svg"
 import AudienceIcon from "public/icons/post-audience-icon.svg"
 import { FC } from "react"
+import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 
 interface NewPostDropdownProps {
-  register: any
-  passes: any
-  onChange: any
-  dropdownVisible: any
-  setDropdownVisible: any
+  register: UseFormRegister<NewPostFormProps>
+  passes: PassDto[]
+  onChange: () => void
+  dropdownVisible: boolean
+  setDropdownVisible: (value: boolean) => void
+}
+
+interface NewPostFormProps {
+  expiresAt: Date | null
+  isPaid: boolean
+  mentions: any[] // TODO
+  passes: PassDto[]
+  price: string
+  scheduledAt: Date | null
+  text: string
 }
 
 export const NewPostDropdown: FC<NewPostDropdownProps> = ({
@@ -35,14 +47,14 @@ export const NewPostDropdown: FC<NewPostDropdownProps> = ({
       {dropdownVisible && (
         <fieldset className="absolute top-14 box-border flex w-full flex-col items-start justify-start gap-[10px] rounded-md border border-passes-dark-200 bg-[#100C11] p-[10px]">
           {passes && passes.length > 0
-            ? passes.map((pass: any) => (
-                <div key={`passes.${pass.id}`}>
+            ? passes.map(({ passId, title }: PassDto) => (
+                <div key={`passes.${passId}`}>
                   <FormInput
                     register={register}
-                    name={`passes[${pass.id}]`}
+                    name={`passes[${passId}]`}
                     type="checkbox"
                     options={{ onChange }}
-                    label={pass.title}
+                    label={title}
                     className="h-4 w-4 rounded border border-[#D0D5DD] bg-transparent text-passes-primary-color ring-0 focus:shadow-none focus:ring-0 focus:ring-offset-0"
                   />
                 </div>

@@ -1,4 +1,4 @@
-import { CreatePostRequestDto } from "@passes/api-client"
+import { CreatePostRequestDto, PassDto } from "@passes/api-client"
 import classNames from "classnames"
 import _ from "lodash"
 import dynamic from "next/dynamic"
@@ -62,15 +62,15 @@ interface NewPostFormProps {
   expiresAt: Date | null
   isPaid: boolean
   mentions: any[] // TODO
-  passes: any[] // TODO
+  passes: PassDto[]
   price: string
   scheduledAt: Date | null
   text: string
 }
 
 interface NewPostProps {
-  passes?: any
-  placeholder: any
+  passes?: PassDto[]
+  placeholder: string
   handleCreatePost: (
     arg: CreatePostRequestDto,
     postId: string
