@@ -21,12 +21,16 @@ export interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number
   isCreator?: boolean
+  contentAvatarDisplayName?: string
+  contentAvatarUserName?: string
 }
 
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
-  isCreator
+  isCreator,
+  contentAvatarDisplayName,
+  contentAvatarUserName
 }) => {
   const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
@@ -180,6 +184,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 isOwnMessage={message.senderId === user?.userId}
                 lastMessage={index === 0}
                 channelId={channelId}
+                contentAvatarDisplayName={contentAvatarDisplayName}
+                contentAvatarUserName={contentAvatarUserName}
               />
             ))}
         </>

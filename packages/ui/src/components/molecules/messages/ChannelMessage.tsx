@@ -1,10 +1,12 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import classNames from "classnames"
+import Locked from "public/icons/lock-locked.svg"
 import React, { FC, useEffect } from "react"
 import { SentStatus } from "src/components/messages/assets/SentStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 
 import { Avatar } from "./Avatar"
+import { CompletedAvatar } from "./CompletedAvatar"
 import { Content } from "./message/Content"
 
 interface ChannelMessageProps {
@@ -12,12 +14,16 @@ interface ChannelMessageProps {
   message: MessageDto
   lastMessage: boolean
   channelId: string
+  contentAvatarDisplayName?: string
+  contentAvatarUserName?: string
 }
 export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
   isOwnMessage = false,
   lastMessage = false,
-  channelId
+  channelId,
+  contentAvatarDisplayName,
+  contentAvatarUserName
 }: ChannelMessageProps) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
@@ -60,7 +66,22 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             className={`rounded border border-[#363037] ${messageBackground} py-3 px-4`}
           >
             {messageContent.length ? (
-              <div className="flex flex-col">
+              <div className="flex w-full flex-col">
+                <div className="flex flex-shrink-0 items-start justify-between">
+                  <CompletedAvatar
+                    contentAvatarDisplayName={contentAvatarDisplayName}
+                    contentAvatarUserName={contentAvatarUserName}
+                    imageSrc="https://www.w3schools.com/w3images/avatar1.png"
+                  />
+                  {message.paid ? (
+                    <div className="flex flex-shrink-0 items-center gap-[6px]">
+                      <Locked />
+                      <span className="text-[14px] font-medium leading-[0px] text-[#767676]">
+                        Purchased
+                      </span>
+                    </div>
+                  ) : null}
+                </div>
                 <div>
                   <span className="break-all">{message?.text}</span>
                 </div>

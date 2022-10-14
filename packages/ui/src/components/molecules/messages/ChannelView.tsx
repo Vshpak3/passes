@@ -49,6 +49,16 @@ export const ChannelView: FC<ChannelViewProps> = ({
                 channelId={selectedChannel.channelId}
                 freeMessages={freeMessages}
                 isCreator={isCreator}
+                contentAvatarDisplayName={
+                  selectedChannel.userId === user.userId
+                    ? user.displayName
+                    : selectedChannel.otherUserDisplayName
+                }
+                contentAvatarUserName={
+                  selectedChannel.userId === user.userId
+                    ? user.username
+                    : selectedChannel.otherUserUsername
+                }
               />
               {isCreator ? (
                 <InputMessageCreatorPerspective
