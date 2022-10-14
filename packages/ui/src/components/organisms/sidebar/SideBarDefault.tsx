@@ -1,6 +1,7 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
-import { createElement, useState } from "react"
+import { useState } from "react"
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
+import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
 import { CreatorToolsItem } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsItem"
 import { CreatorToolsSidebar } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsSidebar"
 import { SidebarContainer } from "src/components/molecules/Sidebar/SidebarLayout/SidebarContainer"
@@ -11,15 +12,14 @@ import {
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { isOver18 } from "src/helpers/user"
+import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
 import { SidebarDefaultProps } from "./types"
 
 export const SidebarDefault: React.FC<SidebarDefaultProps> = ({
   navigation,
-  active,
-  newPostButton
+  active
 }) => {
   const { user } = useUser()
   // TODO: sidebar open will be used for mobile sidebar

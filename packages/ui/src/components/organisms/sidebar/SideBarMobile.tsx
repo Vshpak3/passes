@@ -9,7 +9,7 @@ import {
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { isOver18 } from "src/helpers/user"
+import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
 import { SidebarDefaultProps } from "./types"

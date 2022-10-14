@@ -11,12 +11,12 @@ import {
 import { format } from "date-fns"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useRef, useState } from "react"
-import MonthYearPicker from "react-month-year-picker"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Payout } from "src/components/molecules/payment/payout"
+import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useUser } from "src/hooks/useUser"
 import { ChevronDown } from "src/icons/chevron-down"
@@ -105,7 +105,6 @@ export const PayoutHistory = () => {
                   <MonthYearPicker
                     minYear={2022}
                     maxYear={new Date().getFullYear()}
-                    caption="Pick your month and year"
                     selectedMonth={month}
                     selectedYear={year}
                     onChangeYear={(year: number) =>
