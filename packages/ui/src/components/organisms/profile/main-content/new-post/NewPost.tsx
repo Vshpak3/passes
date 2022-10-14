@@ -306,6 +306,7 @@ export const NewPost: FC<NewPostProps> = ({
                   accept={["image", "video"]}
                   options={{ onChange: onDragDropChange }}
                   errors={errors}
+                  helperText={`You may upload 1 video or up to ${MAX_IMAGE_COUNT} photos per post`}
                 />
               ) : (
                 <div

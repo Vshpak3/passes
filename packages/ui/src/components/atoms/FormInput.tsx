@@ -43,6 +43,7 @@ type FormInputProps = {
   mask?: string
   checked?: boolean
   iconMargin?: string
+  helperText?: string
 }
 
 export const FormInput: FC<FormInputProps> = ({
@@ -64,6 +65,7 @@ export const FormInput: FC<FormInputProps> = ({
   tagsFromServer,
   checked,
   iconMargin,
+  helperText,
   ...rest
 }) => {
   const input: Partial<{ [key in FormType]: JSX.Element }> = {
@@ -218,6 +220,7 @@ export const FormInput: FC<FormInputProps> = ({
         multiple={multiple}
         accept={accept}
         className={className}
+        helperText={helperText}
         {...rest}
       />
     )

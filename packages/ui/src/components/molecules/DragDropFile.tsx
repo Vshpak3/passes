@@ -1,7 +1,6 @@
 import UploadIcon from "public/icons/upload.svg"
 import { FC, useState } from "react"
 import { File } from "src/components/atoms/File"
-import { MAX_IMAGE_COUNT } from "src/components/organisms/profile/main-content/new-post/NewPost"
 import {
   FileAccept,
   FormErrors,
@@ -18,6 +17,7 @@ type DragDropFileProps = {
   className?: string
   accept?: FileAccept
   multiple?: boolean
+  helperText?: string
 }
 
 export const DragDropFile: FC<DragDropFileProps> = ({
@@ -27,7 +27,8 @@ export const DragDropFile: FC<DragDropFileProps> = ({
   errors = {},
   multiple,
   className,
-  accept
+  accept,
+  helperText
 }) => {
   const [dragActive, setDragActive] = useState(false)
   const { onChange, onBlur, name: registerName, ref } = register(name, options)
@@ -99,7 +100,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
             </span>
           </div>
           <p className="self-stretch text-center text-sm font-normal text-[#888689]">
-            You may upload 1 video or up to {MAX_IMAGE_COUNT} photos per post
+            {helperText}
           </p>
           {name === "passFile" ?? (
             <p className="self-stretch text-center text-sm font-normal text-[#888689]">

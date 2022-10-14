@@ -209,10 +209,12 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
           register={register}
           name="passFile"
           type="drag-drop-file"
-          multiple={true}
+          multiple={false}
           accept={["image", "video"]}
           options={{ onChange: onDragDropChange }}
           errors={errors}
+          helperText="you may upload 1 image of your choice as art work for your pass. If
+          no image is uploaded, a default will be selected"
           // maximumLimit={maximumLimit}
         />
       )}
