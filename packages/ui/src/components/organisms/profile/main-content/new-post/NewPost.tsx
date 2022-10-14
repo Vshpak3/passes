@@ -19,8 +19,8 @@ import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader
 import { ContentService } from "src/helpers/content"
 import { usePost } from "src/hooks/usePost"
 
-import { NewPostDropdown } from "./audience-dropdown"
-import { MediaFile } from "./media"
+import { MediaFile } from "./Media"
+import { NewPostDropdown } from "./NewPostDropdown"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
@@ -69,7 +69,6 @@ interface NewPostFormProps {
 }
 
 interface NewPostProps {
-  passes?: PassDto[]
   placeholder: string
   handleCreatePost: (
     arg: CreatePostRequestDto,
@@ -82,7 +81,6 @@ interface NewPostProps {
 }
 
 export const NewPost: FC<NewPostProps> = ({
-  passes = [], // TODO: use passes search bar
   placeholder,
   handleCreatePost,
   initialData = {},
@@ -97,7 +95,7 @@ export const NewPost: FC<NewPostProps> = ({
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const [selectedPasses, setSelectedPasses] = useState(passes)
+  const [selectedPasses, setSelectedPasses] = useState<string[]>([])
 
   const { createPost } = usePost()
 
@@ -122,13 +120,8 @@ export const NewPost: FC<NewPostProps> = ({
     setValue("scheduledAt", date, { shouldValidate: true })
   }
 
-  const onPassSelect = () => {
-    //   const { passes: _passes } = getValues()
-    //   const result = Object.keys(_passes)
-    //     .filter((id) => _passes[id])
-    //     .map((id) => passes.find((pass) => pass.id === id))
-    //   setSelectedPasses(result)
-    setSelectedPasses([])
+  const onPassSelect = (pass: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedPasses([...selectedPasses, pass.target.name])
   }
 
   const onMediaFileSelect = (file: File) => {
@@ -136,9 +129,8 @@ export const NewPost: FC<NewPostProps> = ({
     setIsNewPostModalOpen(true)
   }
 
-  const removePasses = (id: any) => {
-    // setValue(`passes[${id}]`, false, { shouldValidate: true })
-    setSelectedPasses(selectedPasses.filter((pass: any) => pass.id !== id))
+  const removePasses = (idToRemove: string) => {
+    setSelectedPasses(selectedPasses.filter((passId) => passId !== idToRemove))
   }
 
   const onSubmit = async () => {
@@ -159,7 +151,7 @@ export const NewPost: FC<NewPostProps> = ({
     const post: CreatePostRequestDto = {
       text: values.text,
       tags: [], // TODO: add in values.mentions (must update to be TagDto)
-      passIds: [], // TODO: add in passes
+      passIds: selectedPasses,
       scheduledAt: values.scheduledAt,
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
@@ -457,7 +449,6 @@ export const NewPost: FC<NewPostProps> = ({
                     </span>
                     <NewPostDropdown
                       register={register}
-                      passes={passes}
                       onChange={onPassSelect}
                       dropdownVisible={dropdownVisible}
                       setDropdownVisible={setDropdownVisible}

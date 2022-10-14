@@ -11,6 +11,7 @@ import Youtube from "public/icons/profile-youtube-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
@@ -28,7 +29,7 @@ export const editProfileSchema = object({
     .required("Please enter a display name"),
   description: string()
     .transform((name) => name.trim())
-    .required("Please enter a bio"),
+    .optional(),
   ...socialMediaUsernameSchema
 })
 
@@ -103,11 +104,10 @@ export const EditProfile: FC<EditProfileProps> = ({
   const {
     handleSubmit,
     register,
-    getValues,
     watch,
     setValue,
     reset,
-    formState: { dirtyFields, isSubmitSuccessful }
+    formState: { dirtyFields, errors, isSubmitting }
   } = useForm<ProfileUpdate>({
     defaultValues: useMemo(() => {
       return {
@@ -147,6 +147,7 @@ export const EditProfile: FC<EditProfileProps> = ({
         type={input.type}
         placeholder={input.label}
         accept={input?.accept}
+        errors={errors}
       />
     </div>
   )
@@ -194,14 +195,12 @@ export const EditProfile: FC<EditProfileProps> = ({
       onClose={() => setEditProfileModalOpen(false)}
       footer={
         <div className="left-20 mx-0 -mb-4 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
-          <span
+          <PassesPinkButton
+            name="Save"
             className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
-            onClick={handleSubmit(
-              () => !isSubmitSuccessful && onSubmit(getValues())
-            )}
-          >
-            Save
-          </span>
+            isDisabled={isSubmitting}
+            onClick={handleSubmit(onSubmit)}
+          />
         </div>
       }
     >
@@ -296,6 +295,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                           className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
                           type={input.type as FormType}
                           placeholder={input.label}
+                          errors={errors}
                         />
                       </div>
                     </div>

@@ -3,7 +3,6 @@ import Popper from "@mui/material/Popper"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useContext, useRef, useState } from "react"
 import { CreateSchedulerPopup } from "src/components/molecules/scheduler/CreateSchedulerPopup"
-import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
@@ -14,7 +13,6 @@ import { NewPostPopup } from "./NewPostPopup"
 
 export const SchedulerHeader: FC = () => {
   const { month, year, setMonth, setYear } = useContext(SchedulerContext)
-  const { creatorPasses } = useCreatorPasses()
 
   const popperContainerRef = useRef<HTMLDivElement | null>(null)
   const popperMonthYearPickerRef = useRef<HTMLDivElement | null>(null)
@@ -149,7 +147,6 @@ export const SchedulerHeader: FC = () => {
           setIsNewPostModalOpen(false)
         }}
         selectionDate={selectionDate as Date}
-        passes={creatorPasses}
       />
 
       <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">

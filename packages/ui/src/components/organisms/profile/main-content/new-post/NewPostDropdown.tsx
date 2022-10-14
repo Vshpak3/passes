@@ -4,11 +4,11 @@ import AudienceIcon from "public/icons/post-audience-icon.svg"
 import { FC } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
+import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 
 interface NewPostDropdownProps {
   register: UseFormRegister<NewPostFormProps>
-  passes: PassDto[]
-  onChange: () => void
+  onChange: (value: React.ChangeEvent<HTMLInputElement>) => void
   dropdownVisible: boolean
   setDropdownVisible: (value: boolean) => void
 }
@@ -25,11 +25,13 @@ interface NewPostFormProps {
 
 export const NewPostDropdown: FC<NewPostDropdownProps> = ({
   register,
-  passes,
   onChange,
   dropdownVisible,
   setDropdownVisible
 }) => {
+  // TODO: add pagination here
+  const { passes } = useCreatorPasses()
+
   return (
     <div className="relative flex cursor-pointer flex-col gap-4">
       <div
@@ -48,10 +50,10 @@ export const NewPostDropdown: FC<NewPostDropdownProps> = ({
         <fieldset className="absolute top-14 box-border flex w-full flex-col items-start justify-start gap-[10px] rounded-md border border-passes-dark-200 bg-[#100C11] p-[10px]">
           {passes && passes.length > 0
             ? passes.map(({ passId, title }: PassDto) => (
-                <div key={`passes.${passId}`}>
+                <div key={passId}>
                   <FormInput
                     register={register}
-                    name={`passes[${passId}]`}
+                    name={passId}
                     type="checkbox"
                     options={{ onChange }}
                     label={title}

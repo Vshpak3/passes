@@ -1,14 +1,12 @@
 import { CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 import { useProfile } from "src/hooks/useProfile"
 
 import { NewPost } from "./NewPost"
 
 export const NewPosts: React.FC = () => {
   const { profileInfo, profileUsername } = useProfile()
-  const { creatorPasses } = useCreatorPasses()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
   const handleCreatePost = async (
@@ -47,7 +45,6 @@ export const NewPosts: React.FC = () => {
   return (
     <>
       <NewPost
-        passes={creatorPasses}
         handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"
         initialData={{}}

@@ -19,7 +19,7 @@ import {
   PassNumberInput
 } from "src/components/atoms/passes/CreatePass"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
+import { MediaFile } from "src/components/organisms/profile/main-content/new-post/Media"
 
 type FieldErrors<TFieldValues extends FieldValues = FieldValues> = DeepMap<
   TFieldValues,

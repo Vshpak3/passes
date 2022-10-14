@@ -1,24 +1,36 @@
 import { PassApi } from "@passes/api-client"
+import { useEffect } from "react"
 import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
+
+const CACHE_KEY_CREATOR_PASSES = "/pass/creator-passes"
 
 export const useCreatorPasses = () => {
   const { user } = useUser()
 
-  const { data: creatorPasses = [], isValidating: isLoadingCreatorPasses } =
-    useSWR(user ? "/pass/creator-passes" : null, async () => {
-      const api = new PassApi()
-      return (
-        await api.getCreatorPasses({
-          getPassesRequestDto: {
-            creatorId: user?.userId
-          }
-        })
-      ).data
-    })
+  const api = new PassApi()
+
+  const {
+    data: passes = [],
+    isValidating: isLoadingPasses,
+    mutate
+  } = useSWR(user ? CACHE_KEY_CREATOR_PASSES : null, async () => {
+    return (
+      await api.getCreatorPasses({
+        getPassesRequestDto: { creatorId: user?.userId }
+      })
+    ).data
+  })
+
+  useEffect(() => {
+    if (user && passes.length === 0) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.userId])
 
   return {
-    creatorPasses,
-    isLoadingCreatorPasses
+    passes,
+    isLoadingPasses
   }
 }

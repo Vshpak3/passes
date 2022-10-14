@@ -1,6 +1,6 @@
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { Modal } from "src/components/organisms/Modal"
-import { MediaFile } from "src/components/organisms/profile/main-content/new-post/media"
+import { MediaFile } from "src/components/organisms/profile/main-content/new-post/Media"
 
 interface NewPostModalProps {
   isOpen: boolean

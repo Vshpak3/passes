@@ -7,11 +7,11 @@ import { FormInput } from "src/components/atoms/FormInput"
 // import { MessagePriceAlert } from "src/components/atoms/MessagePriceAlert"
 // import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
-import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/header"
 import {
   Media,
   MediaFile
-} from "src/components/organisms/profile/main-content/new-post/media"
+} from "src/components/organisms/profile/main-content/new-post/Media"
+import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/MediaHeader"
 import { ContentService } from "src/helpers/content"
 const MB = 1048576
 const MAX_FILE_SIZE = 10 * MB

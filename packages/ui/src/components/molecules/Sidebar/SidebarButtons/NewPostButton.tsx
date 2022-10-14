@@ -3,7 +3,6 @@ import { useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
-import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 
 export interface NewPostButtonProps {
   isMobile?: boolean
@@ -11,7 +10,6 @@ export interface NewPostButtonProps {
 
 export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const { creatorPasses } = useCreatorPasses()
   const handleCreatePost = () => {
     setIsNewPostModalOpen(false)
   }
@@ -43,7 +41,6 @@ export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
       }
     >
       <NewPost
-        passes={creatorPasses}
         initialData={{}}
         handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"

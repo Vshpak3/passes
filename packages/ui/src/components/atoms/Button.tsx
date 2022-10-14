@@ -240,7 +240,7 @@ export const PostUnlockButton: FC<GenericButtonProps> = ({
   </button>
 )
 
-export const HeaderChatButton = ({ name }: GenericButtonProps) => (
+export const HeaderChatButton: FC<GenericButtonProps> = ({ name }) => (
   <button className="flex h-[49px] w-full min-w-[105px] items-center justify-center gap-[10px] rounded-md border border-transparent bg-[#1b141d]/50 text-base font-semibold text-white ">
     <HeaderChatIcon className="" />
     {name}

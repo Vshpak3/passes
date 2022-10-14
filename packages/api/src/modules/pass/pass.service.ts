@@ -1153,7 +1153,7 @@ export class PassService {
         `${UserExternalPassEntity.table}.pass_id`,
         `${PassEntity.table}.id`,
       )
-      .whereIn('id', passIds)
+      .whereIn(`${PassEntity.table}.id`, passIds)
       .andWhere(function () {
         return this.where(
           `${UserExternalPassEntity.table}.user_id`,
