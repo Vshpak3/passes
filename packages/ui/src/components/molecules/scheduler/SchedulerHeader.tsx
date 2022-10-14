@@ -127,9 +127,8 @@ export const SchedulerHeader: FC = () => {
               className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
             >
               <MonthYearPicker
-                minYear={new Date().getFullYear() - 1}
-                maxYear={new Date().getFullYear() + 1}
-                // maxMonth="sdf
+                maxFutureMonths={24}
+                maxPastMonths={6}
                 selectedMonth={month}
                 selectedYear={year}
                 onChangeYear={setYear}

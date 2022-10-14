@@ -103,8 +103,8 @@ export const PayoutHistory = () => {
                   className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
                 >
                   <MonthYearPicker
-                    minYear={2022}
-                    maxYear={new Date().getFullYear()}
+                    maxFutureMonths={24}
+                    maxPastMonths={6}
                     selectedMonth={month}
                     selectedYear={year}
                     onChangeYear={(year: number) =>
