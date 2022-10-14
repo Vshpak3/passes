@@ -2,8 +2,10 @@ import { CreatorStatsApi } from "@passes/api-client"
 import { NextPage } from "next"
 import { useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
-import { EarningsGraph } from "src/components/pages/tools/analytics/AnalyticsGraph"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
+import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
+import { MessageStatistics } from "src/components/pages/tools/analytics/MessageStatistics"
+import { PostStatistics } from "src/components/pages/tools/analytics/PostStatistics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import useSWR from "swr"
 
@@ -32,7 +34,12 @@ const Analytics: NextPage = () => {
           </TabButton>
         ))}
       </div>
-      <EarningsGraph userBalance={userBalance?.amount} />
+      {analyticsTab === "earnings" && (
+        <EarningsGraph userBalance={userBalance?.amount} />
+      )}
+      {analyticsTab === "posts" && <PostStatistics />}
+
+      {analyticsTab === "messages" && <MessageStatistics />}
     </div>
   )
 }

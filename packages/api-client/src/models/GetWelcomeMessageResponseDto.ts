@@ -80,6 +80,18 @@ export interface GetWelcomeMessageResponseDto {
      * @memberof GetWelcomeMessageResponseDto
      */
     isWelcomeMesage: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetWelcomeMessageResponseDto
+     */
+    unsent: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetWelcomeMessageResponseDto
+     */
+    sentTo: number;
 }
 
 /**
@@ -95,6 +107,8 @@ export function instanceOfGetWelcomeMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "earningsPurchases" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isWelcomeMesage" in value;
+    isInstance = isInstance && "unsent" in value;
+    isInstance = isInstance && "sentTo" in value;
 
     return isInstance;
 }
@@ -118,6 +132,8 @@ export function GetWelcomeMessageResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'earningsPurchases': json['earningsPurchases'],
         'createdAt': (new Date(json['createdAt'])),
         'isWelcomeMesage': json['isWelcomeMesage'],
+        'unsent': json['unsent'],
+        'sentTo': json['sentTo'],
     };
 }
 
@@ -139,6 +155,8 @@ export function GetWelcomeMessageResponseDtoToJSON(value?: GetWelcomeMessageResp
         'earningsPurchases': value.earningsPurchases,
         'createdAt': (value.createdAt.toISOString()),
         'isWelcomeMesage': value.isWelcomeMesage,
+        'unsent': value.unsent,
+        'sentTo': value.sentTo,
     };
 }
 

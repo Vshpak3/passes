@@ -110,11 +110,11 @@ export interface GetOrCreateChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
 }
 
-export interface GetPaidMessageRequest {
+export interface GetPaidMessagesRequest {
     getPaidMessagesRequestDto: GetPaidMessagesRequestDto;
 }
 
-export interface GetPaidMessagesRequest {
+export interface GetPaidMessagesHistoryRequest {
     getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto;
 }
 
@@ -414,9 +414,9 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get paid messages
      */
-    async getPaidMessageRaw(requestParameters: GetPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessagesResponseDto>> {
+    async getPaidMessagesRaw(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessagesResponseDto>> {
         if (requestParameters.getPaidMessagesRequestDto === null || requestParameters.getPaidMessagesRequestDto === undefined) {
-            throw new runtime.RequiredError('getPaidMessagesRequestDto','Required parameter requestParameters.getPaidMessagesRequestDto was null or undefined when calling getPaidMessage.');
+            throw new runtime.RequiredError('getPaidMessagesRequestDto','Required parameter requestParameters.getPaidMessagesRequestDto was null or undefined when calling getPaidMessages.');
         }
 
         const queryParameters: any = {};
@@ -444,17 +444,17 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get paid messages
      */
-    async getPaidMessage(requestParameters: GetPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessagesResponseDto> {
-        const response = await this.getPaidMessageRaw(requestParameters, initOverrides);
+    async getPaidMessages(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessagesResponseDto> {
+        const response = await this.getPaidMessagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get paid message history
      */
-    async getPaidMessagesRaw(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessageHistoryResponseDto>> {
+    async getPaidMessagesHistoryRaw(requestParameters: GetPaidMessagesHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPaidMessageHistoryResponseDto>> {
         if (requestParameters.getPaidMessageHistoryRequestDto === null || requestParameters.getPaidMessageHistoryRequestDto === undefined) {
-            throw new runtime.RequiredError('getPaidMessageHistoryRequestDto','Required parameter requestParameters.getPaidMessageHistoryRequestDto was null or undefined when calling getPaidMessages.');
+            throw new runtime.RequiredError('getPaidMessageHistoryRequestDto','Required parameter requestParameters.getPaidMessageHistoryRequestDto was null or undefined when calling getPaidMessagesHistory.');
         }
 
         const queryParameters: any = {};
@@ -482,8 +482,8 @@ export class MessagesApi extends runtime.BaseAPI {
     /**
      * Get paid message history
      */
-    async getPaidMessages(requestParameters: GetPaidMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
-        const response = await this.getPaidMessagesRaw(requestParameters, initOverrides);
+    async getPaidMessagesHistory(requestParameters: GetPaidMessagesHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
+        const response = await this.getPaidMessagesHistoryRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

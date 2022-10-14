@@ -1,0 +1,65 @@
+import { PaidMessageDto } from "@passes/api-client"
+import React, { useState } from "react"
+import { Button } from "src/components/atoms/Button"
+
+interface PaidMessageStatisticProps {
+  paidMessage: PaidMessageDto
+}
+
+export const PaidMessageStatistic = ({
+  paidMessage
+}: PaidMessageStatisticProps) => {
+  const [unsent, setUnsent] = useState<boolean>(false)
+
+  const unsendMessage = async () => {
+    // const messagesApi = new MessagesApi()
+    // TODO unsend message
+    setUnsent(true)
+  }
+  const canUnsend =
+    !unsent && !paidMessage.unsent && !paidMessage.isWelcomeMesage
+  return (
+    <div className="flex flex-row justify-between border-b border-passes-dark-200">
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[14px] font-[700]">
+          {paidMessage.createdAt.toLocaleString()}
+        </span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[14px] font-[700]">{paidMessage.text}</span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <span className="text-[12px] font-[500]">
+          {paidMessage.bareContents?.length ?? 0}
+        </span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <span className="text-[12px] font-[500]">
+          {"$" + (paidMessage.price ?? 0).toFixed(2)}
+        </span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <span className="text-[12px] font-[500]">{paidMessage.sentTo}</span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[12px] font-[500]">
+          {paidMessage.numPurchases}
+        </span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[12px] font-[500]">
+          {paidMessage.earningsPurchases}
+        </span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[12px] font-[500]">Create List</span>
+      </div>
+      <div className="flex h-[72px] flex-1 items-center justify-center">
+        <span className="text-[14px] font-[700] text-passes-pink-100">
+          {canUnsend && <Button onClick={unsendMessage}>Unsend</Button>}
+          {!canUnsend && <>Unsent</>}
+        </span>
+      </div>
+    </div>
+  )
+}

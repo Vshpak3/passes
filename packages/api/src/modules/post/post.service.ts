@@ -236,10 +236,9 @@ export class PostService {
     userId: string,
     getPostsRequestDto: GetPostsRequestDto,
   ): Promise<PostDto[]> {
-    const { scheduledOnly, lastId, createdAt } = getPostsRequestDto
+    const { lastId, createdAt } = getPostsRequestDto
     let query = this.dbReader<PostEntity>(PostEntity.table)
       .select([`${PostEntity.table}.*`])
-      .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
     query = createPaginatedQuery(
       query,
@@ -250,9 +249,6 @@ export class PostService {
       createdAt,
       lastId,
     )
-    if (scheduledOnly) {
-      query = query.whereNotNull('scheduled_at')
-    }
     return await this.getPostsFromQuery(userId, query)
   }
 
@@ -320,6 +316,7 @@ export class PostService {
               post.price === 0, // price of post is 0
             post.user_id,
             post.preview_index,
+            post.user_id === userId,
           ),
         ),
     )

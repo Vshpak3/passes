@@ -88,6 +88,9 @@ export class PostDto {
   @DtoProperty({ type: 'date', optional: true, nullable: true })
   expiresAt?: Date | null
 
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  deletedAt?: Date | null
+
   @Min(0)
   @Max(POST_PRICE_MAX_PRICE)
   @DtoProperty({ type: 'currency', optional: true })
@@ -125,6 +128,7 @@ export class PostDto {
       this.tags = JSON.parse(post.tags)
       this.passIds = JSON.parse(post.pass_ids)
       this.previewIndex = post.preview_index
+      this.deletedAt = post.deleted_at
       if (isOwner) {
         this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount

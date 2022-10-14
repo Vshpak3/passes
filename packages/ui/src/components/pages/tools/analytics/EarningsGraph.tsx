@@ -3,6 +3,7 @@ import "react-date-range/dist/theme/default.css"
 
 import {
   CreatorEarningDto,
+  CreatorEarningDtoTypeEnum,
   CreatorStatsApi,
   GetCreatorEarningsHistoryRequestDtoTypeEnum
 } from "@passes/api-client"
@@ -18,7 +19,7 @@ import {
 } from "chart.js"
 import { uniqueId } from "lodash"
 import ms from "ms"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
@@ -42,15 +43,17 @@ interface EarningsGraphProps {
 }
 
 export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
-  const [activeTab, setActiveTab] = React.useState("total")
-  const [dateRange, setDateRange] = React.useState({
-    startDate: new Date(Date.now() - ms("1 week")),
+  const [activeTab, setActiveTab] = useState<CreatorEarningDtoTypeEnum>(
+    CreatorEarningDtoTypeEnum.Total
+  )
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(Date.now() - ms("2 weeks")),
     endDate: new Date(),
     key: "selection"
   })
   const [graphData, setGraphData] = React.useState<Array<CreatorEarningDto>>([])
 
-  const handleOnTabClick = (value: string) => {
+  const handleOnTabClick = (value: CreatorEarningDtoTypeEnum) => {
     setActiveTab(value)
   }
   const api = new CreatorStatsApi()
@@ -178,26 +181,36 @@ const EARNINGS_GRAPH_TABS = [
   {
     label: "All",
     id: uniqueId(),
-    value: "total"
+    value: CreatorEarningDtoTypeEnum.Total
   },
   {
-    label: "Subscriptions",
+    label: "Subscription Passes",
     id: uniqueId(),
-    value: "subscriptions"
+    value: CreatorEarningDtoTypeEnum.Subscription
   },
   {
     label: "Tips",
     id: uniqueId(),
-    value: "tips"
+    value: CreatorEarningDtoTypeEnum.Tips
   },
   {
     label: "Posts",
     id: uniqueId(),
-    value: "posts"
+    value: CreatorEarningDtoTypeEnum.Posts
   },
   {
     label: "Messages",
     id: uniqueId(),
-    value: "messages"
+    value: CreatorEarningDtoTypeEnum.Messages
+  },
+  {
+    label: "Lifetime Passes",
+    id: uniqueId(),
+    value: CreatorEarningDtoTypeEnum.Lifetime
+  },
+  {
+    label: "Chargebacks",
+    id: uniqueId(),
+    value: CreatorEarningDtoTypeEnum.Chargebacks
   }
 ]

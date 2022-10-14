@@ -31,12 +31,6 @@ export interface GetPostsRequestDto {
      * @memberof GetPostsRequestDto
      */
     lastId?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetPostsRequestDto
-     */
-    scheduledOnly: boolean;
 }
 
 /**
@@ -44,7 +38,6 @@ export interface GetPostsRequestDto {
  */
 export function instanceOfGetPostsRequestDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "scheduledOnly" in value;
 
     return isInstance;
 }
@@ -61,7 +54,6 @@ export function GetPostsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
-        'scheduledOnly': json['scheduledOnly'],
     };
 }
 
@@ -76,7 +68,6 @@ export function GetPostsRequestDtoToJSON(value?: GetPostsRequestDto | null): any
         
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
-        'scheduledOnly': value.scheduledOnly,
     };
 }
 

@@ -37,6 +37,12 @@ export class PaidMessageDto {
   @DtoProperty({ type: 'boolean' })
   isWelcomeMesage: boolean
 
+  @DtoProperty({ type: 'boolean' })
+  unsent: boolean
+
+  @DtoProperty({ type: 'number' })
+  sentTo: number
+
   constructor(paidMessage: PaidMessageEntity | undefined) {
     if (paidMessage) {
       this.paidMessageId = paidMessage.id
@@ -48,6 +54,8 @@ export class PaidMessageDto {
       this.earningsPurchases = paidMessage.earnings_purchases
       this.createdAt = paidMessage.created_at
       this.isWelcomeMesage = paidMessage.is_welcome_message
+      this.unsent = paidMessage.unsent
+      this.sentTo = paidMessage.sent_to
     }
   }
 }

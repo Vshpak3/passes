@@ -315,7 +315,7 @@ export class MessagesController {
     role: RoleEnum.CREATOR_ONLY,
   })
   @Post('paid-message/history')
-  async getPaidMessages(
+  async getPaidMessagesHistory(
     @Req() req: RequestWithUser,
     @Body() getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto,
   ): Promise<GetPaidMessageHistoryResponseDto> {
@@ -335,7 +335,7 @@ export class MessagesController {
     role: RoleEnum.CREATOR_ONLY,
   })
   @Post('paid-message')
-  async getPaidMessage(
+  async getPaidMessages(
     @Req() req: RequestWithUser,
     @Body() getPaidMessagesRequestDto: GetPaidMessagesRequestDto,
   ): Promise<GetPaidMessagesResponseDto> {

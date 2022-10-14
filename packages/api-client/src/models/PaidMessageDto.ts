@@ -80,6 +80,18 @@ export interface PaidMessageDto {
      * @memberof PaidMessageDto
      */
     isWelcomeMesage: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PaidMessageDto
+     */
+    unsent: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaidMessageDto
+     */
+    sentTo: number;
 }
 
 /**
@@ -95,6 +107,8 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     isInstance = isInstance && "earningsPurchases" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isWelcomeMesage" in value;
+    isInstance = isInstance && "unsent" in value;
+    isInstance = isInstance && "sentTo" in value;
 
     return isInstance;
 }
@@ -118,6 +132,8 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'earningsPurchases': json['earningsPurchases'],
         'createdAt': (new Date(json['createdAt'])),
         'isWelcomeMesage': json['isWelcomeMesage'],
+        'unsent': json['unsent'],
+        'sentTo': json['sentTo'],
     };
 }
 
@@ -139,6 +155,8 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'earningsPurchases': value.earningsPurchases,
         'createdAt': (value.createdAt.toISOString()),
         'isWelcomeMesage': value.isWelcomeMesage,
+        'unsent': value.unsent,
+        'sentTo': value.sentTo,
     };
 }
 
