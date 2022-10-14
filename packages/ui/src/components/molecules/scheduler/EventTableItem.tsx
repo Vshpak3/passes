@@ -1,16 +1,13 @@
-import { PostApi, PostDto, UpdatePostRequestDto } from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import { compareAsc, format } from "date-fns"
 import EditIcon from "public/icons/edit.svg"
 import TrashIcon from "public/icons/trash.svg"
 import { FC, useCallback, useEffect, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
-import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
+import { UpdatePost } from "src/components/organisms/profile/main-content/UpdatePost"
 import { formatCurrency } from "src/helpers/formatters"
 import { useWindowDimensions } from "src/helpers/hooks/useWindowDimensions"
-import { useCreatorPasses } from "src/hooks/useCreatorPasses"
-import { CACHE_KEY_SCHEDULED_EVENTS } from "src/hooks/useScheduledPosts"
-import { mutate } from "swr"
 
 interface EventTableItemProps {
   id: string
@@ -22,16 +19,11 @@ interface EventTableItemProps {
   postUnlocked: boolean
 }
 
-const postAPI = new PostApi()
-
-export const EditButtonGroup: FC<any> = ({ postId, data }) => {
+export const EditButtonGroup: FC<any> = ({ id, data }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const { creatorPasses } = useCreatorPasses()
 
-  const handleUpdatePost = async (values: UpdatePostRequestDto) => {
-    await postAPI.updatePost({ postId, updatePostRequestDto: values })
+  const hideUpdatePostModalHandler = () => {
     setIsNewPostModalOpen(false)
-    mutate(CACHE_KEY_SCHEDULED_EVENTS)
   }
 
   return (
@@ -41,13 +33,11 @@ export const EditButtonGroup: FC<any> = ({ postId, data }) => {
       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
       trigger={<EditIcon onClick={() => setIsNewPostModalOpen(true)} />}
     >
-      <NewPost
-        isExtended
-        passes={creatorPasses}
+      <UpdatePost
+        onUpdate={hideUpdatePostModalHandler}
+        onClose={hideUpdatePostModalHandler}
         initialData={data}
-        handleCreatePost={handleUpdatePost}
-        placeholder="What's on your mind?"
-        onlyText
+        postId={id}
       />
     </Dialog>
   )

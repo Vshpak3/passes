@@ -1,4 +1,4 @@
-import { PostApi } from "@passes/api-client"
+import { CreatePostRequestDto, PostApi } from "@passes/api-client"
 import { addSeconds } from "date-fns"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
@@ -57,6 +57,17 @@ export const useScheduledPosts = (defaultDate?: DateProps) => {
     mutate()
   }
 
+  const updatePost = async (
+    postId: string,
+    post: Pick<CreatePostRequestDto, "text" | "scheduledAt" | "tags">
+  ) => {
+    await api.updatePost({
+      postId,
+      updatePostRequestDto: post
+    })
+    mutate()
+  }
+
   // const { mutate: _mutateManual } = useSWRConfig()
   // const mutateManual = (update: Partial<ProfileUpdate>) =>
   //   _mutateManual(CACHE_KEY_SCHEDULED_EVENTS, update, {
@@ -75,6 +86,7 @@ export const useScheduledPosts = (defaultDate?: DateProps) => {
     mutate,
     hasInitialFetch,
     setMonthYear,
-    deletePost
+    deletePost,
+    updatePost
   }
 }
