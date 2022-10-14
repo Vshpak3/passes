@@ -216,16 +216,16 @@ export class ContentService {
       .whereIn('id', contentIds)
       .andWhere({ user_id: userId })
       .select('id', 'content_type')
-    const content: Record<string, ContentTypeEnum> = {}
+    const contents: Record<string, ContentTypeEnum> = {}
 
     filteredContent.forEach(
-      (content) => (content[content.id] = content.content_type),
+      (content) => (contents[content.id] = content.content_type),
     )
     return contentIds.map((contentId) => {
-      if (!content[contentId]) {
+      if (!contents[contentId]) {
         throw new NoContentError('cant find content for user')
       }
-      return new ContentBareDto(contentId, content[contentId])
+      return new ContentBareDto(contentId, contents[contentId])
     })
   }
 
