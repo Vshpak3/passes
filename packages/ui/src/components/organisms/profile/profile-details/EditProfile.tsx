@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { GetProfileResponseDto } from "@passes/api-client"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
@@ -17,7 +18,92 @@ import { FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
+import { SOCIAL_MEDIA_USERNAME_REGEX } from "src/helpers/validation"
 import { useProfile } from "src/hooks/useProfile"
+import { object, string } from "yup"
+
+export const editProfileSchema = object({
+  displayName: string()
+    .transform((name) => name.trim())
+    .required("Please enter a display name"),
+  description: string()
+    .transform((name) => name.trim())
+    .required("Please enter a bio"),
+  facebookUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("facebookUsername", "Please enter a valid Facebook username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.facebook.test(v)
+    }),
+  instagramUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test(
+      "instagramUsername",
+      "Please enter a valid Instagram username",
+      (v) => {
+        if (!v) {
+          return true
+        }
+
+        return SOCIAL_MEDIA_USERNAME_REGEX.instagram.test(v)
+      }
+    ),
+  twitterUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("twitterUsername", "Please enter a valid Twitter username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.twitter.test(v)
+    }),
+  discordUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("discordUsername", "Please enter a valid Discord username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.discord.test(v)
+    }),
+  tiktokUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("tiktokUsername", "Please enter a valid TikTok username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.tiktok.test(v)
+    }),
+  twitchUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("twitchUsername", "Please enter a valid Twitch username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.twitch.test(v)
+    }),
+  youtubeUsername: string()
+    .optional()
+    .transform((value) => value.trim())
+    .test("youtubeUsername", "Please enter a valid Youtube username", (v) => {
+      if (!v) {
+        return true
+      }
+
+      return SOCIAL_MEDIA_USERNAME_REGEX.youtube.test(v)
+    })
+})
 
 const bioForm = {
   description: {
@@ -77,12 +163,12 @@ const socialMediaForm = {
 }
 
 interface EditProfileProps {
-  setEditProfile: Dispatch<SetStateAction<boolean>>
+  setEditProfileModalOpen: Dispatch<SetStateAction<boolean>>
   setProfileImageOverride: Dispatch<SetStateAction<string | undefined>>
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
-  setEditProfile,
+  setEditProfileModalOpen,
   setProfileImageOverride
 }) => {
   const { mutateManual, profileInfo, profileUserId } = useProfile()
@@ -114,7 +200,8 @@ export const EditProfile: FC<EditProfileProps> = ({
         profileImage: [],
         profileBannerImage: []
       }
-    }, [profileInfo])
+    }, [profileInfo]),
+    resolver: yupResolver(editProfileSchema)
   })
 
   useEffect(() => {
@@ -169,7 +256,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     } catch (error: any) {
       await errorMessage(error, true)
     } finally {
-      setEditProfile(false)
+      setEditProfileModalOpen(false)
     }
   }
 
@@ -177,7 +264,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     <Dialog
       className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[20px]"
       open={true}
-      onClose={() => setEditProfile(false)}
+      onClose={() => setEditProfileModalOpen(false)}
       footer={
         <div className="left-20 mx-0 -mb-4 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
           <span

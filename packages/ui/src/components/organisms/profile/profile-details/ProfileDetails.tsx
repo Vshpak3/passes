@@ -17,7 +17,8 @@ export const ProfileDetails: FC = () => {
 
   const { ownsProfile, profileUserId } = useProfile()
 
-  const [editProfile, setEditProfile] = useState<boolean>(false)
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
+    useState<boolean>(false)
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
   const onChat = async () => {
@@ -30,9 +31,9 @@ export const ProfileDetails: FC = () => {
 
   return (
     <>
-      {editProfile && (
+      {isEditProfileModalOpen && (
         <EditProfile
-          setEditProfile={setEditProfile}
+          setEditProfileModalOpen={setIsEditProfileModalOpen}
           setProfileImageOverride={setProfileImageOverride}
         />
       )}
@@ -49,7 +50,9 @@ export const ProfileDetails: FC = () => {
             onClick={() => setIsProfilePicModalOpen(true)}
             override={profileImageOverride}
           />
-          {ownsProfile && <EditProfileAction setEditProfile={setEditProfile} />}
+          {ownsProfile && (
+            <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
+          )}
           <div className="col-span-4 flex flex-col px-5 pt-4">
             <ProfileInformationDesktop onChat={onChat} />
           </div>
@@ -61,7 +64,9 @@ export const ProfileDetails: FC = () => {
             userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
           />
-          {ownsProfile && <EditProfileAction setEditProfile={setEditProfile} />}
+          {ownsProfile && (
+            <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
+          )}
           <ProfileInformationMobile onChat={onChat} />
         </div>
       </div>
