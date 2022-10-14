@@ -11,7 +11,7 @@ interface Props {
 export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
   const {
     register,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors },
     handleSubmit,
     setError,
     clearErrors,
@@ -22,10 +22,6 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
   const [tip, setTip] = useState(0)
   const message = watch("message")
   const payinMethod = undefined
-  // TODO: error validation
-  // const [loading, setLoading] = useState(false)
-  // const [blocked, setBlocked] = useState(false)
-  // TODO: loading and blocked should be used from usePay along with blocked enums, next step
 
   const registerMessage = async () => {
     return await api.sendMessage({
@@ -53,12 +49,11 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
     })
   }
   const submitMessage = async () => {
-    if (!channelId || isSubmitSuccessful) {
+    if (!channelId) {
       return false
     }
     try {
       submit()
-
       reset()
     } catch (error) {
       setError("submitError", {

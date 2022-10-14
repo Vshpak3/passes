@@ -28,10 +28,7 @@ export const InputMessageCreatorPerspective: FC<InputMessageProps> = ({
 }) => {
   const {
     register,
-    formState: {
-      errors
-      // isSubmitSuccessful TODO: recheck this
-    },
+    formState: { errors },
     handleSubmit,
     reset,
     setError,
