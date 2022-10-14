@@ -69,12 +69,6 @@ const EmailNotifications = dynamic(
       "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
     )
 )
-const NotificationPreferences = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/NotificationPreferences"
-    )
-)
 const PaymentSettings = dynamic(
   () => import("src/components/pages/settings/tabs/PaymentSettings/index")
 )
@@ -245,8 +239,6 @@ const renderTab = (tab: TabsEnum) => {
 
 const renderSubTab = (tab: SubTabsEnum) => {
   switch (tab) {
-    case SubTabsEnum.NotificationPreferences:
-      return <NotificationPreferences />
     case SubTabsEnum.AccountInformation:
       return <AccountInformation />
     case SubTabsEnum.ChangePassword:

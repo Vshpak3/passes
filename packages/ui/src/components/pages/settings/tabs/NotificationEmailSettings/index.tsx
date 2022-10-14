@@ -7,9 +7,9 @@ import { SettingsContextProps, useSettings } from "src/contexts/settings"
 
 const subTabs = [
   {
-    name: "Notification Preferences",
-    subText: "Select your preferences by notification type.",
-    id: SubTabsEnum.NotificationPreferences,
+    name: "Email Notifications",
+    subText: "Select your preferences for receiving emails.",
+    id: SubTabsEnum.EmailNotifications,
     Icon: NotificationIcon
   }
 ]

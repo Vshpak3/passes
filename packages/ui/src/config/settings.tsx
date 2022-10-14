@@ -10,33 +10,33 @@ export enum TabsEnum {
 
 export const tabs = [
   {
-    name: "Account Settings",
+    name: "Account",
     id: TabsEnum.AccountSettings,
     creatorOnly: false
   },
-  { name: "Chat Settings", id: TabsEnum.ChatSettings, creatorOnly: true },
+  { name: "Chat", id: TabsEnum.ChatSettings, creatorOnly: true },
   {
-    name: "Notifications & Emails Settings",
+    name: "Notifications & Emails",
     id: TabsEnum.NotificationEmailSettings,
     creatorOnly: false
   },
   {
-    name: "Privacy & Safety Settings",
+    name: "Privacy & Safety",
     id: TabsEnum.PrivacySafetySettings,
     creatorOnly: true
   },
   {
-    name: "Payment Settings",
+    name: "Payment",
     id: TabsEnum.PaymentSettings,
     creatorOnly: false
   },
   {
-    name: "Wallet Settings",
+    name: "Wallet",
     id: TabsEnum.WalletSettings,
     creatorOnly: false
   },
   {
-    name: "Payout Settings",
+    name: "Payout",
     id: TabsEnum.PayoutSettings,
     creatorOnly: true
   }
@@ -69,7 +69,6 @@ export enum SubTabsEnum {
   "Username",
 
   // Notification
-  "NotificationPreferences",
   "EmailNotifications",
 
   // PrivacySafety
@@ -87,7 +86,7 @@ export enum SubTabsEnum {
   "PaymentHistory"
 }
 
-export const subTabToPath = {
+export const subTabToPath: Record<SubTabsEnum, string> = {
   // Accounts
   [SubTabsEnum.AccountInformation]: "information",
   [SubTabsEnum.ChangePassword]: "password",
@@ -97,7 +96,6 @@ export const subTabToPath = {
   [SubTabsEnum.Username]: "username",
 
   // Notification
-  [SubTabsEnum.NotificationPreferences]: "preferences",
   [SubTabsEnum.EmailNotifications]: "email",
 
   // PrivacySafety
@@ -115,9 +113,6 @@ export const subTabToPath = {
   [SubTabsEnum.PaymentHistory]: "history"
 }
 
-export const pathToSubTab = Object.keys(subTabToPath).reduce((result, key) => {
-  result[subTabToPath[key as unknown as SubTabsEnum]] = parseInt(
-    key as unknown as string
-  )
-  return result
-}, {} as Record<string, SubTabsEnum>)
+export const pathToSubTab: Record<string, SubTabsEnum> = Object.fromEntries(
+  Object.entries(subTabToPath).map(([k, v]) => [v, parseInt(k) as SubTabsEnum])
+)

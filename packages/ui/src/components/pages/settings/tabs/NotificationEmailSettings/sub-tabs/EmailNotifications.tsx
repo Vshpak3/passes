@@ -79,8 +79,8 @@ const EmailNotifications = () => {
   return (
     <Tab
       withBack
-      title="Notification Preferences"
-      description="Select your preferences by notification type."
+      title="Email Settings"
+      description="Select your preferences for receiving emails."
     >
       <div className="mt-[22px] border-b border-passes-dark-200 pb-3">
         <label className="flex cursor-pointer items-center justify-between">
