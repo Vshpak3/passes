@@ -43,6 +43,12 @@ export const BuyPostModal: FC<BuyMessageModalProps> = ({
           />
         )}
       </div>
+      {defaultPayinMethod?.cardId && (
+        <div>
+          Buying an nft with a credit card requires 3DS authentication. You may
+          be redirected shortly after paying to confirm the transaction.
+        </div>
+      )}
       <BuyPassButton
         isDisabled={
           !defaultPayinMethod ||

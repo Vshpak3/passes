@@ -6,7 +6,7 @@ import { Hero } from "src/components/organisms/lucypalooza/LucypaloozaHero"
 import { Passes } from "src/components/organisms/lucypalooza/LucypaloozaPasses"
 import { useUser } from "src/hooks/useUser"
 
-const LucyPalooza = () => {
+export const LucyPalooza = () => {
   const { user, loading } = useUser()
   const router = useRouter()
   useEffect(() => {
@@ -71,4 +71,4 @@ const LucyPalooza = () => {
   )
 }
 
-export default LucyPalooza // no WithNormalPageLayout
+// export default LucyPalooza // no WithNormalPageLayout
