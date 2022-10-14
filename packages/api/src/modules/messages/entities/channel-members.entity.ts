@@ -10,6 +10,7 @@ import { ChannelEntity } from './channel.entity'
 @Unique({ properties: ['user_id', 'other_user_id'] })
 export class ChannelMemberEntity extends BaseEntity {
   static table = 'channel_member'
+
   @ManyToOne({ entity: () => ChannelEntity })
   channel_id: string
 

@@ -8,6 +8,7 @@ import { PaidMessageEntity } from './paid-message.entity'
 @Index({ properties: ['created_at'] })
 export class PaidMessageHistoryEntity extends BaseEntity {
   static table = 'paid_message_history'
+
   @ManyToOne({ entity: () => PaidMessageEntity })
   paid_message_id: string
 

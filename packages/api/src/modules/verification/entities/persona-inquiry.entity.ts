@@ -9,6 +9,7 @@ import { PersonaInquiryStatusEnum } from '../enum/persona-inquiry.status.enum'
 @Entity()
 export class PersonaInquiryEntity extends BaseEntity {
   static table = 'persona_inquiry'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

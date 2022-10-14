@@ -10,6 +10,7 @@ import { PostEntity } from './post.entity'
 @Unique({ properties: ['post_id', 'user_id'] })
 export class PostUserAccessEntity extends BaseEntity {
   static table = 'post_user_access'
+
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

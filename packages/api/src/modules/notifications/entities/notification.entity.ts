@@ -9,6 +9,7 @@ import { NotificationTypeEnum } from '../enum/notification.type.enum'
 @Entity()
 export class NotificationEntity extends BaseEntity {
   static table = 'notification'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

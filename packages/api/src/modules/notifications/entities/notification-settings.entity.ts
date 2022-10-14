@@ -6,6 +6,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Entity()
 export class NotificationSettingsEntity extends BaseEntity {
   static table = 'notification_settings'
+
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

@@ -8,6 +8,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Index({ properties: ['user_id', 'content_id'] })
 export class UserMessageContentEntity extends BaseEntity {
   static table = 'user_message_content'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

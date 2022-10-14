@@ -22,6 +22,7 @@ import { PassEntity } from './pass.entity'
 @Unique({ properties: ['address', 'chain', 'token_id'] })
 export class PassHolderEntity extends BaseEntity {
   static table = 'pass_holder'
+
   @ManyToOne({ entity: () => PassEntity })
   pass_id: string
 

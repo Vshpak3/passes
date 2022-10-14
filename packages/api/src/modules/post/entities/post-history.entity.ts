@@ -8,6 +8,7 @@ import { PostEntity } from './post.entity'
 @Index({ properties: ['created_at'] })
 export class PostHistoryEntity extends BaseEntity {
   static table = 'post_history'
+
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

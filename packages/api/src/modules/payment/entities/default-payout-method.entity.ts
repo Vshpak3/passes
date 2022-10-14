@@ -9,6 +9,7 @@ import { CircleBankEntity } from './circle-bank.entity'
 @Entity()
 export class DefaultPayoutMethodEntity extends BaseEntity {
   static table = 'default_payout_method'
+
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

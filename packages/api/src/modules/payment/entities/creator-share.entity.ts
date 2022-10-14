@@ -8,6 +8,7 @@ import { PayinEntity } from './payin.entity'
 @Entity()
 export class CreatorShareEntity extends BaseEntity {
   static table = 'creator_share'
+
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string
 

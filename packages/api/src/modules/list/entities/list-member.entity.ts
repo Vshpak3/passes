@@ -9,6 +9,7 @@ import { ListEntity } from './list.entity'
 @Index({ properties: ['created_at'] })
 export class ListMemberEntity extends BaseEntity {
   static table = 'list_member'
+
   @ManyToOne({ entity: () => ListEntity })
   list_id: string
 

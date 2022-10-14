@@ -28,6 +28,7 @@ import { PassImageEnum } from '../enum/pass-image.enum'
 @Entity()
 export class PassEntity extends BaseEntity {
   static table = 'pass'
+
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string | null
 

@@ -8,6 +8,7 @@ import { USER_EMAIL_LENGTH } from '../constants/schema'
 @Unique({ properties: ['email', 'pass_id'] })
 export class WhitelistedUsersEntity extends BaseEntity {
   static table = 'whitelisted_users'
+
   @Property({ length: USER_EMAIL_LENGTH })
   email: string
 

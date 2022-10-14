@@ -7,6 +7,7 @@ import { USER_EMAIL_LENGTH } from '../../user/constants/schema'
 @Entity()
 export class VerifyEmailRequestEntity extends BaseEntity {
   static table = 'verify_email_request'
+
   @ManyToOne({ entity: () => AuthEntity })
   auth_id: string
 

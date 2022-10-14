@@ -9,6 +9,7 @@ import { EarningTypeEnum } from '../enum/earning.type.enum'
 @Unique({ properties: ['user_id', 'type'] })
 export class CreatorEarningEntity extends BaseEntity {
   static table = 'creator_earning'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

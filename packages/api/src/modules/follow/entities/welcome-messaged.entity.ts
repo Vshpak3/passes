@@ -7,6 +7,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Unique({ properties: ['follower_id', 'creator_id'] })
 export class WelcomeMessaged extends BaseEntity {
   static table = 'welcome_messaged'
+
   @ManyToOne({ entity: () => UserEntity })
   follower_id: string
 

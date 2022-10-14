@@ -9,6 +9,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Index({ properties: ['created_at'] })
 export class FollowEntity extends BaseEntity {
   static table = 'follow'
+
   @ManyToOne({ entity: () => UserEntity })
   follower_id: string
 

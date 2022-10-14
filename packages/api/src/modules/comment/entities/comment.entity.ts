@@ -8,6 +8,7 @@ import { COMMENT_TAGS_LENGTH, COMMENT_TEXT_LENGTH } from '../constants/schema'
 @Entity()
 export class CommentEntity extends BaseEntity {
   static table = 'comment'
+
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

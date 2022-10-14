@@ -6,6 +6,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Entity()
 export class CreatorStatEntity extends BaseEntity {
   static table = 'creator_stat'
+
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

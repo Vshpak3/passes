@@ -12,6 +12,7 @@ import { PaidMessageEntity } from './paid-message.entity'
 @Index({ properties: ['created_at'] })
 export class MessageEntity extends BaseEntity {
   static table = 'message'
+
   @ManyToOne({ entity: () => UserEntity })
   sender_id: string
 

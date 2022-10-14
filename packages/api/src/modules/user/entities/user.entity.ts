@@ -18,9 +18,10 @@ export class UserIndexes {
   display_name?: string = undefined
 }
 
-@Entity({ tableName: 'users' }) // pural because it not a good idea to have a table named "user" in mysql
+@Entity({ tableName: 'users' }) // plural because it not a good idea to have a table named "user"
 export class UserEntity extends BaseEntity {
   static table = 'users'
+
   @Property({ length: USER_EMAIL_LENGTH })
   @Unique()
   email: string

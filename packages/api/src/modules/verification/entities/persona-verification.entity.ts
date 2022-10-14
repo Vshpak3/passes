@@ -8,6 +8,7 @@ import { PersonaInquiryEntity } from './persona-inquiry.entity'
 @Entity()
 export class PersonaVerificationEntity extends BaseEntity {
   static table = 'persona_verification'
+
   @ManyToOne({ entity: () => PersonaInquiryEntity })
   inquiry_id: string
 

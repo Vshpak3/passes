@@ -9,6 +9,7 @@ import { UserEntity } from '../../user/entities/user.entity'
 @Index({ properties: ['created_at'] })
 export class PostLikeEntity extends BaseEntity {
   static table = 'post_like'
+
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

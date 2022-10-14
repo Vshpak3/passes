@@ -9,6 +9,7 @@ import { ChainEnum } from '../enum/chain.enum'
 @Unique({ properties: ['chain', 'address'] })
 export class WalletEntity extends BaseEntity {
   static table = 'wallet'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string | null
 

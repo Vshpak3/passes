@@ -9,6 +9,7 @@ import { REASON_FOR_BLOCKING_LENGTH } from '../constants/schema'
 @Index({ properties: ['created_at'] })
 export class FollowReportEntity extends BaseEntity {
   static table = 'follow_report'
+
   @ManyToOne({ entity: () => UserEntity })
   follower_id: string
 

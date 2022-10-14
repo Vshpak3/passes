@@ -28,6 +28,7 @@ import { CircleCardEntity } from './circle-card.entity'
 @Entity()
 export class PayinEntity extends BaseEntity {
   static table = 'payin'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

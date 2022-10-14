@@ -11,6 +11,7 @@ import {
 @Index({ properties: ['created_at'] })
 export class FanWallCommentEntity extends BaseEntity {
   static table = 'fan_wall_comment'
+
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string
 

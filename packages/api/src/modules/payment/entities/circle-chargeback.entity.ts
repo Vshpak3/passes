@@ -7,6 +7,7 @@ import { CirclePaymentEntity } from './circle-payment.entity'
 @Entity()
 export class CircleChargebackEntity extends BaseEntity {
   static table = 'circle_chargeback'
+
   @Property({ length: CIRCLE_ID_LENGTH })
   @Unique()
   circle_id: string

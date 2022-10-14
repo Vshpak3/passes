@@ -3,15 +3,27 @@ import { Injectable, Scope } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
 import { ContextName } from './database.decorator'
-import { getKnexOptions } from './database.options'
+import { getDatabaseOptions } from './database.options'
 
-@Injectable({
-  scope: Scope.TRANSIENT,
-})
+@Injectable({ scope: Scope.TRANSIENT })
 export class DatabaseService {
   public knex: Knex
 
   constructor(configService: ConfigService, contextName: ContextName) {
-    this.knex = knex(getKnexOptions(configService, contextName))
+    const dbOptions = getDatabaseOptions(configService, contextName)
+    this.knex = knex({
+      client: 'mysql2',
+      connection: {
+        ...dbOptions,
+        supportBigNumbers: true,
+        bigNumberStrings: false,
+        decimalNumbers: true,
+        timezone: '+00:00',
+      },
+      pool: {
+        min: 2,
+        max: 10,
+      },
+    })
   }
 }

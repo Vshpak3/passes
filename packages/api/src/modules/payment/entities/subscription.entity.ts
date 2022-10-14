@@ -23,6 +23,7 @@ import { CircleCardEntity } from './circle-card.entity'
 @Unique({ properties: ['user_id', 'pass_holder_id'] })
 export class SubscriptionEntity extends BaseEntity {
   static table = 'subscription'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

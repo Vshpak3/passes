@@ -10,6 +10,7 @@ import {
 @Entity()
 export class CircleNotificationEntity extends BaseEntity {
   static table = 'circle_notification'
+
   @Property({ length: CIRCLE_CLIENT_ID_LENGTH })
   client_id: string
 

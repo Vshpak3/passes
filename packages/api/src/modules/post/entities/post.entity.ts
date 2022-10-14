@@ -13,6 +13,7 @@ import {
 @Entity()
 export class PostEntity extends BaseEntity {
   static table = 'post'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

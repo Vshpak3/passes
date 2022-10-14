@@ -10,6 +10,7 @@ import { MESSAGE_LENGTH } from '../constants/schema'
 @Index({ properties: ['created_at'] })
 export class PaidMessageEntity extends BaseEntity {
   static table = 'paid_message'
+
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string
 

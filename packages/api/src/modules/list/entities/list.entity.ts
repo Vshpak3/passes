@@ -9,6 +9,7 @@ import { ListTypeEnum } from '../enum/list.type.enum'
 @Index({ properties: ['created_at'] })
 export class ListEntity extends BaseEntity {
   static table = 'list'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

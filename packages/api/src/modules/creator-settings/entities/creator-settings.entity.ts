@@ -9,6 +9,7 @@ import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 @Entity()
 export class CreatorSettingsEntity extends BaseEntity {
   static table = 'creator_settings'
+
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

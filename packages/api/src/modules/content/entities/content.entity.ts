@@ -7,6 +7,7 @@ import { ContentTypeEnum } from '../enums/content-type.enum'
 @Entity()
 export class ContentEntity extends BaseEntity {
   static table = 'content'
+
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

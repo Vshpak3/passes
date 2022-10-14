@@ -7,6 +7,7 @@ import { USD_AMOUNT_TYPE } from '../constants/schema'
 @Entity()
 export class CreatorFeeEntity extends BaseEntity {
   static table = 'creator_fee'
+
   @OneToOne({ entity: () => UserEntity })
   creator_id: string
 

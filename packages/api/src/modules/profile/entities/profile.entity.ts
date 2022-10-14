@@ -12,6 +12,7 @@ import {
 @Entity()
 export class ProfileEntity extends BaseEntity {
   static table = 'profile'
+
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

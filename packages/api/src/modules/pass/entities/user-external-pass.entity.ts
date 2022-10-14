@@ -8,6 +8,7 @@ import { PassEntity } from './pass.entity'
 @Unique({ properties: ['pass_id', 'user_id'] })
 export class UserExternalPassEntity extends BaseEntity {
   static table = 'user_external_pass'
+
   @ManyToOne({ entity: () => PassEntity })
   pass_id: string
 
