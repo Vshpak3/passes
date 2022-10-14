@@ -443,7 +443,7 @@ export class MessagesService {
         text: text,
         channelId: channelId,
         contents: JSON.stringify(
-          this.contentService.validateContentIds(userId, contentIds),
+          await this.contentService.validateContentIds(userId, contentIds),
         ),
       }
       return await this.payService.registerPayin({
