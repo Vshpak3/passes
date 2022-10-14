@@ -28,7 +28,7 @@ import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { ContentTypeEnum } from '../content/enums/content-type.enum'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
-import { LikeEntity } from '../likes/entities/like.entity'
+import { PostLikeEntity } from '../likes/entities/like.entity'
 import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { AccessTypeEnum } from '../pass/enum/access.enum'
@@ -207,18 +207,18 @@ export class PostService {
           dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(LikeEntity.table, function () {
-        this.on(`${PostEntity.table}.id`, `${LikeEntity.table}.post_id`).andOn(
-          `${LikeEntity.table}.liker_id`,
-          dbReader.raw('?', [userId]),
-        )
+      .leftJoin(PostLikeEntity.table, function () {
+        this.on(
+          `${PostEntity.table}.id`,
+          `${PostLikeEntity.table}.post_id`,
+        ).andOn(`${PostLikeEntity.table}.liker_id`, dbReader.raw('?', [userId]))
       })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.id as access`,
-        `${LikeEntity.table}.id as is_liked`,
+        `${PostLikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(`${PostEntity.table}.id`, postId)
@@ -697,7 +697,7 @@ export class PostService {
       .where({ id: postId })
       .update(
         'num_likes',
-        this.dbWriter<LikeEntity>(LikeEntity.table)
+        this.dbWriter<PostLikeEntity>(PostLikeEntity.table)
           .where({
             post_id: postId,
           })

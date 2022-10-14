@@ -5,8 +5,9 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { USD_AMOUNT_TYPE } from '../constants/schema'
 import { PayinEntity } from './payin.entity'
 
-@Entity({ tableName: 'creator_share' })
+@Entity()
 export class CreatorShareEntity extends BaseEntity {
+  static table = 'creator_share'
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string
 

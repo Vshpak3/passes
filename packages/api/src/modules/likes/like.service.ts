@@ -12,7 +12,7 @@ import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
 import { PostEntity } from '../post/entities/post.entity'
-import { LikeEntity } from './entities/like.entity'
+import { PostLikeEntity } from './entities/like.entity'
 
 @Injectable()
 export class LikeService {
@@ -27,7 +27,7 @@ export class LikeService {
   ) {}
 
   async checkLike(userId: string, postId: string): Promise<boolean> {
-    return !!(await this.dbReader<LikeEntity>(LikeEntity.table)
+    return !!(await this.dbReader<PostLikeEntity>(PostLikeEntity.table)
       .where({
         post_id: postId,
         liker_id: userId,
@@ -50,7 +50,7 @@ export class LikeService {
     }
 
     const query = this.dbWriter.transaction(async (trx) => {
-      await trx<LikeEntity>(LikeEntity.table).insert({
+      await trx<PostLikeEntity>(PostLikeEntity.table).insert({
         post_id: postId,
         liker_id: userId,
       })
@@ -83,7 +83,7 @@ export class LikeService {
     }
 
     await this.dbWriter.transaction(async (trx) => {
-      const deleted = await trx<LikeEntity>(LikeEntity.table)
+      const deleted = await trx<PostLikeEntity>(PostLikeEntity.table)
         .where({
           post_id: postId,
           liker_id: userId,

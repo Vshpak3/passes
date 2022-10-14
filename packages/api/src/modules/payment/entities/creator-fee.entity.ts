@@ -4,8 +4,9 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { USD_AMOUNT_TYPE } from '../constants/schema'
 
-@Entity({ tableName: 'creator_fee' })
+@Entity()
 export class CreatorFeeEntity extends BaseEntity {
+  static table = 'creator_fee'
   @OneToOne({ entity: () => UserEntity })
   creator_id: string
 

@@ -6,9 +6,10 @@ import { PayinEntity } from '../../payment/entities/payin.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { PostEntity } from './post.entity'
 
-@Entity({ tableName: 'post_tip' })
+@Entity()
 @Index({ properties: ['post_id', 'user_id'] })
 export class PostTipEntity extends BaseEntity {
+  static table = 'post_tip'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

@@ -19,9 +19,10 @@ import { PayinMethodEnum } from '../enum/payin-method.enum'
 import { SubscriptionStatusEnum } from '../enum/subscription.status.enum'
 import { CircleCardEntity } from './circle-card.entity'
 
-@Entity({ tableName: 'subscription' })
+@Entity()
 @Unique({ properties: ['user_id', 'pass_holder_id'] })
 export class SubscriptionEntity extends BaseEntity {
+  static table = 'subscription'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

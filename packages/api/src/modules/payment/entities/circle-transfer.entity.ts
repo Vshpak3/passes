@@ -10,8 +10,9 @@ import {
 import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 import { PayoutEntity } from './payout.entity'
 
-@Entity({ tableName: 'circle_transfer' })
+@Entity()
 export class CircleTransferEntity extends BaseEntity {
+  static table = 'circle_transfer'
   @OneToOne({ entity: () => PayoutEntity })
   payout_id: string
 

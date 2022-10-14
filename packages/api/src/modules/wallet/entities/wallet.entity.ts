@@ -5,9 +5,10 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { BLOCKCHAIN_ADDRESS_LENGTH } from '../constants/schema'
 import { ChainEnum } from '../enum/chain.enum'
 
-@Entity({ tableName: 'wallet' })
+@Entity()
 @Unique({ properties: ['chain', 'address'] })
 export class WalletEntity extends BaseEntity {
+  static table = 'wallet'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string | null
 

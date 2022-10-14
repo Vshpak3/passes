@@ -10,8 +10,9 @@ import {
 } from '../constants/schema'
 import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 
-@Entity({ tableName: 'circle_card' })
+@Entity()
 export class CircleCardEntity extends BaseEntity {
+  static table = 'circle_card'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

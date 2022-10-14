@@ -4,8 +4,9 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
-@Entity({ tableName: 'content' })
+@Entity()
 export class ContentEntity extends BaseEntity {
+  static table = 'content'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

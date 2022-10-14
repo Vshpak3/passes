@@ -17,8 +17,9 @@ import { CircleAccountStatusEnum } from '../enum/circle-account.status.enum'
 import { CircleBankEntity } from './circle-bank.entity'
 import { PayoutEntity } from './payout.entity'
 
-@Entity({ tableName: 'circle_payout' })
+@Entity()
 export class CirclePayoutEntity extends BaseEntity {
+  static table = 'circle_payout'
   @ManyToOne({ entity: () => CircleBankEntity })
   bank_id: string
 

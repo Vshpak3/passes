@@ -25,8 +25,9 @@ import { PassTypeEnum } from '../enum/pass.enum'
 import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
 
-@Entity({ tableName: 'pass' })
+@Entity()
 export class PassEntity extends BaseEntity {
+  static table = 'pass'
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string | null
 

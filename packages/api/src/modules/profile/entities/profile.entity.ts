@@ -9,8 +9,9 @@ import {
   PROFILE_DESCRIPTION_LENGTH,
 } from '../constants/schema'
 
-@Entity({ tableName: 'profile' })
+@Entity()
 export class ProfileEntity extends BaseEntity {
+  static table = 'profile'
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

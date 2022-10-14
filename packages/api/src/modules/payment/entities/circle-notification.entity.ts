@@ -7,8 +7,9 @@ import {
 } from '../constants/schema'
 
 // this table is almost purely for logging and analysis purposes
-@Entity({ tableName: 'circle_notification' })
+@Entity()
 export class CircleNotificationEntity extends BaseEntity {
+  static table = 'circle_notification'
   @Property({ length: CIRCLE_CLIENT_ID_LENGTH })
   client_id: string
 

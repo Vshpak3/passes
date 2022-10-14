@@ -10,8 +10,9 @@ import {
   POST_TEXT_LENGTH,
 } from '../constants/schema'
 
-@Entity({ tableName: 'post' })
+@Entity()
 export class PostEntity extends BaseEntity {
+  static table = 'post'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

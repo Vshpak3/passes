@@ -6,8 +6,9 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { MINIMUM_MESSAGE_TIP_AMOUNT } from '../creator-settings.service'
 import { PayoutFrequencyEnum } from '../enum/payout-frequency.enum'
 
-@Entity({ tableName: 'creator_settings' })
+@Entity()
 export class CreatorSettingsEntity extends BaseEntity {
+  static table = 'creator_settings'
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

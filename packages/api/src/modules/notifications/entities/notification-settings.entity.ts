@@ -3,8 +3,9 @@ import { Entity, OneToOne, Property } from '@mikro-orm/core'
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity({ tableName: 'notification_settings' })
+@Entity()
 export class NotificationSettingsEntity extends BaseEntity {
+  static table = 'notification_settings'
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

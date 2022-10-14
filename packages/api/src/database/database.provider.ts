@@ -1,4 +1,4 @@
-import { EntityManager } from '@mikro-orm/mysql'
+import { ConfigService } from '@nestjs/config'
 
 import { ContextName } from './database.decorator'
 import { DatabaseService } from './database.service'
@@ -8,9 +8,9 @@ export const getDatabaseProviderToken = (contextName: ContextName) =>
 
 export const createDatabaseProvider = (contextName: ContextName) => ({
   provide: getDatabaseProviderToken(contextName),
-  useFactory: (entityManager: EntityManager) => {
-    const databaseService = new DatabaseService(entityManager)
+  useFactory: (configService: ConfigService) => {
+    const databaseService = new DatabaseService(configService, contextName)
     return databaseService.knex
   },
-  inject: [`${contextName}_EntityManager`],
+  inject: [ConfigService],
 })

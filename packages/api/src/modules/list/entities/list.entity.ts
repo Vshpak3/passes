@@ -5,9 +5,10 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { LIST_NAME_LENGTH } from '../constants/schema'
 import { ListTypeEnum } from '../enum/list.type.enum'
 
-@Entity({ tableName: 'list' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class ListEntity extends BaseEntity {
+  static table = 'list'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

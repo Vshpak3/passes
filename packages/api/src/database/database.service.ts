@@ -1,6 +1,8 @@
-import { EntityManager, Knex, knex } from '@mikro-orm/mysql'
+import { Knex, knex } from '@mikro-orm/mysql'
 import { Injectable, Scope } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 
+import { ContextName } from './database.decorator'
 import { getKnexOptions } from './database.options'
 
 @Injectable({
@@ -9,16 +11,7 @@ import { getKnexOptions } from './database.options'
 export class DatabaseService {
   public knex: Knex
 
-  constructor(entityManager: EntityManager) {
-    this.knex = knex(getKnexOptions(entityManager.getKnex()))
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    Object.values(entityManager.metadata.getAll()).forEach(
-      ({ class: entityClass, tableName }) => {
-        if (entityClass) {
-          entityClass.table = tableName
-        }
-      },
-    )
+  constructor(configService: ConfigService, contextName: ContextName) {
+    this.knex = knex(getKnexOptions(configService, contextName))
   }
 }

@@ -5,9 +5,10 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { REASON_FOR_BLOCKING_LENGTH } from '../constants/schema'
 
 // Represents a creator reporting a follower
-@Entity({ tableName: 'follow_report' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class FollowReportEntity extends BaseEntity {
+  static table = 'follow_report'
   @ManyToOne({ entity: () => UserEntity })
   follower_id: string
 

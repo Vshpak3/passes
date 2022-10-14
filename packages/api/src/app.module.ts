@@ -1,4 +1,3 @@
-import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { APP_INTERCEPTOR } from '@nestjs/core'
@@ -7,9 +6,7 @@ import { SentryInterceptor, SentryModule } from '@ntegral/nestjs-sentry'
 import { WinstonModule } from 'nest-winston'
 
 import { configOptions } from './config/config.options'
-import { contextNames } from './database/database.decorator'
 import { DatabaseModule } from './database/database.module'
-import { MikroOrmConfigService } from './database/mikro-orm.config.service'
 import { redisOptions } from './database/redis.options'
 import { AdminModule } from './modules/admin/admin.module'
 import { AuthModule } from './modules/auth/auth.module'
@@ -48,12 +45,6 @@ import {
 
 @Module({
   imports: [
-    ...contextNames.map((contextName) =>
-      MikroOrmModule.forRootAsync({
-        contextName,
-        useClass: MikroOrmConfigService,
-      }),
-    ),
     ConfigModule.forRoot(configOptions),
     MetricsModule.forRootAsync(metricOptions),
     RedisModule.forRootAsync(redisOptions),

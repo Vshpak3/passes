@@ -5,8 +5,9 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { PayinMethodEnum } from '../enum/payin-method.enum'
 import { CircleCardEntity } from './circle-card.entity'
 
-@Entity({ tableName: 'default_payin_method' })
+@Entity()
 export class DefaultPayinMethodEntity extends BaseEntity {
+  static table = 'default_payin_method'
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import path from 'path'
 
 import { ContextName, DB_WRITER } from './database.decorator'
+import { getDatabaseOptions } from './database.options'
 import { ColumnNamingStrategy } from './mikro-orm.naming'
 
 export function getMikroOrmOptions(
@@ -13,6 +14,7 @@ export function getMikroOrmOptions(
   // Temporary until we upgrade to 5.4.0
   // ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
   const env = configService.get('infra.env')
+  const dbOptions = getDatabaseOptions(configService, contextName)
   let migrations:
     | { path: string; emit?: 'ts' | 'js'; safe: boolean }
     | undefined
@@ -31,13 +33,13 @@ export function getMikroOrmOptions(
     type: 'mysql',
     entities: [path.join(__dirname, '..', '/**/entities/*.js')],
     entitiesTs: [path.join(__dirname, '..', '/**/entities/*.ts')],
-    contextName,
+    DB_WRITER,
     registerRequestContext: false,
-    dbName: configService.get('database.dbname'),
-    host: configService.get(`database.host${contextName}`),
-    port: configService.get('database.port'),
-    user: configService.get('database.user'),
-    password: configService.get('database.password'),
+    dbName: dbOptions.database,
+    host: dbOptions.host,
+    port: dbOptions.port,
+    user: dbOptions.user,
+    password: dbOptions.password,
     migrations,
     cache: {
       pretty: true,

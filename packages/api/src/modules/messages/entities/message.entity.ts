@@ -8,9 +8,10 @@ import { MESSAGE_LENGTH } from '../constants/schema'
 import { ChannelEntity } from './channel.entity'
 import { PaidMessageEntity } from './paid-message.entity'
 
-@Entity({ tableName: 'message' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class MessageEntity extends BaseEntity {
+  static table = 'message'
   @ManyToOne({ entity: () => UserEntity })
   sender_id: string
 

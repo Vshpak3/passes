@@ -6,7 +6,7 @@ import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowEntity } from '../follow/entities/follow.entity'
-import { LikeEntity } from '../likes/entities/like.entity'
+import { PostLikeEntity } from '../likes/entities/like.entity'
 import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
@@ -52,18 +52,18 @@ export class FeedService {
           dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(LikeEntity.table, function () {
-        this.on(`${PostEntity.table}.id`, `${LikeEntity.table}.post_id`).andOn(
-          `${LikeEntity.table}.liker_id`,
-          dbReader.raw('?', [userId]),
-        )
+      .leftJoin(PostLikeEntity.table, function () {
+        this.on(
+          `${PostEntity.table}.id`,
+          `${PostLikeEntity.table}.post_id`,
+        ).andOn(`${PostLikeEntity.table}.liker_id`, dbReader.raw('?', [userId]))
       })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.id as access`,
-        `${LikeEntity.table}.id as is_liked`,
+        `${PostLikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(function () {
@@ -122,18 +122,18 @@ export class FeedService {
           dbReader.raw('?', [userId]),
         )
       })
-      .leftJoin(LikeEntity.table, function () {
-        this.on(`${LikeEntity.table}.post_id`, `${PostEntity.table}.id`).andOn(
-          `${LikeEntity.table}.liker_id`,
-          dbReader.raw('?', [userId]),
-        )
+      .leftJoin(PostLikeEntity.table, function () {
+        this.on(
+          `${PostLikeEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(`${PostLikeEntity.table}.liker_id`, dbReader.raw('?', [userId]))
       })
       .select([
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.id as access`,
-        `${LikeEntity.table}.id as is_liked`,
+        `${PostLikeEntity.table}.id as is_liked`,
       ])
       .where(`${PostEntity.table}.user_id`, creatorId)
       .whereNull(`${PostEntity.table}.deleted_at`)

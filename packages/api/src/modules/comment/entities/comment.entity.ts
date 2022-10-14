@@ -5,8 +5,9 @@ import { PostEntity } from '../../post/entities/post.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { COMMENT_TAGS_LENGTH, COMMENT_TEXT_LENGTH } from '../constants/schema'
 
-@Entity({ tableName: 'comment' })
+@Entity()
 export class CommentEntity extends BaseEntity {
+  static table = 'comment'
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

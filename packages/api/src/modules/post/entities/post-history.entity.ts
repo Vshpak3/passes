@@ -4,9 +4,10 @@ import { BaseEntity } from '../../../database/base-entity'
 import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { PostEntity } from './post.entity'
 
-@Entity({ tableName: 'post_history' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class PostHistoryEntity extends BaseEntity {
+  static table = 'post_history'
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

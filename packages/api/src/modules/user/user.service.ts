@@ -41,7 +41,7 @@ import {
 } from './dto/search-creator.dto'
 import { UserDto } from './dto/user.dto'
 import { UserEntity, UserIndexes } from './entities/user.entity'
-import { WhitelistedUserEntity } from './entities/whitelisted-users.entity'
+import { WhitelistedUsersEntity } from './entities/whitelisted-users.entity'
 
 const CREATOR_SEARCH_LIMIT = 10
 
@@ -72,13 +72,13 @@ export class UserService {
         `Unexpected missing user: ${userId}`,
       )
     }
-    const users = await this.dbReader<WhitelistedUserEntity>(
-      WhitelistedUserEntity.table,
+    const users = await this.dbReader<WhitelistedUsersEntity>(
+      WhitelistedUsersEntity.table,
     )
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.email`,
-        `${WhitelistedUserEntity.table}.email`,
+        `${WhitelistedUsersEntity.table}.email`,
       )
       .distinct(`${UserEntity.table}.id`, `${UserEntity.table}.email`)
     await Promise.all(
@@ -89,14 +89,14 @@ export class UserService {
   }
 
   async createWhitelistedPassesForUser(userId: string, email: string) {
-    const whitelisted = await this.dbReader<WhitelistedUserEntity>(
-      WhitelistedUserEntity.table,
+    const whitelisted = await this.dbReader<WhitelistedUsersEntity>(
+      WhitelistedUsersEntity.table,
     )
       .where({ email, created: false })
       .select('*')
     for (let i = 0; i < whitelisted.length; ++i) {
       await this.passService.createPassHolder(userId, whitelisted[i].pass_id)
-      await this.dbWriter<WhitelistedUserEntity>(WhitelistedUserEntity.table)
+      await this.dbWriter<WhitelistedUsersEntity>(WhitelistedUsersEntity.table)
         .where({ id: whitelisted[i].id })
         .update({ created: true })
       await this.passService.addSupply(whitelisted[i].pass_id)

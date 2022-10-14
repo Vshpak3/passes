@@ -4,10 +4,11 @@ import { BaseEntity } from '../../../database/base-entity'
 import { PostEntity } from '../../post/entities/post.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 
-@Entity({ tableName: 'post_like' })
+@Entity()
 @Unique({ properties: ['post_id', 'liker_id'] })
 @Index({ properties: ['created_at'] })
-export class LikeEntity extends BaseEntity {
+export class PostLikeEntity extends BaseEntity {
+  static table = 'post_like'
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

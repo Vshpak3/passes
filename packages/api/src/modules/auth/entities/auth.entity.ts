@@ -9,9 +9,10 @@ import {
   AUTH_PASSWORD_HASH_LENGTH,
 } from '../constants/schema'
 
-@Entity({ tableName: 'auth' })
+@Entity()
 @Index({ properties: ['oauth_id', 'oauth_provider'] })
 export class AuthEntity extends BaseEntity {
+  static table = 'auth'
   @Property({ length: AUTH_PASSWORD_HASH_LENGTH })
   password_hash: string | null
 

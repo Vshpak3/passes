@@ -5,9 +5,10 @@ import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
-@Entity({ tableName: 'creator_earning_history' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class CreatorEarningHistoryEntity extends BaseEntity {
+  static table = 'creator_earning_history'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

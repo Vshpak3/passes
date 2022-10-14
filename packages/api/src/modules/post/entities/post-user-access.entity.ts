@@ -6,9 +6,10 @@ import { UserEntity } from '../../user/entities/user.entity'
 import { PASS_HOLDER_IDS_LENGTH } from '../constants/schema'
 import { PostEntity } from './post.entity'
 
-@Entity({ tableName: 'post_user_access' })
+@Entity()
 @Unique({ properties: ['post_id', 'user_id'] })
 export class PostUserAccessEntity extends BaseEntity {
+  static table = 'post_user_access'
   @ManyToOne({ entity: () => PostEntity })
   post_id: string
 

@@ -6,9 +6,10 @@ import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { MESSAGE_LENGTH } from '../constants/schema'
 
-@Entity({ tableName: 'paid_message' })
+@Entity()
 @Index({ properties: ['created_at'] })
 export class PaidMessageEntity extends BaseEntity {
+  static table = 'paid_message'
   @ManyToOne({ entity: () => UserEntity })
   creator_id: string
 

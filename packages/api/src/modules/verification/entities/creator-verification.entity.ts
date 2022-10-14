@@ -4,8 +4,9 @@ import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { CreatorVerificationStepEnum } from '../enum/creator-verification.enum'
 
-@Entity({ tableName: 'creator_verification' })
+@Entity()
 export class CreatorVerificationEntity extends BaseEntity {
+  static table = 'creator_verification'
   @OneToOne({ entity: () => UserEntity })
   user_id: string
 

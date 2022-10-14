@@ -6,8 +6,9 @@ import { PERSONA_ID_LENGTH } from '../constants/schema'
 import { KYCStatusEnum } from '../enum/kyc.status.enum'
 import { PersonaInquiryStatusEnum } from '../enum/persona-inquiry.status.enum'
 
-@Entity({ tableName: 'persona_inquiry' })
+@Entity()
 export class PersonaInquiryEntity extends BaseEntity {
+  static table = 'persona_inquiry'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

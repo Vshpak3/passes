@@ -18,9 +18,10 @@ import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
 import { PassEntity } from './pass.entity'
 
-@Entity({ tableName: 'pass_holder' })
+@Entity()
 @Unique({ properties: ['address', 'chain', 'token_id'] })
 export class PassHolderEntity extends BaseEntity {
+  static table = 'pass_holder'
   @ManyToOne({ entity: () => PassEntity })
   pass_id: string
 

@@ -5,10 +5,11 @@ import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { UserEntity } from '../../user/entities/user.entity'
 import { ChannelEntity } from './channel.entity'
 
-@Entity({ tableName: 'channel_member' })
+@Entity()
 @Unique({ properties: ['channel_id', 'user_id'] })
 @Unique({ properties: ['user_id', 'other_user_id'] })
 export class ChannelMemberEntity extends BaseEntity {
+  static table = 'channel_member'
   @ManyToOne({ entity: () => ChannelEntity })
   channel_id: string
 

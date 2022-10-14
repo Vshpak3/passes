@@ -6,8 +6,9 @@ import { NOTIFICATION_MESSAGE_LENGTH } from '../constants/schema'
 import { NotificationStatusEnum } from '../enum/notification.status.enum'
 import { NotificationTypeEnum } from '../enum/notification.type.enum'
 
-@Entity({ tableName: 'notification' })
+@Entity()
 export class NotificationEntity extends BaseEntity {
+  static table = 'notification'
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
 

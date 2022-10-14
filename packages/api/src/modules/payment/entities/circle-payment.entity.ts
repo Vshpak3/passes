@@ -18,8 +18,9 @@ import { CirclePaymentStatusEnum } from '../enum/circle-payment.status.enum'
 import { CircleCardEntity } from './circle-card.entity'
 import { PayinEntity } from './payin.entity'
 
-@Entity({ tableName: 'circle_payment' })
+@Entity()
 export class CirclePaymentEntity extends BaseEntity {
+  static table = 'circle_payment'
   @ManyToOne({ entity: () => CircleCardEntity })
   card_id: string
 

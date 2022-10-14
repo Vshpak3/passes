@@ -4,8 +4,9 @@ import { BaseEntity } from '../../../database/base-entity'
 import { AuthEntity } from '../../auth/entities/auth.entity'
 import { USER_EMAIL_LENGTH } from '../../user/constants/schema'
 
-@Entity({ tableName: 'reset_password_request' })
+@Entity()
 export class ResetPasswordRequestEntity extends BaseEntity {
+  static table = 'reset_password_request'
   @ManyToOne({ entity: () => AuthEntity })
   auth_id: string
 
