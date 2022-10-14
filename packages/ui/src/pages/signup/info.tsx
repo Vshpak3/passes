@@ -22,7 +22,6 @@ import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
-import { FULL_NAME_REGEX } from "src/helpers/validation"
 import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
@@ -36,6 +35,8 @@ export type SignupInfoPageSchema = {
   countryCode: string
   birthday: string
 }
+
+const FULL_NAME_REGEX = /^[A-Za-z-,'\s]+$/
 
 const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
   legalFullName: string()

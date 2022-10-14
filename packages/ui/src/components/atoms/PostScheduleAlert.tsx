@@ -13,7 +13,7 @@ export const PostScheduleAlert: FC<PostScheduleAlertProps> = ({
 }) => {
   return (
     <div
-      className="mt-3 flex sm:h-10 items-center justify-between gap-1 rounded-md md:p-2.5 p-[10px] text-sm text-white"
+      className="mt-3 flex items-center justify-between gap-1 rounded-md p-[10px] text-sm text-white sm:h-10 md:p-2.5"
       style={{
         backgroundColor: "#C943A8"
       }}
