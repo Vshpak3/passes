@@ -83,9 +83,6 @@ export class PostDto {
   updatedAt: Date
 
   @DtoProperty({ type: 'date', optional: true, nullable: true })
-  scheduledAt?: Date | null
-
-  @DtoProperty({ type: 'date', optional: true, nullable: true })
   expiresAt?: Date | null
 
   @DtoProperty({ type: 'date', optional: true, nullable: true })
@@ -130,7 +127,6 @@ export class PostDto {
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
       if (isOwner) {
-        this.scheduledAt = post.scheduled_at
         this.totalTipAmount = post.total_tip_amount
         this.earningsPurchases = post.earnings_purchases
         this.numPurchases = post.num_purchases

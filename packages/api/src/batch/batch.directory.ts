@@ -7,6 +7,7 @@ import { RefreshNumPostsTask } from './tasks/refresh-num-posts.batch'
 import { RefreshPersonasVerificationsTask } from './tasks/refresh-persona-verifications.batch'
 import { RefreshSolNftTask } from './tasks/refresh-sol-nft.batch'
 import { RefreshStatsTask } from './tasks/refresh-stats.batch'
+import { ScheduledEventsTask } from './tasks/scheduled-events.batch'
 import { UpdateSubscriptionsTask } from './tasks/update-subscriptions.batch'
 
 // Maps an identifier (to be specified in the job definition) to the batch task
@@ -22,4 +23,5 @@ export const TaskDirectory = {
   refresh_num_posts_task: RefreshNumPostsTask,
   update_subscriptions_task: UpdateSubscriptionsTask,
   fail_stale_payins_task: FailStalePayinsTask,
+  scheduled_events_task: ScheduledEventsTask,
 }

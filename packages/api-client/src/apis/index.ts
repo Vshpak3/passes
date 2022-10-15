@@ -22,6 +22,7 @@ export * from './PassApi';
 export * from './PaymentApi';
 export * from './PostApi';
 export * from './ProfileApi';
+export * from './ScheduledApi';
 export * from './UserApi';
 export * from './VerificationApi';
 export * from './WalletApi';

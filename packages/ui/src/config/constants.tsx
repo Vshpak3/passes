@@ -24,4 +24,4 @@ export const CREATOR_STEPS_TEXT = {
   }
 }
 
-export const MAX_POST_SCHEDULE_DURATION_IN_MONTHS = 6
+export const MAX_SCHEDULE_DURATION_IN_MONTHS = 6

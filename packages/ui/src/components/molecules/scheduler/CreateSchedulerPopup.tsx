@@ -2,8 +2,8 @@ import { addMinutes, addMonths, compareAsc, format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
 import { Dispatch, forwardRef, SetStateAction, useState } from "react"
-import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
-import { MAX_POST_SCHEDULE_DURATION_IN_MONTHS } from "src/config/constants"
+import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
+import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/config/constants"
 
 interface CreateSchedulerPopupProps {
   onCancel: () => void
@@ -44,7 +44,7 @@ export const CreateSchedulerPopup = forwardRef<
           Please choose a date and time for your action to be executed.
         </p>
         <CalendarPicker
-          toDate={addMonths(new Date(), MAX_POST_SCHEDULE_DURATION_IN_MONTHS)}
+          toDate={addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS)}
           onSave={(date) => {
             if (!date && setSelectionDate) {
               setErrorHandler()

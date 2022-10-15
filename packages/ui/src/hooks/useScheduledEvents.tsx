@@ -1,6 +1,7 @@
-import { CreatePostRequestDto, PostApi } from "@passes/api-client"
+import { ScheduledApi } from "@passes/api-client"
 import { addSeconds } from "date-fns"
 import { useEffect, useState } from "react"
+import { sleep } from "src/helpers/sleep"
 import useSWR from "swr"
 
 export type DateProps = {
@@ -8,10 +9,10 @@ export type DateProps = {
   year: number
 }
 
-export const CACHE_KEY_SCHEDULED_EVENTS = "/posts/scheduled"
+export const CACHE_KEY_SCHEDULED_EVENTS = "/scheduled"
 
-export const useScheduledPosts = (defaultDate?: DateProps) => {
-  const api = new PostApi()
+export const useScheduledEvents = (defaultDate?: DateProps) => {
+  const api = new ScheduledApi()
 
   const [monthYear, setMonthYear] = useState<DateProps | undefined>(defaultDate)
 
@@ -32,8 +33,8 @@ export const useScheduledPosts = (defaultDate?: DateProps) => {
       }
       setHasInitialFetch(true)
       return (
-        await api.getPostsScheduled({
-          getPostsRangeRequestDto: {
+        await api.getScheduledEvents({
+          getScheduledEventsRequestDto: {
             startDate: new Date(monthYear.year, monthYear.month, 1),
             endDate: addSeconds(
               new Date(monthYear.year, monthYear.month + 1, 1),
@@ -52,41 +53,31 @@ export const useScheduledPosts = (defaultDate?: DateProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const deletePost = async (postId: string) => {
-    await api.removePost({ postId })
-    mutate()
-  }
-
-  const updatePost = async (
-    postId: string,
-    post: Pick<CreatePostRequestDto, "text" | "scheduledAt" | "tags">
-  ) => {
-    await api.updatePost({
-      postId,
-      updatePostRequestDto: post
+  const deleteScheduledEvent = async (scheduledEventId: string) => {
+    await api.deleteScheduledEvent({
+      deleteScheduledEventRequestDto: { scheduledEventId }
     })
+    sleep("1 second")
     mutate()
   }
 
-  // const { mutate: _mutateManual } = useSWRConfig()
-  // const mutateManual = (update: Partial<ProfileUpdate>) =>
-  //   _mutateManual(CACHE_KEY_SCHEDULED_EVENTS, update, {
-  //     populateCache: (
-  //       update: Partial<ProfileUpdate>,
-  //       original: ProfileUpdate
-  //     ) => {
-  //       return Object.assign(original, update)
-  //     },
-  //     revalidate: false
-  //   })
-
+  const updateScheduledTime = async (
+    scheduledEventId: string,
+    scheduledAt: Date
+  ) => {
+    await api.updateScheduledEventTime({
+      updateScheduledTimeRequestDto: { scheduledEventId, scheduledAt }
+    })
+    sleep("1 second")
+    mutate()
+  }
   return {
     data,
     loading,
     mutate,
     hasInitialFetch,
     setMonthYear,
-    deletePost,
-    updatePost
+    deleteScheduledEvent,
+    updateScheduledTime
   }
 }

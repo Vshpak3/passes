@@ -7,8 +7,6 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
-import { addMonths } from 'date-fns'
-import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -44,6 +42,9 @@ import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { ScheduledEventEntity } from '../scheduled/entities/scheduled-event.entity'
+import { ScheduledEventTypeEnum } from '../scheduled/enum/scheduled-event.type.enum'
+import { checkScheduledAt } from '../scheduled/scheduled.util'
 import { UserEntity } from '../user/entities/user.entity'
 import { POST_NOT_EXIST } from './constants/errors'
 import {
@@ -52,11 +53,9 @@ import {
 } from './dto/create-post.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
-import { GetPostsRangeRequestDto } from './dto/get-posts-range.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
-// import { UpdatePostContentRequestDto } from './dto/update-post-content.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
@@ -69,9 +68,7 @@ import {
 } from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
-const MAX_SCHEDULED_AT_MONTHS = 6
 const MAX_PINNED_POST = 3
-const POST_SCHEDULE_BUFFER = ms('5 minutes')
 @Injectable()
 export class PostService {
   constructor(
@@ -89,28 +86,11 @@ export class PostService {
     private readonly contentService: ContentService,
   ) {}
 
-  private checkScheduledAt(scheduledAt?: Date | null) {
-    if (!scheduledAt) {
-      return
-    }
-    if (scheduledAt.valueOf() + POST_SCHEDULE_BUFFER < new Date().valueOf()) {
-      throw new BadPostPropertiesException(
-        'Cannot schedule a post for the past',
-      )
-    }
-    if (scheduledAt > addMonths(new Date(), MAX_SCHEDULED_AT_MONTHS)) {
-      throw new BadPostPropertiesException(
-        `Cannot schedule a post more than ${MAX_SCHEDULED_AT_MONTHS} months in advance`,
-      )
-    }
-  }
-
-  async createPost(
+  async validateCreatePost(
     userId: string,
     createPostDto: CreatePostRequestDto,
-  ): Promise<CreatePostResponseDto> {
+  ) {
     verifyTaggedText(createPostDto.text, createPostDto.tags)
-    const postId = v4()
     if (
       createPostDto.text.length === 0 &&
       createPostDto.contentIds.length === 0
@@ -120,11 +100,15 @@ export class PostService {
       )
     }
     await this.passService.validatePassIds(userId, createPostDto.passIds)
-    const contents = await this.contentService.validateContentIds(
+    return await this.contentService.validateContentIds(
       userId,
       createPostDto.contentIds,
     )
-    this.checkScheduledAt(createPostDto.scheduledAt)
+  }
+
+  async publishPost(userId: string, createPostDto: CreatePostRequestDto) {
+    const postId = v4()
+    const contents = this.validateCreatePost(userId, createPostDto)
     await this.dbWriter
       .transaction(async (trx) => {
         await trx<PostEntity>(PostEntity.table).insert({
@@ -134,7 +118,6 @@ export class PostService {
           tags: JSON.stringify(createPostDto.tags),
           price: createPostDto.price ?? 0,
           expires_at: createPostDto.expiresAt,
-          scheduled_at: createPostDto.scheduledAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
           contents: JSON.stringify(contents),
         })
@@ -187,7 +170,29 @@ export class PostService {
         this.logger.error(err)
         throw err
       })
-    return { postId }
+    return postId
+  }
+
+  async createPost(
+    userId: string,
+    createPostDto: CreatePostRequestDto,
+  ): Promise<CreatePostResponseDto> {
+    if (createPostDto.scheduledAt) {
+      const scheduledAt = createPostDto.scheduledAt
+      checkScheduledAt(scheduledAt)
+      createPostDto.scheduledAt = undefined
+      await this.dbWriter<ScheduledEventEntity>(
+        ScheduledEventEntity.table,
+      ).insert({
+        user_id: userId,
+        type: ScheduledEventTypeEnum.CREATE_POST,
+        body: createPostDto,
+        scheduled_at: scheduledAt,
+      })
+    } else {
+      return { postId: await this.publishPost(userId, createPostDto) }
+    }
+    return { postId: undefined }
   }
 
   async findPost(postId: string, userId: string): Promise<PostDto> {
@@ -249,21 +254,6 @@ export class PostService {
       createdAt,
       lastId,
     )
-    return await this.getPostsFromQuery(userId, query)
-  }
-
-  async getPostsRange(
-    userId: string,
-    getPostsRangeRequestDto: GetPostsRangeRequestDto,
-  ): Promise<PostDto[]> {
-    const { startDate, endDate } = getPostsRangeRequestDto
-    const query = this.dbReader<PostEntity>(PostEntity.table)
-      .select([`${PostEntity.table}.*`])
-      .whereNull(`${PostEntity.table}.deleted_at`)
-      .andWhere('scheduled_at', '>=', startDate)
-      .andWhere('scheduled_at', '<', endDate)
-      .andWhere(`${PostEntity.table}.user_id`, userId)
-
     return await this.getPostsFromQuery(userId, query)
   }
 
@@ -336,8 +326,6 @@ export class PostService {
     if (updatePostDto.text && updatePostDto.tags) {
       verifyTaggedText(updatePostDto.text, updatePostDto.tags)
     }
-    // TODO: consider blocking users from removing the scheduled at
-    this.checkScheduledAt(updatePostDto.scheduledAt)
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId })
       .update({
@@ -345,7 +333,6 @@ export class PostService {
         tags: JSON.stringify(updatePostDto.tags),
         price: updatePostDto.price,
         expires_at: updatePostDto.expiresAt,
-        scheduled_at: updatePostDto.scheduledAt,
       })
     return updated === 1
   }
@@ -653,11 +640,6 @@ export class PostService {
         .where({
           user_id: this.dbWriter.raw(`${CreatorStatEntity.table}.user_id`),
           deleted_at: null,
-        })
-        .andWhere(function () {
-          return this.where('scheduled_at', '<', new Date()).orWhereNull(
-            'scheduled_at',
-          )
         })
         .count(),
     )

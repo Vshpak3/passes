@@ -4,9 +4,9 @@ import Recorder from "public/icons/media-recorder.svg"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { FC, useEffect, useState } from "react"
+import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import { FormInput } from "src/components/atoms/FormInput"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
-import { CalendarPicker } from "src/components/molecules/scheduler/CalendarPicker"
 import {
   FormErrors,
   FormOptions,

@@ -21,6 +21,7 @@ apis/PassApi.ts
 apis/PaymentApi.ts
 apis/PostApi.ts
 apis/ProfileApi.ts
+apis/ScheduledApi.ts
 apis/UserApi.ts
 apis/VerificationApi.ts
 apis/WalletApi.ts
@@ -72,6 +73,7 @@ models/CreateWelcomeMessageRequestDto.ts
 models/CreatorEarningDto.ts
 models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
+models/DeleteScheduledEventRequestDto.ts
 models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetBlockedResponseDto.ts
@@ -134,14 +136,14 @@ models/GetPersonaStatusResponseDto.ts
 models/GetPostHistoryRequestDto.ts
 models/GetPostHistoryResponseDto.ts
 models/GetPostResponseDto.ts
-models/GetPostsRangeRequestDto.ts
-models/GetPostsRangeResponseDto.ts
 models/GetPostsRequestDto.ts
 models/GetPostsResponseDto.ts
 models/GetProfileFeedRequestDto.ts
 models/GetProfileFeedResponseDto.ts
 models/GetProfileRequestDto.ts
 models/GetProfileResponseDto.ts
+models/GetScheduledEventsRequestDto.ts
+models/GetScheduledEventsResponseDto.ts
 models/GetSignedUrlResponseDto.ts
 models/GetSubscriptionsResponseDto.ts
 models/GetUserResponseDto.ts
@@ -187,6 +189,7 @@ models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts
 models/RenewPassHolderRequestDto.ts
 models/ReportFanDto.ts
+models/ScheduledEventDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts
 models/SearchFansResponseDto.ts
@@ -212,6 +215,8 @@ models/UpdateNotificationSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePasswordRequestDto.ts
 models/UpdatePostRequestDto.ts
+models/UpdateScheduledEventRequestDto.ts
+models/UpdateScheduledTimeRequestDto.ts
 models/UpdateUsernameRequestDto.ts
 models/UserDisplayInfoDto.ts
 models/UserExternalPassRequestDto.ts

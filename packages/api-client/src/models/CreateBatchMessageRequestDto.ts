@@ -45,6 +45,12 @@ export interface CreateBatchMessageRequestDto {
     price?: number;
     /**
      * 
+     * @type {Date}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    scheduledAt?: Date;
+    /**
+     * 
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
@@ -92,6 +98,7 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
         'contentIds': json['contentIds'],
         'previewIndex': json['previewIndex'],
         'price': !exists(json, 'price') ? undefined : json['price'],
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
         'includeListIds': json['includeListIds'],
         'excludeListIds': json['excludeListIds'],
         'passIds': json['passIds'],
@@ -111,6 +118,7 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
         'contentIds': value.contentIds,
         'previewIndex': value.previewIndex,
         'price': value.price,
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
         'includeListIds': value.includeListIds,
         'excludeListIds': value.excludeListIds,
         'passIds': value.passIds,

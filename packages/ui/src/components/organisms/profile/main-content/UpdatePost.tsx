@@ -4,9 +4,7 @@ import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
-import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { usePost } from "src/hooks/usePost"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
@@ -15,7 +13,6 @@ const CustomMentionEditor = dynamic(
 
 interface UpdatePostFormProps {
   mentions: any[] // TODO
-  scheduledAt: Date | null
   text: string
 }
 
@@ -33,24 +30,12 @@ export const UpdatePost: FC<UpdatePostProps> = ({
   onClose
 }) => {
   const [isReset, setIsReset] = useState(false)
-  const { updatePost } = useScheduledPosts()
+  const { updatePost } = usePost()
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-    getValues,
-    setValue,
-    watch,
-    reset
-  } = useForm<UpdatePostFormProps>({
-    defaultValues: { ...initialData }
-  })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
-
-  const setScheduledTime = (date: Date | null) => {
-    setValue("scheduledAt", date, { shouldValidate: true })
-  }
-
+  const { handleSubmit, getValues, setValue, reset } =
+    useForm<UpdatePostFormProps>({
+      defaultValues: { ...initialData }
+    })
   const onSubmit = async () => {
     const values = getValues()
     if (values.text.length === 0) {
@@ -58,10 +43,9 @@ export const UpdatePost: FC<UpdatePostProps> = ({
       return
     }
 
-    const post: Pick<CreatePostRequestDto, "text" | "scheduledAt" | "tags"> = {
+    const post: Pick<CreatePostRequestDto, "text" | "tags"> = {
       tags: [], // TODO: add in values.mentions (must update to be TagDto)
-      text: values.text,
-      scheduledAt: values.scheduledAt
+      text: values.text
     }
 
     updatePost(postId, post)
@@ -94,11 +78,6 @@ export const UpdatePost: FC<UpdatePostProps> = ({
             />
           </div>
         </div>
-        <PostFooter
-          disableForm={disableForm}
-          setScheduledTime={setScheduledTime}
-          scheduledTime={watch()?.scheduledAt}
-        />
       </div>
     </form>
   )

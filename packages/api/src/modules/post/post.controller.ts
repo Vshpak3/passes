@@ -27,10 +27,6 @@ import {
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
 import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
-import {
-  GetPostsRangeRequestDto,
-  GetPostsRangeResponseDto,
-} from './dto/get-posts-range.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -246,26 +242,6 @@ export class PostController {
     return new GetPostsResponseDto(
       await this.postService.getPosts(req.user.id, getPostsRequestDto),
       getPostsRequestDto,
-    )
-  }
-
-  @ApiEndpoint({
-    summary: 'Gets posts',
-    responseStatus: HttpStatus.OK,
-    responseType: GetPostsRangeResponseDto,
-    responseDesc: 'A list of posts in date range was retrieved',
-    role: RoleEnum.CREATOR_ONLY,
-  })
-  @Post('post-range')
-  async getPostsScheduled(
-    @Req() req: RequestWithUser,
-    @Body() getPostsRangeRequestDto: GetPostsRangeRequestDto,
-  ): Promise<GetPostsResponseDto> {
-    return new GetPostsRangeResponseDto(
-      await this.postService.getPostsRange(
-        req.user.id,
-        getPostsRangeRequestDto,
-      ),
     )
   }
 }

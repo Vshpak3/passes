@@ -55,12 +55,6 @@ export interface CreatePostRequestDto {
      * @type {Date}
      * @memberof CreatePostRequestDto
      */
-    scheduledAt?: Date | null;
-    /**
-     * 
-     * @type {Date}
-     * @memberof CreatePostRequestDto
-     */
     expiresAt?: Date | null;
     /**
      * 
@@ -74,6 +68,12 @@ export interface CreatePostRequestDto {
      * @memberof CreatePostRequestDto
      */
     contentIds: Array<string>;
+    /**
+     * 
+     * @type {Date}
+     * @memberof CreatePostRequestDto
+     */
+    scheduledAt?: Date;
 }
 
 /**
@@ -104,10 +104,10 @@ export function CreatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'previewIndex': json['previewIndex'],
         'passIds': json['passIds'],
-        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (json['scheduledAt'] === null ? null : new Date(json['scheduledAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'contentIds': json['contentIds'],
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
 
@@ -124,10 +124,10 @@ export function CreatePostRequestDtoToJSON(value?: CreatePostRequestDto | null):
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'previewIndex': value.previewIndex,
         'passIds': value.passIds,
-        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt === null ? null : value.scheduledAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'price': value.price,
         'contentIds': value.contentIds,
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

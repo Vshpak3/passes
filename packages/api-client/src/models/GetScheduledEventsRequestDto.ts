@@ -16,27 +16,27 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface GetPostsRangeRequestDto
+ * @interface GetScheduledEventsRequestDto
  */
-export interface GetPostsRangeRequestDto {
+export interface GetScheduledEventsRequestDto {
     /**
      * 
      * @type {Date}
-     * @memberof GetPostsRangeRequestDto
+     * @memberof GetScheduledEventsRequestDto
      */
     startDate: Date;
     /**
      * 
      * @type {Date}
-     * @memberof GetPostsRangeRequestDto
+     * @memberof GetScheduledEventsRequestDto
      */
     endDate: Date;
 }
 
 /**
- * Check if a given object implements the GetPostsRangeRequestDto interface.
+ * Check if a given object implements the GetScheduledEventsRequestDto interface.
  */
-export function instanceOfGetPostsRangeRequestDto(value: object): boolean {
+export function instanceOfGetScheduledEventsRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "startDate" in value;
     isInstance = isInstance && "endDate" in value;
@@ -44,11 +44,11 @@ export function instanceOfGetPostsRangeRequestDto(value: object): boolean {
     return isInstance;
 }
 
-export function GetPostsRangeRequestDtoFromJSON(json: any): GetPostsRangeRequestDto {
-    return GetPostsRangeRequestDtoFromJSONTyped(json, false);
+export function GetScheduledEventsRequestDtoFromJSON(json: any): GetScheduledEventsRequestDto {
+    return GetScheduledEventsRequestDtoFromJSONTyped(json, false);
 }
 
-export function GetPostsRangeRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetPostsRangeRequestDto {
+export function GetScheduledEventsRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): GetScheduledEventsRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -59,7 +59,7 @@ export function GetPostsRangeRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
     };
 }
 
-export function GetPostsRangeRequestDtoToJSON(value?: GetPostsRangeRequestDto | null): any {
+export function GetScheduledEventsRequestDtoToJSON(value?: GetScheduledEventsRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }

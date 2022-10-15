@@ -24,7 +24,7 @@ export interface CreatePostResponseDto {
      * @type {string}
      * @memberof CreatePostResponseDto
      */
-    postId: string;
+    postId?: string;
 }
 
 /**
@@ -32,7 +32,6 @@ export interface CreatePostResponseDto {
  */
 export function instanceOfCreatePostResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "postId" in value;
 
     return isInstance;
 }
@@ -47,7 +46,7 @@ export function CreatePostResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     }
     return {
         
-        'postId': json['postId'],
+        'postId': !exists(json, 'postId') ? undefined : json['postId'],
     };
 }
 

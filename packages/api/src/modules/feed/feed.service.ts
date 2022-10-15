@@ -73,13 +73,6 @@ export class FeedService {
           new Date(),
         )
       })
-      .andWhere(function () {
-        return this.whereNull(`${PostEntity.table}.scheduled_at`).orWhere(
-          `${PostEntity.table}.scheduled_at`,
-          '<=',
-          new Date(),
-        )
-      })
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
       .limit(FEED_LIMIT)
     query = createPaginatedQuery(
@@ -141,13 +134,6 @@ export class FeedService {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
           `${PostEntity.table}.expires_at`,
           '>',
-          new Date(),
-        )
-      })
-      .andWhere(function () {
-        return this.whereNull(`${PostEntity.table}.scheduled_at`).orWhere(
-          `${PostEntity.table}.scheduled_at`,
-          '<=',
           new Date(),
         )
       })

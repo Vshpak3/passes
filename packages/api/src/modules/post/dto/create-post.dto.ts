@@ -9,11 +9,16 @@ export class CreatePostRequestDto extends PickType(PostDto, [
   'passIds',
   'price',
   'expiresAt',
-  'scheduledAt',
   'previewIndex',
 ]) {
   @DtoProperty({ type: 'uuid[]' })
   contentIds: string[]
+
+  @DtoProperty({ type: 'date', optional: true })
+  scheduledAt?: Date
 }
 
-export class CreatePostResponseDto extends PickType(PostDto, ['postId']) {}
+export class CreatePostResponseDto {
+  @DtoProperty({ type: 'uuid', optional: true })
+  postId?: string
+}

@@ -30,5 +30,5 @@ export class SendMessageRequestDto {
   payinMethod?: PayinMethodDto
 
   @DtoProperty({ type: 'date', optional: true })
-  scheduled_at: Date
+  scheduledAt?: Date
 }

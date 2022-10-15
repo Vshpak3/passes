@@ -1,8 +1,8 @@
-import { PostDto } from "@passes/api-client"
+import { ScheduledEventDto } from "@passes/api-client"
 import classNames from "classnames"
 import { flatten } from "lodash"
 import { FC, useContext, useEffect, useState } from "react"
-import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
 type CalendarDate = {
@@ -49,21 +49,21 @@ export const Calendar: FC = () => {
 
   const [matrixDate, setMatrixDate] = useState<CalendarDate[]>([])
 
-  const { data, setMonthYear } = useScheduledPosts()
+  const { data, setMonthYear } = useScheduledEvents()
 
   useEffect(() => {
     setMonthYear({ month, year })
     setMatrixDate(flatten(getCalendarMatrix(month, year)))
   }, [month, year, setMonthYear])
 
-  const countPostsInDate = (date: Date): number => {
-    const postInThisDate = []
-    data?.map((post: PostDto) => {
-      if (post.scheduledAt && post.scheduledAt.getDate() === date.getDate()) {
-        postInThisDate.push(post)
+  const countEventsInDate = (date: Date): number => {
+    const eventsInThisDate = []
+    data?.map((event: ScheduledEventDto) => {
+      if (event.scheduledAt && event.scheduledAt.getDate() === date.getDate()) {
+        eventsInThisDate.push(event)
       }
     })
-    return postInThisDate.length
+    return eventsInThisDate.length
   }
 
   return (
@@ -79,7 +79,7 @@ export const Calendar: FC = () => {
       </div>
       <div className="flex flex-wrap">
         {matrixDate.map((date: CalendarDate, index) => {
-          const numberPostInDate = countPostsInDate(date.date)
+          const numberPostInDate = countEventsInDate(date.date)
           return (
             <div
               key={index}

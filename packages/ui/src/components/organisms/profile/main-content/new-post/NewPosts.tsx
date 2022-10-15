@@ -31,7 +31,6 @@ export const NewPosts: React.FC = () => {
       isLiked: false,
       createdAt: new Date(),
       updatedAt: new Date(),
-      scheduledAt: createPost.scheduledAt,
       expiresAt: createPost.expiresAt,
       price: createPost.price,
       totalTipAmount: 0,

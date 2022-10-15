@@ -1,9 +1,9 @@
 import { FC } from "react"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
 import { Text } from "src/components/atoms/Text"
 
-import { CalendarSelector } from "./CalendarPicker"
 import { MediaSelector } from "./MediaSelector"
 
 interface PostFooterProps {

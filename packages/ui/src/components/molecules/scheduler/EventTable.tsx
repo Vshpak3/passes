@@ -1,9 +1,9 @@
-import { PostDto } from "@passes/api-client"
+import { ScheduledEventDto } from "@passes/api-client"
 import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
-import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
 import { DeleteEventModal } from "./DeleteEventModal"
@@ -11,7 +11,13 @@ import { DeleteEventModal } from "./DeleteEventModal"
 export const EventTable: FC = () => {
   const { month, year } = useContext(SchedulerContext)
 
-  const { data, setMonthYear, deletePost } = useScheduledPosts()
+  const {
+    data,
+    setMonthYear,
+    deleteScheduledEvent,
+    mutate,
+    updateScheduledTime
+  } = useScheduledEvents()
 
   useEffect(() => {
     setMonthYear({ month, year })
@@ -20,7 +26,7 @@ export const EventTable: FC = () => {
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<string | null>(
     null
   )
-  const [isDeletingPost, setIsDeletingPost] = useState<boolean>(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
   const handleOnDeleteEvent = useCallback((targetId: string) => {
     setSelectEventIdDelete(targetId)
@@ -34,11 +40,11 @@ export const EventTable: FC = () => {
     if (!selectEventIdDelete) {
       return
     }
-    setIsDeletingPost(true)
-    await deletePost(selectEventIdDelete)
+    setIsDeleting(true)
+    await deleteScheduledEvent(selectEventIdDelete)
     setSelectEventIdDelete(null)
-    setIsDeletingPost(false)
-  }, [selectEventIdDelete, deletePost])
+    setIsDeleting(false)
+  }, [selectEventIdDelete, deleteScheduledEvent])
 
   return (
     <div className="px-[15px] md:px-[30px]">
@@ -56,31 +62,28 @@ export const EventTable: FC = () => {
         <div className="mb-[30px] w-full overflow-auto rounded-[20px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
           {selectEventIdDelete && (
             <DeleteEventModal
-              isDeleting={isDeletingPost}
+              isDeleting={isDeleting}
               onCancel={handleCancelDelete}
               onDelete={handleDeleteEvent}
             />
           )}
           <table className="w-full">
             <tr className="hidden pb-2 text-left text-base font-medium leading-6 text-white opacity-50 md:contents">
-              <th className="pl-5 pb-1">Name</th>
+              <th className="pl-5 pb-1">Type</th>
+              <th className="px-3 pb-1">Media</th>
+              <th className="px-3 pb-1">Price</th>
               <th className="px-3 pb-1">Text</th>
               <th className="pb-1 text-center">Date</th>
               <th className="pb-1">Action</th>
             </tr>
-            {data?.map((item: PostDto) => {
-              const { postId, price, text, scheduledAt, purchasable } = item
-
+            {data?.map((item: ScheduledEventDto) => {
               return (
                 <EventTableItem
-                  key={postId}
-                  id={postId}
-                  price={price}
-                  text={text}
-                  scheduledAt={scheduledAt as Date}
-                  data={item}
+                  key={item.scheduledEventId}
+                  scheduledEvent={item}
                   onDeleteEvent={handleOnDeleteEvent}
-                  postUnlocked={!purchasable}
+                  mutate={mutate}
+                  onChangeTime={updateScheduledTime}
                 />
               )
             })}

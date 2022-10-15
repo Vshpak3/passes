@@ -3,7 +3,7 @@ import { Dispatch, FC, SetStateAction, useRef, useState } from "react"
 import {
   Time,
   TimeShiftEnum
-} from "src/components/molecules/scheduler/CalendarPicker"
+} from "src/components/atoms/calendar/CalendarPicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const padZero = (n: number) => n.toString().padStart(2, "0")

@@ -107,7 +107,7 @@ export function SendMessageRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'tipAmount': json['tipAmount'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'payinMethod': !exists(json, 'payinMethod') ? undefined : PayinMethodDtoFromJSON(json['payinMethod']),
-        'scheduledAt': !exists(json, 'scheduled_at') ? undefined : (new Date(json['scheduled_at'])),
+        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
     };
 }
 
@@ -127,7 +127,7 @@ export function SendMessageRequestDtoToJSON(value?: SendMessageRequestDto | null
         'tipAmount': value.tipAmount,
         'price': value.price,
         'payinMethod': PayinMethodDtoToJSON(value.payinMethod),
-        'scheduled_at': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
+        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
     };
 }
 

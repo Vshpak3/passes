@@ -63,10 +63,6 @@ export class PostEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   total_tip_amount: number
 
-  @Index()
-  @Property()
-  scheduled_at: Date | null
-
   @Property({ length: PASS_IDS_LENGTH, default: '[]' })
   pass_ids: string
 }

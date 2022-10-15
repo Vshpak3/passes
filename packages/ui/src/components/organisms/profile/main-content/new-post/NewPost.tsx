@@ -156,7 +156,6 @@ export const NewPost: FC<NewPostProps> = ({
       text: values.text,
       tags: [], // TODO: add in values.mentions (must update to be TagDto)
       passIds: selectedPasses,
-      scheduledAt: values.scheduledAt,
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
       contentIds: content.map((c: any) => c.id),
@@ -166,7 +165,7 @@ export const NewPost: FC<NewPostProps> = ({
     // TODO: make this less hacky
     if (shouldCreate) {
       const res = await createPost(post)
-      await handleCreatePost(post, res.postId)
+      await handleCreatePost(post, res.postId ?? "")
     } else {
       await handleCreatePost(post, "")
     }

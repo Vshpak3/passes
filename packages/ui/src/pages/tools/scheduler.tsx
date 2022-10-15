@@ -3,7 +3,7 @@ import { Loader } from "src/components/atoms/Loader"
 import { Calendar } from "src/components/molecules/scheduler/Calendar"
 import { EventTable } from "src/components/molecules/scheduler/EventTable"
 import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHeader"
-import { useScheduledPosts } from "src/hooks/useScheduledPosts"
+import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 export const SchedulerContext = React.createContext({
@@ -24,7 +24,7 @@ const SchedulerPage = () => {
 
   const contextValue = { month, year, setMonth, setYear }
 
-  const { data, hasInitialFetch } = useScheduledPosts(defaultDate)
+  const { data, hasInitialFetch } = useScheduledEvents(defaultDate)
 
   return (
     <SchedulerContext.Provider value={contextValue}>

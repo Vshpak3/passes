@@ -39,6 +39,9 @@ import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
+import { ScheduledEventEntity } from '../scheduled/entities/scheduled-event.entity'
+import { ScheduledEventTypeEnum } from '../scheduled/enum/scheduled-event.type.enum'
+import { checkScheduledAt } from '../scheduled/scheduled.util'
 import { UserEntity } from '../user/entities/user.entity'
 import { ChannelMemberDto } from './dto/channel-member.dto'
 import { CreateBatchMessageRequestDto } from './dto/create-batch-message.dto'
@@ -307,7 +310,7 @@ export class MessagesService {
     }
   }
 
-  async createBatchMessage(
+  async publishBatchMessage(
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
@@ -330,6 +333,7 @@ export class MessagesService {
       userId,
       includeListIds,
     )
+
     ;(
       await this.dbReader<PassHolderEntity>(PassHolderEntity.table)
         .whereIn('pass_id', passIds)
@@ -404,6 +408,27 @@ export class MessagesService {
         }
       }),
     )
+  }
+
+  async createBatchMessage(
+    userId: string,
+    createBatchMessageDto: CreateBatchMessageRequestDto,
+  ): Promise<void> {
+    if (createBatchMessageDto.scheduledAt) {
+      const scheduledAt = createBatchMessageDto.scheduledAt
+      checkScheduledAt(scheduledAt)
+      createBatchMessageDto.scheduledAt = undefined
+      await this.dbWriter<ScheduledEventEntity>(
+        ScheduledEventEntity.table,
+      ).insert({
+        user_id: userId,
+        type: ScheduledEventTypeEnum.BATCH_MESSAGE,
+        body: createBatchMessageDto,
+        scheduled_at: scheduledAt,
+      })
+    } else {
+      await this.publishBatchMessage(userId, createBatchMessageDto)
+    }
   }
 
   async registerSendMessage(

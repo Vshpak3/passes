@@ -139,12 +139,6 @@ export interface PostDto {
      * @type {Date}
      * @memberof PostDto
      */
-    scheduledAt?: Date | null;
-    /**
-     * 
-     * @type {Date}
-     * @memberof PostDto
-     */
     expiresAt?: Date | null;
     /**
      * 
@@ -224,7 +218,6 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isLiked': !exists(json, 'isLiked') ? undefined : json['isLiked'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
-        'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (json['scheduledAt'] === null ? null : new Date(json['scheduledAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'deletedAt': !exists(json, 'deletedAt') ? undefined : (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
@@ -259,7 +252,6 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'isLiked': value.isLiked,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
-        'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt === null ? null : value.scheduledAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'deletedAt': value.deletedAt === undefined ? undefined : (value.deletedAt === null ? null : value.deletedAt.toISOString()),
         'price': value.price,
