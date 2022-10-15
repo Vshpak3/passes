@@ -108,7 +108,7 @@ export class PostService {
 
   async publishPost(userId: string, createPostDto: CreatePostRequestDto) {
     const postId = v4()
-    const contents = this.validateCreatePost(userId, createPostDto)
+    const contents = await this.validateCreatePost(userId, createPostDto)
     await this.dbWriter
       .transaction(async (trx) => {
         await trx<PostEntity>(PostEntity.table).insert({
@@ -178,6 +178,7 @@ export class PostService {
     createPostDto: CreatePostRequestDto,
   ): Promise<CreatePostResponseDto> {
     if (createPostDto.scheduledAt) {
+      await this.validateCreatePost(userId, createPostDto)
       const scheduledAt = createPostDto.scheduledAt
       checkScheduledAt(scheduledAt)
       createPostDto.scheduledAt = undefined
@@ -186,7 +187,7 @@ export class PostService {
       ).insert({
         user_id: userId,
         type: ScheduledEventTypeEnum.CREATE_POST,
-        body: createPostDto,
+        body: JSON.stringify(createPostDto),
         scheduled_at: scheduledAt,
       })
     } else {
@@ -699,22 +700,22 @@ export class PostService {
       )
     }
 
-    const contentIds = (
+    const contents = (
       await this.dbReader<PostEntity>(PostEntity.table)
         .where({ id: postId })
-        .select('content_ids')
+        .select('contents')
         .first()
-    )?.content_ids
+    )?.contents
 
     // TODO: join on content entity to get type
-    if (!contentIds) {
+    if (!contents) {
       return true
     }
     const results = await Promise.all(
-      contentIds.map(async (contentId) => {
+      JSON.parse(contents).map(async (content) => {
         return await this.contentService.preSignMediaContent(
           user.user_id,
-          contentId.content_id,
+          content.contentId,
           ContentTypeEnum.IMAGE,
         )
       }),

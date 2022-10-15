@@ -49,13 +49,13 @@ export const EventTable: FC = () => {
   return (
     <div className="px-[15px] md:px-[30px]">
       <div className="mb-9 select-none text-base font-bold md:text-2xl">
-        Scheduled Posts In {format(new Date(year, month, 1), "LLLL")}
+        Scheduled Events In {format(new Date(year, month, 1), "LLLL")}
       </div>
       {!data?.length ? (
         <div className="mb-[30px] flex h-[295px] w-full flex-col items-center justify-center rounded-[20px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
           <Calendar />
           <span className="mt-3 text-white opacity-50">
-            There are no scheduled events for this day
+            There are no scheduled events for this month
           </span>
         </div>
       ) : (

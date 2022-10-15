@@ -91,7 +91,6 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   }
   const generateActionStatus = (
     <div className="flex items-center">
-      <span className="mr-6 text-passes-yellow">In queue</span>
       <TrashIcon
         className="mr-3 cursor-pointer"
         onClick={async () => await onDeleteEvent(scheduledEventId)}
@@ -121,7 +120,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         <div className="flex items-start gap-2">
           <div className="mr-3 h-[125px] w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
           <div className="flex flex-col gap-2">
-            <div> {media} Media</div>
+            <div> {media}</div>
             <div>{formatCurrency(price ?? 0)}</div>
             <span>{text}</span>
             <span>{generateActionStatus}</span>
@@ -133,20 +132,9 @@ export const EventTableItem: FC<EventTableItemProps> = ({
 
   return (
     <tr className="px-5 odd:bg-passes-purple-200">
-      <td className="my-[6px] flex items-center pl-5">
-        {typeStr}
-        <div className="relative mr-3 h-[75px] w-[75px] overflow-hidden rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]">
-          {/* {showcaseImg && (
-            <img
-              src={showcaseImg}
-              alt="user profile"
-              className="absolute h-full w-full object-cover object-center"
-            />
-          )} */}
-          {media} Media
-        </div>
-        {formatCurrency(price ?? 0)}
-      </td>
+      <td className="pl-5 pb-1">{typeStr}</td>
+      <td>{media}</td>
+      <td>{formatCurrency(price ?? 0)}</td>
       <td className="my-[6px] max-w-[350px] truncate px-3">{text}</td>
       <td className="min-w-[150px] text-center">
         {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}

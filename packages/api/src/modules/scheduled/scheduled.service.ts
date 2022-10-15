@@ -75,6 +75,7 @@ export class ScheduledService {
         .where('scheduled_at', '>=', startDate)
         .andWhere('scheduled_at', '<', endDate)
         .andWhere('user_id', userId)
+        .orderBy('scheduled_at', 'asc')
         .select('*')
     ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
   }
@@ -125,7 +126,7 @@ export class ScheduledService {
     let continuing = false
     do {
       continuing = false
-      if (startTime + EXECUTION_TIME_BUFFER > Date.now()) {
+      if (startTime + EXECUTION_TIME_BUFFER < Date.now()) {
         break
       }
       const processor = uuid4()
@@ -133,16 +134,11 @@ export class ScheduledService {
         ScheduledEventEntity.table,
       )
         .update('processor', processor)
-        .where(
-          'id',
-          'in',
-          this.dbWriter<ScheduledEventEntity>(ScheduledEventEntity.table)
-            .whereNull('processer')
-            .whereNull('deleted_at')
-            .where('scheduled_at', '<', new Date())
-            .select('id')
-            .limit(1),
-        )
+        .whereNull('processor')
+        .whereNull('deleted_at')
+        .where('processed', false)
+        .limit(1)
+
       if (updated) {
         const event = await this.dbWriter<ScheduledEventEntity>(
           ScheduledEventEntity.table,

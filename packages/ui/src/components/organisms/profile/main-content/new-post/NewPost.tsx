@@ -159,7 +159,8 @@ export const NewPost: FC<NewPostProps> = ({
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
       contentIds: content.map((c: any) => c.id),
-      previewIndex: 0 // TODO: add previewing FE
+      previewIndex: 0, // TODO: add previewing FE
+      scheduledAt: values.scheduledAt ?? undefined
     }
 
     // TODO: make this less hacky

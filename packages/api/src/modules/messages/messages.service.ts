@@ -20,6 +20,7 @@ import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
+import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -423,7 +424,7 @@ export class MessagesService {
       ).insert({
         user_id: userId,
         type: ScheduledEventTypeEnum.BATCH_MESSAGE,
-        body: createBatchMessageDto,
+        body: JSON.stringify(createBatchMessageDto),
         scheduled_at: scheduledAt,
       })
     } else {
@@ -864,18 +865,18 @@ export class MessagesService {
         .increment('earnings_purchases', earnings)
       const message = await trx<MessageEntity>(MessageEntity.table)
         .where({ id: messageId })
-        .select('content_ids')
+        .select('contents')
         .first()
       if (!message) {
         throw new MessageNotFoundException(`message ${messageId} not found`)
       }
 
-      const contentIds = JSON.parse(message.content_ids)
+      const contents = JSON.parse(message.contents)
 
       await Promise.all(
-        contentIds.map(async (contentId) => {
+        contents.map(async (content: ContentBareDto) => {
           await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
-            .insert({ user_id: userId, content_id: contentId as string })
+            .insert({ user_id: userId, content_id: content.contentId })
             .onConflict(['user_id', 'content_id'])
             .ignore()
         }),

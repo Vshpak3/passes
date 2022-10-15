@@ -30,13 +30,13 @@ export class ScheduledEventDto {
       this.type = scheduledEvent.type
       switch (this.type) {
         case ScheduledEventTypeEnum.CREATE_POST:
-          this.createPost = JSON.parse(scheduledEvent.body)
+          this.createPost = scheduledEvent.body
           break
         case ScheduledEventTypeEnum.SEND_MESSAGE:
-          this.sendMessage = JSON.parse(scheduledEvent.body)
+          this.sendMessage = scheduledEvent.body
           break
         case ScheduledEventTypeEnum.BATCH_MESSAGE:
-          this.batchMessage = JSON.parse(scheduledEvent.body)
+          this.batchMessage = scheduledEvent.body
           break
       }
       this.scheduledAt = scheduledEvent.scheduled_at
