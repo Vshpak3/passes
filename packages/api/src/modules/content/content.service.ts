@@ -34,7 +34,7 @@ import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { ContentDeleteError, NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
-export const MAX_CONTENT_PER_REQUeST = 10
+export const MAX_CONTENT_PER_REQUEST = 20
 
 @Injectable()
 export class ContentService {

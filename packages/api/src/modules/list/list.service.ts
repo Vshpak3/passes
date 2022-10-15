@@ -102,8 +102,9 @@ export class ListService {
         id,
         user_id: userId,
         type: ListTypeEnum.NORMAL,
+        deleted_at: null,
       })
-      .delete()
+      .update({ deleted_at: new Date() })
     return dbResult == 1
   }
 
@@ -136,7 +137,7 @@ export class ListService {
 
   async getList(userId: string, listId: string): Promise<ListDto> {
     const list = await this.dbReader<ListEntity>(ListEntity.table)
-      .where({ id: listId, user_id: userId })
+      .where({ id: listId, user_id: userId, deleted_at: null })
       .select('*')
       .first()
     await this.fillAutomatedLists([list])
@@ -150,7 +151,7 @@ export class ListService {
     const { name, lastId, createdAt, updatedAt, order, orderType, search } =
       getListsRequestsDto
     let query = this.dbReader<ListEntity>(ListEntity.table)
-      .where({ user_id: userId })
+      .andWhere({ user_id: userId, deleted_at: null })
       .select('*')
     let column = ''
     let value: string | Date | undefined = undefined
@@ -337,6 +338,7 @@ export class ListService {
         id: listId,
         user_id: userId,
         type: ListTypeEnum.NORMAL,
+        deleted_at: null,
       })
       .update({
         name,
