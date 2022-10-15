@@ -88,12 +88,10 @@ export const Post: React.FC<PostProps> = ({ post }) => {
             totalTipAmount
           }}
         />
-        <div className="cursor-pointer">
-          <PostTextContent text={text} />
-          {!purchasable && (
-            <PostMedia contents={contents} setPostHandler={setPostHandler} />
-          )}
-        </div>
+        <PostTextContent text={text} />
+        {!purchasable && (
+          <PostMedia contents={contents} setPostHandler={setPostHandler} />
+        )}
         {purchasable && <LockedMedia post={post} />}
         <PostEngagement post={post} />
       </FormContainer>

@@ -3,13 +3,16 @@ import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
 import Slider from "react-slick"
-import { PostContent } from "src/components/molecules/PostContent"
+import {
+  PostContent,
+  PostContentProps
+} from "src/components/molecules/PostContent"
 import { KeyedMutator } from "swr"
 
 interface PostMediaProps {
   contents: PostDto["contents"]
   mutatePosts?: KeyedMutator<GetFeedResponseDto>
-  setPostHandler?: () => void
+  setPostHandler?: PostContentProps["setPostHandler"]
 }
 
 export const PostMedia: FC<PostMediaProps> = ({

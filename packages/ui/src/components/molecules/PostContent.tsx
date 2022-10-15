@@ -4,7 +4,9 @@ import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
 
 import { PostVideo } from "./post/PostVideo"
 
-type PostContentProps = PostImageProps
+export interface PostContentProps extends PostImageProps {
+  setPostHandler?: () => void
+}
 
 export const PostContent: FC<PostContentProps> = ({
   content,
@@ -12,20 +14,27 @@ export const PostContent: FC<PostContentProps> = ({
   startLoadingHandler,
   setPostHandler
 }) => {
-  return (
-    <>
-      {content.contentType === ContentDtoContentTypeEnum.Image ? (
+  let contentElement: JSX.Element | undefined
+  switch (content.contentType) {
+    case ContentDtoContentTypeEnum.Image:
+      contentElement = (
         <PostImage
           content={content}
           ref={ref}
           startLoadingHandler={startLoadingHandler}
-          setPostHandler={setPostHandler}
         />
-      ) : content.contentType === ContentDtoContentTypeEnum.Video ? (
+      )
+      break
+    case ContentDtoContentTypeEnum.Video:
+      contentElement = (
         <PostVideo key={content.contentId} videoUrl={content.signedUrl ?? ""} />
-      ) : (
-        <></>
-      )}
-    </>
+      )
+      break
+  }
+
+  return contentElement ? (
+    <button onClick={setPostHandler}>{contentElement}</button>
+  ) : (
+    <></>
   )
 }

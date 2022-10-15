@@ -5,18 +5,15 @@ export interface PostImageProps {
   content: ContentDto
   ref: RefObject<HTMLImageElement>
   startLoadingHandler: () => () => void
-  setPostHandler?: () => void
 }
 
 export const PostImage: FC<PostImageProps> = ({
   content,
   ref,
-  startLoadingHandler,
-  setPostHandler
+  startLoadingHandler
 }) => {
   return (
     <img
-      onClick={setPostHandler}
       ref={ref}
       onLoad={startLoadingHandler}
       key={content.contentId}
