@@ -1,18 +1,13 @@
 import { PostDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
-import CostIcon from "public/icons/post-cost-icon.svg"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useCallback, useMemo, useState } from "react"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
+import { TipButton } from "src/components/molecules/post/TipButton"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { compactNumberFormatter } from "src/helpers/formatters"
 
 import { CommentSection } from "./CommentSection"
-const TipPostModal = dynamic(
-  () => import("src/components/organisms/payment/TipPostModal"),
-  { ssr: false }
-)
 
 interface PostEngagementProps {
   post: PostDto
@@ -31,7 +26,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     passIds
   } = post
 
-  const [isTipsModalOpen, setIsTipsModalOpen] = useState(false)
   const [numComments, setNumComments] = useState(initialNumComments)
   const [showCommentSection, setShowCommentSection] = useState(false)
 
@@ -93,12 +87,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
               : "Free"}
           </div>
         ) : (
-          <div
-            onClick={() => setIsTipsModalOpen((prev) => !prev)}
-            className="flex cursor-pointer items-center gap-2 pr-2 text-passes-gray-100"
-          >
-            <CostIcon />
-          </div>
+          <TipButton postId={postId} />
         )}
       </div>
       {showCommentSection && (
@@ -107,13 +96,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           incrementNumComments={incrementNumComments}
           decrementNumComments={decrementNumComments}
           ownsPost={isOwner}
-        />
-      )}
-      {isTipsModalOpen && (
-        <TipPostModal
-          isOpen={isTipsModalOpen}
-          setOpen={setIsTipsModalOpen}
-          postId={postId}
         />
       )}
     </div>

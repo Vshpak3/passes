@@ -22,7 +22,7 @@ export const PostImage: FC<PostImageProps> = ({
       key={content.contentId}
       src={content.signedUrl}
       alt=""
-      className="h-[400px] w-full rounded-[20px] object-cover shadow-xl"
+      className="h-[400px] w-full rounded-[20px] object-cover"
     />
   )
 }

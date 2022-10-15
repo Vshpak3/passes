@@ -71,15 +71,29 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
           <ProfileThumbnail userId={comment.commenterId} />
         </div>
         <div className="flex grow flex-col">
-          <div className="mb-1 flex gap-x-2">
-            {comment.commenterDisplayName && (
-              <Text fontSize={14} className="font-bold">
-                {comment.commenterDisplayName}
+          <div className="flex justify-between">
+            <div className="flex gap-x-2">
+              {comment.commenterDisplayName && (
+                <Text fontSize={14} className="font-bold">
+                  {comment.commenterDisplayName}
+                </Text>
+              )}
+              <Text fontSize={14} className="text-gray-500">
+                @{comment.commenterUsername}
               </Text>
-            )}
-            <Text fontSize={14} className="text-gray-500">
-              @{comment.commenterUsername}
-            </Text>
+            </div>
+            <div className="flex gap-x-2">
+              <TimeAgo
+                className="shrink-0 text-[12px] text-gray-300/60"
+                date={comment.createdAt}
+                live={false}
+              />
+              <PostDropdown
+                items={dropdownOptions}
+                username={commenterUsername}
+                postId={postId}
+              />
+            </div>
           </div>
           <Text
             fontSize={14}
@@ -87,18 +101,6 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
           >
             {comment.text}
           </Text>
-        </div>
-        <TimeAgo
-          className="shrink-0 text-[12px] text-gray-300/60"
-          date={comment.createdAt}
-          live={false}
-        />
-        <div className="shrink-0">
-          <PostDropdown
-            items={dropdownOptions}
-            username={commenterUsername}
-            postId={postId}
-          />
         </div>
       </div>
     </ConditionRendering>
