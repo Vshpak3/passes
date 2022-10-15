@@ -75,7 +75,6 @@ interface NewPostProps {
     postId: string
   ) => void | Promise<void>
   initialData: Record<string, any>
-  shouldCreate?: boolean
   onlyText?: boolean
   isExtended?: boolean
 }
@@ -84,7 +83,6 @@ export const NewPost: FC<NewPostProps> = ({
   placeholder,
   handleCreatePost,
   initialData = {},
-  shouldCreate = true,
   onlyText = false,
   isExtended = false
 }) => {
@@ -164,11 +162,14 @@ export const NewPost: FC<NewPostProps> = ({
     }
 
     // TODO: make this less hacky
-    if (shouldCreate) {
-      const res = await createPost(post)
+
+    const res = await createPost(post)
+    if (res.postId) {
       await handleCreatePost(post, res.postId ?? "")
     } else {
-      await handleCreatePost(post, "")
+      toast.success(
+        "Your post has been scheduled, go to the scheduler to view!"
+      )
     }
 
     reset()
