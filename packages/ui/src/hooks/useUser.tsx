@@ -37,7 +37,17 @@ export const useUser = () => {
     return await authApi.getCurrentUser()
   })
 
-  const { mutate: mutateManual } = useSWRConfig()
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: Partial<GetUserResponseDto>) =>
+    _mutateManual(CACHE_KEY_USER, update, {
+      populateCache: (
+        update: Partial<GetUserResponseDto>,
+        original: GetUserResponseDto
+      ) => {
+        return Object.assign(original, update)
+      },
+      revalidate: false
+    })
 
   const logout = () => {
     setAccessToken(undefined)
@@ -62,16 +72,7 @@ export const useUser = () => {
     user,
     loading,
     mutate,
-    mutateManual: (update: Partial<GetUserResponseDto>) =>
-      mutateManual(CACHE_KEY_USER, update, {
-        populateCache: (
-          update: Partial<GetUserResponseDto>,
-          original: GetUserResponseDto
-        ) => {
-          return Object.assign(original, update)
-        },
-        revalidate: false
-      }),
+    mutateManual,
     userClaims: accessToken ? jwtDecode<JWTUserClaims>(accessToken) : null,
     accessToken,
     setAccessToken,

@@ -11,8 +11,12 @@ export const NewPosts: React.FC = () => {
 
   const handleCreatePost = async (
     createPost: CreatePostRequestDto,
-    postId: string
+    postId?: string
   ) => {
+    // Was a scheduled post
+    if (!postId) {
+      return
+    }
     const post: PostDto = {
       postId,
       purchasable: false,

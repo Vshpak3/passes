@@ -1,7 +1,12 @@
-import { ScheduledApi } from "@passes/api-client"
+import {
+  CreatePostRequestDto,
+  ScheduledApi,
+  ScheduledEventDto,
+  ScheduledEventDtoTypeEnum
+} from "@passes/api-client"
 import { addSeconds } from "date-fns"
 import { useEffect, useState } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
 export type DateProps = {
   month: number
@@ -52,12 +57,23 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: ScheduledEventDto[]) =>
+    _mutateManual([CACHE_KEY_SCHEDULED_EVENTS, monthYear], update, {
+      populateCache: (update: ScheduledEventDto[]) => {
+        return update
+      },
+      revalidate: false
+    })
+
   const deleteScheduledEvent = async (scheduledEventId: string) => {
     await api.deleteScheduledEvent({
       deleteScheduledEventRequestDto: { scheduledEventId }
     })
-    // TODO: don't mutate and instead mutate manually
-    mutate()
+    if (!data) {
+      return
+    }
+    mutateManual(data.filter((s) => s.scheduledEventId !== scheduledEventId))
   }
 
   const updateScheduledTime = async (
@@ -67,8 +83,42 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
     await api.updateScheduledEventTime({
       updateScheduledTimeRequestDto: { scheduledEventId, scheduledAt }
     })
-    // TODO: don't mutate and instead mutate manually
-    mutate()
+    if (!data) {
+      return
+    }
+    if (monthYear?.month === scheduledAt.getMonth()) {
+      data[
+        data.findIndex((s) => s.scheduledEventId === scheduledEventId)
+      ].scheduledAt = scheduledAt
+      data.sort((a, b) => a.scheduledAt.getTime() - b.scheduledAt.getTime())
+      mutateManual(data)
+    } else {
+      // TODO: Currently each month change fetches. If we update this to cache
+      // then this will have to mutual the month the scheduled post is moved to
+      mutateManual(data.filter((s) => s.scheduledEventId !== scheduledEventId))
+    }
+  }
+
+  const insertNewPost = async (post: CreatePostRequestDto) => {
+    if (!data) {
+      return
+    }
+    if (!post.scheduledAt) {
+      return
+    }
+    setMonthYear({
+      month: post.scheduledAt.getMonth(),
+      year: post.scheduledAt.getFullYear()
+    })
+    const content: ScheduledEventDto = {
+      scheduledEventId: "",
+      scheduledAt: post.scheduledAt,
+      createPost: post,
+      type: ScheduledEventDtoTypeEnum.CreatePost
+    }
+    data.push(content)
+    data.sort((a, b) => a.scheduledAt.getTime() - b.scheduledAt.getTime())
+    mutateManual(data)
   }
 
   return {
@@ -78,6 +128,7 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
     hasInitialFetch,
     setMonthYear,
     deleteScheduledEvent,
-    updateScheduledTime
+    updateScheduledTime,
+    insertNewPost
   }
 }

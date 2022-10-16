@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
-import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import { Tab } from "src/components/pages/settings/Tab"
 import { ContentService } from "src/helpers/content"
@@ -27,7 +26,7 @@ const ProfilePicture: FC = () => {
   } = useForm<ProfileFormProps>({
     defaultValues: { profileImage: [] }
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+  const [lastSubmittedProfPic, setLastSubmittedProfPic] = useState<File[]>()
 
   const profileImage = watch("profileImage")
 
@@ -35,7 +34,7 @@ const ProfilePicture: FC = () => {
     return await new ContentService().uploadProfileImage(picture)
   }
 
-  const onProfileCrop = (croppedImage: any) => {
+  const onProfileCrop = (croppedImage: File) => {
     setValue("profileImage", [croppedImage], { shouldValidate: true })
     setprofileImageCropOpen(false)
   }
@@ -45,10 +44,15 @@ const ProfilePicture: FC = () => {
       toast.error("Please upload a profile image")
       return
     }
+
     try {
       await setProfilePicture(profileImage[0])
-      toast.success("Your profile picture has been updated successfully")
-      setValue("profileImage", [])
+      toast.info(
+        "Please wait up to 10 minutes to see profile picture changes propogate throughout the site"
+      )
+      // Ensure we show the new profile image
+      // setValue("profileImage", [])
+      setLastSubmittedProfPic(profileImage)
     } catch (error) {
       errorMessage(error, true)
     }
@@ -103,7 +107,11 @@ const ProfilePicture: FC = () => {
           variant="pink"
           className="w-auto !px-[52px]"
           tag="button"
-          disabled={!profileImage?.length || disableForm}
+          disabled={
+            !profileImage?.length ||
+            profileImage === lastSubmittedProfPic ||
+            isSubmitting
+          }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

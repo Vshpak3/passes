@@ -1,6 +1,8 @@
+import { CreatePostRequestDto } from "@passes/api-client"
 import { FC } from "react"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
+import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 
 interface NewPostPopupProps {
   isOpen: boolean
@@ -13,7 +15,10 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
   onCancel,
   selectionDate
 }) => {
-  const handleCreatePost = () => {
+  const { insertNewPost } = useScheduledEvents()
+
+  const handleCreatePost = (post: CreatePostRequestDto) => {
+    insertNewPost(post)
     onCancel()
   }
 

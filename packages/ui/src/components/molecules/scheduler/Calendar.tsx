@@ -76,12 +76,15 @@ export const Calendar: FC = () => {
           .map((_, i) => (
             <>
               <div
-                key={i}
+                key={`desktop-${i}`}
                 className="hidden w-[14.2%] pr-[12px] text-end md:grid"
               >
                 {enUS.localize?.day(i)}
               </div>
-              <div key={i} className="w-[14.2%] pr-[12px] text-end md:hidden">
+              <div
+                key={`mobile-${i}`}
+                className="w-[14.2%] pr-[12px] text-end md:hidden"
+              >
                 {enUS.localize?.day(i, { width: "abbreviated" })}
               </div>
             </>
