@@ -2,6 +2,7 @@ import { ScheduledEventDto } from "@passes/api-client"
 import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
@@ -28,13 +29,13 @@ export const EventTable: FC = () => {
   )
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
-  const handleOnDeleteEvent = useCallback((targetId: string) => {
+  const handleOnDeleteEvent = (targetId: string) => {
     setSelectEventIdDelete(targetId)
-  }, [])
+  }
 
-  const handleCancelDelete = useCallback(() => {
+  const handleCancelDelete = () => {
     setSelectEventIdDelete(null)
-  }, [])
+  }
 
   const handleDeleteEvent = useCallback(async () => {
     if (!selectEventIdDelete) {
@@ -44,7 +45,13 @@ export const EventTable: FC = () => {
     await deleteScheduledEvent(selectEventIdDelete)
     setSelectEventIdDelete(null)
     setIsDeleting(false)
+    toast.success("Deleted event successefully")
   }, [selectEventIdDelete, deleteScheduledEvent])
+
+  const handleOnUpdateEvent = async (id: string, time: Date) => {
+    await updateScheduledTime(id, time)
+    toast.success("Updated schedule successefully")
+  }
 
   return (
     <div className="px-[15px] md:px-[30px]">
@@ -83,7 +90,7 @@ export const EventTable: FC = () => {
                   scheduledEvent={item}
                   onDeleteEvent={handleOnDeleteEvent}
                   mutate={mutate}
-                  onChangeTime={updateScheduledTime}
+                  onChangeTime={handleOnUpdateEvent}
                 />
               )
             })}

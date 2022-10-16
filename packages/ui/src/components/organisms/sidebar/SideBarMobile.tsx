@@ -61,15 +61,13 @@ export const SidebarMobile: FC<SidebarDefaultProps> = ({
         toggleSidebar={toggleSidebar}
       >
         {renderSidebarItems}
-        {user ? (
-          <AuthWrapper>
-            {user?.isCreator ? (
-              createElement(newPostButton, { isMobile: true })
-            ) : isOver18(user) ? (
-              <BecomeCreatorButton />
-            ) : null}
-          </AuthWrapper>
-        ) : null}
+        <AuthWrapper>
+          {user?.isCreator ? (
+            createElement(newPostButton, { isMobile: true })
+          ) : isOver18(user) ? (
+            <BecomeCreatorButton />
+          ) : null}
+        </AuthWrapper>
         <AuthWrapper>
           <SidebarMobileItem
             onClick={toggleSidebar}

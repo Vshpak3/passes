@@ -7,7 +7,6 @@ import TrashIcon from "public/icons/trash.svg"
 import { FC } from "react"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { formatCurrency } from "src/helpers/formatters"
-import { useWindowDimensions } from "src/helpers/hooks/useWindowDimensions"
 import { KeyedMutator } from "swr"
 
 interface EventTableItemProps {
@@ -17,46 +16,11 @@ interface EventTableItemProps {
   mutate: KeyedMutator<ScheduledEventDto[] | undefined>
 }
 
-// export const EditTimeGroup: FC<any> = ({ id, data }) => {
-//   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-
-//   const hideUpdatePostModalHandler = () => {
-//     setIsNewPostModalOpen(false)
-//   }
-
-//   return (
-//     <Dialog
-//       open={isNewPostModalOpen}
-//       triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-0"
-//       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
-//       trigger={<EditIcon onClick={() => setIsNewPostModalOpen(true)} />}
-//     >
-//       {/* <UpdatePost
-//         onUpdate={hideUpdatePostModalHandler}
-//         onClose={hideUpdatePostModalHandler}
-//         initialData={data}
-//         postId={id}
-//       /> */}
-//       {/* TODO: add in calendar dropdown */}
-//     </Dialog>
-//   )
-// }
-
 export const EventTableItem: FC<EventTableItemProps> = ({
   scheduledEvent,
   onDeleteEvent,
   onChangeTime
 }) => {
-  const { width = 0 } = useWindowDimensions()
-  // const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
-
-  // Set image if it exists in post
-  // useEffect(() => {
-  //   if (data.contents?.[0]?.contentType === "image") {
-  //     setShowcaseImg(data.contents[0].signedUrl as string)
-  //   }
-  // }, [data.contents])
-
   const {
     scheduledEventId,
     type,
@@ -68,7 +32,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   let text: string | undefined = undefined
   let price: number | undefined = undefined
   let media = 0
-  let typeStr = "unkown"
+  let typeStr = "Unknown"
   switch (type) {
     case ScheduledEventDtoTypeEnum.CreatePost:
       text = createPost?.text
@@ -106,13 +70,27 @@ export const EventTableItem: FC<EventTableItemProps> = ({
           await onChangeTime(scheduledEventId, date)
         }}
       />
-      {/* <EditButtonGroup id={id} data={data} /> */}
     </div>
   )
 
-  if (width < 768) {
-    return (
-      <div className="mb-8 px-5">
+  return (
+    <>
+      {/* Desktop */}
+      <tr className="hidden px-5 odd:bg-passes-purple-200 md:table-row">
+        <td className="pl-5 pb-1">{typeStr}</td>
+        <td>{media}</td>
+        <td>{formatCurrency(price ?? 0)}</td>
+        <td className="my-[6px] max-w-[350px] truncate px-3">{text}</td>
+        <td className="min-w-[150px] text-center">
+          {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
+        </td>
+        <td className="my-[6px] min-w-[170px] whitespace-nowrap px-3">
+          <div className="flex items-center">{generateActionStatus}</div>
+        </td>
+      </tr>
+
+      {/* Mobile */}
+      <div className="mb-8 px-5 md:hidden">
         <div className="mb-6 flex items-center justify-between">
           <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
           <span>{generateActionStatus}</span>
@@ -127,24 +105,6 @@ export const EventTableItem: FC<EventTableItemProps> = ({
           </div>
         </div>
       </div>
-    )
-  }
-
-  return (
-    <tr className="px-5 odd:bg-passes-purple-200">
-      <td className="pl-5 pb-1">{typeStr}</td>
-      <td>{media}</td>
-      <td>{formatCurrency(price ?? 0)}</td>
-      <td className="my-[6px] max-w-[350px] truncate px-3">{text}</td>
-      <td className="min-w-[150px] text-center">
-        {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
-      </td>
-      <td className="my-[6px] min-w-[170px] whitespace-nowrap px-3">
-        <div className="flex items-center">
-          {generateActionStatus}
-          {/* <EditButtonGroup id={id} data={data} /> */}
-        </div>
-      </td>
-    </tr>
+    </>
   )
 }

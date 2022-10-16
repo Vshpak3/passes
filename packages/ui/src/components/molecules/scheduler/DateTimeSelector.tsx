@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react"
 import { FC, useContext } from "react"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
-const VIEWABLE_THIS_MANY_MONTHS_AGO = 24
-const VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE = 6
+export const VIEWABLE_THIS_MANY_MONTHS_AGO = 24
+export const VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE = 6
 
 interface DateTimeSelectedProps {
   showDateYearModal: (event: React.MouseEvent<HTMLElement>) => void

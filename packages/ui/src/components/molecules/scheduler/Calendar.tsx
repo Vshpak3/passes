@@ -1,5 +1,6 @@
 import { ScheduledEventDto } from "@passes/api-client"
 import classNames from "classnames"
+import { enUS } from "date-fns/locale"
 import { flatten } from "lodash"
 import { FC, useContext, useEffect, useState } from "react"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
@@ -57,25 +58,34 @@ export const Calendar: FC = () => {
   }, [month, year, setMonthYear])
 
   const countEventsInDate = (date: Date): number => {
-    const eventsInThisDate = []
-    data?.map((event: ScheduledEventDto) => {
-      if (event.scheduledAt && event.scheduledAt.getDate() === date.getDate()) {
-        eventsInThisDate.push(event)
-      }
-    })
-    return eventsInThisDate.length
+    return (
+      data?.filter(
+        (event: ScheduledEventDto) =>
+          event.scheduledAt &&
+          event.scheduledAt.getMonth() === date.getMonth() &&
+          event.scheduledAt.getDate() === date.getDate()
+      ).length || 0
+    )
   }
 
   return (
     <div className="mb-[52px] select-none px-[15px] md:px-[30px]">
       <div className="mb-[15px] flex items-center justify-evenly">
-        <div className="w-[14.2%] pr-[12px] text-end">Sun</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Mon</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Tue</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Wed</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Thu</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Fri</div>
-        <div className="w-[14.2%] pr-[12px] text-end">Sat</div>
+        {Array(7)
+          .fill(0)
+          .map((_, i) => (
+            <>
+              <div
+                key={i}
+                className="hidden w-[14.2%] pr-[12px] text-end md:grid"
+              >
+                {enUS.localize?.day(i)}
+              </div>
+              <div key={i} className="w-[14.2%] pr-[12px] text-end md:hidden">
+                {enUS.localize?.day(i, { width: "abbreviated" })}
+              </div>
+            </>
+          ))}
       </div>
       <div className="flex flex-wrap">
         {matrixDate.map((date: CalendarDate, index) => {

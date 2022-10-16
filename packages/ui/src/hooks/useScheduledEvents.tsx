@@ -1,7 +1,6 @@
 import { ScheduledApi } from "@passes/api-client"
 import { addSeconds } from "date-fns"
 import { useEffect, useState } from "react"
-import { sleep } from "src/helpers/sleep"
 import useSWR from "swr"
 
 export type DateProps = {
@@ -57,7 +56,7 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
     await api.deleteScheduledEvent({
       deleteScheduledEventRequestDto: { scheduledEventId }
     })
-    sleep("1 second")
+    // TODO: don't mutate and instead mutate manually
     mutate()
   }
 
@@ -68,9 +67,10 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
     await api.updateScheduledEventTime({
       updateScheduledTimeRequestDto: { scheduledEventId, scheduledAt }
     })
-    sleep("1 second")
+    // TODO: don't mutate and instead mutate manually
     mutate()
   }
+
   return {
     data,
     loading,

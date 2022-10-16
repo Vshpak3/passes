@@ -4,6 +4,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { uuid4 } from '@sentry/utils'
+import { subMinutes } from 'date-fns'
 import ms from 'ms'
 
 import {
@@ -22,7 +23,7 @@ import { ScheduledEventEntity } from './entities/scheduled-event.entity'
 import { ScheduledEventTypeEnum } from './enum/scheduled-event.type.enum'
 import { checkScheduledAt } from './scheduled.util'
 
-const MAX_TIME_BUFFER = ms('5 minutes')
+const MAX_TIME_BUFFER = 5 // minutes
 const EXECUTION_TIME_BUFFER = ms('45 minutes')
 
 @Injectable()
@@ -43,7 +44,7 @@ export class ScheduledService {
       .whereNull('processor')
       .whereNull('deleted_at')
       .andWhere({ user_id: userId, id: scheduledEventId })
-      .andWhere('scheduled_at')
+      .andWhere('scheduled_at', '>=', subMinutes(new Date(), MAX_TIME_BUFFER))
       .update({ deleted_at: new Date() })
     return updated === 1
   }
@@ -72,9 +73,10 @@ export class ScheduledService {
 
     return (
       await this.dbReader<ScheduledEventEntity>(ScheduledEventEntity.table)
+        .andWhere('user_id', userId)
         .where('scheduled_at', '>=', startDate)
         .andWhere('scheduled_at', '<', endDate)
-        .andWhere('user_id', userId)
+        .whereNull('deleted_at')
         .orderBy('scheduled_at', 'asc')
         .select('*')
     ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
@@ -116,7 +118,7 @@ export class ScheduledService {
       .where('id', scheduledEventId)
       .whereNull('processer')
       .whereNull('deleted_at')
-      .andWhere('scheduled_at', '<', new Date(Date.now() - MAX_TIME_BUFFER))
+      .andWhere('scheduled_at', '<', subMinutes(new Date(), MAX_TIME_BUFFER))
       .update({ body })
     return updated === 1
   }

@@ -5,8 +5,8 @@ import React, { FC, useMemo, useState } from "react"
 interface MonthYearPickerProps {
   selectedYear: number
   selectedMonth: number
-  maxPastMonths: number
-  maxFutureMonths: number
+  maxPastMonths?: number
+  maxFutureMonths?: number
   onChangeYear: any
   onChangeMonth: any
 }
@@ -17,51 +17,53 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
   selectedYear,
   selectedMonth,
   onChangeYear,
-  maxFutureMonths,
   maxPastMonths,
+  maxFutureMonths,
   onChangeMonth
 }) => {
   const [currentYear, setCurrentYear] = useState(selectedYear)
 
   const minMonth = useMemo(() => {
-    return today.getMonth() - (maxPastMonths % 12)
+    return maxPastMonths ? today.getMonth() - (maxPastMonths % 12) : undefined
   }, [maxPastMonths])
 
   const maxMonth = useMemo(() => {
-    return (today.getMonth() + (maxFutureMonths % 12)) % 12
+    return maxFutureMonths
+      ? (today.getMonth() + (maxFutureMonths % 12)) % 12
+      : undefined
   }, [maxFutureMonths])
 
   const minYear = useMemo(() => {
-    const numberOfYears =
-      Math.trunc(maxPastMonths / 12) +
-      (today.getMonth() + 1 - (maxPastMonths % 12) > 0 ? 0 : 1)
-
-    return today.getFullYear() - numberOfYears
+    return maxPastMonths
+      ? today.getFullYear() -
+          Math.trunc(maxPastMonths / 12) +
+          (today.getMonth() + 1 - (maxPastMonths % 12) > 0 ? 0 : 1)
+      : undefined
   }, [maxPastMonths])
 
   const maxYear = useMemo(() => {
-    const numberOfYears =
-      Math.trunc(maxFutureMonths / 12) +
-      ((maxFutureMonths % 12) + today.getMonth() > 11 ? 1 : 0)
-
-    return today.getFullYear() + numberOfYears
+    return maxFutureMonths
+      ? today.getFullYear() +
+          Math.trunc(maxFutureMonths / 12) +
+          ((maxFutureMonths % 12) + today.getMonth() > 11 ? 1 : 0)
+      : undefined
   }, [maxFutureMonths])
 
   const isDisabledBtn = (currentMonth: number) => {
     return (
-      (currentYear === maxYear && currentMonth > maxMonth) ||
-      (currentYear === minYear && currentMonth < minMonth)
+      (!!maxMonth && currentYear === maxYear && currentMonth > maxMonth) ||
+      (!!minMonth && currentYear === minYear && currentMonth < minMonth)
     )
   }
 
   const handleOnClickLeftArrow = () => {
-    if (currentYear > minYear) {
+    if (!minYear || currentYear > minYear) {
       setCurrentYear((prevYear) => prevYear - 1)
     }
   }
 
   const handleOnClickRightArrow = () => {
-    if (currentYear <= maxYear) {
+    if (!maxYear || currentYear <= maxYear) {
       setCurrentYear((prevYear) => prevYear + 1)
     }
   }
