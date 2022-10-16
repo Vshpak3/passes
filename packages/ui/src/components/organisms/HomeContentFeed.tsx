@@ -10,6 +10,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
+import { Header } from "src/components/molecules/performance/Header"
 import { Post } from "src/components/organisms/profile/post/Post"
 
 // TODO: fix formatting
@@ -40,26 +41,29 @@ export const HomeContentFeed: React.FC = () => {
   const api = new FeedApi()
 
   return (
-    <div className="w-full bg-black">
-      <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:-mt-56 md:w-[653px] md:pt-20 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-        <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-          <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
-            keyValue="/feed"
-            fetch={async (req: GetFeedRequestDto) => {
-              return await api.getFeed({ getFeedRequestDto: req })
-            }}
-            fetchProps={{}}
-            emptyElement={ContentFeedEmpty}
-            loadingElement={ContentFeedLoading}
-            endElement={ContentFeedEnd}
-            KeyedComponent={({ arg }: ComponentArg<PostDto>) => (
-              <div className="mt-6">
-                <Post post={arg} />
-              </div>
-            )}
-          />
+    <>
+      <Header />
+      <div className="w-full bg-black">
+        <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] md:pt-20 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
+          <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
+            <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
+              keyValue="/feed"
+              fetch={async (req: GetFeedRequestDto) => {
+                return await api.getFeed({ getFeedRequestDto: req })
+              }}
+              fetchProps={{}}
+              emptyElement={ContentFeedEmpty}
+              loadingElement={ContentFeedLoading}
+              endElement={ContentFeedEnd}
+              KeyedComponent={({ arg }: ComponentArg<PostDto>) => (
+                <div className="mt-6">
+                  <Post post={arg} />
+                </div>
+              )}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

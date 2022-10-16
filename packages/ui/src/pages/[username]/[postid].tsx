@@ -25,4 +25,4 @@ const PostByUrlPage = () => {
   )
 }
 
-export default WithNormalPageLayout(PostByUrlPage)
+export default WithNormalPageLayout(PostByUrlPage, { header: false })

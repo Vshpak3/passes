@@ -5,4 +5,4 @@ const Home = () => {
   return <HomeContentFeed />
 }
 
-export default WithNormalPageLayout(Home)
+export default WithNormalPageLayout(Home, { header: false })
