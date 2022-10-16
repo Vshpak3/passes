@@ -20,8 +20,8 @@ export const UserSearchInput: FC<UserSearchInputProps> = ({
   return (
     <div
       className={classNames(
-        isDesktop ? "hidden md:flex" : "mx-2 flex-grow",
-        "flex items-center justify-end gap-2"
+        isDesktop ? "hidden md:flex" : "mr-2 flex-grow",
+        "items-center justify-end md:flex"
       )}
     >
       <div className="relative flex items-center gap-3">
@@ -35,7 +35,7 @@ export const UserSearchInput: FC<UserSearchInputProps> = ({
           value={searchValue}
           autoComplete="off"
           placeholder={placeholder}
-          className="form-input h-[51px] w-full min-w-[360px] rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
+          className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0 xs:min-w-[320px] sm:min-w-[360px]"
         />
       </div>
     </div>

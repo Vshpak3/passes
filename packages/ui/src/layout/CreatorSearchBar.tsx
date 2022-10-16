@@ -36,7 +36,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
 
   return (
     <AuthWrapper>
-      <div ref={searchRef}>
+      <div ref={searchRef} className="relative flex-1 xs:flex-initial">
         <UserSearchInput
           onChangeInput={onChangeInput}
           onSearchFocus={onSearchFocus}
