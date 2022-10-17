@@ -12,7 +12,7 @@ import { DropdownOption, PostDropdown } from "./PostDropdown"
 interface PostProfileAvatarProps
   extends Pick<
     PostDto,
-    "createdAt" | "displayName" | "isOwner" | "postId" | "userId" | "username"
+    "createdAt" | "displayName" | "isOwner" | "userId" | "username"
   > {
   dropdownOptions: DropdownOption[]
   statisticsButtonProps?: PostStatisticsButtonProps
@@ -23,12 +23,10 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
   createdAt,
   displayName,
   isOwner,
-  postId,
   userId,
   username,
   dropdownOptions,
-  statisticsButtonProps,
-  isPostComment = false
+  statisticsButtonProps
 }) => {
   return (
     <div className="flex w-full items-center justify-between">
@@ -78,12 +76,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
           )}
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
-          <PostDropdown
-            items={dropdownOptions}
-            username={username}
-            postId={postId}
-            isPostComment={isPostComment}
-          />
+          <PostDropdown items={dropdownOptions} />
         </div>
       </div>
     </div>

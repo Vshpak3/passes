@@ -4,6 +4,7 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
+import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { useBlockUnblockUser } from "src/hooks/useBlockUnblockUser"
 import { useReportModal } from "src/hooks/useReportModal"
 import { useUser } from "src/hooks/useUser"
@@ -25,7 +26,6 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen } = useBlockModal()
   const router = useRouter()
   const { user } = useUser()
 
@@ -34,6 +34,7 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
       text: "Report",
       onClick: () => setIsReportModalOpen(true)
     },
+
     ...(post.isOwner
       ? [
           {
@@ -50,7 +51,11 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
             }
           }
         ]
-      : [])
+      : []),
+    {
+      text: "Copy link to post",
+      onClick: () => copyLinkToClipboard(username, postId)
+    }
   ]
 
   const {
@@ -81,7 +86,6 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
           createdAt={createdAt}
           displayName={displayName}
           isOwner={isOwner}
-          postId={postId}
           userId={userId}
           username={username}
           dropdownOptions={dropdownOptions}

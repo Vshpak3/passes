@@ -1,26 +1,18 @@
 import { Menu, Transition } from "@headlessui/react"
-import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import PostOptionsIcon from "public/icons/post-options-icon.svg"
 import { FC, Fragment } from "react"
-import { copyLinkToClipboard } from "src/helpers/clipboard"
 
 export interface DropdownOption {
   readonly text: string
   readonly onClick: () => void
 }
 
-interface PostDropdownProps extends Pick<PostDto, "username" | "postId"> {
+interface PostDropdownProps {
   readonly items: DropdownOption[]
-  readonly isPostComment?: boolean
 }
 
-export const PostDropdown: FC<PostDropdownProps> = ({
-  items,
-  username,
-  postId,
-  isPostComment
-}) => {
+export const PostDropdown: FC<PostDropdownProps> = ({ items }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -40,22 +32,6 @@ export const PostDropdown: FC<PostDropdownProps> = ({
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {!isPostComment && (
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              <Menu.Item onClick={() => copyLinkToClipboard(username, postId)}>
-                {({ active }) => (
-                  <span
-                    className={classNames(
-                      active ? "text-passes-primary-color" : "text-[#868487]",
-                      "block cursor-pointer px-4 py-2 text-sm"
-                    )}
-                  >
-                    Copy link to post
-                  </span>
-                )}
-              </Menu.Item>
-            )}
             {items.map((item, index) => (
               <div key={index}>
                 {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}

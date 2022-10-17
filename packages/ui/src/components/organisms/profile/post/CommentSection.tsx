@@ -43,7 +43,6 @@ export const CommentSection: FC<CommentSectionProps> = ({
             ownsPost={ownsPost}
             isCreator={isCreator}
             blockedUsers={blockedUsers}
-            isPostComment={isPostComment}
           />
         )
       })}

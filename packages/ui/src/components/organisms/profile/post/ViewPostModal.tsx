@@ -12,6 +12,7 @@ import { TipButton } from "src/components/molecules/post/TipButton"
 import { Dialog } from "src/components/organisms/Dialog"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
@@ -67,7 +68,11 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
             }
           }
         ]
-      : [])
+      : []),
+    {
+      text: "Copy link to post",
+      onClick: () => copyLinkToClipboard(username, postId)
+    }
   ]
 
   const {
@@ -170,11 +175,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 />
               )}
             </div>
-            <PostDropdown
-              items={dropdownOptions}
-              username={username}
-              postId={postId}
-            />
+            <PostDropdown items={dropdownOptions} />
           </div>
           <div className="mt-[50px] flex space-x-4">
             <ProfileThumbnail userId={post.userId} />

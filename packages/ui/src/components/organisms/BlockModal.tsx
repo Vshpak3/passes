@@ -7,7 +7,12 @@ import { errorMessage } from "src/helpers/error"
 
 import { Modal, ModalProps } from "./Modal"
 
-export const BlockModal: FC<ModalProps> = ({
+interface BlockModalProps extends ModalProps {
+  creatorId: string
+  username: string
+}
+
+export const BlockModal: FC<BlockModalProps> = ({
   isOpen = false,
   setOpen,
   creatorId,

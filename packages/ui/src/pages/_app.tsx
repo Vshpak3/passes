@@ -165,8 +165,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
                     <BlockModal
                       isOpen={isBlockModalOpen}
                       setOpen={setIsBlockModalOpen}
-                      username={blockModalData?.userName}
-                      creatorId={blockModalData?.userId}
+                      username={blockModalData?.userName || ""}
+                      creatorId={blockModalData?.userId || ""}
                     />
                   )}
                   <ToastContainer

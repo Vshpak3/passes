@@ -16,7 +16,6 @@ interface CommentProps {
   ownsPost: boolean
   isCreator?: boolean
   blockedUsers?: ListMemberDto[]
-  isPostComment?: boolean
 }
 
 const api = new CommentApi()
@@ -26,8 +25,7 @@ export const Comment: FC<CommentProps> = ({
   removable,
   ownsPost,
   isCreator,
-  blockedUsers,
-  isPostComment
+  blockedUsers
 }) => {
   const router = useRouter()
   const [removed, setRemoved] = useState(false)
@@ -123,12 +121,7 @@ export const Comment: FC<CommentProps> = ({
                 date={comment.createdAt}
                 live={false}
               />
-              <PostDropdown
-                items={dropdownOptions}
-                username={commenterUsername}
-                postId={postId}
-                isPostComment={isPostComment}
-              />
+              <PostDropdown items={dropdownOptions} />
             </div>
           </div>
           <Text

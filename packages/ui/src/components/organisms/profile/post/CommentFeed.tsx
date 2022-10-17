@@ -44,7 +44,6 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
             ownsPost={ownsPost}
             isCreator={isCreator}
             blockedUsers={blockedUsers}
-            isPostComment={isPostComment}
           />
         )
       }}
