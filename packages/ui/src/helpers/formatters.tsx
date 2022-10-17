@@ -26,3 +26,7 @@ export function getFormattedDate(date: Date) {
     })
     .toLocaleString()},  ${date.getFullYear()}`
 }
+
+export function getNYearsAgoDate(years: number) {
+  return new Date(new Date().setFullYear(new Date().getFullYear() - years))
+}

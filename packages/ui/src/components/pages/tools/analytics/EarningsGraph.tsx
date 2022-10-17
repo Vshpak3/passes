@@ -23,7 +23,11 @@ import React, { FC, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
-import { formatCurrency, getFormattedDate } from "src/helpers/formatters"
+import {
+  formatCurrency,
+  getFormattedDate,
+  getNYearsAgoDate
+} from "src/helpers/formatters"
 import { Caret } from "src/icons/caret"
 
 ChartJS.register(
@@ -103,6 +107,8 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           >
             <DateRangePicker
               ranges={[dateRange]}
+              maxDate={new Date()}
+              minDate={getNYearsAgoDate(2)}
               onChange={(newRange) => {
                 setDateRange(newRange.selection as any)
               }}

@@ -47,7 +47,7 @@ export const RequestPayouts = () => {
   const fetchCreatorBalance = useCallback(async () => {
     const api = new CreatorStatsApi()
     const data = await api.getAvailableBalance()
-    setBalance(data.amount)
+    setBalance(data.amount ?? 0)
   }, [])
 
   const onManualPayoutClick = useCallback(async () => {
