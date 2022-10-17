@@ -127,4 +127,4 @@ const ForgotPassword = () => {
   )
 }
 
-export default WithLoginPageLayout(ForgotPassword, { routeOnlyIfAuth: true })
+export default ForgotPassword // no WithLoginPageLayout
