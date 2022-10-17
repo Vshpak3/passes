@@ -1,28 +1,32 @@
-import { CommentApi, CommentDto, ListMemberDto } from "@passes/api-client"
+import { CommentDto, ListMemberDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { Text } from "src/components/atoms/Text"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import {
+  Dropdown,
+  DropdownOption
+} from "src/components/organisms/profile/drop-down/Dropdown"
+import {
+  DropDownCommentDelete,
+  DropDownCommentHide
+} from "src/components/organisms/profile/drop-down/DropdownOptionsComment"
+import { DropDownReport } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { useBlockModal } from "src/hooks/useBlockModal"
+import { useComment } from "src/hooks/useComment"
 import { useReportModal } from "src/hooks/useReportModal"
-
-import { DropdownOption, PostDropdown } from "./PostDropdown"
 
 interface CommentProps {
   comment: CommentDto
-  removable: boolean
   ownsPost: boolean
   isCreator?: boolean
   blockedUsers?: ListMemberDto[]
 }
 
-const api = new CommentApi()
-
 export const Comment: FC<CommentProps> = ({
   comment,
-  removable,
   ownsPost,
   isCreator,
   blockedUsers
@@ -32,16 +36,15 @@ export const Comment: FC<CommentProps> = ({
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen, setBlockModalData } = useBlockModal()
   const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
+  const { deleteComment, hideComment } = useComment()
+
   const { commentId, commenterUsername, isOwner, postId, commenterId } = comment
   const commentCreatorBlockedList =
     blockedUsers?.length &&
     blockedUsers?.find(({ userId }: ListMemberDto) => userId === commenterId)
 
   const dropdownOptions: DropdownOption[] = [
-    {
-      text: "Report",
-      onClick: () => setIsReportModalOpen(true)
-    },
+    ...DropDownReport(!isOwner, setIsReportModalOpen),
     ...(isCreator && !commentCreatorBlockedList
       ? [
           {
@@ -66,35 +69,17 @@ export const Comment: FC<CommentProps> = ({
           }
         ]
       : []),
-    ...(ownsPost || isOwner
-      ? [
-          {
-            text: "Delete comment",
-            onClick: async () => {
-              await api.deleteComment({
-                commentId: commentId,
-                postId: postId
-              })
-              if (removable) {
-                setRemoved(true)
-              }
-            }
-          }
-        ]
-      : []), //TODO: add unhide
-    ...(ownsPost && !comment.isOwner
-      ? [
-          {
-            text: "Hide comment",
-            onClick: async () => {
-              await api.hideComment({
-                commentId: commentId,
-                postId: postId
-              })
-            }
-          }
-        ]
-      : [])
+
+    ...DropDownCommentDelete(
+      ownsPost || isOwner,
+      postId,
+      commentId,
+      deleteComment,
+      () => {
+        setRemoved(true)
+      }
+    ),
+    ...DropDownCommentHide(ownsPost && !isOwner, postId, commentId, hideComment)
   ]
 
   return (
@@ -121,7 +106,7 @@ export const Comment: FC<CommentProps> = ({
                 date={comment.createdAt}
                 live={false}
               />
-              <PostDropdown items={dropdownOptions} />
+              <Dropdown items={dropdownOptions} />
             </div>
           </div>
           <Text

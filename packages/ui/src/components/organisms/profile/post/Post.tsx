@@ -1,17 +1,23 @@
-import { PostApi, PostDto } from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useState } from "react"
-import { toast } from "react-toastify"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import { copyLinkToClipboard } from "src/helpers/clipboard"
+import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
+import {
+  DropDownBlock,
+  DropDownCopyLink,
+  DropDownReport
+} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
+import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
+import { useBlockModal } from "src/hooks/useBlockModal"
 import { useBlockUnblockUser } from "src/hooks/useBlockUnblockUser"
+import { usePost } from "src/hooks/usePost"
 import { useReportModal } from "src/hooks/useReportModal"
 import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { LockedMedia } from "./LockedMedia"
-import { DropdownOption } from "./PostDropdown"
 import { PostEngagement } from "./PostEngagement"
 import { PostMedia } from "./PostMedia"
 import { PostProfileAvatar } from "./PostProfileAvatar"
@@ -26,37 +32,10 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()
+  const { setIsBlockModalOpen } = useBlockModal()
   const router = useRouter()
   const { user } = useUser()
-
-  const dropdownOptions: DropdownOption[] = [
-    {
-      text: "Report",
-      onClick: () => setIsReportModalOpen(true)
-    },
-
-    ...(post.isOwner
-      ? [
-          {
-            text: "Delete",
-            onClick: async () => {
-              const api = new PostApi()
-              await api
-                .removePost({ postId: post.postId })
-                .catch((error) => toast(error))
-              if (redirectOnDelete && user) {
-                router.push(`/${user.username}`)
-              }
-              setIsRemoved(true)
-            }
-          }
-        ]
-      : []),
-    {
-      text: "Copy link to post",
-      onClick: () => copyLinkToClipboard(username, postId)
-    }
-  ]
+  const { removePost } = usePost()
 
   const {
     contents,
@@ -74,6 +53,18 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
     userId,
     username
   } = post
+
+  const dropdownOptions: DropdownOption[] = [
+    ...DropDownReport(!post.isOwner, setIsReportModalOpen),
+    ...DropDownBlock(!post.isOwner, setIsBlockModalOpen),
+    ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
+      setIsRemoved(true)
+      if (redirectOnDelete && user) {
+        router.push(`/${user.username}`)
+      }
+    }),
+    DropDownCopyLink(username, postId)
+  ]
 
   const { blockedUsersList } = useBlockUnblockUser(displayName)
 

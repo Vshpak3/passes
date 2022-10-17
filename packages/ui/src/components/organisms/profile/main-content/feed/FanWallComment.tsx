@@ -1,68 +1,32 @@
-import { FanWallApi, FanWallCommentDto } from "@passes/api-client"
+import { FanWallCommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import { DropdownOption } from "src/components/organisms/profile/post/PostDropdown"
+import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
+import {
+  DropDownFanWallCommentDelete,
+  DropDownFanWallCommentHide
+} from "src/components/organisms/profile/drop-down/DropdownOptionsFanWall"
+import {
+  DropDownBlock,
+  DropDownReport
+} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
 import { useBlockModal } from "src/hooks/useBlockModal"
+import { useFanWall } from "src/hooks/useFanWall"
 import { useProfile } from "src/hooks/useProfile"
 import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
   comment: FanWallCommentDto
-  removable: boolean
-  isPostComment?: boolean
 }
 
-export const FanWallComment: FC<FanWallCommentProps> = ({
-  comment,
-  removable,
-  isPostComment = false
-}) => {
+export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   const { ownsProfile } = useProfile()
-  const api = new FanWallApi()
-
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
-
   const [removed, setRemoved] = useState<boolean>(false)
-  const dropdownItems: DropdownOption[] = [
-    {
-      text: "Report",
-      onClick: () => setIsReportModalOpen(true)
-    },
-    {
-      text: "Block",
-      onClick: () => setIsBlockModalOpen(true)
-    },
-    ...(ownsProfile || comment.isOwner
-      ? [
-          {
-            text: "Delete comment",
-            onClick: async () => {
-              await api.deleteFanWallComment({
-                fanWallCommentId: comment.fanWallCommentId
-              })
-              if (removable) {
-                setRemoved(true)
-              }
-            }
-          }
-        ]
-      : []), //TODO: add unhide
-    ...(ownsProfile && !comment.isOwner
-      ? [
-          {
-            text: "Hide comment",
-            onClick: async () => {
-              await api.hideFanWallComment({
-                fanWallCommentId: comment.fanWallCommentId
-              })
-            }
-          }
-        ]
-      : [])
-  ]
+  const { deleteFanWallComment, hideFanWallComment } = useFanWall()
 
   const {
     commenterDisplayName,
@@ -72,6 +36,24 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
     isOwner,
     text
   } = comment
+
+  const dropdownItems: DropdownOption[] = [
+    ...DropDownReport(isOwner, setIsReportModalOpen),
+    ...DropDownBlock(isOwner, setIsBlockModalOpen),
+    ...DropDownFanWallCommentDelete(
+      ownsProfile || comment.isOwner,
+      comment.fanWallCommentId,
+      deleteFanWallComment,
+      () => {
+        setRemoved(true)
+      }
+    ),
+    ...DropDownFanWallCommentHide(
+      ownsProfile && !comment.isOwner,
+      comment.fanWallCommentId,
+      hideFanWallComment
+    )
+  ]
 
   return (
     <ConditionRendering condition={!removed}>
@@ -83,7 +65,6 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
           userId={commenterId}
           username={commenterUsername}
           dropdownOptions={dropdownItems}
-          isPostComment={isPostComment}
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">

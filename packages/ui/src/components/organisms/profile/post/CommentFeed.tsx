@@ -40,7 +40,6 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
         return (
           <Comment
             comment={arg}
-            removable={true}
             ownsPost={ownsPost}
             isCreator={isCreator}
             blockedUsers={blockedUsers}

@@ -1,13 +1,16 @@
 import { PostDto } from "@passes/api-client"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
+import { FC } from "react"
 import TimeAgo from "react-timeago"
 import {
   PostStatisticsButton,
   PostStatisticsButtonProps
 } from "src/components/molecules/post/PostStatisticsButton"
+import {
+  Dropdown,
+  DropdownOption
+} from "src/components/organisms/profile/drop-down/Dropdown"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
-
-import { DropdownOption, PostDropdown } from "./PostDropdown"
 
 interface PostProfileAvatarProps
   extends Pick<
@@ -16,10 +19,9 @@ interface PostProfileAvatarProps
   > {
   dropdownOptions: DropdownOption[]
   statisticsButtonProps?: PostStatisticsButtonProps
-  isPostComment?: boolean
 }
 
-export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
+export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
   createdAt,
   displayName,
   isOwner,
@@ -76,7 +78,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
           )}
           {postPinned ? <PinnedActive /> : <PinnedInactive />}
         </div> */}
-          <PostDropdown items={dropdownOptions} />
+          <Dropdown items={dropdownOptions} />
         </div>
       </div>
     </div>

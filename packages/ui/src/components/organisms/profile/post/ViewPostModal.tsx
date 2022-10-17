@@ -10,9 +10,18 @@ import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { Dialog } from "src/components/organisms/Dialog"
+import {
+  Dropdown,
+  DropdownOption
+} from "src/components/organisms/profile/drop-down/Dropdown"
+import {
+  DropDownBlock,
+  DropDownCopyLink,
+  DropDownReport
+} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
+import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
-import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
@@ -23,7 +32,6 @@ import { useReportModal } from "src/hooks/useReportModal"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { CommentFeed } from "./CommentFeed"
-import { DropdownOption, PostDropdown } from "./PostDropdown"
 
 export interface ViewPostModalProps {
   post: PostDto & { setIsRemoved?: Dispatch<SetStateAction<boolean>> }
@@ -48,33 +56,6 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   const postUnlocked = !post.purchasable
 
-  const dropdownOptions: DropdownOption[] = [
-    {
-      text: "Report",
-      onClick: () => setIsReportModalOpen(true)
-    },
-    {
-      text: "Block",
-      onClick: () => setIsBlockModalOpen(true)
-    },
-    ...(post.isOwner
-      ? [
-          {
-            text: "Delete",
-            onClick: async () => {
-              removePost(post.postId)
-              post.setIsRemoved?.(true)
-              setPost(null)
-            }
-          }
-        ]
-      : []),
-    {
-      text: "Copy link to post",
-      onClick: () => copyLinkToClipboard(username, postId)
-    }
-  ]
-
   const {
     createdAt,
     earningsPurchases,
@@ -87,6 +68,16 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     totalTipAmount,
     username
   } = post
+
+  const dropdownOptions: DropdownOption[] = [
+    ...DropDownReport(!post.isOwner, setIsReportModalOpen),
+    ...DropDownBlock(!post.isOwner, setIsBlockModalOpen),
+    ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
+      post.setIsRemoved?.(true)
+      setPost(null)
+    }),
+    DropDownCopyLink(username, postId)
+  ]
 
   return (
     <Dialog open={true} className="z-10" onClose={() => setPost(null)}>
@@ -175,7 +166,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 />
               )}
             </div>
-            <PostDropdown items={dropdownOptions} />
+            <Dropdown items={dropdownOptions} />
           </div>
           <div className="mt-[50px] flex space-x-4">
             <ProfileThumbnail userId={post.userId} />

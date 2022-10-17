@@ -8,11 +8,11 @@ export interface DropdownOption {
   readonly onClick: () => void
 }
 
-interface PostDropdownProps {
+interface DropdownProps {
   readonly items: DropdownOption[]
 }
 
-export const PostDropdown: FC<PostDropdownProps> = ({ items }) => {
+export const Dropdown: FC<DropdownProps> = ({ items }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>

@@ -39,7 +39,6 @@ export const CommentSection: FC<CommentSectionProps> = ({
           <Comment
             key={comment.commentId}
             comment={comment}
-            removable={true}
             ownsPost={ownsPost}
             isCreator={isCreator}
             blockedUsers={blockedUsers}
