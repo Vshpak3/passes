@@ -11,11 +11,13 @@ import { useReportModal } from "src/hooks/useReportModal"
 interface FanWallCommentProps {
   comment: FanWallCommentDto
   removable: boolean
+  copyLinkDisabled?: boolean
 }
 
 export const FanWallComment: FC<FanWallCommentProps> = ({
   comment,
-  removable
+  removable,
+  copyLinkDisabled = false
 }) => {
   const { ownsProfile } = useProfile()
   const api = new FanWallApi()
@@ -83,6 +85,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
           userId={commenterId}
           username={commenterUsername}
           dropdownOptions={dropdownItems}
+          copyLinkDisabled={copyLinkDisabled}
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">

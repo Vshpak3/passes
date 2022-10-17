@@ -48,7 +48,11 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
         return (
           <div className="mt-6 flex">
-            <FanWallComment comment={arg} removable={true} />
+            <FanWallComment
+              comment={arg}
+              removable={true}
+              copyLinkDisabled={true}
+            />
           </div>
         )
       }}

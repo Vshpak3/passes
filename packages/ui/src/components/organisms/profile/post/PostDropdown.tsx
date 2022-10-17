@@ -12,12 +12,14 @@ export interface DropdownOption {
 
 interface PostDropdownProps extends Pick<PostDto, "username" | "postId"> {
   readonly items: DropdownOption[]
+  copyLinkDisabled?: boolean
 }
 
 export const PostDropdown: FC<PostDropdownProps> = ({
   items,
   username,
-  postId
+  postId,
+  copyLinkDisabled = false
 }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -38,20 +40,22 @@ export const PostDropdown: FC<PostDropdownProps> = ({
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <Menu.Item onClick={() => copyLinkToClipboard(username, postId)}>
-              {({ active }) => (
-                <span
-                  className={classNames(
-                    active ? "text-passes-primary-color" : "text-[#868487]",
-                    "block cursor-pointer px-4 py-2 text-sm"
-                  )}
-                >
-                  Copy link to post
-                </span>
-              )}
-            </Menu.Item>
+            {!copyLinkDisabled && (
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
+              <Menu.Item onClick={() => copyLinkToClipboard(username, postId)}>
+                {({ active }) => (
+                  <span
+                    className={classNames(
+                      active ? "text-passes-primary-color" : "text-[#868487]",
+                      "block cursor-pointer px-4 py-2 text-sm"
+                    )}
+                  >
+                    Copy link to post
+                  </span>
+                )}
+              </Menu.Item>
+            )}
             {items.map((item, index) => (
               <div key={index}>
                 {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
