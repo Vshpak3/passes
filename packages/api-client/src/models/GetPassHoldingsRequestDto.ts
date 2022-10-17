@@ -67,24 +67,6 @@ export interface GetPassHoldingsRequestDto {
      * @memberof GetPassHoldingsRequestDto
      */
     expired?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassHoldingsRequestDto
-     */
-    username?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassHoldingsRequestDto
-     */
-    displayName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassHoldingsRequestDto
-     */
-    orderType: GetPassHoldingsRequestDtoOrderTypeEnum;
 }
 
 
@@ -107,16 +89,6 @@ export const GetPassHoldingsRequestDtoPassTypeEnum = {
 } as const;
 export type GetPassHoldingsRequestDtoPassTypeEnum = typeof GetPassHoldingsRequestDtoPassTypeEnum[keyof typeof GetPassHoldingsRequestDtoPassTypeEnum];
 
-/**
- * @export
- */
-export const GetPassHoldingsRequestDtoOrderTypeEnum = {
-    Username: 'username',
-    DisplayName: 'display name',
-    CreatedAt: 'created at'
-} as const;
-export type GetPassHoldingsRequestDtoOrderTypeEnum = typeof GetPassHoldingsRequestDtoOrderTypeEnum[keyof typeof GetPassHoldingsRequestDtoOrderTypeEnum];
-
 
 /**
  * Check if a given object implements the GetPassHoldingsRequestDto interface.
@@ -124,7 +96,6 @@ export type GetPassHoldingsRequestDtoOrderTypeEnum = typeof GetPassHoldingsReque
 export function instanceOfGetPassHoldingsRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
-    isInstance = isInstance && "orderType" in value;
 
     return isInstance;
 }
@@ -147,9 +118,6 @@ export function GetPassHoldingsRequestDtoFromJSONTyped(json: any, ignoreDiscrimi
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
         'passType': !exists(json, 'passType') ? undefined : json['passType'],
         'expired': !exists(json, 'expired') ? undefined : json['expired'],
-        'username': !exists(json, 'username') ? undefined : json['username'],
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
-        'orderType': json['orderType'],
     };
 }
 
@@ -170,9 +138,6 @@ export function GetPassHoldingsRequestDtoToJSON(value?: GetPassHoldingsRequestDt
         'passId': value.passId,
         'passType': value.passType,
         'expired': value.expired,
-        'username': value.username,
-        'displayName': value.displayName,
-        'orderType': value.orderType,
     };
 }
 

@@ -76,24 +76,6 @@ export interface GetPassHoldingsResponseDto {
     expired?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof GetPassHoldingsResponseDto
-     */
-    username?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassHoldingsResponseDto
-     */
-    displayName?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPassHoldingsResponseDto
-     */
-    orderType: GetPassHoldingsResponseDtoOrderTypeEnum;
-    /**
-     * 
      * @type {Array<PassHolderDto>}
      * @memberof GetPassHoldingsResponseDto
      */
@@ -120,16 +102,6 @@ export const GetPassHoldingsResponseDtoPassTypeEnum = {
 } as const;
 export type GetPassHoldingsResponseDtoPassTypeEnum = typeof GetPassHoldingsResponseDtoPassTypeEnum[keyof typeof GetPassHoldingsResponseDtoPassTypeEnum];
 
-/**
- * @export
- */
-export const GetPassHoldingsResponseDtoOrderTypeEnum = {
-    Username: 'username',
-    DisplayName: 'display name',
-    CreatedAt: 'created at'
-} as const;
-export type GetPassHoldingsResponseDtoOrderTypeEnum = typeof GetPassHoldingsResponseDtoOrderTypeEnum[keyof typeof GetPassHoldingsResponseDtoOrderTypeEnum];
-
 
 /**
  * Check if a given object implements the GetPassHoldingsResponseDto interface.
@@ -137,7 +109,6 @@ export type GetPassHoldingsResponseDtoOrderTypeEnum = typeof GetPassHoldingsResp
 export function instanceOfGetPassHoldingsResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
-    isInstance = isInstance && "orderType" in value;
     isInstance = isInstance && "data" in value;
 
     return isInstance;
@@ -161,9 +132,6 @@ export function GetPassHoldingsResponseDtoFromJSONTyped(json: any, ignoreDiscrim
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
         'passType': !exists(json, 'passType') ? undefined : json['passType'],
         'expired': !exists(json, 'expired') ? undefined : json['expired'],
-        'username': !exists(json, 'username') ? undefined : json['username'],
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
-        'orderType': json['orderType'],
         'data': ((json['data'] as Array<any>).map(PassHolderDtoFromJSON)),
     };
 }
@@ -185,9 +153,6 @@ export function GetPassHoldingsResponseDtoToJSON(value?: GetPassHoldingsResponse
         'passId': value.passId,
         'passType': value.passType,
         'expired': value.expired,
-        'username': value.username,
-        'displayName': value.displayName,
-        'orderType': value.orderType,
         'data': ((value.data as Array<any>).map(PassHolderDtoToJSON)),
     };
 }

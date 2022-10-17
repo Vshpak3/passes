@@ -11,7 +11,7 @@ import { MAX_PASSHOLDERS_PER_REQUEST } from './pass.service'
 
 export function createPassHolderQuery(
   query: Knex.QueryBuilder,
-  requestDto: GetPassHoldersRequestDto | GetPassHoldingsRequestDto,
+  requestDto: GetPassHoldersRequestDto,
 ): Knex.QueryBuilder {
   const { username, displayName, orderType, createdAt, order, search, lastId } =
     requestDto

@@ -357,7 +357,16 @@ export class PassService {
     userId: string,
     getPassHoldingsRequestDto: GetPassHoldingsRequestDto,
   ) {
-    const { creatorId, passId, passType, expired } = getPassHoldingsRequestDto
+    const {
+      createdAt,
+      lastId,
+      creatorId,
+      passId,
+      passType,
+      expired,
+      search,
+      order,
+    } = getPassHoldingsRequestDto
     let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         PassEntity.table,
@@ -399,7 +408,25 @@ export class PassService {
     if (passId) {
       query = query.andWhere(`${PassEntity.table}.id`, passId)
     }
-    query = createPassHolderQuery(query, getPassHoldingsRequestDto)
+    query = createPaginatedQuery(
+      query,
+      PassHolderEntity.table,
+      PassHolderEntity.table,
+      'created_at',
+      order,
+      createdAt,
+      lastId,
+    )
+    if (search && search.length) {
+      // const strippedSearch = search.replace(/\W/g, '')
+      const likeClause = `%${search}%`
+      query = query.andWhere(function () {
+        return this.whereILike(
+          `${PassEntity.table}.title`,
+          likeClause,
+        ).orWhereILike(`${PassEntity.table}.description`, likeClause)
+      })
+    }
     const passHolders = await query
 
     return passHolders.map((passHolder) => new PassHolderDto(passHolder))

@@ -23,6 +23,7 @@ import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
 import { errorMessage } from "src/helpers/error"
 import { encrypt } from "src/helpers/openpgp"
+import { sleep } from "src/helpers/sleep"
 import { useUser } from "src/hooks/useUser"
 import { v4 } from "uuid"
 
@@ -34,13 +35,14 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
   const idempotencyKey = v4()
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     register,
     control,
     watch,
     getValues,
     handleSubmit,
+
     formState: { errors }
   } = useForm<{ country: string; "card-number": string }>({
     defaultValues: {}
@@ -52,7 +54,9 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
 
   const onSubmit = async () => {
     try {
+      setIsSubmitting(true)
       const values: any = getValues()
+
       const cardDetails = {
         number: values["card-number"]
           .trim()
@@ -98,6 +102,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         circleCreateCardAndExtraRequestDto: payload
       })
       toast.success("Credit card added succesfully")
+      sleep("1 second")
       if (callback) {
         callback()
       } else {
@@ -105,6 +110,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
       }
     } catch (error: any) {
       errorMessage(error, true)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -305,8 +312,11 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
       <button
         className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
         onClick={handleSubmit(onSubmit)}
+        disabled={isSubmitting}
       >
-        <span className="text-[16px] font-[500]">Confirm and Continue</span>
+        <span className="text-[16px] font-[500]">
+          {isSubmitting ? "Submitting ..." : "Confirm and Continue"}
+        </span>
       </button>
     </>
   )

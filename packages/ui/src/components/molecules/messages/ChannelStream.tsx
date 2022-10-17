@@ -5,6 +5,8 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import { FC, useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
+import { io } from "socket.io-client"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -33,6 +35,41 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 }) => {
   const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
+  const { accessToken } = useUser()
+  const socket = io(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/gateway`,
+    {
+      path: "/api/messages/gateway",
+      transports: ["websocket"],
+      auth: {
+        Authorization: `Bearer ${accessToken}`
+      },
+      autoConnect: false
+    }
+  )
+  const [isConnected, setIsConnected] = useState(socket.connected)
+  // socket.connect()
+  useEffect(() => {
+    socket.on("connect", () => {
+      setIsConnected(true)
+      socket.emit("message", "info")
+    })
+    socket.on("disconnect", () => {
+      setIsConnected(false)
+      setPendingMessages([])
+    })
+    socket.on("message", (data) => {
+      toast.success(JSON.stringify(data))
+    })
+    socket.connect()
+    // console.log(socket.connected, "connected")
+    return () => {
+      socket.off("connect")
+      socket.off("disconnect")
+      // socket.off('pong');
+      socket.disconnect()
+    }
+  }, [socket])
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
 
   useEffect(() => {
@@ -70,58 +107,25 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <FreeMessagesLeftContainer freeMessages={freeMessages} />
         </div>
       )}
-
-      <div
-        className="flex h-full flex-1 flex-col overflow-y-scroll"
-        // onScroll={handleScroll}
-        // ref={bottomOfChatRef}
-        onFocus={onReadLastMessage}
-        style={{
-          height: 300,
-          overflow: "auto",
-          display: "flex",
-          flexDirection: "column-reverse"
-        }}
-      >
-        <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-          keyValue="messages"
-          fetch={async (req: GetMessagesRequestDto) => {
-            return await api.getMessages({ getMessagesRequestDto: req })
+      {isConnected && (
+        <div
+          className="flex h-full flex-1 flex-col overflow-y-scroll"
+          // onScroll={handleScroll}
+          // ref={bottomOfChatRef}
+          onFocus={onReadLastMessage}
+          style={{
+            height: 300,
+            overflow: "auto",
+            display: "flex",
+            flexDirection: "column-reverse"
           }}
-          fetchProps={{ channelId, pending: false, contentOnly: false }}
-          KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
-            return (
-              <ChannelMessage
-                message={arg}
-                isOwnMessage={arg.senderId === user?.userId}
-                contentAvatarDisplayName={contentAvatarDisplayName}
-                contentAvatarUserName={contentAvatarUserName}
-              />
-            )
-          }}
-          loadingElement={<div>Loading older messages...</div>}
-        />
-        {/* {messages.length ? (
-        <>
-          {channelId &&
-            messages.map((message, index) => (
-              <ChannelMessage
-                key={index}
-                message={message}
-                isOwnMessage={message.senderId === user?.userId}
-                lastMessage={index === 0}
-                channelId={channelId}
-                contentAvatarDisplayName={contentAvatarDisplayName}
-                contentAvatarUserName={contentAvatarUserName}
-              />
-            ))}
+        >
           <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
             keyValue="messages"
             fetch={async (req: GetMessagesRequestDto) => {
-              const api = new MessagesApi()
               return await api.getMessages({ getMessagesRequestDto: req })
             }}
-            fetchProps={{ channelId, pending: false }}
+            fetchProps={{ channelId, pending: false, contentOnly: false }}
             KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
               return (
                 <ChannelMessage
@@ -132,31 +136,27 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 />
               )
             }}
+            loadingElement={<div>Loading older messages...</div>}
           />
-        </>
-      ) : (
-        <div className="flex flex-1 items-center justify-center">
-          No messages
-        </div>
-      )} */}
-        {pendingMessages.length > 0 &&
-          pendingMessages.map((m, i) => {
-            return (
-              <div
-                key={i}
-                className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
-              >
-                <div className="mx-4 flex flex-col items-start">
-                  <TippedMessage tipAmount={m?.tipAmount} />
-                  <PendingStatus />
+          {pendingMessages.length > 0 &&
+            pendingMessages.map((m, i) => {
+              return (
+                <div
+                  key={i}
+                  className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
+                >
+                  <div className="mx-4 flex flex-col items-start">
+                    <TippedMessage tipAmount={m?.tipAmount} />
+                    <PendingStatus />
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
 
-        {/* Dummy ref to allow scrolling to bottom of chat */}
-        <div ref={bottomOfChatRef} />
-      </div>
+          {/* Dummy ref to allow scrolling to bottom of chat */}
+          <div ref={bottomOfChatRef} />
+        </div>
+      )}
     </>
   )
 }
