@@ -121,8 +121,8 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 
   return (
     <div className="flex flex-col items-start gap-[6px]">
-      <div className="grid grid-cols-2 items-center justify-around md:w-[60%] sidebar-collapse:w-full">
-        <span className="text-[32px] font-medium leading-9 text-passes-white-100">
+      <div className="items-center justify-around truncate md:w-[65%]">
+        <span className="w-full truncate text-[32px] font-medium leading-9 text-passes-white-100">
           {profileInfo?.displayName}
         </span>
       </div>
@@ -216,10 +216,10 @@ export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
 
   return (
     <>
-      <span className="text-[18px] font-semibold text-passes-white-100">
+      <span className="w-full truncate text-center text-[18px] font-semibold text-passes-white-100">
         {profileInfo?.displayName}
       </span>
-      <div className="align-items flex h-[23px] w-[62px] items-center justify-center rounded-xl bg-passes-white-100/5">
+      <div className="align-items flex items-center justify-center rounded-xl bg-passes-white-100/5 px-2 py-1">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
           @{profileUsername}
         </span>
