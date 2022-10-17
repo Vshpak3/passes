@@ -544,7 +544,7 @@ export class MessagesService {
       .count()
     if (sendMessageDto.tipAmount > 0) {
       if (count[0]['count(*)'] >= MAX_PENDING_MESSAGES) {
-        blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
+        blocked = BlockedReasonEnum.TOO_MANY
       } else if (await this.payService.checkPayinBlocked(userId)) {
         blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
       }
