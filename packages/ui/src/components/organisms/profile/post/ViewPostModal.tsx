@@ -166,8 +166,11 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
             </div>
             <Dropdown items={dropdownOptions} />
           </div>
-          <div className="mt-[50px] flex space-x-4">
-            <ProfileThumbnail userId={post.userId} />
+          <a
+            href={`${window.location.origin}/${username}`}
+            className="mt-[50px] flex space-x-4 overflow-x-clip"
+          >
+            <ProfileThumbnail userId={userId} />
             <div>
               <div className="flex items-center">
                 <h4 className="mr-1.5 text-base font-medium leading-[22px]">
@@ -179,10 +182,10 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 </span>
               </div>
               <p className="text-start text-xs font-medium leading-[22px] text-white/50">
-                @{post.username}
+                @{username}
               </p>
             </div>
-          </div>
+          </a>
           <p className="mt-7 text-justify text-base font-medium">{post.text}</p>
           <div className="mt-8 flex items-center justify-start space-x-1.5 border-b border-[#727272] pb-2 text-xs font-medium text-passes-gray-100">
             <MessageIcon />
