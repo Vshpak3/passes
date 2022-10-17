@@ -49,7 +49,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                       {/* TODO: replace with real passes */}
                     </span>
                   </div>
-                  <div className="via-neutral-100 flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 to-amber-500 px-2">
+                  <div className="flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 via-neutral-100 to-amber-500 px-2">
                     <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
                       Limited Pass
                     </span>

@@ -40,7 +40,7 @@ export const PassHoldingsGrid: FC = () => {
             {passType === PassDtoTypeEnum.Lifetime && "Lifetime"}
           </span>
         </div>
-        <hr className="my-auto hidden grow border-passes-dark-200 md:display" />
+        <hr className="md:display my-auto hidden grow border-passes-dark-200" />
       </div>
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 sidebar-collapse:grid-cols-4">
         <InfiniteScrollPagination<PassHolderDto, GetPassHoldingsResponseDto>

@@ -86,7 +86,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     <>
       {children}
       {flattenedData.map((data, index) => (
-        <KeyedComponent key={index} arg={data} />
+        <KeyedComponent key={index} arg={data} index={index} />
       ))}
       {hasMore && <button onClick={triggerFetch}>Load more</button>}
       {!hasMore && !!flattenedData.length && endElement}

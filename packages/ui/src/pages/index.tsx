@@ -71,7 +71,7 @@ const HomePage = () => {
                   <a
                     target="_blank"
                     href="https://docs.google.com/forms/d/e/1FAIpQLSdJrllGUTEc9IKbx-bcS9J9t0kplgdAx7Bn3vg2ecNfFf5aFQ/viewform"
-                    className="shadow-accent-volume hover:bg-accent-dark w-36 rounded-full bg-accent py-3 px-8 text-center font-semibold text-white transition-all"
+                    className="shadow-accent-volume hover:bg-accent-dark bg-accent w-36 rounded-full py-3 px-8 text-center font-semibold text-white transition-all"
                     rel="noreferrer"
                   >
                     Waitlist
@@ -79,7 +79,7 @@ const HomePage = () => {
                   <a
                     target="_blank"
                     href="https://jobs.lever.co/Passes"
-                    className="shadow-white-volume hover:bg-accent-dark hover:shadow-accent-volume w-36 rounded-full bg-white py-3 px-8 text-center font-semibold text-accent transition-all hover:text-white"
+                    className="shadow-white-volume hover:bg-accent-dark hover:shadow-accent-volume text-accent w-36 rounded-full bg-white py-3 px-8 text-center font-semibold transition-all hover:text-white"
                     rel="noreferrer"
                   >
                     Jobs
@@ -115,7 +115,7 @@ const HomePage = () => {
             <button
               type="button"
               onClick={routeToLogin}
-              className="shadow-accent-volume hover:bg-accent-dark mt-20 w-36 rounded-full border-none bg-accent py-3 px-8 text-center font-semibold text-white transition-all"
+              className="shadow-accent-volume hover:bg-accent-dark bg-accent mt-20 w-36 rounded-full border-none py-3 px-8 text-center font-semibold text-white transition-all"
             >
               Login
             </button>
@@ -134,12 +134,12 @@ const HomePage = () => {
                 onChange={(v) => setEmailAddress(v.target.value)}
                 value={emailAddress}
                 placeholder="Email address"
-                className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 w-full rounded-full border py-3 px-4 focus:ring-accent dark:text-white dark:placeholder-white"
+                className="dark:bg-jacarta-700 dark:border-jacarta-600 border-jacarta-100 focus:ring-accent w-full rounded-full border py-3 px-4 dark:text-white dark:placeholder-white"
               />
               <button
                 type="submit"
                 onClick={handleSubmitEmail}
-                className="hover:bg-accent-dark font-display absolute top-2 right-2 rounded-full bg-accent px-6 py-2 text-sm text-white"
+                className="hover:bg-accent-dark font-display bg-accent absolute top-2 right-2 rounded-full px-6 py-2 text-sm text-white"
               >
                 Subscribe
               </button>
