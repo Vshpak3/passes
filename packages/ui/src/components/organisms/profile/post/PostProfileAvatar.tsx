@@ -30,7 +30,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
 }) => {
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-4 overflow-x-clip">
         <ProfileThumbnail userId={userId} />
         <div className="space-y-1 font-medium dark:text-white">
           {/* TODO: consider making this not link for non-creator comments */}
@@ -49,7 +49,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
           </a>
         </div>
       </div>
-      <div className="-mt-[21px] flex flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
+      <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
             className="uppercase text-gray-300/60"
@@ -61,7 +61,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
           <PostStatisticsButton {...statisticsButtonProps} />
         )}
 
-        <div className="flex items-center gap-[15px]">
+        <div className="flex flex-shrink-0 items-center gap-[15px]">
           {/* <div
           onClick={() => setPostPinned(!postPinned)}
           className={classNames(

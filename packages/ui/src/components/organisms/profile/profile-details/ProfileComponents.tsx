@@ -89,7 +89,7 @@ export const ProfileImage = ({
 )
 
 export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
-  <div className="h-[42px] w-[42px] overflow-hidden rounded-full bg-gray-900">
+  <div className="h-[42px] w-[42px] flex-shrink-0 overflow-hidden rounded-full bg-gray-900">
     <img
       className="h-full w-full object-cover object-center"
       src={ContentService.profileThumbnail(userId)}
