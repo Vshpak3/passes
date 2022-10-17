@@ -21,6 +21,9 @@ export class GetMessagesRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'boolean' })
   contentOnly: boolean
 
+  @DtoProperty({ type: 'boolean', optional: true })
+  paid?: boolean
+
   @DtoProperty({ type: 'boolean' })
   pending: boolean
 }

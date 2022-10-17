@@ -39,6 +39,7 @@ import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
+import { PayinMethodEnum } from '../payment/enum/payin-method.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { ScheduledEventEntity } from '../scheduled/entities/scheduled-event.entity'
@@ -521,6 +522,13 @@ export class MessagesService {
     sendMessageDto: SendMessageRequestDto,
     otherUserId?: string,
   ): Promise<PayinDataDto> {
+    const method = await this.payService.getDefaultPayinMethod(userId)
+    if (method.method === PayinMethodEnum.NONE) {
+      return {
+        blocked: BlockedReasonEnum.NO_PAYIN_METHOD,
+        amount: sendMessageDto.tipAmount,
+      }
+    }
     if (!otherUserId) {
       const channelMember = await this.dbReader<ChannelMemberEntity>(
         ChannelMemberEntity.table,
@@ -550,7 +558,6 @@ export class MessagesService {
         blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
       }
     }
-
     return { blocked, amount: sendMessageDto.tipAmount }
   }
 
@@ -725,17 +732,11 @@ export class MessagesService {
       return BlockedReasonEnum.USER_BLOCKED
     }
 
-    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
-      CreatorSettingsEntity.table,
-    )
-      .where({ user_id: otherUserId })
-      .select('minimum_tip_amount')
-      .first()
+    const minimum = await this.getMinimumTip(otherUserId)
     const freeMessages = await this.checkFreeMessages(userId, channelId)
     if (
-      !creatorSettings ||
-      !creatorSettings.minimum_tip_amount ||
-      tipAmount > creatorSettings.minimum_tip_amount ||
+      !minimum ||
+      tipAmount >= minimum ||
       freeMessages === null ||
       (freeMessages > 0 && tipAmount === 0)
     ) {
@@ -1051,7 +1052,7 @@ export class MessagesService {
     userId: string,
     getMessagesRequestDto: GetMessagesRequestDto,
   ) {
-    const { sentAt, lastId, dateLimit, channelId, contentOnly, pending } =
+    const { sentAt, lastId, dateLimit, channelId, contentOnly, pending, paid } =
       getMessagesRequestDto
     const channel = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,
@@ -1081,6 +1082,10 @@ export class MessagesService {
     )
     if (contentOnly) {
       query = query.where('has_content', true).andWhereNot('sender_id', userId)
+    }
+
+    if (paid !== undefined) {
+      query = query.where('paid', paid)
     }
 
     if (pending) {

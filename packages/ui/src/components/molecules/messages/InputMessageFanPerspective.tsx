@@ -1,15 +1,23 @@
 import { PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
-import React, { FC, KeyboardEvent, useState } from "react"
+import { debounce } from "lodash"
+import React, {
+  FC,
+  KeyboardEvent,
+  useCallback,
+  useEffect,
+  useState
+} from "react"
 import { useForm } from "react-hook-form"
-import { useDebouncedEffect } from "src/components/messages/utils/useDebounceEffect"
 import { usePay } from "src/hooks/usePay"
 
 interface Props {
   channelId: string
   minimumTip?: number | null
 }
+
+const api = new MessagesApi()
 export const InputMessageFanPerspective: FC<Props> = ({
   channelId,
   minimumTip
@@ -23,10 +31,8 @@ export const InputMessageFanPerspective: FC<Props> = ({
     reset,
     watch
   } = useForm()
-  const api = new MessagesApi()
   const [tip, setTip] = useState(0)
   const message = watch("message")
-  const payinMethod = undefined
 
   const registerMessage = async () => {
     return await api.sendMessage({
@@ -35,24 +41,11 @@ export const InputMessageFanPerspective: FC<Props> = ({
         contentIds: [],
         channelId,
         tipAmount: tip,
-        payinMethod,
         previewIndex: 0
       }
     })
   }
 
-  const registerMessageData = async () => {
-    return await api.sendMessageData({
-      sendMessageRequestDto: {
-        text: "test",
-        contentIds: [],
-        channelId,
-        tipAmount: tip,
-        payinMethod,
-        previewIndex: 0
-      }
-    })
-  }
   const submitMessage = async () => {
     if (!channelId) {
       return false
@@ -86,19 +79,43 @@ export const InputMessageFanPerspective: FC<Props> = ({
   const { submitError } = errors
   const { blocked, submitting, submit, submitData } = usePay(
     registerMessage,
-    registerMessageData,
+    undefined,
     onCallback
   )
 
-  useDebouncedEffect(
-    () => {
-      if (channelId && tip !== null) {
-        submitData()
-      }
-    },
-    [channelId, tip],
-    20
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChangeTip = useCallback(
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      setTip(parseFloat(parseFloat(value).toFixed(2)))
+    }, 100),
+    [setTip]
   )
+
+  const prevent = (e: any) => {
+    if (e.code === "Minus") {
+      e.preventDefault()
+    }
+  }
+
+  useEffect(() => {
+    if (channelId && !isNaN(tip)) {
+      const fetch = async () => {
+        await submitData(async () =>
+          api.sendMessageData({
+            sendMessageRequestDto: {
+              text: "message",
+              contentIds: [],
+              channelId,
+              tipAmount: tip,
+              previewIndex: 0
+            }
+          })
+        )
+      }
+      fetch()
+    }
+  }, [channelId, message, submitData, tip])
 
   return (
     <form
@@ -129,15 +146,17 @@ export const InputMessageFanPerspective: FC<Props> = ({
           <div className="flex h-full flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4">
             <input
               type="number"
-              placeholder="$"
-              value={tip}
-              onChange={(e) => setTip(parseInt(e.target.value))}
+              placeholder="0.00"
+              // value={tip}
+              onChange={handleChangeTip}
               className={classNames(
                 errors.message && "border-b-red",
                 "sm:w-ful w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0"
               )}
               autoComplete="off"
               min="0"
+              step=".01"
+              onKeyPress={prevent}
             />
 
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
@@ -151,11 +170,12 @@ export const InputMessageFanPerspective: FC<Props> = ({
           >
             <button
               type="button"
-              disabled={!!blocked}
+              disabled={!isNaN(tip) && !!blocked}
               className={classNames(
                 blocked ? " cursor-not-allowed opacity-50" : "",
                 "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
               )}
+              onClick={submit}
             >
               {submitting
                 ? "Sending..."
@@ -165,8 +185,8 @@ export const InputMessageFanPerspective: FC<Props> = ({
                 ? "Not following"
                 : blocked === PayinDataDtoBlockedEnum.InsufficientTip
                 ? "Insufficient tip"
-                : tip > 0
-                ? " Send Message with Tip"
+                : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
+                ? "No Payment Method (go to settings)"
                 : ` Send Message`}
             </button>
             {submitError?.message && (
@@ -174,7 +194,7 @@ export const InputMessageFanPerspective: FC<Props> = ({
                 {String(submitError.message)}
               </span>
             )}
-            {blocked && <span className="text-red-500">{String(blocked)}</span>}
+            {/* {blocked && <span className="text-red-500">{String(blocked)}</span>} */}
           </div>
         </div>
       </div>

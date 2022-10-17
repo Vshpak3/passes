@@ -54,6 +54,12 @@ export interface GetMessagesRequestDto {
      * @type {boolean}
      * @memberof GetMessagesRequestDto
      */
+    paid?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessagesRequestDto
+     */
     pending: boolean;
 }
 
@@ -84,6 +90,7 @@ export function GetMessagesRequestDtoFromJSONTyped(json: any, ignoreDiscriminato
         'dateLimit': !exists(json, 'dateLimit') ? undefined : (new Date(json['dateLimit'])),
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
+        'paid': !exists(json, 'paid') ? undefined : json['paid'],
         'pending': json['pending'],
     };
 }
@@ -102,6 +109,7 @@ export function GetMessagesRequestDtoToJSON(value?: GetMessagesRequestDto | null
         'dateLimit': value.dateLimit === undefined ? undefined : (value.dateLimit.toISOString()),
         'channelId': value.channelId,
         'contentOnly': value.contentOnly,
+        'paid': value.paid,
         'pending': value.pending,
     };
 }

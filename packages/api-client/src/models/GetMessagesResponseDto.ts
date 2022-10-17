@@ -61,6 +61,12 @@ export interface GetMessagesResponseDto {
      * @type {boolean}
      * @memberof GetMessagesResponseDto
      */
+    paid?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessagesResponseDto
+     */
     pending: boolean;
     /**
      * 
@@ -98,6 +104,7 @@ export function GetMessagesResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
         'dateLimit': !exists(json, 'dateLimit') ? undefined : (new Date(json['dateLimit'])),
         'channelId': json['channelId'],
         'contentOnly': json['contentOnly'],
+        'paid': !exists(json, 'paid') ? undefined : json['paid'],
         'pending': json['pending'],
         'data': ((json['data'] as Array<any>).map(MessageDtoFromJSON)),
     };
@@ -117,6 +124,7 @@ export function GetMessagesResponseDtoToJSON(value?: GetMessagesResponseDto | nu
         'dateLimit': value.dateLimit === undefined ? undefined : (value.dateLimit.toISOString()),
         'channelId': value.channelId,
         'contentOnly': value.contentOnly,
+        'paid': value.paid,
         'pending': value.pending,
         'data': ((value.data as Array<any>).map(MessageDtoToJSON)),
     };

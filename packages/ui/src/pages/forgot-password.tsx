@@ -11,7 +11,6 @@ import { Wordmark } from "src/components/atoms/Wordmark"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { sleep } from "src/helpers/sleep"
-import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf } from "yup"
 
 import { emailFormSchema } from "./signup"

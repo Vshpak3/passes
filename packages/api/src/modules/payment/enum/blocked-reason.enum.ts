@@ -1,5 +1,6 @@
 export enum BlockedReasonEnum {
   PAYMENTS_DEACTIVATED = 'payments deactivated',
+  NO_PAYIN_METHOD = 'no payin method',
   NO_PRICE = 'no price',
   PURCHASE_IN_PROGRESS = 'purchase in progress',
   TOO_MANY = 'too many purchases in progress',

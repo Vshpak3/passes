@@ -51,6 +51,7 @@ export interface PayinDataDto {
  */
 export const PayinDataDtoBlockedEnum = {
     PaymentsDeactivated: 'payments deactivated',
+    NoPayinMethod: 'no payin method',
     NoPrice: 'no price',
     PurchaseInProgress: 'purchase in progress',
     TooManyPurchasesInProgress: 'too many purchases in progress',
