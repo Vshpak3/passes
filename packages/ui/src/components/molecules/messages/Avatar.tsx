@@ -5,7 +5,7 @@ interface Props {
   isOnline?: boolean
 }
 
-export const Avatar: FC<Props> = ({ imageSrc, isOnline = true }) => {
+export const Avatar: FC<Props> = ({ imageSrc, isOnline = false }) => {
   return (
     <div className="item-center relative flex pr-[10px]">
       {isOnline && (

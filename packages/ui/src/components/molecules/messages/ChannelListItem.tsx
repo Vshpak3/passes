@@ -34,8 +34,7 @@ export const ChannelListItem: FC<Props> = ({
             {channel.otherUserDisplayName || channel.otherUserUsername}
           </span>
           <p className="w-[120px] truncate text-[14px] font-medium leading-[17px] text-[#ffff]/30">
-            {channel?.mostRecentMessage?.text ||
-              "Hey! there whats up how do you how how"}
+            {channel?.mostRecentMessage?.text || ""}
           </p>
         </div>
         <div className="flex flex-col items-center justify-end gap-1">
