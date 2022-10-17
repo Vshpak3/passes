@@ -15,7 +15,7 @@ describe('WalletService', () => {
         WalletService,
         ...getBaseProviders(),
         {
-          provide: getRedisConnectionToken(),
+          provide: getRedisConnectionToken('subscriber'),
           useFactory: jest.fn(() => ({})),
         },
         {

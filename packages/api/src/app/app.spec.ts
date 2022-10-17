@@ -20,7 +20,8 @@ describe('App e2e', () => {
     ...contextNames.map((n) => getMikroORMToken(n)),
     ...contextNames.map((n) => getDatabaseProviderToken(n)),
     // Mock redis
-    getRedisConnectionToken(),
+    getRedisConnectionToken('subscriber'),
+    getRedisConnectionToken('publisher'),
   ]
 
   beforeAll(async () => {

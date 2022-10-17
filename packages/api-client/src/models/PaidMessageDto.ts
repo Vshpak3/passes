@@ -61,6 +61,12 @@ export interface PaidMessageDto {
      * @type {number}
      * @memberof PaidMessageDto
      */
+    previewIndex: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaidMessageDto
+     */
     numPurchases: number;
     /**
      * 
@@ -103,6 +109,7 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     isInstance = isInstance && "creatorId" in value;
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "bareContents" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "numPurchases" in value;
     isInstance = isInstance && "earningsPurchases" in value;
     isInstance = isInstance && "createdAt" in value;
@@ -128,6 +135,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'text': !exists(json, 'text') ? undefined : json['text'],
         'price': json['price'],
         'bareContents': ((json['bareContents'] as Array<any>).map(ContentBareDtoFromJSON)),
+        'previewIndex': json['previewIndex'],
         'numPurchases': json['numPurchases'],
         'earningsPurchases': json['earningsPurchases'],
         'createdAt': (new Date(json['createdAt'])),
@@ -151,6 +159,7 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'text': value.text,
         'price': value.price,
         'bareContents': ((value.bareContents as Array<any>).map(ContentBareDtoToJSON)),
+        'previewIndex': value.previewIndex,
         'numPurchases': value.numPurchases,
         'earningsPurchases': value.earningsPurchases,
         'createdAt': (value.createdAt.toISOString()),

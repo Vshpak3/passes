@@ -23,7 +23,7 @@ describe('WalletController', () => {
           useFactory: jest.fn(() => ({})),
         },
         {
-          provide: getRedisConnectionToken(),
+          provide: getRedisConnectionToken('subscriber'),
           useFactory: jest.fn(() => ({})),
         },
         {

@@ -37,7 +37,7 @@ export interface GetChannelResponseDto {
      * @type {Date}
      * @memberof GetChannelResponseDto
      */
-    recent: Date;
+    recent: Date | null;
     /**
      * 
      * @type {string}
@@ -128,7 +128,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
     return {
         
         'channelId': !exists(json, 'channelId') ? undefined : json['channelId'],
-        'recent': (new Date(json['recent'])),
+        'recent': (json['recent'] === null ? null : new Date(json['recent'])),
         'channelMemberId': json['channelMemberId'],
         'userId': json['userId'],
         'otherUserId': json['otherUserId'],
@@ -152,7 +152,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
     return {
         
         'channelId': value.channelId,
-        'recent': (value.recent.toISOString()),
+        'recent': (value.recent === null ? null : value.recent.toISOString()),
         'channelMemberId': value.channelMemberId,
         'userId': value.userId,
         'otherUserId': value.otherUserId,

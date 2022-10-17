@@ -52,6 +52,12 @@ export interface GetMessageResponseDto {
     contents: Array<ContentDto>;
     /**
      * 
+     * @type {number}
+     * @memberof GetMessageResponseDto
+     */
+    previewIndex: number;
+    /**
+     * 
      * @type {string}
      * @memberof GetMessageResponseDto
      */
@@ -103,6 +109,7 @@ export function instanceOfGetMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "senderId" in value;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "contents" in value;
+    isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "pending" in value;
@@ -127,6 +134,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'senderId': json['senderId'],
         'text': json['text'],
         'contents': ((json['contents'] as Array<any>).map(ContentDtoFromJSON)),
+        'previewIndex': json['previewIndex'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'paid': json['paid'],
@@ -150,6 +158,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'senderId': value.senderId,
         'text': value.text,
         'contents': ((value.contents as Array<any>).map(ContentDtoToJSON)),
+        'previewIndex': value.previewIndex,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'paid': value.paid,

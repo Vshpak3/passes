@@ -5,8 +5,8 @@ export class ChannelDto {
   @DtoProperty({ type: 'uuid', optional: true })
   channelId: string
 
-  @DtoProperty({ type: 'date' })
-  recent: Date
+  @DtoProperty({ type: 'date', nullable: true })
+  recent: Date | null
 
   constructor(channel: ChannelEntity) {
     if (channel) {

@@ -51,7 +51,8 @@ export class GetChannelsResponseDto
       this.lastId = channelMembers[channelMembers.length - 1].channelMemberId
       switch (requestDto.orderType) {
         case ChannelOrderTypeEnum.RECENT:
-          this.recent = channelMembers[channelMembers.length - 1].recent
+          this.recent =
+            channelMembers[channelMembers.length - 1].recent ?? undefined
           break
         case ChannelOrderTypeEnum.TIP:
           this.tip = channelMembers[channelMembers.length - 1].unreadTip

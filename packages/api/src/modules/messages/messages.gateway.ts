@@ -19,15 +19,22 @@ export class MessagesGateway extends GatewayBase {
   }
 
   async onModuleInit() {
-    // eslint-disable-next-line @typescript-eslint/no-this-alias
-    const self = this
-    await this.redisService.subscribe('message')
-    await this.redisService.on('message', (_event: string, dataStr: string) => {
-      const message: MessageNotificationDto = JSON.parse(dataStr)
-      if (!message.pending) {
-        self.send(message.recieverId, 'message', message)
-      }
-      self.send(message.senderId, 'message', message)
-    })
+    if (
+      this.redisService && // to fix tests
+      this.redisService.subscribe &&
+      this.redisService.on
+    ) {
+      await this.redisService.subscribe('message')
+      await this.redisService.on(
+        'message',
+        (_event: string, dataStr: string) => {
+          const message: MessageNotificationDto = JSON.parse(dataStr)
+          if (!message.pending) {
+            this.send(message.recieverId, 'message', message)
+          }
+          this.send(message.senderId, 'message', message)
+        },
+      )
+    }
   }
 }
