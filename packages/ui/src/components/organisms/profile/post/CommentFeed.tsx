@@ -3,6 +3,7 @@ import {
   CommentDto,
   GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
+  ListMemberDto,
   PostDto
 } from "@passes/api-client"
 import React from "react"
@@ -14,13 +15,17 @@ import { Comment } from "./Comment"
 interface CommentFeedProps {
   postId: PostDto["postId"]
   ownsPost: PostDto["isOwner"]
+  isCreator?: boolean
+  blockedUsers?: ListMemberDto[]
 }
 
 const api = new CommentApi()
 
 export const CommentFeed: React.FC<CommentFeedProps> = ({
   postId,
-  ownsPost
+  ownsPost,
+  isCreator,
+  blockedUsers
 }) => {
   return (
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
@@ -37,7 +42,9 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
             comment={arg}
             removable={true}
             ownsPost={ownsPost}
-            isPostComment
+            isCreator={isCreator}
+            blockedUsers={blockedUsers}
+            isPostComment={isPostComment}
           />
         )
       }}

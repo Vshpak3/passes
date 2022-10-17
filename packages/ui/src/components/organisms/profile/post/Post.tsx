@@ -4,7 +4,7 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import { useBlockModal } from "src/hooks/useBlockModal"
+import { useBlockUnblockUser } from "src/hooks/useBlockUnblockUser"
 import { useReportModal } from "src/hooks/useReportModal"
 import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
@@ -33,10 +33,6 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
     {
       text: "Report",
       onClick: () => setIsReportModalOpen(true)
-    },
-    {
-      text: "Block",
-      onClick: () => setIsBlockModalOpen(true)
     },
     ...(post.isOwner
       ? [
@@ -74,6 +70,8 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
     username
   } = post
 
+  const { blockedUsersList } = useBlockUnblockUser(displayName)
+
   const setPostHandler = () => setPost({ ...post, setIsRemoved })
 
   return (
@@ -105,7 +103,11 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
           />
         )}
         {purchasable && <LockedMedia post={post} />}
-        <PostEngagement post={post} />
+        <PostEngagement
+          post={post}
+          isCreator={user?.isCreator}
+          blockedUsers={blockedUsersList}
+        />
       </FormContainer>
     </ConditionRendering>
   )

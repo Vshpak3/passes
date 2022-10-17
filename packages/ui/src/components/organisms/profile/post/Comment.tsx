@@ -1,4 +1,5 @@
-import { CommentApi, CommentDto } from "@passes/api-client"
+import { CommentApi, CommentDto, ListMemberDto } from "@passes/api-client"
+import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { Text } from "src/components/atoms/Text"
@@ -13,6 +14,8 @@ interface CommentProps {
   comment: CommentDto
   removable: boolean
   ownsPost: boolean
+  isCreator?: boolean
+  blockedUsers?: ListMemberDto[]
   isPostComment?: boolean
 }
 
@@ -22,23 +25,49 @@ export const Comment: FC<CommentProps> = ({
   comment,
   removable,
   ownsPost,
+  isCreator,
+  blockedUsers,
   isPostComment
 }) => {
+  const router = useRouter()
   const [removed, setRemoved] = useState(false)
   const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen } = useBlockModal()
-
-  const { commentId, commenterUsername, isOwner, postId } = comment
+  const { setIsBlockModalOpen, setBlockModalData } = useBlockModal()
+  const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
+  const { commentId, commenterUsername, isOwner, postId, commenterId } = comment
+  const commentCreatorBlockedList =
+    blockedUsers?.length &&
+    blockedUsers?.find(({ userId }: ListMemberDto) => userId === commenterId)
 
   const dropdownOptions: DropdownOption[] = [
     {
       text: "Report",
       onClick: () => setIsReportModalOpen(true)
     },
-    {
-      text: "Block",
-      onClick: () => setIsBlockModalOpen(true)
-    },
+    ...(isCreator && !commentCreatorBlockedList
+      ? [
+          {
+            text: "Block",
+            onClick: () => {
+              setIsBlockModalOpen(true)
+              setBlockModalData({
+                userName: commenterUsername,
+                userId: commenterId
+              })
+            }
+          }
+        ]
+      : []),
+    ...(isCreator && commentCreatorBlockedList
+      ? [
+          {
+            text: "Unblock",
+            onClick: async () => {
+              await router.push(BLOCKED_USER_LIST_PAGE)
+            }
+          }
+        ]
+      : []),
     ...(ownsPost || isOwner
       ? [
           {

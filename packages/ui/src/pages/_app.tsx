@@ -77,6 +77,11 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
+interface BlockModalData {
+  userName: string
+  userId: string
+}
+
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [refresh, setRefresh] = useState(0)
   const [hasRefreshed, setHasRefreshed] = useState(false)
@@ -85,6 +90,9 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
+  const [blockModalData, setBlockModalData] = useState<BlockModalData | null>(
+    null
+  )
   const router = useRouter()
   const { setAccessToken } = useUser()
 
@@ -136,7 +144,9 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
             }}
           >
             <ReportModalContext.Provider value={{ setIsReportModalOpen }}>
-              <BlockModalContext.Provider value={{ setIsBlockModalOpen }}>
+              <BlockModalContext.Provider
+                value={{ setIsBlockModalOpen, setBlockModalData }}
+              >
                 <BuyPostModalContext.Provider value={{ setPost: setBuyPost }}>
                   <Component {...pageProps} />
                   {viewPost && (
@@ -155,6 +165,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
                     <BlockModal
                       isOpen={isBlockModalOpen}
                       setOpen={setIsBlockModalOpen}
+                      username={blockModalData?.userName}
+                      creatorId={blockModalData?.userId}
                     />
                   )}
                   <ToastContainer

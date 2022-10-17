@@ -1,4 +1,4 @@
-import { PostDto } from "@passes/api-client"
+import { ListMemberDto, PostDto } from "@passes/api-client"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useCallback, useMemo, useState } from "react"
@@ -11,9 +11,15 @@ import { CommentSection } from "./CommentSection"
 
 interface PostEngagementProps {
   post: PostDto
+  isCreator?: boolean
+  blockedUsers?: ListMemberDto[]
 }
 
-export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
+export const PostEngagement: FC<PostEngagementProps> = ({
+  post,
+  isCreator,
+  blockedUsers
+}) => {
   const {
     isLiked,
     isOwner,
@@ -96,6 +102,8 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           incrementNumComments={incrementNumComments}
           decrementNumComments={decrementNumComments}
           ownsPost={isOwner}
+          isCreator={isCreator}
+          blockedUsers={blockedUsers}
         />
       )}
     </div>

@@ -1,4 +1,4 @@
-import { CommentDto, PostDto } from "@passes/api-client"
+import { CommentDto, ListMemberDto, PostDto } from "@passes/api-client"
 import { FC, useCallback, useState } from "react"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 
@@ -10,12 +10,16 @@ interface CommentSectionProps {
   ownsPost: PostDto["isOwner"]
   incrementNumComments: () => void
   decrementNumComments: () => void
+  isCreator?: boolean
+  blockedUsers?: ListMemberDto[]
 }
 
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
   ownsPost,
-  incrementNumComments
+  incrementNumComments,
+  isCreator,
+  blockedUsers
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
 
@@ -37,10 +41,18 @@ export const CommentSection: FC<CommentSectionProps> = ({
             comment={comment}
             removable={true}
             ownsPost={ownsPost}
-            isPostComment
+            isCreator={isCreator}
+            blockedUsers={blockedUsers}
+            isPostComment={isPostComment}
           />
         )
       })}
+      <CommentFeed
+        postId={postId}
+        ownsPost={ownsPost}
+        isCreator={isCreator}
+        blockedUsers={blockedUsers}
+      />
       <NewCommentEditor postId={postId} addComment={addNewComment} />
     </div>
   )

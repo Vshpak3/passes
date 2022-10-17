@@ -4,19 +4,21 @@ import { FC, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks/useUser"
 
 import { Modal, ModalProps } from "./Modal"
 
-export const BlockModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
-  const { user } = useUser()
-
+export const BlockModal: FC<ModalProps> = ({
+  isOpen = false,
+  setOpen,
+  creatorId,
+  username
+}) => {
   const [blockValue, setBlockValue] = useState("")
 
   const onFanBlock = async () => {
     try {
       const api = new FollowApi()
-      await api.blockFollower({ followerId: user?.userId || "" })
+      await api.blockFollower({ followerId: creatorId || "" })
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)
@@ -25,7 +27,7 @@ export const BlockModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
-      <h2 className="mb-5 font-semibold text-white">BLOCK {user?.userId}</h2>
+      <h2 className="mb-5 font-semibold text-white">BLOCK {username}</h2>
       <RadioGroup
         value={blockValue}
         onChange={setBlockValue}
