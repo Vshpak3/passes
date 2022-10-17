@@ -26,7 +26,7 @@ export const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
     setReady(!redirected)
   }, [router, userClaims, routeOnlyIfAuth])
 
-  return <>{ready ? children : <></>}</>
+  return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
 }
 
 export const WithLoginPageLayout = (
