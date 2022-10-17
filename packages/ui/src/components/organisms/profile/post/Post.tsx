@@ -1,10 +1,12 @@
 import { PostApi, PostDto } from "@passes/api-client"
+import { useRouter } from "next/router"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { useBlockModal } from "src/hooks/useBlockModal"
 import { useReportModal } from "src/hooks/useReportModal"
+import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { LockedMedia } from "./LockedMedia"
@@ -16,13 +18,16 @@ import { PostTextContent } from "./PostTextContent"
 
 interface PostProps {
   post: PostDto
+  redirectToProfile?: boolean
 }
 
-export const Post: React.FC<PostProps> = ({ post }) => {
+export const Post: React.FC<PostProps> = ({ post, redirectToProfile }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
+  const router = useRouter()
+  const { user } = useUser()
 
   const dropdownOptions: DropdownOption[] = [
     {
@@ -42,6 +47,9 @@ export const Post: React.FC<PostProps> = ({ post }) => {
               await api
                 .removePost({ postId: post.postId })
                 .catch((error) => toast(error))
+              if (redirectToProfile && user) {
+                router.push(`/${user.username}`)
+              }
               setIsRemoved(true)
             }
           }
