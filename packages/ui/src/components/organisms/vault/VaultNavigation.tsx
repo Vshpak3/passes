@@ -1,5 +1,6 @@
 import {
   ContentApi,
+  ContentDto,
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
 import { FC, useState } from "react"
@@ -24,6 +25,8 @@ interface VaultNavigationProps {
   deletedItems: string[]
   setDeletedItems: (items: string[]) => void
   embedded?: boolean
+  setSelectedItemsFullData: (items: ContentDto[]) => void
+  isDiffTypesSelected: boolean
 }
 
 export const VaultNavigation: FC<VaultNavigationProps> = ({
@@ -38,9 +41,14 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   order,
   deletedItems,
   setDeletedItems,
-  embedded = false
+  embedded = false,
+  isDiffTypesSelected = false,
+  setSelectedItemsFullData
 }) => {
-  const deselectAll = () => setSelectedItems([])
+  const deselectAll = () => {
+    setSelectedItems([])
+    setSelectedItemsFullData([])
+  }
   const [deleteModalActive, setDeleteModalActive] = useState(false)
   const toggleDeleteModal = () => setDeleteModalActive(!deleteModalActive)
 
@@ -54,14 +62,21 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           <div className="align-center items-align flex justify-center">
             {selectedItems && selectedItems?.length > 0 && (
               <>
+                {isDiffTypesSelected && (
+                  <div>
+                    10 photos or 1 video can be posted at any given time
+                  </div>
+                )}
                 <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
-                <VaultAddToDropdown
-                  // TODO: connect with API to get selected items and add to new message
-                  onAddToMessage={() => pushToMessages()}
-                  // TODO: connect with API to get selected items and add to new post
-                  // eslint-disable-next-line no-console
-                  onAddToPost={() => console.log("add to post")}
-                />
+                {!isDiffTypesSelected && (
+                  <VaultAddToDropdown
+                    // TODO: connect with API to get selected items and add to new message
+                    onAddToMessage={() => pushToMessages()}
+                    // TODO: connect with API to get selected items and add to new post
+                    // eslint-disable-next-line no-console
+                    onAddToPost={() => console.log("add to post")}
+                  />
+                )}
               </>
             )}
             <VaultSortDropdown order={order} setOrder={setOrder} />

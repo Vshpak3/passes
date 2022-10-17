@@ -5,7 +5,7 @@ import {
   GetVaultQueryRequestDtoOrderEnum,
   GetVaultQueryResponseDto
 } from "@passes/api-client"
-import { FC } from "react"
+import { Dispatch, FC } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -20,6 +20,10 @@ interface VaultMediaGridProps {
   category?: TVaultCategory
   type?: TVaultType
   deletedItems: string[]
+  selectedItemsFullData: ContentDto[]
+  setSelectedItemsFullData: Dispatch<React.SetStateAction<ContentDto[]>>
+  isVideoSelected: boolean
+  isMaxFileCountSelected: boolean
 }
 
 export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
@@ -28,7 +32,11 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   category,
   type,
   order,
-  deletedItems
+  deletedItems,
+  selectedItemsFullData,
+  setSelectedItemsFullData,
+  isVideoSelected,
+  isMaxFileCountSelected
 }) => {
   return (
     <div className="max-h-[65vh] justify-center overflow-y-scroll">
@@ -57,6 +65,10 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
                     content={arg}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
+                    selectedItemsFullData={selectedItemsFullData}
+                    setSelectedItemsFullData={setSelectedItemsFullData}
+                    isVideoSelected={isVideoSelected}
+                    isMaxFileCountSelected={isMaxFileCountSelected}
                   />
                 )}
               </>
