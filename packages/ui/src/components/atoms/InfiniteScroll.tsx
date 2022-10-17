@@ -1,7 +1,7 @@
 import { debounce } from "lodash"
 import React, { PropsWithChildren, useEffect, useMemo, useState } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
-import useSWRInfinite from "swr/infinite"
+import useSWRInfinite, { SWRInfiniteConfiguration } from "swr/infinite"
 
 const SCROLL_DEBOUNCE_MS = 500
 
@@ -30,6 +30,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
   classes?: string
+  options?: SWRInfiniteConfiguration
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -47,7 +48,14 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   KeyedComponent,
   resets = 0,
   children,
-  classes
+  classes,
+  options = {
+    revalidateOnMount: true,
+    revalidateAll: false,
+    revalidateFirstPage: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  }
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
@@ -62,13 +70,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return await fetch(props as Omit<T, "data">)
   }
 
-  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, {
-    revalidateOnMount: true,
-    revalidateAll: false,
-    revalidateFirstPage: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  })
+  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, options)
 
   const triggerFetch = useMemo(
     () =>

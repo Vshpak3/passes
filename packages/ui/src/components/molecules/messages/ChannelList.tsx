@@ -6,12 +6,14 @@ import {
   GetChannelsResponseDto,
   ListMemberDto
 } from "@passes/api-client/models"
-import React, { FC } from "react"
+import { debounce } from "lodash"
+import React, { FC, useCallback, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { OrderDropDown } from "src/components/molecules/OrderDropDown"
+import { useUser } from "src/hooks/useUser"
 
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
@@ -27,28 +29,39 @@ interface ChannelListProps {
 export const ChannelList: FC<ChannelListProps> = ({
   channelOrderType,
   setChannelOrderType,
-  onUserSelect,
   selectedChannel,
   onChannelClicked
 }) => {
   const channelOrders = [
-    { id: "recent", name: "Most recent" },
-    { id: "tip", name: "Highest Tip amount" },
-    { id: "tip", name: "Highest All-Time Tip Amount" },
-    { id: "tip", name: "Most Loyal" }
+    { id: GetChannelsRequestDtoOrderTypeEnum.Recent, name: "Most recent" },
+    { id: GetChannelsRequestDtoOrderTypeEnum.Tip, name: "Highest Tip amount" }
   ]
+  const { user } = useUser()
+
+  const DEBOUNCE_TIMEOUT = 500
+  const [search, setSearch] = useState<string>("")
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChangeSearch = useCallback(
+    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value.toLowerCase()
+      setSearch(value)
+    }, DEBOUNCE_TIMEOUT),
+    [setSearch]
+  )
   return (
     <div className="min-w-[35%] overflow-y-auto border-r border-[#fff]/10 p-[30px] ">
       <div className="border-b border-[#fff]/10 pb-6">
         <div className="flex justify-between pb-6">
           <span className="text-base font-medium">Find people</span>
-          <OrderDropDown
-            orders={channelOrders}
-            activeOrder={channelOrderType}
-            setActiveOrder={setChannelOrderType as (order: string) => void}
-          />
+          {!!user?.isCreator && (
+            <OrderDropDown
+              orders={channelOrders}
+              activeOrder={channelOrderType}
+              setActiveOrder={setChannelOrderType as (order: string) => void}
+            />
+          )}
         </div>
-        <ChannelSearchInput onUserSelect={onUserSelect} />
+        <ChannelSearchInput handleSearch={handleChangeSearch} />
       </div>
 
       <div className="pt-6">
@@ -61,7 +74,17 @@ export const ChannelList: FC<ChannelListProps> = ({
           fetchProps={{
             unreadOnly: false,
             order: "desc",
-            orderType: channelOrderType
+            orderType: channelOrderType,
+            search
+          }}
+          options={{
+            revalidateOnMount: true,
+            revalidateAll: true,
+            revalidateFirstPage: true,
+            revalidateOnFocus: true,
+            revalidateOnReconnect: true,
+            refreshInterval: 1000,
+            persistSize: true
           }}
           KeyedComponent={({
             arg: channel
