@@ -1,5 +1,4 @@
-import { CommentDto, ListMemberDto } from "@passes/api-client"
-import { useRouter } from "next/router"
+import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { Text } from "src/components/atoms/Text"
@@ -17,54 +16,28 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
-import { useBlockModal } from "src/hooks/useBlockModal"
 import { useComment } from "src/hooks/useComment"
-import { useReportModal } from "src/hooks/useReportModal"
 
 interface CommentProps {
   comment: CommentDto
   ownsPost: boolean
-  isCreator?: boolean
-  blockedUsers?: ListMemberDto[]
 }
 
-export const Comment: FC<CommentProps> = ({
-  comment,
-  ownsPost,
-  isCreator,
-  blockedUsers
-}) => {
-  const router = useRouter()
+export const Comment: FC<CommentProps> = ({ comment, ownsPost }) => {
   const [removed, setRemoved] = useState(false)
-  const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen, setBlockModalData } = useBlockModal()
-  const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
   const { deleteComment, hideComment } = useComment()
 
   const { commentId, commenterUsername, isOwner, postId, commenterId } = comment
-  const commentCreatorBlockedList =
-    blockedUsers?.length &&
-    blockedUsers?.find(({ userId }: ListMemberDto) => userId === commenterId)
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!isOwner && !ownsPost, setIsReportModalOpen),
-    ...DropDownBlock(!isOwner && ownsPost, setIsBlockModalOpen),
-    // !commentCreatorBlockedList
-    // setBlockModalData({
-    //   userName: commenterUsername,
-    //   userId: commenterId
-    // })
-    ...(isCreator && commentCreatorBlockedList
-      ? [
-          {
-            text: "Unblock",
-            onClick: async () => {
-              await router.push(BLOCKED_USER_LIST_PAGE)
-            }
-          }
-        ]
-      : []),
-
+    ...DropDownReport(!isOwner && !ownsPost, {
+      username: commenterUsername,
+      userId: commenterId
+    }),
+    ...DropDownBlock(!isOwner && ownsPost, {
+      username: commenterUsername,
+      userId: commenterId
+    }),
     ...DropDownCommentDelete(
       isOwner || ownsPost,
       postId,

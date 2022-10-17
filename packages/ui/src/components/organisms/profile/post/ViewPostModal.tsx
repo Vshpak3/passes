@@ -26,7 +26,6 @@ import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { usePost } from "src/hooks/usePost"
-import { useReportModal } from "src/hooks/useReportModal"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { CommentFeed } from "./CommentFeed"
@@ -39,7 +38,6 @@ export interface ViewPostModalProps {
 export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
-  const { setIsReportModalOpen } = useReportModal()
   const { viewPostActiveIndex } = useViewPostModal()
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
   const { removePost } = usePost()
@@ -62,12 +60,16 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     numComments,
     purchasable,
     postId,
+    userId,
     totalTipAmount,
     username
   } = post
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!post.isOwner, setIsReportModalOpen),
+    ...DropDownReport(!post.isOwner, {
+      username: username,
+      userId: userId
+    }),
     ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
       post.setIsRemoved?.(true)
       setPost(null)

@@ -12,10 +12,8 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
-import { useBlockModal } from "src/hooks/useBlockModal"
 import { useFanWall } from "src/hooks/useFanWall"
 import { useProfile } from "src/hooks/useProfile"
-import { useReportModal } from "src/hooks/useReportModal"
 
 interface FanWallCommentProps {
   comment: FanWallCommentDto
@@ -23,8 +21,6 @@ interface FanWallCommentProps {
 
 export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   const { ownsProfile } = useProfile()
-  const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen } = useBlockModal()
   const [removed, setRemoved] = useState<boolean>(false)
   const { deleteFanWallComment, hideFanWallComment } = useFanWall()
 
@@ -39,8 +35,14 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   } = comment
 
   const dropdownItems: DropdownOption[] = [
-    ...DropDownReport(!isOwner && !ownsProfile, setIsReportModalOpen),
-    ...DropDownBlock(!isOwner && ownsProfile, setIsBlockModalOpen),
+    ...DropDownReport(!isOwner && !ownsProfile, {
+      username: commenterUsername,
+      userId: commenterId
+    }),
+    ...DropDownBlock(!isOwner && ownsProfile, {
+      username: commenterUsername,
+      userId: commenterId
+    }),
     ...DropDownFanWallCommentDelete(
       isOwner || ownsProfile,
       fanWallCommentId,

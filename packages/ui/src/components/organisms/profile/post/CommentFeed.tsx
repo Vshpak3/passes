@@ -3,7 +3,6 @@ import {
   CommentDto,
   GetCommentsForPostRequestDto,
   GetCommentsForPostResponseDto,
-  ListMemberDto,
   PostDto
 } from "@passes/api-client"
 import React from "react"
@@ -15,17 +14,13 @@ import { Comment } from "./Comment"
 interface CommentFeedProps {
   postId: PostDto["postId"]
   ownsPost: PostDto["isOwner"]
-  isCreator?: boolean
-  blockedUsers?: ListMemberDto[]
 }
 
 const api = new CommentApi()
 
 export const CommentFeed: React.FC<CommentFeedProps> = ({
   postId,
-  ownsPost,
-  isCreator,
-  blockedUsers
+  ownsPost
 }) => {
   return (
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
@@ -37,14 +32,7 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
         })
       }}
       KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
-        return (
-          <Comment
-            comment={arg}
-            ownsPost={ownsPost}
-            isCreator={isCreator}
-            blockedUsers={blockedUsers}
-          />
-        )
+        return <Comment comment={arg} ownsPost={ownsPost} />
       }}
       loadingElement={
         <div className="flex w-full items-center justify-center">

@@ -9,9 +9,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
-import { useBlockUnblockUser } from "src/hooks/useBlockUnblockUser"
 import { usePost } from "src/hooks/usePost"
-import { useReportModal } from "src/hooks/useReportModal"
 import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
 
@@ -29,7 +27,7 @@ interface PostProps {
 export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
-  const { setIsReportModalOpen } = useReportModal()
+
   const router = useRouter()
   const { user } = useUser()
   const { removePost } = usePost()
@@ -52,7 +50,10 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
   } = post
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!post.isOwner, setIsReportModalOpen),
+    ...DropDownReport(!post.isOwner, {
+      username: username,
+      userId: userId
+    }),
     ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
       setIsRemoved(true)
       if (redirectOnDelete && user) {
@@ -61,8 +62,6 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
     }),
     DropDownCopyLink(username, postId)
   ]
-
-  const { blockedUsersList } = useBlockUnblockUser(displayName)
 
   const setPostHandler = () => setPost({ ...post, setIsRemoved })
 
@@ -94,11 +93,7 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
           />
         )}
         {purchasable && <LockedMedia post={post} />}
-        <PostEngagement
-          post={post}
-          isCreator={user?.isCreator}
-          blockedUsers={blockedUsersList}
-        />
+        <PostEngagement post={post} />
       </FormContainer>
     </ConditionRendering>
   )

@@ -19,9 +19,9 @@ import { BlockModal } from "src/components/organisms/BlockModal"
 import { BuyPostModal } from "src/components/organisms/payment/BuyPostModal"
 import { ViewPostModal } from "src/components/organisms/profile/post/ViewPostModal"
 import { ReportModal } from "src/components/organisms/ReportModal"
-import { BlockModalContext } from "src/contexts/BlockModal"
+import { BlockModalContext, BlockModalData } from "src/contexts/BlockModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
-import { ReportModalContext } from "src/contexts/ReportModal"
+import { ReportModalContext, ReportModalData } from "src/contexts/ReportModal"
 import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { refreshAccessToken } from "src/helpers/token"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
@@ -77,23 +77,18 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-interface BlockModalData {
-  userName: string
-  userId: string
-}
-
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [refresh, setRefresh] = useState(0)
   const [hasRefreshed, setHasRefreshed] = useState(false)
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
+  const [reportModalData, setReportModalData] =
+    useState<ReportModalData | null>(null)
   const [blockModalData, setBlockModalData] = useState<BlockModalData | null>(
-    null
-  )
-  const [reportModalData, setReportModalData] = useState<BlockModalData | null>(
     null
   )
 
@@ -165,15 +160,15 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
                     <ReportModal
                       isOpen={isReportModalOpen}
                       setOpen={setIsReportModalOpen}
-                      username={blockModalData?.userName || ""}
-                      userId={blockModalData?.userId || ""}
+                      username={reportModalData?.username || ""}
+                      userId={reportModalData?.userId || ""}
                     />
                   )}
                   {isBlockModalOpen && (
                     <BlockModal
                       isOpen={isBlockModalOpen}
                       setOpen={setIsBlockModalOpen}
-                      username={blockModalData?.userName || ""}
+                      username={blockModalData?.username || ""}
                       userId={blockModalData?.userId || ""}
                     />
                   )}

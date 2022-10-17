@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { toast } from "react-toastify"
 import useSWR from "swr"
 
-const CACHE_KEY_FOLLOW = "/follow/blocked"
+const CACHE_KEY_BLOCKED = "/follow/blocked"
 
 export const useBlockUnblockUser = (
   displayName?: string,
@@ -15,17 +15,20 @@ export const useBlockUnblockUser = (
     data: blockedUsersList = [],
     mutate: mutateBlockedUsersList,
     isValidating: isLoadingBlockedUsersList
-  } = useSWR(displayName ? [CACHE_KEY_FOLLOW, displayName] : null, async () => {
-    return (
-      await api.getBlocked({
-        searchFollowRequestDto: {
-          displayName,
-          order: "asc",
-          orderType: "username"
-        }
-      })
-    ).data
-  })
+  } = useSWR(
+    displayName ? [CACHE_KEY_BLOCKED, displayName] : null,
+    async () => {
+      return (
+        await api.getBlocked({
+          searchFollowRequestDto: {
+            displayName,
+            order: "asc",
+            orderType: "username"
+          }
+        })
+      ).data
+    }
+  )
 
   const unblockUser = () => {
     return api.unblockFollower({

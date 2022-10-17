@@ -30,7 +30,7 @@ export const ReportModal: FC<ReportModalProps> = ({
       await api.reportUser({
         reportUserDto: { reason: reportValue, userId }
       })
-      toast.success("Reported this content")
+      toast.success("Reported this user")
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)

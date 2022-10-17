@@ -29,18 +29,18 @@ const MENTION_LIMIT = 5
 const mentions: MentionData[] = [
   {
     name: "Alex Drachnik",
-    userName: "drachnik",
+    username: "drachnik",
     avatar:
       "https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg"
   },
   {
     name: "First Fan",
-    userName: "limani",
+    username: "limani",
     avatar: "https://avatars0.githubusercontent.com/u/2182307?v=3&s=400"
   },
   {
     name: "Second Fan",
-    userName: "secondFan",
+    username: "secondFan",
     avatar: "https://avatars0.githubusercontent.com/u/2182307?v=3&s=400"
   }
 ]
@@ -65,7 +65,7 @@ const Entry: FC<EntryComponentProps> = ({
       />
       <div>
         <div>{mention.name}</div>
-        <div>@{mention.userName}</div>
+        <div>@{mention.username}</div>
       </div>
     </div>
   </div>
@@ -169,7 +169,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
           setEditorState(value)
           const raw = convertToRaw(value.getCurrentContent()).entityMap
           const mentionedUsers = Object.values(raw).map(
-            (entity) => entity.data?.mention?.userName
+            (entity) => entity.data?.mention?.username
           )
           setMentionLimit(mentionedUsers?.length)
           onInputChange({ text: plainTextValue, mentions: mentionedUsers })

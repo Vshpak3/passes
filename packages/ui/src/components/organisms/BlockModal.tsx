@@ -1,11 +1,15 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
+import Link from "next/link"
 import { FC, useState } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
 
 import { Modal, ModalProps } from "./Modal"
+
+const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
 
 interface BlockModalProps extends ModalProps {
   userId: string
@@ -29,6 +33,15 @@ export const BlockModal: FC<BlockModalProps> = ({
       const api = new FollowApi()
       await api.blockFollower({ followerId: userId })
       setOpen(false)
+
+      toast.success(
+        <div>
+          <Link href={BLOCKED_USER_LIST_PAGE}>
+            Successfully blocked this user. Click here to visit your settings to
+            manage blocked users.
+          </Link>
+        </div>
+      )
     } catch (error: any) {
       errorMessage(error, true)
     }
