@@ -29,6 +29,22 @@ const securityHeaders = [
   {
     key: "X-Frame-Options",
     value: "SAMEORIGIN"
+  },
+
+  // This header stops pages from loading when they detect reflected
+  // cross-site scripting (XSS) attacks.
+  {
+    key: "X-XSS-Protection",
+    value: "1; mode=block"
+  },
+
+  // This header informs browsers it should only be accessed using HTTPS, instead
+  // of using HTTP. Using the configuration below, all present and future
+  // subdomains will use HTTPS for a max-age of 2 years. This blocks access to
+  // pages or subdomains that can only be served over HTTP.
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload"
   }
 
   // Prevent cross-site scripting (XSS), clickjacking and other code injection attacks.

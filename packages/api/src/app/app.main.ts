@@ -54,7 +54,21 @@ export class App {
         transformOptions: { excludeExtraneousValues: true },
       }),
     )
-    this.app.enableCors()
+
+    const corsConfig = {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      preflightContinue: false,
+      optionsSuccessStatus: 204,
+    }
+
+    if (process.env.NODE_ENV === 'prod') {
+      corsConfig.origin = 'http://passes.com'
+    } else if (process.env.NODE_ENV === 'stage') {
+      corsConfig.origin = 'http://passes-staging.com'
+    }
+
+    this.app.enableCors(corsConfig)
     this.app.use(cookieParser())
 
     // Adds protection against well-known web vulnerabilities by setting HTTP headers appropriately.
