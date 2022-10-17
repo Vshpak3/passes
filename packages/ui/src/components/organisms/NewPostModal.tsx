@@ -24,6 +24,7 @@ export const NewPostModal: FC<NewPostModalProps> = ({
       setOpen={setOpen}
       modalContainerClassname={modalContainerClassname}
       childrenClassname={childrenClassname}
+      isCloseOutside
     >
       <MediaFile
         preview
