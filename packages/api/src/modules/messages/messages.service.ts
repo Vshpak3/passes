@@ -225,6 +225,8 @@ export class MessagesService {
         `${ChannelMemberEntity.table}.other_user_id`,
         `${UserEntity.table}.id`,
       )
+      .whereNotNull(`${ChannelEntity.table}.recent`)
+      .andWhere(`${ChannelMemberEntity.table}.user_id`, userId)
       .select([
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
@@ -232,7 +234,6 @@ export class MessagesService {
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
-      .where(`${ChannelMemberEntity.table}.user_id`, userId)
 
     switch (orderType) {
       case ChannelOrderTypeEnum.RECENT:
