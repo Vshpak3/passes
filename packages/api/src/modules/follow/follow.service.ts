@@ -39,7 +39,7 @@ import { SearchFollowRequestDto } from './dto/search-follow.dto'
 import { BlockTaskEntity } from './entities/block-task.entity'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
-import { FollowReportEntity } from './entities/follow-report.entity'
+import { ReportEntity } from './entities/follow-report.entity'
 import { WelcomeMessaged } from './entities/welcome-messaged.entity'
 
 export const MAX_FOLLOWERS_PER_REQUEST = 20
@@ -231,15 +231,15 @@ export class FollowService {
     })
   }
 
-  async reportFollower(
-    creatorId: string,
-    followerId: string,
+  async reportUser(
+    reporterId: string,
+    reporteeId: string,
     reason: string,
   ): Promise<void> {
-    await this.dbWriter<FollowReportEntity>(FollowReportEntity.table).insert({
+    await this.dbWriter<ReportEntity>(ReportEntity.table).insert({
       id: uuid.v4(),
-      creator_id: creatorId,
-      follower_id: followerId,
+      reporter_id: reporterId,
+      reportee_id: reporteeId,
       reason: reason,
     })
   }

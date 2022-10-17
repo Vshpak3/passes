@@ -1,3 +1,4 @@
+import { PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import React, { FC, KeyboardEvent, useState } from "react"
@@ -7,8 +8,12 @@ import { usePay } from "src/hooks/usePay"
 
 interface Props {
   channelId: string
+  minimumTip?: number | null
 }
-export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
+export const InputMessageFanPerspective: FC<Props> = ({
+  channelId,
+  minimumTip
+}) => {
   const {
     register,
     formState: { errors },
@@ -136,7 +141,7 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
             />
 
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
-              minimum $5 tip
+              minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"} tip
             </span>
           </div>
           <div
@@ -146,16 +151,20 @@ export const InputMessageFanPerspective: FC<Props> = ({ channelId }) => {
           >
             <button
               type="button"
-              disabled={false}
+              disabled={!!blocked}
               className={classNames(
-                // TODO: enum BlockedReasonEnum
                 blocked ? " cursor-not-allowed opacity-50" : "",
                 "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
               )}
             >
               {submitting
-                ? // //: TODO enum BlockedReasonEnum
-                  "Sending..."
+                ? "Sending..."
+                : blocked === PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
+                ? "Waiting on Payment"
+                : blocked === PayinDataDtoBlockedEnum.DoesNotFollow
+                ? "Not following"
+                : blocked === PayinDataDtoBlockedEnum.InsufficientTip
+                ? "Insufficient tip"
                 : tip > 0
                 ? " Send Message with Tip"
                 : ` Send Message`}

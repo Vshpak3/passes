@@ -15,7 +15,7 @@ import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { GetFollowResponseDto } from './dto/get-follow.dto'
 import { IsFollowingDto } from './dto/is-following.dto'
-import { ReportFanDto } from './dto/report-fan.dto'
+import { ReportUserDto } from './dto/report-user.dto'
 import {
   GetBlockedResponseDto,
   SearchFansResponseDto,
@@ -66,7 +66,7 @@ export class FollowController {
     responseDesc: 'A following was deleted',
     role: RoleEnum.GENERAL,
   })
-  @Delete(':creatorId')
+  @Delete('unfollow/:creatorId')
   async unfollowCreator(
     @Req() req: RequestWithUser,
     @Param('creatorId') creatorId: string,
@@ -114,22 +114,21 @@ export class FollowController {
   }
 
   @ApiEndpoint({
-    summary: 'Reports a follower',
+    summary: 'Reports a user',
     responseStatus: HttpStatus.CREATED,
     responseType: undefined,
-    responseDesc: 'A follower was reported',
-    role: RoleEnum.CREATOR_ONLY,
+    responseDesc: 'A user was reported',
+    role: RoleEnum.GENERAL,
   })
-  @Post('report/:followerId')
-  async reportFollower(
+  @Post('report')
+  async reportUser(
     @Req() req: RequestWithUser,
-    @Param('followerId') followerId: string,
-    @Body() reportFanDto: ReportFanDto,
+    @Body() reportUserDto: ReportUserDto,
   ): Promise<void> {
-    return await this.followService.reportFollower(
+    return await this.followService.reportUser(
       req.user.id,
-      followerId,
-      reportFanDto.reason,
+      reportUserDto.userId,
+      reportUserDto.reason,
     )
   }
 

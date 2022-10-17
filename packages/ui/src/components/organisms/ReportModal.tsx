@@ -16,9 +16,8 @@ export const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
   const onFanReport = async () => {
     try {
       const api = new FollowApi()
-      await api.reportFollower({
-        followerId: user?.userId || "",
-        reportFanDto: { reason: reportValue }
+      await api.reportUser({
+        reportUserDto: { reason: reportValue, userId: user?.userId || "" }
       })
       setOpen(false)
     } catch (error: any) {

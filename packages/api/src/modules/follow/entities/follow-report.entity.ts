@@ -7,14 +7,14 @@ import { REASON_FOR_BLOCKING_LENGTH } from '../constants/schema'
 // Represents a creator reporting a follower
 @Entity()
 @Index({ properties: ['created_at'] })
-export class FollowReportEntity extends BaseEntity {
-  static table = 'follow_report'
+export class ReportEntity extends BaseEntity {
+  static table = 'report'
 
   @ManyToOne({ entity: () => UserEntity })
-  follower_id: string
+  reporter_id: string
 
   @ManyToOne({ entity: () => UserEntity })
-  creator_id: string
+  reportee_id: string
 
   @Property({ length: REASON_FOR_BLOCKING_LENGTH })
   reason: string

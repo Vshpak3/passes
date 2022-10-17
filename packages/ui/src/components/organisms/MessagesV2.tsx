@@ -9,26 +9,34 @@ import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { useUser } from "src/hooks/useUser"
 
-export const MessagesV2 = () => {
+interface MessagesV2Props {
+  defaultUserId?: string
+}
+
+export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
   const [channelOrderType, setChannelOrderType] =
     useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
 
   const [gallery, setGallery] = useState(false)
-  const [isCreator, setIsCreator] = useState(true)
 
   const { user } = useUser()
-  const [freeMessages, setFreeMessages] = useState(20)
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
     setSelectedChannel(channel)
   }
 
-  const checkCreator = async () => {
-    if (!user?.isCreator) {
-      setIsCreator(false)
-      await getFreeMessages()
+  useEffect(() => {
+    if (defaultUserId) {
+      const fetch = async () => {
+        const api = new MessagesApi()
+        const channel = await api.getOrCreateChannel({
+          getChannelRequestDto: { userId: defaultUserId }
+        })
+        setSelectedChannel(channel)
+      }
+      fetch()
     }
-  }
+  }, [defaultUserId])
 
   const createChannel = (userId: string) => {
     const api = new MessagesApi()
@@ -44,25 +52,6 @@ export const MessagesV2 = () => {
     setSelectedChannel(channel)
   }
 
-  const getFreeMessages = async () => {
-    const api = new MessagesApi()
-    if (!selectedChannel?.channelId) {
-      return
-    }
-    const freeMessagesResponse = await api.getFreeMessages({
-      channelId: selectedChannel.channelId
-    })
-    if (freeMessagesResponse) {
-      setFreeMessages(freeMessagesResponse.messages)
-    }
-  }
-
-  useEffect(() => {
-    if (selectedChannel?.channelId) {
-      checkCreator()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChannel])
   return (
     <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
       <ChannelList
@@ -77,8 +66,7 @@ export const MessagesV2 = () => {
           selectedChannel={selectedChannel}
           gallery={gallery}
           setGallery={setGallery}
-          freeMessages={freeMessages}
-          isCreator={isCreator}
+          isCreator={!!user?.isCreator}
           user={user}
         />
       )}

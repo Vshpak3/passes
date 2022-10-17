@@ -24,7 +24,7 @@ import {
   GetChannelsRequestDto,
   GetChannelsResponseDto,
 } from './dto/get-channel.dto'
-import { GetFreeMesssagesResponseDto } from './dto/get-free-message.dto'
+import { GetChannelMesssageInfoResponseDto } from './dto/get-channel-message-info.dto'
 import {
   GetMessageResponseDto,
   GetMessagesRequestDto,
@@ -158,19 +158,20 @@ export class MessagesController {
   }
 
   @ApiEndpoint({
-    summary: 'Get free chat messages',
+    summary: 'Get channel message info',
     responseStatus: HttpStatus.OK,
-    responseType: GetFreeMesssagesResponseDto,
-    responseDesc: 'Channel settings was updated ',
+    responseType: GetChannelMesssageInfoResponseDto,
+    responseDesc: 'Channel message info was returned',
     role: RoleEnum.GENERAL,
   })
-  @Get('free-messages/:channelId')
-  async getFreeMessages(
+  @Get('message-info/:channelId')
+  async getChannelMessageInfo(
     @Req() req: RequestWithUser,
     @Param('channelId') channelId: string,
-  ): Promise<GetFreeMesssagesResponseDto> {
-    return new GetFreeMesssagesResponseDto(
-      await this.messagesService.checkFreeMessages(req.user.id, channelId),
+  ): Promise<GetChannelMesssageInfoResponseDto> {
+    return await this.messagesService.getChannelMessageInfo(
+      req.user.id,
+      channelId,
     )
   }
 

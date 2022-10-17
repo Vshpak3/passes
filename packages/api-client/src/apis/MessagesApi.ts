@@ -18,11 +18,11 @@ import type {
   BooleanResponseDto,
   CreateBatchMessageRequestDto,
   CreateWelcomeMessageRequestDto,
+  GetChannelMesssageInfoResponseDto,
   GetChannelRequestDto,
   GetChannelResponseDto,
   GetChannelsRequestDto,
   GetChannelsResponseDto,
-  GetFreeMesssagesResponseDto,
   GetMessageResponseDto,
   GetMessagesRequestDto,
   GetMessagesResponseDto,
@@ -44,6 +44,8 @@ import {
     CreateBatchMessageRequestDtoToJSON,
     CreateWelcomeMessageRequestDtoFromJSON,
     CreateWelcomeMessageRequestDtoToJSON,
+    GetChannelMesssageInfoResponseDtoFromJSON,
+    GetChannelMesssageInfoResponseDtoToJSON,
     GetChannelRequestDtoFromJSON,
     GetChannelRequestDtoToJSON,
     GetChannelResponseDtoFromJSON,
@@ -52,8 +54,6 @@ import {
     GetChannelsRequestDtoToJSON,
     GetChannelsResponseDtoFromJSON,
     GetChannelsResponseDtoToJSON,
-    GetFreeMesssagesResponseDtoFromJSON,
-    GetFreeMesssagesResponseDtoToJSON,
     GetMessageResponseDtoFromJSON,
     GetMessageResponseDtoToJSON,
     GetMessagesRequestDtoFromJSON,
@@ -90,12 +90,12 @@ export interface GetChannelRequest {
     getChannelRequestDto: GetChannelRequestDto;
 }
 
-export interface GetChannelsRequest {
-    getChannelsRequestDto: GetChannelsRequestDto;
+export interface GetChannelMessageInfoRequest {
+    channelId: string;
 }
 
-export interface GetFreeMessagesRequest {
-    channelId: string;
+export interface GetChannelsRequest {
+    getChannelsRequestDto: GetChannelsRequestDto;
 }
 
 export interface GetMessageRequest {
@@ -228,6 +228,41 @@ export class MessagesApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get channel message info
+     */
+    async getChannelMessageInfoRaw(requestParameters: GetChannelMessageInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelMesssageInfoResponseDto>> {
+        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
+            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getChannelMessageInfo.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/message-info/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChannelMesssageInfoResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get channel message info
+     */
+    async getChannelMessageInfo(requestParameters: GetChannelMessageInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelMesssageInfoResponseDto> {
+        const response = await this.getChannelMessageInfoRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get channels
      */
     async getChannelsRaw(requestParameters: GetChannelsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChannelsResponseDto>> {
@@ -262,41 +297,6 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getChannels(requestParameters: GetChannelsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChannelsResponseDto> {
         const response = await this.getChannelsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get free chat messages
-     */
-    async getFreeMessagesRaw(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetFreeMesssagesResponseDto>> {
-        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
-            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling getFreeMessages.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-        const response = await this.request({
-            path: `/api/messages/free-messages/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetFreeMesssagesResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get free chat messages
-     */
-    async getFreeMessages(requestParameters: GetFreeMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetFreeMesssagesResponseDto> {
-        const response = await this.getFreeMessagesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

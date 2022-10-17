@@ -53,6 +53,7 @@ export const PayinDataDtoBlockedEnum = {
     PaymentsDeactivated: 'payments deactivated',
     NoPrice: 'no price',
     PurchaseInProgress: 'purchase in progress',
+    TooManyPurchasesInProgress: 'too many purchases in progress',
     AlreadyHasAccess: 'already has access',
     IsNotPassholder: 'is not passholder',
     AlreadyOwnsPass: 'already owns pass',

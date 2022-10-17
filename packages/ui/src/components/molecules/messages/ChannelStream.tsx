@@ -19,7 +19,7 @@ const FETCH_NEW_MESSAGES_RATE = ms("3 seconds")
 
 export interface ChannelStreamProps {
   channelId?: string
-  freeMessages?: number
+  freeMessages?: number | null
   isCreator?: boolean
   contentAvatarDisplayName?: string
   contentAvatarUserName?: string
@@ -28,7 +28,6 @@ export interface ChannelStreamProps {
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
-  isCreator,
   contentAvatarDisplayName,
   contentAvatarUserName
 }) => {
@@ -169,13 +168,13 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       ref={bottomOfChatRef}
     >
       {isLoadingOlderMessages && <div>Loading older messages...</div>}
+      {freeMessages !== undefined && (
+        <div className="sticky top-0 z-20 w-full">
+          <FreeMessagesLeftContainer freeMessages={freeMessages} />
+        </div>
+      )}
       {messages.length ? (
         <>
-          {!isCreator && freeMessages !== null && (
-            <div className="sticky top-0 z-20 w-full">
-              <FreeMessagesLeftContainer freeMessages={freeMessages} />
-            </div>
-          )}
           {channelId &&
             messages.map((message, index) => (
               <ChannelMessage

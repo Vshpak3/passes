@@ -52,6 +52,7 @@ import {
   GetChannelRequestDto,
   GetChannelsRequestDto,
 } from './dto/get-channel.dto'
+import { GetChannelMesssageInfoResponseDto } from './dto/get-channel-message-info.dto'
 import { GetMessagesRequestDto } from './dto/get-message.dto'
 import { GetPaidMessagesRequestDto } from './dto/get-paid-message.dto'
 import { GetPaidMessageHistoryRequestDto } from './dto/get-paid-message-history.dto'
@@ -553,6 +554,16 @@ export class MessagesService {
     return { blocked, amount: sendMessageDto.tipAmount }
   }
 
+  async getMinimumTip(creatorId: string) {
+    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
+      CreatorSettingsEntity.table,
+    )
+      .where({ user_id: creatorId })
+      .select('minimum_tip_amount')
+      .first()
+    return creatorSettings?.minimum_tip_amount
+  }
+
   async removeFreeMessage(userId: string, channelId: string) {
     const channelMember = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,
@@ -567,13 +578,7 @@ export class MessagesService {
     if (channelMember.unlimited_messages) {
       return
     }
-    const creatorSettings = await this.dbReader<CreatorSettingsEntity>(
-      CreatorSettingsEntity.table,
-    )
-      .where({ user_id: creatorId })
-      .select('minimum_tip_amount')
-      .first()
-    if (!creatorSettings || !creatorSettings.minimum_tip_amount) {
+    if (!(await this.getMinimumTip(creatorId))) {
       return
     }
     const passHoldings = await this.dbReader<PassHolderEntity>(
@@ -610,10 +615,7 @@ export class MessagesService {
       .decrement('messages', 1)
   }
 
-  async checkFreeMessages(
-    userId: string,
-    channelId: string,
-  ): Promise<number | null> {
+  async getChannelMessageInfo(userId: string, channelId: string) {
     const channelMember = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,
     )
@@ -621,9 +623,34 @@ export class MessagesService {
       .select(['unlimited_messages', 'other_user_id'])
       .first()
     if (!channelMember) {
-      throw new ChannelNotFoundException(
-        `channel ${channelId} not found for user ${userId}`,
+      throw new BadRequestException('channel not found')
+    }
+    return new GetChannelMesssageInfoResponseDto(
+      await this.checkFreeMessages(userId, channelId, channelMember),
+      await this.getMinimumTip(channelMember.other_user_id),
+    )
+  }
+
+  async checkFreeMessages(
+    userId: string,
+    channelId: string,
+    channelMember?: Pick<
+      ChannelMemberEntity,
+      'unlimited_messages' | 'other_user_id'
+    >,
+  ): Promise<number | null> {
+    if (!channelMember) {
+      channelMember = await this.dbReader<ChannelMemberEntity>(
+        ChannelMemberEntity.table,
       )
+        .where({ user_id: userId, channel_id: channelId })
+        .select(['unlimited_messages', 'other_user_id'])
+        .first()
+      if (!channelMember) {
+        throw new ChannelNotFoundException(
+          `channel ${channelId} not found for user ${userId}`,
+        )
+      }
     }
     const creatorId = channelMember.other_user_id
     if (channelMember.unlimited_messages) {

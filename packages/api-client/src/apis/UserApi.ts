@@ -45,6 +45,10 @@ export interface GetUsernameFromIdRequest {
     userId: string;
 }
 
+export interface IsCreatorRequest {
+    userId: string;
+}
+
 export interface IsUsernameTakenRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
@@ -195,6 +199,41 @@ export class UserApi extends runtime.BaseAPI {
      */
     async getUsernameFromId(requestParameters: GetUsernameFromIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<string> {
         const response = await this.getUsernameFromIdRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Check if user is a creator
+     */
+    async isCreatorRaw(requestParameters: IsCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.userId === null || requestParameters.userId === undefined) {
+            throw new runtime.RequiredError('userId','Required parameter requestParameters.userId was null or undefined when calling isCreator.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/user/creator/check/{userId}`.replace(`{${"userId"}}`, encodeURIComponent(String(requestParameters.userId))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Check if user is a creator
+     */
+    async isCreator(requestParameters: IsCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.isCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

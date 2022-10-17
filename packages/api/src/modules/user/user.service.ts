@@ -255,6 +255,14 @@ export class UserService {
     return updated === 1
   }
 
+  async isCreator(userId: string) {
+    const user = await this.dbReader<UserEntity>(UserEntity.table)
+      .where({ id: userId, is_creator: true })
+      .select('id')
+      .first()
+    return !!user
+  }
+
   async getIdFromUsername(username: string) {
     const user = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ username })

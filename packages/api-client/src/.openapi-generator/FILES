@@ -77,6 +77,7 @@ models/DeleteScheduledEventRequestDto.ts
 models/EditListNameRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetBlockedResponseDto.ts
+models/GetChannelMesssageInfoResponseDto.ts
 models/GetChannelRequestDto.ts
 models/GetChannelResponseDto.ts
 models/GetChannelsRequestDto.ts
@@ -102,7 +103,6 @@ models/GetFanWallResponseDto.ts
 models/GetFeedRequestDto.ts
 models/GetFeedResponseDto.ts
 models/GetFollowResponseDto.ts
-models/GetFreeMesssagesResponseDto.ts
 models/GetListMembersRequestDto.ts
 models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
@@ -188,7 +188,7 @@ models/RefreshAuthTokenRequestDto.ts
 models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts
 models/RenewPassHolderRequestDto.ts
-models/ReportFanDto.ts
+models/ReportUserDto.ts
 models/ScheduledEventDto.ts
 models/SearchCreatorRequestDto.ts
 models/SearchCreatorResponseDto.ts

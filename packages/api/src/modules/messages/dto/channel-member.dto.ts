@@ -65,6 +65,7 @@ export class ChannelMemberDto extends ChannelDto {
       this.tipSent = channelMember.tip_sent
       this.tipRecieved = channelMember.tip_received
       this.unreadTip = channelMember.unread_tip
+      this.otherUserId = channelMember.other_user_id
 
       this.channelId = channelMember.channel_id
 

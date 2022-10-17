@@ -165,6 +165,9 @@ export class PostService {
             }),
           )
         }
+        await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+          .increment('num_posts', 1)
+          .where('user_id', userId)
       })
       .catch((err) => {
         this.logger.error(err)
@@ -342,9 +345,9 @@ export class PostService {
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId, deleted_at: null })
       .update({ deleted_at: new Date() })
-    // await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-    //   .where({ user_id: userId })
-    //   .decrement('num_posts', updated)
+    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+      .where({ user_id: userId })
+      .decrement('num_posts', updated)
     return updated === 1
   }
 

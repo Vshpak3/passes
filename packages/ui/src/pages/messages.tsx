@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic"
+import { useRouter } from "next/router"
 import { memo, Suspense, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { io } from "socket.io-client"
@@ -12,6 +13,7 @@ const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
 
 const MessagesPage = () => {
   const { accessToken } = useUser()
+  const router = useRouter()
   const socket = io(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/gateway`,
     {
@@ -52,7 +54,9 @@ const MessagesPage = () => {
         <div className="mt-8 ml-5 mb-3 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
           Messages
         </div>
-        {isConnected && <Messages />}
+        {isConnected && (
+          <Messages defaultUserId={router.query.user as string | undefined} />
+        )}
       </div>
     </Suspense>
   )

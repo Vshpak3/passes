@@ -18,7 +18,7 @@ import type {
   GetBlockedResponseDto,
   GetFollowResponseDto,
   IsFollowingDto,
-  ReportFanDto,
+  ReportUserDto,
   SearchFansResponseDto,
   SearchFollowRequestDto,
   SearchFollowingResponseDto,
@@ -30,8 +30,8 @@ import {
     GetFollowResponseDtoToJSON,
     IsFollowingDtoFromJSON,
     IsFollowingDtoToJSON,
-    ReportFanDtoFromJSON,
-    ReportFanDtoToJSON,
+    ReportUserDtoFromJSON,
+    ReportUserDtoToJSON,
     SearchFansResponseDtoFromJSON,
     SearchFansResponseDtoToJSON,
     SearchFollowRequestDtoFromJSON,
@@ -56,9 +56,8 @@ export interface GetBlockedRequest {
     searchFollowRequestDto: SearchFollowRequestDto;
 }
 
-export interface ReportFollowerRequest {
-    followerId: string;
-    reportFanDto: ReportFanDto;
+export interface ReportUserRequest {
+    reportUserDto: ReportUserDto;
 }
 
 export interface SearchFansRequest {
@@ -225,15 +224,11 @@ export class FollowApi extends runtime.BaseAPI {
     }
 
     /**
-     * Reports a follower
+     * Reports a user
      */
-    async reportFollowerRaw(requestParameters: ReportFollowerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.followerId === null || requestParameters.followerId === undefined) {
-            throw new runtime.RequiredError('followerId','Required parameter requestParameters.followerId was null or undefined when calling reportFollower.');
-        }
-
-        if (requestParameters.reportFanDto === null || requestParameters.reportFanDto === undefined) {
-            throw new runtime.RequiredError('reportFanDto','Required parameter requestParameters.reportFanDto was null or undefined when calling reportFollower.');
+    async reportUserRaw(requestParameters: ReportUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.reportUserDto === null || requestParameters.reportUserDto === undefined) {
+            throw new runtime.RequiredError('reportUserDto','Required parameter requestParameters.reportUserDto was null or undefined when calling reportUser.');
         }
 
         const queryParameters: any = {};
@@ -248,21 +243,21 @@ export class FollowApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/follow/report/{followerId}`.replace(`{${"followerId"}}`, encodeURIComponent(String(requestParameters.followerId))),
+            path: `/api/follow/report`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: ReportFanDtoToJSON(requestParameters.reportFanDto),
+            body: ReportUserDtoToJSON(requestParameters.reportUserDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Reports a follower
+     * Reports a user
      */
-    async reportFollower(requestParameters: ReportFollowerRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.reportFollowerRaw(requestParameters, initOverrides);
+    async reportUser(requestParameters: ReportUserRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.reportUserRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -393,7 +388,7 @@ export class FollowApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/follow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
+            path: `/api/follow/unfollow/{creatorId}`.replace(`{${"creatorId"}}`, encodeURIComponent(String(requestParameters.creatorId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,

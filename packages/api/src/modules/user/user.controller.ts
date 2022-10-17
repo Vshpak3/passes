@@ -134,6 +134,20 @@ export class UserController {
   }
 
   @ApiEndpoint({
+    summary: 'Check if user is a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'User checked for creator status',
+    role: RoleEnum.GENERAL,
+  })
+  @Get('creator/check/:userId')
+  async isCreator(
+    @Param('userId') userId: string,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(await this.userService.isCreator(userId))
+  }
+
+  @ApiEndpoint({
     summary: 'Flags self as adult',
     responseStatus: HttpStatus.OK,
     responseType: undefined,

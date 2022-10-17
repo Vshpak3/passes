@@ -16,42 +16,50 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface ReportFanDto
+ * @interface ReportUserDto
  */
-export interface ReportFanDto {
+export interface ReportUserDto {
     /**
      * 
      * @type {string}
-     * @memberof ReportFanDto
+     * @memberof ReportUserDto
      */
     reason: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ReportUserDto
+     */
+    userId: string;
 }
 
 /**
- * Check if a given object implements the ReportFanDto interface.
+ * Check if a given object implements the ReportUserDto interface.
  */
-export function instanceOfReportFanDto(value: object): boolean {
+export function instanceOfReportUserDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "reason" in value;
+    isInstance = isInstance && "userId" in value;
 
     return isInstance;
 }
 
-export function ReportFanDtoFromJSON(json: any): ReportFanDto {
-    return ReportFanDtoFromJSONTyped(json, false);
+export function ReportUserDtoFromJSON(json: any): ReportUserDto {
+    return ReportUserDtoFromJSONTyped(json, false);
 }
 
-export function ReportFanDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ReportFanDto {
+export function ReportUserDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): ReportUserDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
         'reason': json['reason'],
+        'userId': json['userId'],
     };
 }
 
-export function ReportFanDtoToJSON(value?: ReportFanDto | null): any {
+export function ReportUserDtoToJSON(value?: ReportUserDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -61,6 +69,7 @@ export function ReportFanDtoToJSON(value?: ReportFanDto | null): any {
     return {
         
         'reason': value.reason,
+        'userId': value.userId,
     };
 }
 
