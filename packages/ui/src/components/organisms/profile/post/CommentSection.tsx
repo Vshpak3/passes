@@ -45,12 +45,6 @@ export const CommentSection: FC<CommentSectionProps> = ({
           />
         )
       })}
-      <CommentFeed
-        postId={postId}
-        ownsPost={ownsPost}
-        isCreator={isCreator}
-        blockedUsers={blockedUsers}
-      />
       <NewCommentEditor postId={postId} addComment={addNewComment} />
     </div>
   )
