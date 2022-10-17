@@ -8,7 +8,6 @@ import {
 import { ChannelEntity } from '../entities/channel.entity'
 import { ChannelMemberEntity } from '../entities/channel-members.entity'
 import { ChannelDto } from './channel-dto'
-import { MessageDto } from './message.dto'
 
 export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ type: 'uuid' })
@@ -39,15 +38,12 @@ export class ChannelMemberDto extends ChannelDto {
   unreadTip: number
 
   @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  otherUserUsername?: string
+  @DtoProperty({ type: 'string' })
+  otherUserUsername: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
   @DtoProperty({ type: 'string', optional: true })
   otherUserDisplayName?: string
-
-  @DtoProperty({ custom_type: MessageDto, optional: true })
-  mostRecentMessage?: MessageDto
 
   constructor(
     channelMember: ChannelMemberEntity &
@@ -55,7 +51,6 @@ export class ChannelMemberDto extends ChannelDto {
         other_user_username: string
         other_user_display_name: string
       },
-    mostRecentMessage?,
   ) {
     super(channelMember)
     if (channelMember) {
@@ -72,6 +67,5 @@ export class ChannelMemberDto extends ChannelDto {
       this.otherUserUsername = channelMember.other_user_username
       this.otherUserDisplayName = channelMember.other_user_display_name
     }
-    this.mostRecentMessage = mostRecentMessage
   }
 }

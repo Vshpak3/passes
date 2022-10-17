@@ -232,6 +232,7 @@ export class MessagesService {
         `${ChannelMemberEntity.table}.*`,
         `${ChannelEntity.table}.id as channel_id`,
         `${ChannelEntity.table}.recent`,
+        `${ChannelEntity.table}.preview_text`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
       ])
@@ -774,7 +775,7 @@ export class MessagesService {
     } as MessageEntity
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
-      await this.updateStatus(userId, channelId)
+      await this.updateStatus(userId, channelId, text)
     }
     await this.redisService.publish(
       'message',
@@ -803,8 +804,6 @@ export class MessagesService {
         pending: false,
       })
     if (updated) {
-      await this.updateStatus(userId, channelId)
-      await this.updateChannelTipStats(userId, channelId, tipAmount)
       const message = await this.dbWriter<MessageEntity>(MessageEntity.table)
         .where({
           id: messageId,
@@ -814,6 +813,8 @@ export class MessagesService {
       if (!message) {
         throw new InternalServerErrorException('no message found')
       }
+      await this.updateStatus(userId, channelId, message.text)
+      await this.updateChannelTipStats(userId, channelId, tipAmount)
       message.pending = false
       message.sent_at = date
       await this.redisService.publish(
@@ -829,14 +830,14 @@ export class MessagesService {
     }
   }
 
-  async updateStatus(userId: string, channelId: string) {
+  async updateStatus(userId: string, channelId: string, previewText: string) {
     await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .where({ channel_id: channelId })
       .andWhereNot({ user_id: userId })
       .update({ unread: true })
     await this.dbWriter<ChannelEntity>(ChannelEntity.table)
       .where({ id: channelId })
-      .update({ recent: new Date() })
+      .update({ recent: new Date(), preview_text: previewText })
   }
 
   async deleteMessage(messageId: string): Promise<boolean> {

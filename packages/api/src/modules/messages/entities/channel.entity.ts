@@ -1,6 +1,7 @@
 import { Entity, Index, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { MESSAGE_LENGTH } from '../constants/schema'
 
 @Entity()
 export class ChannelEntity extends BaseEntity {
@@ -9,4 +10,7 @@ export class ChannelEntity extends BaseEntity {
   @Index()
   @Property()
   recent: Date | null
+
+  @Property({ length: MESSAGE_LENGTH })
+  preview_text: string | null
 }

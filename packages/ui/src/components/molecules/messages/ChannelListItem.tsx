@@ -2,17 +2,18 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
+import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { formatCurrency } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
 
-interface Props {
+interface ChannelListItemProps {
   onClick: () => void
   channel: ChannelMemberDto
   isSelected?: boolean
 }
 
-export const ChannelListItem: FC<Props> = ({
+export const ChannelListItem: FC<ChannelListItemProps> = ({
   onClick,
   channel,
   isSelected
@@ -31,10 +32,13 @@ export const ChannelListItem: FC<Props> = ({
       <div className="flex w-full justify-between">
         <div className="flex flex-col items-start justify-start">
           <span className="text-[16px] font-medium leading-[24px] text-white">
-            {channel.otherUserDisplayName || channel.otherUserUsername}
+            <NameDisplay
+              displayName={channel.otherUserDisplayName}
+              username={channel.otherUserUsername}
+            />
           </span>
           <p className="w-[120px] truncate text-[14px] font-medium leading-[17px] text-[#ffff]/30">
-            {channel?.mostRecentMessage?.text || ""}
+            {channel?.previewText ?? ""}
           </p>
         </div>
         <div className="flex flex-col items-center justify-end gap-1">

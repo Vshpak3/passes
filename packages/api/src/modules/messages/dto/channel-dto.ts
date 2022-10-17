@@ -8,10 +8,14 @@ export class ChannelDto {
   @DtoProperty({ type: 'date', nullable: true })
   recent: Date | null
 
+  @DtoProperty({ type: 'string', nullable: true })
+  previewText: string | null
+
   constructor(channel: ChannelEntity) {
     if (channel) {
       this.channelId = channel.id
       this.recent = channel.recent
+      this.previewText = channel.preview_text
     }
   }
 }

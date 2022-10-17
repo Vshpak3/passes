@@ -1,6 +1,5 @@
 import {
   GetPassHoldingsRequestDtoOrderEnum,
-  GetPassHoldingsRequestDtoOrderTypeEnum,
   PassApi,
   PassDto,
   PassDtoChainEnum,
@@ -112,8 +111,7 @@ export const Passes = () => {
     const passHoldings = (
       await passApi.getPassHoldings({
         getPassHoldingsRequestDto: {
-          order: GetPassHoldingsRequestDtoOrderEnum.Asc,
-          orderType: GetPassHoldingsRequestDtoOrderTypeEnum.CreatedAt
+          order: GetPassHoldingsRequestDtoOrderEnum.Asc
         }
       })
     ).data.filter((passHolder) => {

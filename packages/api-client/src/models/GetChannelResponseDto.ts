@@ -13,13 +13,6 @@
  */
 
 import { exists, mapValues } from '../runtime';
-import type { MessageDto } from './MessageDto';
-import {
-    MessageDtoFromJSON,
-    MessageDtoFromJSONTyped,
-    MessageDtoToJSON,
-} from './MessageDto';
-
 /**
  * 
  * @export
@@ -38,6 +31,12 @@ export interface GetChannelResponseDto {
      * @memberof GetChannelResponseDto
      */
     recent: Date | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetChannelResponseDto
+     */
+    previewText: string | null;
     /**
      * 
      * @type {string}
@@ -85,19 +84,13 @@ export interface GetChannelResponseDto {
      * @type {string}
      * @memberof GetChannelResponseDto
      */
-    otherUserUsername?: string;
+    otherUserUsername: string;
     /**
      * 
      * @type {string}
      * @memberof GetChannelResponseDto
      */
     otherUserDisplayName?: string;
-    /**
-     * 
-     * @type {MessageDto}
-     * @memberof GetChannelResponseDto
-     */
-    mostRecentMessage?: MessageDto;
 }
 
 /**
@@ -106,6 +99,7 @@ export interface GetChannelResponseDto {
 export function instanceOfGetChannelResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "recent" in value;
+    isInstance = isInstance && "previewText" in value;
     isInstance = isInstance && "channelMemberId" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "otherUserId" in value;
@@ -113,6 +107,7 @@ export function instanceOfGetChannelResponseDto(value: object): boolean {
     isInstance = isInstance && "tipSent" in value;
     isInstance = isInstance && "tipRecieved" in value;
     isInstance = isInstance && "unreadTip" in value;
+    isInstance = isInstance && "otherUserUsername" in value;
 
     return isInstance;
 }
@@ -129,6 +124,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         
         'channelId': !exists(json, 'channelId') ? undefined : json['channelId'],
         'recent': (json['recent'] === null ? null : new Date(json['recent'])),
+        'previewText': json['previewText'],
         'channelMemberId': json['channelMemberId'],
         'userId': json['userId'],
         'otherUserId': json['otherUserId'],
@@ -136,9 +132,8 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'tipSent': json['tipSent'],
         'tipRecieved': json['tipRecieved'],
         'unreadTip': json['unreadTip'],
-        'otherUserUsername': !exists(json, 'otherUserUsername') ? undefined : json['otherUserUsername'],
+        'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': !exists(json, 'otherUserDisplayName') ? undefined : json['otherUserDisplayName'],
-        'mostRecentMessage': !exists(json, 'mostRecentMessage') ? undefined : MessageDtoFromJSON(json['mostRecentMessage']),
     };
 }
 
@@ -153,6 +148,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         
         'channelId': value.channelId,
         'recent': (value.recent === null ? null : value.recent.toISOString()),
+        'previewText': value.previewText,
         'channelMemberId': value.channelMemberId,
         'userId': value.userId,
         'otherUserId': value.otherUserId,
@@ -162,7 +158,6 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         'unreadTip': value.unreadTip,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
-        'mostRecentMessage': MessageDtoToJSON(value.mostRecentMessage),
     };
 }
 

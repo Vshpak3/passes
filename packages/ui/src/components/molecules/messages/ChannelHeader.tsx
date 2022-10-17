@@ -1,6 +1,7 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
+import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/messages-channel-gallery-header"
 import { formatCurrency } from "src/helpers/formatters"
 
@@ -38,15 +39,17 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           <div className="flex items-center ">
             <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
             <span className="text-brand-600 pl-2">
-              {selectedChannel.otherUserUsername}
+              <NameDisplay
+                displayName={selectedChannel.otherUserDisplayName}
+                username={selectedChannel.otherUserUsername}
+              />
             </span>
-            {isCreator && (
+            {/* {isCreator && (
               <div className="flex items-center gap-8 pl-3">
                 <div className="hidden items-center gap-3 sm:flex">
                   <div className="flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color px-2">
                     <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
                       Vip Pass
-                      {/* TODO: replace with real passes */}
                     </span>
                   </div>
                   <div className="flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 via-neutral-100 to-amber-500 px-2">
@@ -56,7 +59,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         )}
         {!isCreator && !gallery && (
