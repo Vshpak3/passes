@@ -35,6 +35,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
         handleCreatePost={handleCreatePost}
         placeholder="What's on your mind?"
         isExtended
+        onClose={onCancel}
       />
     </Dialog>
   )

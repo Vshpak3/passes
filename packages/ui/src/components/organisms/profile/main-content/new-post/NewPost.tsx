@@ -74,6 +74,7 @@ interface NewPostProps {
   initialData: Record<string, any>
   onlyText?: boolean
   isExtended?: boolean
+  onClose?: () => void
 }
 
 export const NewPost: FC<NewPostProps> = ({
@@ -81,7 +82,8 @@ export const NewPost: FC<NewPostProps> = ({
   handleCreatePost,
   initialData = {},
   onlyText = false,
-  isExtended = false
+  isExtended = false,
+  onClose
 }) => {
   const [files, setFiles] = useState<File[]>([])
   const [containsVideo, setContainsVideo] = useState(false)
@@ -137,6 +139,9 @@ export const NewPost: FC<NewPostProps> = ({
       inMessage: false
     })
     setExtended(false)
+    if (onClose) {
+      onClose()
+    }
 
     const post: CreatePostRequestDto = {
       text: values.text,
@@ -245,6 +250,9 @@ export const NewPost: FC<NewPostProps> = ({
               title="New post"
               onClose={() => {
                 setExtended(false)
+                if (onClose) {
+                  onClose()
+                }
               }}
               register={register}
               errors={errors}
