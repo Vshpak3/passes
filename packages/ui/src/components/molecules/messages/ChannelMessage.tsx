@@ -1,7 +1,7 @@
-import { MessageDto, MessagesApi } from "@passes/api-client"
+import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import Locked from "public/icons/lock-locked.svg"
-import React, { FC, useEffect } from "react"
+import React, { FC } from "react"
 import { SentStatus } from "src/components/messages/assets/SentStatus"
 import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 
@@ -12,35 +12,17 @@ import { Content } from "./message/Content"
 interface ChannelMessageProps {
   isOwnMessage?: boolean
   message: MessageDto
-  lastMessage: boolean
-  channelId: string
   contentAvatarDisplayName?: string
   contentAvatarUserName?: string
 }
 export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
   isOwnMessage = false,
-  lastMessage = false,
-  channelId,
   contentAvatarDisplayName,
   contentAvatarUserName
 }: ChannelMessageProps) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
-  const onReadLastMessage = async () => {
-    const api = new MessagesApi()
-    await api.readMessages({
-      channelId
-    })
-  }
-  useEffect(() => {
-    if (!lastMessage && !isOwnMessage) {
-      return
-    } else {
-      onReadLastMessage()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastMessage, isOwnMessage])
 
   return (
     <div

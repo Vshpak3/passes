@@ -12,6 +12,7 @@ export interface PagedData<A> {
 
 export interface ComponentArg<A> {
   arg: A
+  index: number
 }
 
 export interface Key<T> {
@@ -27,7 +28,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   emptyElement?: JSX.Element
   loadingElement?: JSX.Element
   endElement?: JSX.Element
-  KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
+  KeyedComponent: ({ arg, index }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
   classes?: string
   options?: SWRInfiniteConfiguration
@@ -107,7 +108,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         {children}
         {data?.length === 1 && data[0].data.length === 0 && emptyElement}
         {flattenedData.map((data, index) => (
-          <KeyedComponent key={index} arg={data} />
+          <KeyedComponent key={index} arg={data} index={index} />
         ))}
       </InfiniteScroll>
     </>
