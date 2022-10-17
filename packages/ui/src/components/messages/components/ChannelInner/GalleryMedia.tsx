@@ -9,7 +9,7 @@ import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface GalleryMediaProps {
-  contents: any
+  contents: ContentDto[]
   text: string
   price: number
   createdAt: Date

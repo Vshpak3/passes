@@ -23,7 +23,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
   isCreator,
   user
 }) => {
-  const [activeContent, setActiveContent] = useState("All")
+  const [paid, setPaid] = useState<boolean | undefined>()
   const [freeMessages, setFreeMessages] = useState<number | null | undefined>(
     undefined
   )
@@ -60,13 +60,13 @@ export const ChannelView: FC<ChannelViewProps> = ({
             gallery={gallery}
             setGallery={setGallery}
             selectedChannel={selectedChannel}
-            activeContent={activeContent}
-            setActiveContent={setActiveContent}
+            paid={paid}
+            setPaid={setPaid}
             isCreator={isCreator}
           />
           {gallery ? (
             <ChannelGalleryView
-              activeContent={activeContent}
+              paid={paid}
               selectedChannel={selectedChannel}
               isCreator={isCreator}
             />

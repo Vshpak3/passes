@@ -1,5 +1,14 @@
-import { MessageDto, MessagesApi } from "@passes/api-client"
-import { FC, Key, useEffect, useMemo, useState } from "react"
+import {
+  GetMessagesRequestDto,
+  GetMessagesResponseDto,
+  MessageDto,
+  MessagesApi
+} from "@passes/api-client"
+import { FC } from "react"
+import {
+  ComponentArg,
+  InfiniteScrollPagination
+} from "src/components/atoms/InfiniteScroll"
 import { GalleryMedia } from "src/components/messages/components/ChannelInner/GalleryMedia"
 
 export type Content = {
@@ -97,103 +106,46 @@ export type Content = {
 // ]
 
 interface Props {
-  activeContent: string
+  paid?: boolean
   selectedChannel: any
   isCreator: boolean
 }
 
 export const ChannelGalleryView: FC<Props> = ({
-  activeContent,
+  paid,
   selectedChannel,
   isCreator
 }) => {
-  const api = useMemo(() => new MessagesApi(), [])
-  const [paidGalleryContent, setPaidGalleryContent] = useState<any>([])
-  const [unpaidGalleryContent, setUnpaidGalleryContent] = useState<any>([])
-
-  useEffect(() => {
-    // declare the data fetching function
-    const fetchData = async () => {
-      const contentMessagesResponse = await api.getMessages({
-        getMessagesRequestDto: {
-          channelId: selectedChannel.channelId,
-          contentOnly: true,
-          pending: false
-        }
-      })
-      if (contentMessagesResponse.data) {
-        const paidContent = contentMessagesResponse.data.filter(
-          (message) => message.paid
-        )
-        const unpaidContent = contentMessagesResponse.data.filter(
-          (message) => !message.paid
-        )
-        setPaidGalleryContent(paidContent)
-        setUnpaidGalleryContent(unpaidContent)
-      }
-    }
-
-    // call the function
-    fetchData()
-      // make sure to catch any error
-      .catch(console.error)
-  }, [api, selectedChannel.channelId])
-
   // TODO: Replace mocked content with real content when chat is up and there is media in a specific channel
   // const pendingContent = content.filter((media) => media.locked)
   // const purchasedContent = content.filter((media) => !media.locked)
-  const allContent = [...paidGalleryContent, ...unpaidGalleryContent]
   return (
     <div className="flex h-full flex-wrap items-start justify-start gap-2 overflow-auto p-[10px]">
-      {activeContent === "All" ? (
-        <>
-          {allContent.map(
-            (message: MessageDto, index: Key | null | undefined) => (
-              <GalleryMedia
-                key={index}
-                contents={message.contents}
-                text={message.text}
-                price={message.price}
-                createdAt={message.sentAt}
-                isCreator={isCreator}
-                purchased={message.paid}
-              />
-            )
-          )}
-        </>
-      ) : activeContent === "Purchased" ? (
-        <>
-          {paidGalleryContent.map(
-            (message: MessageDto, index: Key | null | undefined) => (
-              <GalleryMedia
-                key={index}
-                contents={message.contents}
-                text={message.text}
-                price={message.price}
-                createdAt={message.sentAt}
-                isCreator={isCreator}
-                purchased={message.paid}
-              />
-            )
-          )}
-        </>
-      ) : activeContent === "Not Purchased" ? (
-        <>
-          {unpaidGalleryContent.map(
-            (message: MessageDto, index: Key | null | undefined) => (
-              <GalleryMedia
-                key={index}
-                contents={message.contents}
-                text={message.text}
-                price={message.price}
-                createdAt={message.sentAt}
-                isCreator={isCreator}
-                purchased={message.paid}
-              />
-            )
-          )}
-        </>
-      ) : null}
+      <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
+        keyValue="messages"
+        fetch={async (req: GetMessagesRequestDto) => {
+          const api = new MessagesApi()
+          return await api.getMessages({ getMessagesRequestDto: req })
+        }}
+        fetchProps={{
+          channelId: selectedChannel.channelId,
+          pending: false,
+          contentOnly: true,
+          paid
+        }}
+        KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+          return (
+            <GalleryMedia
+              contents={arg.contents}
+              text={arg.text}
+              price={arg.price}
+              createdAt={arg.sentAt}
+              isCreator={isCreator}
+              purchased={arg.paid}
+            />
+          )
+        }}
+      />
     </div>
   )
 }

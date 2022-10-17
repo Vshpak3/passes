@@ -11,16 +11,16 @@ interface ChannelHeaderProps {
   selectedChannel: ChannelMemberDto
   gallery: boolean
   setGallery: Dispatch<SetStateAction<any>>
-  activeContent: string
-  setActiveContent: Dispatch<SetStateAction<any>>
+  paid?: boolean
+  setPaid: Dispatch<SetStateAction<boolean | undefined>>
   isCreator: boolean
 }
 
 export const ChannelHeader: FC<ChannelHeaderProps> = ({
   gallery,
   setGallery,
-  activeContent,
-  setActiveContent,
+  paid,
+  setPaid,
   selectedChannel,
   isCreator
 }) => {
@@ -31,8 +31,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           <MessagesChannelGalleryHeader
             gallery={gallery}
             setGallery={setGallery}
-            activeContent={activeContent}
-            setActiveContent={setActiveContent}
+            paid={paid}
+            setPaid={setPaid}
             selectedChannel={selectedChannel}
           />
         ) : (
