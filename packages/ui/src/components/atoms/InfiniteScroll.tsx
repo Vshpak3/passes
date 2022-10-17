@@ -1,5 +1,11 @@
 import { debounce } from "lodash"
-import React, { PropsWithChildren, useEffect, useMemo, useState } from "react"
+import React, {
+  CSSProperties,
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
 import useSWRInfinite, { SWRInfiniteConfiguration } from "swr/infinite"
 
@@ -32,6 +38,9 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   resets?: number // increment to manually reset list
   classes?: string
   options?: SWRInfiniteConfiguration
+  style?: CSSProperties
+  scrollableTarget?: string
+  inverse?: boolean
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -56,7 +65,10 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     revalidateFirstPage: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false
-  }
+  },
+  style = {},
+  scrollableTarget,
+  inverse = false
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
@@ -93,24 +105,23 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
-
   return (
-    <>
-      <InfiniteScroll
-        dataLength={flattenedData.length}
-        className={"w-full " + classes ?? ""}
-        style={{ width: "100%", overflow: "hidden" }}
-        next={() => triggerFetch(size + 1)}
-        hasMore={!data || !!data[data.length - 1].lastId}
-        loader={loadingElement}
-        endMessage={size !== 1 && endElement}
-      >
-        {children}
-        {data?.length === 1 && data[0].data.length === 0 && emptyElement}
-        {flattenedData.map((data, index) => (
-          <KeyedComponent key={index} arg={data} index={index} />
-        ))}
-      </InfiniteScroll>
-    </>
+    <InfiniteScroll
+      dataLength={flattenedData.length}
+      className={"w-full " + classes ?? ""}
+      style={{ width: "100%", overflow: "hidden", ...style }}
+      next={() => triggerFetch(size + 1)}
+      hasMore={!data || !!data[data.length - 1].lastId}
+      loader={loadingElement}
+      endMessage={size !== 1 && endElement}
+      scrollableTarget={scrollableTarget}
+      inverse={inverse}
+    >
+      {children}
+      {data?.length === 1 && data[0].data.length === 0 && emptyElement}
+      {flattenedData.map((data, index) => (
+        <KeyedComponent key={index} arg={data} index={index} />
+      ))}
+    </InfiniteScroll>
   )
 }

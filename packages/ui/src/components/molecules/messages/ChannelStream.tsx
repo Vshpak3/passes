@@ -5,7 +5,6 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import { FC, useEffect, useRef, useState } from "react"
-import { toast } from "react-toastify"
 import { io } from "socket.io-client"
 import {
   ComponentArg,
@@ -25,16 +24,20 @@ export interface ChannelStreamProps {
   isCreator?: boolean
   contentAvatarDisplayName?: string
   contentAvatarUserName?: string
+  minimumTip?: number | null
 }
 
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
   contentAvatarDisplayName,
-  contentAvatarUserName
+  contentAvatarUserName,
+  minimumTip
 }) => {
   const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
+  const [messages, setMessages] = useState<MessageDto[]>([])
+
   const { accessToken } = useUser()
   const socket = io(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/gateway`,
@@ -59,19 +62,28 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       setPendingMessages([])
     })
     socket.on("message", (data) => {
-      toast.success(JSON.stringify(data))
+      const newMessage = data as MessageDto
+      if (newMessage.pending) {
+        setPendingMessages([newMessage, ...pendingMessages])
+      } else {
+        setMessages([newMessage, ...messages])
+        setPendingMessages(
+          pendingMessages.filter(
+            (message) => message.messageId !== newMessage.messageId
+          )
+        )
+      }
     })
     socket.connect()
-    // console.log(socket.connected, "connected")
     return () => {
       socket.off("connect")
       socket.off("disconnect")
-      // socket.off('pong');
+      socket.off("message")
       socket.disconnect()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket])
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
-
   useEffect(() => {
     if (!channelId) {
       return
@@ -102,60 +114,79 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 
   return (
     <>
-      {freeMessages !== undefined && (
+      {!!minimumTip && freeMessages !== undefined && (
         <div className="sticky top-0 z-20 w-full">
           <FreeMessagesLeftContainer freeMessages={freeMessages} />
         </div>
       )}
       {isConnected && (
-        <div
-          className="flex h-full flex-1 flex-col overflow-y-scroll"
-          // onScroll={handleScroll}
-          // ref={bottomOfChatRef}
-          onFocus={onReadLastMessage}
-          style={{
-            height: 300,
-            overflow: "auto",
-            display: "flex",
-            flexDirection: "column-reverse"
-          }}
-        >
-          <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-            keyValue="messages"
-            fetch={async (req: GetMessagesRequestDto) => {
-              return await api.getMessages({ getMessagesRequestDto: req })
+        <>
+          <div
+            id="scrollableDiv"
+            className="flex h-full flex-1 flex-col overflow-y-scroll"
+            // onScroll={handleScroll}
+            // ref={bottomOfChatRef}
+            onFocus={onReadLastMessage}
+            style={{
+              // height: 300,
+              // overflow: "auto",
+              display: "flex",
+              flexDirection: "column-reverse"
             }}
-            fetchProps={{ channelId, pending: false, contentOnly: false }}
-            KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
-              return (
-                <ChannelMessage
-                  message={arg}
-                  isOwnMessage={arg.senderId === user?.userId}
-                  contentAvatarDisplayName={contentAvatarDisplayName}
-                  contentAvatarUserName={contentAvatarUserName}
-                />
-              )
-            }}
-            loadingElement={<div>Loading older messages...</div>}
-          />
-          {pendingMessages.length > 0 &&
-            pendingMessages.map((m, i) => {
-              return (
-                <div
-                  key={i}
-                  className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
-                >
-                  <div className="mx-4 flex flex-col items-start">
-                    <TippedMessage tipAmount={m?.tipAmount} />
-                    <PendingStatus />
-                  </div>
-                </div>
-              )
-            })}
+          >
+            <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
+              keyValue="messages"
+              fetch={async (req: GetMessagesRequestDto) => {
+                return await api.getMessages({ getMessagesRequestDto: req })
+              }}
+              fetchProps={{ channelId, pending: false, contentOnly: false }}
+              KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+                return (
+                  <ChannelMessage
+                    message={arg}
+                    isOwnMessage={arg.senderId === user?.userId}
+                    contentAvatarDisplayName={contentAvatarDisplayName}
+                    contentAvatarUserName={contentAvatarUserName}
+                  />
+                )
+              }}
+              scrollableTarget="scrollableDiv"
+              loadingElement={<div>Loading older messages...</div>}
+              style={{ display: "flex", flexDirection: "column-reverse" }}
+              inverse={true}
+            >
+              {pendingMessages.length > 0 &&
+                pendingMessages.map((m, i) => {
+                  return (
+                    <div
+                      key={i}
+                      className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
+                    >
+                      <div className="mx-4 flex flex-col items-start">
+                        <TippedMessage tipAmount={m?.tipAmount} />
+                        <PendingStatus />
+                      </div>
+                    </div>
+                  )
+                })}
+              {messages.length > 0 &&
+                messages.map((m, i) => {
+                  return (
+                    <ChannelMessage
+                      key={i}
+                      message={m}
+                      isOwnMessage={m.senderId === user?.userId}
+                      contentAvatarDisplayName={contentAvatarDisplayName}
+                      contentAvatarUserName={contentAvatarUserName}
+                    />
+                  )
+                })}
+            </InfiniteScrollPagination>
 
-          {/* Dummy ref to allow scrolling to bottom of chat */}
-          <div ref={bottomOfChatRef} />
-        </div>
+            {/* Dummy ref to allow scrolling to bottom of chat */}
+            <div ref={bottomOfChatRef} />
+          </div>
+        </>
       )}
     </>
   )

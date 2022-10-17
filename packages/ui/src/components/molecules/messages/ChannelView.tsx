@@ -75,6 +75,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
               <ChannelStream
                 channelId={selectedChannel.channelId}
                 freeMessages={freeMessages}
+                minimumTip={minimumTip}
                 isCreator={isCreator}
                 contentAvatarDisplayName={
                   selectedChannel.userId === user.userId
