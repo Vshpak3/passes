@@ -12,7 +12,10 @@ import {
   DropDownCommentDelete,
   DropDownCommentHide
 } from "src/components/organisms/profile/drop-down/DropdownOptionsComment"
-import { DropDownReport } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
+import {
+  DropDownBlock,
+  DropDownReport
+} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { useBlockModal } from "src/hooks/useBlockModal"
 import { useComment } from "src/hooks/useComment"
@@ -44,21 +47,13 @@ export const Comment: FC<CommentProps> = ({
     blockedUsers?.find(({ userId }: ListMemberDto) => userId === commenterId)
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!isOwner, setIsReportModalOpen),
-    ...(isCreator && !commentCreatorBlockedList
-      ? [
-          {
-            text: "Block",
-            onClick: () => {
-              setIsBlockModalOpen(true)
-              setBlockModalData({
-                userName: commenterUsername,
-                userId: commenterId
-              })
-            }
-          }
-        ]
-      : []),
+    ...DropDownReport(!isOwner && !ownsPost, setIsReportModalOpen),
+    ...DropDownBlock(!isOwner && ownsPost, setIsBlockModalOpen),
+    // !commentCreatorBlockedList
+    // setBlockModalData({
+    //   userName: commenterUsername,
+    //   userId: commenterId
+    // })
     ...(isCreator && commentCreatorBlockedList
       ? [
           {
@@ -71,7 +66,7 @@ export const Comment: FC<CommentProps> = ({
       : []),
 
     ...DropDownCommentDelete(
-      ownsPost || isOwner,
+      isOwner || ownsPost,
       postId,
       commentId,
       deleteComment,
@@ -79,7 +74,7 @@ export const Comment: FC<CommentProps> = ({
         setRemoved(true)
       }
     ),
-    ...DropDownCommentHide(ownsPost && !isOwner, postId, commentId, hideComment)
+    ...DropDownCommentHide(!isOwner && ownsPost, postId, commentId, hideComment)
   ]
 
   return (

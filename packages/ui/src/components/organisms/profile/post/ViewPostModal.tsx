@@ -15,7 +15,6 @@ import {
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
-  DropDownBlock,
   DropDownCopyLink,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
@@ -25,7 +24,6 @@ import { ProfileThumbnail } from "src/components/organisms/profile/profile-detai
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
-import { useBlockModal } from "src/hooks/useBlockModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { usePost } from "src/hooks/usePost"
 import { useReportModal } from "src/hooks/useReportModal"
@@ -42,7 +40,6 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
   const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen } = useBlockModal()
   const { viewPostActiveIndex } = useViewPostModal()
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
   const { removePost } = usePost()
@@ -71,7 +68,6 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, setIsReportModalOpen),
-    ...DropDownBlock(!post.isOwner, setIsBlockModalOpen),
     ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
       post.setIsRemoved?.(true)
       setPost(null)

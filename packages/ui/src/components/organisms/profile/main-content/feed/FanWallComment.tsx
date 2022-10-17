@@ -29,6 +29,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   const { deleteFanWallComment, hideFanWallComment } = useFanWall()
 
   const {
+    fanWallCommentId,
     commenterDisplayName,
     commenterId,
     commenterUsername,
@@ -38,19 +39,19 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   } = comment
 
   const dropdownItems: DropdownOption[] = [
-    ...DropDownReport(isOwner, setIsReportModalOpen),
-    ...DropDownBlock(isOwner, setIsBlockModalOpen),
+    ...DropDownReport(!isOwner && !ownsProfile, setIsReportModalOpen),
+    ...DropDownBlock(!isOwner && ownsProfile, setIsBlockModalOpen),
     ...DropDownFanWallCommentDelete(
-      ownsProfile || comment.isOwner,
-      comment.fanWallCommentId,
+      isOwner || ownsProfile,
+      fanWallCommentId,
       deleteFanWallComment,
       () => {
         setRemoved(true)
       }
     ),
     ...DropDownFanWallCommentHide(
-      ownsProfile && !comment.isOwner,
-      comment.fanWallCommentId,
+      !isOwner && ownsProfile,
+      fanWallCommentId,
       hideFanWallComment
     )
   ]

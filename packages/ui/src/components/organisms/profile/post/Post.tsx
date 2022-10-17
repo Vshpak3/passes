@@ -1,16 +1,14 @@
 import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
-  DropDownBlock,
   DropDownCopyLink,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
-import { useBlockModal } from "src/hooks/useBlockModal"
 import { useBlockUnblockUser } from "src/hooks/useBlockUnblockUser"
 import { usePost } from "src/hooks/usePost"
 import { useReportModal } from "src/hooks/useReportModal"
@@ -28,11 +26,10 @@ interface PostProps {
   redirectOnDelete?: boolean
 }
 
-export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
+export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()
-  const { setIsBlockModalOpen } = useBlockModal()
   const router = useRouter()
   const { user } = useUser()
   const { removePost } = usePost()
@@ -56,7 +53,6 @@ export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, setIsReportModalOpen),
-    ...DropDownBlock(!post.isOwner, setIsBlockModalOpen),
     ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
       setIsRemoved(true)
       if (redirectOnDelete && user) {

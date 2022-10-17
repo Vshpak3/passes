@@ -130,7 +130,7 @@ export class FollowService {
     await createOrThrowOnDuplicate(
       () => query,
       this.logger,
-      'cant follow a creator twice',
+      'You cannot follow a creator twice',
     )
 
     try {
@@ -257,7 +257,7 @@ export class FollowService {
     await createOrThrowOnDuplicate(
       () => query,
       this.logger,
-      'cant block a creator twice',
+      'You cannot block a creator twice',
     )
     await this.dbWriter<BlockTaskEntity>(BlockTaskEntity.table).insert({
       follower_id: followerId,

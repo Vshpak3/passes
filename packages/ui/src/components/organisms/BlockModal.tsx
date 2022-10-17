@@ -8,22 +8,26 @@ import { errorMessage } from "src/helpers/error"
 import { Modal, ModalProps } from "./Modal"
 
 interface BlockModalProps extends ModalProps {
-  creatorId: string
+  userId: string
   username: string
 }
 
 export const BlockModal: FC<BlockModalProps> = ({
+  userId,
+  username,
   isOpen = false,
-  setOpen,
-  creatorId,
-  username
+  setOpen
 }) => {
-  const [blockValue, setBlockValue] = useState("")
+  const [blockValue, setBlockValue] = useState()
 
   const onFanBlock = async () => {
+    // TODO: this block value is not actually used
+    if (!blockValue) {
+      return
+    }
     try {
       const api = new FollowApi()
-      await api.blockFollower({ followerId: creatorId || "" })
+      await api.blockFollower({ followerId: userId })
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)
@@ -75,7 +79,12 @@ export const BlockModal: FC<BlockModalProps> = ({
         <Button onClick={() => setOpen(false)} variant="">
           <Text className="text-white">Cancel</Text>
         </Button>
-        <Button disabled={!blockValue} onClick={() => onFanBlock()} variant="">
+        <Button
+          disabled={!blockValue}
+          disabledClass="opacity-[0.5]"
+          onClick={onFanBlock}
+          variant=""
+        >
           <Text className="text-white">Confirm</Text>
         </Button>
       </div>

@@ -93,6 +93,10 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [blockModalData, setBlockModalData] = useState<BlockModalData | null>(
     null
   )
+  const [reportModalData, setReportModalData] = useState<BlockModalData | null>(
+    null
+  )
+
   const router = useRouter()
   const { setAccessToken } = useUser()
 
@@ -143,7 +147,9 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
               viewPostActiveIndex
             }}
           >
-            <ReportModalContext.Provider value={{ setIsReportModalOpen }}>
+            <ReportModalContext.Provider
+              value={{ setIsReportModalOpen, setReportModalData }}
+            >
               <BlockModalContext.Provider
                 value={{ setIsBlockModalOpen, setBlockModalData }}
               >
@@ -159,6 +165,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
                     <ReportModal
                       isOpen={isReportModalOpen}
                       setOpen={setIsReportModalOpen}
+                      username={blockModalData?.userName || ""}
+                      userId={blockModalData?.userId || ""}
                     />
                   )}
                   {isBlockModalOpen && (
@@ -166,7 +174,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
                       isOpen={isBlockModalOpen}
                       setOpen={setIsBlockModalOpen}
                       username={blockModalData?.userName || ""}
-                      creatorId={blockModalData?.userId || ""}
+                      userId={blockModalData?.userId || ""}
                     />
                   )}
                   <ToastContainer

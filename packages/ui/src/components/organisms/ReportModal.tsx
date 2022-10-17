@@ -1,24 +1,36 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import { FC, useState } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
-import { useUser } from "src/hooks/useUser"
 
 import { Modal, ModalProps } from "./Modal"
 
-export const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
-  const { user } = useUser()
+interface ReportModalProps extends ModalProps {
+  userId: string
+  username: string
+}
 
-  const [reportValue, setReportValue] = useState("")
+export const ReportModal: FC<ReportModalProps> = ({
+  userId,
+  username,
+  isOpen = false,
+  setOpen
+}) => {
+  const [reportValue, setReportValue] = useState()
 
   const onFanReport = async () => {
+    if (!reportValue) {
+      return
+    }
     try {
       const api = new FollowApi()
       await api.reportUser({
-        reportUserDto: { reason: reportValue, userId: user?.userId || "" }
+        reportUserDto: { reason: reportValue, userId }
       })
+      toast.success("Reported this content")
       setOpen(false)
     } catch (error: any) {
       errorMessage(error, true)
@@ -27,7 +39,7 @@ export const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
 
   return (
     <Modal isOpen={isOpen} setOpen={setOpen}>
-      <h2 className="mb-5 font-semibold text-white">REPORT USER</h2>
+      <h2 className="mb-5 font-semibold text-white">REPORT ${username}</h2>
       <RadioGroup
         value={reportValue}
         onChange={setReportValue}
@@ -97,7 +109,8 @@ export const ReportModal: FC<ModalProps> = ({ isOpen = false, setOpen }) => {
         </Button>
         <Button
           disabled={!reportValue}
-          onClick={() => onFanReport()}
+          disabledClass="opacity-[0.5]"
+          onClick={onFanReport}
           variant=""
         >
           <Text className="text-white">Report</Text>
