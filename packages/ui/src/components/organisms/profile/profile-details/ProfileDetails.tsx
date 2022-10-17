@@ -22,7 +22,7 @@ export const ProfileDetails: FC = () => {
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
   const onChat = async () => {
-    router.push("/messages")
+    router.push(`/messages?user=${profileUserId}`)
   }
 
   if (!profileUserId) {

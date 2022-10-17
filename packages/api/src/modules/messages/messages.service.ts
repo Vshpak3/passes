@@ -25,7 +25,6 @@ import { ContentDto } from '../content/dto/content.dto'
 import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
-import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { ListService } from '../list/list.service'
 import { PassEntity } from '../pass/entities/pass.entity'
@@ -671,18 +670,26 @@ export class MessagesService {
     tipAmount: number,
   ): Promise<BlockedReasonEnum | undefined> {
     // userId must be a creator or follow otherUserId
-    const user = await this.dbReader<UserEntity>(UserEntity.table)
-      .where({ id: userId })
+    // const user = await this.dbReader<UserEntity>(UserEntity.table)
+    //   .where({ id: userId })
+    //   .select('is_creator')
+    //   .first()
+    // const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
+    //   .where({
+    //     follower_id: userId,
+    //     creator_id: otherUserId,
+    //   })
+    //   .select('id')
+    //   .first()
+    // if (!user || (!user.is_creator && !follow)) {
+    //   return BlockedReasonEnum.USER_BLOCKED
+    // }
+
+    const users = await this.dbReader<UserEntity>(UserEntity.table)
+      .whereIn('id', [userId, otherUserId])
       .select('is_creator')
-      .first()
-    const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
-      .where({
-        follower_id: userId,
-        creator_id: otherUserId,
-      })
-      .select('id')
-      .first()
-    if (!user || (!user.is_creator && !follow)) {
+    const creators = users.filter((user) => user.is_creator)
+    if (!creators.length) {
       return BlockedReasonEnum.USER_BLOCKED
     }
 
