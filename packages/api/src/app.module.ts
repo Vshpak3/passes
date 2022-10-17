@@ -48,7 +48,8 @@ import {
   imports: [
     ConfigModule.forRoot(configOptions),
     MetricsModule.forRootAsync(metricOptions),
-    RedisModule.forRootAsync(redisOptions),
+    RedisModule.forRootAsync(redisOptions, 'subscriber'),
+    RedisModule.forRootAsync(redisOptions, 'publisher'),
     SentryModule.forRootAsync(sentryOptions),
     WinstonModule.forRootAsync(loggingOptions),
     AdminModule,

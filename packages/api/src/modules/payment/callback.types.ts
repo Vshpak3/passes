@@ -4,7 +4,9 @@ export class MessagePayinCallbackInput extends PayinCallbackInput {
   userId: string
   text: string
   channelId: string
+  receiverId: string
   contents: string
+  previewIndex: number
   messageId?: string
 }
 

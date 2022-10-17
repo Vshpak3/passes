@@ -3,8 +3,10 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -55,6 +57,7 @@ import { GetMessagesRequestDto } from './dto/get-message.dto'
 import { GetPaidMessagesRequestDto } from './dto/get-paid-message.dto'
 import { GetPaidMessageHistoryRequestDto } from './dto/get-paid-message-history.dto'
 import { MessageDto } from './dto/message.dto'
+import { MessageNotificationDto } from './dto/message-notification.dto'
 import { PaidMessageDto } from './dto/paid-message.dto'
 import { PaidMessageHistoryDto } from './dto/paid-message-history.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
@@ -75,6 +78,7 @@ import {
   MessageSendError,
   PaidMessageNotFoundException,
 } from './error/message.error'
+import { MessagesGateway } from './messages.gateway'
 
 const MAX_CHANNELS_PER_REQUEST = 10
 const MAX_MESSAGES_PER_REQUEST = 10
@@ -99,6 +103,8 @@ export class MessagesService {
     private readonly passService: PassService,
     private readonly listService: ListService,
     private readonly contentService: ContentService,
+    private readonly gateway: MessagesGateway,
+    @InjectRedis('publisher') private readonly redisService: Redis,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
   }
@@ -395,9 +401,11 @@ export class MessagesService {
             userId,
             text,
             channelId,
+            otherUserId,
             0,
             false,
             contents,
+            previewIndex,
             price,
             paidMessageId,
           )
@@ -471,6 +479,8 @@ export class MessagesService {
         contents: JSON.stringify(
           await this.contentService.validateContentIds(userId, contentIds),
         ),
+        receiverId: channelMember.other_user_id,
+        previewIndex,
       }
       return await this.payService.registerPayin({
         userId,
@@ -492,9 +502,11 @@ export class MessagesService {
         userId,
         text,
         channelId,
+        channelMember.other_user_id,
         tipAmount,
         false,
         contents,
+        previewIndex,
         price,
         paidMessageId,
       )
@@ -701,9 +713,11 @@ export class MessagesService {
     userId: string,
     text: string,
     channelId: string,
+    recieverId: string,
     tipAmount: number,
     pending: boolean,
     contents: string,
+    previewIndex: number,
     price?: number,
     paidMessageId?: string,
   ): Promise<string> {
@@ -717,13 +731,21 @@ export class MessagesService {
       price: price ?? 0,
       paid_message_id: paidMessageId ?? null,
       contents,
+      paid: false,
+      preview_index: previewIndex,
       // eslint-disable-next-line no-magic-numbers
       has_content: contents.length > 8,
-    }
+    } as MessageEntity
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
       await this.updateStatus(userId, channelId)
     }
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new MessageNotificationDto(data, this.getContents(data), recieverId),
+      ),
+    )
     return data.id
   }
 
@@ -731,20 +753,43 @@ export class MessagesService {
     userId: string,
     messageId: string,
     channelId: string,
+    receiverId: string,
     tipAmount: number,
   ) {
+    const date = new Date()
     const updated = await this.dbWriter<MessageEntity>(MessageEntity.table)
       .where({
         id: messageId,
         pending: true,
       })
       .update({
-        sent_at: new Date(),
+        sent_at: date,
         pending: false,
       })
     if (updated) {
       await this.updateStatus(userId, channelId)
       await this.updateChannelTipStats(userId, channelId, tipAmount)
+      const message = await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .where({
+          id: messageId,
+        })
+        .select('*')
+        .first()
+      if (!message) {
+        throw new InternalServerErrorException('no message found')
+      }
+      message.pending = false
+      message.sent_at = date
+      await this.redisService.publish(
+        'message',
+        JSON.stringify(
+          new MessageNotificationDto(
+            message,
+            this.getContents(message),
+            receiverId,
+          ),
+        ),
+      )
     }
   }
 

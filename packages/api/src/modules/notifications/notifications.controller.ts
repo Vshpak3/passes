@@ -7,7 +7,6 @@ import {
   Patch,
   Post,
   Req,
-  Sse,
 } from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { EventEmitter } from 'events'
@@ -45,18 +44,6 @@ export class NotificationsController {
     return new GetNotificationsResponseDto(
       await this.notificationsService.get(req.user.id, getNotificationsRequest),
     )
-  }
-
-  @ApiEndpoint({
-    summary: 'Subscribe to notification events',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'Notification events were subscribed',
-    role: RoleEnum.GENERAL,
-  })
-  @Sse('subscribe')
-  async subscribeNotifications(@Req() req: RequestWithUser) {
-    return await this.notificationsService.subscribe(req.user.id)
   }
 
   @ApiEndpoint({

@@ -23,6 +23,9 @@ export class PaidMessageDto {
   @DtoProperty({ custom_type: [ContentBareDto] })
   bareContents: ContentBareDto[]
 
+  @DtoProperty({ type: 'number' })
+  previewIndex: number
+
   @Min(0)
   @DtoProperty({ type: 'number' })
   numPurchases: number
@@ -50,6 +53,7 @@ export class PaidMessageDto {
       this.text = paidMessage.text
       this.price = paidMessage.price
       this.bareContents = JSON.parse(paidMessage.contents)
+      this.previewIndex = paidMessage.preview_index
       this.numPurchases = paidMessage.num_purchases
       this.earningsPurchases = paidMessage.earnings_purchases
       this.createdAt = paidMessage.created_at

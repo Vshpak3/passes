@@ -30,7 +30,7 @@ interface VerifyCallback {
   (payload: any, done: VerifiedCallback): void
 }
 
-const JWT_VERIFY_OPTIONS = {
+export const JWT_VERIFY_OPTIONS = {
   ignoreExpiration: false,
   audience: BASE_CLAIMS.aud,
   issuer: BASE_CLAIMS.iss,

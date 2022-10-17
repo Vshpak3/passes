@@ -93,9 +93,11 @@ async function tippedMessageCreationCallback(
     input.userId,
     input.text,
     input.channelId,
+    input.receiverId,
     payin.amount,
     true,
     input.contents,
+    input.previewIndex,
   )
   input.messageId = messageId
   await payService.updateInputJSON(payin.id, input)
@@ -122,6 +124,7 @@ async function tippedMessageSuccessCallback(
     input.userId,
     input.messageId as string,
     input.channelId,
+    input.receiverId,
     payin.amount,
   )
   return { messageId: input.messageId as string }

@@ -3,10 +3,10 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
 import { EventEmitter } from 'events'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { fromEvent } from 'rxjs'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
@@ -25,6 +25,7 @@ import { NotificationEntity } from './entities/notification.entity'
 import { NotificationSettingsEntity } from './entities/notification-settings.entity'
 import { NotificationStatusEnum } from './enum/notification.status.enum'
 import { NotificationTypeEnum } from './enum/notification.type.enum'
+import { NotificationsGateway } from './notifications.gateway'
 
 @Injectable()
 export class NotificationsService {
@@ -33,21 +34,19 @@ export class NotificationsService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    @InjectRedis('subscriber') private readonly redisService: Redis,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
+    private readonly gateway: NotificationsGateway,
   ) {
     this.emitter = new EventEmitter()
   }
 
   getEventName(userId: string) {
     return CryptoJS.SHA256(`notifications-${userId}`).toString(CryptoJS.enc.Hex)
-  }
-
-  async subscribe(userId: string) {
-    return fromEvent(this.emitter, this.getEventName(userId))
   }
 
   async get(

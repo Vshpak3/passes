@@ -47,7 +47,7 @@ export class WalletService {
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
-    @InjectRedis() private readonly redisService: Redis,
+    @InjectRedis('subscriber') private readonly redisService: Redis,
   ) {
     this.web3 = new Web3(
       'https://eth-mainnet.g.alchemy.com/v2/dDJnsm97esWl2C9fFvmuS6pUMKOe6rlM',

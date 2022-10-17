@@ -19,6 +19,9 @@ export class MessageDto {
   @DtoProperty({ custom_type: [ContentDto] })
   contents: ContentDto[]
 
+  @DtoProperty({ type: 'number' })
+  previewIndex: number
+
   @DtoProperty({ type: 'uuid' })
   channelId: string
 
@@ -53,6 +56,7 @@ export class MessageDto {
       this.reverted = message.reverted
       this.paid = message.paid
       this.pending = message.pending
+      this.previewIndex = message.preview_index
     }
     this.contents = contents
   }

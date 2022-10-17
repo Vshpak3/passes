@@ -11,7 +11,9 @@ const DEFAULT_LOCK_MAX_RETRY_TIMES = 100
 export class RedisLockService {
   private readonly uuid: string = uuid.v4()
 
-  constructor(@InjectRedis() private readonly redisService: Redis) {}
+  constructor(
+    @InjectRedis('subscriber') private readonly redisService: Redis,
+  ) {}
 
   private prefix(name: string): string {
     return `lock:${name}`

@@ -150,9 +150,11 @@ export class FollowService {
             creatorId,
             welcomeMessage.text,
             channel.channelId,
+            userId,
             0,
             false,
             JSON.stringify(welcomeMessage.bareContents),
+            welcomeMessage.previewIndex,
             welcomeMessage.price,
             welcomeMessage.paidMessageId,
           )

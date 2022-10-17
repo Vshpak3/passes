@@ -6,6 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
+import { IoAdapter } from '@nestjs/platform-socket.io'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
@@ -81,6 +82,7 @@ export class App {
   }
 
   async listen() {
+    this.app.useWebSocketAdapter(new IoAdapter(this.app))
     await this.app.listen(APPLICATION_PORT)
   }
 }
