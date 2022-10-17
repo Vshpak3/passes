@@ -33,7 +33,9 @@ export const PostContent: FC<PostContentProps> = ({
   }
 
   return contentElement ? (
-    <button onClick={setPostHandler}>{contentElement}</button>
+    <button className="w-full" onClick={setPostHandler}>
+      {contentElement}
+    </button>
   ) : (
     <></>
   )

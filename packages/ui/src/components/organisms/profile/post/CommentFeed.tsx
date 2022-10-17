@@ -25,13 +25,21 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
   return (
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
       keyValue={`/comments/${postId}`}
+      isReverse
       fetch={async (req: GetCommentsForPostRequestDto) => {
         return await api.findCommentsForPost({
           getCommentsForPostRequestDto: req
         })
       }}
       KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
-        return <Comment comment={arg} removable={true} ownsPost={ownsPost} />
+        return (
+          <Comment
+            comment={arg}
+            removable={true}
+            ownsPost={ownsPost}
+            isPostComment
+          />
+        )
       }}
       loadingElement={
         <div className="flex w-full items-center justify-center">

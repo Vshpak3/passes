@@ -10,6 +10,7 @@ import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { Dialog } from "src/components/organisms/Dialog"
+import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
@@ -18,6 +19,7 @@ import { useBlockModal } from "src/hooks/useBlockModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { usePost } from "src/hooks/usePost"
 import { useReportModal } from "src/hooks/useReportModal"
+import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { CommentFeed } from "./CommentFeed"
 import { DropdownOption, PostDropdown } from "./PostDropdown"
@@ -32,6 +34,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { setPost: setBuyPost } = useBuyPostModal()
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
+  const { viewPostActiveIndex } = useViewPostModal()
   const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
   const { removePost } = usePost()
 
@@ -97,7 +100,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
           )}
           <div className="relative mr-[27px] flex h-96 flex-1 flex-col space-y-[35px] rounded-[20px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px] lg:h-auto">
             <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px]">
-              {postUnlocked && (
+              {postUnlocked && post.contents && post.contents.length === 1 && (
                 <Image
                   src={showcaseImg || ""}
                   layout="fill"
@@ -106,6 +109,18 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                   objectPosition="center"
                 />
               )}
+              <div className="relative mt-3 flex h-[500px] w-full w-[600px] flex-row items-center justify-center bg-transparent">
+                {postUnlocked && post.contents && post.contents.length > 1 && (
+                  <Carousel
+                    contents={post.contents}
+                    activeIndex={
+                      (viewPostActiveIndex.current &&
+                        viewPostActiveIndex.current[post.postId]) ||
+                      0
+                    }
+                  />
+                )}
+              </div>
               {!postUnlocked && (
                 <>
                   <PostUnlockButton

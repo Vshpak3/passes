@@ -4,7 +4,7 @@ import { FC, RefObject } from "react"
 export interface PostImageProps {
   content: ContentDto
   ref: RefObject<HTMLImageElement>
-  startLoadingHandler: () => () => void
+  startLoadingHandler?: () => () => void
 }
 
 export const PostImage: FC<PostImageProps> = ({

@@ -57,10 +57,11 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           transform: "translate(-50%, -50%)",
           width: "fit-content",
           height: "fit-content",
-
+          borderRadius: "20px",
           // Overrides
           padding: 0,
-          border: 0
+          border: 0,
+          background: "transparent"
         },
         overlay: {
           display: "flex",

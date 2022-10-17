@@ -12,14 +12,14 @@ export interface DropdownOption {
 
 interface PostDropdownProps extends Pick<PostDto, "username" | "postId"> {
   readonly items: DropdownOption[]
-  copyLinkDisabled?: boolean
+  readonly isPostComment?: boolean
 }
 
 export const PostDropdown: FC<PostDropdownProps> = ({
   items,
   username,
   postId,
-  copyLinkDisabled = false
+  isPostComment
 }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -40,7 +40,7 @@ export const PostDropdown: FC<PostDropdownProps> = ({
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className="py-1">
-            {!copyLinkDisabled && (
+            {!isPostComment && (
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               <Menu.Item onClick={() => copyLinkToClipboard(username, postId)}>

@@ -12,6 +12,7 @@ interface InfiniteLoadProps<A, T extends PagedData<A>> {
   endElement?: JSX.Element
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
+  isReverse?: boolean
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -28,6 +29,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   endElement,
   KeyedComponent,
   resets = 0,
+  isReverse,
   children
 }: PropsWithChildren<InfiniteLoadProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
@@ -38,7 +40,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     request.data = undefined
     return { props: request, resets, keyValue }
   }
-  const [hasMore, setHasMore] = useState<boolean>(true)
+  const [hasMore, setHasMore] = useState<boolean>(false)
   const fetchData = async ({ props }: Key<T>) => {
     return await fetch(props as Omit<T, "data">)
   }
@@ -73,6 +75,12 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+
+  useEffect(() => {
+    if (isReverse) {
+      setFlattenedData((prevState) => prevState.reverse())
+    }
+  }, [isReverse, data, hasMore])
 
   return (
     <>

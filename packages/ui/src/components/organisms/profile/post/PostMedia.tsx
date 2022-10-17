@@ -7,30 +7,43 @@ import {
   PostContent,
   PostContentProps
 } from "src/components/molecules/PostContent"
+import { useViewPostModal } from "src/hooks/useViewPostModal"
 import { KeyedMutator } from "swr"
 
 interface PostMediaProps {
   contents: PostDto["contents"]
   mutatePosts?: KeyedMutator<GetFeedResponseDto>
   setPostHandler?: PostContentProps["setPostHandler"]
+  postId?: string
 }
 
 export const PostMedia: FC<PostMediaProps> = ({
   contents,
   mutatePosts,
-  setPostHandler
+  setPostHandler,
+  postId
 }) => {
-  const [activeSlideIndex, setActiveSlideIndex] = useState(0)
+  const { viewPostActiveIndex } = useViewPostModal()
+  const activeIndex =
+    (viewPostActiveIndex.current &&
+      postId &&
+      viewPostActiveIndex.current[postId]) ||
+    0
+  const [activeSlideIndex, setActiveSlideIndex] = useState(activeIndex)
   const sliderSettings = {
     dots: true,
     dotsClass: "slick-dots slick-thumb",
     infinite: false,
     arrows: false,
+    initialSlide: activeIndex,
     slidesToShow: 1,
     slidesToScroll: 1,
     nextArrow: <NextImageArrow />,
     prevArrow: <PrevImageArrow />,
-    afterChange: (current: number) => setActiveSlideIndex(current),
+    afterChange: async (current: number) => {
+      setActiveSlideIndex(current)
+      viewPostActiveIndex.current = { [postId as string]: current }
+    },
     appendDots: (dots: ReactNode) => <ul>{dots}</ul>,
     customPaging: (i: number) => (
       <div className="absolute bottom-[30px]">

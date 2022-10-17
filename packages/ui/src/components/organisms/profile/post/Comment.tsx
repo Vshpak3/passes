@@ -13,11 +13,17 @@ interface CommentProps {
   readonly comment: CommentDto
   removable: boolean
   ownsPost: boolean
+  isPostComment?: boolean
 }
 
 const api = new CommentApi()
 
-export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
+export const Comment: FC<CommentProps> = ({
+  comment,
+  removable,
+  ownsPost,
+  isPostComment
+}) => {
   const [removed, setRemoved] = useState(false)
   const { setIsReportModalOpen } = useReportModal()
   const { setIsBlockModalOpen } = useBlockModal()
@@ -92,6 +98,7 @@ export const Comment: FC<CommentProps> = ({ comment, removable, ownsPost }) => {
                 items={dropdownOptions}
                 username={commenterUsername}
                 postId={postId}
+                isPostComment={isPostComment}
               />
             </div>
           </div>

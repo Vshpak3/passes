@@ -21,7 +21,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
   const addNewComment = useCallback(
     (comment: CommentDto) => {
-      setNewComments((state) => [comment, ...state])
+      setNewComments((state) => [...state, comment])
       incrementNumComments()
     },
     [incrementNumComments]
@@ -29,6 +29,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
   return (
     <div className="mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10">
+      <CommentFeed postId={postId} ownsPost={ownsPost} />
       {newComments.map((comment) => {
         return (
           <Comment
@@ -36,10 +37,10 @@ export const CommentSection: FC<CommentSectionProps> = ({
             comment={comment}
             removable={true}
             ownsPost={ownsPost}
+            isPostComment
           />
         )
       })}
-      <CommentFeed postId={postId} ownsPost={ownsPost} />
       <NewCommentEditor postId={postId} addComment={addNewComment} />
     </div>
   )

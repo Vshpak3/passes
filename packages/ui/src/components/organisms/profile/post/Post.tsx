@@ -98,7 +98,11 @@ export const Post: React.FC<PostProps> = ({ post, redirectToProfile }) => {
         />
         <PostTextContent text={text} />
         {!purchasable && (
-          <PostMedia contents={contents} setPostHandler={setPostHandler} />
+          <PostMedia
+            postId={postId}
+            contents={contents}
+            setPostHandler={setPostHandler}
+          />
         )}
         {purchasable && <LockedMedia post={post} />}
         <PostEngagement post={post} />

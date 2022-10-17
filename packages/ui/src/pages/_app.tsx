@@ -10,7 +10,7 @@ import { AppProps } from "next/app"
 import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import nprogress from "nprogress"
-import { ReactElement, ReactNode, useEffect, useState } from "react"
+import { ReactElement, ReactNode, useEffect, useRef, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
@@ -81,6 +81,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const [refresh, setRefresh] = useState(0)
   const [hasRefreshed, setHasRefreshed] = useState(false)
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
+  const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
@@ -128,7 +129,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       />
       <SWRConfig value={swrConfig}>
         <DndProvider backend={HTML5Backend}>
-          <ViewPostModalContext.Provider value={{ setPost: setViewPost }}>
+          <ViewPostModalContext.Provider
+            value={{
+              setPost: setViewPost,
+              viewPostActiveIndex
+            }}
+          >
             <ReportModalContext.Provider value={{ setIsReportModalOpen }}>
               <BlockModalContext.Provider value={{ setIsBlockModalOpen }}>
                 <BuyPostModalContext.Provider value={{ setPost: setBuyPost }}>
