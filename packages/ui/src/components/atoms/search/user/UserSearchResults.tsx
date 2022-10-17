@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
 interface EmptyResultProps {
   text: string

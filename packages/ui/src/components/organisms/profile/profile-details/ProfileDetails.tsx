@@ -3,13 +3,13 @@ import { FC, useState } from "react"
 import { useProfile } from "src/hooks/useProfile"
 
 import { EditProfile } from "./EditProfile"
+import { EditProfileAction } from "./EditProfileAction"
+import { ProfileImage } from "./ProfileImage"
+import { ProfileImageModal } from "./ProfileImageModal"
 import {
-  EditProfileAction,
-  ProfileImage,
   ProfileInformationDesktop,
   ProfileInformationMobile
-} from "./ProfileComponents"
-import { ProfileImageModal } from "./ProfileImageModal"
+} from "./ProfileInformation"
 
 export const ProfileDetails: FC = () => {
   const router = useRouter()

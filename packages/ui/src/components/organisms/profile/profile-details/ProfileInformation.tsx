@@ -1,106 +1,16 @@
 import ChatIcon from "public/icons/mail-icon.svg"
-import EditIcon from "public/icons/profile-edit-icon.svg"
-import { Dispatch, FC, SetStateAction } from "react"
+import { FC } from "react"
 import {
   ButtonTypeEnum,
-  CoverButton,
   PassesPinkButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { ContentService } from "src/helpers/content"
 import { compactNumberFormatter } from "src/helpers/formatters"
 import { useFollow } from "src/hooks/useFollow"
 import { useProfile } from "src/hooks/useProfile"
 
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
-
-interface VerifiedProps {
-  isVerified: any
-}
-
-export const Verified: FC<VerifiedProps> = ({ isVerified }) => (
-  <div className="align-items flex items-center justify-self-start p-4 text-passes-gray-100">
-    <span className="text-[12px] font-semibold md:pl-2 md:text-sm">
-      {isVerified ? "Verified" : "Not Verified"}
-    </span>
-  </div>
-)
-
-interface ProfileStatItemMobileProps {
-  stat: any
-  label: any
-}
-
-export const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
-  stat,
-  label
-}) => (
-  <div className="grid grid-rows-2">
-    <span className="text-[14px] font-medium text-passes-white-100">
-      {stat ?? "-"}
-    </span>
-    <span className="text-[12px] font-normal text-passes-white-100/60">
-      {label ?? "-"}
-    </span>
-  </div>
-)
-
-interface ProfileStatsMobileProps {
-  numPosts: number
-  likes: number
-}
-
-export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
-  numPosts,
-  likes
-}) => (
-  <div className="align-center grid grid-cols-3 items-center text-center">
-    <ProfileStatItemMobile stat={numPosts} label="POSTS" />
-    <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
-    <ProfileStatItemMobile stat={compactNumberFormatter(likes)} label="LIKES" />
-  </div>
-)
-
-interface ProfileImageProps {
-  userId: string
-  onClick?: () => void
-  override?: string
-}
-
-export const ProfileImage = ({
-  userId,
-  onClick,
-  override
-}: ProfileImageProps) => (
-  <div
-    className="align-items relative h-[116px] w-[116px] cursor-pointer overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:flex md:h-[138px] md:w-[138px] md:-translate-y-[75px] md:items-center md:justify-center"
-    onClick={onClick}
-  >
-    <img
-      src={override ? override : ContentService.profileThumbnail(userId)}
-      className="object-cover drop-shadow-profile-photo"
-      alt=""
-      onError={({ currentTarget }) => {
-        currentTarget.onerror = null
-        currentTarget.src = "/img/profile/default-profile-img.svg"
-      }}
-    />
-  </div>
-)
-
-export const ProfileThumbnail = ({ userId }: ProfileImageProps) => (
-  <div className="h-[42px] w-[42px] flex-shrink-0 overflow-hidden rounded-full bg-gray-900">
-    <img
-      className="h-full w-full object-cover object-center"
-      src={ContentService.profileThumbnail(userId)}
-      alt="user profile thumbnail"
-      onError={({ currentTarget }) => {
-        currentTarget.onerror = null
-        currentTarget.src = "/img/profile/default-profile-img.svg"
-      }}
-    />
-  </div>
-)
+import { ProfileStatsMobile } from "./ProfileStats"
 
 export interface ProfileInformationProps {
   onChat: () => void
@@ -186,25 +96,6 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
     </div>
   )
 }
-
-interface EditProfileActionProps {
-  setEditProfile: Dispatch<SetStateAction<boolean>>
-}
-
-export const EditProfileAction: FC<EditProfileActionProps> = ({
-  setEditProfile
-}) => (
-  <div className="absolute top-5 right-5 items-center justify-between md:top-10 md:right-0">
-    <CoverButton
-      className="hidden px-4 md:block"
-      name="Edit profile"
-      onClick={() => setEditProfile(true)}
-    />
-    <button className="block md:hidden" onClick={() => setEditProfile(true)}>
-      <EditIcon />
-    </button>
-  </div>
-)
 
 export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
   onChat

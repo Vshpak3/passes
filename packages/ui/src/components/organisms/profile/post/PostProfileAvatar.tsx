@@ -1,4 +1,5 @@
 import { PostDto } from "@passes/api-client"
+import classNames from "classnames"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
@@ -10,7 +11,7 @@ import {
   Dropdown,
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
 interface PostProfileAvatarProps
   extends Pick<
@@ -32,25 +33,34 @@ export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
 }) => {
   return (
     <div className="flex w-full items-center justify-between">
-      <div className="flex items-center space-x-4 overflow-x-clip">
+      <a
+        href={`${window.location.origin}/${username}`}
+        className={classNames({
+          "flex items-center space-x-4 overflow-x-clip": true,
+          "pointer-events-none": !displayName
+        })}
+      >
         <ProfileThumbnail userId={userId} />
         <div className="space-y-1 font-medium dark:text-white">
-          {/* TODO: consider making this not link for non-creator comments */}
-          <a href={`${window.location.origin}/${username}`}>
-            <div className="flex items-center gap-[6px]">
-              <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                {displayName}
-              </span>
-              <span className="flex items-center">
-                <VerifiedSmall />
-              </span>
-            </div>
+          <span>
+            {displayName && (
+              <div className="flex items-center gap-[6px]">
+                <>
+                  <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+                    {displayName}
+                  </span>
+                  <span className="flex items-center">
+                    <VerifiedSmall />
+                  </span>
+                </>
+              </div>
+            )}
             <div className="text-sm text-gray-500 dark:text-gray-400">
               @{username}
             </div>
-          </a>
+          </span>
         </div>
-      </div>
+      </a>
       <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo

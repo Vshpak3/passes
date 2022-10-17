@@ -20,7 +20,7 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileComponents"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
