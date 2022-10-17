@@ -93,14 +93,16 @@ const PayoutSettings = () => {
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div
           className={classNames(
-            defaultPayoutMethod
+            defaultPayoutMethod &&
+              defaultPayoutMethod.method !== PayoutMethodDtoMethodEnum.None
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
             "flex w-full gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-4 md:p-6"
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
-          {defaultPayoutMethod ? (
+          {defaultPayoutMethod &&
+          defaultPayoutMethod.method !== PayoutMethodDtoMethodEnum.None ? (
             renderDefaultPayoutMethod()
           ) : (
             <div className="mr-2 rounded-full border-2 border-passes-dark-200 py-2 px-4 font-[500]">

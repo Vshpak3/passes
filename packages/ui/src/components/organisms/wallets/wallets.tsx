@@ -247,7 +247,7 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div className="overflow-x-scroll ">
+      <div className="overflow-x-scroll md:overflow-x-auto">
         <div
           className="
           mt-6

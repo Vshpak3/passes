@@ -73,6 +73,7 @@ const PaymentHistory = () => {
     <>
       <Tab withBack title="Payment History" />
       <button
+        className="my-4"
         aria-describedby={monthYearPopperId}
         type="button"
         onClick={handleShowMonthYearPopper}
