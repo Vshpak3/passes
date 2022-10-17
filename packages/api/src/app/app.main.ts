@@ -62,10 +62,8 @@ export class App {
       optionsSuccessStatus: 204,
     }
 
-    if (process.env.NODE_ENV === 'prod') {
-      corsConfig.origin = 'http://passes.com'
-    } else if (process.env.NODE_ENV === 'stage') {
-      corsConfig.origin = 'http://passes-staging.com'
+    if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'stage') {
+      corsConfig.origin = process.env.CLIENT_URL ?? ''
     }
 
     this.app.enableCors(corsConfig)
