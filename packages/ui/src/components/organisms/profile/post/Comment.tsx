@@ -10,7 +10,7 @@ import { useReportModal } from "src/hooks/useReportModal"
 import { DropdownOption, PostDropdown } from "./PostDropdown"
 
 interface CommentProps {
-  readonly comment: CommentDto
+  comment: CommentDto
   removable: boolean
   ownsPost: boolean
   isPostComment?: boolean

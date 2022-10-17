@@ -16,7 +16,7 @@ interface PostProfileAvatarProps
   > {
   dropdownOptions: DropdownOption[]
   statisticsButtonProps?: PostStatisticsButtonProps
-  copyLinkDisabled?: boolean
+  isPostComment?: boolean
 }
 
 export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
@@ -28,7 +28,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
   username,
   dropdownOptions,
   statisticsButtonProps,
-  copyLinkDisabled = false
+  isPostComment = false
 }) => {
   return (
     <div className="flex w-full items-center justify-between">
@@ -82,7 +82,7 @@ export const PostProfileAvatar: React.FC<PostProfileAvatarProps> = ({
             items={dropdownOptions}
             username={username}
             postId={postId}
-            copyLinkDisabled={copyLinkDisabled}
+            isPostComment={isPostComment}
           />
         </div>
       </div>

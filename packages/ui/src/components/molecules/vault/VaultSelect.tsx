@@ -1,3 +1,4 @@
+import { ContentDto } from "@passes/api-client"
 import { FC } from "react"
 import {
   VaultDeselectButton,
@@ -5,7 +6,7 @@ import {
 } from "src/components/atoms/vault"
 
 interface VaultSelectContainerProps {
-  selectedItems: Array<string>
+  selectedItems: Array<ContentDto>
   deselectAll: () => void
 }
 

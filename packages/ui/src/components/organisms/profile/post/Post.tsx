@@ -18,10 +18,10 @@ import { PostTextContent } from "./PostTextContent"
 
 interface PostProps {
   post: PostDto
-  redirectToProfile?: boolean
+  redirectOnDelete?: boolean
 }
 
-export const Post: React.FC<PostProps> = ({ post, redirectToProfile }) => {
+export const Post: React.FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
   const { setIsReportModalOpen } = useReportModal()
@@ -47,7 +47,7 @@ export const Post: React.FC<PostProps> = ({ post, redirectToProfile }) => {
               await api
                 .removePost({ postId: post.postId })
                 .catch((error) => toast(error))
-              if (redirectToProfile && user) {
+              if (redirectOnDelete && user) {
                 router.push(`/${user.username}`)
               }
               setIsRemoved(true)
@@ -110,3 +110,5 @@ export const Post: React.FC<PostProps> = ({ post, redirectToProfile }) => {
     </ConditionRendering>
   )
 }
+
+export default Post // eslint-disable-line import/no-default-export

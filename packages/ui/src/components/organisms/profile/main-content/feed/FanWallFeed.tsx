@@ -51,7 +51,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
             <FanWallComment
               comment={arg}
               removable={true}
-              copyLinkDisabled={true}
+              isPostComment={true}
             />
           </div>
         )

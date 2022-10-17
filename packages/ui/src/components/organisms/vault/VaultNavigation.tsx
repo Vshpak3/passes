@@ -10,44 +10,41 @@ import { VaultDeleteModal } from "src/components/molecules/vault/VaultDelete"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
 import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
 import { VaultSortDropdown } from "src/components/molecules/vault/VaultSort"
-import { TVaultCategory, TVaultType } from "src/components/pages/tools/Vault"
+import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
 interface VaultNavigationProps {
-  selectedItems: string[]
-  setSelectedItems: (items: string[]) => void
-  setVaultType: (type: TVaultType) => void
-  setVaultCategory: (category: TVaultCategory) => void
+  selectedItems: ContentDto[]
+  setSelectedItems: (items: ContentDto[]) => void
+  setVaultType: (type: VaultType) => void
+  setVaultCategory: (category: VaultCategory) => void
   setOrder: (order: GetVaultQueryRequestDtoOrderEnum) => void
-  vaultType: TVaultType
-  vaultCategory: TVaultCategory
+  vaultType: VaultType
+  vaultCategory: VaultCategory
   pushToMessages: () => void
   order: GetVaultQueryRequestDtoOrderEnum
-  deletedItems: string[]
-  setDeletedItems: (items: string[]) => void
+  deletedItems: ContentDto[]
+  setDeletedItems: (items: ContentDto[]) => void
   embedded?: boolean
-  setSelectedItemsFullData: (items: ContentDto[]) => void
   isDiffTypesSelected: boolean
 }
 
 export const VaultNavigation: FC<VaultNavigationProps> = ({
   selectedItems,
+  setSelectedItems,
   vaultType,
   vaultCategory,
   setVaultType,
   setVaultCategory,
   setOrder,
-  setSelectedItems,
   pushToMessages,
   order,
   deletedItems,
   setDeletedItems,
   embedded = false,
-  isDiffTypesSelected = false,
-  setSelectedItemsFullData
+  isDiffTypesSelected = false
 }) => {
   const deselectAll = () => {
     setSelectedItems([])
-    setSelectedItemsFullData([])
   }
   const [deleteModalActive, setDeleteModalActive] = useState(false)
   const toggleDeleteModal = () => setDeleteModalActive(!deleteModalActive)
@@ -101,7 +98,9 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         onDeleteVaultItems={async () => {
           const api = new ContentApi()
           await api.deleteContent({
-            deleteContentRequestDto: { contentIds: selectedItems }
+            deleteContentRequestDto: {
+              contentIds: selectedItems.map((c) => c.contentId)
+            }
           })
           setDeletedItems([...deletedItems, ...selectedItems])
         }}

@@ -1,13 +1,13 @@
 import { FC } from "react"
 import { VaultFilterOption } from "src/components/atoms/vault"
-import { TVaultCategory, TVaultType } from "src/components/pages/tools/Vault"
+import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
 interface TypeFilterButton {
-  id: TVaultType
+  id: VaultType
   label: string
 }
 interface CategoryFilterButton {
-  id: TVaultCategory
+  id: VaultCategory
   label: string
 }
 
@@ -30,10 +30,10 @@ const filterStyles = {
 }
 
 interface VaultFilterContainerProps {
-  setVaultType: (type: TVaultType) => void
-  setVaultCategory: (category: TVaultCategory) => void
-  vaultType: TVaultType
-  vaultCategory: TVaultCategory
+  setVaultType: (type: VaultType) => void
+  setVaultCategory: (category: VaultCategory) => void
+  vaultType: VaultType
+  vaultCategory: VaultCategory
 }
 
 export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({

@@ -5,23 +5,21 @@ import {
   GetVaultQueryRequestDtoOrderEnum,
   GetVaultQueryResponseDto
 } from "@passes/api-client"
-import { Dispatch, FC } from "react"
+import { FC } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
-import { TVaultCategory, TVaultType } from "src/components/pages/tools/Vault"
+import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
 interface VaultMediaGridProps {
-  selectedItems: Array<string>
-  setSelectedItems: (items: string[]) => void
+  selectedItems: ContentDto[]
+  setSelectedItems: (items: ContentDto[]) => void
   order: GetVaultQueryRequestDtoOrderEnum
-  category?: TVaultCategory
-  type?: TVaultType
-  deletedItems: string[]
-  selectedItemsFullData: ContentDto[]
-  setSelectedItemsFullData: Dispatch<React.SetStateAction<ContentDto[]>>
+  category?: VaultCategory
+  type?: VaultType
+  deletedItems: ContentDto[]
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
 }
@@ -33,8 +31,6 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   type,
   order,
   deletedItems,
-  selectedItemsFullData,
-  setSelectedItemsFullData,
   isVideoSelected,
   isMaxFileCountSelected
 }) => {
@@ -60,13 +56,11 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
           KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
             return (
               <>
-                {!deletedItems.includes(arg.contentId) && (
+                {!deletedItems.some((x) => x.contentId === arg.contentId) && (
                   <VaultMediaItem
                     content={arg}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
-                    selectedItemsFullData={selectedItemsFullData}
-                    setSelectedItemsFullData={setSelectedItemsFullData}
                     isVideoSelected={isVideoSelected}
                     isMaxFileCountSelected={isMaxFileCountSelected}
                   />

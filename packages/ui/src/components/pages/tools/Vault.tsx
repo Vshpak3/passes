@@ -13,16 +13,15 @@ interface VaultProps {
   passSelectedItems?: (selectedItems: string[]) => void
 }
 
-export type TVaultData = ContentDto[] | null
-export type TSelectedVaultData = ContentDto[]
-export type TVaultType = GetVaultQueryRequestDtoTypeEnum | undefined
-export type TVaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
+export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
+export type VaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
+
 const MAX_FILE_COUNT = 10
 
-const checkDifferentTypesSelected = (selectedItemsFullData: ContentDto[]) => {
+const checkDifferentTypesSelected = (selectedItems: ContentDto[]) => {
   const typesSelected: string[] = []
 
-  selectedItemsFullData.forEach((item) => {
+  selectedItems.forEach((item) => {
     if (!typesSelected.find((el) => el === item.contentType)) {
       typesSelected.push(item.contentType)
     }
@@ -31,28 +30,19 @@ const checkDifferentTypesSelected = (selectedItemsFullData: ContentDto[]) => {
 }
 
 export const Vault = ({ passSelectedItems }: VaultProps) => {
-  const [selectedItems, setSelectedItems] = useState<Array<string>>([])
-  const [selectedItemsFullData, setSelectedItemsFullData] = useState<
-    Array<ContentDto>
-  >([])
-  const [deletedItems, setDeletedItems] = useState<Array<string>>([])
-  const [vaultType, setVaultType] = useState<
-    GetVaultQueryRequestDtoTypeEnum | undefined
-  >(undefined)
-
-  const [vaultCategory, setVaultCategory] = useState<
-    GetVaultQueryRequestDtoCategoryEnum | undefined
-  >(undefined)
+  const [selectedItems, setSelectedItems] = useState<Array<ContentDto>>([])
+  const [deletedItems, setDeletedItems] = useState<Array<ContentDto>>([])
+  const [vaultType, setVaultType] = useState<VaultType>()
+  const [vaultCategory, setVaultCategory] = useState<VaultCategory>()
   const [order, setOrder] = useState<GetVaultQueryRequestDtoOrderEnum>(
     GetVaultQueryRequestDtoOrderEnum.Desc
   )
-
   const [isVideoSelected, setIsVideoSelected] = useState(false)
   const [isMaxFileCountSelected, setIsMaxFileCountSelected] = useState(false)
   const [isDiffTypesSelected, setIsDiffTypesSelected] = useState(false)
 
   useEffect(() => {
-    if (!selectedItemsFullData.length) {
+    if (!selectedItems.length) {
       setIsVideoSelected(false)
       setIsDiffTypesSelected(false)
       setIsMaxFileCountSelected(false)
@@ -61,20 +51,20 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
 
     // check if video file is selected
     setIsVideoSelected(
-      !!selectedItemsFullData.find((elem) => elem.contentType === "video")
+      !!selectedItems.find((elem) => elem.contentType === "video")
     )
 
     // check different types
-    setIsDiffTypesSelected(checkDifferentTypesSelected(selectedItemsFullData))
+    setIsDiffTypesSelected(checkDifferentTypesSelected(selectedItems))
 
     // check max file count
-    setIsMaxFileCountSelected(selectedItemsFullData.length === MAX_FILE_COUNT)
-  }, [selectedItemsFullData])
+    setIsMaxFileCountSelected(selectedItems.length === MAX_FILE_COUNT)
+  }, [selectedItems])
 
-  const setItems = (items: string[]) => {
+  const setItems = (items: ContentDto[]) => {
     setSelectedItems(items)
     if (passSelectedItems) {
-      passSelectedItems(items)
+      passSelectedItems(items.map((c) => c.contentId))
     }
   }
   const router = useRouter()
@@ -83,7 +73,7 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
       {
         pathname: "/messages",
         query: {
-          contentIds: selectedItems
+          contentIds: selectedItems.map((c) => c.contentId)
         }
       },
       "/messages"
@@ -104,7 +94,6 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
         order={order}
         deletedItems={deletedItems}
         setDeletedItems={setDeletedItems}
-        setSelectedItemsFullData={setSelectedItemsFullData}
         isDiffTypesSelected={isDiffTypesSelected}
       />
 
@@ -115,8 +104,6 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
         order={order}
         category={vaultCategory}
         type={vaultType}
-        selectedItemsFullData={selectedItemsFullData}
-        setSelectedItemsFullData={setSelectedItemsFullData}
         isVideoSelected={isVideoSelected}
         isMaxFileCountSelected={isMaxFileCountSelected}
       />

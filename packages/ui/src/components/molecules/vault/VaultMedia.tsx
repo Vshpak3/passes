@@ -1,12 +1,11 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { Dispatch, FC } from "react"
+import { FC } from "react"
+
 interface VaultMediaItemProps {
   content: ContentDto
-  selectedItems: string[]
-  setSelectedItems: (items: string[]) => void
-  selectedItemsFullData: ContentDto[]
-  setSelectedItemsFullData: Dispatch<React.SetStateAction<ContentDto[]>>
+  selectedItems: ContentDto[]
+  setSelectedItems: (items: ContentDto[]) => void
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
 }
@@ -15,14 +14,14 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
   setSelectedItems,
-  selectedItemsFullData,
-  setSelectedItemsFullData,
   isVideoSelected,
   isMaxFileCountSelected
 }) => {
   const date = content.createdAt?.toDateString().slice(5, 11)
 
-  const isSelected = selectedItems.includes(content.contentId)
+  const isSelected = !!selectedItems.filter(
+    (c) => c.contentId === content.contentId
+  ).length
 
   const handleSelectItem = () => {
     if (content.contentType === "video" && isVideoSelected) {
@@ -33,20 +32,12 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
       return
     }
 
-    setSelectedItemsFullData((prev) => [...prev, content])
-    setSelectedItems([...selectedItems, content.contentId])
+    setSelectedItems([...selectedItems, content])
   }
   const handleRemoveItem = () => {
-    const itemsArr = selectedItems.slice()
-    itemsArr.splice(itemsArr.indexOf(content.contentId), 1)
-    setSelectedItems(itemsArr)
-
-    const fullItemsArr = selectedItemsFullData.slice()
-    const index = fullItemsArr.findIndex(
-      (elem) => elem.contentId === content.contentId
+    setSelectedItems(
+      selectedItems.filter((c) => c.contentId !== content.contentId)
     )
-    fullItemsArr.splice(index, 1)
-    setSelectedItemsFullData(fullItemsArr)
   }
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
   const opacityStyle =
