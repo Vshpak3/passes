@@ -51,6 +51,7 @@ export class PassHolderDto extends PassDto {
           PassEntity & {
             holder_username?: string
             holder_display_name?: string
+            total_messages: number | null
           })
       | undefined,
   ) {
@@ -64,6 +65,8 @@ export class PassHolderDto extends PassDto {
       this.messages = passHolder.messages
       this.tokenId = passHolder.token_id
       this.address = passHolder.address
+
+      this.totalMessages = passHolder.total_messages
 
       this.holderUsername = passHolder.holder_username
       this.holderDisplayName = passHolder.holder_display_name

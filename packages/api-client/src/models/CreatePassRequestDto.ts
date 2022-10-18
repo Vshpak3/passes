@@ -144,7 +144,7 @@ export type CreatePassRequestDtoImageTypeEnum = typeof CreatePassRequestDtoImage
  * @export
  */
 export const CreatePassRequestDtoAccessTypeEnum = {
-    PassAccess: 'pass access',
+    PassAccess: 'pass_access',
     AccountAccess: 'account_access'
 } as const;
 export type CreatePassRequestDtoAccessTypeEnum = typeof CreatePassRequestDtoAccessTypeEnum[keyof typeof CreatePassRequestDtoAccessTypeEnum];

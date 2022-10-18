@@ -145,6 +145,12 @@ export interface PassDto {
      * @memberof PassDto
      */
     accessType: PassDtoAccessTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof PassDto
+     */
+    totalMessages: number | null;
 }
 
 
@@ -192,7 +198,7 @@ export type PassDtoAnimationTypeEnum = typeof PassDtoAnimationTypeEnum[keyof typ
  * @export
  */
 export const PassDtoAccessTypeEnum = {
-    PassAccess: 'pass access',
+    PassAccess: 'pass_access',
     AccountAccess: 'account_access'
 } as const;
 export type PassDtoAccessTypeEnum = typeof PassDtoAccessTypeEnum[keyof typeof PassDtoAccessTypeEnum];
@@ -219,6 +225,7 @@ export function instanceOfPassDto(value: object): boolean {
     isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "animationType" in value;
     isInstance = isInstance && "accessType" in value;
+    isInstance = isInstance && "totalMessages" in value;
 
     return isInstance;
 }
@@ -254,6 +261,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'imageType': json['imageType'],
         'animationType': json['animationType'],
         'accessType': json['accessType'],
+        'totalMessages': json['totalMessages'],
     };
 }
 
@@ -287,6 +295,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'imageType': value.imageType,
         'animationType': value.animationType,
         'accessType': value.accessType,
+        'totalMessages': value.totalMessages,
     };
 }
 

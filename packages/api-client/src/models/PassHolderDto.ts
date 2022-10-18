@@ -147,6 +147,12 @@ export interface PassHolderDto {
     accessType: PassHolderDtoAccessTypeEnum;
     /**
      * 
+     * @type {number}
+     * @memberof PassHolderDto
+     */
+    totalMessages: number | null;
+    /**
+     * 
      * @type {string}
      * @memberof PassHolderDto
      */
@@ -246,7 +252,7 @@ export type PassHolderDtoAnimationTypeEnum = typeof PassHolderDtoAnimationTypeEn
  * @export
  */
 export const PassHolderDtoAccessTypeEnum = {
-    PassAccess: 'pass access',
+    PassAccess: 'pass_access',
     AccountAccess: 'account_access'
 } as const;
 export type PassHolderDtoAccessTypeEnum = typeof PassHolderDtoAccessTypeEnum[keyof typeof PassHolderDtoAccessTypeEnum];
@@ -273,6 +279,7 @@ export function instanceOfPassHolderDto(value: object): boolean {
     isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "animationType" in value;
     isInstance = isInstance && "accessType" in value;
+    isInstance = isInstance && "totalMessages" in value;
     isInstance = isInstance && "passHolderId" in value;
     isInstance = isInstance && "address" in value;
 
@@ -310,6 +317,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'imageType': json['imageType'],
         'animationType': json['animationType'],
         'accessType': json['accessType'],
+        'totalMessages': json['totalMessages'],
         'passHolderId': json['passHolderId'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'walletId': !exists(json, 'walletId') ? undefined : json['walletId'],
@@ -352,6 +360,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'imageType': value.imageType,
         'animationType': value.animationType,
         'accessType': value.accessType,
+        'totalMessages': value.totalMessages,
         'passHolderId': value.passHolderId,
         'holderId': value.holderId,
         'walletId': value.walletId,

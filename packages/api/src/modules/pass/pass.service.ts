@@ -376,6 +376,7 @@ export class PassService {
         `${PassEntity.table}.description`,
         `${PassEntity.table}.creator_id`,
         `${PassEntity.table}.collection_address`,
+        `${PassEntity.table}.messages as total_messages`,
         `${PassHolderEntity.table}.*`,
         `${UserEntity.table}.username as creator_username`,
         `${UserEntity.table}.display_name as creator_display_name`,
@@ -442,6 +443,7 @@ export class PassService {
       .where(`${PassEntity.table}.creator`, userId)
       .select([
         `${PassHolderEntity.table}.*`,
+        `${PassEntity.table}.messages as total_messages`,
         `${PassEntity.table}.total_supply`,
         `${PassEntity.table}.remaining_supply`,
         `${PassEntity.table}.price`,
