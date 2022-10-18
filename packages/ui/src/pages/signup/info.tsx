@@ -17,6 +17,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
+import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
 import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
@@ -26,7 +27,6 @@ import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
-const BIRTHDAY_MIN_AGE_IN_YEARS = 13
 const BIRTHDAY_DATE_FORMAT = "yyyy-MM-dd"
 
 export type SignupInfoPageSchema = {
@@ -50,11 +50,10 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
     .required("Enter your birthday")
     .test(
       "birthday-age",
-      `You must be at least ${BIRTHDAY_MIN_AGE_IN_YEARS} to sign up`,
+      `You must be at least ${MIN_USER_AGE_IN_YEARS} to sign up`,
       (value) =>
         value !== undefined &&
-        differenceInYears(new Date(), new Date(value)) >=
-          BIRTHDAY_MIN_AGE_IN_YEARS
+        differenceInYears(new Date(), new Date(value)) >= MIN_USER_AGE_IN_YEARS
     ),
   countryCode: string().required("Enter your coutnry")
 })

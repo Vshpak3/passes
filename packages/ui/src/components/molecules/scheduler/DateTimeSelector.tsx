@@ -2,10 +2,11 @@ import classNames from "classnames"
 import { addMonths, format, startOfMonth } from "date-fns"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { FC, useContext } from "react"
+import {
+  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
+  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
+} from "src/config/scheduler"
 import { SchedulerContext } from "src/pages/tools/scheduler"
-
-export const VIEWABLE_THIS_MANY_MONTHS_AGO = 24
-export const VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE = 6
 
 interface DateTimeSelectedProps {
   showDateYearModal: (event: React.MouseEvent<HTMLElement>) => void
@@ -27,12 +28,16 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
   }
 
   const disablePast =
-    addMonths(startOfMonth(new Date()), -1 * VIEWABLE_THIS_MANY_MONTHS_AGO) >=
-    new Date(year, month, 1)
+    addMonths(
+      startOfMonth(new Date()),
+      -1 * SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO
+    ) >= new Date(year, month, 1)
 
   const disableFuture =
-    addMonths(startOfMonth(new Date()), VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE) <=
-    new Date(year, month, 1)
+    addMonths(
+      startOfMonth(new Date()),
+      SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
+    ) <= new Date(year, month, 1)
 
   return (
     <>

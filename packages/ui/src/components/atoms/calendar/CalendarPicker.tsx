@@ -1,88 +1,87 @@
-import "react-day-picker/dist/style.css"
 import "rc-time-picker/assets/index.css"
+import "react-day-picker/dist/style.css"
 
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { format } from "date-fns"
-import { FC, useCallback, useRef, useState } from "react"
+import { FC, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { TimePicker } from "src/components/atoms/TimePicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 export const CALENDAR_POPUP_ID = "calendar-popper"
 
-const hoursTo24Hours = (hours: number, timeShift: TimeShiftEnum) => {
-  if (timeShift === TimeShiftEnum.PM) {
-    return 12 + (hours === 12 ? 0 : hours)
-  }
-
-  return hours
-}
-
 export enum TimeShiftEnum {
   "AM",
   "PM"
 }
+
 export type Time = { minutes: number; hours: number; timeShift: TimeShiftEnum }
 
-const today = new Date()
-const defaultTime = {
-  hours: new Date().getHours() % 12 || 12,
-  minutes: new Date().getMinutes(),
-  timeShift: new Date().getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
-}
-
-const getTime = (date?: Date | null) => {
+const dateToInternalTime = (date?: Date | null) => {
+  const _date = date || new Date()
   return {
-    hours: (date || new Date()).getHours() % 12 || 12,
-    minutes: (date || new Date()).getMinutes(),
-    timeShift:
-      (date || new Date()).getHours() >= 12
-        ? TimeShiftEnum.PM
-        : TimeShiftEnum.AM
+    hours: _date.getHours() % 12 || 12,
+    minutes: _date.getMinutes(),
+    timeShift: _date.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
   }
 }
 
-export const CalendarPicker: FC<{
-  children: React.ReactNode
+interface CalendarPickerProps {
   onSave: (date: Date | null) => void
-  toDate?: Date
+  maxDate?: Date
   scheduledTime?: Date | null
-}> = ({ children, onSave, toDate, scheduledTime }) => {
+  children: React.ReactNode
+}
+
+export const CalendarPicker: FC<CalendarPickerProps> = ({
+  onSave,
+  maxDate,
+  scheduledTime,
+  children
+}) => {
+  const today = new Date()
+  const defaultTime = {
+    hours: today.getHours() % 12 || 12,
+    minutes: today.getMinutes(),
+    timeShift: today.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
+  }
+
   const [month, setMonth] = useState<Date>(scheduledTime || today)
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(
     scheduledTime || today
   )
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [time, setTime] = useState<Time>(getTime(scheduledTime))
+  const [time, setTime] = useState<Time>(
+    scheduledTime ? dateToInternalTime(scheduledTime) : defaultTime
+  )
 
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
   const calenderRef = useRef(null)
 
-  const handleSelectToday = useCallback(() => {
+  const handleSelectToday = () => {
     const date = new Date()
-    const hours = date.getHours()
-    const minutes = date.getMinutes()
-    date.setHours(0, 0, 0, 0)
     setSelectionDate(date)
-    setMonth(today)
+    setMonth(date)
     setTime({
-      hours: hours % 12 || 12,
-      minutes,
-      timeShift: hours >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
+      hours: date.getHours() % 12 || 12,
+      minutes: date.getMinutes(),
+      timeShift: date.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
     })
-  }, [])
+  }
 
-  const handleSaveDateAndTime = useCallback(() => {
-    const targetDate = new Date(selectionDate || "")
-    // add hour into current selectionDate
+  const handleSaveDateAndTime = () => {
+    const targetDate = selectionDate || new Date()
+
     targetDate.setHours(
-      targetDate.getHours() + hoursTo24Hours(time.hours, time.timeShift)
+      time.hours + (time.timeShift === TimeShiftEnum.PM ? 12 : 0),
+      time.minutes,
+      0,
+      0
     )
-    // add min into current selectionDate
-    targetDate.setMinutes(targetDate.getMinutes() + time.minutes)
+
     onSave(targetDate)
     setAnchorEl(null)
-  }, [onSave, selectionDate, time])
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
@@ -141,20 +140,16 @@ export const CalendarPicker: FC<{
                   required
                   selected={selectionDate}
                   onSelect={setSelectionDate}
+                  month={month}
                   onMonthChange={setMonth}
                   fromDate={new Date()}
-                  toDate={toDate}
-                  month={month}
+                  toDate={maxDate}
                 />
                 <div className="mt-3 flex w-full items-center justify-between">
                   <span className="text-base font-normal leading-6 text-white">
-                    TIME
+                    Time
                   </span>
-                  <TimePicker
-                    defualtTime={defaultTime}
-                    time={time}
-                    setTime={setTime}
-                  />
+                  <TimePicker time={time} setTime={setTime} />
                 </div>
                 <button
                   className="duration-400 mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"

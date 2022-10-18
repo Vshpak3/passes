@@ -4,14 +4,14 @@ import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useCallback, useContext, useRef, useState } from "react"
 import { CALENDAR_POPUP_ID } from "src/components/atoms/calendar/CalendarPicker"
 import { CreateSchedulerPopup } from "src/components/molecules/scheduler/CreateSchedulerPopup"
+import {
+  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
+  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
+} from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
-import {
-  DateTimeSelected,
-  VIEWABLE_THIS_MANY_MONTHS_AGO,
-  VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
-} from "./DateTimeSelector"
+import { DateTimeSelected } from "./DateTimeSelector"
 import { MonthYearPicker } from "./MonthYearPicker"
 import { NewPostPopup } from "./NewPostPopup"
 
@@ -131,8 +131,8 @@ export const SchedulerHeader: FC = () => {
               className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
             >
               <MonthYearPicker
-                maxPastMonths={VIEWABLE_THIS_MANY_MONTHS_AGO}
-                maxFutureMonths={VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE}
+                maxPastMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO}
+                maxFutureMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE}
                 selectedMonth={month}
                 selectedYear={year}
                 onChangeYear={setYear}

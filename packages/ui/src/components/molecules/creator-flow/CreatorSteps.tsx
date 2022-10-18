@@ -1,6 +1,6 @@
 import CheckIcon from "public/icons/check.svg"
 import { FC } from "react"
-import { CREATOR_STEPS_TEXT } from "src/config/constants"
+import { CREATOR_STEPS_TEXT } from "src/config/creator-flow"
 
 type CreatorStepsProps = {
   creatorStep: string

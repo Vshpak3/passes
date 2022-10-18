@@ -1,5 +1,3 @@
-export const MIN_CREATOR_AGE_IN_YEARS = 18
-
 export const CREATOR_STEPS = {
   CUSTOMIZE: "CUSTOMIZE",
   VERIFICATION: "VERIFICATION",
@@ -23,5 +21,3 @@ export const CREATOR_STEPS_TEXT = {
     subtitle: "Banking information"
   }
 }
-
-export const MAX_SCHEDULE_DURATION_IN_MONTHS = 6

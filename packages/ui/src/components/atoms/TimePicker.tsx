@@ -6,21 +6,45 @@ import {
 } from "src/components/atoms/calendar/CalendarPicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-const padZero = (n: number) => n.toString().padStart(2, "0")
+const HOURS = 12
+const MINUTES = 60
 
-export interface TimePickerProps {
+interface TimePickerProps {
   time: Time
   setTime: Dispatch<SetStateAction<Time>>
-  defualtTime?: { hours: number; minutes: number }
 }
 
-export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
+export const TimePicker: FC<TimePickerProps> = ({
+  time,
+  setTime: _setTime
+}) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownEl = useRef(null)
 
   useOnClickOutside(dropdownEl, () => {
     setShowDropdown(false)
   })
+
+  const setTime = ({
+    minutes,
+    hours,
+    timeShift
+  }: {
+    minutes?: number
+    hours?: number
+    timeShift?: TimeShiftEnum
+  }) => {
+    _setTime(
+      Object.assign(
+        { ...time },
+        minutes !== undefined ? { minutes } : null,
+        hours !== undefined ? { hours } : null,
+        timeShift !== undefined ? { timeShift } : null
+      )
+    )
+  }
+
+  const padTime = (n: number) => n.toString().padStart(2, "0")
 
   return (
     <div className="relative">
@@ -31,17 +55,12 @@ export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
           type="button"
           onClick={() => setShowDropdown(true)}
         >
-          {padZero(time.hours)}:{padZero(time.minutes)}
+          {padTime(time.hours)}:{padTime(time.minutes)}
         </button>
         <span className="flex rounded-lg border border-white bg-[#0E0A0F]">
           <button
             tabIndex={1}
-            onClick={() =>
-              setTime((prevTime) => ({
-                ...prevTime,
-                timeShift: TimeShiftEnum.AM
-              }))
-            }
+            onClick={() => setTime({ timeShift: TimeShiftEnum.AM })}
             className={classNames(
               "duration-400 cursor-pointer rounded-bl-lg rounded-tl-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
@@ -54,12 +73,7 @@ export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
           </button>
           <button
             tabIndex={1}
-            onClick={() =>
-              setTime((prevTime) => ({
-                ...prevTime,
-                timeShift: TimeShiftEnum.PM
-              }))
-            }
+            onClick={() => setTime({ timeShift: TimeShiftEnum.PM })}
             className={classNames(
               "duration-400 cursor-pointer rounded-tr-lg rounded-br-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
@@ -79,14 +93,9 @@ export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
           className="absolute top-full z-50 flex h-[178px] w-[113px] translate-y-2 rounded border border-white bg-[#0E0A0F] py-2 text-center text-white"
         >
           <ul className="h-full flex-1 overflow-scroll">
-            {Array.from({ length: 12 }, (_, i) => (
+            {Array.from({ length: HOURS }, (_, i) => (
               <li
-                onClick={() =>
-                  setTime((prevTime) => ({
-                    ...prevTime,
-                    hours: i + 1
-                  }))
-                }
+                onClick={() => setTime({ hours: i + 1 })}
                 role="button"
                 tabIndex={0}
                 className={classNames(
@@ -95,16 +104,14 @@ export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
                 )}
                 key={i}
               >
-                {padZero(i + 1)}
+                {padTime(i + 1)}
               </li>
             ))}
           </ul>
           <ul className="h-full flex-1 overflow-scroll">
-            {Array.from({ length: 60 }, (_, i) => (
+            {Array.from({ length: MINUTES }, (_, i) => (
               <li
-                onClick={() =>
-                  setTime((prevTime) => ({ ...prevTime, minutes: i }))
-                }
+                onClick={() => setTime({ minutes: i })}
                 role="button"
                 tabIndex={0}
                 className={classNames(
@@ -113,7 +120,7 @@ export const TimePicker: FC<TimePickerProps> = ({ time, setTime }) => {
                 )}
                 key={i}
               >
-                {padZero(i)}
+                {padTime(i)}
               </li>
             ))}
           </ul>
