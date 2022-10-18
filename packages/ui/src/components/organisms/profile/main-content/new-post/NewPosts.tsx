@@ -38,7 +38,9 @@ export const NewPosts: React.FC = () => {
       expiresAt: createPost.expiresAt,
       price: createPost.price,
       totalTipAmount: 0,
-      isOwner: true
+      isOwner: true,
+      paying: false,
+      paid: false
     }
 
     setNewPosts([post, ...newPosts])
