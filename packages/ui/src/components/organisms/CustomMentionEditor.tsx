@@ -5,7 +5,7 @@ import createMentionPlugin, {
   Popover
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
-import { TagDto, UserApi } from "@passes/api-client"
+import { TagDto } from "@passes/api-client"
 import classNames from "classnames"
 import {
   CharacterMetadata,
@@ -23,11 +23,12 @@ import React, {
   useState
 } from "react"
 import { ContentService } from "src/helpers/content"
+import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 
 const MENTION_LIMIT = 5
 
-const api = new UserApi()
+const TRIGGER = "@"
 
 const Entry: FC<EntryComponentProps> = ({
   mention,
@@ -94,6 +95,8 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   const [numMentions, setNumMentions] = useState(0)
   const [suggestions, setSuggestions] = useState<MentionData[]>([])
 
+  const { results, searchValue, setSearchValue } = useCreatorSearch()
+
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
       mentionComponent: ({ mention }) => (
@@ -101,7 +104,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
           @{mention.username}
         </a>
       ),
-      mentionPrefix: "@"
+      mentionPrefix: TRIGGER
     })
 
     const { MentionSuggestions } = mentionPlugin
@@ -113,26 +116,30 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   const onOpenChange = useCallback((_open: boolean) => {
     setAreSuggestionsOpen(_open)
   }, [])
+
   const onSearchChange = useCallback(
-    async ({ trigger, value }: { trigger: string; value: string }) => {
-      const { creators } = await api.searchCreatorByUsername({
-        searchCreatorRequestDto: { query: value }
-      })
-
-      const newSuggestions: MentionData[] = creators.map(
-        ({ displayName, username, userId }) => ({
-          name: username,
-          username,
-          displayName: displayName || "",
-          id: userId,
-          avatar: ContentService.profileThumbnail(userId)
-        })
-      )
-
-      setSuggestions(defaultSuggestionsFilter(value, newSuggestions, trigger))
+    async ({ value }: { trigger: string; value: string }) => {
+      setSearchValue(value)
     },
-    []
+    [setSearchValue]
   )
+
+  useEffect(() => {
+    const newSuggestions: MentionData[] = results.map(
+      ({ displayName, username, userId }) => ({
+        name: username,
+        username,
+        displayName: displayName || "",
+        id: userId,
+        avatar: ContentService.profileThumbnail(userId)
+      })
+    )
+
+    setSuggestions(
+      defaultSuggestionsFilter(searchValue, newSuggestions, TRIGGER)
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [results])
 
   useEffect(() => {
     if (isReset && setIsReset) {

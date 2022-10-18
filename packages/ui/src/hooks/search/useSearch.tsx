@@ -2,7 +2,7 @@ import debounce from "lodash.debounce"
 import { useEffect, useMemo, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-const DEBOUNCE_DELAY = 300
+const DEBOUNCE_DELAY = 350
 
 export const useSearch = <T,>(
   fetcher: (searchValue: string) => Promise<T[]>,
@@ -34,7 +34,8 @@ export const useSearch = <T,>(
           setResults([])
         }
       }, debounceDelay),
-    [debounceDelay, fetcher]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [debounceDelay]
   )
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export const useSearch = <T,>(
   return {
     results,
     searchValue,
+    setSearchValue,
     resultsVisible,
     onChangeInput,
     onSearchFocus,
