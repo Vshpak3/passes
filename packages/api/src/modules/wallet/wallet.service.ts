@@ -154,10 +154,7 @@ export class WalletService {
         `${DefaultWalletEntity.table}.wallet_id`,
         `${WalletEntity.table}.id`,
       )
-      .where(
-        `${DefaultWalletEntity.table}.user_id`,
-        `${WalletEntity.table}.user_id`,
-      )
+      .where(`${DefaultWalletEntity.table}.user_id`, userId)
       .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
       .andWhere(`${WalletEntity.table}.chain`, chain)
       .andWhere(`${DefaultWalletEntity.table}.chain`, chain)
@@ -201,15 +198,7 @@ export class WalletService {
         chain,
       })
       .onConflict(['user_id', 'chain'])
-      .ignore()
-    await this.dbWriter<DefaultWalletEntity>(DefaultWalletEntity.table)
-      .update({
-        wallet_id: walletId,
-      })
-      .where({
-        user_id: userId,
-        chain,
-      })
+      .merge(['wallet_id'])
   }
 
   fixAddress(address: string, chain: ChainEnum): string {

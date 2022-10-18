@@ -1,4 +1,4 @@
-import { Entity, Enum, OneToOne, Unique } from '@mikro-orm/core'
+import { Entity, Enum, ManyToOne, OneToOne, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -10,7 +10,7 @@ import { WalletEntity } from './wallet.entity'
 export class DefaultWalletEntity extends BaseEntity {
   static table = 'default_wallet'
 
-  @OneToOne({ entity: () => UserEntity })
+  @ManyToOne({ entity: () => UserEntity })
   user_id: string
 
   @OneToOne({ entity: () => WalletEntity })
