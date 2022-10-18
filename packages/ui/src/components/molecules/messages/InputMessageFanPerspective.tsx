@@ -46,11 +46,24 @@ export const InputMessageFanPerspective: FC<Props> = ({
     })
   }
 
+  const registerMessageData = async () => {
+    return await api.sendMessageData({
+      sendMessageRequestDto: {
+        text: "text",
+        contentIds: [],
+        channelId,
+        tipAmount: tip,
+        previewIndex: 0
+      }
+    })
+  }
+
   const submitMessage = async () => {
     if (!channelId) {
       return false
     }
     try {
+      await submitData(tip)
       submit()
       reset()
     } catch (error) {
@@ -79,7 +92,7 @@ export const InputMessageFanPerspective: FC<Props> = ({
   const { submitError } = errors
   const { blocked, submitting, submit, submitData } = usePay(
     registerMessage,
-    undefined,
+    registerMessageData,
     onCallback
   )
 
@@ -101,17 +114,7 @@ export const InputMessageFanPerspective: FC<Props> = ({
   useEffect(() => {
     if (channelId && !isNaN(tip)) {
       const fetch = async () => {
-        await submitData(async () =>
-          api.sendMessageData({
-            sendMessageRequestDto: {
-              text: "message",
-              contentIds: [],
-              channelId,
-              tipAmount: tip,
-              previewIndex: 0
-            }
-          })
-        )
+        await submitData(tip)
       }
       fetch()
     }

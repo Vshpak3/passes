@@ -28,7 +28,7 @@ import { useLocalStorage } from "./useLocalStorage"
 export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
-  registerPaymentDataFunc?: () => Promise<PayinDataDto>,
+  registerPaymentDataFunc: (amount?: number) => Promise<PayinDataDto>,
   callback?: (error?: Error) => void
 ) => {
   const [submitting, setSubmitting] = useState(false)
@@ -182,6 +182,9 @@ export const usePay = (
   }
 
   const submit = async () => {
+    if (blocked) {
+      return
+    }
     setSubmitting(true)
     setLoading(true)
     try {
@@ -224,11 +227,8 @@ export const usePay = (
     }
   }
 
-  const empty = async () => {
-    return { blocked: PayinDataDtoBlockedEnum.PaymentsDeactivated }
-  }
-  const submitData = async (func?: () => Promise<PayinDataDto>) => {
-    const { blocked } = await (func ?? registerPaymentDataFunc ?? empty)()
+  const submitData = async (amount?: number) => {
+    const { blocked } = await registerPaymentDataFunc(amount)
     setBlocked(blocked)
   }
   return {
