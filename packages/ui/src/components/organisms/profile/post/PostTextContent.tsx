@@ -6,15 +6,19 @@ type PostTextContentProps = Pick<PostDto, "text" | "tags">
 const insertMentions = (text: string, tags: TagDto[]) => {
   let formattedText = text
 
-  const matcher = (match: string) => {
-    const prefixedUsername = match.trim()
-    const username = prefixedUsername.slice(1)
+  // TODO
+  const userIdsToUsernames: Record<string, string> = {}
+  tags.forEach((x) => (userIdsToUsernames[x.userId] = x.userId))
 
-    return ` <a href="/${username}" class="text-[rgb(191,122,240)]">${prefixedUsername}</a> `
+  // Must loop through string in reverse order otherwise the indexes will change
+  tags.sort((a, b) => b.index - a.index)
+  for (const tag of tags) {
+    const username = userIdsToUsernames[tag.userId]
+    formattedText =
+      formattedText.slice(0, tag.index + 1) +
+      `<a href="/${username}" class="text-[rgb(191,122,240)]">${username}</a>` +
+      formattedText.slice(tag.index + 1)
   }
-  tags.forEach(() => {
-    formattedText = formattedText.replace(/\s@\w*\s/, matcher)
-  })
 
   return formattedText
 }
