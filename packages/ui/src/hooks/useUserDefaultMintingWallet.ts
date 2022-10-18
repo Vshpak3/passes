@@ -43,6 +43,7 @@ export const useUserDefaultMintingWallets = () => {
     chain: GetDefaultWalletRequestDtoChainEnum
   ) {
     try {
+      console.log(walletId)
       await api.setDefaultWallet({
         setDefaultWalletRequestDto: { walletId, chain }
       })

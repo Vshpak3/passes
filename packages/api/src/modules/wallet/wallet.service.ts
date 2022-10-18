@@ -47,7 +47,7 @@ export class WalletService {
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
-    @InjectRedis('subscriber') private readonly redisService: Redis,
+    @InjectRedis('publisher') private readonly redisService: Redis,
   ) {
     this.web3 = new Web3(
       'https://eth-mainnet.g.alchemy.com/v2/dDJnsm97esWl2C9fFvmuS6pUMKOe6rlM',
@@ -161,7 +161,7 @@ export class WalletService {
       .andWhere(`${DefaultWalletEntity.table}.user_id`, userId)
       .andWhere(`${WalletEntity.table}.chain`, chain)
       .andWhere(`${DefaultWalletEntity.table}.chain`, chain)
-      .select([`${WalletEntity.table}.*`])
+      .select(`${WalletEntity.table}.*`)
       .first()
     if (wallet) {
       return new WalletDto(wallet)
