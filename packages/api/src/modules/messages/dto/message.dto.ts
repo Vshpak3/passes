@@ -33,6 +33,9 @@ export class MessageDto {
   paid: boolean
 
   @DtoProperty({ type: 'boolean' })
+  paying: boolean
+
+  @DtoProperty({ type: 'boolean' })
   pending: boolean
 
   @DtoProperty({ type: 'currency' })
@@ -55,6 +58,7 @@ export class MessageDto {
       this.messageId = message.id
       this.reverted = message.reverted
       this.paid = message.paid
+      this.paying = message.paying
       this.pending = message.pending
       this.previewIndex = message.preview_index
     }

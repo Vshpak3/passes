@@ -142,6 +142,10 @@ export interface SendMessageDataRequest {
     sendMessageRequestDto: SendMessageRequestDto;
 }
 
+export interface UnsendPaidMessageRequest {
+    paidMessageId: string;
+}
+
 export interface UpdateChannelSettingsRequest {
     updateChannelSettingsRequestDto: UpdateChannelSettingsRequestDto;
 }
@@ -799,6 +803,41 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async subscribeMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.subscribeMessagesRaw(initOverrides);
+    }
+
+    /**
+     * Unsend paid message
+     */
+    async unsendPaidMessageRaw(requestParameters: UnsendPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.paidMessageId === null || requestParameters.paidMessageId === undefined) {
+            throw new runtime.RequiredError('paidMessageId','Required parameter requestParameters.paidMessageId was null or undefined when calling unsendPaidMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/messages/unsend/{paidMessageId}`.replace(`{${"paidMessageId"}}`, encodeURIComponent(String(requestParameters.paidMessageId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Unsend paid message
+     */
+    async unsendPaidMessage(requestParameters: UnsendPaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.unsendPaidMessageRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

@@ -49,7 +49,7 @@ export const ChannelListItem: FC<ChannelListItemProps> = ({
           )}
           <TimeAgo
             className="self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
-            date={channel?.recent ? channel?.recent : ""}
+            date={channel?.recent ? channel.recent : ""}
             minPeriod={30}
           />
         </div>

@@ -79,6 +79,12 @@ export interface MessageDto {
      * @type {boolean}
      * @memberof MessageDto
      */
+    paying: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MessageDto
+     */
     pending: boolean;
     /**
      * 
@@ -112,6 +118,7 @@ export function instanceOfMessageDto(value: object): boolean {
     isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "channelId" in value;
     isInstance = isInstance && "paid" in value;
+    isInstance = isInstance && "paying" in value;
     isInstance = isInstance && "pending" in value;
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "reverted" in value;
@@ -138,6 +145,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
         'paid': json['paid'],
+        'paying': json['paying'],
         'pending': json['pending'],
         'price': json['price'],
         'reverted': json['reverted'],
@@ -162,6 +170,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
         'paid': value.paid,
+        'paying': value.paying,
         'pending': value.pending,
         'price': value.price,
         'reverted': value.reverted,

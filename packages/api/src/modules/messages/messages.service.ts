@@ -70,6 +70,7 @@ import { PaidMessageEntity } from './entities/paid-message.entity'
 import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity'
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
+import { MessageNotificationEnum } from './enum/message.notification.enum'
 import {
   ChannelNotFoundException,
   ForbiddenChannelError,
@@ -780,7 +781,14 @@ export class MessagesService {
     await this.redisService.publish(
       'message',
       JSON.stringify(
-        new MessageNotificationDto(data, this.getContents(data), recieverId),
+        new MessageNotificationDto(
+          data,
+          this.getContents(data),
+          recieverId,
+          pending
+            ? MessageNotificationEnum.PENDING
+            : MessageNotificationEnum.MESSAGE,
+        ),
       ),
     )
     return data.id
@@ -824,6 +832,7 @@ export class MessagesService {
             message,
             this.getContents(message),
             receiverId,
+            MessageNotificationEnum.MESSAGE,
           ),
         ),
       )
@@ -937,6 +946,13 @@ export class MessagesService {
     paidMessageId: string,
     earnings: number,
   ) {
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
+      .select('*')
+      .first()
+    if (!message) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
         .update({ paid: true })
@@ -945,10 +961,6 @@ export class MessagesService {
         .where({ id: paidMessageId })
         .increment('num_purchases', 1)
         .increment('earnings_purchases', earnings)
-      const message = await trx<MessageEntity>(MessageEntity.table)
-        .where({ id: messageId })
-        .select('contents')
-        .first()
       if (!message) {
         throw new MessageNotFoundException(`message ${messageId} not found`)
       }
@@ -964,6 +976,69 @@ export class MessagesService {
         }),
       )
     })
+
+    message.paid = true
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new MessageNotificationDto(
+          message,
+          this.getContents(message),
+          userId,
+          MessageNotificationEnum.PAID,
+        ),
+      ),
+    )
+  }
+
+  async payingMessage(userId: string, messageId: string) {
+    await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .update({ paying: true })
+      .where({ id: messageId })
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
+      .select('*')
+      .first()
+    if (!message) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
+    message.paying = true
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new MessageNotificationDto(
+          message,
+          this.getContents(message),
+          userId,
+          MessageNotificationEnum.PAYING,
+        ),
+      ),
+    )
+  }
+
+  async failMessagePayment(userId: string, messageId: string) {
+    await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .update({ paying: false })
+      .where({ id: messageId })
+    const message = await this.dbReader<MessageEntity>(MessageEntity.table)
+      .where({ id: messageId })
+      .select('*')
+      .first()
+    if (!message) {
+      throw new MessageNotFoundException(`message ${messageId} not found`)
+    }
+    message.paying = true
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new MessageNotificationDto(
+          message,
+          this.getContents(message),
+          userId,
+          MessageNotificationEnum.FAILED_PAYMENT,
+        ),
+      ),
+    )
   }
 
   async revertMessagePurchase(
@@ -1228,5 +1303,24 @@ export class MessagesService {
       true,
     )
     return true
+  }
+
+  async unsendMessage(userId: string, paidMessageId: string) {
+    let updated = 0
+    await this.dbWriter.transaction(async (trx) => {
+      updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
+        .where({ id: paidMessageId, creator_id: userId, unsent: false })
+        .update('unsent', true)
+      if (updated > 1) {
+        await trx<MessageEntity>(MessageEntity.table)
+          .where({
+            paid_message_id: paidMessageId,
+            paid: false,
+            paying: false,
+          })
+          .delete()
+      }
+    })
+    return !!updated
   }
 }

@@ -382,4 +382,21 @@ export class MessagesController {
       ),
     )
   }
+
+  @ApiEndpoint({
+    summary: 'Unsend paid message',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'Paid message was unsent',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('unsend/:paidMessageId')
+  async unsendPaidMessage(
+    @Req() req: RequestWithUser,
+    @Param('paidMessageId') paidMessageId: string,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.messagesService.unsendMessage(req.user.id, paidMessageId),
+    )
+  }
 }

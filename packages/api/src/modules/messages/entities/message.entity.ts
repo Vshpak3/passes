@@ -40,6 +40,9 @@ export class MessageEntity extends BaseEntity {
   @Property({ default: false })
   paid: boolean
 
+  @Property({ default: false })
+  paying: boolean
+
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   price: number
 

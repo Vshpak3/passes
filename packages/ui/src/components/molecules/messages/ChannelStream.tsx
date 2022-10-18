@@ -63,15 +63,17 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     })
     socket.on("message", (data) => {
       const newMessage = data as MessageDto
-      if (newMessage.pending) {
-        setPendingMessages([newMessage, ...pendingMessages])
-      } else {
-        setMessages([newMessage, ...messages])
-        setPendingMessages(
-          pendingMessages.filter(
-            (message) => message.messageId !== newMessage.messageId
+      if (newMessage.channelId === channelId) {
+        if (newMessage.pending) {
+          setPendingMessages([newMessage, ...pendingMessages])
+        } else {
+          setMessages([newMessage, ...messages])
+          setPendingMessages(
+            pendingMessages.filter(
+              (message) => message.messageId !== newMessage.messageId
+            )
           )
-        )
+        }
       }
     })
     socket.connect()

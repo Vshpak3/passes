@@ -222,6 +222,29 @@ async function purchaseMessageSuccessfulCallback(
   return {}
 }
 
+async function purchaseMessageCreationCallback(
+  payin: PayinEntity,
+  input: PurchaseMessageCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchaseMessageCallbackOutput> {
+  await payService.messagesService.payingMessage(payin.user_id, input.messageId)
+  return {}
+}
+
+async function purchaseMessageFailureCallback(
+  payin: PayinEntity,
+  input: PurchaseMessageCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchaseMessageCallbackOutput> {
+  await payService.messagesService.failMessagePayment(
+    payin.user_id,
+    input.messageId,
+  )
+  return {}
+}
+
 async function tipPostSuccessfulCallback(
   payin: PayinEntity,
   input: TipPostCallbackInput,

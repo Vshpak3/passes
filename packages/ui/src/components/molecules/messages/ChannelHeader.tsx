@@ -44,22 +44,6 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 username={selectedChannel.otherUserUsername}
               />
             </span>
-            {/* {isCreator && (
-              <div className="flex items-center gap-8 pl-3">
-                <div className="hidden items-center gap-3 sm:flex">
-                  <div className="flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-passes-secondary-color px-2">
-                    <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                      Vip Pass
-                    </span>
-                  </div>
-                  <div className="flex h-[31px] w-fit items-center justify-center gap-3 rounded-[30px] bg-gradient-to-r from-cyan-400 via-neutral-100 to-amber-500 px-2">
-                    <span className="cursor-pointer text-[16px] font-medium leading-[16px] text-[#FFF]">
-                      Limited Pass
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )} */}
           </div>
         )}
         {!isCreator && !gallery && (
