@@ -2,7 +2,7 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import Locked from "public/icons/lock-locked.svg"
 import React, { FC } from "react"
-import { formatCurrency } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
@@ -22,7 +22,6 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
 }: ChannelMessageProps) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
-
   return (
     <div
       className={classNames(
@@ -67,7 +66,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 ) : null}
               </div>
               <div>
-                <span className="break-all">{message?.text}</span>
+                <span>{message?.text}</span>
               </div>
               <div className="pt-2">
                 <Content
@@ -89,9 +88,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             </div>
           ) : (
-            <span className="break-all">
-              {/* <Text>{formatText(message?.text)}</Text> */}
-            </span>
+            <span>{formatText(message?.text)}</span>
           )}
         </div>
         {!!message?.pending && (

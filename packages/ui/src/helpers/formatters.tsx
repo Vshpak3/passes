@@ -36,13 +36,13 @@ export function formatText(text?: string | null) {
     return ""
   }
   return text
-    .replace("\n", "<br>")
-    .replace(" ", "&nbsp;")
-    .replace("<", "&lt;")
-    .replace(">", "&gt")
-    .replace("&", "&amp;")
-    .replace("€", "&euro;")
-    .replace("£", "&pound;")
-    .replace('"', "&quot;")
-    .replace("'", "&apos;")
+    .replaceAll("&", "&amp;")
+    .replaceAll(" ", "&nbsp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt")
+    .replaceAll("€", "&euro;")
+    .replaceAll("£", "&pound;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;")
+    .replaceAll("\n", "<br/>")
 }
