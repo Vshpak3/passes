@@ -134,8 +134,14 @@ export const DirectMessage: FC<DirectMessagesProps> = ({
   const onSubmit = async () => {
     const messagesApi = new MessagesApi()
     const listIds = selectedLists.map((s) => s.listId)
-    const content = await new ContentService().uploadContent(files)
-    const uploadedContentIds = content.map((c: any) => c.id)
+    const uploadedContentIds = await new ContentService().uploadContent(
+      files,
+      undefined,
+      {
+        inPost: false,
+        inMessage: true
+      }
+    )
     const values = getValues()
     const _contentIds = mergeContentIds(uploadedContentIds)
 

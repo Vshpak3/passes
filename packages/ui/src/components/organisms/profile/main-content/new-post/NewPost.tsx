@@ -134,10 +134,14 @@ export const NewPost: FC<NewPostProps> = ({
     if (files.length > 0) {
       toast.info("Please wait a moment as your content is uploaded")
     }
-    const content = await new ContentService().uploadContent(files, undefined, {
-      inPost: true,
-      inMessage: false
-    })
+    const contentIds = await new ContentService().uploadContent(
+      files,
+      undefined,
+      {
+        inPost: true,
+        inMessage: false
+      }
+    )
     setExtended(false)
     if (onClose) {
       onClose()
@@ -149,7 +153,7 @@ export const NewPost: FC<NewPostProps> = ({
       passIds: selectedPasses,
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
-      contentIds: content.map((c: any) => c.id),
+      contentIds,
       previewIndex: 0, // TODO: add previewing FE
       scheduledAt: values.scheduledAt ?? undefined
     }

@@ -5,44 +5,43 @@ import {
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
 } from "@passes/api-client"
+import path from "path"
 
 import { isDev } from "./env"
 
-class Content {
-  url!: string
-
-  id?: string
-
-  constructor(init?: Partial<Content>) {
-    Object.assign(this, init)
-  }
+const getUrlPath = (...args: string[]) => {
+  return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
 
 export class ContentService {
   private readonly contentApi = new ContentApi()
 
+  // Profile
+
   static profileImage(userId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-image.jpeg`
+    return getUrlPath("profile", userId, "profile-image.jpeg")
   }
 
   static profileThumbnail(userId: string): string {
+    // In dev there is no lambda to generate the thumbnail so use the profile image itself
     if (isDev) {
-      // In dev there is no lambda to generate the thumbnail so use the profile image itself
       return ContentService.profileImage(userId)
     }
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/profile-thumbnail.jpeg`
+    return getUrlPath("profile", userId, "profile-thumbnail.jpeg")
   }
 
   static profileBanner(userId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/profile/${userId}/banner.jpeg`
+    return getUrlPath("profile", userId, "banner.jpeg")
   }
+
+  // Passes/NFTs
 
   static passHolderImage(
     passId: string,
     passHolderId: string,
     imageType: PassDtoImageTypeEnum
   ): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/media.${imageType}`
+    return getUrlPath("nft", passId, passHolderId, `media.${imageType}`)
   }
 
   static passHolderAnimation(
@@ -50,23 +49,21 @@ export class ContentService {
     passHolderId: string,
     animationType: PassDtoAnimationTypeEnum
   ): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/${passHolderId}/media.${animationType}`
+    return getUrlPath("nft", passId, passHolderId, `media.${animationType}`)
   }
 
   static passImage(passId: string, imageType: PassDtoImageTypeEnum): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/media.${imageType}`
+    return getUrlPath("nft", passId, `media.${imageType}`)
   }
 
   static passAnimation(
     passId: string,
     animationType: PassDtoAnimationTypeEnum
   ): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/nft/${passId}/media.${animationType}`
+    return getUrlPath("nft", passId, `media.${animationType}`)
   }
 
-  static w9Pdf(userId: string): string {
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/w9/${userId}/upload.pdf`
-  }
+  // User Content
 
   static userContentMedia(content: ContentDto): string {
     if (content.signedUrl) {
@@ -86,16 +83,32 @@ export class ContentService {
         throw new Error("Unsupported media format")
     }
 
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/media/${content.userId}/${content.contentId}.${extension}`
+    return getUrlPath(
+      "media",
+      content.userId,
+      `${content.contentId}.${extension}`
+    )
   }
 
   static userContentThumbnail(content: ContentDto): string {
+    // In dev there is no lambda to generate the thumbnail so use the media itself
     if (isDev) {
-      // In dev there is no lambda to generate the thumbnail so use the image itself
       return ContentService.userContentMedia(content)
     }
-    return `${process.env.NEXT_PUBLIC_CDN_URL}/media/${content.userId}/${content.contentId}-thumbnail.jpeg`
+    return getUrlPath(
+      "media",
+      content.userId,
+      `${content.contentId}-thumbnail.jpeg`
+    )
   }
+
+  // Other
+
+  static w9Pdf(userId: string): string {
+    return getUrlPath("w9", userId, "upload.pdf")
+  }
+
+  // Upload methods
 
   /**
    * Get content type from file type.
@@ -136,20 +149,16 @@ export class ContentService {
   ) {
     switch (type) {
       case "profile": {
-        const { url } = await this.contentApi.preSignProfileImage()
-        return url
+        return (await this.contentApi.preSignProfileImage()).url
       }
       case "banner": {
-        const { url } = await this.contentApi.preSignProfileBanner()
-        return url
+        return (await this.contentApi.preSignProfileBanner()).url
       }
       case "content": {
-        const { url } = await this.contentApi.preSignContent(params)
-        return url
+        return (await this.contentApi.preSignContent(params)).url
       }
       case "w9": {
-        const { url } = await this.contentApi.preSignW9()
-        return url
+        return (await this.contentApi.preSignW9()).url
       }
     }
   }
@@ -208,7 +217,7 @@ export class ContentService {
     files: File[],
     contentType?: ContentDtoContentTypeEnum,
     requestConfig?: { inPost: boolean; inMessage: boolean }
-  ): Promise<Content[]> {
+  ): Promise<string[]> {
     if (!files.length) {
       return Promise.resolve([])
     }
@@ -226,8 +235,7 @@ export class ContentService {
           }
         })
         const result = await this.uploadFile(url, file)
-        const content = this.parseContentUrl(result)
-        return new Content(content)
+        return this.parseContentUrl(result).id
       })
     )
   }
