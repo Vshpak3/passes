@@ -65,7 +65,7 @@ export const SidebarMobile: FC<SidebarDefaultProps> = ({
           {user?.isCreator ? (
             createElement(newPostButton, { isMobile: true })
           ) : isOver18(user) ? (
-            <BecomeCreatorButton />
+            <BecomeCreatorButton isMobile />
           ) : null}
         </AuthWrapper>
         <AuthWrapper>
