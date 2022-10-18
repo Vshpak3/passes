@@ -79,7 +79,7 @@ export const PassCardMobile: FC<PassItemProps> = ({ pass, setModalOpen }) => (
     {"todo-PASS-532" && (
       <img
         src={"todo-PASS-532"}
-        alt={formatText(pass.title)}
+        alt={pass.title}
         className="rounded-[20px] object-cover"
       />
     )}
@@ -104,7 +104,7 @@ export const PassCardDesktop: FC<PassItemProps> = ({ pass, setModalOpen }) => {
       <img
         src={"todo-PASS-532"}
         className="rounded-[20px] object-cover"
-        alt={formatText(pass.title)}
+        alt={pass.title}
       />
       <div className="flex flex-col">
         <p className="mt-6 text-center text-[16px] font-medium leading-[19px] text-[#ffff] lg:mt-2 lg:text-start">

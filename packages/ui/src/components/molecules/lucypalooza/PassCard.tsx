@@ -2,6 +2,7 @@ import DOMPurify from "dompurify"
 import React, { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 import { GradientBorderTile } from "src/components/atoms/GradientBorderTile"
+import { formatText } from "src/helpers/formatters"
 
 interface PassVideoProps {
   img: {
@@ -64,7 +65,9 @@ export const PassCard: FC<PassCardProps> = ({
           </div>
         </div>
         <div className="flex-1">
-          <h4 className="mt-4 text-2xl font-bold leading-[24px]">{title}</h4>
+          <h4 className="mt-4 text-2xl font-bold leading-[24px]">
+            {formatText(title)}
+          </h4>
           <p className="mt-4 text-sm leading-[18px]">What you get:</p>
           <ul
             className="list-inside list-disc pl-2 text-sm leading-[18px]"

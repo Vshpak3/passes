@@ -1,7 +1,6 @@
 import { PostDto, TagDto, UserApi } from "@passes/api-client"
 import { FC, useEffect, useState } from "react"
 import { formatText } from "src/helpers/formatters"
-
 type PostTextContentProps = Pick<PostDto, "text" | "tags">
 
 export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
@@ -31,7 +30,7 @@ export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
         text.slice(tag.index + 1)
     }
 
-    setFormattedText(formatText(text))
+    setFormattedText(text)
   }
 
   useEffect(() => {
@@ -40,9 +39,8 @@ export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
   }, [text, tags])
 
   return (
-    <p
-      className="break-all text-start text-base font-medium text-[#ffffff]/90"
-      dangerouslySetInnerHTML={{ __html: formattedText }}
-    />
+    <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
+      {formatText(formattedText)}
+    </p>
   )
 }

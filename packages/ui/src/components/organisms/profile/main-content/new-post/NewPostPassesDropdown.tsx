@@ -4,7 +4,6 @@ import AudienceIcon from "public/icons/post-audience-icon.svg"
 import { FC, useState } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
-import { formatText } from "src/helpers/formatters"
 import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 
 import { NewPostFormProps } from "./NewPostEditor"
@@ -47,7 +46,7 @@ export const NewPostPassesDropdown: FC<NewPostPassesDropdownProps> = ({
                     name={passId}
                     type="checkbox"
                     options={{ onChange }}
-                    label={formatText(title)}
+                    label={title}
                     className="h-4 w-4 rounded border border-[#D0D5DD] bg-transparent text-passes-primary-color ring-0 focus:shadow-none focus:ring-0 focus:ring-offset-0"
                   />
                 </div>

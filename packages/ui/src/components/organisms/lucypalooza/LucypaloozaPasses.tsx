@@ -29,7 +29,6 @@ import { PassSuccess } from "src/components/molecules/lucypalooza/PassSuccess"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
 import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
 import { ContentService } from "src/helpers/content"
-import { formatText } from "src/helpers/formatters"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface PassListProps {
@@ -44,7 +43,7 @@ export const PassList: FC<PassListProps> = ({ passes, setPassId, passId }) => {
         // TODO: rework this to use the pass object as a prop
         <PassCard
           key={pass.passId}
-          title={formatText(pass.title)}
+          title={pass.title}
           price={pass.price}
           remainingSupply={pass.remainingSupply || 0}
           ethPrice={pass.ethPrice ?? 0}

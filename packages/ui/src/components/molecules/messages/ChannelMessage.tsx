@@ -48,7 +48,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             <></>
           )}
 
-          {messageContent.length ? (
+          {messageContent.length && (
             <div className="flex w-full flex-col">
               <div className="flex flex-shrink-0 items-start justify-between">
                 <CompletedAvatar
@@ -87,9 +87,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 </span>
               </div>
             </div>
-          ) : (
-            <span>{formatText(message?.text)}</span>
           )}
+          {formatText(message?.text)}
         </div>
         {!!message?.pending && (
           <span className="text-md mt-2 text-gray-500">Pending...</span>

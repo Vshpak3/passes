@@ -6,6 +6,7 @@ import {
   FormName,
   FormOptions
 } from "src/components/types/FormTypes"
+import { formatText } from "src/helpers/formatters"
 
 type LabelProps = {
   label?: FormLabel
@@ -31,7 +32,7 @@ export const Label: FC<LabelProps> = ({
         className ?? "text-sm font-medium"
       )}
     >
-      {label} {options.required && "*"}
+      {formatText(label)} {options.required && "*"}
     </label>
   )
 }
