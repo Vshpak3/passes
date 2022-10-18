@@ -4,7 +4,7 @@ import "react-day-picker/dist/style.css"
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { format } from "date-fns"
-import { FC, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { TimePicker } from "src/components/atoms/TimePicker"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
@@ -18,12 +18,11 @@ export enum TimeShiftEnum {
 
 export type Time = { minutes: number; hours: number; timeShift: TimeShiftEnum }
 
-const dateToInternalTime = (date?: Date | null) => {
-  const _date = date || new Date()
+const dateToInternalTime = (date: Date) => {
   return {
-    hours: _date.getHours() % 12 || 12,
-    minutes: _date.getMinutes(),
-    timeShift: _date.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
+    hours: (date.getHours() - 1) % 12,
+    minutes: date.getMinutes(),
+    timeShift: date.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
   }
 }
 
@@ -41,18 +40,15 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   children
 }) => {
   const today = new Date()
-  const defaultTime = {
-    hours: today.getHours() % 12 || 12,
-    minutes: today.getMinutes(),
-    timeShift: today.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
-  }
 
   const [month, setMonth] = useState<Date>(scheduledTime || today)
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(
     scheduledTime || today
   )
   const [time, setTime] = useState<Time>(
-    scheduledTime ? dateToInternalTime(scheduledTime) : defaultTime
+    scheduledTime
+      ? dateToInternalTime(scheduledTime)
+      : dateToInternalTime(today)
   )
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null)
@@ -62,18 +58,14 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
     const date = new Date()
     setSelectionDate(date)
     setMonth(date)
-    setTime({
-      hours: date.getHours() % 12 || 12,
-      minutes: date.getMinutes(),
-      timeShift: date.getHours() >= 12 ? TimeShiftEnum.PM : TimeShiftEnum.AM
-    })
+    setTime(dateToInternalTime(date))
   }
 
   const handleSaveDateAndTime = () => {
     const targetDate = selectionDate || new Date()
 
     targetDate.setHours(
-      time.hours + (time.timeShift === TimeShiftEnum.PM ? 12 : 0),
+      ((time.hours + 1) % 12) + (time.timeShift === TimeShiftEnum.PM ? 12 : 0),
       time.minutes,
       0,
       0

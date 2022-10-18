@@ -55,7 +55,7 @@ export const TimePicker: FC<TimePickerProps> = ({
           type="button"
           onClick={() => setShowDropdown(true)}
         >
-          {padTime(time.hours)}:{padTime(time.minutes)}
+          {padTime(time.hours + 1)}:{padTime(time.minutes)}
         </button>
         <span className="flex rounded-lg border border-white bg-[#0E0A0F]">
           <button
@@ -95,12 +95,12 @@ export const TimePicker: FC<TimePickerProps> = ({
           <ul className="h-full flex-1 overflow-scroll">
             {Array.from({ length: HOURS }, (_, i) => (
               <li
-                onClick={() => setTime({ hours: i + 1 })}
+                onClick={() => setTime({ hours: i })}
                 role="button"
                 tabIndex={0}
                 className={classNames(
                   "cursor-pointer py-0.5 text-sm font-medium hover:bg-[#edfaff42]",
-                  { "bg-[#edfaff42]": time.hours === i + 1 }
+                  { "bg-[#edfaff42]": time.hours === i }
                 )}
                 key={i}
               >

@@ -1,4 +1,4 @@
-import { addMinutes, addMonths, compareAsc, format } from "date-fns"
+import { addMonths, compareAsc, format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
 import { Dispatch, forwardRef, SetStateAction, useState } from "react"
@@ -53,19 +53,16 @@ export const CreateSchedulerPopup = forwardRef<
               return
             }
 
-            // adding 2 minutes to actual scheduled date to remove time between saving time and clicking on create button
-            const scheduledDate = date && addMinutes(date, 2)
-
-            if (!scheduledDate) {
+            if (!date) {
               return
             }
 
-            if (compareAsc(new Date(), scheduledDate) === 1) {
+            if (compareAsc(new Date(), date) === 1) {
               setErrorHandler("Schedule date must be in future")
               return
             }
 
-            setSelectionDate && setSelectionDate(scheduledDate)
+            setSelectionDate && setSelectionDate(date)
             setSelectedDateError(null)
           }}
         >
