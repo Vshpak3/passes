@@ -15,7 +15,8 @@ interface CommentSectionProps {
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
   ownsPost,
-  incrementNumComments
+  incrementNumComments,
+  decrementNumComments
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
 
@@ -29,13 +30,18 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
   return (
     <div className="mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10">
-      <CommentFeed postId={postId} ownsPost={ownsPost} />
+      <CommentFeed
+        postId={postId}
+        ownsPost={ownsPost}
+        decrementNumComments={decrementNumComments}
+      />
       {newComments.map((comment) => {
         return (
           <Comment
             key={comment.commentId}
             comment={comment}
             ownsPost={ownsPost}
+            decrementNumComments={decrementNumComments}
           />
         )
       })}

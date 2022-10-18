@@ -14,13 +14,15 @@ import { Comment } from "./Comment"
 interface CommentFeedProps {
   postId: PostDto["postId"]
   ownsPost: PostDto["isOwner"]
+  decrementNumComments?: () => void
 }
 
 const api = new CommentApi()
 
 export const CommentFeed: React.FC<CommentFeedProps> = ({
   postId,
-  ownsPost
+  ownsPost,
+  decrementNumComments
 }) => {
   return (
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
@@ -32,7 +34,13 @@ export const CommentFeed: React.FC<CommentFeedProps> = ({
         })
       }}
       KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
-        return <Comment comment={arg} ownsPost={ownsPost} />
+        return (
+          <Comment
+            comment={arg}
+            ownsPost={ownsPost}
+            decrementNumComments={decrementNumComments}
+          />
+        )
       }}
       loadingElement={
         <div className="flex w-full items-center justify-center">
