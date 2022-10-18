@@ -2,8 +2,8 @@ import { debounce } from "lodash"
 import React, {
   CSSProperties,
   PropsWithChildren,
+  useCallback,
   useEffect,
-  useMemo,
   useState
 } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -85,12 +85,12 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, options)
 
-  const triggerFetch = useMemo(
-    () =>
-      debounce(async (_size: number) => {
-        setSize(_size)
-      }, SCROLL_DEBOUNCE_MS),
-    [setSize]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const triggerFetch = useCallback(
+    debounce(async (_size: number) => {
+      setSize(_size)
+    }, SCROLL_DEBOUNCE_MS),
+    []
   )
 
   const [flattenedData, setFlattenedData] = useState<A[]>([])

@@ -12,6 +12,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
 const PostFeedEmpty = (
   <h3>No posts</h3> // TODO: add a better message
@@ -39,28 +40,34 @@ export interface PostFeedProps {
 }
 
 export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
+  const api = new FeedApi()
+
+  const { posts, isConnected } = usePostWebhook()
   return (
-    <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
-      keyValue={`/feed/creator/${profileUserId}`}
-      fetch={async (req: GetProfileFeedRequestDto) => {
-        const api = new FeedApi()
-        return await api.getFeedForCreator({
-          getProfileFeedRequestDto: req
-        })
-      }}
-      fetchProps={{ creatorId: profileUserId }}
-      emptyElement={PostFeedEmpty}
-      loadingElement={PostFeedLoader}
-      endElement={PostFeedEnd}
-      KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-        return (
-          <div className="mt-6">
-            <Post post={arg} />
-          </div>
-        )
-      }}
-    >
-      {ownsProfile && <NewPosts />}
-    </InfiniteScrollPagination>
+    <>
+      {isConnected && (
+        <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+          keyValue={`/feed/creator/${profileUserId}`}
+          fetch={async (req: GetProfileFeedRequestDto) => {
+            return await api.getFeedForCreator({
+              getProfileFeedRequestDto: req
+            })
+          }}
+          fetchProps={{ creatorId: profileUserId }}
+          emptyElement={PostFeedEmpty}
+          loadingElement={PostFeedLoader}
+          endElement={PostFeedEnd}
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <div className="mt-6">
+                <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
+              </div>
+            )
+          }}
+        >
+          {ownsProfile && <NewPosts />}
+        </InfiniteScrollPagination>
+      )}
+    </>
   )
 }

@@ -80,7 +80,6 @@ import {
   MessageSendError,
   PaidMessageNotFoundException,
 } from './error/message.error'
-import { MessagesGateway } from './messages.gateway'
 
 const MAX_CHANNELS_PER_REQUEST = 10
 const MAX_MESSAGES_PER_REQUEST = 10
@@ -105,7 +104,6 @@ export class MessagesService {
     private readonly passService: PassService,
     private readonly listService: ListService,
     private readonly contentService: ContentService,
-    private readonly gateway: MessagesGateway,
     @InjectRedis('publisher') private readonly redisService: Redis,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string

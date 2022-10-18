@@ -84,7 +84,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
       setSearch(value)
       setResets(resets + 1)
     }, DEBOUNCE_TIMEOUT),
-    [resets, setSearch]
+    [resets]
   )
 
   const handleOpenPopper = useCallback(

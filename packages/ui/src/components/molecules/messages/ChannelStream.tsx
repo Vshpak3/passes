@@ -62,17 +62,31 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       setPendingMessages([])
     })
     socket.on("message", (data) => {
-      const newMessage = data as MessageDto
+      const newMessage = data as MessageDto & { notification: string }
       if (newMessage.channelId === channelId) {
-        if (newMessage.pending) {
-          setPendingMessages([newMessage, ...pendingMessages])
-        } else {
-          setMessages([newMessage, ...messages])
-          setPendingMessages(
-            pendingMessages.filter(
-              (message) => message.messageId !== newMessage.messageId
+        switch (newMessage.notification) {
+          case "message":
+            setMessages([newMessage, ...messages])
+            setPendingMessages(
+              pendingMessages.filter(
+                (message) => message.messageId !== newMessage.messageId
+              )
             )
-          )
+            break
+          case "pending":
+            setPendingMessages([newMessage, ...pendingMessages])
+            break
+          case "paying":
+          case "failed_payment":
+          case "paid":
+            setMessages(
+              messages.map((message) => {
+                return message.messageId === newMessage.messageId
+                  ? newMessage
+                  : message
+              })
+            )
+            break
         }
       }
     })

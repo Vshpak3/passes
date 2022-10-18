@@ -55,14 +55,14 @@ export const functionMapping = (payinCallbackEnum: PayinCallbackEnum) => {
     case PayinCallbackEnum.PURCHASE_POST:
       return {
         success: purchasePostSuccessfulCallback,
-        failure: empty,
-        creation: empty,
+        failure: purchasePostFailureCallback,
+        creation: purchasePostCreationCallback,
       }
     case PayinCallbackEnum.PURCHASE_DM:
       return {
         success: purchaseMessageSuccessfulCallback,
-        failure: empty,
-        creation: empty,
+        failure: purchaseMessageFailureCallback,
+        creation: purchaseMessageCreationCallback,
       }
     case PayinCallbackEnum.TIP_POST:
       return {
@@ -203,6 +203,34 @@ async function purchasePostSuccessfulCallback(
     input.postId,
     payin.id,
     await payService.getTotalEarnings(payin.id),
+  )
+  return { postId: input.postId }
+}
+
+async function purchasePostCreationCallback(
+  payin: PayinEntity,
+  input: PurchasePostCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchasePostCallbackOutput> {
+  await payService.postService.purchasingPost(
+    input.userId,
+    input.postId,
+    payin.id,
+  )
+  return { postId: input.postId }
+}
+
+async function purchasePostFailureCallback(
+  payin: PayinEntity,
+  input: PurchasePostCallbackInput,
+  payService: PaymentService,
+  db: DatabaseService['knex'],
+): Promise<PurchasePostCallbackOutput> {
+  await payService.postService.failPostPurchase(
+    input.userId,
+    input.postId,
+    payin.id,
   )
   return { postId: input.postId }
 }

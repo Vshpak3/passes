@@ -6,6 +6,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -55,12 +56,14 @@ import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
+import { PostNotificationDto } from './dto/post-notification.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
+import { PostNotificationEnum } from './enum/post.notification.enum'
 import {
   BadPostPropertiesException,
   ForbiddenPostException,
@@ -84,6 +87,8 @@ export class PostService {
     private readonly payService: PaymentService,
     private readonly passService: PassService,
     private readonly contentService: ContentService,
+
+    @InjectRedis('publisher') private readonly redisService: Redis,
   ) {}
 
   async validateCreatePost(
@@ -154,6 +159,7 @@ export class PostService {
                 post_id: postId,
                 user_id: userId,
                 pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
+                paid: true,
               }
             }),
           )
@@ -226,7 +232,8 @@ export class PostService {
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.id as access`,
+        `${PostUserAccessEntity.table}.paid as paid`,
+        `${PostUserAccessEntity.table}.paying as paying`,
         `${PostLikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
@@ -303,7 +310,7 @@ export class PostService {
           post.user_id === userId,
           this.contentService.getContentDtosFromBare(
             JSON.parse(post.contents),
-            post.access || // single post purchase
+            post.paid || // single post purchase
               postsFromPass.has(post.id) || // owns pass that gives access
               post.user_id === userId || // user made post
               !post.price || // no price on post
@@ -351,6 +358,56 @@ export class PostService {
     return updated === 1
   }
 
+  async purchasingPost(userId: string, postId: string, payinId: string) {
+    await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
+      .insert({
+        user_id: userId,
+        post_id: postId,
+        payin_id: payinId,
+        paying: true,
+      })
+      .onConflict(['post_id', 'user_id'])
+      .merge(['payin_id', 'paying'])
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new PostNotificationDto(
+          undefined,
+          false,
+          [],
+          userId,
+          PostNotificationEnum.PAYING,
+        ),
+      ),
+    )
+  }
+
+  async failPostPurchase(userId: string, postId: string, payinId: string) {
+    const updated = await this.dbWriter<PostUserAccessEntity>(
+      PostUserAccessEntity.table,
+    )
+      .update({ payin_id: null, paying: false })
+      .where({
+        payin_id: payinId,
+        user_id: userId,
+        post_id: postId,
+      })
+    if (updated) {
+      await this.redisService.publish(
+        'post',
+        JSON.stringify(
+          new PostNotificationDto(
+            undefined,
+            false,
+            [],
+            userId,
+            PostNotificationEnum.FAILED_PAYMENT,
+          ),
+        ),
+      )
+    }
+  }
+
   async purchasePost(
     userId: string,
     postId: string,
@@ -394,6 +451,18 @@ export class PostService {
         }),
       )
     })
+    await this.redisService.publish(
+      'message',
+      JSON.stringify(
+        new PostNotificationDto(
+          undefined,
+          false,
+          [],
+          userId,
+          PostNotificationEnum.PAID,
+        ),
+      ),
+    )
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
@@ -408,22 +477,26 @@ export class PostService {
         `cant find post access for payinId ${payinId}`,
       )
     }
-    await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
+    const updated = await this.dbWriter<PostUserAccessEntity>(
+      PostUserAccessEntity.table,
+    )
       .update({ payin_id: undefined })
-      .where({ id: access.id })
-    if (!JSON.parse(access.pass_holder_ids).length) {
-      await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
-        .where({ id: access.id })
-        .delete()
+      .where({ id: access.id, payin_id: payinId })
+    if (updated) {
+      if (!JSON.parse(access.pass_holder_ids).length) {
+        await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
+          .where({ id: access.id })
+          .update({ paid: false })
+      }
+      await this.dbWriter.transaction(async (trx) => {
+        await trx<PostEntity>(PostEntity.table)
+          .where({ id: postId })
+          .decrement('num_purchases', 1)
+        await trx<PostEntity>(PostEntity.table)
+          .where({ id: postId })
+          .decrement('earnings_purchases', earnings)
+      })
     }
-    await this.dbWriter.transaction(async (trx) => {
-      await trx<PostEntity>(PostEntity.table)
-        .where({ id: postId })
-        .decrement('num_purchases', 1)
-      await trx<PostEntity>(PostEntity.table)
-        .where({ id: postId })
-        .decrement('earnings_purchases', earnings)
-    })
   }
 
   async createTip(

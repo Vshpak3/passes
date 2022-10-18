@@ -140,7 +140,9 @@ export class ListService {
       .where({ id: listId, user_id: userId, deleted_at: null })
       .select('*')
       .first()
-    await this.fillAutomatedLists([list])
+    if (list) {
+      await this.fillAutomatedLists([list])
+    }
     return new ListDto(list)
   }
 

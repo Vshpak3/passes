@@ -20,6 +20,12 @@ export class PostUserAccessEntity extends BaseEntity {
   @OneToOne({ entity: () => PayinEntity })
   payin_id: string | null
 
+  @Property({ default: false })
+  paid: boolean
+
+  @Property({ default: false })
+  paying: boolean
+
   @Property({ length: PASS_HOLDER_IDS_LENGTH })
   pass_holder_ids: string
 }

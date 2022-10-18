@@ -164,6 +164,18 @@ export interface GetPostResponseDto {
      * @memberof GetPostResponseDto
      */
     isOwner: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPostResponseDto
+     */
+    paid: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPostResponseDto
+     */
+    paying: boolean;
 }
 
 /**
@@ -187,6 +199,8 @@ export function instanceOfGetPostResponseDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "isOwner" in value;
+    isInstance = isInstance && "paid" in value;
+    isInstance = isInstance && "paying" in value;
 
     return isInstance;
 }
@@ -223,6 +237,8 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
         'isOwner': json['isOwner'],
+        'paid': json['paid'],
+        'paying': json['paying'],
     };
 }
 
@@ -257,6 +273,8 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
         'isOwner': value.isOwner,
+        'paid': value.paid,
+        'paying': value.paying,
     };
 }
 

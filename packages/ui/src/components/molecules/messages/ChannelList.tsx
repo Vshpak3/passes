@@ -46,7 +46,7 @@ export const ChannelList: FC<ChannelListProps> = ({
       const value = e.target.value.toLowerCase()
       setSearch(value)
     }, DEBOUNCE_TIMEOUT),
-    [setSearch]
+    []
   )
   return (
     <div className="min-w-[35%] overflow-y-auto border-r border-[#fff]/10 p-[30px] ">

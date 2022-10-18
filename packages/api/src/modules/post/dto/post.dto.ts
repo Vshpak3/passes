@@ -100,12 +100,22 @@ export class PostDto {
   @DtoProperty({ type: 'boolean' })
   isOwner: boolean
 
+  @DtoProperty({ type: 'boolean' })
+  paid: boolean
+
+  @DtoProperty({ type: 'boolean' })
+  paying: boolean
+
   constructor(
-    post: PostEntity & {
-      is_liked: boolean
-      username: string
-      display_name: string
-    },
+    post:
+      | (PostEntity & {
+          is_liked: boolean
+          username: string
+          display_name: string
+          paid: boolean
+          paying: boolean
+        })
+      | undefined,
     isOwner,
     contents?: ContentDto[],
   ) {
@@ -126,6 +136,8 @@ export class PostDto {
       this.passIds = JSON.parse(post.pass_ids)
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
+      this.paid = post.paid
+      this.paying = post.paying
       if (isOwner) {
         this.totalTipAmount = post.total_tip_amount
         this.earningsPurchases = post.earnings_purchases
@@ -137,6 +149,8 @@ export class PostDto {
       }
       this.purchasable =
         !isOwner &&
+        !this.paid &&
+        !this.paying &&
         !!contents &&
         !!contents.length &&
         !contents.filter((content) => content.signedUrl).length

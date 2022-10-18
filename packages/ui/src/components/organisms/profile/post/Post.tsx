@@ -27,7 +27,6 @@ interface PostProps {
 export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
   const [isRemoved, setIsRemoved] = useState(false)
   const { setPost } = useViewPostModal()
-
   const router = useRouter()
   const { user } = useUser()
   const { removePost } = usePost()
