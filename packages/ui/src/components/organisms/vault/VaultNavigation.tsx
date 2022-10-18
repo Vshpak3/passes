@@ -4,7 +4,7 @@ import {
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
 import { FC, useState } from "react"
-import { VaultDeleteButton } from "src/components/atoms/vault"
+import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultDeleteModal } from "src/components/molecules/vault/VaultDelete"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
@@ -76,6 +76,11 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
                 )}
               </>
             )}
+
+            <VaultAddButton
+              // TODO: connect with API to add items
+              onClick={() => undefined}
+            />
             <VaultSortDropdown order={order} setOrder={setOrder} />
           </div>
         )}

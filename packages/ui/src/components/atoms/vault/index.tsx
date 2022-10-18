@@ -1,8 +1,8 @@
 import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
-import { FC } from "react"
-import { MdDelete } from "react-icons/md"
+import { FC, useRef } from "react"
+import { MdAdd, MdDelete } from "react-icons/md"
 
 const filterStyles = {
   button: "rounded-[56px] bg-[#FFFEFF]/10 hover:bg-[#EDEDED]",
@@ -34,6 +34,9 @@ interface VaultAddToItemProps {
 
 interface VaultDeleteButtonProps {
   toggleDeleteModal: () => void
+}
+interface VaultAddItemProps {
+  onClick: (files: FileList | null) => void
 }
 
 export const VaultDeselectButton = ({
@@ -101,6 +104,30 @@ export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
       className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
     >
       <MdDelete size={23} />
+    </div>
+  )
+}
+
+export const VaultAddButton: FC<VaultAddItemProps> = ({
+  onClick
+}: VaultAddItemProps) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+  const handleSelectContent = () => {
+    inputRef.current?.click()
+  }
+
+  return (
+    <div
+      onClick={handleSelectContent}
+      className="cursor-pointer rounded-[50%] bg-[#ffffff40] p-[4px] text-white"
+    >
+      <input
+        type="file"
+        className="hidden"
+        ref={inputRef}
+        onChange={(e) => onClick(e.target.files)}
+      />
+      <MdAdd size={16} />
     </div>
   )
 }
