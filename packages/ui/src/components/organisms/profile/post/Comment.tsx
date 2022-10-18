@@ -21,7 +21,7 @@ import { useComment } from "src/hooks/useComment"
 interface CommentProps {
   comment: CommentDto
   ownsPost: boolean
-  decrementNumComments?: () => void
+  decrementNumComments: () => void
 }
 
 export const Comment: FC<CommentProps> = ({
@@ -49,9 +49,7 @@ export const Comment: FC<CommentProps> = ({
       commentId,
       deleteComment,
       () => {
-        if (decrementNumComments) {
-          decrementNumComments()
-        }
+        decrementNumComments()
         setRemoved(true)
       }
     ),

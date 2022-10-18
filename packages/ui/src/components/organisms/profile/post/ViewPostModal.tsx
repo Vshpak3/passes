@@ -193,7 +193,13 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
             <span>{compactNumberFormatter(post.numComments)}</span>
           </div>
           <div className="max-h-[380px] overflow-auto">
-            <CommentFeed postId={post.postId} ownsPost={post.isOwner} />
+            <CommentFeed
+              postId={post.postId}
+              ownsPost={post.isOwner}
+              // TODO: add this
+              // eslint-disable-next-line @typescript-eslint/no-empty-function
+              decrementNumComments={() => {}}
+            />
           </div>
         </div>
       </div>

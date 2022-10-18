@@ -7,15 +7,17 @@ interface InfiniteLoadProps<A, T extends PagedData<A>> {
   keyValue: string
   fetch: (data: Omit<T, "data">) => Promise<T>
   fetchProps: Partial<T>
+  KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
+
   emptyElement?: JSX.Element
   loadingElement?: JSX.Element
   endElement?: JSX.Element
-  KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
+  loadMoreMessage?: string
+  loadMorePosition?: LoadMsgPositionEnum
+
   resets?: number // increment to manually reset list
   isReverse?: boolean
-  loadMsg?: string
-  loadMsgPosition?: LoadMsgPositionEnum
-  numComments?: number
+  numElements?: number
 }
 
 export enum LoadMsgPositionEnum {
@@ -32,15 +34,17 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   keyValue,
   fetch,
   fetchProps,
+  KeyedComponent,
+
   emptyElement,
   loadingElement,
   endElement,
-  KeyedComponent,
-  resets = 0,
+  loadMoreMessage = "Load more",
+  loadMorePosition = LoadMsgPositionEnum.BOTTOM,
+
   isReverse,
-  loadMsg = "Load more",
-  loadMsgPosition = LoadMsgPositionEnum.BOTTOM,
-  numComments = 0,
+  numElements = 0,
+  resets = 0,
   children
 }: PropsWithChildren<InfiniteLoadProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
@@ -93,7 +97,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
           })
           .flat() ?? []
       )
-      setHasMore(!data || (!!data[data.length - 1].lastId && numComments > 5))
+      setHasMore(!data || (!!data[data.length - 1].lastId && numElements > 5))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -111,17 +115,17 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
 
   return (
     <>
-      {loadMsgPosition === LoadMsgPositionEnum.TOP &&
+      {loadMorePosition === LoadMsgPositionEnum.TOP &&
         hasMore &&
-        showedElementsCounter < numComments && (
-          <button onClick={triggerFetch}>{loadMsg}</button>
+        showedElementsCounter < numElements && (
+          <button onClick={triggerFetch}>{loadMoreMessage}</button>
         )}
       {children}
       {flattenedData.map((data, index) => (
         <KeyedComponent key={index} arg={data} index={index} />
       ))}
-      {loadMsgPosition === LoadMsgPositionEnum.BOTTOM && hasMore && (
-        <button onClick={triggerFetch}>{loadMsg}</button>
+      {loadMorePosition === LoadMsgPositionEnum.BOTTOM && hasMore && (
+        <button onClick={triggerFetch}>{loadMoreMessage}</button>
       )}
       {!hasMore && !!flattenedData.length && endElement}
       {!hasMore && !flattenedData.length && emptyElement}
