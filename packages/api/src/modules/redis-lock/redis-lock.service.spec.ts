@@ -10,7 +10,7 @@ describe('RedisLockService', () => {
       providers: [
         RedisLockService,
         {
-          provide: getRedisConnectionToken('subscriber'),
+          provide: getRedisConnectionToken('publisher'),
           useFactory: jest.fn(() => ({})),
         },
       ],
