@@ -6,6 +6,7 @@ import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import { FC } from "react"
+import { formatText } from "src/helpers/formatters"
 
 const socialUsernameToUrl = {
   discordUsername: (u: string) => `https://www.discord.gg/${u}`,
@@ -39,7 +40,7 @@ export const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   <>
     {username && (
       <a
-        href={socialUsernameToUrl[type](username)}
+        href={formatText(socialUsernameToUrl[type](username))}
         target="_blank"
         rel="noopener noreferrer"
       >
