@@ -146,9 +146,7 @@ export const SchedulerHeader: FC = () => {
       {/* Create new post */}
       <NewPostPopup
         isOpen={isNewPostModalOpen && !!selectionDate}
-        onCancel={() => {
-          setIsNewPostModalOpen(false)
-        }}
+        onCancel={() => setIsNewPostModalOpen(false)}
         selectionDate={selectionDate as Date}
       />
 

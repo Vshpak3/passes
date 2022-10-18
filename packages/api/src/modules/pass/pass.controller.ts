@@ -273,7 +273,7 @@ export class PassController {
     summary: 'Get passholders of a pass or user',
     responseStatus: HttpStatus.OK,
     responseType: GetPassHoldersResponseDto,
-    responseDesc: 'A pass was unpinned',
+    responseDesc: 'Gets pass holders',
     role: RoleEnum.CREATOR_ONLY,
   })
   @Get('passholders')
