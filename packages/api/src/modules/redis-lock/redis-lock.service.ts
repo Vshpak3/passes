@@ -11,9 +11,7 @@ const DEFAULT_LOCK_MAX_RETRY_TIMES = 100
 export class RedisLockService {
   private readonly uuid: string = uuid.v4()
 
-  constructor(
-    @InjectRedis('subscriber') private readonly redisService: Redis,
-  ) {}
+  constructor(@InjectRedis('publisher') private readonly redisService: Redis) {}
 
   private prefix(name: string): string {
     return `lock:${name}`
@@ -106,7 +104,7 @@ export class RedisLockService {
    * @param {number} ms milliseconds, the sleep interval
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
-  sleep(ms: number): Promise<Function> {
+  async sleep(ms: number): Promise<Function> {
     return new Promise((resolve) => setTimeout(resolve, Number(ms)))
   }
 }

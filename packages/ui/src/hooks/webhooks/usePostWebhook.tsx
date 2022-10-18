@@ -41,7 +41,7 @@ export const usePostWebhook = () => {
           newMap[newPost.postId] = { paying: newPost.notification === "paying" }
           break
         case "paid":
-          sleep("1 second")
+          await sleep("1 second")
           newMap[newPost.postId] = await api.findPost({
             postId: newPost.postId
           })

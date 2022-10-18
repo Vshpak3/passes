@@ -102,7 +102,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         circleCreateCardAndExtraRequestDto: payload
       })
       toast.success("Credit card added succesfully")
-      sleep("1 second")
+      await sleep("1 second")
       if (callback) {
         callback()
       } else {
