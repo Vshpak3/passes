@@ -3,9 +3,8 @@ import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/messages-channel-gallery-header"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
-
-import { Avatar } from "./Avatar"
 
 interface ChannelHeaderProps {
   selectedChannel: ChannelMemberDto
@@ -37,7 +36,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           />
         ) : (
           <div className="flex items-center ">
-            <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
+            <ProfileThumbnail userId={selectedChannel.otherUserId} />
             <span className="text-brand-600 pl-2">
               <NameDisplay
                 displayName={selectedChannel.otherUserDisplayName}

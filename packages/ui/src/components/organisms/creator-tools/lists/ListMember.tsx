@@ -1,6 +1,7 @@
 import { ListMemberDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { CheckVerified } from "src/icons/check-verified"
 
 type ListMemberProps = {
@@ -25,11 +26,7 @@ export const ListMember: FC<ListMemberProps> = ({
             <div className="absolute right-[-5px] top-[0px] z-20 h-[18px] w-[18px] overflow-hidden rounded-full">
               <CheckVerified height={18} width={18} />
             </div>
-            <img
-              alt="Name"
-              className="h-[50px] w-[50px] rounded-full"
-              src="https://cdn1.vectorstock.com/i/1000x1000/32/10/young-man-avatar-character-vector-14213210.jpg"
-            />
+            <ProfileThumbnail userId={fanInfo.userId} />
           </div>
           <span className="ml-3 text-base font-medium leading-6 text-white">
             {displayName}

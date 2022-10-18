@@ -106,6 +106,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           return r
         })
         .catch(() => undefined)
+
       setHasRefreshed(true)
     }
 
@@ -117,6 +118,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
     return () => clearInterval(interval)
   }, [refresh, router, setAccessToken])
+
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"

@@ -3,9 +3,8 @@ import classNames from "classnames"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
 import { NameDisplay } from "src/components/atoms/NameDisplay"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
-
-import { Avatar } from "./Avatar"
 
 interface ChannelListItemProps {
   onClick: () => void
@@ -27,7 +26,7 @@ export const ChannelListItem: FC<ChannelListItemProps> = ({
       )}
     >
       <div className="item-center flex pr-[10px]">
-        <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
+        <ProfileThumbnail userId={channel.otherUserId} />
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col items-start justify-start">
