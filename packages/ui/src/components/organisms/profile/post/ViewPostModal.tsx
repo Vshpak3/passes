@@ -20,6 +20,7 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
+import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -28,8 +29,6 @@ import { plural } from "src/helpers/plural"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { usePost } from "src/hooks/usePost"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
-
-import { CommentFeed } from "./CommentFeed"
 
 export interface ViewPostModalProps {
   post: PostDto & { setIsRemoved?: Dispatch<SetStateAction<boolean>> }

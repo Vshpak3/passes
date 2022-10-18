@@ -19,7 +19,7 @@ import {
 } from "chart.js"
 import { uniqueId } from "lodash"
 import ms from "ms"
-import React, { FC, useState } from "react"
+import React, { FC, useRef, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 import { TabButton } from "src/components/atoms/Button"
@@ -28,6 +28,7 @@ import {
   getFormattedDate,
   getNYearsAgoDate
 } from "src/helpers/formatters"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { Caret } from "src/icons/caret"
 
 ChartJS.register(
@@ -47,6 +48,9 @@ interface EarningsGraphProps {
 }
 
 export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
+  const datepickerRef = useRef(null)
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false)
+  useOnClickOutside(datepickerRef, () => setIsDatePickerOpen(false))
   const [activeTab, setActiveTab] = useState<CreatorEarningDtoTypeEnum>(
     CreatorEarningDtoTypeEnum.Total
   )
@@ -56,6 +60,9 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     key: "selection"
   })
   const [graphData, setGraphData] = React.useState<Array<CreatorEarningDto>>([])
+
+  const datePickerModalToggle = () =>
+    setIsDatePickerOpen((prevState) => !prevState)
 
   const handleOnTabClick = (value: CreatorEarningDtoTypeEnum) => {
     setActiveTab(value)
@@ -87,32 +94,41 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
 
   return (
     <div className="flex flex-col gap-[32px]">
-      <div className="flex flex-col gap-[8px]">
+      <div className="relative flex flex-col gap-[8px]">
         <h3 className="text-2xl font-bold">
           {dateDiff(dateRange.startDate, dateRange.endDate)} Days
         </h3>
         <label
           htmlFor="calender-modal"
           className="modal-button flex cursor-pointer flex-row items-end gap-[24px] text-base font-bold"
+          onChange={datePickerModalToggle}
         >
           {getFormattedDate(dateRange.startDate)} -{" "}
           {getFormattedDate(dateRange.endDate)}
           <Caret height={15} width={15} />
+          <input
+            type="checkbox"
+            id="calender-modal"
+            className="modal-toggle hidden"
+          />
         </label>
-        <input type="checkbox" id="calender-modal" className="modal-toggle" />
         <label htmlFor="calender-modal" className="modal cursor-pointer">
           <label
-            className="modal-box relative flex items-center justify-center bg-[#fff]"
+            className="absolute flex w-fit items-center justify-center rounded-[20px] bg-[#fff]"
             htmlFor=""
           >
-            <DateRangePicker
-              ranges={[dateRange]}
-              maxDate={new Date()}
-              minDate={getNYearsAgoDate(2)}
-              onChange={(newRange) => {
-                setDateRange(newRange.selection as any)
-              }}
-            />
+            {isDatePickerOpen && (
+              <div className="w-fit" ref={datepickerRef}>
+                <DateRangePicker
+                  ranges={[dateRange]}
+                  maxDate={new Date()}
+                  minDate={getNYearsAgoDate(2)}
+                  onChange={(newRange) => {
+                    setDateRange(newRange.selection as any)
+                  }}
+                />
+              </div>
+            )}
           </label>
         </label>
       </div>
