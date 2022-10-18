@@ -1,5 +1,6 @@
 import { FC } from "react"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { formatText } from "src/helpers/formatters"
 
 interface EmptyResultProps {
   text: string
@@ -7,7 +8,7 @@ interface EmptyResultProps {
 
 export const EmptyResult = ({ text }: EmptyResultProps) => (
   <li className="my-4 pl-6 text-[#ffffff]/30">
-    <div>Try searching for {text}.</div>
+    <div>Try searching for {formatText(text)}.</div>
   </li>
 )
 

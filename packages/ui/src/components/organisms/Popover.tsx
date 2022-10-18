@@ -2,13 +2,14 @@ import * as RadixPopover from "@radix-ui/react-popover"
 import classNames from "classnames"
 import { FC } from "react"
 import { Text } from "src/components/atoms/Text"
+import { formatText } from "src/helpers/formatters"
 import { Cross } from "src/icons/cross"
 
 interface PopoverProps {
   avoidCollisions: any
   children: any
-  description: any
-  title: any
+  description: string
+  title: string
   trigger: any
   triggerClassName: any
   popoverClassName: any
@@ -39,7 +40,7 @@ export const Popover: FC<PopoverProps> = ({
         <div className="flex max-w-full justify-between space-x-6">
           <div className="min-w-0 break-words">
             <Text fontSize={18} className="font-bold">
-              {title}
+              {formatText(title)}
             </Text>
           </div>
           <div className="h-4 w-4" />
@@ -48,7 +49,7 @@ export const Popover: FC<PopoverProps> = ({
       {description && (
         <div className="my-4">
           <Text className="text-mauve-mauve11 dark:text-mauveDark-mauve11">
-            {description}
+            {formatText(description)}
           </Text>
         </div>
       )}

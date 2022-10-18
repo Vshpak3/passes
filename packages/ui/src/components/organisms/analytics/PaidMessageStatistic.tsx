@@ -1,6 +1,7 @@
 import { PaidMessageDto } from "@passes/api-client"
 import React, { useState } from "react"
 import { Button } from "src/components/atoms/Button"
+import { formatText } from "src/helpers/formatters"
 
 interface PaidMessageStatisticProps {
   paidMessage: PaidMessageDto
@@ -26,7 +27,9 @@ export const PaidMessageStatistic = ({
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700]">{paidMessage.text}</span>
+        <span className="text-[14px] font-[700]">
+          {formatText(paidMessage.text)}
+        </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">

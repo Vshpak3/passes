@@ -1,6 +1,7 @@
 import { PassDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+import { formatText } from "src/helpers/formatters"
 
 import { Modal } from "./Modal"
 
@@ -20,7 +21,7 @@ export const CreatorPassModal: FC<CreatorPassModalProps> = ({
       <div className="flex flex-wrap gap-4">
         <div className="flex flex-grow flex-col">
           <div>
-            <span className="text-[#ffff]/90">{pass.title}</span>
+            <span className="text-[#ffff]/90">{formatText(pass.title)}</span>
           </div>
         </div>
         <PassMedia

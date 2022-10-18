@@ -1,6 +1,7 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import { FC, Fragment, PropsWithChildren, useEffect, useState } from "react"
+import { formatText } from "src/helpers/formatters"
 
 type DialogProps = {
   triggerClassName?: string
@@ -87,7 +88,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                   <div className="relative flex h-full w-full flex-col justify-between">
                     {title && (
                       <HeadlessDialog.Title className="z-20">
-                        {title}
+                        {typeof title === "string" ? formatText(title) : title}
                       </HeadlessDialog.Title>
                     )}
                     <div className="z-10 h-full w-full overflow-y-auto">
@@ -95,7 +96,9 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                     </div>
                     {footer && (
                       <div className="relative z-20 w-full self-end">
-                        {footer}
+                        {typeof footer === "string"
+                          ? formatText(footer)
+                          : footer}
                       </div>
                     )}
                   </div>

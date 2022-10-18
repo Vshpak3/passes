@@ -4,6 +4,7 @@ import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, useState } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { RenewPassModal } from "src/components/organisms/payment/RenewPassModal"
+import { formatText } from "src/helpers/formatters"
 
 interface PassRenewalButtonProps {
   onRenewal: () => void
@@ -57,7 +58,7 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
           </div>
           <div className="mt-2">
             <span className="w-[180px] text-[24px] font-bold leading-9 line-clamp-2">
-              {passHolder.title}
+              {formatText(passHolder.title)}
             </span>
           </div>
           <div className="mt-2">

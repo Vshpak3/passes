@@ -3,6 +3,7 @@ import DeleteIcon from "public/icons/post-audience-x-icon.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
+import { formatText } from "src/helpers/formatters"
 
 import { NewPostFormProps } from "./NewPostEditor"
 import { NewPostPassesDropdown } from "./NewPostPassesDropdown"
@@ -69,7 +70,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
               <span>
                 <AudienceChevronIcon />
               </span>
-              <span>{pass.title}</span>
+              <span>{formatText(pass.title)}</span>
               <span>
                 <DeleteIcon onClick={() => removePasses(pass.id)} />
               </span>

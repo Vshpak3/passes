@@ -41,7 +41,7 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
 
 interface PassNumberInputProps {
   register: any
-  title: any
+  title: string
   name: any
   placeholder: any
   suffix?: any

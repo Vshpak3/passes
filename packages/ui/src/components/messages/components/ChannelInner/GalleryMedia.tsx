@@ -7,7 +7,7 @@ import { PostUnlockButton } from "src/components/atoms/Button"
 import { PostVideo } from "src/components/molecules/post/PostVideo"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
-import { formatCurrency } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 
 interface GalleryMediaProps {
   contents: ContentDto[]
@@ -72,7 +72,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
       </div>
       <div className="flex w-full">
         <p className="truncate text-[16px] font-medium leading-[22px] text-white hover:text-clip">
-          {text}
+          {formatText(text)}
         </p>
       </div>
       {isCreator ? (

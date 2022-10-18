@@ -1,6 +1,7 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React, { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+import { formatText } from "src/helpers/formatters"
 import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {
@@ -26,9 +27,11 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
       <span className="mt-3 inline-block text-sm font-medium leading-4">
         {passType[pass.type] ?? pass.type}
       </span>
-      <h2 className="mt-[3px] text-base font-bold leading-5">{pass.title}</h2>
+      <h2 className="mt-[3px] text-base font-bold leading-5">
+        {formatText(pass.title)}
+      </h2>
       <p className="mt-2.5 text-xs font-medium leading-[18px] text-white/70">
-        {pass.description}
+        {formatText(pass.description)}
       </p>
       <button className="mt-3 w-full rounded-[50px] bg-passes-primary-color py-2.5 text-center">
         {isCreator ? "Pin Pass" : "Purchase Pass"}

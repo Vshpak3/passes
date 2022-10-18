@@ -5,7 +5,7 @@ import {
   PassesPinkButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { compactNumberFormatter } from "src/helpers/formatters"
+import { compactNumberFormatter, formatText } from "src/helpers/formatters"
 import { useFollow } from "src/hooks/useFollow"
 import { useProfile } from "src/hooks/useProfile"
 
@@ -60,7 +60,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         )}
       </div>
       <span className="text-md my-3 font-semibold leading-[22px] text-white">
-        {profileInfo?.description}
+        {formatText(profileInfo?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
@@ -116,7 +116,7 @@ export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
         </span>
       </div>
       <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
-        {profileInfo?.description}
+        {formatText(profileInfo?.description)}
       </span>
       <ProfileSocialMedia
         discordUsername={profileInfo?.discordUsername}

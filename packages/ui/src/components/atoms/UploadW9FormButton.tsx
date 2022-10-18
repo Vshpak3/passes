@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
+import { formatText } from "src/helpers/formatters"
 
 import { FormInput } from "./FormInput"
 
@@ -71,7 +72,7 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
               }}
             >
               {icon && <EditIcon />}
-              {text}
+              {formatText(text)}
             </Button>
           }
         />

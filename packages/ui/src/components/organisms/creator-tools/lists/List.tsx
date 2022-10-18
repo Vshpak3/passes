@@ -4,6 +4,7 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
+import { formatText } from "src/helpers/formatters"
 
 interface ListProps {
   list: ListDto
@@ -20,7 +21,9 @@ export const List: FC<ListProps> = ({
     <ConditionRendering condition={!removed}>
       <Link href={`/tools/list-members/${list.listId}`} key={list.listId}>
         <li className="duration-400 cursor-pointer border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
-          <h1 className="text-xl font-bold">{list.name || list.listId}</h1>
+          <h1 className="text-xl font-bold">
+            {formatText(list.name) || list.listId}
+          </h1>
           <span className="text-base font-bold text-gray-500">
             &nbsp; {list.count}
           </span>

@@ -1,6 +1,7 @@
 import { PostApi, PostDto } from "@passes/api-client"
 import React, { useState } from "react"
 import { Button } from "src/components/atoms/Button"
+import { formatText } from "src/helpers/formatters"
 
 interface PostStatisticProps {
   post: PostDto
@@ -23,7 +24,7 @@ export const PostStatistic = ({ post }: PostStatisticProps) => {
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700] ">{post.text}</span>
+        <span className="text-[14px] font-[700] ">{formatText(post.text)}</span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">

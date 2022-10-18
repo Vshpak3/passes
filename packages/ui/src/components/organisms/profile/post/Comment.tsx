@@ -16,6 +16,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { formatText } from "src/helpers/formatters"
 import { useComment } from "src/hooks/useComment"
 
 interface CommentProps {
@@ -87,7 +88,7 @@ export const Comment: FC<CommentProps> = ({
             fontSize={14}
             className="whitespace-pre-wrap break-all font-light"
           >
-            {comment.text}
+            {formatText(comment.text)}
           </Text>
         </div>
       </div>

@@ -89,13 +89,15 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             </div>
           ) : (
-            <span className="break-all">{message?.text}</span>
+            <span className="break-all">
+              {/* <Text>{formatText(message?.text)}</Text> */}
+            </span>
           )}
         </div>
         {!!message?.pending && (
           <span className="text-md mt-2 text-gray-500">Pending...</span>
         )}
-        {!message?.pending && (
+        {!message?.pending && message.sentAt && (
           <span className="text-md mt-2 text-gray-500">
             {message.sentAt.toLocaleDateString()}
           </span>

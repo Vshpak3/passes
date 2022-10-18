@@ -6,7 +6,7 @@ import { format } from "date-fns"
 import TrashIcon from "public/icons/trash.svg"
 import { FC } from "react"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
-import { formatCurrency } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 import { KeyedMutator } from "swr"
 
 interface EventTableItemProps {
@@ -80,7 +80,9 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         <td className="pl-5 pb-1">{typeStr}</td>
         <td>{media}</td>
         <td>{formatCurrency(price ?? 0)}</td>
-        <td className="my-[6px] max-w-[350px] truncate px-3">{text}</td>
+        <td className="my-[6px] max-w-[350px] truncate px-3">
+          {formatText(text)}
+        </td>
         <td className="min-w-[150px] text-center">
           {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
         </td>
@@ -100,7 +102,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
           <div className="flex flex-col gap-2">
             <div> {media}</div>
             <div>{formatCurrency(price ?? 0)}</div>
-            <span>{text}</span>
+            <span>{formatText(text)}</span>
             <span>{generateActionStatus}</span>
           </div>
         </div>

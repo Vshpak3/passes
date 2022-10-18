@@ -12,6 +12,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
 import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
+import { formatText } from "src/helpers/formatters"
 import { useFanWall } from "src/hooks/useFanWall"
 import { useProfile } from "src/hooks/useProfile"
 
@@ -71,7 +72,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
         />
         <div className="flex flex-col items-start">
           <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-            {text}
+            {formatText(text)}
           </p>
         </div>
       </FormContainer>

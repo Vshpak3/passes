@@ -30,3 +30,19 @@ export function getFormattedDate(date: Date) {
 export function getNYearsAgoDate(years: number) {
   return new Date(new Date().setFullYear(new Date().getFullYear() - years))
 }
+
+export function formatText(text?: string | null) {
+  if (!text) {
+    return ""
+  }
+  return text
+    .replace("\n", "<br>")
+    .replace(" ", "&nbsp;")
+    .replace("<", "&lt;")
+    .replace(">", "&gt")
+    .replace("&", "&amp;")
+    .replace("€", "&euro;")
+    .replace("£", "&pound;")
+    .replace('"', "&quot;")
+    .replace("'", "&apos;")
+}

@@ -1,6 +1,7 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
 import React, { FC, PropsWithChildren } from "react"
 import { SettingsContextProps, useSettings } from "src/contexts/settings"
+import { formatText } from "src/helpers/formatters"
 
 interface TabProps {
   title: string
@@ -39,13 +40,13 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
                 <ArrowRightIcon />
               </button>
             )}
-            <h3 className="text-label-lg">{title}</h3>
+            <h3 className="text-label-lg">{formatText(title)}</h3>
           </div>
           {TitleBtn}
         </div>
         {description && (
           <p className="mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
-            {description}
+            {formatText(description)}
           </p>
         )}
       </div>

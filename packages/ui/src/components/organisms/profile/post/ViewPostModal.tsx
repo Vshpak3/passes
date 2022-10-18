@@ -24,7 +24,11 @@ import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
-import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
+import {
+  compactNumberFormatter,
+  formatCurrency,
+  formatText
+} from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { usePost } from "src/hooks/usePost"
@@ -186,7 +190,9 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               </p>
             </div>
           </a>
-          <p className="mt-7 text-justify text-base font-medium">{post.text}</p>
+          <p className="mt-7 text-justify text-base font-medium">
+            {formatText(post.text)}
+          </p>
           <div className="mt-8 flex items-center justify-start space-x-1.5 border-b border-[#727272] pb-2 text-xs font-medium text-passes-gray-100">
             <MessageIcon />
             <span>{compactNumberFormatter(post.numComments)}</span>

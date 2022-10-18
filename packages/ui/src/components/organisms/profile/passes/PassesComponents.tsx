@@ -1,7 +1,7 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React, { FC } from "react"
 import { Button } from "src/components/atoms/Button"
-import { formatCurrency } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 
 export interface PaymentModalInfo {
   passId: string
@@ -79,18 +79,18 @@ export const PassCardMobile: FC<PassItemProps> = ({ pass, setModalOpen }) => (
     {"todo-PASS-532" && (
       <img
         src={"todo-PASS-532"}
-        alt={pass.title}
+        alt={formatText(pass.title)}
         className="rounded-[20px] object-cover"
       />
     )}
     <div className="flex">
       <span className="mt-6 text-center text-[16px] font-medium leading-[19px] text-[#ffff] lg:mt-2 lg:text-start">
-        {pass.title}
+        {formatText(pass.title)}
       </span>
     </div>
     <div className="mt-2 max-w-[280px] text-center line-clamp-3">
       <span className="text-[14px] font-medium leading-[23px] text-[#ffff]/70 md:max-w-[350px] lg:text-start">
-        {pass.description}
+        {formatText(pass.description)}
       </span>
     </div>
     {getPassButton(pass, setModalOpen)}
@@ -104,15 +104,15 @@ export const PassCardDesktop: FC<PassItemProps> = ({ pass, setModalOpen }) => {
       <img
         src={"todo-PASS-532"}
         className="rounded-[20px] object-cover"
-        alt={pass.title}
+        alt={formatText(pass.title)}
       />
       <div className="flex flex-col">
         <p className="mt-6 text-center text-[16px] font-medium leading-[19px] text-[#ffff] lg:mt-2 lg:text-start">
-          {pass.title}
+          {formatText(pass.title)}
         </p>
         <br />
         <p className="max-w-[250px] break-normal text-center text-[14px] font-medium leading-[23px] text-[#ffff]/70 md:max-w-[350px] lg:text-start">
-          {pass.description}
+          {formatText(pass.description)}
         </p>
       </div>
       {getPassButton(pass, setModalOpen)}
