@@ -14,11 +14,13 @@ import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
+import { CreatePassResponseDto } from '../pass/dto/create-pass.dto'
 import { AdminGuard } from './admin.guard'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
 import { AdminDto } from './dto/admin.dto'
 import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
+import { CreateManualPassRequestDto } from './dto/create-manual-pass.dto'
 import { DeleteExternalPassAddressRequestDto } from './dto/delete-external-pass-address.to'
 import {
   GetCreatorFeeRequestDto,
@@ -246,5 +248,19 @@ export class AdminController {
     @Body() body: UpdateChargebackRequestDto,
   ): Promise<void> {
     await this.adminService.updateChargeback(body)
+  }
+
+  @ApiEndpoint({
+    summary: 'Create pass',
+    responseStatus: HttpStatus.OK,
+    responseType: CreatePassResponseDto,
+    responseDesc: 'Pass created',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('pass/create')
+  async createManualPass(
+    @Body() createManualPassDto: CreateManualPassRequestDto,
+  ): Promise<CreatePassResponseDto> {
+    return await this.adminService.manualPass(createManualPassDto)
   }
 }

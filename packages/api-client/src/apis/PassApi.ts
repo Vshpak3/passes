@@ -98,10 +98,6 @@ export interface MintPassRequest {
     mintPassRequestDto: MintPassRequestDto;
 }
 
-export interface PatrickPassRequest {
-    createPassRequestDto: CreatePassRequestDto;
-}
-
 export interface PinPassRequest {
     passId: string;
 }
@@ -385,44 +381,6 @@ export class PassApi extends runtime.BaseAPI {
      */
     async mintPass(requestParameters: MintPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<MintPassResponseDto> {
         const response = await this.mintPassRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * patrick pass
-     */
-    async patrickPassRaw(requestParameters: PatrickPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePassResponseDto>> {
-        if (requestParameters.createPassRequestDto === null || requestParameters.createPassRequestDto === undefined) {
-            throw new runtime.RequiredError('createPassRequestDto','Required parameter requestParameters.createPassRequestDto was null or undefined when calling patrickPass.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-        const response = await this.request({
-            path: `/api/pass/patrick`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreatePassRequestDtoToJSON(requestParameters.createPassRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePassResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * patrick pass
-     */
-    async patrickPass(requestParameters: PatrickPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePassResponseDto> {
-        const response = await this.patrickPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

@@ -33,6 +33,7 @@ export * from './CreateFanWallCommentRequestDto';
 export * from './CreateFanWallCommentResponseDto';
 export * from './CreateListRequestDto';
 export * from './CreateLocalUserRequestDto';
+export * from './CreateManualPassRequestDto';
 export * from './CreateOrUpdateProfileRequestDto';
 export * from './CreatePassHolderRequestDto';
 export * from './CreatePassRequestDto';

@@ -115,15 +115,6 @@ export class PassService {
     userId: string,
     createPassDto: CreatePassRequestDto,
   ): Promise<CreatePassResponseDto> {
-    const user = await this.dbReader<UserEntity>(UserEntity.table)
-      .where({ id: userId })
-      .select(['email'])
-      .first()
-    if (!user || user.email != 'patrick@passes.com') {
-      throw new InternalServerErrorException(
-        `Unexpected missing user: ${userId}`,
-      )
-    }
     const duration =
       createPassDto.duration === undefined &&
       createPassDto.type === PassTypeEnum.SUBSCRIPTION

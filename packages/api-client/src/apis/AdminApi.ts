@@ -20,6 +20,8 @@ import type {
   AdminDto,
   BooleanResponseDto,
   CreateExternalPassRequestDto,
+  CreateManualPassRequestDto,
+  CreatePassResponseDto,
   DeleteExternalPassAddressRequestDto,
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
@@ -40,6 +42,10 @@ import {
     BooleanResponseDtoToJSON,
     CreateExternalPassRequestDtoFromJSON,
     CreateExternalPassRequestDtoToJSON,
+    CreateManualPassRequestDtoFromJSON,
+    CreateManualPassRequestDtoToJSON,
+    CreatePassResponseDtoFromJSON,
+    CreatePassResponseDtoToJSON,
     DeleteExternalPassAddressRequestDtoFromJSON,
     DeleteExternalPassAddressRequestDtoToJSON,
     GetCreatorFeeRequestDtoFromJSON,
@@ -68,6 +74,10 @@ export interface AddExternalPassAddressRequest {
 
 export interface AddUserExternalPassRequest {
     userExternalPassRequestDto: UserExternalPassRequestDto;
+}
+
+export interface CreateManualPassRequest {
+    createManualPassRequestDto: CreateManualPassRequestDto;
 }
 
 export interface DeleteExternalPassRequest {
@@ -230,6 +240,44 @@ export class AdminApi extends runtime.BaseAPI {
      */
     async addUserExternalPass(requestParameters: AddUserExternalPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.addUserExternalPassRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create pass
+     */
+    async createManualPassRaw(requestParameters: CreateManualPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePassResponseDto>> {
+        if (requestParameters.createManualPassRequestDto === null || requestParameters.createManualPassRequestDto === undefined) {
+            throw new runtime.RequiredError('createManualPassRequestDto','Required parameter requestParameters.createManualPassRequestDto was null or undefined when calling createManualPass.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/admin/pass/create`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateManualPassRequestDtoToJSON(requestParameters.createManualPassRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePassResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Create pass
+     */
+    async createManualPass(requestParameters: CreateManualPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePassResponseDto> {
+        const response = await this.createManualPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

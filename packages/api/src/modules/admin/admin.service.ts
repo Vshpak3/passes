@@ -16,6 +16,7 @@ import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { PassTypeEnum } from '../pass/enum/pass.enum'
+import { PassService } from '../pass/pass.service'
 import { CircleChargebackEntity } from '../payment/entities/circle-chargeback.entity'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { PaymentService } from '../payment/payment.service'
@@ -26,6 +27,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { UserService } from '../user/user.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { CreateExternalPassRequestDto } from './dto/create-external-pass.dto'
+import { CreateManualPassRequestDto } from './dto/create-manual-pass.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
 import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
@@ -51,6 +53,7 @@ export class AdminService {
     private readonly jwtService: JwtService,
     private readonly s3contentService: S3ContentService,
     private readonly paymentService: PaymentService,
+    private readonly passService: PassService,
   ) {
     this.secret = this.configService.get('admin.secret') as string
     this.env = this.configService.get('infra.env') as string
@@ -282,5 +285,15 @@ export class AdminService {
         updateChargebackRequestDto.circleChargebackId,
       )
     }
+  }
+
+  async manualPass(createManualPassRequestDto: CreateManualPassRequestDto) {
+    if (!createManualPassRequestDto.userId) {
+      throw new BadRequestException('no user for pass creation selected')
+    }
+    return await this.passService.manualPass(
+      createManualPassRequestDto.userId,
+      createManualPassRequestDto,
+    )
   }
 }

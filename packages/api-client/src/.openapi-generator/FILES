@@ -60,6 +60,7 @@ models/CreateFanWallCommentRequestDto.ts
 models/CreateFanWallCommentResponseDto.ts
 models/CreateListRequestDto.ts
 models/CreateLocalUserRequestDto.ts
+models/CreateManualPassRequestDto.ts
 models/CreateOrUpdateProfileRequestDto.ts
 models/CreatePassHolderRequestDto.ts
 models/CreatePassRequestDto.ts
