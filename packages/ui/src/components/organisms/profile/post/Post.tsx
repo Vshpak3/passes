@@ -43,6 +43,7 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
     numPurchases,
     purchasable,
     postId,
+    tags,
     text,
     totalTipAmount,
     userId,
@@ -84,7 +85,7 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
             totalTipAmount
           }}
         />
-        <PostTextContent text={text} />
+        <PostTextContent text={text} tags={tags} />
         {!purchasable && (
           <PostMedia
             postId={postId}

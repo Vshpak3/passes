@@ -94,7 +94,7 @@ export const NewCommentEditor: React.FC<NewCommentProps> = ({
           onInputChange={(params: any) => {
             setIsButtonDisabled(!params?.text)
             setValue("comment", params?.text)
-            setValue("mentions", params?.mentions)
+            setValue("mentions", params?.tags)
           }}
         />
       </div>

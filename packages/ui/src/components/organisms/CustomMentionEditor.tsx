@@ -5,10 +5,11 @@ import createMentionPlugin, {
   Popover
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
+import { TagDto, UserApi } from "@passes/api-client"
 import classNames from "classnames"
 import {
+  CharacterMetadata,
   convertFromRaw,
-  convertToRaw,
   EditorState,
   getDefaultKeyBinding
 } from "draft-js"
@@ -21,29 +22,12 @@ import React, {
   useRef,
   useState
 } from "react"
+import { ContentService } from "src/helpers/content"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 
 const MENTION_LIMIT = 5
 
-// TODO: make mentions real!
-const mentions: MentionData[] = [
-  {
-    name: "Alex Drachnik",
-    username: "drachnik",
-    avatar:
-      "https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg"
-  },
-  {
-    name: "First Fan",
-    username: "limani",
-    avatar: "https://avatars0.githubusercontent.com/u/2182307?v=3&s=400"
-  },
-  {
-    name: "Second Fan",
-    username: "secondFan",
-    avatar: "https://avatars0.githubusercontent.com/u/2182307?v=3&s=400"
-  }
-]
+const api = new UserApi()
 
 const Entry: FC<EntryComponentProps> = ({
   mention,
@@ -85,7 +69,7 @@ const emptyContentState = (text: string) =>
     blocks: [
       {
         text,
-        key: "foo",
+        key: "postContent",
         type: "unstyled",
         entityRanges: [],
         depth: 0,
@@ -106,34 +90,46 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
     EditorState.createWithContent(emptyContentState(defaultText))
   )
 
-  const [open, setOpen] = useState(false)
-  const [mentionLimit, setMentionLimit] = useState(0)
-  const [suggestions, setSuggestions] = useState(mentions)
+  const [areSuggestionsOpen, setAreSuggestionsOpen] = useState(false)
+  const [numMentions, setNumMentions] = useState(0)
+  const [suggestions, setSuggestions] = useState<MentionData[]>([])
 
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
-      mentionComponent(mentionProps) {
-        return (
-          <span
-            className="text-[#4a85bb]"
-            onClick={() => alert("Clicked on the Mention!")}
-          >
-            @{mentionProps.children}
-          </span>
-        )
-      }
+      mentionComponent: ({ mention }) => (
+        <a className="text-[rgb(191,122,240)]" href={`/${mention.username}`}>
+          @{mention.username}
+        </a>
+      ),
+      mentionPrefix: "@"
     })
+
     const { MentionSuggestions } = mentionPlugin
     const plugins = [mentionPlugin]
+
     return { plugins, MentionSuggestions }
   }, [])
 
   const onOpenChange = useCallback((_open: boolean) => {
-    setOpen(_open)
+    setAreSuggestionsOpen(_open)
   }, [])
   const onSearchChange = useCallback(
-    ({ trigger, value }: { trigger: string; value: string }) => {
-      setSuggestions(defaultSuggestionsFilter(value, mentions, trigger))
+    async ({ trigger, value }: { trigger: string; value: string }) => {
+      const { creators } = await api.searchCreatorByUsername({
+        searchCreatorRequestDto: { query: value }
+      })
+
+      const newSuggestions: MentionData[] = creators.map(
+        ({ displayName, username, userId }) => ({
+          name: username,
+          username,
+          displayName: displayName || "",
+          id: userId,
+          avatar: ContentService.profileThumbnail(userId)
+        })
+      )
+
+      setSuggestions(defaultSuggestionsFilter(value, newSuggestions, trigger))
     },
     []
   )
@@ -154,6 +150,51 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
     return getDefaultKeyBinding(e)
   }, [])
 
+  const onChange = useCallback(
+    (value: EditorState) => {
+      setEditorState(value)
+      const currentContent = value.getCurrentContent()
+      const block = currentContent.getBlocksAsArray()[0]
+
+      const mentions: MentionData[] = []
+
+      // Find start indices for each mentioned user
+      const filter = (character: CharacterMetadata) => {
+        const entityKey = character.getEntity()
+
+        if (entityKey) {
+          const entity = currentContent.getEntity(entityKey)
+
+          if (entity.getType() === "mention") {
+            mentions.push(entity.getData().mention as MentionData)
+
+            return true
+          }
+        }
+
+        return false
+      }
+      const callback = (index: number) => {
+        mentions[mentions.length - 1] = {
+          ...mentions[mentions.length - 1],
+          index
+        }
+      }
+      block.findEntityRanges(filter, callback)
+
+      setNumMentions(mentions.length)
+
+      const text = block.getText()
+      const tags: TagDto[] = mentions.map((mention) => ({
+        userId: mention.id as string,
+        index: mention.index
+      }))
+
+      onInputChange({ text, tags })
+    },
+    [onInputChange]
+  )
+
   return (
     <div
       className={editorStyles.editor}
@@ -162,26 +203,17 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
       }}
     >
       <Editor
-        editorKey={"editor"}
+        editorKey="editor"
         editorState={editorState}
-        onChange={(value) => {
-          const plainTextValue = value.getCurrentContent().getPlainText()
-          setEditorState(value)
-          const raw = convertToRaw(value.getCurrentContent()).entityMap
-          const mentionedUsers = Object.values(raw).map(
-            (entity) => entity.data?.mention?.username
-          )
-          setMentionLimit(mentionedUsers?.length)
-          onInputChange({ text: plainTextValue, mentions: mentionedUsers })
-        }}
+        onChange={onChange}
         plugins={plugins}
         ref={ref}
         placeholder={placeholder}
         keyBindingFn={myKeyBindingFn}
       />
-      {mentionLimit <= MENTION_LIMIT && (
+      {numMentions <= MENTION_LIMIT && (
         <MentionSuggestions
-          open={open}
+          open={areSuggestionsOpen}
           onOpenChange={onOpenChange}
           suggestions={suggestions}
           onSearchChange={onSearchChange}

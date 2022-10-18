@@ -3,7 +3,7 @@ import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { useProfile } from "src/hooks/useProfile"
 
-import { NewPost } from "./NewPost"
+import { NewPostEditor } from "./NewPostEditor"
 
 export const NewPosts: React.FC = () => {
   const { profileInfo, profileUsername } = useProfile()
@@ -40,6 +40,7 @@ export const NewPosts: React.FC = () => {
       totalTipAmount: 0,
       isOwner: true
     }
+
     setNewPosts([post, ...newPosts])
   }
 
@@ -47,11 +48,7 @@ export const NewPosts: React.FC = () => {
 
   return (
     <>
-      <NewPost
-        handleCreatePost={handleCreatePost}
-        placeholder="What's on your mind?"
-        initialData={{}}
-      />
+      <NewPostEditor handleCreatePost={handleCreatePost} initialData={{}} />
       <div className="mt-9 space-y-6">
         {newPosts.map((post) => (
           <Post key={post.postId} post={post} />

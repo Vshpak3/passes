@@ -2,7 +2,7 @@ import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
-import { NewPost } from "src/components/organisms/profile/main-content/new-post/NewPost"
+import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 
 export interface NewPostButtonProps {
   isMobile?: boolean
@@ -10,9 +10,7 @@ export interface NewPostButtonProps {
 
 export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const handleCreatePost = () => {
-    setIsNewPostModalOpen(false)
-  }
+  const handleCreatePost = () => setIsNewPostModalOpen(false)
 
   return (
     <Dialog
@@ -40,10 +38,10 @@ export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
         </>
       }
     >
-      <NewPost
+      <NewPostEditor
         initialData={{}}
         handleCreatePost={handleCreatePost}
-        placeholder="What's on your mind?"
+        isExtended
       />
     </Dialog>
   )

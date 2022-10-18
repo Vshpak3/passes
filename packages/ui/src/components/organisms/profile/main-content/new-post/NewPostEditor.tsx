@@ -58,15 +58,14 @@ const settings = {
 export interface NewPostFormProps {
   expiresAt: Date | null
   isPaid: boolean
-  mentions: TagDto[]
+  tags: TagDto[]
   passes: PassDto[]
   price: string
   scheduledAt: Date | null
   text: string
 }
 
-interface NewPostProps {
-  placeholder: string
+interface NewPostEditorProps {
   handleCreatePost: (
     arg: CreatePostRequestDto,
     postId?: string
@@ -77,8 +76,7 @@ interface NewPostProps {
   onClose?: () => void
 }
 
-export const NewPost: FC<NewPostProps> = ({
-  placeholder,
+export const NewPostEditor: FC<NewPostEditorProps> = ({
   handleCreatePost,
   initialData = {},
   onlyText = false,
@@ -149,7 +147,7 @@ export const NewPost: FC<NewPostProps> = ({
 
     const post: CreatePostRequestDto = {
       text: values.text,
-      tags: values.mentions,
+      tags: values.tags,
       passIds: selectedPasses,
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
@@ -278,13 +276,13 @@ export const NewPost: FC<NewPostProps> = ({
             }}
           >
             <CustomMentionEditor
+              placeholder="What's on your mind?"
               defaultText={initialData.text}
               isReset={isReset}
               setIsReset={setIsReset}
-              placeholder={placeholder}
               onInputChange={(params: any) => {
                 setValue("text", params?.text)
-                setValue("mentions", params?.mentions)
+                setValue("tags", params?.tags)
               }}
             />
           </div>

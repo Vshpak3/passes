@@ -4,7 +4,7 @@ import { Dispatch, FC, SetStateAction } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 
-import { NewPostFormProps } from "./NewPost"
+import { NewPostFormProps } from "./NewPostEditor"
 import { NewPostPassesDropdown } from "./NewPostPassesDropdown"
 
 interface NewPostPaidSectionProps {

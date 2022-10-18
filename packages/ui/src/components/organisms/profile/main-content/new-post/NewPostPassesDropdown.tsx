@@ -6,7 +6,7 @@ import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { useCreatorPasses } from "src/hooks/useCreatorPasses"
 
-import { NewPostFormProps } from "./NewPost"
+import { NewPostFormProps } from "./NewPostEditor"
 
 interface NewPostPassesDropdownProps {
   register: UseFormRegister<NewPostFormProps>
