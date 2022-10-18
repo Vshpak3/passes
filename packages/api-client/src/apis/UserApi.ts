@@ -53,7 +53,7 @@ export interface IsUsernameTakenRequest {
     updateUsernameRequestDto: UpdateUsernameRequestDto;
 }
 
-export interface SearchCreatorByUsernameRequest {
+export interface SearchCreatorRequest {
     searchCreatorRequestDto: SearchCreatorRequestDto;
 }
 
@@ -364,9 +364,9 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Search for creators by query
      */
-    async searchCreatorByUsernameRaw(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
+    async searchCreatorRaw(requestParameters: SearchCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
         if (requestParameters.searchCreatorRequestDto === null || requestParameters.searchCreatorRequestDto === undefined) {
-            throw new runtime.RequiredError('searchCreatorRequestDto','Required parameter requestParameters.searchCreatorRequestDto was null or undefined when calling searchCreatorByUsername.');
+            throw new runtime.RequiredError('searchCreatorRequestDto','Required parameter requestParameters.searchCreatorRequestDto was null or undefined when calling searchCreator.');
         }
 
         const queryParameters: any = {};
@@ -394,8 +394,8 @@ export class UserApi extends runtime.BaseAPI {
     /**
      * Search for creators by query
      */
-    async searchCreatorByUsername(requestParameters: SearchCreatorByUsernameRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchCreatorResponseDto> {
-        const response = await this.searchCreatorByUsernameRaw(requestParameters, initOverrides);
+    async searchCreator(requestParameters: SearchCreatorRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchCreatorResponseDto> {
+        const response = await this.searchCreatorRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

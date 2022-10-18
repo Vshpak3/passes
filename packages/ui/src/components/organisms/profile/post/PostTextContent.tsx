@@ -1,34 +1,48 @@
-import { PostDto, TagDto } from "@passes/api-client"
-import { FC } from "react"
+import { PostDto, TagDto, UserApi } from "@passes/api-client"
+import { FC, useEffect, useState } from "react"
 
 type PostTextContentProps = Pick<PostDto, "text" | "tags">
 
-const insertMentions = (text: string, tags: TagDto[]) => {
-  let formattedText = text
+export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
+  const api = new UserApi()
 
-  // TODO
-  const userIdsToUsernames: Record<string, string> = {}
-  tags.forEach((x) => (userIdsToUsernames[x.userId] = x.userId))
+  const [formattedText, setFormattedText] = useState(text)
 
-  // Must loop through string in reverse order otherwise the indexes will change
-  tags.sort((a, b) => b.index - a.index)
-  for (const tag of tags) {
-    const username = userIdsToUsernames[tag.userId]
-    formattedText =
-      formattedText.slice(0, tag.index + 1) +
-      `<a href="/${username}" class="text-[rgb(191,122,240)]">${username}</a>` +
-      formattedText.slice(tag.index + 1)
+  const insertMentions = async (text: string, tags: TagDto[]) => {
+    const userIdsToUsernames = Object.fromEntries(
+      await Promise.all(
+        tags.map(
+          async (t) =>
+            await api
+              .getUsernameFromId({ userId: t.userId })
+              .then((name) => [t.userId, name])
+        )
+      )
+    )
+
+    // Must loop through string in reverse order otherwise the indexes will change
+    tags.sort((a, b) => b.index - a.index)
+    for (const tag of tags) {
+      const username = userIdsToUsernames[tag.userId]
+      text =
+        text.slice(0, tag.index) +
+        `<a href="/${username}" class="text-[rgb(191,122,240)]">@${username}</a>` +
+        text.slice(tag.index + 1)
+    }
+
+    setFormattedText(text)
   }
 
-  return formattedText
-}
+  useEffect(() => {
+    insertMentions(text, tags)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [text, tags])
 
-export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
   return (
     <div className="flex flex-col items-start">
       <p
         className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90"
-        dangerouslySetInnerHTML={{ __html: insertMentions(text, tags) }}
+        dangerouslySetInnerHTML={{ __html: formattedText }}
       />
     </div>
   )

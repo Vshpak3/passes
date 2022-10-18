@@ -127,7 +127,7 @@ export class UserController {
     role: RoleEnum.GENERAL,
   })
   @Post('creator/search')
-  async searchCreatorByUsername(
+  async searchCreator(
     @Body() searchCreatorDto: SearchCreatorRequestDto,
   ): Promise<SearchCreatorResponseDto> {
     return await this.userService.searchByQuery(searchCreatorDto)

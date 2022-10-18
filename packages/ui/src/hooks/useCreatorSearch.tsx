@@ -6,7 +6,7 @@ const api = new UserApi()
 export const useCreatorSearch = () =>
   useSearch<UserDisplayInfoDto>(async (searchValue: string) => {
     return (
-      await api.searchCreatorByUsername({
+      await api.searchCreator({
         searchCreatorRequestDto: { query: searchValue }
       })
     ).creators
