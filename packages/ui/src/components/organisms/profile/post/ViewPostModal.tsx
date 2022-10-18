@@ -21,6 +21,7 @@ import {
 import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
@@ -45,7 +46,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   // Set image if it exists in post
   useEffect(() => {
     if (post.contents?.[0]?.contentType === "image") {
-      setShowcaseImg(post.contents[0].signedUrl as string)
+      setShowcaseImg(ContentService.userContentMedia(post.contents[0]))
     }
   }, [post.contents])
 

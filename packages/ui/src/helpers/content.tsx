@@ -1,5 +1,6 @@
 import {
   ContentApi,
+  ContentDto,
   ContentDtoContentTypeEnum,
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
@@ -65,6 +66,35 @@ export class ContentService {
 
   static w9Pdf(userId: string): string {
     return `${process.env.NEXT_PUBLIC_CDN_URL}/w9/${userId}/upload.pdf`
+  }
+
+  static userContentMedia(content: ContentDto): string {
+    if (content.signedUrl) {
+      return content.signedUrl
+    }
+
+    let extension: string
+    switch (content.contentType) {
+      case ContentDtoContentTypeEnum.Image:
+        extension = "jpeg"
+        break
+      case ContentDtoContentTypeEnum.Video:
+        extension = "mp4"
+        break
+      case ContentDtoContentTypeEnum.Gif:
+      case ContentDtoContentTypeEnum.Audio:
+        throw new Error("Unsupported media format")
+    }
+
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/media/${content.userId}/${content.contentId}.${extension}`
+  }
+
+  static userContentThumbnail(content: ContentDto): string {
+    if (isDev) {
+      // In dev there is no lambda to generate the thumbnail so use the image itself
+      return ContentService.userContentMedia(content)
+    }
+    return `${process.env.NEXT_PUBLIC_CDN_URL}/media/${content.userId}/${content.contentId}-thumbnail.jpeg`
   }
 
   /**

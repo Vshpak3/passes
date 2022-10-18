@@ -5,6 +5,7 @@ import { FC, useEffect, useRef, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { PostVideo } from "src/components/molecules/post/PostVideo"
+import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 
@@ -169,7 +170,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                       return (
                         <PostVideo
                           key={c.contentId}
-                          videoUrl={c.signedUrl ?? ""}
+                          videoUrl={ContentService.userContentMedia(c)}
                         />
                       )
                     } else {

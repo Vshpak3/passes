@@ -714,6 +714,7 @@ export class PostService {
     if (!contents) {
       return true
     }
+
     const results = await Promise.all(
       JSON.parse(contents).map(async (content) => {
         return await this.contentService.preSignMediaContent(

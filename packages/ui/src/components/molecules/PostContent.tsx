@@ -1,6 +1,7 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import { FC } from "react"
 import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
+import { ContentService } from "src/helpers/content"
 
 import { PostVideo } from "./post/PostVideo"
 
@@ -27,7 +28,10 @@ export const PostContent: FC<PostContentProps> = ({
       break
     case ContentDtoContentTypeEnum.Video:
       contentElement = (
-        <PostVideo key={content.contentId} videoUrl={content.signedUrl ?? ""} />
+        <PostVideo
+          key={content.contentId}
+          videoUrl={ContentService.userContentMedia(content)}
+        />
       )
       break
   }

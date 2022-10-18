@@ -34,8 +34,6 @@ import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { ContentDeleteError, NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
-export const MAX_CONTENT_PER_REQUEST = 20
-
 @Injectable()
 export class ContentService {
   constructor(
@@ -141,18 +139,7 @@ export class ContentService {
       lastId,
     )
     const result = await query
-    return Promise.all(
-      result.map(
-        async (content) =>
-          new ContentDto(
-            content,
-            await this.preSignMediaContentThumbnail(
-              content.user_id,
-              content.id,
-            ),
-          ),
-      ),
-    )
+    return result.map((content) => new ContentDto(content))
   }
 
   preSignMediaContent(
@@ -234,14 +221,14 @@ export class ContentService {
     accessible: boolean,
     userId: string,
     previewIndex: number,
-    isOwner?: boolean, // eslint-disable-line @typescript-eslint/no-unused-vars
+    isOwner?: boolean,
   ): ContentDto[] {
     return contents.map((content, index) => {
       return {
         contentId: content.contentId,
         userId,
         signedUrl:
-          index < previewIndex || accessible
+          (index < previewIndex || accessible) && !isOwner
             ? this.preSignMediaContent(
                 userId,
                 content.contentId,

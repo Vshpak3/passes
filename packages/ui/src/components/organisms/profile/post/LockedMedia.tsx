@@ -1,6 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import { useMemo } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
+import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
@@ -17,7 +18,7 @@ export const LockedMedia: React.FC<LockedMediaProps> = ({ post }) => {
 
   const showcaseImg = useMemo(() => {
     if (contents?.[0]?.contentType === "image") {
-      return contents[0].signedUrl as string
+      return ContentService.userContentMedia(contents[0])
     }
   }, [contents])
 

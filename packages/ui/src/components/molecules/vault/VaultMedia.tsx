@@ -1,6 +1,7 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC } from "react"
+import { ContentService } from "src/helpers/content"
 
 interface VaultMediaItemProps {
   content: ContentDto
@@ -50,18 +51,14 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           "dropdown-shadow aspect-w-1 aspect-h-1 w-full cursor-pointer overflow-hidden rounded-[5px] bg-gray-200 md:rounded-[20px] xl:aspect-w-8 xl:aspect-h-8"
         )}
       >
-        {content.signedUrl ? (
-          <img
-            src={content.signedUrl}
-            alt=""
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null
-              currentTarget.src = "" // TODO: consider adding default image
-            }}
-          />
-        ) : (
-          ""
-        )}
+        <img // All content types have an image thumbnail
+          src={ContentService.userContentThumbnail(content)}
+          alt=""
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null
+            currentTarget.src = "" // TODO: consider adding default image
+          }}
+        />
         <div className="flex p-3">
           <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
             <div
