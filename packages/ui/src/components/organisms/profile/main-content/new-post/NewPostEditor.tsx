@@ -281,7 +281,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               isReset={isReset}
               setIsReset={setIsReset}
               onInputChange={(params: any) => {
-                setValue("text", params?.text)
+                setValue("text", params?.text.replaceAll("\n", "<br>"))
                 setValue("tags", params?.tags)
               }}
             />

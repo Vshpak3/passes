@@ -191,7 +191,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
 
       setNumMentions(mentions.length)
 
-      const text = block.getText()
+      const text = currentContent.getPlainText()
       const tags: TagDto[] = mentions.map((mention) => ({
         userId: mention.id as string,
         index: mention.index
