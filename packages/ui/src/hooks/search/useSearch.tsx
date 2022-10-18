@@ -20,9 +20,7 @@ export const useSearch = <T,>(
     setSearchValue(e.target.value)
   }
 
-  const onSearchFocus = () => {
-    setResultsVisible(true)
-  }
+  const onSearchFocus = () => setResultsVisible(true)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const search = useCallback(

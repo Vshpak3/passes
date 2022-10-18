@@ -39,11 +39,9 @@ export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
   }, [text, tags])
 
   return (
-    <div className="flex flex-col items-start">
-      <p
-        className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90"
-        dangerouslySetInnerHTML={{ __html: formattedText }}
-      />
-    </div>
+    <p
+      className="break-all text-start text-base font-medium text-[#ffffff]/90"
+      dangerouslySetInnerHTML={{ __html: formattedText }}
+    />
   )
 }
