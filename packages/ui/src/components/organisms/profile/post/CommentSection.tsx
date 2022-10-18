@@ -10,13 +10,15 @@ interface CommentSectionProps {
   ownsPost: PostDto["isOwner"]
   incrementNumComments: () => void
   decrementNumComments: () => void
+  numComments?: number
 }
 
 export const CommentSection: FC<CommentSectionProps> = ({
   postId = "",
   ownsPost,
   incrementNumComments,
-  decrementNumComments
+  decrementNumComments,
+  numComments
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
 
@@ -33,6 +35,7 @@ export const CommentSection: FC<CommentSectionProps> = ({
       <CommentFeed
         postId={postId}
         ownsPost={ownsPost}
+        numComments={numComments}
         decrementNumComments={decrementNumComments}
       />
       {newComments.map((comment) => {

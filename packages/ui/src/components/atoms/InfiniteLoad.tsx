@@ -13,6 +13,14 @@ interface InfiniteLoadProps<A, T extends PagedData<A>> {
   KeyedComponent: ({ arg }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
   isReverse?: boolean
+  loadMsg?: string
+  loadMsgPosition?: LoadMsgPositionEnum
+  numComments?: number
+}
+
+export enum LoadMsgPositionEnum {
+  TOP = "top",
+  BOTTOM = "bottom"
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -30,6 +38,9 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   KeyedComponent,
   resets = 0,
   isReverse,
+  loadMsg = "Load more",
+  loadMsgPosition = LoadMsgPositionEnum.BOTTOM,
+  numComments = 0,
   children
 }: PropsWithChildren<InfiniteLoadProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
@@ -41,6 +52,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     return { props: request, resets, keyValue }
   }
   const [hasMore, setHasMore] = useState<boolean>(false)
+  const [showedElementsCounter, setShowedElementsCounter] = useState<number>(0)
   const fetchData = async ({ props }: Key<T>) => {
     return await fetch(props as Omit<T, "data">)
   }
@@ -57,8 +69,18 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     }
   )
 
+  const showedElementsHandler = () => {
+    setShowedElementsCounter((prevState) => {
+      if (data) {
+        return prevState + data[data.length - 1].data.length
+      }
+      return prevState
+    })
+  }
+
   const triggerFetch = () => {
     setSize(size + 1)
+    showedElementsHandler()
   }
   const [flattenedData, setFlattenedData] = useState<A[]>([])
 
@@ -71,7 +93,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
           })
           .flat() ?? []
       )
-      setHasMore(!data || !!data[data.length - 1].lastId)
+      setHasMore(!data || (!!data[data.length - 1].lastId && numComments > 5))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -82,13 +104,25 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     }
   }, [isReverse, data, hasMore])
 
+  useEffect(() => {
+    showedElementsHandler()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+
   return (
     <>
+      {loadMsgPosition === LoadMsgPositionEnum.TOP &&
+        hasMore &&
+        showedElementsCounter < numComments && (
+          <button onClick={triggerFetch}>{loadMsg}</button>
+        )}
       {children}
       {flattenedData.map((data, index) => (
         <KeyedComponent key={index} arg={data} index={index} />
       ))}
-      {hasMore && <button onClick={triggerFetch}>Load more</button>}
+      {loadMsgPosition === LoadMsgPositionEnum.BOTTOM && hasMore && (
+        <button onClick={triggerFetch}>{loadMsg}</button>
+      )}
       {!hasMore && !!flattenedData.length && endElement}
       {!hasMore && !flattenedData.length && emptyElement}
       {isValidating && loadingElement}
