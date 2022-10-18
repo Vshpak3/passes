@@ -22,9 +22,7 @@ export const TippedMessage = ({ tipAmount = 10 }) => {
         <span className="text-[14px] font-medium leading-[24px] text-white">
           Thank you for your tip
         </span>
-        <span className="text-center text-[42px] font-bold leading-[53px] text-[#BF7AF0]">
-          {formatCurrency(tipAmount)}
-        </span>
+        {formatCurrency(tipAmount)}
       </div>
     </div>
   )

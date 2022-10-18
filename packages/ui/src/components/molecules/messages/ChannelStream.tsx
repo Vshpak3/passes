@@ -10,8 +10,6 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { PendingStatus } from "src/components/messages/assets/PendingStatus"
-import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/free-messages-left-container"
 import { useUser } from "src/hooks/useUser"
 
@@ -174,15 +172,13 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               {pendingMessages.length > 0 &&
                 pendingMessages.map((m, i) => {
                   return (
-                    <div
+                    <ChannelMessage
                       key={i}
-                      className="m-4 flex max-w-[70%] flex-row-reverse self-end rounded"
-                    >
-                      <div className="mx-4 flex flex-col items-start">
-                        <TippedMessage tipAmount={m?.tipAmount} />
-                        <PendingStatus />
-                      </div>
-                    </div>
+                      message={m}
+                      isOwnMessage={m.senderId === user?.userId}
+                      contentAvatarDisplayName={contentAvatarDisplayName}
+                      contentAvatarUserName={contentAvatarUserName}
+                    />
                   )
                 })}
               {messages.length > 0 &&

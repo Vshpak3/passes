@@ -2,8 +2,7 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import Locked from "public/icons/lock-locked.svg"
 import React, { FC } from "react"
-import { SentStatus } from "src/components/messages/assets/SentStatus"
-import { TippedMessage } from "src/components/molecules/direct-messages/completed-tipped-message"
+import { formatCurrency } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
@@ -37,64 +36,71 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
         </div>
       )}
 
-      {message && message?.tipAmount !== undefined && message?.tipAmount > 0 ? (
-        <div className="mx-4 flex flex-col items-start">
-          <TippedMessage tipAmount={message?.tipAmount} />
-          <SentStatus />
-        </div>
-      ) : (
-        <div className="mx-4 flex flex-col items-end">
-          <div
-            className={`rounded border border-[#363037] ${messageBackground} py-3 px-4`}
-          >
-            {messageContent.length ? (
-              <div className="flex w-full flex-col">
-                <div className="flex flex-shrink-0 items-start justify-between">
-                  <CompletedAvatar
-                    contentAvatarDisplayName={contentAvatarDisplayName}
-                    contentAvatarUserName={contentAvatarUserName}
-                    imageSrc="https://www.w3schools.com/w3images/avatar1.png"
-                  />
-                  {message.paid ? (
-                    <div className="flex flex-shrink-0 items-center gap-[6px]">
-                      <Locked />
-                      <span className="text-[14px] font-medium leading-[0px] text-[#767676]">
-                        Purchased
-                      </span>
-                    </div>
-                  ) : null}
-                </div>
-                <div>
-                  <span className="break-all">{message?.text}</span>
-                </div>
-                <div className="pt-2">
-                  <Content
-                    contents={messageContent}
-                    paid={message.paid}
-                    price={message?.price}
-                    message={message}
-                    isOwnMessage={isOwnMessage}
-                  />
-                </div>
-                <div className="pt-2">
-                  <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
-                    {messageContent[0].createdAt?.toLocaleString("en-US", {
-                      hour: "numeric",
-                      minute: "numeric",
-                      hour12: true
-                    })}
-                  </span>
-                </div>
+      <div className="mx-4 flex flex-col items-end">
+        <div
+          className={`rounded border border-[#363037] ${messageBackground} py-3 px-4`}
+        >
+          {message?.tipAmount ? (
+            <>
+              {formatCurrency(message.tipAmount)}
+              <br />
+            </>
+          ) : (
+            <></>
+          )}
+
+          {messageContent.length ? (
+            <div className="flex w-full flex-col">
+              <div className="flex flex-shrink-0 items-start justify-between">
+                <CompletedAvatar
+                  contentAvatarDisplayName={contentAvatarDisplayName}
+                  contentAvatarUserName={contentAvatarUserName}
+                  imageSrc="https://www.w3schools.com/w3images/avatar1.png"
+                />
+                {message.paid ? (
+                  <div className="flex flex-shrink-0 items-center gap-[6px]">
+                    <Locked />
+                    <span className="text-[14px] font-medium leading-[0px] text-[#767676]">
+                      Purchased
+                    </span>
+                  </div>
+                ) : null}
               </div>
-            ) : (
-              <span className="break-all">{message?.text}</span>
-            )}
-          </div>
-          {/* {isOwnMessage && message?.pending && (
-            <span className="text-md mt-2 text-gray-500">Pending...</span>
-          )} */}
+              <div>
+                <span className="break-all">{message?.text}</span>
+              </div>
+              <div className="pt-2">
+                <Content
+                  contents={messageContent}
+                  paid={message.paid}
+                  price={message?.price}
+                  message={message}
+                  isOwnMessage={isOwnMessage}
+                />
+              </div>
+              <div className="pt-2">
+                <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
+                  {messageContent[0].createdAt?.toLocaleString("en-US", {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true
+                  })}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <span className="break-all">{message?.text}</span>
+          )}
         </div>
-      )}
+        {!!message?.pending && (
+          <span className="text-md mt-2 text-gray-500">Pending...</span>
+        )}
+        {!message?.pending && (
+          <span className="text-md mt-2 text-gray-500">
+            {message.sentAt.toLocaleDateString()}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
