@@ -32,7 +32,7 @@ export const CreatorFlow = () => {
   const [isVerificationDialogOpen, setIsVerificationDialogOpen] =
     useState<boolean>(false)
   const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState<boolean>(false)
-  const { width } = useWindowSize()
+  const { isMobile } = useWindowSize()
 
   const onFinishCustomizePage = async () => {
     // Show modal
@@ -158,7 +158,7 @@ export const CreatorFlow = () => {
         </div>
         {selectedStep === CREATOR_STEPS.CUSTOMIZE && (
           <>
-            {Number(width || 0) > 640 ? (
+            {!isMobile ? (
               <CustomizePageForm
                 onFinishCustomizePage={onFinishCustomizePage}
               />
@@ -194,7 +194,7 @@ export const CreatorFlow = () => {
 
         {selectedStep === CREATOR_STEPS.PAYMENT && (
           <>
-            {Number(width || 0) > 640 ? (
+            {!isMobile ? (
               <PaymentForm onFinishPaymentForm={onFinishPaymentForm} />
             ) : (
               <>
@@ -209,7 +209,7 @@ export const CreatorFlow = () => {
         )}
       </div>
 
-      {Number(width || 0) > 640 && (
+      {!isMobile && (
         <Modal
           isOpen={isVerificationDialogOpen}
           setOpen={setIsVerificationDialogOpen}
@@ -227,7 +227,7 @@ export const CreatorFlow = () => {
         </Modal>
       )}
 
-      {Number(width || 0) > 640 && (
+      {!isMobile && (
         <Modal
           isOpen={isWelcomeModalOpen}
           setOpen={setIsWelcomeModalOpen}

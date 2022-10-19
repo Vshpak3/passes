@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { breakpoints } from "src/styles/breakpoints"
 
 // Define general type for useWindowSize hook, which includes width and height
 interface Size {
@@ -6,13 +7,17 @@ interface Size {
   height: number | undefined
 }
 
-export function useWindowSize(): Size {
+export function useWindowSize() {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState<Size>({
     width: undefined,
     height: undefined
   })
+  const windowWidth =
+    windowSize && windowSize.width ? windowSize.width : breakpoints.md
+  const isMobile = windowWidth > breakpoints.md
+
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
@@ -29,5 +34,8 @@ export function useWindowSize(): Size {
     // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize)
   }, []) // Empty array ensures that effect is only run on mount
-  return windowSize
+
+  return {
+    isMobile
+  }
 }
