@@ -39,6 +39,12 @@ export interface GetCreatorEarningResponseDto {
     type: GetCreatorEarningResponseDtoTypeEnum;
     /**
      * 
+     * @type {string}
+     * @memberof GetCreatorEarningResponseDto
+     */
+    category: GetCreatorEarningResponseDtoCategoryEnum;
+    /**
+     * 
      * @type {Date}
      * @memberof GetCreatorEarningResponseDto
      */
@@ -63,6 +69,16 @@ export const GetCreatorEarningResponseDtoTypeEnum = {
 } as const;
 export type GetCreatorEarningResponseDtoTypeEnum = typeof GetCreatorEarningResponseDtoTypeEnum[keyof typeof GetCreatorEarningResponseDtoTypeEnum];
 
+/**
+ * @export
+ */
+export const GetCreatorEarningResponseDtoCategoryEnum = {
+    Net: 'net',
+    Gross: 'gross',
+    Agency: 'agency'
+} as const;
+export type GetCreatorEarningResponseDtoCategoryEnum = typeof GetCreatorEarningResponseDtoCategoryEnum[keyof typeof GetCreatorEarningResponseDtoCategoryEnum];
+
 
 /**
  * Check if a given object implements the GetCreatorEarningResponseDto interface.
@@ -72,6 +88,7 @@ export function instanceOfGetCreatorEarningResponseDto(value: object): boolean {
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "amount" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "category" in value;
     isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
@@ -90,6 +107,7 @@ export function GetCreatorEarningResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'userId': json['userId'],
         'amount': json['amount'],
         'type': json['type'],
+        'category': json['category'],
         'createdAt': (new Date(json['createdAt'])),
     };
 }
@@ -106,6 +124,7 @@ export function GetCreatorEarningResponseDtoToJSON(value?: GetCreatorEarningResp
         'userId': value.userId,
         'amount': value.amount,
         'type': value.type,
+        'category': value.category,
         'createdAt': (value.createdAt.toISOString()),
     };
 }

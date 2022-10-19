@@ -202,7 +202,7 @@ async function purchasePostSuccessfulCallback(
     input.userId,
     input.postId,
     payin.id,
-    await payService.getTotalEarnings(payin.id),
+    payin.amount,
   )
   return { postId: input.postId }
 }
@@ -245,7 +245,7 @@ async function purchaseMessageSuccessfulCallback(
     payin.user_id,
     input.messageId,
     input.paidMessageId,
-    await payService.getTotalEarnings(payin.id),
+    payin.amount,
   )
   return {}
 }

@@ -13,15 +13,15 @@ import { CreatorSettingsEntity } from '../creator-settings/entities/creator-sett
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
-import { NEGATIVE_AMOUNT } from './constants/error'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
 import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
 import { CreatorEarningHistoryEntity } from './entities/creator-earning-history.entity'
 import { CreatorStatEntity } from './entities/creator-stat.entity'
+import { EarningCategoryEnum } from './enum/earning.category.enum'
 import { EarningTypeEnum } from './enum/earning.type.enum'
-import { EarningsTypeError } from './error/earnings.error'
 
+const NEGATE = -1
 @Injectable()
 export class CreatorStatsService {
   payinToEarnings = (payinCallbackEnum: PayinCallbackEnum) => {
@@ -60,6 +60,7 @@ export class CreatorStatsService {
         .where({
           user_id: userId,
           type: EarningTypeEnum.BALANCE,
+          category: EarningCategoryEnum.NET,
         })
         .select('*')
         .first(),
@@ -72,6 +73,7 @@ export class CreatorStatsService {
         .where({
           user_id: userId,
           type: EarningTypeEnum.AVAILABLE_BALANCE,
+          category: EarningCategoryEnum.NET,
         })
         .select('*')
         .first(),
@@ -100,80 +102,97 @@ export class CreatorStatsService {
   async updateEarning(
     userId: string,
     earningType: EarningTypeEnum,
-    amount: number,
+    amounts: Record<EarningCategoryEnum, number>,
+    multipler = 1,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
-        .insert({
-          amount,
-          user_id: userId,
-          type: earningType,
-        })
-        .onConflict()
-        .ignore()
-      await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
-        .where({
-          amount,
-          user_id: userId,
-          type: earningType,
-        })
-        .increment('amount', amount)
+      await Promise.all(
+        Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
+          await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+            .insert({
+              category: category,
+              amount: amounts[category] * multipler,
+              user_id: userId,
+              type: earningType,
+            })
+            .onConflict()
+            .merge({
+              amount: trx.raw('amount + ?', [amounts[category] * multipler]),
+            })
+        }),
+      )
     })
   }
 
   async handlePayinSuccess(
     userId: string,
     payinCallbackEnum: PayinCallbackEnum,
-    amount: number,
+    amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amount)
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amount)
-    await this.updateEarning(userId, EarningTypeEnum.TOTAL, amount)
+    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts)
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amounts)
+    await this.updateEarning(userId, EarningTypeEnum.TOTAL, amounts)
     await this.updateEarning(
       userId,
       this.payinToEarnings(payinCallbackEnum),
-      amount,
+      amounts,
     )
   }
 
-  async handleChargebackSuccess(userId: string, amount: number) {
-    if (amount < 0) {
-      throw new EarningsTypeError(NEGATIVE_AMOUNT)
-    }
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
-    await this.updateEarning(userId, EarningTypeEnum.CHARGEBACKS, amount)
+  async handleChargebackSuccess(
+    userId: string,
+    amounts: Record<EarningCategoryEnum, number>,
+  ) {
+    await this.updateEarning(
+      userId,
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      amounts,
+      NEGATE,
+    )
+    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts, NEGATE)
+    await this.updateEarning(
+      userId,
+      EarningTypeEnum.CHARGEBACKS,
+      amounts,
+      NEGATE,
+    )
   }
 
-  async handlePayout(userId: string, amount: number) {
-    if (amount < 0) {
-      throw new EarningsTypeError(NEGATIVE_AMOUNT)
-    }
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, -amount)
+  async handlePayout(
+    userId: string,
+    amounts: Record<EarningCategoryEnum, number>,
+  ) {
+    await this.updateEarning(
+      userId,
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      amounts,
+      NEGATE,
+    )
   }
 
-  async handlePayoutSuccess(userId: string, amount: number) {
-    if (amount < 0) {
-      throw new EarningsTypeError(NEGATIVE_AMOUNT)
-    }
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, -amount)
+  async handlePayoutSuccess(
+    userId: string,
+    amounts: Record<EarningCategoryEnum, number>,
+  ) {
+    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts, NEGATE)
   }
 
-  async handlePayoutFail(userId: string, amount: number) {
-    if (amount < 0) {
-      throw new EarningsTypeError(NEGATIVE_AMOUNT)
-    }
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amount)
+  async handlePayoutFail(
+    userId: string,
+    amounts: Record<EarningCategoryEnum, number>,
+  ) {
+    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amounts)
   }
 
   async createEarningHistory() {
     await this.dbWriter
       .from(
-        this.dbWriter.raw('?? (??, ??, ??)', [
+        this.dbWriter.raw('?? (??, ??, ??, ??)', [
           CreatorEarningHistoryEntity.table,
           'user_id',
           'amount',
           'type',
+          'category',
         ]),
       )
       .insert(
@@ -181,6 +200,7 @@ export class CreatorStatsService {
           'user_id',
           'amount',
           'type',
+          'category',
         ]),
       )
   }

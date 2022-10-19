@@ -39,6 +39,12 @@ export interface CreatorEarningDto {
     type: CreatorEarningDtoTypeEnum;
     /**
      * 
+     * @type {string}
+     * @memberof CreatorEarningDto
+     */
+    category: CreatorEarningDtoCategoryEnum;
+    /**
+     * 
      * @type {Date}
      * @memberof CreatorEarningDto
      */
@@ -63,6 +69,16 @@ export const CreatorEarningDtoTypeEnum = {
 } as const;
 export type CreatorEarningDtoTypeEnum = typeof CreatorEarningDtoTypeEnum[keyof typeof CreatorEarningDtoTypeEnum];
 
+/**
+ * @export
+ */
+export const CreatorEarningDtoCategoryEnum = {
+    Net: 'net',
+    Gross: 'gross',
+    Agency: 'agency'
+} as const;
+export type CreatorEarningDtoCategoryEnum = typeof CreatorEarningDtoCategoryEnum[keyof typeof CreatorEarningDtoCategoryEnum];
+
 
 /**
  * Check if a given object implements the CreatorEarningDto interface.
@@ -72,6 +88,7 @@ export function instanceOfCreatorEarningDto(value: object): boolean {
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "amount" in value;
     isInstance = isInstance && "type" in value;
+    isInstance = isInstance && "category" in value;
     isInstance = isInstance && "createdAt" in value;
 
     return isInstance;
@@ -90,6 +107,7 @@ export function CreatorEarningDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'userId': json['userId'],
         'amount': json['amount'],
         'type': json['type'],
+        'category': json['category'],
         'createdAt': (new Date(json['createdAt'])),
     };
 }
@@ -106,6 +124,7 @@ export function CreatorEarningDtoToJSON(value?: CreatorEarningDto | null): any {
         'userId': value.userId,
         'amount': value.amount,
         'type': value.type,
+        'category': value.category,
         'createdAt': (value.createdAt.toISOString()),
     };
 }

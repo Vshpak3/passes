@@ -2,6 +2,7 @@ import { Min } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'
 import { CreatorEarningEntity } from '../entities/creator-earning.entity'
+import { EarningCategoryEnum } from '../enum/earning.category.enum'
 import { EarningTypeEnum } from '../enum/earning.type.enum'
 
 export class CreatorEarningDto {
@@ -15,6 +16,9 @@ export class CreatorEarningDto {
   @DtoProperty({ custom_type: EarningTypeEnum })
   type: EarningTypeEnum
 
+  @DtoProperty({ custom_type: EarningCategoryEnum })
+  category: EarningCategoryEnum
+
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
@@ -23,6 +27,7 @@ export class CreatorEarningDto {
       this.userId = creatorEarning.user_id
       this.amount = creatorEarning.amount
       this.type = creatorEarning.type
+      this.category = creatorEarning.category
       this.createdAt = creatorEarning.created_at
     }
   }

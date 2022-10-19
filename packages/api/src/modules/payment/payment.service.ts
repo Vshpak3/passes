@@ -24,6 +24,7 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
+import { EarningCategoryEnum } from '../creator-stats/enum/earning.category.enum'
 import { EmailService } from '../email/email.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { EthService } from '../eth/eth.service'
@@ -1755,7 +1756,11 @@ export class PaymentService {
             await this.creatorStatsService.handlePayinSuccess(
               creatorShare.creator_id,
               payin.callback,
-              creatorShare.amount,
+              {
+                [EarningCategoryEnum.NET]: creatorShare.amount,
+                [EarningCategoryEnum.GROSS]: payin.amount,
+                [EarningCategoryEnum.AGENCY]: 0,
+              },
             ),
         ),
       )
@@ -1873,16 +1878,18 @@ export class PaymentService {
       .update({ payout_status: PayoutStatusEnum.FAILED })
     // check for completed update
     if (rows == 1) {
-      const amount = (
-        await this.dbReader<PayoutEntity>(PayoutEntity.table)
-          .where({ id: payoutId })
-          .select('amount')
-          .first()
-      )?.amount
-      await this.creatorStatsService.handlePayoutFail(
-        userId,
-        amount ? amount : 0,
-      )
+      const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+        .where({ id: payoutId })
+        .select('amount')
+        .first()
+      if (!payout) {
+        throw new InternalServerErrorException('no amount for payout found')
+      }
+      await this.creatorStatsService.handlePayoutFail(userId, {
+        [EarningCategoryEnum.NET]: payout.amount,
+        [EarningCategoryEnum.GROSS]: payout.amount,
+        [EarningCategoryEnum.AGENCY]: 0,
+      })
     }
   }
 
@@ -1896,16 +1903,18 @@ export class PaymentService {
       ])
       .update({ payout_status: PayoutStatusEnum.SUCCESSFUL })
     if (rows == 1) {
-      const amount = (
-        await this.dbReader<PayoutEntity>(PayoutEntity.table)
-          .where({ id: payoutId })
-          .select('amount')
-          .first()
-      )?.amount
-      await this.creatorStatsService.handlePayoutSuccess(
-        userId,
-        amount ? amount : 0,
-      )
+      const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+        .where({ id: payoutId })
+        .select('amount')
+        .first()
+      if (!payout) {
+        throw new InternalServerErrorException('no amount for payout found')
+      }
+      await this.creatorStatsService.handlePayoutSuccess(userId, {
+        [EarningCategoryEnum.NET]: payout.amount,
+        [EarningCategoryEnum.GROSS]: payout.amount,
+        [EarningCategoryEnum.AGENCY]: 0,
+      })
     }
   }
 
@@ -1978,7 +1987,11 @@ export class PaymentService {
     }
 
     try {
-      await this.creatorStatsService.handlePayout(userId, availableBalance)
+      await this.creatorStatsService.handlePayout(userId, {
+        [EarningCategoryEnum.NET]: availableBalance,
+        [EarningCategoryEnum.GROSS]: availableBalance,
+        [EarningCategoryEnum.AGENCY]: 0,
+      })
       if (availableBalance < MIN_PAYOUT_AMOUNT) {
         throw new PayoutAmountException(
           `${availableBalance} is not enough to payout`,
@@ -1997,7 +2010,11 @@ export class PaymentService {
       await this.submitPayout(data.id)
     } catch (err) {
       await this.lockService.unlock(redisKey)
-      await this.creatorStatsService.handlePayoutFail(userId, availableBalance)
+      await this.creatorStatsService.handlePayoutFail(userId, {
+        [EarningCategoryEnum.NET]: availableBalance,
+        [EarningCategoryEnum.GROSS]: availableBalance,
+        [EarningCategoryEnum.AGENCY]: 0,
+      })
     }
   }
 
@@ -2368,14 +2385,14 @@ export class PaymentService {
           await this.postService.revertPostPurchase(
             payinInput.postId,
             payin.id,
-            await this.getTotalEarnings(payin.id),
+            payin.amount,
           )
           break
         case PayinCallbackEnum.PURCHASE_DM:
           await this.messagesService.revertMessagePurchase(
             payinInput.messageId,
             payinInput.paidMessageId,
-            await this.getTotalEarnings(payin.id),
+            payin.amount,
           )
           break
         case PayinCallbackEnum.TIP_POST:
