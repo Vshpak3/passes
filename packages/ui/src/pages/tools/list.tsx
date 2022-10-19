@@ -17,6 +17,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { CreateNewListModal } from "src/components/molecules/list/CreateNewListModal"
 import { List } from "src/components/organisms/creator-tools/lists/List"
 import { SortListPopup } from "src/components/organisms/creator-tools/lists/SortListPopup"
 import { errorMessage } from "src/helpers/error"
@@ -28,6 +29,7 @@ const DEBOUNCE_TIMEOUT = 500
 
 const FanLists: NextPage = () => {
   const [resets, setResets] = useState(0)
+  const [newListModalState, setNewListModalState] = useState(false)
 
   const [orderType, setOrderType] = useState<GetListsRequestsDtoOrderTypeEnum>(
     GetListsRequestsDtoOrderTypeEnum.Name
@@ -36,8 +38,6 @@ const FanLists: NextPage = () => {
     GetListsRequestsDtoOrderEnum.Asc
   )
   const [search, setSearch] = useState<string>("")
-
-  const [listName, setListName] = useState<string>("")
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
 
@@ -67,7 +67,11 @@ const FanLists: NextPage = () => {
     setAnchorSortPopperEl(null)
   }
 
-  const handleCreateNewList = async () => {
+  const handleCreateNewListModal = () => {
+    setNewListModalState(true)
+  }
+
+  const handleCreateNewList = async (listName: string) => {
     try {
       await listApi.createList({
         createListRequestDto: {
@@ -76,6 +80,7 @@ const FanLists: NextPage = () => {
         }
       })
       await new Promise((resolve) => setTimeout(resolve, 500))
+      setNewListModalState(false)
       setResets(resets + 1)
     } catch (error) {
       errorMessage(error, true)
@@ -87,32 +92,30 @@ const FanLists: NextPage = () => {
 
   return (
     <div className="text-white">
-      <div className="-mt-[160px] flex items-center justify-between px-7">
+      <div className="absolute top-[160px] flex w-[-webkit-fill-available] items-center justify-between px-7">
         <h1 className="text-xl font-bold">My Lists</h1>
-        <header className="flex items-center justify-end">
-          <span className="relative">
-            <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
-            <input
-              type="text"
-              onChange={handleChangeSearch}
-              placeholder="Search list"
-              className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            />
-            <input
-              type="text"
-              placeholder="new list name"
-              onInput={(e) => setListName((e.target as HTMLInputElement).value)}
-              className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-            />
-            <button
-              className="ml-2 block min-h-[50px] min-w-[147px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 font-bold shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-              onClick={handleCreateNewList}
-            >
-              + New List
-            </button>
-          </span>
-        </header>
+        <div className="relative flex items-center justify-end">
+          <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
+          <input
+            type="text"
+            onChange={handleChangeSearch}
+            placeholder="Search list"
+            className="block min-h-[50px] min-w-[296px] appearance-none rounded-[6px] border border-[#624256] bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+          />
+          <button
+            className="ml-2 block min-h-[50px] min-w-[147px] appearance-none rounded-[6px] border border-[#624256] bg-transparent p-2 py-3 px-4 font-bold shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+            onClick={handleCreateNewListModal}
+          >
+            + New List
+          </button>
+        </div>
       </div>
+
+      <CreateNewListModal
+        onSubmit={handleCreateNewList}
+        isOpen={newListModalState}
+        setOpen={setNewListModalState}
+      />
 
       <Popper
         id={sortPopperId}
@@ -158,8 +161,17 @@ const FanLists: NextPage = () => {
           </Fade>
         )}
       </Popper>
-      <ul className="px-7 pt-40">
-        <li className="flex items-center justify-end border-b-2 border-gray-500 px-7 py-5">
+
+      <ul className="px-7 ">
+        <li className="flex items-center justify-between py-5">
+          <div className="flex flex-row justify-between gap-[32px] border-b border-[#2C282D]">
+            <span className="cursor-pointer border-b-[3px] border-b-[#9C4DC1] py-[16px] px-[12px] text-base font-bold">
+              Created List
+            </span>
+            <span className="cursor-pointer py-[16px] px-[12px] text-base font-bold opacity-[0.5]">
+              Pass Holders
+            </span>
+          </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
             <div
               aria-describedby={sortPopperId}

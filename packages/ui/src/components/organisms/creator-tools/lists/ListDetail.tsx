@@ -10,18 +10,21 @@ import {
   ListMemberDto
 } from "@passes/api-client"
 import { debounce } from "lodash"
-import ChevronRight from "public/icons/chevron-right-icon.svg"
-import EditIcon from "public/icons/edit-icon.svg"
+import { ArrowLeft } from "lucide-react"
+import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
-import React, { FC, useCallback, useEffect, useRef, useState } from "react"
+import React, { FC, useCallback, useEffect, useState } from "react"
+import { Button } from "src/components/atoms/Button"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
-import { FollowerSearchBar } from "src/components/molecules/FollowerSearchBar"
+import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowerToListModal"
+import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
 import { errorMessage } from "src/helpers/error"
+import { AddIcon } from "src/icons/add-icon"
+import { InfoIconOutlined } from "src/icons/info-icon"
 
 import { ListMember } from "./ListMember"
 import { SortListPopup } from "./SortListPopup"
@@ -36,7 +39,7 @@ const DEBOUNCE_TIMEOUT = 500
 const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [listInfo, setListInfo] = useState<GetListResponseDto>()
   const [listName, setListName] = useState<string>("")
-  // const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
+  const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
   const [resets, setResets] = useState(0)
   const [search, setSearch] = useState<string>("")
@@ -50,11 +53,8 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     GetListMembersRequestDtoOrderEnum.Asc
   )
 
-  const [isEditingListName, setIsEditingListName] = useState<boolean>(false)
   const [anchorSortPopperEl, setAnchorSortPopperEl] =
     useState<null | HTMLElement>(null)
-
-  const listNameRef = useRef<HTMLInputElement>(null)
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -63,8 +63,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         listId
       })
       setListInfo(listInfoRes)
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      listNameRef.current!.value = listInfoRes.name
       setListName(listInfoRes.name)
     } catch (error) {
       errorMessage(error, true)
@@ -137,77 +135,57 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     [resets, setResets]
   )
 
-  const handleChangeListName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setListName(event.target.value)
-    },
-    []
-  )
-
-  const toggleEditListName = useCallback(
-    async (event: React.MouseEvent<HTMLDivElement>) => {
-      event.preventDefault()
-      const inputListNameValue = listNameRef.current?.value ?? ""
-      if (
-        isEditingListName &&
-        listNameRef.current &&
-        inputListNameValue.length > 0
-      ) {
-        // Update list name
-        try {
-          const updated = (
-            await listApi.editListName({
-              editListNameRequestDto: {
-                listId,
-                name: listNameRef.current?.value
-              }
-            })
-          ).value
-          if (updated) {
-            setListName(listNameRef.current?.value)
-          }
-          setIsEditingListName((isEditingListName) => !isEditingListName)
-        } catch (error) {
-          errorMessage(error, true)
+  const handleEditListName = useCallback(
+    async (value: string) => {
+      if (value.length === 0) {
+        return
+      }
+      // Update list name
+      try {
+        const updated = (
+          await listApi.editListName({
+            editListNameRequestDto: {
+              listId,
+              name: value
+            }
+          })
+        ).value
+        if (updated) {
+          setListName(value)
         }
-      } else {
-        setIsEditingListName((isEditingListName) => !isEditingListName)
+      } catch (error) {
+        errorMessage(error, true)
       }
     },
-    [listId, isEditingListName]
+    [listId]
   )
 
   const sortPopperOpen = Boolean(anchorSortPopperEl)
   const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
+  const router = useRouter()
+  const [dismissed, setDismissed] = useState<boolean>(false)
 
   return (
     <div className="text-white">
-      <div className="-mt-[160px] flex items-center justify-between px-7">
-        <h1 className="text-xl font-bold">List Members</h1>
+      <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
+        <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
+        <h1 className="text-xl font-bold">{listName}</h1>
       </div>
-      <ul className="px-7 pt-[82px]">
-        <li className="mb-3 flex items-center text-base font-medium leading-5 text-white">
-          <span>List</span>
-          <ChevronRight className="mx-[11px]" />
-          <span>Details</span>
-        </li>
+      <ul className="px-7">
         <li className="flex items-center justify-between border-b-2 border-gray-500 py-5">
-          <div className="flex items-center ">
-            <input
-              onChange={handleChangeListName}
-              ref={listNameRef}
-              disabled={!isEditingListName}
-              className="mr-2 w-[160px] appearance-none bg-transparent text-2xl font-bold leading-6 outline-none"
-              value={listName}
-            />
+          <div className="flex items-center gap-[10px]">
+            <div className="flex items-center border-r border-r-[#fff]">
+              <h2 className="pr-[10px] text-2xl font-bold">{listName}</h2>
+            </div>
             {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
-              <span className="cursor-pointer" onClick={toggleEditListName}>
-                <EditIcon />
-              </span>
+              <UpdateListNamePopper
+                onSubmit={(value) => handleEditListName(value)}
+                value={listName}
+              />
             )}
           </div>
-          <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
-            <span className="relative">
+          <div className="flex items-center justify-center gap-[30px] ">
+            <span className="relative opacity-70 hover:opacity-100">
               <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
               <input
                 type="text"
@@ -216,8 +194,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                 className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
               />
             </span>
-          </div>
-          <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
             <div
               aria-describedby={sortPopperId}
               onClick={handleOpenPopper}
@@ -226,11 +202,16 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
               <FilterIcon />
             </div>
           </div>
-          <ConditionRendering
-            condition={listInfo?.type === GetListResponseDtoTypeEnum.Normal}
-          >
-            <FollowerSearchBar onSelect={handleAddFan} />
-          </ConditionRendering>
+
+          <div className="flex items-center justify-center gap-3">
+            <Button
+              icon={<AddIcon />}
+              className="font-[700]"
+              onClick={() => setAddFollowerOpen(true)}
+            >
+              Add
+            </Button>
+          </div>
         </li>
         <Popper
           id={sortPopperId}
@@ -278,6 +259,20 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             </Fade>
           )}
         </Popper>
+        {listInfo?.count === 0 && !dismissed && (
+          <div className=" mt-[10px] flex h-[40px] w-full flex-row items-center  justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
+            <div className="flex flex-row items-center gap-[10px]">
+              <InfoIconOutlined />
+              <span>Users you add to the list will be shown here</span>
+            </div>
+            <span
+              className="cursor-pointer text-[#ffffffeb]"
+              onClick={() => setDismissed(true)}
+            >
+              Dismiss
+            </span>
+          </div>
+        )}
 
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
           keyValue={`list/list-members/${listId}`}
@@ -299,6 +294,11 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           resets={resets}
         />
       </ul>
+      <AddFollowerToListModal
+        onSubmit={(userId) => handleAddFan(userId)}
+        isOpen={addFollowerOpen}
+        setOpen={setAddFollowerOpen}
+      />
     </div>
   )
 }

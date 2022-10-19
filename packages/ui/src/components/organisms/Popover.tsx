@@ -5,7 +5,7 @@ import { Text } from "src/components/atoms/Text"
 import { formatText } from "src/helpers/formatters"
 import { Cross } from "src/icons/cross"
 
-interface PopoverProps {
+export interface PopoverProps {
   avoidCollisions: any
   children: any
   description: string
