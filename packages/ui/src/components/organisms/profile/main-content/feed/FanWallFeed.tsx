@@ -11,6 +11,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
+import { useUser } from "src/hooks/useUser"
 
 import { FanWallComment } from "./FanWallComment"
 
@@ -33,6 +34,7 @@ export interface FanWallFeedProps {
 }
 
 export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
+  const { accessToken } = useUser()
   return (
     <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
       keyValue={`/fanwall/${profileUserId}`}
@@ -50,7 +52,9 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
         return <FanWallComment comment={arg} />
       }}
     >
-      <NewFanwallPosts profileUserId={profileUserId} />
+      {!!accessToken.length && (
+        <NewFanwallPosts profileUserId={profileUserId} />
+      )}
     </InfiniteScrollPagination>
   )
 }
