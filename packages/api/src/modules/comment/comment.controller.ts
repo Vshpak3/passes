@@ -86,6 +86,24 @@ export class CommentController {
   }
 
   @ApiEndpoint({
+    summary: 'Unhides a comment',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'A comment was unhidden',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Patch('unhide/:postId/:commentId')
+  async unhideComment(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+    @Param('commentId') commentId: string,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.commentService.unhideComment(req.user.id, postId, commentId),
+    )
+  }
+
+  @ApiEndpoint({
     summary: 'Deletes a comment',
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,

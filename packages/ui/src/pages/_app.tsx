@@ -29,12 +29,12 @@ import { useUser } from "src/hooks/useUser"
 import { Providers } from "src/providers"
 import { SWRConfig, SWRConfiguration } from "swr"
 
-const swrConfig: SWRConfiguration = {
+export const swrConfig: SWRConfiguration = {
   // enable or disable automatic revalidation when component is mounted
   revalidateOnMount: false,
 
   // automatically revalidate when window gets focused
-  revalidateOnFocus: true,
+  revalidateOnFocus: false,
 
   // only revalidate once during a time span in milliseconds
   focusThrottleInterval: 10000,
@@ -46,7 +46,9 @@ const swrConfig: SWRConfiguration = {
   refreshWhenOffline: false,
 
   // automatically revalidate when the browser regains a network connection
-  revalidateOnReconnect: false
+  revalidateOnReconnect: false,
+
+  revalidateIfStale: false
 }
 
 // Try to refresh the access token every this many minutes
@@ -93,7 +95,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 
   const router = useRouter()
-  const { setAccessToken } = useUser()
+  const { setAccessToken, mutate } = useUser()
 
   // Refresh once on page load then repeatedly
   useEffect(() => {
@@ -123,6 +125,11 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
   ])
+
+  useEffect(() => {
+    mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(

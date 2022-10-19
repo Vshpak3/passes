@@ -2,6 +2,7 @@ import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "src/hooks/useLocalStorage"
+import { swrConfig } from "src/pages/_app"
 import useSWR, { useSWRConfig } from "swr"
 
 export interface JWTUserClaims {
@@ -28,14 +29,18 @@ export const useUser = () => {
     data: user,
     isValidating: loading,
     mutate
-  } = useSWR(accessToken ? CACHE_KEY_USER : null, async () => {
-    // When this flag is false there is not yet a user to retrieve
-    if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
-      return
-    }
+  } = useSWR(
+    accessToken ? CACHE_KEY_USER : null,
+    async () => {
+      // When this flag is false there is not yet a user to retrieve
+      if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+        return
+      }
 
-    return await authApi.getCurrentUser()
-  })
+      return await authApi.getCurrentUser()
+    },
+    swrConfig
+  )
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, memo } from "react"
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
 import { ProfileContent } from "src/components/organisms/profile/main-content/ProfileContent"
@@ -8,7 +8,6 @@ import { useProfile } from "src/hooks/useProfile"
 
 export const Profile: FC = () => {
   const { profileInfo, loadingProfileInfo, hasInitialFetch } = useProfile()
-
   return (
     <>
       {!profileInfo && loadingProfileInfo ? (
@@ -32,4 +31,4 @@ export const Profile: FC = () => {
   )
 }
 
-export default Profile // eslint-disable-line import/no-default-export
+export default memo(Profile) // eslint-disable-line import/no-default-export

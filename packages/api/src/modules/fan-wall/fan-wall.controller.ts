@@ -77,13 +77,33 @@ export class FanWallController {
     responseDesc: 'A fan wall comment was hidden',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Patch(':fanWallCommentId')
+  @Patch('hide/:fanWallCommentId')
   async hideFanWallComment(
     @Req() req: RequestWithUser,
     @Param('fanWallCommentId') fanWallCommentId: string,
   ): Promise<BooleanResponseDto> {
     return new BooleanResponseDto(
       await this.fanWallService.hideFanWallCommment(
+        req.user.id,
+        fanWallCommentId,
+      ),
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Hides a fan wall comment',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'A fan wall comment was hidden',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Patch('unhide/:fanWallCommentId')
+  async unhideFanWallComment(
+    @Req() req: RequestWithUser,
+    @Param('fanWallCommentId') fanWallCommentId: string,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.fanWallService.unhideFanWallCommment(
         req.user.id,
         fanWallCommentId,
       ),

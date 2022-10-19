@@ -30,8 +30,7 @@ export const useProfile = () => {
       return await profileApi.findProfile({
         getProfileRequestDto: { username: profileUsername }
       })
-    },
-    { revalidateOnFocus: false }
+    }
   )
 
   // For a brief moment during rendering, loadingProfileInfo will be set false

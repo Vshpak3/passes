@@ -50,6 +50,10 @@ export interface HideFanWallCommentRequest {
     fanWallCommentId: string;
 }
 
+export interface UnhideFanWallCommentRequest {
+    fanWallCommentId: string;
+}
+
 /**
  * 
  */
@@ -179,7 +183,7 @@ export class FanWallApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
         const response = await this.request({
-            path: `/api/fan-wall/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
+            path: `/api/fan-wall/hide/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'PATCH',
             headers: headerParameters,
             query: queryParameters,
@@ -193,6 +197,41 @@ export class FanWallApi extends runtime.BaseAPI {
      */
     async hideFanWallComment(requestParameters: HideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.hideFanWallCommentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Hides a fan wall comment
+     */
+    async unhideFanWallCommentRaw(requestParameters: UnhideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.fanWallCommentId === null || requestParameters.fanWallCommentId === undefined) {
+            throw new runtime.RequiredError('fanWallCommentId','Required parameter requestParameters.fanWallCommentId was null or undefined when calling unhideFanWallComment.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/fan-wall/unhide/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Hides a fan wall comment
+     */
+    async unhideFanWallComment(requestParameters: UnhideFanWallCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.unhideFanWallCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

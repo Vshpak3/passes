@@ -52,6 +52,11 @@ export interface HideCommentRequest {
     commentId: string;
 }
 
+export interface UnhideCommentRequest {
+    postId: string;
+    commentId: string;
+}
+
 /**
  * 
  */
@@ -208,6 +213,45 @@ export class CommentApi extends runtime.BaseAPI {
      */
     async hideComment(requestParameters: HideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.hideCommentRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Unhides a comment
+     */
+    async unhideCommentRaw(requestParameters: UnhideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling unhideComment.');
+        }
+
+        if (requestParameters.commentId === null || requestParameters.commentId === undefined) {
+            throw new runtime.RequiredError('commentId','Required parameter requestParameters.commentId was null or undefined when calling unhideComment.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+        const response = await this.request({
+            path: `/api/comment/unhide/{postId}/{commentId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))).replace(`{${"commentId"}}`, encodeURIComponent(String(requestParameters.commentId))),
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Unhides a comment
+     */
+    async unhideComment(requestParameters: UnhideCommentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.unhideCommentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
