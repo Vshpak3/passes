@@ -1,4 +1,3 @@
-import { yupResolver } from "@hookform/resolvers/yup"
 import { CreatePostRequestDto, PassDto, TagDto } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
@@ -9,7 +8,6 @@ import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmi
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers/content"
-import { date, object, SchemaOf } from "yup"
 
 import { NewPostMediaSection } from "./NewPostMediaSection"
 import { NewPostPaidSection } from "./NewPostPaidSection"
@@ -49,16 +47,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState<string[]>([])
 
-  interface NewPostSchema {
-    scheduledAt?: Date
-  }
-
-  const newPostSchema: SchemaOf<NewPostSchema> = object({
-    scheduledAt: date().min(
-      new Date(new Date().setMinutes(new Date().getMinutes() + 10)).toString()
-    )
-  })
-
   const {
     handleSubmit,
     register,
@@ -68,8 +56,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     watch,
     reset
   } = useForm<NewPostFormProps>({
-    defaultValues: { ...initialData },
-    resolver: yupResolver(newPostSchema)
+    defaultValues: { ...initialData }
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
@@ -204,7 +191,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               disableForm={disableForm}
               setScheduledTime={setScheduledTime}
               scheduledTime={getValues()?.scheduledAt}
-              error={errors?.scheduledAt?.message}
             />
           </>
         )}

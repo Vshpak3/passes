@@ -21,9 +21,6 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   onDeleteEvent,
   onChangeTime
 }) => {
-  const controlTime = new Date(
-    new Date().setMinutes(new Date().getMinutes() + 10)
-  )
   const {
     scheduledEventId,
     type,
@@ -67,7 +64,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         activeHeader="Schedule"
         scheduledTime={scheduledAt}
         setScheduledTime={async (date: Date | null) => {
-          if (!date || date <= controlTime) {
+          if (!date) {
             return
           }
           await onChangeTime(scheduledEventId, date)
