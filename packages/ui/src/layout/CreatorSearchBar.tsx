@@ -1,8 +1,7 @@
-import { UserDisplayInfoDto } from "@passes/api-client"
+import classNames from "classnames"
 import { useRouter } from "next/router"
-import React, { FC } from "react"
-import { UserSearchDropdown } from "src/components/atoms/search/user/UserSearchDropdown"
-import { UserSearchInput } from "src/components/atoms/search/user/UserSearchInput"
+import { FC, useCallback, useMemo } from "react"
+import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 
@@ -15,43 +14,41 @@ export interface CreatorSearchBarProps {
 export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
   isDesktop = true
 }) => {
-  const {
-    results,
-    searchValue,
-    onChangeInput,
-    onSearchFocus,
-    resultsVisible,
-    searchRef
-  } = useCreatorSearch()
+  const { push } = useRouter()
+  const { results, searchValue, onChangeInput, setSearchValue } =
+    useCreatorSearch()
 
-  const router = useRouter()
+  const goToProfile = useCallback(
+    (username: string) => {
+      setSearchValue("")
+      push(`/${username}`)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
-  const goToProfile = (user: UserDisplayInfoDto) => {
-    router.push(`/${user.username}`)
-  }
-
-  const truncatedResults = isDesktop
-    ? results
-    : results.slice(0, MAX_RESULTS_MOBILE)
+  const truncatedResults = useMemo(
+    () => (isDesktop ? results : results.slice(0, MAX_RESULTS_MOBILE)),
+    [isDesktop, results]
+  )
 
   return (
     <AuthWrapper>
-      <div ref={searchRef} className="relative flex-1 xs:flex-initial">
-        <UserSearchInput
-          onChangeInput={onChangeInput}
-          onSearchFocus={onSearchFocus}
-          searchValue={searchValue}
-          isDesktop={isDesktop}
-          placeholder={"Find creator"}
-        />
-        {resultsVisible && (
-          <UserSearchDropdown
-            results={truncatedResults}
-            isDesktop={isDesktop}
-            emptyText={"creators"}
-            onClick={goToProfile}
-          />
+      <div
+        className={classNames(
+          isDesktop ? "hidden md:flex" : "mr-2 flex-grow",
+          "items-center justify-end md:flex"
         )}
+      >
+        <SearchBar
+          isDesktop={isDesktop}
+          searchValue={searchValue}
+          onSelect={(creator: string) => goToProfile(creator)}
+          onChange={onChangeInput}
+          placeholder="Find creator"
+          emptyText="Try searching for creators."
+          results={truncatedResults}
+        />
       </div>
     </AuthWrapper>
   )
