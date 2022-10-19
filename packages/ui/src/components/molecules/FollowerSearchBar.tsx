@@ -18,7 +18,7 @@ export const FollowerSearchBar: React.FC<FollowerSearchBarProps> = ({
       onSelect={onSelect}
       onChange={onChangeInput}
       placeholder="Add followers"
-      emptyText="following"
+      emptyText="followers"
     />
   )
 }

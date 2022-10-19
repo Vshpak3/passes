@@ -47,7 +47,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         </Combobox.Button>
         <Combobox.Options
           className={classNames(
-            isDesktop ? "max-h-[165px]" : "h-full w-full",
+            isDesktop ? "h-full w-full" : "max-h-[165px]",
             {
               "absolute top-16 w-full pr-2 xs:right-2 xs:w-auto xs:pr-0":
                 !isDesktop
