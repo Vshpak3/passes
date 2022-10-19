@@ -1,6 +1,6 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { FC } from "react"
+import { FC, MouseEvent } from "react"
 import { ContentService } from "src/helpers/content"
 
 interface VaultMediaItemProps {
@@ -9,6 +9,7 @@ interface VaultMediaItemProps {
   setSelectedItems: (items: ContentDto[]) => void
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
+  handleClickOnItem: (item: ContentDto) => void
 }
 
 export const VaultMediaItem: FC<VaultMediaItemProps> = ({
@@ -16,7 +17,8 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   selectedItems,
   setSelectedItems,
   isVideoSelected,
-  isMaxFileCountSelected
+  isMaxFileCountSelected,
+  handleClickOnItem
 }) => {
   const date = content.createdAt?.toDateString().slice(5, 11)
 
@@ -24,7 +26,8 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
     (c) => c.contentId === content.contentId
   ).length
 
-  const handleSelectItem = () => {
+  const handleSelectItem = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
     if (content.contentType === "video" && isVideoSelected) {
       return
     }
@@ -35,10 +38,14 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
 
     setSelectedItems([...selectedItems, content])
   }
-  const handleRemoveItem = () => {
+  const handleRemoveItem = (event: MouseEvent<HTMLElement>) => {
+    event.stopPropagation()
     setSelectedItems(
       selectedItems.filter((c) => c.contentId !== content.contentId)
     )
+  }
+  const handleClick = () => {
+    handleClickOnItem(content)
   }
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
   const opacityStyle =
@@ -50,6 +57,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           opacityStyle,
           "dropdown-shadow aspect-w-1 aspect-h-1 w-full cursor-pointer overflow-hidden rounded-[5px] bg-gray-200 md:rounded-[20px] xl:aspect-w-8 xl:aspect-h-8"
         )}
+        onClick={handleClick}
       >
         <img // All content types have an image thumbnail
           src={ContentService.userContentThumbnail(content)}

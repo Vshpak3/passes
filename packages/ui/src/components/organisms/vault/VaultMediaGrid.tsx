@@ -5,13 +5,15 @@ import {
   GetVaultQueryRequestDtoOrderEnum,
   GetVaultQueryResponseDto
 } from "@passes/api-client"
-import { FC } from "react"
+import { FC, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+
+import { VaultMediaModal } from "./VaultMediaModal"
 
 interface VaultMediaGridProps {
   selectedItems: ContentDto[]
@@ -34,8 +36,22 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   isVideoSelected,
   isMaxFileCountSelected
 }) => {
+  const [isViewMediaModal, setIsViewMediaModal] = useState(false)
+  const [content, setContent] = useState<ContentDto>()
+
+  const handleClickOnItem = (item: ContentDto) => {
+    setIsViewMediaModal(true)
+    setContent(item)
+  }
+
   return (
     <div className="max-h-[65vh] justify-center overflow-y-scroll">
+      <VaultMediaModal
+        content={content}
+        isViewMediaModal={isViewMediaModal}
+        setIsViewMediaModal={setIsViewMediaModal}
+      />
+
       <div className="grid grid-cols-3 gap-2">
         <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
           keyValue={`vault`}
@@ -63,6 +79,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
                     selectedItems={selectedItems}
                     isVideoSelected={isVideoSelected}
                     isMaxFileCountSelected={isMaxFileCountSelected}
+                    handleClickOnItem={handleClickOnItem}
                   />
                 )}
               </>
