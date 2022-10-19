@@ -1,4 +1,5 @@
-import { ContentDto, GetFeedResponseDto, PostDto } from "@passes/api-client"
+import { ContentDto, PostDto } from "@passes/api-client"
+import ms from "ms"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { FC, ReactNode, useEffect, useRef, useState } from "react"
@@ -8,20 +9,21 @@ import {
   PostContentProps
 } from "src/components/molecules/PostContent"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
-import { KeyedMutator } from "swr"
+
+const CHECK_FOR_PROCESSED_CONTENT = ms("5 seconds")
 
 interface PostMediaProps {
-  contents: PostDto["contents"]
-  mutatePosts?: KeyedMutator<GetFeedResponseDto>
-  setPostHandler?: PostContentProps["setPostHandler"]
   postId?: string
+  contents: PostDto["contents"]
+  isNewPost?: boolean
+  setPostHandler?: PostContentProps["setPostHandler"]
 }
 
 export const PostMedia: FC<PostMediaProps> = ({
-  contents,
-  mutatePosts,
-  setPostHandler,
-  postId
+  postId,
+  contents = [],
+  isNewPost,
+  setPostHandler
 }) => {
   const { viewPostActiveIndex } = useViewPostModal()
   const activeIndex =
@@ -57,30 +59,44 @@ export const PostMedia: FC<PostMediaProps> = ({
   }
   const imgRef = useRef<HTMLImageElement>(null)
   const sliderRef = useRef<Slider | null>(null)
-  const [isLoadingStart, setIsLoadingStart] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [refresh, setRefresh] = useState(0)
+  const [isProcessing, setIsProcessing] = useState(
+    !!contents.length && !!isNewPost
+  )
 
-  const startLoadingHandler = () => () => setIsLoadingStart(true)
+  // For now we don't have any logic when the content has loaded
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const onMediaLoad = () => () => {}
 
-  const onLoadingHandler = () => {
-    setIsLoading(false)
+  const checkForProcessContent = () => {
+    // TODO: add in check for if the content is ready and get the content
+    setIsProcessing(true)
   }
 
   useEffect(() => {
-    mutatePosts && mutatePosts()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const interval = setInterval(async () => {
+      checkForProcessContent()
+      setRefresh(refresh + 1)
+    }, CHECK_FOR_PROCESSED_CONTENT)
 
-  useEffect(() => {
-    onLoadingHandler()
-  }, [isLoadingStart])
+    return () => clearInterval(interval)
+  }, [refresh])
 
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
-      {!!contents?.length &&
-        (isLoading ? (
-          <span>Please wait! Your content is being uploaded</span>
-        ) : contents.length > 1 ? (
+      {isProcessing ? (
+        <div className="relative mb-[30px] rounded-md border-2 border-passes-purple-100 px-[25px] py-[15px]">
+          Please wait; your content is being processed.
+        </div>
+      ) : contents.length === 1 ? (
+        <PostContent
+          content={contents[0]}
+          ref={imgRef}
+          onMediaLoad={onMediaLoad}
+          setPostHandler={setPostHandler}
+        />
+      ) : (
+        contents.length > 1 && (
           <div className="relative w-[100%]">
             {activeSlideIndex !== contents.length - 1 && (
               <button
@@ -103,7 +119,7 @@ export const PostMedia: FC<PostMediaProps> = ({
                     key={index}
                     content={c}
                     ref={imgRef}
-                    startLoadingHandler={startLoadingHandler}
+                    onMediaLoad={onMediaLoad}
                     setPostHandler={setPostHandler}
                   />
                 )
@@ -118,14 +134,8 @@ export const PostMedia: FC<PostMediaProps> = ({
               </button>
             )}
           </div>
-        ) : (
-          <PostContent
-            content={contents[0]}
-            ref={imgRef}
-            startLoadingHandler={startLoadingHandler}
-            setPostHandler={setPostHandler}
-          />
-        ))}
+        )
+      )}
     </div>
   )
 }

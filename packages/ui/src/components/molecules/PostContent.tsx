@@ -12,18 +12,14 @@ export interface PostContentProps extends PostImageProps {
 export const PostContent: FC<PostContentProps> = ({
   content,
   ref,
-  startLoadingHandler,
+  onMediaLoad,
   setPostHandler
 }) => {
   let contentElement: JSX.Element | undefined
   switch (content.contentType) {
     case ContentDtoContentTypeEnum.Image:
       contentElement = (
-        <PostImage
-          content={content}
-          ref={ref}
-          startLoadingHandler={startLoadingHandler}
-        />
+        <PostImage content={content} ref={ref} onMediaLoad={onMediaLoad} />
       )
       break
     case ContentDtoContentTypeEnum.Video:

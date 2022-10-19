@@ -5,18 +5,18 @@ import { ContentService } from "src/helpers/content"
 export interface PostImageProps {
   content: ContentDto
   ref: RefObject<HTMLImageElement>
-  startLoadingHandler?: () => () => void
+  onMediaLoad?: () => () => void
 }
 
 export const PostImage: FC<PostImageProps> = ({
   content,
   ref,
-  startLoadingHandler
+  onMediaLoad
 }) => {
   return (
     <img
       ref={ref}
-      onLoad={startLoadingHandler}
+      onLoad={onMediaLoad}
       key={content.contentId}
       src={ContentService.userContentMedia(content)}
       alt=""

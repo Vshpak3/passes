@@ -78,8 +78,9 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
 
     if (targetDate < addMinutes(new Date(), minuteLimit)) {
       toast.error(
-        `You cannot schedule an event before ${minuteLimit} minutes from now`
+        `An event must be scheduled at least ${minuteLimit} minutes from now`
       )
+      return
     }
 
     onSave(targetDate)

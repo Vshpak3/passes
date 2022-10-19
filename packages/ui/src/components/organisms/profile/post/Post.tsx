@@ -22,14 +22,16 @@ import { PostTextContent } from "./PostTextContent"
 interface PostProps {
   post: PostDto
   redirectOnDelete?: boolean
+  isNewPost?: boolean
 }
 
-export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
-  const [isRemoved, setIsRemoved] = useState(false)
-  const { setPost } = useViewPostModal()
+export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
   const router = useRouter()
   const { user } = useUser()
+  const { setPost } = useViewPostModal()
   const { removePost } = usePost()
+
+  const [isRemoved, setIsRemoved] = useState(false)
 
   const {
     contents,
@@ -90,6 +92,7 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
             <PostMedia
               postId={postId}
               contents={contents}
+              isNewPost={isNewPost}
               setPostHandler={setPostHandler}
             />
           )}
