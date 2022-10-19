@@ -2,6 +2,7 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import Locked from "public/icons/lock-locked.svg"
 import React, { FC } from "react"
+import { PostMedia } from "src/components/organisms/profile/post/PostMedia"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
@@ -71,14 +72,19 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               <div>
                 <span>{message?.text}</span>
               </div>
-              <div className="pt-2">
-                <Content
-                  contents={messageContent}
-                  paid={message.paid}
-                  price={message?.price}
-                  message={message}
-                  isOwnMessage={isOwnMessage}
-                />
+              <div className="max-w-[403px] pt-2">
+                {message.price > 0 && !message.paid ? (
+                  <Content
+                    contents={messageContent}
+                    paid={message.paid}
+                    price={message?.price}
+                    message={message}
+                    isOwnMessage={isOwnMessage}
+                  />
+                ) : (
+                  <PostMedia contents={messageContent} />
+                )}
+                {/* TODO: this includes only free content carsuel */}
               </div>
               <div className="pt-2">
                 <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
