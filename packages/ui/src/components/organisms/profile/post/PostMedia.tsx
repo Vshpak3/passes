@@ -76,6 +76,7 @@ export const PostMedia: FC<PostMediaProps> = ({
     }
   }
 
+  // Used for new posts to ensure the content shows up
   useEffect(() => {
     if (isProcessing) {
       const interval = setInterval(async () => {

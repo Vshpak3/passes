@@ -82,7 +82,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                     isOwnMessage={isOwnMessage}
                   />
                 ) : (
-                  <PostMedia contents={messageContent} />
+                  <PostMedia postId="" contents={messageContent} />
                 )}
                 {/* TODO: this includes only free content carsuel */}
               </div>
