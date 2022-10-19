@@ -16,7 +16,7 @@ export function useWindowSize() {
   })
   const windowWidth =
     windowSize && windowSize.width ? windowSize.width : breakpoints.md
-  const isMobile = windowWidth > breakpoints.md
+  const isMobile = windowWidth < breakpoints.md
 
   useEffect(() => {
     // Handler to call on window resize

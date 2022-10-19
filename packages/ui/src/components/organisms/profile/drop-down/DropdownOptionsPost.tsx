@@ -1,3 +1,5 @@
+import { toast } from "react-toastify"
+
 import { DropdownOption } from "./Dropdown"
 
 export const DropDownDeletePost = (
@@ -30,6 +32,7 @@ export const DropDownPinPost = (
           text: "Pin",
           onClick: async () => {
             await pinPost(postId)
+            toast.success("The post has been pinned")
           }
         }
       ]
@@ -47,6 +50,7 @@ export const DropDownUnpinPost = (
           text: "Unpin",
           onClick: async () => {
             await unpinPost(postId)
+            toast.success("The post has been unpinned")
           }
         }
       ]

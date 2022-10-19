@@ -8,8 +8,10 @@ import { FC, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { toast } from "react-toastify"
 import { TimePicker } from "src/components/atoms/TimePicker"
-import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/components/molecules/scheduler/CreateSchedulerPopup"
-import { SCHEDULE_MINUTE_LIMIT } from "src/config/scheduler"
+import {
+  MAX_SCHEDULE_DURATION_IN_MONTHS,
+  SCHEDULE_MINUTE_LIMIT
+} from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 

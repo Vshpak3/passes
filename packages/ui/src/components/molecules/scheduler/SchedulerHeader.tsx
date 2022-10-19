@@ -1,9 +1,8 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import PlusQuareIcon from "public/icons/plus-square.svg"
-import { FC, useCallback, useContext, useRef, useState } from "react"
-import { CALENDAR_POPUP_ID } from "src/components/atoms/calendar/CalendarPicker"
-import { CreateSchedulerPopup } from "src/components/molecules/scheduler/CreateSchedulerPopup"
+import { FC, useContext, useRef, useState } from "react"
+import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import {
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
@@ -18,14 +17,10 @@ import { NewPostPopup } from "./NewPostPopup"
 export const SchedulerHeader: FC = () => {
   const { month, year, setMonth, setYear } = useContext(SchedulerContext)
 
-  const popperContainerRef = useRef<HTMLDivElement | null>(null)
   const popperMonthYearPickerRef = useRef<HTMLDivElement | null>(null)
 
   const [monthYearPopperOpen, setMonthYearPopperOpen] = useState(false)
-  const [createScheduleOpen, setCreateScheduleOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [buttonCreateSchedulerEl, setButtonCreateSchedulerEl] =
-    useState<null | HTMLElement>(null)
 
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectionDate, setSelectionDate] = useState<Date | null>(null)
@@ -35,80 +30,17 @@ export const SchedulerHeader: FC = () => {
     setMonthYearPopperOpen(true)
   }
 
-  const handleShowCreateSchedulerPopper = (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    setButtonCreateSchedulerEl(event.currentTarget)
-    setCreateScheduleOpen(true)
-  }
-
   const canBeMonthYearPopperOpen = monthYearPopperOpen && Boolean(anchorEl)
   const monthYearPopperId = canBeMonthYearPopperOpen
     ? "transition-popper"
     : undefined
 
-  const canBeCreateSchedulerPopperOpen =
-    monthYearPopperOpen && Boolean(anchorEl)
-  const createSchedulerPopperId = canBeCreateSchedulerPopperOpen
-    ? "transition-popper"
-    : undefined
-
-  const dismissCreateSchedulerPopper = useCallback(() => {
-    buttonCreateSchedulerEl && setButtonCreateSchedulerEl(null)
-    setCreateScheduleOpen(false)
-  }, [buttonCreateSchedulerEl])
-
   useOnClickOutside(popperMonthYearPickerRef, () => {
     setMonthYearPopperOpen(false)
   })
 
-  useOnClickOutside(popperContainerRef, (e) => {
-    const calendarPopup = document.getElementById(CALENDAR_POPUP_ID)
-
-    if (e.target instanceof Node && calendarPopup?.contains(e.target)) {
-      return
-    }
-
-    dismissCreateSchedulerPopper()
-  })
-
   return (
     <>
-      {/* create new schedule popup */}
-      <Popper
-        id={createSchedulerPopperId}
-        open={createScheduleOpen}
-        anchorEl={buttonCreateSchedulerEl}
-        transition
-        placement="bottom-end"
-        modifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [0, 17]
-            }
-          }
-        ]}
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <div
-              ref={popperContainerRef}
-              className="mr-[25px] w-[320px] rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md md:mr-0 md:w-[480px]"
-            >
-              {createScheduleOpen && (
-                <CreateSchedulerPopup
-                  onCancel={dismissCreateSchedulerPopper}
-                  setIsNewPostModalOpen={setIsNewPostModalOpen}
-                  setSelectionDate={setSelectionDate}
-                  selectionDate={selectionDate}
-                />
-              )}
-            </div>
-          </Fade>
-        )}
-      </Popper>
-
       {/* month year picker */}
       <Popper
         id={monthYearPopperId}
@@ -161,13 +93,20 @@ export const SchedulerHeader: FC = () => {
             </div>
           </div>
         </div>
-        <button
-          className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]"
-          onClick={handleShowCreateSchedulerPopper}
+        <CalendarPicker
+          onSave={async (date: Date | null) => {
+            if (!date) {
+              return
+            }
+            setSelectionDate(date)
+            setIsNewPostModalOpen(true)
+          }}
         >
-          <PlusQuareIcon />
-          <span className="hidden md:block">Schedule</span>
-        </button>
+          <button className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]">
+            <PlusQuareIcon />
+            <span className="hidden md:block">Schedule</span>
+          </button>
+        </CalendarPicker>
       </div>
       <div className="relative bottom-[35px] flex items-center justify-center md:hidden">
         <DateTimeSelected showDateYearModal={handleShowMonthYearPopper} />

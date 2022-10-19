@@ -49,7 +49,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
               getProfileFeedRequestDto: req
             })
           }}
-          fetchProps={{ creatorId: profileUserId }}
+          fetchProps={{ creatorId: profileUserId, pinned: false }}
           emptyElement={PostFeedEnd}
           loadingElement={PostFeedLoader}
           endElement={PostFeedEnd}
