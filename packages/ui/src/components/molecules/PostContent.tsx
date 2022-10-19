@@ -16,6 +16,7 @@ export const PostContent: FC<PostContentProps> = ({
   setPostHandler
 }) => {
   let contentElement: JSX.Element | undefined
+
   switch (content.contentType) {
     case ContentDtoContentTypeEnum.Image:
       contentElement = (

@@ -2,9 +2,9 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
 import Locked from "public/icons/lock-locked.svg"
-import React, { FC } from "react"
+import { FC } from "react"
 import TimeAgo from "react-timeago"
-import { PostMedia } from "src/components/organisms/profile/post/PostMedia"
+import { PostMediaContent } from "src/components/molecule/profile/post/PostMediaContent"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
@@ -83,7 +83,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                     isOwnMessage={isOwnMessage}
                   />
                 ) : (
-                  <PostMedia postId="" contents={messageContent} />
+                  <PostMediaContent postId="" contents={messageContent} />
                 )}
                 {/* TODO: this includes only free content carsuel */}
               </div>

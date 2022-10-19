@@ -26,10 +26,16 @@ import { PostTextContent } from "./PostTextContent"
 interface PostProps {
   post: PostDto
   redirectOnDelete?: boolean
+  isPinned?: boolean
   isNewPost?: boolean
 }
 
-export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
+export const Post: FC<PostProps> = ({
+  post,
+  redirectOnDelete = false,
+  isPinned = false,
+  isNewPost = false
+}) => {
   const router = useRouter()
   const { user } = useUser()
   const { removePost, pinPost, unpinPost } = usePost()
@@ -66,8 +72,8 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
         router.push(`/${user.username}`)
       }
     }),
-    ...DropDownPinPost(post.postId, pinPost, user?.isCreator),
-    ...DropDownUnpinPost(post.postId, unpinPost, user?.isCreator),
+    ...DropDownPinPost(post.postId, pinPost, post.isOwner && !isPinned),
+    ...DropDownUnpinPost(post.postId, unpinPost, post.isOwner && isPinned),
     DropDownCopyLink(username, postId)
   ]
 
@@ -94,15 +100,20 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
             }}
           />
           <PostTextContent text={text} tags={tags} />
-          {!purchasable && (
-            <PostMedia
-              postId={postId}
-              contents={contents}
-              isNewPost={isNewPost}
-              setPostHandler={setPostHandler}
-            />
+          {!!contents?.length && (
+            <>
+              {!purchasable ? (
+                <PostMedia
+                  postId={postId}
+                  contents={contents}
+                  isNewPost={isNewPost}
+                  setPostHandler={setPostHandler}
+                />
+              ) : (
+                <LockedMedia post={post} />
+              )}
+            </>
           )}
-          {purchasable && <LockedMedia post={post} />}
           <PostEngagement post={post} />
         </FormContainer>
       </div>

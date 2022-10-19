@@ -778,27 +778,22 @@ export class PostService {
       throw new BadRequestException(`No post with id ${postId}`)
     }
 
+    const contents = JSON.parse(post.contents) as ContentBareDto[]
     const response: PostContentProcessed = {
       postId,
-      contents: [],
+      contents: this.contentService.getContentDtosFromBare(
+        contents,
+        true,
+        post.user_id,
+        0,
+        true,
+      ),
       contentProcessed: true,
     }
 
-    if (post.content_processed) {
+    if (post.content_processed || contents.length === 0) {
       return response
     }
-
-    const contents = JSON.parse(post.contents) as ContentBareDto[]
-    if (contents.length === 0) {
-      return response
-    }
-    response.contents = this.contentService.getContentDtosFromBare(
-      contents,
-      true,
-      post.user_id,
-      0,
-      true,
-    )
 
     const isAllProcessed = await this.contentService.isAllProcessed(
       post.user_id,

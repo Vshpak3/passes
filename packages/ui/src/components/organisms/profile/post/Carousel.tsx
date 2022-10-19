@@ -9,6 +9,7 @@ interface SliderProps {
   contents: ContentDto[]
   onMediaLoad?: () => () => void
   setPostHandler?: () => void
+  afterChangeHandler?: (current: number) => void
   activeIndex?: number
 }
 
@@ -16,6 +17,7 @@ export const Carousel = ({
   contents,
   onMediaLoad,
   setPostHandler,
+  afterChangeHandler,
   activeIndex = 0
 }: SliderProps) => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(activeIndex)
@@ -29,7 +31,12 @@ export const Carousel = ({
     slidesToScroll: 1,
     nextArrow: <NextImageArrow />,
     prevArrow: <PrevImageArrow />,
-    afterChange: (current: number) => setActiveSlideIndex(current),
+    afterChange: (current: number) => {
+      setActiveSlideIndex(current)
+      if (afterChangeHandler) {
+        afterChangeHandler(current)
+      }
+    },
     appendDots: (dots: ReactNode) => <ul>{dots}</ul>,
     customPaging: (i: number) => (
       <div className="absolute bottom-[30px]">
@@ -43,6 +50,7 @@ export const Carousel = ({
   }
   const sliderRef = useRef<Slider | null>(null)
   const imgRef = useRef<HTMLImageElement>(null)
+
   return (
     <div className="relative w-full">
       {activeSlideIndex !== contents.length - 1 && (
