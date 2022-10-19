@@ -44,6 +44,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
       }}
       fetchProps={{ creatorId: profileUserId }}
       loadingElement={FallWallFeedLoader}
+      emptyElement={FanWallFeedEnd}
       endElement={FanWallFeedEnd}
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
         return <FanWallComment comment={arg} />

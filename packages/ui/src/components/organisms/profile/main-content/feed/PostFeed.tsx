@@ -14,10 +14,6 @@ import { NewPosts } from "src/components/organisms/profile/main-content/new-post
 import { Post } from "src/components/organisms/profile/post/Post"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
-const PostFeedEmpty = (
-  <h3>No posts</h3> // TODO: add a better message
-)
-
 const PostFeedLoader = (
   <div className="my-[40px] flex justify-center">
     <Loader />
@@ -54,7 +50,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
             })
           }}
           fetchProps={{ creatorId: profileUserId }}
-          emptyElement={PostFeedEmpty}
+          emptyElement={PostFeedEnd}
           loadingElement={PostFeedLoader}
           endElement={PostFeedEnd}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
