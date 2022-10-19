@@ -567,7 +567,7 @@ export class PostService {
       postId,
     )
     if (blocked) {
-      throw new InvalidPayinRequestError('blocked')
+      throw new InvalidPayinRequestError(blocked)
     }
 
     const post = await this.dbReader<PostEntity>(PostEntity.table)
@@ -618,6 +618,7 @@ export class PostService {
       .where({
         post_id: postId,
         user_id: userId,
+        paid: true,
       })
       .select('id')
       .first()

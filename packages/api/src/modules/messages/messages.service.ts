@@ -1066,7 +1066,7 @@ export class MessagesService {
       messageId,
     )
     if (blocked) {
-      throw new InvalidPayinRequestError('invalid post purchase')
+      throw new InvalidPayinRequestError(blocked)
     }
     const message = await this.dbReader<MessageEntity>(MessageEntity.table)
       .where({ id: messageId })
