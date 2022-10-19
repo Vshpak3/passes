@@ -89,9 +89,12 @@ export class FeedService {
   }
 
   async getFeedForCreator(
-    userId: string,
     getProfileFeedRequestDto: GetProfileFeedRequestDto,
+    userId?: string,
   ): Promise<PostDto[]> {
+    if (!userId) {
+      userId = ''
+    }
     const { creatorId, lastId, createdAt, pinned } = getProfileFeedRequestDto
     const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: creatorId })

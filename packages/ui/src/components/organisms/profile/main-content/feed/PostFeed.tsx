@@ -38,10 +38,10 @@ export interface PostFeedProps {
 export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
 
-  const { posts, isConnected } = usePostWebhook()
+  const { posts, isConnected, isLogged } = usePostWebhook()
   return (
     <>
-      {isConnected && (
+      {(isConnected || !isLogged) && (
         <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
           keyValue={`/feed/creator/${profileUserId}`}
           fetch={async (req: GetProfileFeedRequestDto) => {

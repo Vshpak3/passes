@@ -10,6 +10,7 @@ export const usePostWebhook = () => {
   const [posts, setPosts] = useState<Record<string, Partial<PostDto>>>({})
 
   const [isConnected, setIsConnected] = useState(false)
+  const [isLogged, setIsLogged] = useState(false)
   const [socket, setSocket] = useState<Socket>()
   useEffect(() => {
     setSocket(
@@ -24,6 +25,7 @@ export const usePostWebhook = () => {
           })
         : undefined
     )
+    setIsLogged(!!accessToken && !!accessToken.length)
   }, [accessToken])
   useEffect(() => {
     if (socket) {
@@ -73,5 +75,5 @@ export const usePostWebhook = () => {
       }
     }
   }, [socket])
-  return { isConnected, posts }
+  return { isConnected, posts, isLogged }
 }

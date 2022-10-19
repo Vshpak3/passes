@@ -142,11 +142,6 @@ export class FanWallApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
         const response = await this.request({
             path: `/api/fan-wall/profile`,
             method: 'POST',

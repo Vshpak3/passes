@@ -54,7 +54,7 @@ export class FanWallController {
     responseStatus: HttpStatus.OK,
     responseType: GetFanWallResponseDto,
     responseDesc: 'A list of fan wall comments was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('profile')
   async getFanWallForCreator(
@@ -63,8 +63,8 @@ export class FanWallController {
   ): Promise<GetFanWallResponseDto> {
     return new GetFanWallResponseDto(
       await this.fanWallService.getFanWallForCreator(
-        req.user.id,
         getFanWallRequestDto,
+        req.user?.id,
       ),
       getFanWallRequestDto,
     )

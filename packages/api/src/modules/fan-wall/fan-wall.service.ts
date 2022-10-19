@@ -60,11 +60,13 @@ export class FanWallService {
   }
 
   async getFanWallForCreator(
-    userId: string,
     getFanWallRequestDto: GetFanWallRequestDto,
+    userId?: string,
   ): Promise<FanWallCommentDto[]> {
     const { creatorId, lastId, createdAt } = getFanWallRequestDto
-    await this.checkBlock(userId, creatorId)
+    if (userId) {
+      await this.checkBlock(userId, creatorId)
+    }
     let query = this.dbReader<FanWallCommentEntity>(FanWallCommentEntity.table)
       .leftJoin(
         UserEntity.table,

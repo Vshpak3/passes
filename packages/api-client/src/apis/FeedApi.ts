@@ -96,11 +96,6 @@ export class FeedApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
-        const token = window.localStorage.getItem("access-token")
-
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
         const response = await this.request({
             path: `/api/feed/profile`,
             method: 'POST',

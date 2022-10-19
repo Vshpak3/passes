@@ -39,7 +39,7 @@ export class FeedController {
     responseStatus: HttpStatus.OK,
     responseType: GetProfileFeedResponseDto,
     responseDesc: 'A feed was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('profile')
   async getFeedForCreator(
@@ -48,8 +48,8 @@ export class FeedController {
   ): Promise<GetProfileFeedResponseDto> {
     return new GetProfileFeedResponseDto(
       await this.feedService.getFeedForCreator(
-        req.user.id,
         getProfileFeedRequestDto,
+        req?.user.id,
       ),
       getProfileFeedRequestDto,
     )
