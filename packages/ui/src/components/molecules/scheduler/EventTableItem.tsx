@@ -54,7 +54,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       break
   }
   const generateActionStatus = (
-    <div className="flex items-center">
+    <div className="flex items-center gap-[30px]">
       <TrashIcon
         className="mr-3 cursor-pointer"
         onClick={async () => await onDeleteEvent(scheduledEventId)}
@@ -78,12 +78,12 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       {/* Desktop */}
       <tr className="hidden px-5 odd:bg-passes-purple-200 md:table-row">
         <td className="pl-5 pb-1">{typeStr}</td>
-        <td>{media}</td>
-        <td>{formatCurrency(price ?? 0)}</td>
-        <td className="my-[6px] max-w-[350px] truncate px-3">
+        <td className="px-3 pb-1">{media}</td>
+        <td className="px-3 pb-1">{formatCurrency(price ?? 0)}</td>
+        <td className=" my-[6px] max-w-[350px] truncate px-3 pb-1">
           {formatText(text)}
         </td>
-        <td className="min-w-[150px] text-center">
+        <td className="min-w-[150px] pb-1 text-center">
           {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
         </td>
         <td className="my-[6px] min-w-[170px] whitespace-nowrap px-3">
