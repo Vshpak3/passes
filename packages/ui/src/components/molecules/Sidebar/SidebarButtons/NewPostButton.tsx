@@ -1,8 +1,10 @@
+import { CreatePostRequestDto } from "@passes/api-client"
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
+import { usePost } from "src/hooks/usePost"
 
 export interface NewPostButtonProps {
   isMobile?: boolean
@@ -10,7 +12,12 @@ export interface NewPostButtonProps {
 
 export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const handleCreatePost = () => setIsNewPostModalOpen(false)
+
+  const { createPost } = usePost()
+  const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
+    await createPost(createPostDto)
+    setIsNewPostModalOpen(false)
+  }
 
   return (
     <Dialog
@@ -40,7 +47,7 @@ export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
     >
       <NewPostEditor
         initialData={{}}
-        handleCreatePost={handleCreatePost}
+        handleSavePost={handleSavePost}
         isExtended
       />
     </Dialog>

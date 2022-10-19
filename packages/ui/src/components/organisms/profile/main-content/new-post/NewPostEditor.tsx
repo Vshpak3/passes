@@ -8,7 +8,6 @@ import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmi
 import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers/content"
-import { usePost } from "src/hooks/usePost"
 
 import { NewPostMediaSection } from "./NewPostMediaSection"
 import { NewPostPaidSection } from "./NewPostPaidSection"
@@ -29,10 +28,7 @@ export interface NewPostFormProps {
 }
 
 interface NewPostEditorProps {
-  handleCreatePost: (
-    arg: CreatePostRequestDto,
-    postId?: string
-  ) => void | Promise<void>
+  handleSavePost: (arg: CreatePostRequestDto) => void | Promise<void>
   initialData: Record<string, any>
   onlyText?: boolean
   isExtended?: boolean
@@ -40,7 +36,7 @@ interface NewPostEditorProps {
 }
 
 export const NewPostEditor: FC<NewPostEditorProps> = ({
-  handleCreatePost,
+  handleSavePost,
   initialData = {},
   onlyText = false,
   isExtended = false,
@@ -50,8 +46,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState<string[]>([])
-
-  const { createPost } = usePost()
 
   const {
     handleSubmit,
@@ -122,9 +116,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       scheduledAt: values.scheduledAt ?? undefined
     }
 
-    const res = await createPost(post)
-
-    await handleCreatePost(post, res.postId)
+    await handleSavePost(post)
 
     toast.dismiss()
 

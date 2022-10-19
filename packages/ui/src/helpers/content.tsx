@@ -219,9 +219,9 @@ export class ContentService {
     requestConfig?: { inPost: boolean; inMessage: boolean }
   ): Promise<string[]> {
     if (!files.length) {
-      return Promise.resolve([])
+      return await Promise.resolve([])
     }
-    return Promise.all(
+    return await Promise.all(
       files.map(async (file: File) => {
         const _contentType = contentType ?? this.getFileContentType(file)
         if (!_contentType) {

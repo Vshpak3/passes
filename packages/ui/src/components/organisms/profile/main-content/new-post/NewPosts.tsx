@@ -1,6 +1,7 @@
 import { CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { useState } from "react"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { usePost } from "src/hooks/usePost"
 import { useProfile } from "src/hooks/useProfile"
 
 import { NewPostEditor } from "./NewPostEditor"
@@ -9,25 +10,22 @@ export const NewPosts: React.FC = () => {
   const { profileInfo, profileUsername } = useProfile()
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
-  const handleCreatePost = async (
-    createPost: CreatePostRequestDto,
-    postId?: string
-  ) => {
+  const { createPost } = usePost()
+  const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
     // Was a scheduled post
-    if (!postId) {
-      return
-    }
+
+    const res = await createPost(createPostDto)
     const post: PostDto = {
-      postId,
+      postId: res.postId ?? "",
       purchasable: false,
       userId: profileInfo?.userId || "",
       username: profileUsername || "",
       displayName: profileInfo?.displayName ?? "",
-      text: createPost.text,
-      tags: createPost.tags,
+      text: createPostDto.text,
+      tags: createPostDto.tags,
       contents: [], // TODO: grab content through swr or endpoint
       previewIndex: 0,
-      passIds: createPost.passIds,
+      passIds: createPostDto.passIds,
       numLikes: 0,
       numComments: 0,
       numPurchases: 0,
@@ -35,8 +33,8 @@ export const NewPosts: React.FC = () => {
       isLiked: false,
       createdAt: new Date(),
       updatedAt: new Date(),
-      expiresAt: createPost.expiresAt,
-      price: createPost.price,
+      expiresAt: createPostDto.expiresAt,
+      price: createPostDto.price,
       totalTipAmount: 0,
       isOwner: true,
       paying: false,
@@ -50,7 +48,7 @@ export const NewPosts: React.FC = () => {
 
   return (
     <>
-      <NewPostEditor handleCreatePost={handleCreatePost} initialData={{}} />
+      <NewPostEditor handleSavePost={handleSavePost} initialData={{}} />
       {newPosts.map((post) => (
         <Post key={post.postId} post={post} />
       ))}
