@@ -56,10 +56,10 @@ export class VerificationApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/verification/persona/inquiry/check`,
             method: 'GET',
@@ -87,10 +87,10 @@ export class VerificationApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/verification/creator-verification/step`,
             method: 'GET',
@@ -118,10 +118,10 @@ export class VerificationApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/verification/persona/refresh`,
             method: 'GET',
@@ -155,10 +155,10 @@ export class VerificationApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/verification/creator-verification/step`,
             method: 'POST',
@@ -193,10 +193,10 @@ export class VerificationApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/verification/persona/inquiry`,
             method: 'POST',

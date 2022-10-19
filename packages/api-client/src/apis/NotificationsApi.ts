@@ -60,10 +60,10 @@ export class NotificationsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/notifications/settings`,
             method: 'GET',
@@ -97,10 +97,10 @@ export class NotificationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/notifications/get`,
             method: 'POST',
@@ -133,10 +133,10 @@ export class NotificationsApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/notifications/read/{notificationId}`.replace(`{${"notificationId"}}`, encodeURIComponent(String(requestParameters.notificationId))),
             method: 'PATCH',
@@ -169,10 +169,10 @@ export class NotificationsApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/notifications/settings`,
             method: 'PATCH',

@@ -73,10 +73,10 @@ export class AuthApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/auth/create-user`,
             method: 'POST',
@@ -105,10 +105,10 @@ export class AuthApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/auth/user`,
             method: 'GET',
@@ -140,6 +140,12 @@ export class AuthApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/auth/refresh`,
@@ -175,10 +181,10 @@ export class AuthApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/auth/set-email`,
             method: 'POST',
@@ -210,6 +216,12 @@ export class AuthApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/auth/verify-email`,

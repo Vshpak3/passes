@@ -28,6 +28,12 @@ export class HealthApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/health`,
             method: 'GET',

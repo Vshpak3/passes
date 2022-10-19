@@ -80,10 +80,10 @@ export class ContentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content`,
             method: 'POST',
@@ -117,10 +117,10 @@ export class ContentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content`,
             method: 'DELETE',
@@ -155,10 +155,10 @@ export class ContentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/vault`,
             method: 'POST',
@@ -193,10 +193,10 @@ export class ContentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/sign/content`,
             method: 'POST',
@@ -231,10 +231,10 @@ export class ContentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/sign/pass`,
             method: 'POST',
@@ -263,10 +263,10 @@ export class ContentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/sign/profile/banner`,
             method: 'GET',
@@ -294,10 +294,10 @@ export class ContentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/sign/profile/image`,
             method: 'GET',
@@ -325,10 +325,10 @@ export class ContentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/content/sign/w9`,
             method: 'GET',

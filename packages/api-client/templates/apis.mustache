@@ -164,43 +164,14 @@ export class {{classname}} extends runtime.BaseAPI {
 
         {{/isArray}}
         {{/headerParams}}
-        {{#authMethods}}
-        {{#isBasic}}
-        {{#isBasicBasic}}
-        if (this.configuration && (this.configuration.username !== undefined || this.configuration.password !== undefined)) {
-            headerParameters["Authorization"] = "Basic " + btoa(this.configuration.username + ":" + this.configuration.password);
-        }
-        {{/isBasicBasic}}
-        {{#isBasicBearer}}
+        {{^authMethods}}
+        /* No auth for endpoint but always send access token */
+        {{/authMethods}}
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
-        {{/isBasicBearer}}
-        {{/isBasic}}
-        {{#isApiKey}}
-        {{#isKeyInHeader}}
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["{{keyParamName}}"] = this.configuration.apiKey("{{keyParamName}}"); // {{name}} authentication
-        }
 
-        {{/isKeyInHeader}}
-        {{#isKeyInQuery}}
-        if (this.configuration && this.configuration.apiKey) {
-            queryParameters["{{keyParamName}}"] = this.configuration.apiKey("{{keyParamName}}"); // {{name}} authentication
-        }
-
-        {{/isKeyInQuery}}
-        {{/isApiKey}}
-        {{#isOAuth}}
-        if (this.configuration && this.configuration.accessToken) {
-            // oauth required
-            headerParameters["Authorization"] = await this.configuration.accessToken("{{name}}", [{{#scopes}}"{{{scope}}}"{{^-last}}, {{/-last}}{{/scopes}}]);
-        }
-
-        {{/isOAuth}}
-        {{/authMethods}}
         {{#hasFormParams}}
         const consumes: runtime.Consume[] = [
             {{#consumes}}

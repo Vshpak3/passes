@@ -145,10 +145,10 @@ export class PassApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/subscription/add/{passHolderId}`.replace(`{${"passHolderId"}}`, encodeURIComponent(String(requestParameters.passHolderId))),
             method: 'POST',
@@ -181,10 +181,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass`,
             method: 'POST',
@@ -218,6 +218,12 @@ export class PassApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/pass/creator-passes`,
             method: 'POST',
@@ -250,6 +256,12 @@ export class PassApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/pass/external`,
@@ -285,10 +297,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/passholders`,
             method: 'GET',
@@ -323,10 +335,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/passholdings`,
             method: 'POST',
@@ -361,10 +373,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/mint`,
             method: 'POST',
@@ -397,10 +409,10 @@ export class PassApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/pin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
             method: 'GET',
@@ -434,10 +446,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/buy/create`,
             method: 'POST',
@@ -472,10 +484,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/buy/create/data`,
             method: 'POST',
@@ -510,10 +522,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/buy/renew`,
             method: 'POST',
@@ -548,10 +560,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/buy/renew/data`,
             method: 'POST',
@@ -584,10 +596,10 @@ export class PassApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/unpin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
             method: 'GET',
@@ -625,10 +637,10 @@ export class PassApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/pass/pass-info/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
             method: 'PATCH',

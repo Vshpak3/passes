@@ -77,10 +77,10 @@ export class CommentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/comment`,
             method: 'POST',
@@ -117,10 +117,10 @@ export class CommentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/comment/delete/{postId}/{commentId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))).replace(`{${"commentId"}}`, encodeURIComponent(String(requestParameters.commentId))),
             method: 'DELETE',
@@ -154,10 +154,10 @@ export class CommentApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/comment/post`,
             method: 'POST',
@@ -194,10 +194,10 @@ export class CommentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/comment/hide/{postId}/{commentId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))).replace(`{${"commentId"}}`, encodeURIComponent(String(requestParameters.commentId))),
             method: 'PATCH',
@@ -233,10 +233,10 @@ export class CommentApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/comment/unhide/{postId}/{commentId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))).replace(`{${"commentId"}}`, encodeURIComponent(String(requestParameters.commentId))),
             method: 'PATCH',

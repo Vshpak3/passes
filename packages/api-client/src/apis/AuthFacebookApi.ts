@@ -43,6 +43,12 @@ export class AuthFacebookApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/auth/facebook`,
             method: 'GET',
@@ -69,10 +75,10 @@ export class AuthFacebookApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/auth/facebook/redirect`,
             method: 'GET',
@@ -106,6 +112,12 @@ export class AuthFacebookApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/auth/facebook/deletion_confirmation`,
             method: 'GET',
@@ -136,6 +148,12 @@ export class AuthFacebookApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/auth/facebook/deletion_callback`,

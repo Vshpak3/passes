@@ -77,10 +77,10 @@ export class AuthLocalApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/auth/local/change-password`,
             method: 'POST',
@@ -112,6 +112,12 @@ export class AuthLocalApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/auth/local/confirm-reset-password`,
@@ -146,6 +152,12 @@ export class AuthLocalApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/auth/local/signup`,
             method: 'POST',
@@ -179,6 +191,12 @@ export class AuthLocalApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
         const response = await this.request({
             path: `/api/auth/local/init-reset-password`,
             method: 'POST',
@@ -210,6 +228,12 @@ export class AuthLocalApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/auth/local/login`,

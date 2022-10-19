@@ -74,10 +74,10 @@ export class FanWallApi extends runtime.BaseAPI {
         headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/fan-wall`,
             method: 'POST',
@@ -110,10 +110,10 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/fan-wall/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'DELETE',
@@ -145,6 +145,12 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
 
         const response = await this.request({
             path: `/api/fan-wall/profile`,
@@ -178,10 +184,10 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/fan-wall/hide/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'PATCH',
@@ -213,10 +219,10 @@ export class FanWallApi extends runtime.BaseAPI {
         const headerParameters: runtime.HTTPHeaders = {};
 
         const token = window.localStorage.getItem("access-token")
-
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
         }
+
         const response = await this.request({
             path: `/api/fan-wall/unhide/{fanWallCommentId}`.replace(`{${"fanWallCommentId"}}`, encodeURIComponent(String(requestParameters.fanWallCommentId))),
             method: 'PATCH',
