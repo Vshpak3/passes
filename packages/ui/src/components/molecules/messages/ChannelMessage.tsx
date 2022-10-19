@@ -11,14 +11,16 @@ import { Content } from "./message/Content"
 interface ChannelMessageProps {
   isOwnMessage?: boolean
   message: MessageDto
-  contentAvatarDisplayName?: string
-  contentAvatarUserName?: string
+  otherUserDisplayName: string | undefined
+  otherUserUsername: string
+  user: any
 }
 export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
   isOwnMessage = false,
-  contentAvatarDisplayName,
-  contentAvatarUserName
+  otherUserDisplayName,
+  otherUserUsername,
+  user
 }: ChannelMessageProps) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
@@ -52,9 +54,10 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             <div className="flex w-full flex-col">
               <div className="flex flex-shrink-0 items-start justify-between">
                 <CompletedAvatar
-                  contentAvatarDisplayName={contentAvatarDisplayName}
-                  contentAvatarUserName={contentAvatarUserName}
-                  imageSrc="https://www.w3schools.com/w3images/avatar1.png"
+                  senderId={message.senderId}
+                  otherUserDisplayName={otherUserDisplayName}
+                  otherUserUsername={otherUserUsername}
+                  user={user}
                 />
                 {message.paid ? (
                   <div className="flex flex-shrink-0 items-center gap-[6px]">

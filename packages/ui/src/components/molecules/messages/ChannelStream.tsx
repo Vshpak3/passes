@@ -20,19 +20,20 @@ export interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
   isCreator?: boolean
-  contentAvatarDisplayName?: string
-  contentAvatarUserName?: string
   minimumTip?: number | null
+  otherUserDisplayName: string | undefined
+  otherUserUsername: string
+  user: any
 }
 
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
-  contentAvatarDisplayName,
-  contentAvatarUserName,
-  minimumTip
+  minimumTip,
+  otherUserDisplayName,
+  otherUserUsername,
+  user
 }) => {
-  const { user } = useUser()
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [messages, setMessages] = useState<MessageDto[]>([])
 
@@ -173,8 +174,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   <ChannelMessage
                     message={arg}
                     isOwnMessage={arg.senderId === user?.userId}
-                    contentAvatarDisplayName={contentAvatarDisplayName}
-                    contentAvatarUserName={contentAvatarUserName}
+                    otherUserDisplayName={otherUserDisplayName}
+                    otherUserUsername={otherUserUsername}
+                    user={user}
                   />
                 )
               }}
@@ -190,8 +192,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                       key={i}
                       message={m}
                       isOwnMessage={m.senderId === user?.userId}
-                      contentAvatarDisplayName={contentAvatarDisplayName}
-                      contentAvatarUserName={contentAvatarUserName}
+                      otherUserDisplayName={otherUserDisplayName}
+                      otherUserUsername={otherUserUsername}
+                      user={user}
                     />
                   )
                 })}
@@ -202,8 +205,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                       key={i}
                       message={m}
                       isOwnMessage={m.senderId === user?.userId}
-                      contentAvatarDisplayName={contentAvatarDisplayName}
-                      contentAvatarUserName={contentAvatarUserName}
+                      otherUserDisplayName={otherUserDisplayName}
+                      otherUserUsername={otherUserUsername}
+                      user={user}
                     />
                   )
                 })}
