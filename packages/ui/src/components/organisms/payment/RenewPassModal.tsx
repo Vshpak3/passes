@@ -37,6 +37,9 @@ export const RenewPassModal: FC<RenewPassModalProps> = ({
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
+            closeModal={() => {
+              setOpen(false)
+            }}
           />
         )}
       </div>

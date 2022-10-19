@@ -78,6 +78,9 @@ export const TipPostModal: FC<TipPostModalProps> = ({
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
+            closeModal={() => {
+              setOpen(false)
+            }}
           />
         )}
       </div>

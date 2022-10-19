@@ -6,11 +6,13 @@ import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 interface PayinMethodDisplayProps {
   payinMethod: PayinMethodDto
   card?: CircleCardDto
+  closeModal: () => void
 }
 
 export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
   payinMethod,
-  card
+  card,
+  closeModal
 }) => {
   const router = useRouter()
 
@@ -24,7 +26,10 @@ export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
         </span>{" "}
         <span
           className="cursor-pointer text-[#ffff]/90 underline"
-          onClick={() => router.push("/settings/wallet")}
+          onClick={() => {
+            closeModal()
+            router.push("/settings/wallet")
+          }}
         >
           Settings
         </span>
