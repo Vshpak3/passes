@@ -17,5 +17,14 @@ export const useFanWall = () => {
     await api.hideFanWallComment({ fanWallCommentId })
   }
 
-  return { createFanWallComment, deleteFanWallComment, hideFanWallComment }
+  const unhideFanWallComment = async (fanWallCommentId: string) => {
+    await api.unhideFanWallComment({ fanWallCommentId })
+  }
+
+  return {
+    createFanWallComment,
+    deleteFanWallComment,
+    hideFanWallComment,
+    unhideFanWallComment
+  }
 }

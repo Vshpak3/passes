@@ -8,7 +8,8 @@ import {
 } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownCommentDelete,
-  DropDownCommentHide
+  DropDownCommentHide,
+  DropDownCommentUnhide
 } from "src/components/organisms/profile/drop-down/DropdownOptionsComment"
 import {
   DropDownBlock,
@@ -31,9 +32,16 @@ export const Comment: FC<CommentProps> = ({
 }) => {
   const [removed, setRemoved] = useState(false)
   // const [hiddenParity, setHiddenParity] = useState(true)
-  const { deleteComment, hideComment } = useComment()
+  const { deleteComment, hideComment, unhideComment } = useComment()
 
-  const { commentId, commenterUsername, isOwner, postId, commenterId } = comment
+  const {
+    commentId,
+    commenterUsername,
+    isOwner,
+    postId,
+    commenterId,
+    isHidden
+  } = comment
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!isOwner && !ownsPost, {
@@ -54,7 +62,18 @@ export const Comment: FC<CommentProps> = ({
         setRemoved(true)
       }
     ),
-    ...DropDownCommentHide(!isOwner && ownsPost, postId, commentId, hideComment)
+    ...DropDownCommentHide(
+      !isOwner && ownsPost && !isHidden,
+      postId,
+      commentId,
+      hideComment
+    ),
+    ...DropDownCommentUnhide(
+      !isOwner && ownsPost && isHidden,
+      postId,
+      commentId,
+      unhideComment
+    )
   ]
 
   return (

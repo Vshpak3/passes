@@ -17,9 +17,9 @@ export const useComment = () => {
     await api.hideComment({ postId, commentId })
   }
 
-  const unHideComment = async (postId: string, commentId: string) => {
+  const unhideComment = async (postId: string, commentId: string) => {
     await api.unhideComment({ postId, commentId })
   }
 
-  return { createComment, deleteComment, hideComment, unHideComment }
+  return { createComment, deleteComment, hideComment, unhideComment }
 }

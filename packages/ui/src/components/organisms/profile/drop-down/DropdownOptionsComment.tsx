@@ -37,3 +37,21 @@ export const DropDownCommentHide = (
       ]
     : []
 }
+
+export const DropDownCommentUnhide = (
+  showOption: boolean,
+  postId: string,
+  commentId: string,
+  unhideComment: (postId: string, commentId: string) => Promise<void>
+): DropdownOption[] => {
+  return showOption
+    ? [
+        {
+          text: "Unhide comment",
+          onClick: async () => {
+            await unhideComment(postId, commentId)
+          }
+        }
+      ]
+    : []
+}

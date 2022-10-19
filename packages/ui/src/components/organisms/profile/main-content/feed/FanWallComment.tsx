@@ -5,7 +5,8 @@ import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownFanWallCommentDelete,
-  DropDownFanWallCommentHide
+  DropDownFanWallCommentHide,
+  DropDownFanWallCommentUnhide
 } from "src/components/organisms/profile/drop-down/DropdownOptionsFanWall"
 import {
   DropDownBlock,
@@ -23,7 +24,8 @@ interface FanWallCommentProps {
 export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   const { ownsProfile } = useProfile()
   const [removed, setRemoved] = useState<boolean>(false)
-  const { deleteFanWallComment, hideFanWallComment } = useFanWall()
+  const { deleteFanWallComment, hideFanWallComment, unhideFanWallComment } =
+    useFanWall()
 
   const {
     fanWallCommentId,
@@ -32,6 +34,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
     commenterUsername,
     createdAt,
     isOwner,
+    isHidden,
     text
   } = comment
 
@@ -53,9 +56,14 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
       }
     ),
     ...DropDownFanWallCommentHide(
-      !isOwner && ownsProfile,
+      !isOwner && ownsProfile && !isHidden,
       fanWallCommentId,
       hideFanWallComment
+    ),
+    ...DropDownFanWallCommentUnhide(
+      !isOwner && ownsProfile && isHidden,
+      fanWallCommentId,
+      unhideFanWallComment
     )
   ]
 

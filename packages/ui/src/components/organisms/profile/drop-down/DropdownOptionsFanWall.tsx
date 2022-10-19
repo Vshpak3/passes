@@ -35,3 +35,20 @@ export const DropDownFanWallCommentHide = (
       ]
     : []
 }
+
+export const DropDownFanWallCommentUnhide = (
+  showOption: boolean,
+  fanWallCommentId: string,
+  unhideFanWallComment: (fanWallCommentId: string) => Promise<void>
+): DropdownOption[] => {
+  return showOption
+    ? [
+        {
+          text: "Unhide comment",
+          onClick: async () => {
+            await unhideFanWallComment(fanWallCommentId)
+          }
+        }
+      ]
+    : []
+}
