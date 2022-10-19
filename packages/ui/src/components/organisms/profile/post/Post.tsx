@@ -8,7 +8,11 @@ import {
   DropDownCopyLink,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
-import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
+import {
+  DropDownDeletePost,
+  DropDownPinPost,
+  DropDownUnpinPost
+} from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
 import { usePost } from "src/hooks/usePost"
 import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
@@ -28,8 +32,8 @@ interface PostProps {
 export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
   const router = useRouter()
   const { user } = useUser()
+  const { removePost, pinPost, unpinPost } = usePost()
   const { setPost } = useViewPostModal()
-  const { removePost } = usePost()
 
   const [isRemoved, setIsRemoved] = useState(false)
 
@@ -62,6 +66,8 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete, isNewPost }) => {
         router.push(`/${user.username}`)
       }
     }),
+    ...DropDownPinPost(post.postId, pinPost, user?.isCreator),
+    ...DropDownUnpinPost(post.postId, unpinPost, user?.isCreator),
     DropDownCopyLink(username, postId)
   ]
 

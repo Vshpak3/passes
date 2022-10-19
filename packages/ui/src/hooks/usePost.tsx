@@ -19,5 +19,13 @@ export const usePost = () => {
     await api.removePost({ postId })
   }
 
-  return { createPost, updatePost, removePost }
+  const pinPost = async (postId: string) => {
+    await api.pinPost({ postId })
+  }
+
+  const unpinPost = async (postId: string) => {
+    await api.unpinPost({ postId })
+  }
+
+  return { createPost, updatePost, removePost, pinPost, unpinPost }
 }
