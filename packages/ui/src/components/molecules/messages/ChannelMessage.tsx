@@ -1,14 +1,15 @@
 import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
+import { isAfter, subDays } from "date-fns"
 import Locked from "public/icons/lock-locked.svg"
 import React, { FC } from "react"
+import TimeAgo from "react-timeago"
 import { PostMedia } from "src/components/organisms/profile/post/PostMedia"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
 import { Content } from "./message/Content"
-
 interface ChannelMessageProps {
   isOwnMessage?: boolean
   message: MessageDto
@@ -86,26 +87,28 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 )}
                 {/* TODO: this includes only free content carsuel */}
               </div>
-              <div className="pt-2">
-                <span className="text-[12px] font-normal uppercase leading-[24px] text-[#fff]/50">
-                  {messageContent[0].createdAt?.toLocaleString("en-US", {
-                    hour: "numeric",
-                    minute: "numeric",
-                    hour12: true
-                  })}
-                </span>
-              </div>
             </div>
           )}
-          {formatText(message?.text)}
+          <span className="break-all">{formatText(message?.text)}</span>
+
+          {!message?.pending && message.sentAt && (
+            <>
+              {isAfter(subDays(new Date(), 1), message.sentAt) ? (
+                <TimeAgo
+                  className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
+                  date={message?.sentAt ? message.sentAt : ""}
+                  minPeriod={30}
+                />
+              ) : (
+                <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
+                  {message?.sentAt?.toLocaleDateString()}
+                </span>
+              )}
+            </>
+          )}
         </div>
         {!!message?.pending && (
           <span className="text-md mt-2 text-gray-500">Pending...</span>
-        )}
-        {!message?.pending && message.sentAt && (
-          <span className="text-md mt-2 text-gray-500">
-            {message.sentAt.toLocaleDateString()}
-          </span>
         )}
       </div>
     </div>
