@@ -51,6 +51,10 @@ export class ProfileService {
       youtube_username: createOrUpdateProfileRequestDto.youtubeUsername,
     }
 
+    Object.keys(data).forEach((key) =>
+      data[key] === undefined ? delete data[key] : {},
+    )
+
     await this.dbWriter<ProfileEntity>(ProfileEntity.table)
       .insert(data)
       .onConflict('user_id')
