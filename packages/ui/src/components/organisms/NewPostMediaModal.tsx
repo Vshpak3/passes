@@ -10,7 +10,7 @@ interface NewPostModalProps {
   childrenClassname?: string
 }
 
-export const NewPostModal: FC<NewPostModalProps> = ({
+export const NewPostMediaModal: FC<NewPostModalProps> = ({
   isOpen,
   setOpen,
   file,

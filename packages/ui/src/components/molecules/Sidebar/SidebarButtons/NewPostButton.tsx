@@ -1,56 +1,49 @@
-import { CreatePostRequestDto } from "@passes/api-client"
+import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
 import { useState } from "react"
 import { Button } from "src/components/atoms/Button"
-import { Dialog } from "src/components/organisms/Dialog"
-import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
-import { usePost } from "src/hooks/usePost"
-
+import { NewPostPopup } from "src/components/molecules/scheduler/NewPostPopup"
+import { useUser } from "src/hooks/useUser"
 export interface NewPostButtonProps {
   isMobile?: boolean
 }
 
 export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-
-  const { createPost } = usePost()
-  const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
-    await createPost(createPostDto)
-    setIsNewPostModalOpen(false)
-  }
-
+  const router = useRouter()
+  const { user, loading } = useUser()
   return (
-    <Dialog
-      open={isNewPostModalOpen}
-      triggerClassName="flex items-center justify-center self-center sidebar-collapse:pt-8"
-      className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
-      trigger={
-        <>
-          <span
-            className={`flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color ${
-              isMobile ? "hidden" : "sidebar-collapse:hidden"
-            }`}
-          >
-            <PlusSign className="h-4 w-4" />
-          </span>
-          <div className={`${isMobile ? "" : "hidden"} sidebar-collapse:flex`}>
-            <Button
-              className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white dark:text-mauveDark-mauve12 dark:hover:bg-mauveDark-mauve12 dark:hover:text-black"
-              variant="pink"
-              onClick={() => setIsNewPostModalOpen(true)}
+    <>
+      {router.isReady &&
+        !loading &&
+        (router.pathname !== "/[username]" ||
+          user?.username !== router.query.username) && (
+          <>
+            <NewPostPopup
+              isOpen={isNewPostModalOpen}
+              onCancel={() => setIsNewPostModalOpen(false)}
+            />
+            <span
+              className={`flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color ${
+                isMobile ? "hidden" : "sidebar-collapse:hidden"
+              }`}
             >
-              Create New Post
-            </Button>
-          </div>
-        </>
-      }
-    >
-      <NewPostEditor
-        initialData={{}}
-        handleSavePost={handleSavePost}
-        isExtended
-      />
-    </Dialog>
+              <PlusSign className="h-4 w-4" />
+            </span>
+            <div
+              className={`${isMobile ? "" : "hidden"} sidebar-collapse:flex`}
+            >
+              <Button
+                className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white dark:text-mauveDark-mauve12 dark:hover:bg-mauveDark-mauve12 dark:hover:text-black"
+                variant="pink"
+                onClick={() => setIsNewPostModalOpen(true)}
+              >
+                Create New Post
+              </Button>
+            </div>
+          </>
+        )}
+    </>
   )
 }
 

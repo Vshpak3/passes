@@ -8,7 +8,7 @@ import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 interface NewPostPopupProps {
   isOpen: boolean
   onCancel: () => void
-  selectionDate: Date
+  selectionDate?: Date
 }
 
 export const NewPostPopup: FC<NewPostPopupProps> = ({

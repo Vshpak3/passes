@@ -7,7 +7,7 @@ import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import Slider from "react-slick"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
-import { NewPostModal } from "src/components/organisms/NewPostModal"
+import { NewPostMediaModal } from "src/components/organisms/NewPostMediaModal"
 import { FileAccept } from "src/components/types/FormTypes"
 
 import { MediaFile } from "./Media"
@@ -169,7 +169,7 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
           } justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9`}
         >
           {selectedMedia && (
-            <NewPostModal
+            <NewPostMediaModal
               isOpen={isNewPostModalOpen}
               setOpen={setIsNewPostModalOpen}
               file={selectedMedia}
