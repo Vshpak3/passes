@@ -9,10 +9,7 @@ import { DayPicker } from "react-day-picker"
 import { toast } from "react-toastify"
 import { TimePicker } from "src/components/atoms/TimePicker"
 import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/components/molecules/scheduler/CreateSchedulerPopup"
-import {
-  SCHEDULE_LIMIT_MINUTES,
-  SCHEDULE_MINUTE_LIMIT
-} from "src/config/scheduler"
+import { SCHEDULE_MINUTE_LIMIT } from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 export const CALENDAR_POPUP_ID = "calendar-popper"
