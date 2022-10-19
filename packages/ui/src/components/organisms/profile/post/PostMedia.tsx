@@ -1,4 +1,4 @@
-import { ContentDto, PostDto } from "@passes/api-client"
+import { ContentDto, PostApi, PostDto } from "@passes/api-client"
 import ms from "ms"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
@@ -13,7 +13,7 @@ import { useViewPostModal } from "src/hooks/useViewPostModal"
 const CHECK_FOR_PROCESSED_CONTENT = ms("5 seconds")
 
 interface PostMediaProps {
-  postId?: string
+  postId: string
   contents: PostDto["contents"]
   isNewPost?: boolean
   setPostHandler?: PostContentProps["setPostHandler"]
@@ -22,15 +22,11 @@ interface PostMediaProps {
 export const PostMedia: FC<PostMediaProps> = ({
   postId,
   contents = [],
-  isNewPost,
+  isNewPost = false,
   setPostHandler
 }) => {
   const { viewPostActiveIndex } = useViewPostModal()
-  const activeIndex =
-    (viewPostActiveIndex.current &&
-      postId &&
-      viewPostActiveIndex.current[postId]) ||
-    0
+  const activeIndex = viewPostActiveIndex.current?.[postId] || 0
   const [activeSlideIndex, setActiveSlideIndex] = useState(activeIndex)
   const sliderSettings = {
     dots: true,
@@ -59,28 +55,38 @@ export const PostMedia: FC<PostMediaProps> = ({
   }
   const imgRef = useRef<HTMLImageElement>(null)
   const sliderRef = useRef<Slider | null>(null)
+
   const [refresh, setRefresh] = useState(0)
   const [isProcessing, setIsProcessing] = useState(
-    !!contents.length && !!isNewPost
+    !!contents.length && isNewPost
   )
+  const [postContent, setPostContent] = useState(contents)
+
+  const postApi = new PostApi()
 
   // For now we don't have any logic when the content has loaded
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const onMediaLoad = () => () => {}
 
-  const checkForProcessContent = () => {
-    // TODO: add in check for if the content is ready and get the content
-    setIsProcessing(true)
+  const checkForProcessContent = async () => {
+    const res = await postApi.isAllPostContentProcessed({ postId })
+    if (res.contentProcessed) {
+      setIsProcessing(false)
+      setPostContent(res.contents || [])
+    }
   }
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      checkForProcessContent()
-      setRefresh(refresh + 1)
-    }, CHECK_FOR_PROCESSED_CONTENT)
+    if (isProcessing) {
+      const interval = setInterval(async () => {
+        checkForProcessContent()
+        setRefresh(refresh + 1)
+      }, CHECK_FOR_PROCESSED_CONTENT)
 
-    return () => clearInterval(interval)
-  }, [refresh])
+      return () => clearInterval(interval)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isProcessing, refresh])
 
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
@@ -88,17 +94,17 @@ export const PostMedia: FC<PostMediaProps> = ({
         <div className="relative mb-[30px] rounded-md border-2 border-passes-purple-100 px-[25px] py-[15px]">
           Please wait; your content is being processed.
         </div>
-      ) : contents.length === 1 ? (
+      ) : postContent.length === 1 ? (
         <PostContent
-          content={contents[0]}
+          content={postContent[0]}
           ref={imgRef}
           onMediaLoad={onMediaLoad}
           setPostHandler={setPostHandler}
         />
       ) : (
-        contents.length > 1 && (
+        postContent.length > 1 && (
           <div className="relative w-[100%]">
-            {activeSlideIndex !== contents.length - 1 && (
+            {activeSlideIndex !== postContent.length - 1 && (
               <button
                 className="absolute right-[15px] bottom-[50%] z-[3] translate-y-[50%]"
                 onClick={() => sliderRef.current?.slickNext()}
@@ -107,13 +113,13 @@ export const PostMedia: FC<PostMediaProps> = ({
               </button>
             )}
             <div className="absolute right-[10px] top-[14px] z-[2] w-fit rounded-[24px] bg-black/[0.15] px-[16px] py-[6px]">
-              {activeSlideIndex + 1}/{contents.length}
+              {activeSlideIndex + 1}/{postContent.length}
             </div>
             <Slider
               ref={(ref) => (sliderRef.current = ref)}
               {...sliderSettings}
             >
-              {contents.map((c: ContentDto, index: number) => {
+              {postContent.map((c: ContentDto, index: number) => {
                 return (
                   <PostContent
                     key={index}

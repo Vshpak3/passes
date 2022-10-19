@@ -106,6 +106,9 @@ export class PostDto {
   @DtoProperty({ type: 'boolean' })
   paying: boolean
 
+  @DtoProperty({ type: 'boolean' })
+  contentProcessed: boolean
+
   constructor(
     post:
       | (PostEntity & {
@@ -138,6 +141,7 @@ export class PostDto {
       this.deletedAt = post.deleted_at
       this.paid = post.paid
       this.paying = post.paying
+      this.contentProcessed = post.content_processed
       if (isOwner) {
         this.totalTipAmount = post.total_tip_amount
         this.earningsPurchases = post.earnings_purchases

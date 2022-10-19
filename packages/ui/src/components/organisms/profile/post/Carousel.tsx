@@ -7,14 +7,14 @@ import { PostContent } from "src/components/molecules/PostContent"
 
 interface SliderProps {
   contents: ContentDto[]
-  startLoadingHandler?: () => () => void
+  onMediaLoad?: () => () => void
   setPostHandler?: () => void
   activeIndex?: number
 }
 
 export const Carousel = ({
   contents,
-  startLoadingHandler,
+  onMediaLoad,
   setPostHandler,
   activeIndex = 0
 }: SliderProps) => {
@@ -63,7 +63,7 @@ export const Carousel = ({
               key={index}
               content={c}
               ref={imgRef}
-              startLoadingHandler={startLoadingHandler}
+              onMediaLoad={onMediaLoad}
               setPostHandler={setPostHandler}
             />
           )

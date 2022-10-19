@@ -176,6 +176,12 @@ export interface PostDto {
      * @memberof PostDto
      */
     paying: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PostDto
+     */
+    contentProcessed: boolean;
 }
 
 /**
@@ -201,6 +207,7 @@ export function instanceOfPostDto(value: object): boolean {
     isInstance = isInstance && "isOwner" in value;
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "paying" in value;
+    isInstance = isInstance && "contentProcessed" in value;
 
     return isInstance;
 }
@@ -239,6 +246,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'isOwner': json['isOwner'],
         'paid': json['paid'],
         'paying': json['paying'],
+        'contentProcessed': json['contentProcessed'],
     };
 }
 
@@ -275,6 +283,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'isOwner': value.isOwner,
         'paid': value.paid,
         'paying': value.paying,
+        'contentProcessed': value.contentProcessed,
     };
 }
 

@@ -4,7 +4,6 @@ import {
   forwardRef,
   Inject,
   Injectable,
-  InternalServerErrorException,
 } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
@@ -25,7 +24,6 @@ import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentService } from '../content/content.service'
 import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
-import { ContentTypeEnum } from '../content/enums/content-type.enum'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { PostLikeEntity } from '../likes/entities/like.entity'
 import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
@@ -55,6 +53,7 @@ import {
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
+import { PostContentProcessed } from './dto/post-content-processed'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -72,6 +71,7 @@ import {
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 const MAX_PINNED_POST = 3
+
 @Injectable()
 export class PostService {
   constructor(
@@ -125,6 +125,7 @@ export class PostService {
           expires_at: createPostDto.expiresAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
           contents: JSON.stringify(contents),
+          content_processed: !contents.length, // if no content set true
         })
 
         await trx<ContentEntity>(ContentEntity.table)
@@ -765,40 +766,52 @@ export class PostService {
       )
   }
 
-  async isAllPostContentReady(postId: string): Promise<boolean> {
-    const user = await this.dbReader<PostEntity>(PostEntity.table)
+  async isAllPostContentProcessed(
+    postId: string,
+  ): Promise<PostContentProcessed> {
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
-      .select('user_id')
+      .select('contents', 'content_processed', 'user_id')
       .first()
 
-    if (!user) {
-      throw new InternalServerErrorException(
-        `Unexpected missing user id for post ${postId}`,
-      )
+    if (!post) {
+      throw new BadRequestException(`No post with id ${postId}`)
     }
 
-    const contents = (
-      await this.dbReader<PostEntity>(PostEntity.table)
-        .where({ id: postId })
-        .select('contents')
-        .first()
-    )?.contents
-
-    // TODO: join on content entity to get type
-    if (!contents) {
-      return true
+    const response: PostContentProcessed = {
+      postId,
+      contents: [],
+      contentProcessed: true,
     }
 
-    const results = await Promise.all(
-      JSON.parse(contents).map(async (content) => {
-        return await this.contentService.preSignMediaContent(
-          user.user_id,
-          content.contentId,
-          ContentTypeEnum.IMAGE,
-        )
-      }),
+    if (post.content_processed) {
+      return response
+    }
+
+    const contents = JSON.parse(post.contents) as ContentBareDto[]
+    if (contents.length === 0) {
+      return response
+    }
+    response.contents = this.contentService.getContentDtosFromBare(
+      contents,
+      true,
+      post.user_id,
+      0,
+      true,
     )
 
-    return results.filter((r) => !r).length === 0
+    const isAllProcessed = await this.contentService.isAllProcessed(
+      post.user_id,
+      contents,
+    )
+    if (isAllProcessed) {
+      await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ id: postId })
+        .update({ content_processed: true })
+      return response
+    }
+
+    response.contentProcessed = false
+    return response
   }
 }

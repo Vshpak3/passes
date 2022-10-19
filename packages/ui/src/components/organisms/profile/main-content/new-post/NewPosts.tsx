@@ -44,6 +44,7 @@ export const NewPosts: React.FC = () => {
             userId: profileInfo.userId
           } as ContentDto)
       ),
+      contentProcessed: !createPostDto.contentIds.length,
       previewIndex: 0,
       passIds: createPostDto.passIds,
       numLikes: 0,

@@ -24,6 +24,7 @@ import type {
   GetPostsRequestDto,
   GetPostsResponseDto,
   PayinDataDto,
+  PostContentProcessed,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
   TipPostRequestDto,
@@ -48,6 +49,8 @@ import {
     GetPostsResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
+    PostContentProcessedFromJSON,
+    PostContentProcessedToJSON,
     PurchasePostRequestDtoFromJSON,
     PurchasePostRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
@@ -74,7 +77,7 @@ export interface GetPostsRequest {
     getPostsRequestDto: GetPostsRequestDto;
 }
 
-export interface IsAllPostContentReadyRequest {
+export interface IsAllPostContentProcessedRequest {
     postId: string;
 }
 
@@ -264,9 +267,9 @@ export class PostApi extends runtime.BaseAPI {
     /**
      * Checks if all content in a post is ready
      */
-    async isAllPostContentReadyRaw(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+    async isAllPostContentProcessedRaw(requestParameters: IsAllPostContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContentProcessed>> {
         if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling isAllPostContentReady.');
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling isAllPostContentProcessed.');
         }
 
         const queryParameters: any = {};
@@ -285,14 +288,14 @@ export class PostApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => PostContentProcessedFromJSON(jsonValue));
     }
 
     /**
      * Checks if all content in a post is ready
      */
-    async isAllPostContentReady(requestParameters: IsAllPostContentReadyRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
-        const response = await this.isAllPostContentReadyRaw(requestParameters, initOverrides);
+    async isAllPostContentProcessed(requestParameters: IsAllPostContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContentProcessed> {
+        const response = await this.isAllPostContentProcessedRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

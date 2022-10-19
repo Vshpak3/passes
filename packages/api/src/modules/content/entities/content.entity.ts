@@ -22,4 +22,7 @@ export class ContentEntity extends BaseEntity {
 
   @Property({ length: 3 })
   deleted_at: Date | null
+
+  @Property({ default: false })
+  processed: boolean
 }

@@ -176,6 +176,12 @@ export interface GetPostResponseDto {
      * @memberof GetPostResponseDto
      */
     paying: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPostResponseDto
+     */
+    contentProcessed: boolean;
 }
 
 /**
@@ -201,6 +207,7 @@ export function instanceOfGetPostResponseDto(value: object): boolean {
     isInstance = isInstance && "isOwner" in value;
     isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "paying" in value;
+    isInstance = isInstance && "contentProcessed" in value;
 
     return isInstance;
 }
@@ -239,6 +246,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'isOwner': json['isOwner'],
         'paid': json['paid'],
         'paying': json['paying'],
+        'contentProcessed': json['contentProcessed'],
     };
 }
 
@@ -275,6 +283,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'isOwner': value.isOwner,
         'paid': value.paid,
         'paying': value.paying,
+        'contentProcessed': value.contentProcessed,
     };
 }
 

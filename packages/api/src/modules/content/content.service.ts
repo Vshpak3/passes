@@ -85,6 +85,37 @@ export class ContentService {
     return true
   }
 
+  // TODO: Update this logic in PASS-959
+  // async markProcessed(userId: string, contentId: string): Promise<void> {
+  //   await this.dbWriter<ContentEntity>(ContentEntity.table)
+  //     .where({ id: contentId })
+  //     .andWhere({ user_id: userId })
+  //     .update({ processed: true })
+  // }
+
+  // TODO: Update this logic in PASS-959
+  // async isAllProcessed(contentIds: string[]): Promise<boolean> {
+  async isAllProcessed(
+    userId: string,
+    content: ContentBareDto[],
+  ): Promise<boolean> {
+    return (
+      await Promise.all(
+        content.map(async (content) => {
+          return await this.s3contentService.doesObjectExist(
+            `media/${userId}/${content.contentId}.${getContentTypeFormat(
+              content.contentType,
+            )}`,
+          )
+        }),
+      )
+    ).every((b) => b)
+    // const content = await this.dbReader<ContentEntity>(ContentEntity.table)
+    //   .whereIn('id', contentIds)
+    //   .select('processed')
+    // return content.every((c) => c.processed)
+  }
+
   async findContent(contentId: string): Promise<GetContentResponseDto> {
     const content = await this.dbReader<ContentEntity>(ContentEntity.table)
       .where({ id: contentId })

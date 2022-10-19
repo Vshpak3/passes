@@ -65,4 +65,7 @@ export class PostEntity extends BaseEntity {
 
   @Property({ length: PASS_IDS_LENGTH, default: '[]' })
   pass_ids: string
+
+  @Property({ default: false })
+  content_processed: boolean
 }
