@@ -46,29 +46,32 @@ export const usePostWebhook = () => {
     if (socket) {
       socket.on("post", async (data) => {
         const newPost = data as PostDto & { notification: string }
-        const newMap = { ...posts }
+        const newPosts: Record<string, Partial<PostDto>> = {}
         switch (newPost.notification) {
           case "paying":
           case "failed_payment":
-            if (!newMap[newPost.postId]) {
-              newMap[newPost.postId] = {}
+            if (!newPosts[newPost.postId]) {
+              newPosts[newPost.postId] = {}
             }
-            newMap[newPost.postId] = {
+            newPosts[newPost.postId] = {
               paying: newPost.notification === "paying"
             }
             break
           case "paid":
             await sleep("1 second")
-            newMap[newPost.postId] = await api.findPost({
+            newPosts[newPost.postId] = await api.findPost({
               postId: newPost.postId
             })
             break
         }
+        setPosts((posts) => {
+          return { ...posts, ...newPosts }
+        })
       })
       return () => {
         socket.off("post")
       }
     }
-  }, [socket, posts])
+  }, [socket])
   return { isConnected, posts }
 }

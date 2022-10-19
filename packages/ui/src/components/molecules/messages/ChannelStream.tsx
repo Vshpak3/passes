@@ -80,20 +80,23 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         if (newMessage.channelId === channelId) {
           switch (newMessage.notification) {
             case "message":
-              setMessages([newMessage, ...messages])
-              setPendingMessages(
+              setMessages((messages) => [newMessage, ...messages])
+              setPendingMessages((pendingMessages) =>
                 pendingMessages.filter(
                   (message) => message.messageId !== newMessage.messageId
                 )
               )
               break
             case "pending":
-              setPendingMessages([newMessage, ...pendingMessages])
+              setPendingMessages((pendingMessages) => [
+                newMessage,
+                ...pendingMessages
+              ])
               break
             case "paying":
             case "failed_payment":
             case "paid":
-              setMessages(
+              setMessages((messages) =>
                 messages.map((message) => {
                   return message.messageId === newMessage.messageId
                     ? newMessage
@@ -108,7 +111,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         socket.off("message")
       }
     }
-  }, [channelId, messages, pendingMessages, socket])
+  }, [channelId, socket])
   useEffect(() => {
     if (!channelId) {
       return
