@@ -1,9 +1,7 @@
 import classNames from "classnames"
-import { addMonths } from "date-fns"
 import ScheduledCalendarIcon from "public/icons/calendar-scheduled-purple-icon.svg"
 import { FC } from "react"
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
-import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/components/molecules/scheduler/CreateSchedulerPopup"
 
 interface CalendarSelectorProps {
   name: string
@@ -19,11 +17,7 @@ export const CalendarSelector: FC<CalendarSelectorProps> = ({
   scheduledTime
 }) => {
   return (
-    <CalendarPicker
-      scheduledTime={scheduledTime}
-      onSave={setScheduledTime}
-      maxDate={addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS)}
-    >
+    <CalendarPicker scheduledTime={scheduledTime} onSave={setScheduledTime}>
       <span
         className={classNames(
           activeHeader === name

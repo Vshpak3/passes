@@ -3,10 +3,16 @@ import "react-day-picker/dist/style.css"
 
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
-import { format } from "date-fns"
+import { addMinutes, addMonths, format } from "date-fns"
 import { FC, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
+import { toast } from "react-toastify"
 import { TimePicker } from "src/components/atoms/TimePicker"
+import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/components/molecules/scheduler/CreateSchedulerPopup"
+import {
+  SCHEDULE_LIMIT_MINUTES,
+  SCHEDULE_MINUTE_LIMIT
+} from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 export const CALENDAR_POPUP_ID = "calendar-popper"
@@ -28,6 +34,7 @@ const dateToInternalTime = (date: Date) => {
 
 interface CalendarPickerProps {
   onSave: (date: Date | null) => void
+  minuteLimit?: number
   maxDate?: Date
   scheduledTime?: Date | null
   children: React.ReactNode
@@ -35,7 +42,8 @@ interface CalendarPickerProps {
 
 export const CalendarPicker: FC<CalendarPickerProps> = ({
   onSave,
-  maxDate,
+  minuteLimit = SCHEDULE_MINUTE_LIMIT,
+  maxDate = addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS),
   scheduledTime,
   children
 }) => {
@@ -70,6 +78,12 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
       0,
       0
     )
+
+    if (targetDate < addMinutes(new Date(), minuteLimit)) {
+      toast.error(
+        `You cannot schedule an event before ${minuteLimit} minutes from now`
+      )
+    }
 
     onSave(targetDate)
     setAnchorEl(null)

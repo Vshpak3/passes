@@ -1,4 +1,4 @@
-import { addMonths, compareAsc, format } from "date-fns"
+import { compareAsc, format } from "date-fns"
 import CalendarIcon from "public/icons/calendar-icon.svg"
 import ClockIcon from "public/icons/clock-icon.svg"
 import { Dispatch, forwardRef, SetStateAction, useState } from "react"
@@ -45,7 +45,6 @@ export const CreateSchedulerPopup = forwardRef<
           Please choose a date and time for your action to be executed.
         </p>
         <CalendarPicker
-          maxDate={addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS)}
           onSave={(date) => {
             if (!date && setSelectionDate) {
               setErrorHandler()
