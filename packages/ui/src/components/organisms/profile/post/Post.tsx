@@ -67,34 +67,36 @@ export const Post: FC<PostProps> = ({ post, redirectOnDelete }) => {
 
   return (
     <ConditionRendering condition={!isRemoved}>
-      <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
-        <PostProfileAvatar
-          createdAt={createdAt}
-          displayName={displayName}
-          isOwner={isOwner}
-          userId={userId}
-          username={username}
-          dropdownOptions={dropdownOptions}
-          statisticsButtonProps={{
-            createdAt,
-            earningsPurchases,
-            numComments,
-            numLikes,
-            numPurchases,
-            totalTipAmount
-          }}
-        />
-        <PostTextContent text={text} tags={tags} />
-        {!purchasable && (
-          <PostMedia
-            postId={postId}
-            contents={contents}
-            setPostHandler={setPostHandler}
+      <div className="mt-6">
+        <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
+          <PostProfileAvatar
+            createdAt={createdAt}
+            displayName={displayName}
+            isOwner={isOwner}
+            userId={userId}
+            username={username}
+            dropdownOptions={dropdownOptions}
+            statisticsButtonProps={{
+              createdAt,
+              earningsPurchases,
+              numComments,
+              numLikes,
+              numPurchases,
+              totalTipAmount
+            }}
           />
-        )}
-        {purchasable && <LockedMedia post={post} />}
-        <PostEngagement post={post} />
-      </FormContainer>
+          <PostTextContent text={text} tags={tags} />
+          {!purchasable && (
+            <PostMedia
+              postId={postId}
+              contents={contents}
+              setPostHandler={setPostHandler}
+            />
+          )}
+          {purchasable && <LockedMedia post={post} />}
+          <PostEngagement post={post} />
+        </FormContainer>
+      </div>
     </ConditionRendering>
   )
 }

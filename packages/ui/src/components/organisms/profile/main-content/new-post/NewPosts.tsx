@@ -51,11 +51,9 @@ export const NewPosts: React.FC = () => {
   return (
     <>
       <NewPostEditor handleCreatePost={handleCreatePost} initialData={{}} />
-      <div className="mt-9 space-y-6">
-        {newPosts.map((post) => (
-          <Post key={post.postId} post={post} />
-        ))}
-      </div>
+      {newPosts.map((post) => (
+        <Post key={post.postId} post={post} />
+      ))}
     </>
   )
 }

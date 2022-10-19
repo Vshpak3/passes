@@ -58,11 +58,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           loadingElement={PostFeedLoader}
           endElement={PostFeedEnd}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return (
-              <div className="mt-6">
-                <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
-              </div>
-            )
+            return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
           }}
         >
           {ownsProfile && <NewPosts />}

@@ -60,9 +60,7 @@ export const HomeContentFeed: React.FC = () => {
                 endElement={ContentFeedEnd}
                 KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
                   return (
-                    <div className="mt-6">
-                      <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
-                    </div>
+                    <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
                   )
                 }}
               />

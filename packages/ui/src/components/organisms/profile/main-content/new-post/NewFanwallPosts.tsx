@@ -41,11 +41,9 @@ export const NewFanwallPosts: React.FC<NewFanwallPosts> = ({
   return (
     <>
       <NewFanwallPost creatorId={profileUserId || ""} createPost={createPost} />
-      <div className="mt-9 space-y-6">
-        {newComments.map((comment) => (
-          <FanWallComment key={comment.fanWallCommentId} comment={comment} />
-        ))}
-      </div>
+      {newComments.map((comment) => (
+        <FanWallComment key={comment.fanWallCommentId} comment={comment} />
+      ))}
     </>
   )
 }

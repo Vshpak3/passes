@@ -46,11 +46,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
       loadingElement={FallWallFeedLoader}
       endElement={FanWallFeedEnd}
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
-        return (
-          <div className="mt-6 flex">
-            <FanWallComment comment={arg} />
-          </div>
-        )
+        return <FanWallComment comment={arg} />
       }}
     >
       <NewFanwallPosts profileUserId={profileUserId} />

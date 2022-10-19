@@ -61,21 +61,23 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
 
   return (
     <ConditionRendering condition={!removed}>
-      <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
-        <PostProfileAvatar
-          createdAt={createdAt}
-          displayName={commenterDisplayName}
-          isOwner={isOwner}
-          userId={commenterId}
-          username={commenterUsername}
-          dropdownOptions={dropdownItems}
-        />
-        <div className="flex flex-col items-start">
-          <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-            {formatText(text)}
-          </p>
-        </div>
-      </FormContainer>
+      <div className="mt-6 flex">
+        <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
+          <PostProfileAvatar
+            createdAt={createdAt}
+            displayName={commenterDisplayName}
+            isOwner={isOwner}
+            userId={commenterId}
+            username={commenterUsername}
+            dropdownOptions={dropdownItems}
+          />
+          <div className="flex flex-col items-start">
+            <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
+              {formatText(text)}
+            </p>
+          </div>
+        </FormContainer>
+      </div>
     </ConditionRendering>
   )
 }
