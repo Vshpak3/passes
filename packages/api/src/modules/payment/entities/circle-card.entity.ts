@@ -40,6 +40,6 @@ export class CircleCardEntity extends BaseEntity {
   @Property({ length: USER_LEGAL_FULL_NAME_LENGTH })
   name: string
 
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 }

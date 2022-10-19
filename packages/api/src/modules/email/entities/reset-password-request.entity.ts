@@ -14,6 +14,6 @@ export class ResetPasswordRequestEntity extends BaseEntity {
   @Property({ length: USER_EMAIL_LENGTH })
   email: string
 
-  @Property()
+  @Property({ length: 3 })
   used_at: Date | null
 }

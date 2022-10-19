@@ -771,6 +771,7 @@ export class MessagesService {
       preview_index: previewIndex,
       // eslint-disable-next-line no-magic-numbers
       has_content: contents.length > 8,
+      sent_at: new Date(),
     } as MessageEntity
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {

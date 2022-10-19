@@ -11,11 +11,10 @@ export interface NewPostButtonProps {
 export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const router = useRouter()
-  const { user, loading } = useUser()
+  const { user } = useUser()
   return (
     <>
       {router.isReady &&
-        !loading &&
         (router.pathname !== "/[username]" ||
           user?.username !== router.query.username) && (
           <>

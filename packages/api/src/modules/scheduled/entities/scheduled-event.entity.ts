@@ -27,10 +27,10 @@ export class ScheduledEventEntity extends BaseEntity {
   body: any
 
   @Index()
-  @Property()
+  @Property({ length: 3 })
   scheduled_at: Date
 
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 
   @Unique()

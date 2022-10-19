@@ -35,6 +35,6 @@ export class FanWallCommentEntity extends BaseEntity {
   deactivated: boolean
 
   // Deleted by commenter
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 }

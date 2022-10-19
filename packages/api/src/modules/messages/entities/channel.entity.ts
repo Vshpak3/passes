@@ -8,7 +8,7 @@ export class ChannelEntity extends BaseEntity {
   static table = 'channel'
 
   @Index()
-  @Property()
+  @Property({ length: 3 })
   recent: Date | null
 
   @Property({ length: MESSAGE_LENGTH })

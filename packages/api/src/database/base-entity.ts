@@ -9,12 +9,13 @@ export abstract class BaseEntity {
   })
   id: string
 
-  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
+  @Property({ defaultRaw: 'CURRENT_TIMESTAMP(3)', length: 3 })
   created_at: Date
 
   @Property({
-    defaultRaw: 'CURRENT_TIMESTAMP',
-    extra: 'on update CURRENT_TIMESTAMP',
+    defaultRaw: 'CURRENT_TIMESTAMP(3)',
+    extra: 'on update CURRENT_TIMESTAMP(3)',
+    length: 3,
   })
   updated_at: Date
 }

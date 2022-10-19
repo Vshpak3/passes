@@ -56,6 +56,6 @@ export class MessageEntity extends BaseEntity {
   paid_message_id: string | null
 
   @Index()
-  @Property({ defaultRaw: 'CURRENT_TIMESTAMP' })
+  @Property({ defaultRaw: 'CURRENT_TIMESTAMP(3)', length: 3 })
   sent_at: Date
 }

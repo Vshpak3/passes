@@ -5,7 +5,7 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import { FC, useEffect, useRef, useState } from "react"
-import { io } from "socket.io-client"
+import { io, Socket } from "socket.io-client"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -37,67 +37,78 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const [messages, setMessages] = useState<MessageDto[]>([])
 
   const { accessToken } = useUser()
-  const socket = io(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/gateway`,
-    {
-      path: "/api/messages/gateway",
-      transports: ["websocket"],
-      auth: {
-        Authorization: `Bearer ${accessToken}`
-      },
-      autoConnect: false
-    }
-  )
-  const [isConnected, setIsConnected] = useState(socket.connected)
-  // socket.connect()
-  useEffect(() => {
-    socket.on("connect", () => {
-      setIsConnected(true)
-      socket.emit("message", "info")
-    })
-    socket.on("disconnect", () => {
-      setIsConnected(false)
-      setPendingMessages([])
-    })
-    socket.on("message", (data) => {
-      const newMessage = data as MessageDto & { notification: string }
-      if (newMessage.channelId === channelId) {
-        switch (newMessage.notification) {
-          case "message":
-            setMessages([newMessage, ...messages])
-            setPendingMessages(
-              pendingMessages.filter(
-                (message) => message.messageId !== newMessage.messageId
-              )
-            )
-            break
-          case "pending":
-            setPendingMessages([newMessage, ...pendingMessages])
-            break
-          case "paying":
-          case "failed_payment":
-          case "paid":
-            setMessages(
-              messages.map((message) => {
-                return message.messageId === newMessage.messageId
-                  ? newMessage
-                  : message
-              })
-            )
-            break
-        }
-      }
-    })
-    socket.connect()
-    return () => {
-      socket.off("connect")
-      socket.off("disconnect")
-      socket.off("message")
-      socket.disconnect()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket])
+  const [isConnected, setIsConnected] = useState(false)
+  const [socket, setSocket] = useState<Socket>()
+
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
+  useEffect(() => {
+    setSocket(
+      accessToken && accessToken.length
+        ? io(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/gateway`, {
+            path: "/api/messages/gateway",
+            transports: ["websocket"],
+            auth: {
+              Authorization: `Bearer ${accessToken}`
+            },
+            autoConnect: false
+          })
+        : undefined
+    )
+  }, [accessToken])
+  useEffect(() => {
+    if (socket) {
+      socket.on("connect", () => {
+        setIsConnected(true)
+      })
+      socket.on("disconnect", () => {
+        setIsConnected(false)
+        setPendingMessages([])
+      })
+      socket.connect()
+      return () => {
+        socket.off("connect")
+        socket.off("disconnect")
+        socket.disconnect()
+      }
+    }
+  }, [socket])
+  useEffect(() => {
+    if (socket) {
+      socket.on("message", (data) => {
+        data.sentAt = new Date(data.sentAt)
+        const newMessage = data as MessageDto & { notification: string }
+        if (newMessage.channelId === channelId) {
+          switch (newMessage.notification) {
+            case "message":
+              setMessages([newMessage, ...messages])
+              setPendingMessages(
+                pendingMessages.filter(
+                  (message) => message.messageId !== newMessage.messageId
+                )
+              )
+              break
+            case "pending":
+              setPendingMessages([newMessage, ...pendingMessages])
+              break
+            case "paying":
+            case "failed_payment":
+            case "paid":
+              setMessages(
+                messages.map((message) => {
+                  return message.messageId === newMessage.messageId
+                    ? newMessage
+                    : message
+                })
+              )
+              break
+          }
+        }
+      })
+      return () => {
+        socket.off("message")
+      }
+    }
+  }, [channelId, messages, pendingMessages, socket])
   useEffect(() => {
     if (!channelId) {
       return

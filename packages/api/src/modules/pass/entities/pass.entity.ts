@@ -57,7 +57,7 @@ export class PassEntity extends BaseEntity {
   freetrial: boolean
 
   @Index()
-  @Property()
+  @Property({ length: 3 })
   pinned_at: Date | null
 
   @Property()

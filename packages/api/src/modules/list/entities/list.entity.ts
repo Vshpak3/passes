@@ -22,6 +22,6 @@ export class ListEntity extends BaseEntity {
   @Property({ default: 0 })
   count: number
 
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 }

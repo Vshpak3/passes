@@ -45,18 +45,18 @@ export class PostEntity extends BaseEntity {
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   earnings_purchases: number
 
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   price: number
 
   @Index()
-  @Property()
+  @Property({ length: 3 })
   expires_at: Date | null
 
   @Index()
-  @Property()
+  @Property({ length: 3 })
   pinned_at: Date | null
 
   @Index()

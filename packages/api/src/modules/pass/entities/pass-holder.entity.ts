@@ -34,7 +34,7 @@ export class PassHolderEntity extends BaseEntity {
   @ManyToOne({ entity: () => WalletEntity })
   wallet_id: string | null
 
-  @Property()
+  @Property({ length: 3 })
   expires_at: Date | null
 
   // null means unlimited

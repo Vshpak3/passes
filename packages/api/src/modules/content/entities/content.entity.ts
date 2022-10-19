@@ -20,6 +20,6 @@ export class ContentEntity extends BaseEntity {
   @Property({ default: false })
   in_post: boolean
 
-  @Property()
+  @Property({ length: 3 })
   deleted_at: Date | null
 }

@@ -48,7 +48,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             <></>
           )}
 
-          {messageContent.length && (
+          {!!messageContent.length && (
             <div className="flex w-full flex-col">
               <div className="flex flex-shrink-0 items-start justify-between">
                 <CompletedAvatar
