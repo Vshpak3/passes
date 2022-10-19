@@ -1,7 +1,6 @@
 import "rc-time-picker/assets/index.css"
 import "react-day-picker/dist/style.css"
 
-import { useMediaQuery } from "@mui/material"
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { addMinutes, addMonths, format } from "date-fns"
@@ -12,6 +11,7 @@ import { TimePicker } from "src/components/atoms/TimePicker"
 import { MAX_SCHEDULE_DURATION_IN_MONTHS } from "src/components/molecules/scheduler/CreateSchedulerPopup"
 import { SCHEDULE_MINUTE_LIMIT } from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 export const CALENDAR_POPUP_ID = "calendar-popper"
 
@@ -51,7 +51,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(
     scheduledTime || today
   )
-  const isMobile = useMediaQuery("(max-width: 768px)")
+  const { isMobile } = useWindowSize()
   const [time, setTime] = useState<Time>(
     scheduledTime
       ? dateToInternalTime(scheduledTime)

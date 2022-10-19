@@ -5,7 +5,7 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import { PostFooter } from "src/components/organisms/profile/new-post/PostFooter"
+import { NewPostEditorFooter as NewPostEditorFooter } from "src/components/organisms/profile/new-post/PostFooter"
 import { PostHeader } from "src/components/organisms/profile/new-post/PostHeader"
 import { ContentService } from "src/helpers/content"
 
@@ -187,7 +187,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
                 setSelectedPasses={setSelectedPasses}
               />
             )}
-            <PostFooter
+            <NewPostEditorFooter
               disableForm={disableForm}
               setScheduledTime={setScheduledTime}
               scheduledTime={getValues()?.scheduledAt}

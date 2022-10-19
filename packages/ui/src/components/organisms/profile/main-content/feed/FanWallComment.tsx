@@ -11,7 +11,7 @@ import {
   DropDownBlock,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
-import { PostProfileAvatar } from "src/components/organisms/profile/post/PostProfileAvatar"
+import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
 import { formatText } from "src/helpers/formatters"
 import { useFanWall } from "src/hooks/useFanWall"
 import { useProfile } from "src/hooks/useProfile"
@@ -63,7 +63,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
     <ConditionRendering condition={!removed}>
       <div className="mt-6 flex">
         <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
-          <PostProfileAvatar
+          <PostHeader
             createdAt={createdAt}
             displayName={commenterDisplayName}
             isOwner={isOwner}

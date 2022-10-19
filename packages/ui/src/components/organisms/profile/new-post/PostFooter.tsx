@@ -6,13 +6,13 @@ import { Text } from "src/components/atoms/Text"
 
 import { MediaSelector } from "./MediaSelector"
 
-interface PostFooterProps {
+interface NewPostEditorFooterProps {
   disableForm?: boolean
   setScheduledTime: (date: Date | null) => void
   scheduledTime: Date | null
 }
 
-export const PostFooter: FC<PostFooterProps> = ({
+export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
   disableForm,
   setScheduledTime,
   scheduledTime

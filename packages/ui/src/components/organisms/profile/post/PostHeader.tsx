@@ -13,7 +13,7 @@ import {
 } from "src/components/organisms/profile/drop-down/Dropdown"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
-interface PostProfileAvatarProps
+interface PostHeaderProps
   extends Pick<
     PostDto,
     "createdAt" | "displayName" | "isOwner" | "userId" | "username"
@@ -22,7 +22,7 @@ interface PostProfileAvatarProps
   statisticsButtonProps?: PostStatisticsButtonProps
 }
 
-export const PostProfileAvatar: FC<PostProfileAvatarProps> = ({
+export const PostHeader: FC<PostHeaderProps> = ({
   createdAt,
   displayName,
   isOwner,

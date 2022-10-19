@@ -19,8 +19,8 @@ import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
+import { PostHeader } from "./PostHeader"
 import { PostMedia } from "./PostMedia"
-import { PostProfileAvatar } from "./PostProfileAvatar"
 import { PostTextContent } from "./PostTextContent"
 
 interface PostProps {
@@ -83,7 +83,7 @@ export const Post: FC<PostProps> = ({
     <ConditionRendering condition={!isRemoved}>
       <div className="mt-6">
         <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
-          <PostProfileAvatar
+          <PostHeader
             createdAt={createdAt}
             displayName={displayName}
             isOwner={isOwner}
