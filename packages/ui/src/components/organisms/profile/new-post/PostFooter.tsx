@@ -10,12 +10,14 @@ interface PostFooterProps {
   disableForm?: boolean
   setScheduledTime: (date: Date | null) => void
   scheduledTime: Date | null
+  error?: string
 }
 
 export const PostFooter: FC<PostFooterProps> = ({
   disableForm,
   setScheduledTime,
-  scheduledTime
+  scheduledTime,
+  error
 }) => {
   return (
     <div className="w-full">
@@ -25,6 +27,7 @@ export const PostFooter: FC<PostFooterProps> = ({
           onRemoveScheduledPostTime={() => setScheduledTime(null)}
         />
       )}
+      {error && <span>{error}</span>}
       <div className="mt-4 flex justify-end gap-[10px]">
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
