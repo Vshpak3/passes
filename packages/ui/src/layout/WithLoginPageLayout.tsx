@@ -1,7 +1,7 @@
-import { useRouter } from "next/router"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
 import { authRouter } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
 interface LoginWrapperProps {
@@ -12,19 +12,14 @@ export const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   children,
   routeOnlyIfAuth
 }) => {
-  const router = useRouter()
   const [ready, setReady] = useState(false)
   const { userClaims } = useUser()
+  const { safePush } = useSafeRouter()
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    const redirected = authRouter(router, userClaims, routeOnlyIfAuth)
-
+    const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
     setReady(!redirected)
-  }, [router, userClaims, routeOnlyIfAuth])
+  }, [routeOnlyIfAuth, safePush, userClaims])
 
   return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
 }

@@ -10,22 +10,20 @@ import {
   AuthStates
 } from "src/helpers/authRouter"
 import { setTokens } from "src/helpers/setTokens"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | undefined>(undefined)
+  const { safePush } = useSafeRouter()
 
   const router = useRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
     if (userClaims && authStateMachine(userClaims) !== AuthStates.EMAIL) {
-      authRouter(router, userClaims)
+      authRouter(safePush, userClaims)
     }
 
     verifyEmail()
@@ -41,7 +39,7 @@ const VerifyEmailPage = () => {
 
       // Needs to match /email/verify?id=${id}
       if (!id) {
-        authRouter(router, userClaims)
+        authRouter(safePush, userClaims)
         return
       }
 
@@ -115,7 +113,7 @@ const VerifyEmailPage = () => {
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
                 type="submit"
-                onClick={() => authRouter(router, userClaims)}
+                onClick={() => authRouter(safePush, userClaims)}
               >
                 <Text fontSize={16} className="font-medium">
                   Continue

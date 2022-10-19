@@ -22,6 +22,7 @@ import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
@@ -70,6 +71,7 @@ const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
 
 const SignupInitialPage: FC = () => {
   const router = useRouter()
+  const { safePush } = useSafeRouter()
   const { setAccessToken, setRefreshToken } = useUser()
 
   const {
@@ -104,7 +106,7 @@ const SignupInitialPage: FC = () => {
     }
 
     authRouter(
-      router,
+      safePush,
       jwtDecode<JWTUserClaims>(res.accessToken),
       false,
       new URLSearchParams([["hasEmail", "true"]])

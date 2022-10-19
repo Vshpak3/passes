@@ -22,6 +22,7 @@ import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
@@ -44,6 +45,7 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 
 const LoginPage: FC = () => {
   const router = useRouter()
+  const { safePush } = useSafeRouter()
   const { mutate, setAccessToken, setRefreshToken } = useUser()
 
   const {
@@ -66,7 +68,7 @@ const LoginPage: FC = () => {
 
     mutate()
 
-    authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+    authRouter(safePush, jwtDecode<JWTUserClaims>(res.accessToken))
   }
 
   const onSubmit = async (data: LoginPageSchema) => {

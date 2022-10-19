@@ -13,6 +13,7 @@ import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
 import { sleep } from "src/helpers/sleep"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { object, SchemaOf } from "yup"
 
@@ -29,6 +30,7 @@ const resetPasswordFormSchema: SchemaOf<ResetPasswordFormProps> = object({
 
 const NewPassword = () => {
   const router = useRouter()
+  const { safePush } = useSafeRouter()
   const { userClaims, setAccessToken, setRefreshToken } = useUser()
 
   const {
@@ -43,14 +45,10 @@ const NewPassword = () => {
   const [passwordReset, setPasswordReset] = useState(false)
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
-    const authRedirect = authRouter(router, userClaims, true)
+    const authRedirect = authRouter(safePush, userClaims, true)
 
     if (!authRedirect && !router.query.token) {
-      router.push("/login")
+      safePush("/login")
     }
 
     // We cannot add userClaims here since then this would trigger during the
@@ -76,7 +74,7 @@ const NewPassword = () => {
     // sleep for 2 seconds so the confirmation screen is visible before we redirect
     await sleep("2 seconds")
 
-    authRouter(router, jwtDecode<JWTUserClaims>(res.accessToken))
+    authRouter(safePush, jwtDecode<JWTUserClaims>(res.accessToken))
   }
 
   const onSubmit = async (data: ResetPasswordFormProps) => {

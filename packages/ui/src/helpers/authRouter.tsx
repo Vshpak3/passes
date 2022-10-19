@@ -1,4 +1,3 @@
-import { NextRouter } from "next/router"
 import { JWTUserClaims } from "src/hooks/useUser"
 
 import { isProd } from "./env"
@@ -41,7 +40,7 @@ export function authStateToRoute(state: AuthStates) {
 }
 
 export function authRouter(
-  router: NextRouter,
+  route: (path: string) => boolean,
   jwt?: JWTUserClaims | null,
   routeOnlyIfAuth = false,
   searchParams: URLSearchParams | null = null
@@ -54,15 +53,9 @@ export function authRouter(
 
   let url = authStateToRoute(state)
 
-  if (router.pathname === url) {
-    return false
-  }
-
   if (searchParams) {
     url += "?" + searchParams.toString()
   }
 
-  router.push(url)
-
-  return true
+  return route(url)
 }

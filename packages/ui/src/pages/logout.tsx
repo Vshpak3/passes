@@ -1,20 +1,16 @@
-import { useRouter } from "next/router"
 import { useEffect } from "react"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
 const Logout = () => {
-  const router = useRouter()
+  const { safePush } = useSafeRouter()
   const { logout } = useUser()
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-
     logout()
 
-    router.push("/login")
-  }, [router, logout])
+    safePush("/login")
+  }, [safePush, logout])
 
   return null
 }

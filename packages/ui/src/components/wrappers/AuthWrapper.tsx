@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { FC, useEffect, useState } from "react"
 import {
   authRouter,
@@ -6,6 +5,7 @@ import {
   AuthStates
 } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
+import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 import { PropsWithChildren } from "types"
 
@@ -26,16 +26,14 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   hasRefreshed = true
 }) => {
   const { user, userClaims, loading } = useUser()
-  const router = useRouter()
+  const { safePush } = useSafeRouter()
   const [authed, setAuthed] = useState(skipAuth)
+
   useEffect(() => {
     if (loading) {
       return
     }
     if (!hasRefreshed) {
-      return
-    }
-    if (!router.isReady) {
       return
     }
     if (typeof window === "undefined") {
@@ -50,7 +48,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isProd) {
       setAuthed(false)
       if (isPage) {
-        authRouter(router, userClaims)
+        authRouter(safePush, userClaims)
       }
       return
     }
@@ -62,17 +60,17 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
 
     setAuthed(_authed)
     if (isPage && !_authed) {
-      authRouter(router, userClaims)
+      authRouter(safePush, userClaims)
     }
   }, [
     isPage,
     skipAuth,
     creatorOnly,
-    router,
     user,
     userClaims,
     hasRefreshed,
-    loading
+    loading,
+    safePush
   ])
 
   return authed ? <>{children}</> : <></>
