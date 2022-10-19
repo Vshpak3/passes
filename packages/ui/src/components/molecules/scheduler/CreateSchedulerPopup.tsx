@@ -37,7 +37,7 @@ export const CreateSchedulerPopup = forwardRef<
     }
 
     return (
-      <div ref={ref} className="flex w-[450px] flex-col">
+      <div ref={ref} className="flex w-[100%] flex-col md:w-[450px]">
         <span className="mb-4 text-base font-medium leading-6 text-white">
           Create Schedule Post
         </span>

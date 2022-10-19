@@ -1,6 +1,7 @@
 import "rc-time-picker/assets/index.css"
 import "react-day-picker/dist/style.css"
 
+import { useMediaQuery } from "@mui/material"
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { addMinutes, addMonths, format } from "date-fns"
@@ -50,6 +51,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(
     scheduledTime || today
   )
+  const isMobile = useMediaQuery("(max-width: 768px)")
   const [time, setTime] = useState<Time>(
     scheduledTime
       ? dateToInternalTime(scheduledTime)
@@ -106,7 +108,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
       <Popper
         id={id}
         open={open}
-        placement="right"
+        placement={isMobile ? "bottom" : "right"}
         anchorEl={anchorEl}
         transition
         disablePortal={false}
