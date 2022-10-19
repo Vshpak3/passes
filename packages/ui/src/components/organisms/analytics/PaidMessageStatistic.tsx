@@ -1,5 +1,6 @@
-import { PaidMessageDto } from "@passes/api-client"
+import { MessagesApi, PaidMessageDto } from "@passes/api-client"
 import React, { useState } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { formatText } from "src/helpers/formatters"
 
@@ -13,9 +14,13 @@ export const PaidMessageStatistic = ({
   const [unsent, setUnsent] = useState<boolean>(false)
 
   const unsendMessage = async () => {
-    // const messagesApi = new MessagesApi()
-    // TODO unsend message
-    setUnsent(true)
+    const api = new MessagesApi()
+    try {
+      await api.unsendPaidMessage({ paidMessageId: paidMessage.paidMessageId })
+      setUnsent(true)
+    } catch (error: any) {
+      toast.error("Failed to unsend: please contact support")
+    }
   }
   const canUnsend =
     !unsent && !paidMessage.unsent && !paidMessage.isWelcomeMesage

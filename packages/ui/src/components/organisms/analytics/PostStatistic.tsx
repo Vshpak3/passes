@@ -1,5 +1,6 @@
 import { PostApi, PostDto } from "@passes/api-client"
 import React, { useState } from "react"
+import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { formatText } from "src/helpers/formatters"
 
@@ -12,8 +13,12 @@ export const PostStatistic = ({ post }: PostStatisticProps) => {
 
   const deletePost = async () => {
     const postApi = new PostApi()
-    await postApi.removePost({ postId: post.postId })
-    setDeleted(true)
+    try {
+      await postApi.removePost({ postId: post.postId })
+      setDeleted(true)
+    } catch (error: any) {
+      toast.error("Failed to delete: please contact support")
+    }
   }
   const canDelete = !deleted && !post.deletedAt
   return (

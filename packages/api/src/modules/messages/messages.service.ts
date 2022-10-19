@@ -1310,7 +1310,7 @@ export class MessagesService {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId, creator_id: userId, unsent: false })
         .update('unsent', true)
-      if (updated > 1) {
+      if (updated) {
         await trx<MessageEntity>(MessageEntity.table)
           .where({
             paid_message_id: paidMessageId,
