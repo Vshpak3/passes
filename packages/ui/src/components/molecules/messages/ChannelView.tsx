@@ -5,7 +5,7 @@ import { ChannelGalleryView } from "src/components/molecules/direct-messages/mes
 
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"
-import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
+// import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
 import { InputMessageFanPerspective } from "./InputMessageFanPerspective"
 
 interface ChannelViewProps {
@@ -81,17 +81,14 @@ export const ChannelView: FC<ChannelViewProps> = ({
                 otherUserUsername={selectedChannel.otherUserUsername}
                 user={user}
               />
-              {isCreator ? (
-                <InputMessageCreatorPerspective
-                  channelId={selectedChannel.channelId}
-                  user={user}
-                />
-              ) : selectedChannel.channelId ? (
+              {selectedChannel.channelId && (
                 <InputMessageFanPerspective
                   channelId={selectedChannel.channelId}
                   minimumTip={minimumTip}
+                  isCreator={isCreator}
+                  user={user}
                 />
-              ) : null}
+              )}
             </>
           )}
         </>
