@@ -1,12 +1,14 @@
 import { PostDto, TagDto, UserApi } from "@passes/api-client"
 import { FC, useEffect, useState } from "react"
-import { formatText } from "src/helpers/formatters"
+import { formatReplacedText } from "src/helpers/formatters"
 type PostTextContentProps = Pick<PostDto, "text" | "tags">
 
 export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
   const api = new UserApi()
 
-  const [formattedText, setFormattedText] = useState(text)
+  const [formattedText, setFormattedText] = useState<
+    JSX.Element | string | null
+  >(text)
 
   const insertMentions = async (text: string, tags: TagDto[]) => {
     const userIdsToUsernames = Object.fromEntries(
@@ -20,17 +22,15 @@ export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
       )
     )
 
-    // Must loop through string in reverse order otherwise the indexes will change
-    tags.sort((a, b) => b.index - a.index)
-    for (const tag of tags) {
+    const tagMap: Record<number, string> = {}
+    tags.forEach((tag) => {
       const username = userIdsToUsernames[tag.userId]
-      text =
-        text.slice(0, tag.index) +
-        `<a href="/${username}" class="text-[rgb(191,122,240)]">@${username}</a>` +
-        text.slice(tag.index + 1)
-    }
+      tagMap[
+        tag.index
+      ] = `<a href="/${username}" class="text-[rgb(191,122,240)]">@${username}</a>`
+    })
 
-    setFormattedText(text)
+    setFormattedText(formatReplacedText(text, tagMap))
   }
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const PostTextContent: FC<PostTextContentProps> = ({ text, tags }) => {
 
   return (
     <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
-      {formatText(formattedText)}
+      {formattedText}
     </p>
   )
 }

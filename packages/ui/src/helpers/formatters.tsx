@@ -33,25 +33,48 @@ export function getNYearsAgoDate(years: number) {
   return new Date(new Date().setFullYear(new Date().getFullYear() - years))
 }
 
+const HTML_CHARACTERS_ORDER = ["&", " ", "<", ">", "€", "£", '"', "'", "\n"]
+
+const HTML_CHARACTERS: Record<string, string> = {
+  "&": "&amp;",
+  " ": "&nbsp;",
+  "<": "&lt;",
+  ">": "&gt",
+  "€": "&euro;",
+  "£": "&pound;",
+  '"': "&quot;",
+  "'": "&apos;",
+  "\n": "<br/>"
+}
+
 export function formatTextToString(text?: string | null) {
   if (!text) {
     return ""
   }
+  HTML_CHARACTERS_ORDER.forEach((char) => {
+    text.replaceAll(char, HTML_CHARACTERS[char])
+  })
   return text
-    .replaceAll("&", "&amp;")
-    .replaceAll(" ", "&nbsp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt")
-    .replaceAll("€", "&euro;")
-    .replaceAll("£", "&pound;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&apos;")
-    .replaceAll("\n", "<br/>")
 }
 
-export function formatText(text?: string | null) {
-  return parse(formatTextToString(text), {
+export function formatReplacedText(
+  text: string,
+  replacements: Record<number, string>
+) {
+  let ret = ""
+  for (let i = 0; i < text.length; ++i) {
+    ret = ret.concat(replacements[i] ?? HTML_CHARACTERS[text[i]] ?? text[i])
+  }
+  return formatTextFromString(ret)
+}
+
+export function formatTextFromString(text: string) {
+  return parse(text, {
     createElement: createElement,
     Fragment: Fragment
   })
+}
+
+export function formatText(text?: string | null) {
+  return formatTextFromString(formatTextToString(text))
 }
