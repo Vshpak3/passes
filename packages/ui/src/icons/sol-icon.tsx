@@ -9,14 +9,7 @@ export const SolanaIcon = () => {
       xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <circle cx="12" cy="12" r="12" fill="#C943A8" fill-opacity="0.25" />
-      <rect
-        x="4"
-        y="4"
-        width="16"
-        height="16"
-        fill="url(#pattern0)"
-        style="mix-blend-mode:color-dodge"
-      />
+      <rect x="4" y="4" width="16" height="16" fill="url(#pattern0)" />
       <defs>
         <pattern
           id="pattern0"

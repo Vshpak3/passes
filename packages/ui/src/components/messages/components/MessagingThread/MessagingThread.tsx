@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { CloseThreadIcon } from "src/components/messages/assets"
+import { CloseThreadIcon } from "src/components/messages/assets/CloseThreadIcon"
 
 interface MessagingThreadHeaderProps {
   closeThread: any
