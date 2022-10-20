@@ -20,6 +20,8 @@ export const PostImage: FC<PostImageProps> = ({
       key={content.contentId}
       src={ContentService.userContentMedia(content)}
       alt=""
+      height={400}
+      width={650}
       className="h-[400px] w-full rounded-[20px] object-cover"
     />
   )

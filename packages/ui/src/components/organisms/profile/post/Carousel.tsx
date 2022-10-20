@@ -2,7 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { ReactNode, useRef, useState } from "react"
-import Slider from "react-slick"
+import Slider, { LazyLoadTypes } from "react-slick"
 import { PostContent } from "src/components/molecules/PostContent"
 
 interface SliderProps {
@@ -26,6 +26,8 @@ export const Carousel = ({
     dotsClass: "slick-dots slick-thumb",
     infinite: false,
     arrows: false,
+    fade: true,
+    lazyLoad: "ondemand" as LazyLoadTypes,
     initialSlide: activeIndex,
     slidesToShow: 1,
     slidesToScroll: 1,

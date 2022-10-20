@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.slick-track {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+
+.slick-list {
+  overflow: hidden;
+}
+
+.slick-dots {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.slick-dots li {
+  display: block;
+  height: 8px;
+  width: 8px;
+}
+
 .cover-image {
   background-image: url("/img/bg-cover.png");
   background-position: center;
