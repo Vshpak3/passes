@@ -7,11 +7,14 @@ import { useProfile } from "src/hooks/useProfile"
 
 import { NewPostEditor } from "./NewPostEditor"
 
-export const NewPosts: React.FC = () => {
+interface NewPostsProps {
+  setIsNewPostAdded: (value: boolean) => void
+}
+
+export const NewPosts: React.FC<NewPostsProps> = ({ setIsNewPostAdded }) => {
+  const [newPosts, setNewPosts] = useState<PostDto[]>([])
   const { profileInfo, profileUsername } = useProfile()
   const { createPost } = usePost()
-
-  const [newPosts, setNewPosts] = useState<PostDto[]>([])
 
   const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
     if (!profileInfo || !profileUsername) {
@@ -63,6 +66,9 @@ export const NewPosts: React.FC = () => {
     }
 
     setNewPosts([post, ...newPosts])
+    if (!newPosts?.length) {
+      setIsNewPostAdded(true)
+    }
   }
 
   // TODO: Missing the state to remove the post optimistically

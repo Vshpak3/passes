@@ -31,7 +31,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   keyValue: string
   fetch: (data: Omit<T, "data">) => Promise<T>
   fetchProps: Partial<T>
-  emptyElement?: JSX.Element
+  emptyElement?: JSX.Element | null
   loadingElement?: JSX.Element
   endElement?: JSX.Element
   KeyedComponent: ({ arg, index }: ComponentArg<A>) => JSX.Element
@@ -41,6 +41,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   style?: CSSProperties
   scrollableTarget?: string
   inverse?: boolean
+  isNewPost?: boolean
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -68,7 +69,8 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   },
   style = {},
   scrollableTarget,
-  inverse = false
+  inverse = false,
+  isNewPost = false
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
@@ -118,7 +120,10 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       inverse={inverse}
     >
       {children}
-      {data?.length === 1 && data[0].data.length === 0 && emptyElement}
+      {data?.length === 1 &&
+        data[0].data.length === 0 &&
+        !isNewPost &&
+        emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent key={index} arg={data} index={index} />
       ))}

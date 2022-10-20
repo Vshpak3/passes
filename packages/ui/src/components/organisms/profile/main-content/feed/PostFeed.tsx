@@ -4,7 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC } from "react"
+import { FC, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -37,8 +37,9 @@ export interface PostFeedProps {
 
 export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
+  const [isNewPostAdded, setIsNewPostAdded] = useState(false)
+  const { posts, isConnected } = usePostWebhook()
 
-  const { posts, isConnected, isLogged } = usePostWebhook()
   return (
     <>
       {(isConnected || !isLogged) && (
@@ -49,6 +50,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
               getProfileFeedRequestDto: req
             })
           }}
+          isNewPost={isNewPostAdded}
           fetchProps={{ creatorId: profileUserId, pinned: false }}
           emptyElement={PostFeedEnd}
           loadingElement={PostFeedLoader}
@@ -57,7 +59,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
             return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
           }}
         >
-          {ownsProfile && <NewPosts />}
+          {ownsProfile && <NewPosts setIsNewPostAdded={setIsNewPostAdded} />}
         </InfiniteScrollPagination>
       )}
     </>
