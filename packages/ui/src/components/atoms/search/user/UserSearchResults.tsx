@@ -29,13 +29,15 @@ export const SearchResultOption: FC<SearchResultOptionProps> = (props) => {
 
 interface SearchResultProps extends UserDisplayInfoDto {
   active: boolean
+  onSelect: (value: string) => void
 }
 
 export const SearchResult: FC<SearchResultProps> = ({
   userId,
   displayName,
   username,
-  active
+  active,
+  onSelect
 }) => {
   const formattedUsername = `@${username}`
 
@@ -45,6 +47,7 @@ export const SearchResult: FC<SearchResultProps> = ({
         "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90 hover:bg-[#1b141d]/90",
         { "bg-[#1b141d]/90": active }
       )}
+      onClick={() => onSelect(username)}
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
         <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">

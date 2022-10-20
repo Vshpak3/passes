@@ -11,7 +11,7 @@ import {
 interface SearchBarProps {
   searchValue: string
   results: UserDisplayInfoDto[]
-  onSelect: (value: string) => any
+  onSelect: (value: string) => void
   onChange: (e: any) => void
   placeholder: string
   emptyText: string
@@ -28,7 +28,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   isDesktop = true
 }) => {
   return (
-    <Combobox value={searchValue} onChange={onSelect}>
+    <Combobox value={searchValue}>
       <div className="flex flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">
@@ -62,6 +62,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 userId={user.userId}
                 displayName={user.displayName}
                 username={user.username}
+                onSelect={onSelect}
               />
             ))
           ) : (
