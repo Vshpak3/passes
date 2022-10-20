@@ -24,7 +24,8 @@ export const DropDownDeletePost = (
 export const DropDownPinPost = (
   postId: string,
   pinPost: (postId: string) => Promise<void>,
-  showOption?: boolean
+  showOption: boolean,
+  afterPin: () => void
 ): DropdownOption[] => {
   return showOption
     ? [
@@ -33,6 +34,7 @@ export const DropDownPinPost = (
           onClick: async () => {
             await pinPost(postId)
             toast.success("The post has been pinned")
+            afterPin()
           }
         }
       ]
@@ -42,7 +44,8 @@ export const DropDownPinPost = (
 export const DropDownUnpinPost = (
   postId: string,
   unpinPost: (postId: string) => Promise<void>,
-  showOption?: boolean
+  showOption: boolean,
+  afterUnpin: () => void
 ): DropdownOption[] => {
   return showOption
     ? [
@@ -51,6 +54,7 @@ export const DropDownUnpinPost = (
           onClick: async () => {
             await unpinPost(postId)
             toast.success("The post has been unpinned")
+            afterUnpin()
           }
         }
       ]

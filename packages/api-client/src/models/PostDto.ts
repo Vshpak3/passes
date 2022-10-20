@@ -148,6 +148,12 @@ export interface PostDto {
     deletedAt?: Date | null;
     /**
      * 
+     * @type {Date}
+     * @memberof PostDto
+     */
+    pinnedAt?: Date | null;
+    /**
+     * 
      * @type {number}
      * @memberof PostDto
      */
@@ -241,6 +247,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'updatedAt': (new Date(json['updatedAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'deletedAt': !exists(json, 'deletedAt') ? undefined : (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
         'isOwner': json['isOwner'],
@@ -278,6 +285,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'updatedAt': (value.updatedAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'deletedAt': value.deletedAt === undefined ? undefined : (value.deletedAt === null ? null : value.deletedAt.toISOString()),
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
         'isOwner': value.isOwner,

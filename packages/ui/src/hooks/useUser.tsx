@@ -1,6 +1,5 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
-import { useEffect } from "react"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "src/hooks/useLocalStorage"
 import { swrConfig } from "src/pages/_app"

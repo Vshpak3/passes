@@ -481,7 +481,7 @@ export class PostService {
     const updated = await this.dbWriter<PostUserAccessEntity>(
       PostUserAccessEntity.table,
     )
-      .update({ payin_id: undefined })
+      .update({ payin_id: null })
       .where({ id: access.id, payin_id: payinId })
     if (updated) {
       if (!JSON.parse(access.pass_holder_ids).length) {
@@ -660,7 +660,7 @@ export class PostService {
     return (
       (await this.dbWriter<PostEntity>(PostEntity.table)
         .where({ user_id: userId, id: postId })
-        .update({ pinned_at: undefined })) === 1
+        .update({ pinned_at: null })) === 1
     )
   }
 

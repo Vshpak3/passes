@@ -1,9 +1,4 @@
-import {
-  FeedApi,
-  GetProfileFeedRequestDto,
-  GetProfileFeedResponseDto,
-  PostDto
-} from "@passes/api-client"
+import { GetProfileFeedResponseDto, PostDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import {
   ComponentArg,
@@ -12,6 +7,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { useFeed } from "src/hooks/useFeed"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
 const PostFeedLoader = (
@@ -36,8 +32,8 @@ export interface PostFeedProps {
 }
 
 export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
-  const api = new FeedApi()
   const [isNewPostAdded, setIsNewPostAdded] = useState(false)
+  const { getFeedForCreator, pinnedPosts } = useFeed(profileUserId)
   const { posts, isConnected, isLogged } = usePostWebhook()
 
   return (
@@ -45,21 +41,20 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       {(isConnected || !isLogged) && (
         <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
           keyValue={`/feed/creator/${profileUserId}`}
-          fetch={async (req: GetProfileFeedRequestDto) => {
-            return await api.getFeedForCreator({
-              getProfileFeedRequestDto: req
-            })
-          }}
-          isNewPost={isNewPostAdded}
+          fetch={getFeedForCreator}
           fetchProps={{ creatorId: profileUserId, pinned: false }}
-          emptyElement={PostFeedEnd}
-          loadingElement={PostFeedLoader}
-          endElement={PostFeedEnd}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
             return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
           }}
+          emptyElement={PostFeedEnd}
+          loadingElement={PostFeedLoader}
+          endElement={PostFeedEnd}
+          hasInitialElement={isNewPostAdded}
         >
           {ownsProfile && <NewPosts setIsNewPostAdded={setIsNewPostAdded} />}
+          {pinnedPosts.map((post) => (
+            <Post key={post.postId} post={post} isPinned={true} />
+          ))}
         </InfiniteScrollPagination>
       )}
     </>

@@ -1,5 +1,6 @@
 import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
+import GraphIcon from "public/icons/graph.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
@@ -18,6 +19,7 @@ interface PostHeaderProps
     PostDto,
     "createdAt" | "displayName" | "isOwner" | "userId" | "username"
   > {
+  isPinned?: boolean
   dropdownOptions: DropdownOption[]
   statisticsButtonProps?: PostStatisticsButtonProps
 }
@@ -28,6 +30,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
   isOwner,
   userId,
   username,
+  isPinned,
   dropdownOptions,
   statisticsButtonProps
 }) => {
@@ -65,29 +68,25 @@ export const PostHeader: FC<PostHeaderProps> = ({
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
             className="uppercase text-gray-300/60"
-            date={createdAt || ""} // TODO: post.date}
+            date={createdAt}
             minPeriod={30}
           />
         </div>
         {isOwner && statisticsButtonProps && (
           <PostStatisticsButton {...statisticsButtonProps} />
         )}
-
-        <div className="flex flex-shrink-0 items-center gap-[15px]">
-          {/* <div
-          onClick={() => setPostPinned(!postPinned)}
-          className={classNames(
-            postPinned ? "gap-[10px] rounded-lg bg-[#FFFFFF]/10 px-[10px]" : "",
-            "flex cursor-pointer items-center py-[5px] "
-          )}
-        >
-          {postPinned && (
-            <span className="text-[12px] font-medium leading-[22px]">
-              Pinned post
+        {isPinned && (
+          <div className="relative flex flex-shrink-0 items-center rounded-lg bg-white/10 py-[5px] px-2.5">
+            <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
+              Pinned
             </span>
-          )}
-          {postPinned ? <PinnedActive /> : <PinnedInactive />}
-        </div> */}
+            <span className="flex-shrink-0 md:ml-2">
+              {/* TODO: replace with pin icon */}
+              <GraphIcon />
+            </span>
+          </div>
+        )}
+        <div className="flex flex-shrink-0 items-center gap-[15px]">
           <Dropdown items={dropdownOptions} />
         </div>
       </div>

@@ -13,6 +13,7 @@ import {
   DropDownPinPost,
   DropDownUnpinPost
 } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
+import { useFeed } from "src/hooks/useFeed"
 import { usePost } from "src/hooks/usePost"
 import { useUser } from "src/hooks/useUser"
 import { useViewPostModal } from "src/hooks/useViewPostModal"
@@ -40,8 +41,7 @@ export const Post: FC<PostProps> = ({
   const { user } = useUser()
   const { removePost, pinPost, unpinPost } = usePost()
   const { setPost } = useViewPostModal()
-
-  const [isRemoved, setIsRemoved] = useState(false)
+  const { mutatePinnedPosts } = useFeed(post.userId)
 
   const {
     contents,
@@ -52,14 +52,17 @@ export const Post: FC<PostProps> = ({
     numComments,
     numLikes,
     numPurchases,
-    purchasable,
+    pinnedAt,
     postId,
+    purchasable,
     tags,
     text,
     totalTipAmount,
     userId,
     username
   } = post
+
+  const [isRemoved, setIsRemoved] = useState(!!pinnedAt !== isPinned)
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, {
@@ -72,8 +75,19 @@ export const Post: FC<PostProps> = ({
         router.push(`/${user.username}`)
       }
     }),
-    ...DropDownPinPost(post.postId, pinPost, post.isOwner && !isPinned),
-    ...DropDownUnpinPost(post.postId, unpinPost, post.isOwner && isPinned),
+    ...DropDownPinPost(post.postId, pinPost, post.isOwner && !isPinned, () => {
+      mutatePinnedPosts()
+      setIsRemoved(true)
+    }),
+    ...DropDownUnpinPost(
+      post.postId,
+      unpinPost,
+      post.isOwner && isPinned,
+      () => {
+        mutatePinnedPosts()
+        setIsRemoved(true)
+      }
+    ),
     DropDownCopyLink(username, postId)
   ]
 
@@ -82,13 +96,19 @@ export const Post: FC<PostProps> = ({
   return (
     <ConditionRendering condition={!isRemoved}>
       <div className="mt-6">
-        <FormContainer className="!min-h-[10px] w-full rounded-[20px] border border-[#ffffff]/10 px-5 pt-5">
+        <FormContainer
+          borderColor={
+            isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
+          }
+          className={"!min-h-[10px] w-full rounded-[20px] border px-5 pt-5"}
+        >
           <PostHeader
             createdAt={createdAt}
             displayName={displayName}
             isOwner={isOwner}
             userId={userId}
             username={username}
+            isPinned={isPinned}
             dropdownOptions={dropdownOptions}
             statisticsButtonProps={{
               createdAt,

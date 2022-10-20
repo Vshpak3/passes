@@ -88,6 +88,9 @@ export class PostDto {
   @DtoProperty({ type: 'date', optional: true, nullable: true })
   deletedAt?: Date | null
 
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  pinnedAt?: Date | null
+
   @Min(0)
   @Max(POST_PRICE_MAX_PRICE)
   @DtoProperty({ type: 'currency', optional: true })
@@ -139,6 +142,7 @@ export class PostDto {
       this.passIds = JSON.parse(post.pass_ids)
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
+      this.pinnedAt = post.pinned_at
       this.paid = post.paid
       this.paying = post.paying
       this.contentProcessed = post.content_processed

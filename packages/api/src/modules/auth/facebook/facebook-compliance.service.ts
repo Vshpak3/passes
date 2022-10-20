@@ -65,7 +65,7 @@ export class FacebookComplianceService {
       // Don't actually do an update since this will break out relations; we
       // also don't break if we actually received this information from fb
       // await trx<AuthEntity>(AuthEntity.table)
-      //   .update({ email: undefined })
+      //   .update({ email: null })
       //   .where({ oauth_id: userId })
       //   .where({ oauth_provider: 'facebook' })
     })
