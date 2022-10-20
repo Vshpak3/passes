@@ -60,7 +60,7 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
-    displayName?: string | null;
+    displayName: string;
     /**
      * 
      * @type {boolean}
@@ -86,6 +86,7 @@ export function instanceOfGetUserResponseDto(value: object): boolean {
     isInstance = isInstance && "legalFullName" in value;
     isInstance = isInstance && "countryCode" in value;
     isInstance = isInstance && "birthday" in value;
+    isInstance = isInstance && "displayName" in value;
 
     return isInstance;
 }
@@ -106,7 +107,7 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'legalFullName': json['legalFullName'],
         'countryCode': json['countryCode'],
         'birthday': json['birthday'],
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'displayName': json['displayName'],
         'isCreator': !exists(json, 'isCreator') ? undefined : json['isCreator'],
         'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
     };

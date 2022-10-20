@@ -36,7 +36,7 @@ export interface UserDisplayInfoDto {
      * @type {string}
      * @memberof UserDisplayInfoDto
      */
-    displayName?: string | null;
+    displayName: string;
 }
 
 /**
@@ -46,6 +46,7 @@ export function instanceOfUserDisplayInfoDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "displayName" in value;
 
     return isInstance;
 }
@@ -62,7 +63,7 @@ export function UserDisplayInfoDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         
         'userId': json['userId'],
         'username': json['username'],
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'displayName': json['displayName'],
     };
 }
 

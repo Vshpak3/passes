@@ -112,10 +112,10 @@ export class UserService {
       throw new ConflictException(USERNAME_TAKEN)
     }
 
-    const isTooYoung =
+    if (
       differenceInYears(new Date(), new Date(createUserRequestDto.birthday)) <
       USER_MIN_AGE
-    if (isTooYoung) {
+    ) {
       throw new BadRequestException(USER_MIN_AGE_NOT_MET)
     }
 
@@ -126,6 +126,8 @@ export class UserService {
       country_code: createUserRequestDto.countryCode,
       legal_full_name: createUserRequestDto.legalFullName,
       username: createUserRequestDto.username,
+      // Set initial display name to the username
+      display_name: createUserRequestDto.username,
     } as UserEntity
 
     await this.dbWriter.transaction(async (trx) => {

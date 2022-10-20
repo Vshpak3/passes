@@ -53,8 +53,8 @@ export class UserDto {
   birthday: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', nullable: true, optional: true })
-  displayName?: string | null
+  @DtoProperty({ type: 'string' })
+  displayName: string
 
   @DtoProperty({ type: 'boolean', optional: true })
   isCreator?: boolean

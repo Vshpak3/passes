@@ -41,7 +41,7 @@ export class UserEntity extends BaseEntity {
 
   @Property({ length: USER_DISPLAY_NAME_LENGTH })
   @Index()
-  display_name: string | null
+  display_name: string
 
   @Property({ length: USER_PHONE_NUMBER_LENGTH })
   phone_number: string | null

@@ -24,7 +24,7 @@ export interface UpdateDisplayNameRequestDto {
      * @type {string}
      * @memberof UpdateDisplayNameRequestDto
      */
-    displayName?: string;
+    displayName: string;
 }
 
 /**
@@ -32,6 +32,7 @@ export interface UpdateDisplayNameRequestDto {
  */
 export function instanceOfUpdateDisplayNameRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "displayName" in value;
 
     return isInstance;
 }
@@ -46,7 +47,7 @@ export function UpdateDisplayNameRequestDtoFromJSONTyped(json: any, ignoreDiscri
     }
     return {
         
-        'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'displayName': json['displayName'],
     };
 }
 

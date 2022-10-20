@@ -1,6 +1,5 @@
 import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
-import GraphIcon from "public/icons/graph.svg"
 import PinIcon from "public/icons/pin.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
