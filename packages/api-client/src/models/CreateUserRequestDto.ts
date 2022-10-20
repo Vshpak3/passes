@@ -30,6 +30,12 @@ export interface CreateUserRequestDto {
      * @type {string}
      * @memberof CreateUserRequestDto
      */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateUserRequestDto
+     */
     legalFullName: string;
     /**
      * 
@@ -51,6 +57,7 @@ export interface CreateUserRequestDto {
 export function instanceOfCreateUserRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "legalFullName" in value;
     isInstance = isInstance && "countryCode" in value;
     isInstance = isInstance && "birthday" in value;
@@ -69,6 +76,7 @@ export function CreateUserRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
     return {
         
         'username': json['username'],
+        'displayName': json['displayName'],
         'legalFullName': json['legalFullName'],
         'countryCode': json['countryCode'],
         'birthday': json['birthday'],
@@ -85,6 +93,7 @@ export function CreateUserRequestDtoToJSON(value?: CreateUserRequestDto | null):
     return {
         
         'username': value.username,
+        'displayName': value.displayName,
         'legalFullName': value.legalFullName,
         'countryCode': value.countryCode,
         'birthday': value.birthday,

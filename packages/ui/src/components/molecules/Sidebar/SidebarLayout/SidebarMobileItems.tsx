@@ -91,7 +91,18 @@ export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({
                 "group flex cursor-pointer items-center py-[15px] px-[20px] pr-0"
               )}
             >
-              <SidebarMobileItemInner item={item} active={active} />
+              <div className="flex">
+                <item.icon
+                  className={classNames(
+                    item.id === active
+                      ? "fill-transparent stroke-white stroke-2"
+                      : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
+                  )}
+                  aria-hidden="true"
+                />
+                <span>{item.name}</span>
+              </div>
 
               <ChevronDown
                 className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}

@@ -7,4 +7,5 @@ export class CreateUserRequestDto extends PickType(UserDto, [
   'countryCode',
   'legalFullName',
   'username',
+  'displayName',
 ]) {}

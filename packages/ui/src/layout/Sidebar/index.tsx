@@ -37,7 +37,7 @@ export const Sidebar = () => {
   }, [router.asPath, user?.username])
 
   useEffect(() => {
-    if (!user || !user.isCreator) {
+    if (!user) {
       setNavigation(_navigation)
       return
     }
@@ -48,7 +48,8 @@ export const Sidebar = () => {
         id: "profile",
         name: "Profile",
         href: `/${user?.username}`,
-        icon: ProfileIcon
+        icon: ProfileIcon,
+        creatorOnly: false
       }
     ])
   }, [user])

@@ -9,7 +9,7 @@ import { differenceInYears, format, subYears } from "date-fns"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -34,6 +34,7 @@ export type SignupInfoPageSchema = {
   username: string
   countryCode: string
   birthday: string
+  displayName: string
 }
 
 const FULL_NAME_REGEX = /^[A-Za-z-,'\s]+$/
@@ -55,12 +56,13 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
         value !== undefined &&
         differenceInYears(new Date(), new Date(value)) >= MIN_USER_AGE_IN_YEARS
     ),
-  countryCode: string().required("Enter your coutnry")
+  countryCode: string().required("Enter your country"),
+  displayName: string().required("Enter a display name")
 })
 
 const SignupInfoPage: FC = () => {
   const router = useRouter()
-  const { mutate, setAccessToken, setRefreshToken } = useUser()
+  const { mutate, setAccessToken, setRefreshToken, user } = useUser()
 
   const {
     register,
@@ -80,7 +82,8 @@ const SignupInfoPage: FC = () => {
     name: string,
     username: string,
     countryCode: string,
-    birthday: string
+    birthday: string,
+    displayName: string
   ) => {
     try {
       const api = new AuthApi()
@@ -104,7 +107,8 @@ const SignupInfoPage: FC = () => {
           legalFullName: name,
           username: username,
           countryCode: countryCode,
-          birthday: birthday
+          birthday: birthday,
+          displayName: displayName
         }
       })
 
@@ -116,8 +120,6 @@ const SignupInfoPage: FC = () => {
       }
 
       mutate()
-
-      router.push(authStateToRoute(AuthStates.AUTHED))
     } catch (err: any) {
       toast.dismiss()
       errorMessage(err, true)
@@ -125,13 +127,20 @@ const SignupInfoPage: FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (user) {
+      router.push(authStateToRoute(AuthStates.AUTHED))
+    }
+  }, [router, user])
+
   const onSubmit = (data: SignupInfoPageSchema) => {
     setIsSubmitting(true)
     createNewUser(
       data.legalFullName,
       data.username,
       iso3311a2.getCode(data.countryCode),
-      data.birthday
+      data.birthday,
+      data.displayName
     )
   }
 
@@ -191,6 +200,26 @@ const SignupInfoPage: FC = () => {
                   required: {
                     value: true,
                     message: "Username is required"
+                  }
+                }}
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                Display Name
+              </Text>
+              <FormInput
+                register={register}
+                name="displayName"
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                placeholder="Enter your display name"
+                type="text"
+                errors={errors}
+                options={{
+                  required: {
+                    value: true,
+                    message: "Display name is required"
                   }
                 }}
               />

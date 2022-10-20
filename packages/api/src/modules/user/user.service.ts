@@ -127,8 +127,7 @@ export class UserService {
       country_code: createUserRequestDto.countryCode,
       legal_full_name: createUserRequestDto.legalFullName,
       username: createUserRequestDto.username,
-      // Set initial display name to the username
-      display_name: createUserRequestDto.username,
+      display_name: createUserRequestDto.displayName,
     } as UserEntity
 
     await this.dbWriter.transaction(async (trx) => {
