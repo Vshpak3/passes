@@ -21,7 +21,7 @@ import React, {
   useRef,
   useState
 } from "react"
-import { SearchResult } from "src/components/atoms/search/user/UserSearchResults"
+import { UserSearchResult } from "src/components/atoms/search/user/UserSearchResults"
 import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
@@ -37,7 +37,7 @@ const Entry: FC<EntryComponentProps> = ({
 }) => {
   return (
     <div {...parentProps}>
-      <SearchResult
+      <UserSearchResult
         userId={mention.id as string}
         displayName={mention.displayName}
         username={mention.username}

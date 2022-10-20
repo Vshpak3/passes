@@ -22,22 +22,23 @@ type SearchResultOptionProps = Omit<SearchResultProps, "active">
 export const SearchResultOption: FC<SearchResultOptionProps> = (props) => {
   return (
     <Combobox.Option key={props.userId} value={props.username} as={Fragment}>
-      {({ active }) => <SearchResult active={active} {...props} />}
+      {({ active }) => <UserSearchResult active={active} {...props} />}
     </Combobox.Option>
   )
 }
 
 interface SearchResultProps extends UserDisplayInfoDto {
   active: boolean
-  onSelect: (value: string) => void
+  onSelect?: (value: string) => void
 }
 
-export const SearchResult: FC<SearchResultProps> = ({
+export const UserSearchResult: FC<SearchResultProps> = ({
   userId,
   displayName,
   username,
   active,
-  onSelect
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  onSelect = () => {}
 }) => {
   const formattedUsername = `@${username}`
 
