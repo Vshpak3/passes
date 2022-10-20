@@ -37,8 +37,8 @@ import {
 import { createGetMemberQuery } from './list.util'
 
 export const USER_LIST_LIMIT = 1000
-export const MAX_LISTS_PER_REQUEST = 5
-export const MAX_LIST_MEMBERS_PER_REQUEST = 5
+export const MAX_LISTS_PER_REQUEST = 10
+export const MAX_LIST_MEMBERS_PER_REQUEST = 20
 
 @Injectable()
 export class ListService {
@@ -66,7 +66,7 @@ export class ListService {
     }
 
     const listId = uuid.v4()
-    let listMemberRecords: any[] = []
+    let listMemberRecords: Partial<ListMemberEntity>[] = []
 
     const followers = await this.dbReader<FollowEntity>(FollowEntity.table)
       .where({ creator_id: userId })

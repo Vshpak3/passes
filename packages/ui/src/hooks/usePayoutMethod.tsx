@@ -5,9 +5,12 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
 import { useUserConnectedWallets } from "./useUserConnectedWallets"
+
+const CACHE_KEY_PAYOUT_METHOD = "/payment/default-payout-method"
+const CACHE_KEY_BANKS = "/payment/banks"
 
 export const usePayoutMethod = () => {
   const { wallets } = useUserConnectedWallets()
@@ -16,7 +19,7 @@ export const usePayoutMethod = () => {
     data: payoutMethod,
     isValidating: isLoadingPayoutMethod,
     mutate: mutatePayoutMethod
-  } = useSWR<PayoutMethodDto>("/payment/default-payout-method", async () => {
+  } = useSWR<PayoutMethodDto>(CACHE_KEY_PAYOUT_METHOD, async () => {
     setTimeout(() => undefined, 500)
     return await api.getDefaultPayoutMethod()
   })
@@ -25,7 +28,7 @@ export const usePayoutMethod = () => {
     data: banks,
     isValidating: isLoadingBanks,
     mutate: mutateBanks
-  } = useSWR<CircleBankDto[]>("/payment/banks", async () => {
+  } = useSWR<CircleBankDto[]>(CACHE_KEY_BANKS, async () => {
     setTimeout(() => undefined, 500)
     return (await api.getCircleBanks()).banks
   })
@@ -33,18 +36,34 @@ export const usePayoutMethod = () => {
   const [defaultBank, setDefaultBank] = useState<CircleBankDto>()
   const [defaultWallet, setDefaultWallet] = useState<WalletDto>()
 
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManualPayoutMethod = (update: PayoutMethodDto) =>
+    _mutateManual(CACHE_KEY_PAYOUT_METHOD, update, {
+      populateCache: (update: PayoutMethodDto) => {
+        return update
+      },
+      revalidate: false
+    })
+  const mutateManualBanks = (update: CircleBankDto[]) =>
+    _mutateManual(CACHE_KEY_BANKS, update, {
+      populateCache: (update: CircleBankDto[]) => {
+        return update
+      },
+      revalidate: false
+    })
+
   async function setDefaultPayoutMethod(dto: PayoutMethodDto) {
     await api.setDefaultPayoutMethod({
       setPayoutMethodRequestDto: dto
     })
-    mutatePayoutMethod(dto)
+    mutateManualPayoutMethod(dto)
   }
 
   async function deleteBank(bankId: string) {
     await api.deleteCircleBank({
       circleBankId: bankId
     })
-    mutateBanks()
+    mutateManualBanks(banks?.filter((bank) => bank.id !== bankId) ?? [])
   }
 
   useEffect(() => {

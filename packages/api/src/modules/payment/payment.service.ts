@@ -141,7 +141,7 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MAX_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 3 days
+const MIN_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 3 days
 const MAX_PAYINS_PER_REQUEST = 20
 const MAX_PAYOUTS_PER_REQUEST = 20
 
@@ -164,7 +164,6 @@ export class PaymentService {
   public passService: PassService
   public messagesService: MessagesService
   public postService: PostService
-  private creatorShares: any
 
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -1947,11 +1946,11 @@ export class PaymentService {
     const redisKey = `payoutCreator:${userId}`
     const lockResult = await this.lockService.lockOnce(
       redisKey,
-      MAX_TIME_BETWEEN_PAYOUTS_MS,
+      MIN_TIME_BETWEEN_PAYOUTS_MS,
     )
     if (!lockResult) {
       throw new PayoutFrequencyException(
-        'Payout created for creator recently, try again later',
+        `Payouts can only occur once every ${MIN_TIME_BETWEEN_PAYOUTS_MS}`,
       )
     }
 

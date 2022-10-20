@@ -18,7 +18,7 @@ import { FanWallCommentDto } from './dto/fan-wall-comment.dto'
 import { GetFanWallRequestDto } from './dto/get-fan-wall-comments.dto'
 import { FanWallCommentEntity } from './entities/fan-wall-comment.entity'
 
-export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 20
+export const MAX_FAN_WALL_COMMENTS_PER_REQUEST = 10
 
 @Injectable()
 export class FanWallService {

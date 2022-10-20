@@ -35,7 +35,7 @@ export const usePayinMethod = () => {
       },
       revalidate: false
     })
-  const mutateManualCard = (update: CircleCardDto[]) =>
+  const mutateManualCards = (update: CircleCardDto[]) =>
     _mutateManual(CACHE_KEY_CARDS, update, {
       populateCache: (update: CircleCardDto[]) => {
         return update
@@ -54,7 +54,7 @@ export const usePayinMethod = () => {
     await api.deleteCircleCard({
       circleCardId: cardId
     })
-    mutateManualCard(cards?.filter((card) => card.id !== cardId) ?? [])
+    mutateManualCards(cards?.filter((card) => card.id !== cardId) ?? [])
   }
 
   useEffect(() => {

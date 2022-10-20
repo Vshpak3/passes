@@ -82,7 +82,7 @@ import {
 } from './error/message.error'
 
 const MAX_CHANNELS_PER_REQUEST = 10
-const MAX_MESSAGES_PER_REQUEST = 10
+const MAX_MESSAGES_PER_REQUEST = 20
 const MAX_PENDING_MESSAGES = 10
 
 @Injectable()

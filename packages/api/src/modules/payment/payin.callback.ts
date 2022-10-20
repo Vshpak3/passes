@@ -84,7 +84,7 @@ const empty = async (
 ) => {}
 
 async function tippedMessageCreationCallback(
-  payin: any,
+  payin: PayinEntity,
   input: MessagePayinCallbackInput,
   payService: PaymentService,
   db: DatabaseService['knex'],
