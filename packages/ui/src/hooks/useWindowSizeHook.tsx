@@ -11,8 +11,8 @@ export function useWindowSize() {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [windowSize, setWindowSize] = useState<Size>({
-    width: undefined,
-    height: undefined
+    width: window.innerWidth,
+    height: window.innerHeight
   })
   const windowWidth =
     windowSize && windowSize.width ? windowSize.width : breakpoints.md

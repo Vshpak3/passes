@@ -16,6 +16,7 @@ import {
   useSettings
 } from "src/contexts/settings"
 import { useUser } from "src/hooks/useUser"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const AccountSettings = dynamic(
@@ -135,6 +136,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     showSettingsTab,
     setShowSettingsTab
   } = useSettings() as SettingsContextProps
+  const { isMobile } = useWindowSize()
 
   useEffect(() => {
     if (!settingsPath) {
@@ -147,9 +149,15 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
       []
     setActiveTab(tab || 0)
     setSubTabsStack(subTabs)
+    // If mobile viewport, ensure that the actual tab content is shown,
+    // not the parent tabs. ie. show the <AccountSettings />
+    // instead of the tabs with "Account Settings" highlighted
+    if (isMobile) {
+      setShowSettingsTab(true)
+    }
     // Leave out settingsPath
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setActiveTab, setSubTabsStack])
+  }, [setActiveTab, setSubTabsStack, isMobile])
 
   return (
     <>

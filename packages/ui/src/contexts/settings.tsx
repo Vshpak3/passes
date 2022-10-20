@@ -14,13 +14,14 @@ import {
   TabsEnum,
   tabToPath
 } from "src/config/settings"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 export interface SettingsContextProps {
   showSettingsTab: boolean
   setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
   activeTab: TabsEnum
   subTabsStack: SubTabsEnum[]
-  setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum>>
+  setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum | undefined>>
   setSubTabsStack: React.Dispatch<React.SetStateAction<SubTabsEnum[]>>
   addTabToStackHandler: (tab: SubTabsEnum) => void
   popTabFromStackHandler: () => void
@@ -30,10 +31,11 @@ export interface SettingsContextProps {
 const SettingsContext = createContext<Partial<SettingsContextProps>>({})
 
 export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [activeTab, setActiveTab] = useState(TabsEnum.AccountSettings)
+  const [activeTab, setActiveTab] = useState<TabsEnum>()
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
   const [showSettingsTab, setShowSettingsTab] = useState(false)
   const router = useRouter()
+  const { isMobile } = useWindowSize()
 
   const addTabToStackHandler = (tab: SubTabsEnum) => {
     if (!subTabsStack.includes(tab)) {
@@ -56,25 +58,44 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
+  // If on desktop, set AccountSettings to active by default
   useEffect(() => {
-    router.replace(`/settings/${tabToPath[activeTab]}`, undefined, {
-      shallow: true
-    })
+    if (!isMobile && !activeTab) {
+      setActiveTab(0)
+      router.replace(
+        `/settings/${tabToPath[TabsEnum.AccountSettings]}`,
+        undefined,
+        {
+          shallow: true
+        }
+      )
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isMobile])
+
+  useEffect(() => {
+    if (activeTab) {
+      router.replace(`/settings/${tabToPath[activeTab]}`, undefined, {
+        shallow: true
+      })
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab])
 
   useEffect(() => {
-    router.replace(
-      path.join(
-        "/settings",
-        tabToPath[activeTab],
-        subTabsStack.map((t) => subTabToPath[t]).join("/")
-      ),
-      undefined,
-      {
-        shallow: true
-      }
-    )
+    if (activeTab !== undefined) {
+      router.replace(
+        path.join(
+          "/settings",
+          tabToPath[activeTab],
+          subTabsStack.map((t) => subTabToPath[t]).join("/")
+        ),
+        undefined,
+        {
+          shallow: true
+        }
+      )
+    }
     // Leave out the activeTab and router
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subTabsStack])
