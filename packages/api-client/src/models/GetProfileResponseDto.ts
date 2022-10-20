@@ -108,7 +108,7 @@ export interface GetProfileResponseDto {
      * @type {boolean}
      * @memberof GetProfileResponseDto
      */
-    isKYCVerified: boolean;
+    isCreator: boolean;
     /**
      * 
      * @type {boolean}
@@ -130,7 +130,7 @@ export function instanceOfGetProfileResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "profileId" in value;
     isInstance = isInstance && "userId" in value;
-    isInstance = isInstance && "isKYCVerified" in value;
+    isInstance = isInstance && "isCreator" in value;
     isInstance = isInstance && "isActive" in value;
     isInstance = isInstance && "isAdult" in value;
 
@@ -161,7 +161,7 @@ export function GetProfileResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'twitchUsername': !exists(json, 'twitchUsername') ? undefined : json['twitchUsername'],
         'twitterUsername': !exists(json, 'twitterUsername') ? undefined : json['twitterUsername'],
         'youtubeUsername': !exists(json, 'youtubeUsername') ? undefined : json['youtubeUsername'],
-        'isKYCVerified': json['isKYCVerified'],
+        'isCreator': json['isCreator'],
         'isActive': json['isActive'],
         'isAdult': json['isAdult'],
     };
@@ -190,7 +190,7 @@ export function GetProfileResponseDtoToJSON(value?: GetProfileResponseDto | null
         'twitchUsername': value.twitchUsername,
         'twitterUsername': value.twitterUsername,
         'youtubeUsername': value.youtubeUsername,
-        'isKYCVerified': value.isKYCVerified,
+        'isCreator': value.isCreator,
         'isActive': value.isActive,
         'isAdult': value.isAdult,
     };

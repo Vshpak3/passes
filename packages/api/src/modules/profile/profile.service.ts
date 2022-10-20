@@ -84,6 +84,7 @@ export class ProfileService {
         `${ProfileEntity.table}.*`,
         `${UserEntity.table}.display_name`,
         `${UserEntity.table}.is_adult`,
+        `${UserEntity.table}.is_creator`,
       )
       .first()
     if (creatorId) {

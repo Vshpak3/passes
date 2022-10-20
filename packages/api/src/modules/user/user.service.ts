@@ -26,6 +26,7 @@ import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { PassService } from '../pass/pass.service'
+import { ProfileEntity } from '../profile/entities/profile.entity'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletService } from '../wallet/wallet.service'
@@ -138,6 +139,9 @@ export class UserService {
       await trx<NotificationSettingsEntity>(
         NotificationSettingsEntity.table,
       ).insert({ user_id: user.id })
+      await trx<ProfileEntity>(ProfileEntity.table).insert({
+        user_id: user.id,
+      })
     })
 
     // create custodial wallets on create user

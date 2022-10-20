@@ -71,7 +71,7 @@ export class ProfileDto {
   youtubeUsername?: string | null
 
   @DtoProperty({ type: 'boolean' })
-  isKYCVerified: boolean
+  isCreator: boolean
 
   @DtoProperty({ type: 'boolean' })
   isActive: boolean
@@ -80,28 +80,34 @@ export class ProfileDto {
   isAdult: boolean
 
   constructor(
-    profile: ProfileEntity & {
-      display_name?: string
-      is_adult: boolean
-    },
+    profile:
+      | (ProfileEntity & {
+          display_name?: string
+          is_adult: boolean
+          is_creator: boolean
+        })
+      | undefined,
   ) {
-    this.profileId = profile.id
-    this.userId = profile.user_id
-    this.description = profile.description
-    this.displayName = profile.display_name
+    if (profile) {
+      this.profileId = profile.id
+      this.userId = profile.user_id
+      this.description = profile.description
+      this.displayName = profile.display_name
 
-    this.coverTitle = profile.cover_title
-    this.coverDescription = profile.cover_description
+      this.coverTitle = profile.cover_title
+      this.coverDescription = profile.cover_description
 
-    this.discordUsername = profile.discord_username
-    this.facebookUsername = profile.facebook_username
-    this.instagramUsername = profile.instagram_username
-    this.tiktokUsername = profile.tiktok_username
-    this.twitchUsername = profile.twitch_username
-    this.twitterUsername = profile.twitter_username
-    this.youtubeUsername = profile.youtube_username
+      this.discordUsername = profile.discord_username
+      this.facebookUsername = profile.facebook_username
+      this.instagramUsername = profile.instagram_username
+      this.tiktokUsername = profile.tiktok_username
+      this.twitchUsername = profile.twitch_username
+      this.twitterUsername = profile.twitter_username
+      this.youtubeUsername = profile.youtube_username
+      this.isCreator = profile.is_creator
 
-    this.isActive = profile.is_active
-    this.isAdult = profile.is_adult
+      this.isActive = profile.is_active
+      this.isAdult = profile.is_adult
+    }
   }
 }
