@@ -53,6 +53,7 @@ export const ProfileDetails: FC = () => {
           {ownsProfile && (
             <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
           )}
+
           <div className="col-span-4 flex flex-col px-5 pt-4">
             <ProfileInformationDesktop onChat={onChat} />
           </div>

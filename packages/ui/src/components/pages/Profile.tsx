@@ -18,10 +18,10 @@ export const Profile: FC = () => {
         <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
           <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
             <ProfileDetails />
-            {profileInfo.isCreator && <ProfileContent />}
+            {!!profileInfo.isCreator && <ProfileContent />}
           </div>
           <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
-            {profileInfo.isCreator && <PassTypes />}
+            {!!profileInfo.isCreator && <PassTypes />}
           </div>
         </div>
       ) : (

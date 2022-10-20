@@ -78,7 +78,6 @@ export class ProfileService {
         `${UserEntity.table}.id`,
       )
       .where(`${ProfileEntity.table}.is_active`, true)
-      .where(`${UserEntity.table}.is_creator`, true)
       .where(`${UserEntity.table}.is_active`, true)
       .select(
         `${ProfileEntity.table}.*`,

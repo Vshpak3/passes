@@ -44,12 +44,14 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         </div>
         {!ownsProfile && (
           <div className="align-center flex items-center space-x-3">
-            <RoundedIconButton
-              className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-              onClick={onChat}
-            >
-              <ChatIcon />
-            </RoundedIconButton>
+            {!!profileInfo?.isCreator && (
+              <RoundedIconButton
+                className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
+                onClick={onChat}
+              >
+                <ChatIcon />
+              </RoundedIconButton>
+            )}
             <PassesPinkButton
               name={isFollowing ? "Unfollow" : "Follow"}
               type={ButtonTypeEnum.SUBMIT}
@@ -133,12 +135,14 @@ export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
       />
       {!ownsProfile && (
         <div className="flex space-x-3">
-          <RoundedIconButton
-            className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-            onClick={onChat}
-          >
-            <ChatIcon />
-          </RoundedIconButton>
+          {!!profileInfo?.isCreator && (
+            <RoundedIconButton
+              className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
+              onClick={onChat}
+            >
+              <ChatIcon />
+            </RoundedIconButton>
+          )}
           <PassesPinkButton
             name={isFollowing ? "Unfollow" : "Follow"}
             type={ButtonTypeEnum.SUBMIT}
