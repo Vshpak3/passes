@@ -89,7 +89,7 @@ export class UserService {
     )
   }
 
-  async createWhitelistedPassesForUser(userId: string, email: string) {
+  private async createWhitelistedPassesForUser(userId: string, email: string) {
     const whitelisted = await this.dbReader<WhitelistedUsersEntity>(
       WhitelistedUsersEntity.table,
     )

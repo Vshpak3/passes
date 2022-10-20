@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { Response } from 'express'
 
 import {
@@ -35,15 +34,9 @@ import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
-const ADMIN_EMAIL = '@passes.com'
-
 @Injectable()
 export class AdminService {
-  private env: string
-  private secret: string
-
   constructor(
-    private readonly configService: ConfigService,
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
@@ -54,24 +47,7 @@ export class AdminService {
     private readonly s3contentService: S3ContentService,
     private readonly paymentService: PaymentService,
     private readonly passService: PassService,
-  ) {
-    this.secret = this.configService.get('admin.secret') as string
-    this.env = this.configService.get('infra.env') as string
-  }
-
-  async adminCheck(id: string, secret: string): Promise<UserDto> {
-    const reqUser = await this.userService.findOne({ id })
-
-    // Skip admin check in local development
-    if (this.env === 'dev') {
-      return reqUser
-    }
-
-    if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
-      throw new BadRequestException('Invalid request')
-    }
-    return reqUser
-  }
+  ) {}
 
   async findUser(userId?: string, username?: string): Promise<UserDto> {
     if ((!userId && !username) || (userId && username)) {

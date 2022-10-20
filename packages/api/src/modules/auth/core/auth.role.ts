@@ -8,6 +8,7 @@ export enum RoleEnum {
   GENERAL = 'general',
   CREATOR_ONLY = 'creatorOnly',
   REFRESH = 'refresh',
+  ADMIN = 'admin',
   // Special: truly no auth guard at all
   NO_AUTH_TRUE = 'noAuthTrue',
 }

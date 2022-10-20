@@ -1,23 +1,47 @@
-import { ExecutionContext, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  ExecutionContext,
+  Injectable,
+} from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { AuthGuard } from '@nestjs/passport'
 
-import { AdminService } from './admin.service'
+import { UserDto } from '../user/dto/user.dto'
+// import { UserService } from '../user/user.service'
 
-/**
- * All admin endpoints are protected via this guard. It is set on the Admin
- * controller and will always be called after the main JWT authentication:
- *   https://docs.nestjs.com/faq/request-lifecycle#summary
- */
+const ADMIN_EMAIL = '@passes.com'
+
 @Injectable()
 export class AdminGuard extends AuthGuard('jwt') {
-  constructor(private readonly adminService: AdminService) {
+  private env: string
+  private secret: string
+
+  constructor(
+    private readonly configService: ConfigService, // private readonly userService: UserService,
+  ) {
     super()
+    this.secret = this.configService.get('admin.secret') as string
+    this.env = this.configService.get('infra.env') as string
+  }
+
+  async adminCheck(id: string, secret: string): Promise<UserDto> {
+    const reqUser = {} as UserDto //await this.userService.findOne({ id })
+
+    // Skip admin check in local development
+    if (this.env === 'dev') {
+      return reqUser
+    }
+
+    if (!reqUser.email.endsWith(ADMIN_EMAIL) || secret !== this.secret) {
+      throw new BadRequestException('Invalid request')
+    }
+    return reqUser
   }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // No need to call super, jwt auth is handled by global auth
     const req = context.switchToHttp().getRequest()
-    await this.adminService.adminCheck(req.user.id, req.body['secret'])
+    await this.adminCheck(req.user.id, req.body['secret'])
     return true
   }
 }
