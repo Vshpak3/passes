@@ -6,7 +6,6 @@ import createMentionPlugin, {
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
 import { TagDto } from "@passes/api-client"
-import classNames from "classnames"
 import {
   CharacterMetadata,
   convertFromRaw,
@@ -22,6 +21,7 @@ import React, {
   useRef,
   useState
 } from "react"
+import { SearchResult } from "src/components/atoms/search/user/UserSearchResults"
 import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
@@ -34,27 +34,18 @@ const Entry: FC<EntryComponentProps> = ({
   mention,
   isFocused,
   ...parentProps
-}) => (
-  <div {...parentProps} className="z-50 flex flex-col py-2 px-4">
-    <div
-      className={classNames(
-        "flex cursor-pointer flex-row items-center gap-2 text-sm font-bold text-[#868487] hover:text-[#9c4dc1]",
-        { "text-[#9c4dc1]": isFocused }
-      )}
-    >
-      <img
-        src={mention.avatar}
-        className="h-8 w-8 rounded-full"
-        role="presentation"
-        alt=""
+}) => {
+  return (
+    <div {...parentProps}>
+      <SearchResult
+        userId={mention.id as string}
+        displayName={mention.displayName}
+        username={mention.username}
+        active={isFocused}
       />
-      <div>
-        <div>{mention.name}</div>
-        <div>@{mention.username}</div>
-      </div>
     </div>
-  </div>
-)
+  )
+}
 
 interface CustomMentionProps {
   placeholder?: string

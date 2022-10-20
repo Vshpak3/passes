@@ -5,7 +5,7 @@ import SearchIcon from "public/icons/messages-search-icon.svg"
 import React from "react"
 import {
   EmptyResult,
-  SearchResult
+  SearchResultOption
 } from "src/components/atoms/search/user/UserSearchResults"
 
 interface SearchBarProps {
@@ -57,7 +57,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         >
           {results.length ? (
             results.map((user: UserDisplayInfoDto) => (
-              <SearchResult
+              <SearchResultOption
                 key={user.userId}
                 userId={user.userId}
                 displayName={user?.displayName ?? ""}
