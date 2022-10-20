@@ -44,7 +44,12 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           fetch={getFeedForCreator}
           fetchProps={{ creatorId: profileUserId, pinned: false }}
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
+            return (
+              <Post
+                post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
+                pinnedPostCount={pinnedPosts.length}
+              />
+            )
           }}
           emptyElement={PostFeedEnd}
           loadingElement={PostFeedLoader}

@@ -352,7 +352,7 @@ export class PostService {
   async removePost(userId: string, postId: string) {
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId, deleted_at: null })
-      .update({ deleted_at: new Date() })
+      .update({ deleted_at: new Date(), pinned_at: null })
     await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
       .where({ user_id: userId })
       .decrement('num_posts', updated)
@@ -647,7 +647,9 @@ export class PostService {
           .count('*')
       )[0]['count(*)'] >= MAX_PINNED_POST
     ) {
-      throw new BadPostPropertiesException('Too many pinned posts')
+      throw new BadPostPropertiesException(
+        `Can only pin a max of ${MAX_PINNED_POST} posts`,
+      )
     }
     return (
       (await this.dbWriter<PostEntity>(PostEntity.table)

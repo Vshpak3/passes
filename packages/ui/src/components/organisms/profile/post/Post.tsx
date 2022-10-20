@@ -21,18 +21,22 @@ import { PostHeader } from "./PostHeader"
 import { PostMedia } from "./PostMedia"
 import { PostTextContent } from "./PostTextContent"
 
+const MAX_PINNED_POST = 3
+
 interface PostProps {
   post: PostDto
   redirectOnDelete?: boolean
   isPinned?: boolean
   isNewPost?: boolean
+  pinnedPostCount?: number
 }
 
 export const Post: FC<PostProps> = ({
   post,
   redirectOnDelete = false,
   isPinned = false,
-  isNewPost = false
+  isNewPost = false,
+  pinnedPostCount = 0
 }) => {
   const router = useRouter()
   const { user } = useUser()
@@ -74,6 +78,10 @@ export const Post: FC<PostProps> = ({
       }
     }),
     ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
+      if (pinnedPostCount === MAX_PINNED_POST) {
+        toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
+        return
+      }
       await pinPost(post)
       toast.success("The post has been pinned")
       mutatePinnedPosts()
