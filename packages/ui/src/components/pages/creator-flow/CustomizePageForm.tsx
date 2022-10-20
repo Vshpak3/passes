@@ -329,7 +329,8 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
           </div>
         </div>
 
-        <div className="mb-6 flex gap-[6px]">
+        {/* Temp remove for Circle */}
+        {/* <div className="mb-6 flex gap-[6px]">
           <FormInput
             register={register}
             type="checkbox"
@@ -341,7 +342,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
             My work contains audio or visual creations depicting explicit sexual
             situations, including nudity in sexual contexts.
           </div>
-        </div>
+        </div> */}
 
         <div className="mb-6 flex flex-col">
           <PassesPinkButton
