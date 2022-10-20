@@ -2,7 +2,7 @@ import { PassDto } from "@passes/api-client"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
-// import { EthereumIcon } from "src/icons/eth-icon"
+import { EthereumIcon } from "src/icons/eth-icon"
 import { SolanaIcon } from "src/icons/sol-icon"
 
 interface PassTileCardProps {
@@ -30,7 +30,7 @@ export const PassTileCard: FC<PassTileCardProps> = ({ pass }) => {
               <div className="text-[18px] font-[700]">{pass.title}</div>
               <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
                 <ConditionRendering condition={pass.chain === "eth"}>
-                  <SolanaIcon /> Ethereum
+                  <EthereumIcon /> Ethereum
                 </ConditionRendering>
                 <ConditionRendering condition={pass.chain === "sol"}>
                   <SolanaIcon /> Solana

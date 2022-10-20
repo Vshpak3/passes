@@ -63,7 +63,7 @@ export const Carousel = ({
           <NextImageArrow />
         </button>
       )}
-      <div className="absolute right-[10px] top-[14px] z-[2] w-fit rounded-[24px] bg-black/[0.15] px-[16px] py-[6px]">
+      <div className="absolute right-[10px] top-[14px] z-[2] w-fit select-none rounded-[24px] bg-black/[0.15] px-[16px] py-[6px]">
         {activeSlideIndex + 1}/{contents.length}
       </div>
       <Slider ref={(ref) => (sliderRef.current = ref)} {...sliderSettings}>

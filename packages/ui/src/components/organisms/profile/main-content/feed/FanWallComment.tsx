@@ -56,6 +56,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
       !isOwner && ownsProfile && !isHidden,
       async () => {
         setIsHidden(true)
+        setShowHidden(false)
         await hideFanWallComment(fanWallCommentId)
       }
     ),

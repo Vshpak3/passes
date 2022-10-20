@@ -57,6 +57,7 @@ export const Comment: FC<CommentProps> = ({
     }),
     ...DropDownGeneral("Hide", !isOwner && ownsPost && !isHidden, async () => {
       setIsHidden(true)
+      setShowHidden(false)
       await hideComment(postId, commentId)
     }),
     ...DropDownGeneral("Unhide", !isOwner && ownsPost && isHidden, async () => {
