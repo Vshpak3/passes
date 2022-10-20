@@ -105,39 +105,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
     closeEditor()
 
-    const mentionIndices = values.tags.map((tag) => tag.index)
-    const nonMentionIndices = []
-
-    // Record "non-mention indices", i.e. indices with "@" that are not mentions
-    for (let i = 0; i <= values.text.length; i++) {
-      if (values.text[i] === "@" && !mentionIndices.includes(i)) {
-        nonMentionIndices.push(i)
-      }
-    }
-
-    const strippedText = values.text.replaceAll(/\s@\w*/g, " @").trimEnd()
-
-    // Record new indices of mentions in stripped text
-    for (let i = strippedText.length - 1; i >= 0; i--) {
-      if (strippedText[i] === "@") {
-        if (
-          nonMentionIndices.length &&
-          nonMentionIndices[nonMentionIndices.length - 1] >
-            mentionIndices[mentionIndices.length - 1]
-        ) {
-          nonMentionIndices.pop()
-        } else {
-          mentionIndices.pop()
-          values.tags[mentionIndices.length].index = i
-          if (!mentionIndices.length) {
-            break
-          }
-        }
-      }
-    }
-
     const post: CreatePostRequestDto = {
-      text: strippedText,
+      text: values.text,
       tags: values.tags,
       passIds: selectedPasses,
       expiresAt: values.expiresAt,
