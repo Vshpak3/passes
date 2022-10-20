@@ -1,6 +1,8 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
+import { format } from "date-fns"
 import { FC, MouseEvent } from "react"
+import { ImageWithDefault } from "src/components/atoms/ImageWithDefault"
 import { ContentService } from "src/helpers/content"
 
 interface VaultMediaItemProps {
@@ -20,8 +22,6 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   isMaxFileCountSelected,
   handleClickOnItem
 }) => {
-  const date = content.createdAt?.toDateString().slice(5, 11)
-
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
   ).length
@@ -59,22 +59,18 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         )}
         onClick={handleClick}
       >
-        <img // All content types have an image thumbnail
+        <ImageWithDefault // All content types have an image thumbnail
           src={ContentService.userContentThumbnail(content)}
-          alt=""
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null
-            currentTarget.src = "" // TODO: consider adding default image
-          }}
+          defaultColor="black/50"
         />
         <div className="flex p-3">
           <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
             <div
               onMouseDown={(e) => e.preventDefault()}
               onCopy={(e) => e.preventDefault()}
-              className="hidden text-center text-[11px] font-semibold text-[#ffffff] md:block"
+              className="hidden text-center text-[11px] font-semibold text-white md:block"
             >
-              {date}
+              {format(content.createdAt || new Date(), "LLL dd")}
             </div>
           </div>
           <div

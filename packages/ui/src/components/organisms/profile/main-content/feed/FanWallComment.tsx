@@ -30,10 +30,12 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
     commenterUsername,
     createdAt,
     isOwner,
-    isHidden,
+    isHidden: _isHidden,
     text,
     tags
   } = comment
+
+  const [isHidden, setIsHidden] = useState(_isHidden)
 
   const dropdownItems: DropdownOption[] = [
     ...DropDownReport(!isOwner && !ownsProfile, {
@@ -52,6 +54,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
       "Hide",
       !isOwner && ownsProfile && !isHidden,
       async () => {
+        setIsHidden(true)
         await hideFanWallComment(fanWallCommentId)
       }
     ),
@@ -59,6 +62,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
       "Unhide",
       !isOwner && ownsProfile && isHidden,
       async () => {
+        setIsHidden(false)
         await unhideFanWallComment(fanWallCommentId)
       }
     )
@@ -67,7 +71,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   return (
     <ConditionRendering condition={!removed}>
       <div className="mt-6 flex">
-        <FormContainer className="!min-h-[10px] rounded-[20px] border border-[#ffffff]/10 px-5 pt-5 backdrop-blur-[100px]">
+        <FormContainer className="!min-h-[10px] rounded-[20px] border border-white/10 px-5 pt-5 backdrop-blur-[100px]">
           <PostHeader
             createdAt={createdAt}
             displayName={commenterDisplayName}
@@ -77,8 +81,12 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
             dropdownOptions={dropdownItems}
           />
           <div className="flex flex-col items-start">
-            <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-              <FormattedText text={text} tags={tags} />
+            <p className="break-normal break-all text-start text-base font-medium text-white/90">
+              {!isHidden ? (
+                <FormattedText text={text} tags={tags} />
+              ) : (
+                <div className="text-white/40">hidden</div>
+              )}
             </p>
           </div>
         </FormContainer>

@@ -36,8 +36,10 @@ export const Comment: FC<CommentProps> = ({
     isOwner,
     postId,
     commenterId,
-    isHidden
+    isHidden: _isHidden
   } = comment
+
+  const [isHidden, setIsHidden] = useState(_isHidden)
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!isOwner && !ownsPost, {
@@ -54,9 +56,11 @@ export const Comment: FC<CommentProps> = ({
       setRemoved(true)
     }),
     ...DropDownGeneral("Hide", !isOwner && ownsPost && !isHidden, async () => {
+      setIsHidden(true)
       await hideComment(postId, commentId)
     }),
     ...DropDownGeneral("Unhide", !isOwner && ownsPost && isHidden, async () => {
+      setIsHidden(false)
       await unhideComment(postId, commentId)
     })
   ]
@@ -93,7 +97,11 @@ export const Comment: FC<CommentProps> = ({
               fontSize={14}
               className="whitespace-pre-wrap break-all font-light"
             >
-              <FormattedText text={comment.text} tags={comment.tags} />
+              {!isHidden ? (
+                <FormattedText text={comment.text} tags={comment.tags} />
+              ) : (
+                <div className="text-white/40">hidden</div>
+              )}
             </Text>
           </div>
         </div>

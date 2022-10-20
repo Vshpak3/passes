@@ -1,5 +1,6 @@
 import {
   CreatePostRequestDto,
+  GetPostsRequestDto,
   PostApi,
   UpdatePostRequestDto
 } from "@passes/api-client"
@@ -19,5 +20,9 @@ export const usePost = () => {
     await api.removePost({ postId })
   }
 
-  return { createPost, updatePost, removePost }
+  const getPosts = async (req: GetPostsRequestDto) => {
+    return await api.getPosts({ getPostsRequestDto: req })
+  }
+
+  return { createPost, updatePost, removePost, getPosts }
 }

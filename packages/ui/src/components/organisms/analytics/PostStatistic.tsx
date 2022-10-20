@@ -1,8 +1,9 @@
-import { PostApi, PostDto } from "@passes/api-client"
-import React, { useState } from "react"
+import { PostDto } from "@passes/api-client"
+import { useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { formatText } from "src/helpers/formatters"
+import { usePost } from "src/hooks/usePost"
 
 interface PostStatisticProps {
   post: PostDto
@@ -10,17 +11,17 @@ interface PostStatisticProps {
 
 export const PostStatistic = ({ post }: PostStatisticProps) => {
   const [deleted, setDeleted] = useState<boolean>(false)
+  const { removePost } = usePost()
 
   const deletePost = async () => {
-    const postApi = new PostApi()
     try {
-      await postApi.removePost({ postId: post.postId })
+      await removePost(post.postId)
       setDeleted(true)
     } catch (error: any) {
       toast.error("Failed to delete: please contact support")
     }
   }
-  const canDelete = !deleted && !post.deletedAt
+
   return (
     <div className="flex flex-row justify-between border-b border-passes-dark-200">
       <div className="flex h-[72px] flex-1 items-center justify-center">
@@ -28,8 +29,10 @@ export const PostStatistic = ({ post }: PostStatisticProps) => {
           {post.createdAt.toLocaleString()}
         </span>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700] ">{formatText(post.text)}</span>
+      <div className="flex h-[72px] flex-1 items-center justify-start overflow-hidden">
+        <span className="w-full overflow-hidden text-ellipsis text-[14px] font-[700]">
+          {formatText(post.text)}
+        </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
@@ -50,11 +53,16 @@ export const PostStatistic = ({ post }: PostStatisticProps) => {
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[12px] font-[500]">{post.earningsPurchases}</span>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700] text-passes-pink-100">
-          {canDelete && <Button onClick={deletePost}>Delete</Button>}
-          {!canDelete && <>Deleted</>}
-        </span>
+      <div className="flex h-[72px] flex-1 items-center justify-start">
+        {!deleted && !post.deletedAt ? (
+          <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-passes-pink-100">
+            <Button onClick={deletePost}>Delete</Button>
+          </span>
+        ) : (
+          <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-gray-500">
+            Deleted
+          </span>
+        )}
       </div>
     </div>
   )

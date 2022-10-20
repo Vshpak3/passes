@@ -1,5 +1,6 @@
 import { ContentDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction } from "react"
+import { ImageWithDefault } from "src/components/atoms/ImageWithDefault"
 import { Modal } from "src/components/organisms/Modal"
 import { ContentService } from "src/helpers/content"
 
@@ -24,17 +25,12 @@ export const VaultMediaModal: FC<VaultMediaModalProps> = ({
     >
       <div className="flex flex-row justify-center">
         {content && content.contentType === "image" && (
-          <img
+          <ImageWithDefault
             src={ContentService.userContentThumbnail(content)}
             className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
-            alt=""
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null
-              currentTarget.src = "/img/profile/default-profile-img.svg"
-            }}
+            defaultColor="black/50"
           />
         )}
-
         {content && content.contentType === "video" && (
           <VaultVideo videoUrl={ContentService.userContentMedia(content)} />
         )}
