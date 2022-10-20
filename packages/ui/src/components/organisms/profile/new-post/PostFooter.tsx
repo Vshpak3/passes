@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material"
 import { FC } from "react"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
@@ -46,7 +47,11 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
           disabledClass="opacity-[0.5]"
         >
           <Text fontSize={16} className="font-bold">
-            Post
+            {disableForm ? (
+              <CircularProgress size="14px" color="inherit" />
+            ) : (
+              "Post"
+            )}
           </Text>
         </Button>
       </div>

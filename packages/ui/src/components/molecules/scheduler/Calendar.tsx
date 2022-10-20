@@ -76,7 +76,7 @@ export const Calendar: FC = () => {
           .map((_, i) => (
             <>
               <div
-                key={`desktop-${i}`}
+                key={`${enUS.localize?.day(i)}-${i}`}
                 className="hidden w-[14.2%] pr-[12px] text-end md:grid"
               >
                 {enUS.localize?.day(i)}
@@ -95,7 +95,7 @@ export const Calendar: FC = () => {
           const numberPostInDate = countEventsInDate(date.date)
           return (
             <div
-              key={index}
+              key={`${numberPostInDate}-${index}`}
               className={classNames({
                 "relative h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px]":
                   true,

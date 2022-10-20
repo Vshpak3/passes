@@ -14,5 +14,5 @@ export const formatWalletAddress = (
 export const copyWalletToClipboard = (address: string) => {
   copy(address)
 
-  toast.info("Wallet address copied to clipboard")
+  toast.success("Wallet address copied to clipboard")
 }
