@@ -7,6 +7,7 @@ import {
   GetListResponseDto,
   GetListResponseDtoTypeEnum,
   ListApi,
+  ListDtoTypeEnum,
   ListMemberDto
 } from "@passes/api-client"
 import { debounce } from "lodash"
@@ -286,7 +287,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             return (
               <ListMember
                 fanInfo={arg}
-                removable={true}
+                removable={listInfo?.type === ListDtoTypeEnum.Normal}
                 onRemoveFan={handleRemoveFan}
               />
             )

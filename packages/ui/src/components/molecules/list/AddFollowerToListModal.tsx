@@ -1,11 +1,10 @@
-import { Avatar } from "@mui/material"
 import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React from "react"
 import { Button } from "src/components/atoms/Button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
-import { useFollowSearch } from "src/hooks/search/useFollowSearch"
-import { CheckVerified } from "src/icons/check-verified"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"
 
 interface AddFollowerToListModalProps extends ModalProps {
   onSubmit(listName: string): void
@@ -17,7 +16,7 @@ const AddFollowerToListModal = ({
   ...rest
 }: AddFollowerToListModalProps) => {
   const { results, searchValue, onChangeInput, onSearchFocus, searchRef } =
-    useFollowSearch()
+    useFollowerSearch()
 
   return (
     <Modal setOpen={setOpen} {...rest} childrenClassname="w-[692px]">
@@ -46,14 +45,15 @@ const AddFollowerToListModal = ({
           >
             <div className="flex items-center">
               <div className="relative">
-                <div className="absolute right-[-5px] bottom-[0px] z-20 h-[18px] w-[18px] overflow-hidden rounded-full">
+                {/* <div className="absolute right-[-5px] bottom-[0px] z-20 h-[18px] w-[18px] overflow-hidden rounded-full">
                   <CheckVerified height={18} width={18} />
-                </div>
-                <Avatar
+                </div> */}
+                {/* <Avatar
                   alt="Name"
                   className="h-[50px] w-[50px] rounded-full"
                   src="https://cdn1.vectorstock.com/i/1000x1000/32/10/young-man-avatar-character-vector-14213210.jpg"
-                />
+                /> */}
+                <ProfileThumbnail userId={user.userId} />
               </div>
               <span className="ml-3 text-base font-medium leading-6 text-white">
                 {user.username}

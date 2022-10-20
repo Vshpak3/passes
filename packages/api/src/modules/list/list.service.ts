@@ -299,17 +299,19 @@ export class ListService {
       .where({ creator_id: userId })
       .whereIn('follower_id', addListMembersDto.userIds)
 
-    await this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
-      .insert(
-        followers.map(function (follower) {
-          return {
-            list_id: addListMembersDto.listId,
-            user_id: follower.follower_id,
-          }
-        }),
-      )
-      .onConflict(['list_id', 'user_id'])
-      .ignore()
+    if (followers.length) {
+      await this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
+        .insert(
+          followers.map(function (follower) {
+            return {
+              list_id: addListMembersDto.listId,
+              user_id: follower.follower_id,
+            }
+          }),
+        )
+        .onConflict(['list_id', 'user_id'])
+        .ignore()
+    }
     await this.updateCount(addListMembersDto.listId)
   }
 
