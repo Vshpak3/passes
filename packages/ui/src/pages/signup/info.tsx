@@ -112,20 +112,27 @@ const SignupInfoPage: FC = () => {
         }
       })
 
-      toast.dismiss()
-
       const setRes = setTokens(res, setAccessToken, setRefreshToken)
       if (!setRes) {
         return
       }
-
-      mutate()
     } catch (err: any) {
       toast.dismiss()
       errorMessage(err, true)
       setIsSubmitting(false)
     }
   }
+
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (isSubmitting) {
+      const timer = setTimeout(() => {
+        mutate()
+        setCount(count + 1)
+      }, 3e3)
+      return () => clearTimeout(timer)
+    }
+  }, [count, isSubmitting, mutate])
 
   useEffect(() => {
     if (user) {
