@@ -6,16 +6,16 @@ const PASS_HOLDER_TAB_OPTIONS: PassHolderFilterOption[] = [
   {
     passType: PassDtoTypeEnum.Subscription,
     expired: false,
-    label: "Subscription (Active)"
+    label: "Subscription Passes"
   },
   {
     passType: PassDtoTypeEnum.Lifetime,
-    label: "Lifetime"
+    label: "Lifetime Passes"
   },
   {
     passType: PassDtoTypeEnum.Subscription,
     expired: true,
-    label: "Subscription (Expired)"
+    label: "Subscription Passes"
   }
 ]
 
@@ -45,15 +45,19 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
           mt-[10px]
           box-border
           flex
-          w-fit"
+          w-fit
+          gap-[30px]
+          border-b
+          border-b-[#2C282D]
+          "
     >
       {PASS_HOLDER_TAB_OPTIONS.map((option) => (
         <div
           className={classNames(
             option.passType === passType && expired === option.expired
-              ? "" + "border-b-[3px] border-[#9C4DC1] px-[10px] text-white"
+              ? "" + "border-b-[3px] border-[#9C4DC1] text-white"
               : "px-[10px] text-grayDark-gray8",
-            "block cursor-pointer justify-between pt-[10px] text-[16px] font-bold first:mr-[58px]"
+            "flex cursor-pointer  flex-row justify-between px-[30px] pb-[10px] text-[16px] font-bold"
           )}
           key={option.label}
         >

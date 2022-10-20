@@ -13,6 +13,13 @@ export const creatorToolsItems: SidebarNavigation[] = [
   //   creatorOnly: true
   // },
   {
+    id: "passes",
+    name: "My Passes",
+    href: "/tools/passes",
+    icon: MyPassesIcon,
+    creatorOnly: false
+  },
+  {
     id: "list",
     name: "List",
     href: "/tools/list",
@@ -59,13 +66,6 @@ export const navigation: SidebarNavigation[] = [
     name: "Messages",
     href: "/messages",
     icon: MessagesIcon,
-    creatorOnly: false
-  },
-  {
-    id: "passes",
-    name: "My Passes",
-    href: "/passes",
-    icon: MyPassesIcon,
     creatorOnly: false
   },
   {
