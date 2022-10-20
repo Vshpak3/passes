@@ -25,7 +25,7 @@ const MAX_PINNED_POST = 3
 
 interface PostProps {
   post: PostDto
-  redirectOnDelete?: boolean
+  postByUrl?: boolean
   isPinned?: boolean
   isNewPost?: boolean
   pinnedPostCount?: number
@@ -33,7 +33,7 @@ interface PostProps {
 
 export const Post: FC<PostProps> = ({
   post,
-  redirectOnDelete = false,
+  postByUrl = false,
   isPinned = false,
   isNewPost = false,
   pinnedPostCount = 0
@@ -63,7 +63,9 @@ export const Post: FC<PostProps> = ({
     username
   } = post
 
-  const [isRemoved, setIsRemoved] = useState(!!pinnedAt !== isPinned)
+  const [isRemoved, setIsRemoved] = useState(
+    !!pinnedAt !== isPinned && !postByUrl
+  )
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, {
@@ -73,7 +75,7 @@ export const Post: FC<PostProps> = ({
     ...DropDownGeneral("Delete", post.isOwner, async () => {
       await removePost(postId)
       setIsRemoved(true)
-      if (redirectOnDelete && user) {
+      if (postByUrl && user) {
         router.push(`/${user.username}`)
       }
     }),

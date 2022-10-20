@@ -1,6 +1,5 @@
 import { PostDto } from "@passes/api-client"
 import classnames from "classnames"
-import Image from "next/image"
 import MessageIcon from "public/icons/message-dots-square.svg"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
@@ -43,8 +42,9 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
   const { viewPostActiveIndex } = useViewPostModal()
-  const [showcaseImg, setShowcaseImg] = useState<null | string>(null)
   const { removePost } = usePost()
+
+  const [imageToShow, setShowcaseImg] = useState<null | string>(null)
 
   // Set image if it exists in post
   useEffect(() => {
@@ -86,28 +86,17 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     <Dialog open={true} className="z-10" onClose={() => setPost(null)}>
       <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[20px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
         <div className="relative flex flex-1">
-          {!postUnlocked && (
+          {!postUnlocked && imageToShow && (
             <div className="absolute h-[80%] w-[80%] translate-x-[10%] translate-y-[10%] [filter:blur(15px)]">
-              <Image
-                src={showcaseImg || ""}
-                layout="fill"
-                alt="post"
-                objectFit="cover"
-                objectPosition="center"
-              />
+              <img src={imageToShow} alt="post" />
             </div>
           )}
           <div className="relative mr-[27px] flex h-96 flex-1 flex-col space-y-[35px] rounded-[20px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px] lg:h-auto">
             <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px]">
-              {postUnlocked && post.contents && post.contents.length === 1 && (
-                <Image
-                  src={showcaseImg || ""}
-                  layout="fill"
-                  alt="post"
-                  objectFit="cover"
-                  objectPosition="center"
-                />
-              )}
+              {postUnlocked &&
+                post.contents &&
+                post.contents.length === 1 &&
+                imageToShow && <img src={imageToShow} alt="post" />}
               <div className="relative mt-3 flex h-[500px] w-full w-[600px] flex-row items-center justify-center bg-transparent">
                 {postUnlocked && post.contents && post.contents.length > 1 && (
                   <Carousel
