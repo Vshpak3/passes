@@ -1,8 +1,9 @@
 import { FC } from "react"
 import { Text } from "src/components/atoms/Text"
+
 interface NameDisplayProps {
   username: string
-  displayName?: string
+  displayName: string
 }
 
 export const NameDisplay: FC<NameDisplayProps> = ({
@@ -11,8 +12,8 @@ export const NameDisplay: FC<NameDisplayProps> = ({
 }) => {
   return (
     <>
-      {displayName ?? ""}
-      <Text fontSize={!displayName ? 14 : 11} className="text-gray-500">
+      {displayName}
+      <Text fontSize={11} className="text-gray-500">
         {" @" + username}
       </Text>
     </>

@@ -37,18 +37,6 @@ export interface GetPostResponseDto {
      * @type {string}
      * @memberof GetPostResponseDto
      */
-    postId: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof GetPostResponseDto
-     */
-    purchasable: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetPostResponseDto
-     */
     userId: string;
     /**
      * 
@@ -62,6 +50,18 @@ export interface GetPostResponseDto {
      * @memberof GetPostResponseDto
      */
     displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPostResponseDto
+     */
+    postId: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetPostResponseDto
+     */
+    purchasable: boolean;
     /**
      * 
      * @type {string}
@@ -195,11 +195,11 @@ export interface GetPostResponseDto {
  */
 export function instanceOfGetPostResponseDto(value: object): boolean {
     let isInstance = true;
-    isInstance = isInstance && "postId" in value;
-    isInstance = isInstance && "purchasable" in value;
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "displayName" in value;
+    isInstance = isInstance && "postId" in value;
+    isInstance = isInstance && "purchasable" in value;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "previewIndex" in value;
@@ -228,11 +228,11 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'postId': json['postId'],
-        'purchasable': json['purchasable'],
         'userId': json['userId'],
         'username': json['username'],
         'displayName': json['displayName'],
+        'postId': json['postId'],
+        'purchasable': json['purchasable'],
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'contents': !exists(json, 'contents') ? undefined : ((json['contents'] as Array<any>).map(ContentDtoFromJSON)),
@@ -266,11 +266,11 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
     }
     return {
         
-        'postId': value.postId,
-        'purchasable': value.purchasable,
         'userId': value.userId,
         'username': value.username,
         'displayName': value.displayName,
+        'postId': value.postId,
+        'purchasable': value.purchasable,
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'contents': value.contents === undefined ? undefined : ((value.contents as Array<any>).map(ContentDtoToJSON)),

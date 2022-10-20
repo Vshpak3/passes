@@ -21,12 +21,16 @@ export const NewFanwallPosts: React.FC<NewFanwallPosts> = ({
     createPost: CreateFanWallCommentRequestDto,
     fanWallCommentId: string
   ) => {
+    if (!user) {
+      return
+    }
+
     const comment: FanWallCommentDto = {
       fanWallCommentId,
       creatorId: createPost.creatorId,
-      commenterId: user?.userId ?? "",
-      commenterDisplayName: user?.displayName ?? "",
-      commenterUsername: user?.username ?? "",
+      commenterId: user.userId,
+      commenterDisplayName: user.displayName,
+      commenterUsername: user.username,
       text: createPost.text,
       tags: createPost.tags,
       createdAt: new Date(),

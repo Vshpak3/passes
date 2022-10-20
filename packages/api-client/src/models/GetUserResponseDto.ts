@@ -42,6 +42,12 @@ export interface GetUserResponseDto {
      * @type {string}
      * @memberof GetUserResponseDto
      */
+    displayName: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetUserResponseDto
+     */
     legalFullName: string;
     /**
      * 
@@ -55,12 +61,6 @@ export interface GetUserResponseDto {
      * @memberof GetUserResponseDto
      */
     birthday: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof GetUserResponseDto
-     */
-    displayName: string;
     /**
      * 
      * @type {boolean}
@@ -83,10 +83,10 @@ export function instanceOfGetUserResponseDto(value: object): boolean {
     isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "email" in value;
     isInstance = isInstance && "username" in value;
+    isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "legalFullName" in value;
     isInstance = isInstance && "countryCode" in value;
     isInstance = isInstance && "birthday" in value;
-    isInstance = isInstance && "displayName" in value;
 
     return isInstance;
 }
@@ -104,10 +104,10 @@ export function GetUserResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'userId': json['userId'],
         'email': json['email'],
         'username': json['username'],
+        'displayName': json['displayName'],
         'legalFullName': json['legalFullName'],
         'countryCode': json['countryCode'],
         'birthday': json['birthday'],
-        'displayName': json['displayName'],
         'isCreator': !exists(json, 'isCreator') ? undefined : json['isCreator'],
         'phoneNumber': !exists(json, 'phoneNumber') ? undefined : json['phoneNumber'],
     };
@@ -125,10 +125,10 @@ export function GetUserResponseDtoToJSON(value?: GetUserResponseDto | null): any
         'userId': value.userId,
         'email': value.email,
         'username': value.username,
+        'displayName': value.displayName,
         'legalFullName': value.legalFullName,
         'countryCode': value.countryCode,
         'birthday': value.birthday,
-        'displayName': value.displayName,
         'isCreator': value.isCreator,
         'phoneNumber': value.phoneNumber,
     };

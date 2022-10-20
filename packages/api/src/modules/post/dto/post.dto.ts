@@ -1,3 +1,4 @@
+import { PickType } from '@nestjs/swagger'
 import {
   ArrayMaxSize,
   ArrayMinSize,
@@ -10,10 +11,7 @@ import {
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
-import {
-  USER_DISPLAY_NAME_LENGTH,
-  USER_USERNAME_LENGTH,
-} from '../../user/constants/schema'
+import { UserDto } from '../../user/dto/user.dto'
 import {
   POST_PRICE_MAX_PRICE,
   POST_TAG_MAX_COUNT,
@@ -21,23 +19,16 @@ import {
 } from '../constants/schema'
 import { PostEntity } from '../entities/post.entity'
 
-export class PostDto {
+export class PostDto extends PickType(UserDto, [
+  'userId',
+  'username',
+  'displayName',
+] as const) {
   @DtoProperty({ type: 'uuid' })
   postId: string
 
   @DtoProperty({ type: 'boolean' })
   purchasable: boolean
-
-  @DtoProperty({ type: 'uuid' })
-  userId: string
-
-  @Length(1, USER_USERNAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  username: string
-
-  @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  displayName: string
 
   @Length(0, POST_TEXT_LENGTH)
   @DtoProperty({ type: 'string' })
@@ -125,6 +116,7 @@ export class PostDto {
     isOwner,
     contents?: ContentDto[],
   ) {
+    super()
     if (post) {
       this.text = post.text
       this.numLikes = post.num_likes

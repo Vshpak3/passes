@@ -46,6 +46,12 @@ report_problem_file "${javascript_files}" \
   "The following files are newly added JavaScript files:" \
   "To fix, please convert to Typescript."
 
+# Detect any newly added non-TS files.
+not_allowed_files=$(find src -type f -not -name '*.ts*' | grep -v '.css$' | sort)
+report_problem_file "${not_allowed_files}" \
+  "The following files are not Typescript nor CSS:" \
+  "To fix, please remove."
+
 # Detect assets that are no longer being used.
 extra_assets=($(
   find public -type f | while read file ; do

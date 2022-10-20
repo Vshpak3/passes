@@ -39,6 +39,10 @@ export class UserDto {
   @DtoProperty({ type: 'string', forceLower: true })
   username: string
 
+  @Length(1, USER_DISPLAY_NAME_LENGTH)
+  @DtoProperty({ type: 'string' })
+  displayName: string
+
   @Length(1, USER_LEGAL_FULL_NAME_LENGTH)
   @DtoProperty({ type: 'string', forceLower: true })
   legalFullName: string
@@ -51,10 +55,6 @@ export class UserDto {
   @Validate(IsOnlyDate)
   @DtoProperty({ type: 'string' })
   birthday: string
-
-  @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  displayName: string
 
   @DtoProperty({ type: 'boolean', optional: true })
   isCreator?: boolean

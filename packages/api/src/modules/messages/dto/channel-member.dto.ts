@@ -42,8 +42,8 @@ export class ChannelMemberDto extends ChannelDto {
   otherUserUsername: string
 
   @Length(1, USER_DISPLAY_NAME_LENGTH)
-  @DtoProperty({ type: 'string', optional: true })
-  otherUserDisplayName?: string
+  @DtoProperty({ type: 'string' })
+  otherUserDisplayName: string
 
   constructor(
     channelMember: ChannelMemberEntity &

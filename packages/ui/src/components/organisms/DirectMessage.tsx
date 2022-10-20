@@ -25,7 +25,7 @@ export type List = {
   listId: string
   type: string
   members?: {
-    displayName?: string
+    displayName: string
     userId: string
     username: string
     listMemberId: string

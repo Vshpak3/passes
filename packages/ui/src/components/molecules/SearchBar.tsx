@@ -60,7 +60,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               <SearchResultOption
                 key={user.userId}
                 userId={user.userId}
-                displayName={user?.displayName ?? ""}
+                displayName={user.displayName}
                 username={user.username}
               />
             ))

@@ -90,7 +90,7 @@ export interface GetChannelResponseDto {
      * @type {string}
      * @memberof GetChannelResponseDto
      */
-    otherUserDisplayName?: string;
+    otherUserDisplayName: string;
 }
 
 /**
@@ -108,6 +108,7 @@ export function instanceOfGetChannelResponseDto(value: object): boolean {
     isInstance = isInstance && "tipRecieved" in value;
     isInstance = isInstance && "unreadTip" in value;
     isInstance = isInstance && "otherUserUsername" in value;
+    isInstance = isInstance && "otherUserDisplayName" in value;
 
     return isInstance;
 }
@@ -133,7 +134,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'tipRecieved': json['tipRecieved'],
         'unreadTip': json['unreadTip'],
         'otherUserUsername': json['otherUserUsername'],
-        'otherUserDisplayName': !exists(json, 'otherUserDisplayName') ? undefined : json['otherUserDisplayName'],
+        'otherUserDisplayName': json['otherUserDisplayName'],
     };
 }
 

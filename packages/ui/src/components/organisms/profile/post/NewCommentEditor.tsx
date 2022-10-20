@@ -28,6 +28,10 @@ export const NewCommentEditor: React.FC<NewCommentProps> = ({
     const text = getValues("comment")
     const tags = getValues("mentions")
 
+    if (!user) {
+      return
+    }
+
     const api = new CommentApi()
     try {
       const { commentId } = await api.createComment({
@@ -43,9 +47,9 @@ export const NewCommentEditor: React.FC<NewCommentProps> = ({
         postId,
         text,
         tags,
-        commenterId: user?.userId ?? "",
-        commenterDisplayName: user?.displayName ?? "",
-        commenterUsername: user?.username ?? "",
+        commenterId: user.userId,
+        commenterDisplayName: user.displayName,
+        commenterUsername: user.username,
         createdAt: new Date(),
         isHidden: false,
         isOwner: true

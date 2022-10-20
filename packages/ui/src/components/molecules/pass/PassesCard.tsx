@@ -2,7 +2,7 @@ import { PassDto } from "@passes/api-client"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
-import { EthereumIcon } from "src/icons/Eth-icon"
+import { EthereumIcon } from "src/icons/eth-icon"
 import { SolanaIcon } from "src/icons/sol-icon"
 
 interface PassTileCardProps {
