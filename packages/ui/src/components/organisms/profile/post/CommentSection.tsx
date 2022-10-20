@@ -1,5 +1,5 @@
 import { CommentDto, PostDto } from "@passes/api-client"
-import { FC, useCallback, useState } from "react"
+import { FC, memo, useCallback, useState } from "react"
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
 
@@ -10,21 +10,19 @@ interface CommentSectionProps {
   ownsPost: PostDto["isOwner"]
   incrementNumComments: () => void
   decrementNumComments: () => void
-  numComments?: number
 }
 
-export const CommentSection: FC<CommentSectionProps> = ({
+const CommentSectionUnemo: FC<CommentSectionProps> = ({
   postId = "",
   ownsPost,
   incrementNumComments,
-  decrementNumComments,
-  numComments
+  decrementNumComments
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
 
   const addNewComment = useCallback(
     (comment: CommentDto) => {
-      setNewComments((state) => [...state, comment])
+      setNewComments((state) => [comment, ...state])
       incrementNumComments()
     },
     [incrementNumComments]
@@ -32,12 +30,6 @@ export const CommentSection: FC<CommentSectionProps> = ({
 
   return (
     <div className="mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10">
-      <CommentFeed
-        postId={postId}
-        ownsPost={ownsPost}
-        numComments={numComments}
-        decrementNumComments={decrementNumComments}
-      />
       {newComments.map((comment) => {
         return (
           <Comment
@@ -48,7 +40,14 @@ export const CommentSection: FC<CommentSectionProps> = ({
           />
         )
       })}
+      <CommentFeed
+        postId={postId}
+        ownsPost={ownsPost}
+        decrementNumComments={decrementNumComments}
+      />
       <NewCommentEditor postId={postId} addComment={addNewComment} />
     </div>
   )
 }
+
+export const CommentSection = memo(CommentSectionUnemo)

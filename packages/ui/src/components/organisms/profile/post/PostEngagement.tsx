@@ -38,7 +38,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     () => setNumComments((state) => state - 1),
     []
   )
-
   const formattedNumComments = useMemo(
     () => compactNumberFormatter(numComments),
     [numComments]
@@ -93,7 +92,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
       {showCommentSection && (
         <CommentSection
           postId={postId}
-          numComments={numComments}
           incrementNumComments={incrementNumComments}
           decrementNumComments={decrementNumComments}
           ownsPost={isOwner}

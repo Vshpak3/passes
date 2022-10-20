@@ -26,7 +26,6 @@ const api = new CommentApi()
 export const CommentFeed: FC<CommentFeedProps> = ({
   postId,
   ownsPost,
-  numComments,
   decrementNumComments
 }) => {
   return (
@@ -53,9 +52,7 @@ export const CommentFeed: FC<CommentFeedProps> = ({
         </div>
       }
       loadMoreMessage="Load previous comments"
-      loadMorePosition={LoadMsgPositionEnum.TOP}
-      isReverse
-      numElements={numComments}
+      loadMorePosition={LoadMsgPositionEnum.BOTTOM}
     ></InfiniteLoad>
   )
 }

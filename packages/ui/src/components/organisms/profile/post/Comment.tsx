@@ -83,7 +83,13 @@ export const Comment: FC<CommentProps> = ({
                 <Text fontSize={14} className="text-gray-500">
                   @{comment.commenterUsername}
                 </Text>
+                {!!isHidden && (
+                  <Text fontSize={14} className="text-gray-500">
+                    &nbsp;&nbsp; hidden
+                  </Text>
+                )}
               </div>
+
               <div className="flex gap-x-2">
                 <TimeAgo
                   className="shrink-0 text-[12px] text-gray-300/60"
@@ -97,11 +103,7 @@ export const Comment: FC<CommentProps> = ({
               fontSize={14}
               className="whitespace-pre-wrap break-all font-light"
             >
-              {!isHidden ? (
-                <FormattedText text={comment.text} tags={comment.tags} />
-              ) : (
-                <div className="text-white/40">hidden</div>
-              )}
+              <FormattedText text={comment.text} tags={comment.tags} />
             </Text>
           </div>
         </div>

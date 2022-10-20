@@ -2,7 +2,6 @@ import { TagDto } from "@passes/api-client"
 import { FC, useEffect, useState } from "react"
 import { useGlobalCache } from "src/contexts/GlobalCache"
 import { formatReplacedText } from "src/helpers/formatters"
-import { sleep } from "src/helpers/sleep"
 import { getUsername } from "src/helpers/username"
 type FormattedTextProps = {
   tags: TagDto[]
@@ -18,10 +17,7 @@ export const FormattedText: FC<FormattedTextProps> = ({ text, tags }) => {
   const insertMentions = async (text: string, tags: TagDto[]) => {
     const tagMap: Record<number, string> = {}
     await Promise.all(
-      tags.map(async (tag, index) => {
-        if (index > 0) {
-          await sleep("10 second")
-        }
+      tags.map(async (tag) => {
         const username =
           context.usernames[tag.userId] ??
           (context.usernames[tag.userId] = await getUsername(tag.userId))
