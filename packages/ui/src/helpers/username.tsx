@@ -2,17 +2,12 @@ import { UserApi } from "@passes/api-client"
 
 import { errorMessage } from "./error"
 
-export async function checkUsername(
-  username: string,
-  userApi?: UserApi
-): Promise<void> {
-  if (!userApi) {
-    userApi = new UserApi()
-  }
+const api = new UserApi()
 
+export async function checkUsername(username: string): Promise<void> {
   let usernameTaken
   try {
-    usernameTaken = await userApi.isUsernameTaken({
+    usernameTaken = await api.isUsernameTaken({
       updateUsernameRequestDto: { username }
     })
   } catch (err: any) {
@@ -22,4 +17,9 @@ export async function checkUsername(
   if (usernameTaken.value) {
     throw new Error("This username is not available")
   }
+}
+
+const usernames: Record<string, string> = {}
+export async function getUsername(userId: string) {
+  return (usernames[userId] = await api.getUsernameFromId({ userId }))
 }

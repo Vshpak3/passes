@@ -2,6 +2,7 @@ import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
+import { FormattedText } from "src/components/atoms/FormattedText"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
@@ -19,7 +20,6 @@ import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
 import { PostMedia } from "./PostMedia"
-import { PostTextContent } from "./PostTextContent"
 
 const MAX_PINNED_POST = 3
 
@@ -124,7 +124,10 @@ export const Post: FC<PostProps> = ({
               totalTipAmount
             }}
           />
-          <PostTextContent text={text} tags={tags} />
+
+          <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
+            <FormattedText text={text} tags={tags} />
+          </p>
           {!!contents?.length && (
             <>
               {!purchasable ? (

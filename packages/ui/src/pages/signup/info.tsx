@@ -2,7 +2,7 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 
 import { yupResolver } from "@hookform/resolvers/yup"
-import { AuthApi, UserApi } from "@passes/api-client/apis"
+import { AuthApi } from "@passes/api-client/apis"
 import { differenceInYears, format, subYears } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -84,9 +84,8 @@ const SignupInfoPage: FC = () => {
   ) => {
     try {
       const api = new AuthApi()
-      const userApi = new UserApi()
 
-      const validUsername = await checkUsername(username, userApi)
+      const validUsername = await checkUsername(username)
         .then(() => true)
         .catch((err: Error) => {
           setError("username", { message: err.message })

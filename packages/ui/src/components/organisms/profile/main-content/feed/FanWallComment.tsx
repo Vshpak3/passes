@@ -1,5 +1,6 @@
 import { FanWallCommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
+import { FormattedText } from "src/components/atoms/FormattedText"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
@@ -9,7 +10,6 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
-import { formatText } from "src/helpers/formatters"
 import { useFanWall } from "src/hooks/useFanWall"
 import { useProfile } from "src/hooks/useProfile"
 
@@ -31,7 +31,8 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
     createdAt,
     isOwner,
     isHidden,
-    text
+    text,
+    tags
   } = comment
 
   const dropdownItems: DropdownOption[] = [
@@ -77,7 +78,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
           />
           <div className="flex flex-col items-start">
             <p className="break-normal break-all text-start text-base font-medium text-[#ffffff]/90">
-              {formatText(text)}
+              <FormattedText text={text} tags={tags} />
             </p>
           </div>
         </FormContainer>

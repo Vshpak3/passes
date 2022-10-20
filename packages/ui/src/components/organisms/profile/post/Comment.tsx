@@ -1,6 +1,7 @@
 import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
+import { FormattedText } from "src/components/atoms/FormattedText"
 import { Text } from "src/components/atoms/Text"
 import {
   Dropdown,
@@ -12,7 +13,6 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
-import { formatText } from "src/helpers/formatters"
 import { useComment } from "src/hooks/useComment"
 
 interface CommentProps {
@@ -93,7 +93,7 @@ export const Comment: FC<CommentProps> = ({
               fontSize={14}
               className="whitespace-pre-wrap break-all font-light"
             >
-              {formatText(comment.text)}
+              <FormattedText text={comment.text} tags={comment.tags} />
             </Text>
           </div>
         </div>
