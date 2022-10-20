@@ -5,7 +5,7 @@ import {
   GetCommentsForPostResponseDto,
   PostDto
 } from "@passes/api-client"
-import React, { FC } from "react"
+import React, { FC, memo } from "react"
 import {
   InfiniteLoad,
   LoadMsgPositionEnum
@@ -23,7 +23,7 @@ interface CommentFeedProps {
 
 const api = new CommentApi()
 
-export const CommentFeed: FC<CommentFeedProps> = ({
+const CommentFeedUnmemo: FC<CommentFeedProps> = ({
   postId,
   ownsPost,
   decrementNumComments
@@ -53,6 +53,8 @@ export const CommentFeed: FC<CommentFeedProps> = ({
       }
       loadMoreMessage="Load previous comments"
       loadMorePosition={LoadMsgPositionEnum.BOTTOM}
-    ></InfiniteLoad>
+    />
   )
 }
+
+export const CommentFeed = memo(CommentFeedUnmemo)
