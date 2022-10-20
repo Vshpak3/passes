@@ -20,6 +20,7 @@ interface FanWallCommentProps {
 export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
   const { ownsProfile } = useProfile()
   const [removed, setRemoved] = useState<boolean>(false)
+  const [showHidden, setShowHidden] = useState(false)
   const { deleteFanWallComment, hideFanWallComment, unhideFanWallComment } =
     useFanWall()
 
@@ -82,10 +83,15 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
           />
           <div className="flex flex-col items-start">
             <p className="break-normal break-all text-start text-base font-medium text-white/90">
-              {!isHidden ? (
+              {!isHidden || showHidden ? (
                 <FormattedText text={text} tags={tags} />
               ) : (
-                <div className="text-white/40">hidden</div>
+                <div
+                  className="text-gray-500"
+                  onClick={() => setShowHidden(true)}
+                >
+                  Click to reveal hidden comment
+                </div>
               )}
             </p>
           </div>

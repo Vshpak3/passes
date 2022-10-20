@@ -27,7 +27,7 @@ export const Comment: FC<CommentProps> = ({
   decrementNumComments
 }) => {
   const [removed, setRemoved] = useState(false)
-  // const [hiddenParity, setHiddenParity] = useState(true)
+  const [showHidden, setShowHidden] = useState(false)
   const { deleteComment, hideComment, unhideComment } = useComment()
 
   const {
@@ -103,7 +103,16 @@ export const Comment: FC<CommentProps> = ({
               fontSize={14}
               className="whitespace-pre-wrap break-all font-light"
             >
-              <FormattedText text={comment.text} tags={comment.tags} />
+              {!isHidden || showHidden ? (
+                <FormattedText text={comment.text} tags={comment.tags} />
+              ) : (
+                <div
+                  className="text-gray-500"
+                  onClick={() => setShowHidden(true)}
+                >
+                  Click to reveal hidden comment
+                </div>
+              )}
             </Text>
           </div>
         </div>

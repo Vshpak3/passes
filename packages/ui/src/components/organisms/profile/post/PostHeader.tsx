@@ -1,6 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import GraphIcon from "public/icons/graph.svg"
+import PinIcon from "public/icons/pin.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
@@ -77,12 +78,8 @@ export const PostHeader: FC<PostHeaderProps> = ({
         )}
         {isPinned && (
           <div className="relative flex flex-shrink-0 items-center rounded-lg bg-white/10 py-[5px] px-2.5">
-            <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
-              Pinned
-            </span>
-            <span className="flex-shrink-0 md:ml-2">
-              {/* TODO: replace with pin icon */}
-              <GraphIcon />
+            <span className="flex-shrink-0">
+              <PinIcon />
             </span>
           </div>
         )}
