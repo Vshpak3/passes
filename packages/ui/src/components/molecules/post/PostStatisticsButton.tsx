@@ -1,5 +1,5 @@
 import GraphIcon from "public/icons/graph.svg"
-import { useState } from "react"
+import React, { useState } from "react"
 
 import {
   PostStatisticsMenu,
@@ -13,12 +13,15 @@ export const PostStatisticsButton: React.FC<PostStatisticsButtonProps> = (
 ) => {
   const [showPostStatisticsMenu, setShowPostStatisticsMenu] = useState(false)
 
+  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation()
+
   const toggleMenu = () => setShowPostStatisticsMenu(!showPostStatisticsMenu)
 
   return (
     <div className="relative flex-shrink-0">
       <button
         className="flex items-center rounded-lg bg-white/10 py-[5px] px-2.5"
+        onMouseDown={stopPropagation}
         onClick={toggleMenu}
       >
         <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
