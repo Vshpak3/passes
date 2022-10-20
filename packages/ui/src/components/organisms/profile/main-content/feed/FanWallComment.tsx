@@ -4,14 +4,10 @@ import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
-  DropDownFanWallCommentDelete,
-  DropDownFanWallCommentHide,
-  DropDownFanWallCommentUnhide
-} from "src/components/organisms/profile/drop-down/DropdownOptionsFanWall"
-import {
   DropDownBlock,
+  DropDownGeneral,
   DropDownReport
-} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
+} from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
 import { formatText } from "src/helpers/formatters"
 import { useFanWall } from "src/hooks/useFanWall"
@@ -47,23 +43,23 @@ export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
       username: commenterUsername,
       userId: commenterId
     }),
-    ...DropDownFanWallCommentDelete(
-      isOwner || ownsProfile,
-      fanWallCommentId,
-      deleteFanWallComment,
-      () => {
-        setRemoved(true)
+    ...DropDownGeneral("Delete", isOwner || ownsProfile, async () => {
+      await deleteFanWallComment(fanWallCommentId)
+      setRemoved(true)
+    }),
+    ...DropDownGeneral(
+      "Hide",
+      !isOwner && ownsProfile && !isHidden,
+      async () => {
+        await hideFanWallComment(fanWallCommentId)
       }
     ),
-    ...DropDownFanWallCommentHide(
-      !isOwner && ownsProfile && !isHidden,
-      fanWallCommentId,
-      hideFanWallComment
-    ),
-    ...DropDownFanWallCommentUnhide(
+    ...DropDownGeneral(
+      "Unhide",
       !isOwner && ownsProfile && isHidden,
-      fanWallCommentId,
-      unhideFanWallComment
+      async () => {
+        await unhideFanWallComment(fanWallCommentId)
+      }
     )
   ]
 

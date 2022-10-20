@@ -1,18 +1,15 @@
 import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
+import { toast } from "react-toastify"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownCopyLink,
+  DropDownGeneral,
   DropDownReport
-} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
-import {
-  DropDownDeletePost,
-  DropDownPinPost,
-  DropDownUnpinPost
-} from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
+} from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/useFeed"
 import { usePost } from "src/hooks/usePost"
 import { useUser } from "src/hooks/useUser"
@@ -69,25 +66,25 @@ export const Post: FC<PostProps> = ({
       username: username,
       userId: userId
     }),
-    ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
+    ...DropDownGeneral("Delete", post.isOwner, async () => {
+      await removePost(postId)
       setIsRemoved(true)
       if (redirectOnDelete && user) {
         router.push(`/${user.username}`)
       }
     }),
-    ...DropDownPinPost(post.postId, pinPost, post.isOwner && !isPinned, () => {
+    ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
+      await pinPost(postId)
+      toast.success("The post has been pinned")
       mutatePinnedPosts()
       setIsRemoved(true)
     }),
-    ...DropDownUnpinPost(
-      post.postId,
-      unpinPost,
-      post.isOwner && isPinned,
-      () => {
-        mutatePinnedPosts()
-        setIsRemoved(true)
-      }
-    ),
+    ...DropDownGeneral("Unpin", post.isOwner && isPinned, async () => {
+      await unpinPost(postId)
+      toast.success("The post has been unpinned")
+      mutatePinnedPosts()
+      setIsRemoved(true)
+    }),
     DropDownCopyLink(username, postId)
   ]
 

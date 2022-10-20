@@ -6,23 +6,24 @@ import { useReportModal } from "src/hooks/useReportModal"
 
 import { DropdownOption } from "./Dropdown"
 
+export const DropDownGeneral = (
+  text: string,
+  showOption: boolean,
+  onClick: () => void
+): DropdownOption[] => {
+  return showOption ? [{ text, onClick }] : []
+}
+
 export const DropDownReport = (
   showOption: boolean,
   data: ReportModalData
 ): DropdownOption[] => {
   const { setIsReportModalOpen, setReportModalData } = useReportModal()
 
-  return showOption
-    ? [
-        {
-          text: "Report",
-          onClick: () => {
-            setIsReportModalOpen(true)
-            setReportModalData(data)
-          }
-        }
-      ]
-    : []
+  return DropDownGeneral("Report", showOption, () => {
+    setIsReportModalOpen(true)
+    setReportModalData(data)
+  })
 }
 
 export const DropDownBlock = (
@@ -31,17 +32,10 @@ export const DropDownBlock = (
 ): DropdownOption[] => {
   const { setIsBlockModalOpen, setBlockModalData } = useBlockModal()
 
-  return showOption
-    ? [
-        {
-          text: "Block",
-          onClick: () => {
-            setIsBlockModalOpen(true)
-            setBlockModalData(data)
-          }
-        }
-      ]
-    : []
+  return DropDownGeneral("Block", showOption, () => {
+    setIsBlockModalOpen(true)
+    setBlockModalData(data)
+  })
 }
 
 export const DropDownCopyLink = (

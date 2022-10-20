@@ -7,14 +7,10 @@ import {
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
-  DropDownCommentDelete,
-  DropDownCommentHide,
-  DropDownCommentUnhide
-} from "src/components/organisms/profile/drop-down/DropdownOptionsComment"
-import {
   DropDownBlock,
+  DropDownGeneral,
   DropDownReport
-} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
+} from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatText } from "src/helpers/formatters"
 import { useComment } from "src/hooks/useComment"
@@ -52,28 +48,17 @@ export const Comment: FC<CommentProps> = ({
       username: commenterUsername,
       userId: commenterId
     }),
-    ...DropDownCommentDelete(
-      isOwner || ownsPost,
-      postId,
-      commentId,
-      deleteComment,
-      () => {
-        decrementNumComments()
-        setRemoved(true)
-      }
-    ),
-    ...DropDownCommentHide(
-      !isOwner && ownsPost && !isHidden,
-      postId,
-      commentId,
-      hideComment
-    ),
-    ...DropDownCommentUnhide(
-      !isOwner && ownsPost && isHidden,
-      postId,
-      commentId,
-      unhideComment
-    )
+    ...DropDownGeneral("Delete", isOwner || ownsPost, async () => {
+      await deleteComment(postId, commentId)
+      decrementNumComments()
+      setRemoved(true)
+    }),
+    ...DropDownGeneral("Hide", !isOwner && ownsPost && !isHidden, async () => {
+      await hideComment(postId, commentId)
+    }),
+    ...DropDownGeneral("Unhide", !isOwner && ownsPost && isHidden, async () => {
+      await unhideComment(postId, commentId)
+    })
   ]
 
   return (

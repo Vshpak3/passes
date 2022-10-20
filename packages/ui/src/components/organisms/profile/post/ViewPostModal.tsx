@@ -16,9 +16,9 @@ import {
 } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownCopyLink,
+  DropDownGeneral,
   DropDownReport
-} from "src/components/organisms/profile/drop-down/DropdownOptionsGeneral"
-import { DropDownDeletePost } from "src/components/organisms/profile/drop-down/DropdownOptionsPost"
+} from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
@@ -74,7 +74,8 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
       username: username,
       userId: userId
     }),
-    ...DropDownDeletePost(post.isOwner, post.postId, removePost, () => {
+    ...DropDownGeneral("Delete", post.isOwner, async () => {
+      await removePost(postId)
       post.setIsRemoved?.(true)
       setPost(null)
     }),
