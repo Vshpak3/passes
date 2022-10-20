@@ -9,7 +9,7 @@ import React, {
 import InfiniteScroll from "react-infinite-scroll-component"
 import useSWRInfinite, { SWRInfiniteConfiguration } from "swr/infinite"
 
-const SCROLL_DEBOUNCE_MS = 500
+const SCROLL_DEBOUNCE_MS = 450
 
 export interface PagedData<A> {
   data: A[]

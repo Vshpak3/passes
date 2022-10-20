@@ -38,7 +38,7 @@ export interface PostFeedProps {
 export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
   const [isNewPostAdded, setIsNewPostAdded] = useState(false)
-  const { posts, isConnected } = usePostWebhook()
+  const { posts, isConnected, isLogged } = usePostWebhook()
 
   return (
     <>

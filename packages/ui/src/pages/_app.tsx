@@ -95,7 +95,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 
   const router = useRouter()
-  const { setAccessToken } = useUser()
+  const { setAccessToken, mutate } = useUser()
 
   // Refresh once on page load then repeatedly
   useEffect(() => {
@@ -125,6 +125,11 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
   ])
+
+  useEffect(() => {
+    mutate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [setAccessToken])
 
   const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(

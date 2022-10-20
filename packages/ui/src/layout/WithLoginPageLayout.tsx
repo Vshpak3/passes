@@ -19,7 +19,9 @@ export const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   useEffect(() => {
     const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
     setReady(!redirected)
-  }, [routeOnlyIfAuth, safePush, userClaims])
+    // This is intended to only run on page load to ensure direction from page
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
 }

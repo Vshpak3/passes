@@ -43,11 +43,6 @@ export const useUser = () => {
     swrConfig
   )
 
-  useEffect(() => {
-    mutate()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setAccessToken])
-
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>
     _mutateManual(CACHE_KEY_USER, update, {
