@@ -36,9 +36,9 @@ export const Post: FC<PostProps> = ({
 }) => {
   const router = useRouter()
   const { user } = useUser()
-  const { removePost, pinPost, unpinPost } = usePost()
+  const { removePost } = usePost()
   const { setPost } = useViewPostModal()
-  const { mutatePinnedPosts } = useFeed(post.userId)
+  const { mutatePinnedPosts, pinPost, unpinPost } = useFeed(post.userId)
 
   const {
     contents,
@@ -74,13 +74,13 @@ export const Post: FC<PostProps> = ({
       }
     }),
     ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
-      await pinPost(postId)
+      await pinPost(post)
       toast.success("The post has been pinned")
       mutatePinnedPosts()
       setIsRemoved(true)
     }),
     ...DropDownGeneral("Unpin", post.isOwner && isPinned, async () => {
-      await unpinPost(postId)
+      await unpinPost(post)
       toast.success("The post has been unpinned")
       mutatePinnedPosts()
       setIsRemoved(true)
