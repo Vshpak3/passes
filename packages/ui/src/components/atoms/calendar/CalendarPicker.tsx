@@ -114,7 +114,11 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
         anchorEl={anchorEl}
         transition
         disablePortal={false}
-        style={{ zIndex: 10000 }}
+        style={{
+          zIndex: 10000,
+          paddingBottom: "100px",
+          margin: "0px"
+        }}
         modifiers={[
           {
             name: "offset",
