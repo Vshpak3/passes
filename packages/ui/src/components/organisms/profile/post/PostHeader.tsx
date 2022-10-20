@@ -46,18 +46,16 @@ export const PostHeader: FC<PostHeaderProps> = ({
         <ProfileThumbnail userId={userId} />
         <div className="space-y-1 font-medium dark:text-white">
           <span>
-            {displayName && (
-              <div className="flex items-center gap-[6px]">
-                <>
-                  <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                    {displayName}
-                  </span>
-                  <span className="flex items-center">
-                    <VerifiedSmall />
-                  </span>
-                </>
-              </div>
-            )}
+            <div className="flex items-center gap-[6px]">
+              <>
+                <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+                  {displayName}
+                </span>
+                <span className="flex items-center">
+                  <VerifiedSmall />
+                </span>
+              </>
+            </div>
             <div className="text-sm text-gray-500 dark:text-gray-400">
               @{username}
             </div>

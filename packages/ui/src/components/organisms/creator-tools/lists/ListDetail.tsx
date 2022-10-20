@@ -164,7 +164,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const sortPopperOpen = Boolean(anchorSortPopperEl)
   const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
   const router = useRouter()
-  const [dismissed, setDismissed] = useState<boolean>(false)
 
   return (
     <div className="text-white">
@@ -175,7 +174,14 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
       <ul className="px-7">
         <li className="flex items-center justify-between border-b-2 border-gray-500 py-5">
           <div className="flex items-center gap-[10px]">
-            <div className="flex items-center border-r border-r-[#fff]">
+            <div
+              className={
+                "flex items-center" +
+                (listInfo?.type === GetListResponseDtoTypeEnum.Normal
+                  ? "border-r border-r-[#fff]"
+                  : "")
+              }
+            >
               <h2 className="pr-[10px] text-2xl font-bold">{listName}</h2>
             </div>
             {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
@@ -205,13 +211,15 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           </div>
 
           <div className="flex items-center justify-center gap-3">
-            <Button
-              icon={<AddIcon />}
-              className="font-[700]"
-              onClick={() => setAddFollowerOpen(true)}
-            >
-              Add
-            </Button>
+            {listInfo?.type === ListDtoTypeEnum.Normal && (
+              <Button
+                icon={<AddIcon />}
+                className="font-[700]"
+                onClick={() => setAddFollowerOpen(true)}
+              >
+                Add
+              </Button>
+            )}
           </div>
         </li>
         <Popper
@@ -260,20 +268,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             </Fade>
           )}
         </Popper>
-        {listInfo?.count === 0 && !dismissed && (
-          <div className=" mt-[10px] flex h-[40px] w-full flex-row items-center  justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
-            <div className="flex flex-row items-center gap-[10px]">
-              <InfoIconOutlined />
-              <span>Users you add to the list will be shown here</span>
-            </div>
-            <span
-              className="cursor-pointer text-[#ffffffeb]"
-              onClick={() => setDismissed(true)}
-            >
-              Dismiss
-            </span>
-          </div>
-        )}
 
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
           keyValue={`list/list-members/${listId}`}
@@ -293,6 +287,20 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             )
           }}
           resets={resets}
+          emptyElement={
+            <div className=" mt-[10px] flex h-[40px] w-full flex-row items-center  justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
+              <div className="flex flex-row items-center gap-[10px]">
+                <InfoIconOutlined />
+                <span>
+                  {listInfo?.type === ListDtoTypeEnum.Followers
+                    ? "You have no followers yet."
+                    : listInfo?.type === ListDtoTypeEnum.Following
+                    ? "You are not following anyone yet."
+                    : "Users you add to the list will be shown here:"}
+                </span>
+              </div>
+            </div>
+          }
         />
       </ul>
       <AddFollowerToListModal

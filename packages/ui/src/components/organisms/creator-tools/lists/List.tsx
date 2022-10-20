@@ -26,7 +26,7 @@ export const List: FC<ListProps> = ({
           <div className="flex flex-1 flex-col gap-[10px]">
             <h1 className="text-xl font-bold">{list.name || list.listId}</h1>
             <span className="text-base font-bold text-gray-500">
-              &nbsp; {list.count}
+              &nbsp; {list.count} members
             </span>
           </div>
         </Link>

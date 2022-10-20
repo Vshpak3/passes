@@ -2,6 +2,7 @@ import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 import { FormattedText } from "src/components/atoms/FormattedText"
+import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { Text } from "src/components/atoms/Text"
 import {
   Dropdown,
@@ -36,6 +37,7 @@ export const Comment: FC<CommentProps> = ({
     isOwner,
     postId,
     commenterId,
+    commenterDisplayName,
     isHidden: _isHidden
   } = comment
 
@@ -71,19 +73,19 @@ export const Comment: FC<CommentProps> = ({
       {!removed && (
         <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
           <div>
-            <ProfileThumbnail userId={comment.commenterId} />
+            <a href={`${window.location.origin}/${comment.commenterUsername}`}>
+              <ProfileThumbnail userId={comment.commenterId} />
+            </a>
           </div>
           <div className="flex grow flex-col">
             <div className="flex justify-between">
               <div className="flex gap-x-2">
-                {comment.commenterDisplayName && (
-                  <Text fontSize={14} className="font-bold">
-                    {comment.commenterDisplayName}
-                  </Text>
-                )}
-                <Text fontSize={14} className="text-gray-500">
-                  @{comment.commenterUsername}
-                </Text>
+                <NameDisplay
+                  displayName={commenterDisplayName}
+                  username={commenterUsername}
+                  linked={true}
+                />
+                {/* </a> */}
                 {!!isHidden && (
                   <Text fontSize={14} className="text-gray-500">
                     &nbsp;&nbsp; hidden
