@@ -192,12 +192,23 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
       setNumMentions(mentions.length)
 
       const text = currentContent.getPlainText()
-      const tags: TagDto[] = mentions.map((mention) => ({
-        userId: mention.id as string,
-        index: mention.index
-      }))
-
-      onInputChange({ text, tags })
+      const tags: TagDto[] = []
+      const mentionsMap: Record<number, MentionData> = {}
+      mentions.forEach((mention) => {
+        mentionsMap[mention.index] = mention
+      })
+      let formattedText = ""
+      for (let i = 0; i < text.length; ++i) {
+        formattedText = formattedText.concat(text[i])
+        if (mentionsMap[i]) {
+          tags.push({
+            userId: mentionsMap[i].id as string,
+            index: formattedText.length - 1
+          })
+          i += mentionsMap[i].username.length
+        }
+      }
+      onInputChange({ text: formattedText, tags })
     },
     [onInputChange]
   )
