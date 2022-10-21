@@ -52,7 +52,7 @@ export const MessageStatistics = () => {
           })
         }}
         fetchProps={{}}
-        emptyElement={<span>No posts to show</span>}
+        emptyElement={<span>No messages to show</span>}
         KeyedComponent={({ arg }: ComponentArg<PaidMessageDto>) => {
           return <PaidMessageStatistic paidMessage={arg} />
         }}
