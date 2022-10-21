@@ -74,7 +74,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
           <PostStatisticsButton {...statisticsButtonProps} />
         )}
         {isPinned && (
-          <div className="relative flex flex-shrink-0 items-center rounded-lg bg-white/10 py-[5px] px-2.5">
+          <div className="sm:px-2.5mb-0 relative mb-[5px] flex flex-shrink-0 items-center rounded-lg bg-white/10 py-[0px] px-2 md:mb-0 md:py-[4px]">
             <span className="flex-shrink-0">
               <PinIcon />
             </span>
