@@ -1,4 +1,4 @@
-import { socialMediaUsernameSchema } from "src/helpers/validation"
+import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { array, object, string } from "yup"
 
 export const creatorFlowProfileSchema = object({

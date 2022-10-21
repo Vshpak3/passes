@@ -9,7 +9,7 @@ import { ethers } from "ethers"
 import { ERC20ABI } from "./ABI"
 import { EthereumProvider, PhantomProvider } from "./wallet-setup"
 
-export const generateSolanaTokenTransactionMessage = async (
+const generateSolanaTokenTransactionMessage = async (
   connection: Connection,
   depositAddress: string,
   ownerAccount: PublicKey,

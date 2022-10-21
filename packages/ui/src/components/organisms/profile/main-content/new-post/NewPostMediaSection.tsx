@@ -13,7 +13,7 @@ import { FileAccept } from "src/components/types/FormTypes"
 import { MediaFile } from "./Media"
 import { NewPostFormProps } from "./NewPostEditor"
 
-export const MAX_IMAGE_COUNT = 10
+const MAX_IMAGE_COUNT = 10
 
 const MB = 1048576
 const MAX_IMAGE_SIZE = 10 * MB

@@ -19,7 +19,7 @@ import { FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
-import { socialMediaUsernameSchema } from "src/helpers/validation"
+import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { object, string } from "yup"
 

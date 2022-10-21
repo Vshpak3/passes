@@ -68,7 +68,7 @@ export function formatReplacedText(
   return formatTextFromString(ret)
 }
 
-export function formatTextFromString(text: string) {
+function formatTextFromString(text: string) {
   return parse(text, {
     createElement: createElement,
     Fragment: Fragment

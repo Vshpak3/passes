@@ -7,8 +7,8 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { chatSettingsSchema } from "src/helpers/validation"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
+import { boolean, mixed, number, object, string } from "yup"
 
 const defaultValues = {
   isWithoutTip: true,
@@ -16,6 +16,21 @@ const defaultValues = {
   minimumTipAmount: "" as number | string,
   welcomeMessage: ""
 }
+
+const chatSettingsSchema = object({
+  isWithoutTip: boolean(),
+  showWelcomeMessageInput: boolean(),
+  minimumTipAmount: mixed().when("isWithoutTip", {
+    is: false,
+    then: number()
+      .min(5, "minimum tip amount is $5")
+      .required("Please enter tip amount")
+  }),
+  welcomeMessage: string().when("showWelcomeMessageInput", {
+    is: true,
+    then: string().required("Please enter welcome message")
+  })
+})
 
 const ChatSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
