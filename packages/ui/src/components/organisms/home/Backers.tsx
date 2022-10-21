@@ -2,45 +2,39 @@ import React from "react"
 
 export interface Backer {
   name: string
-  imageUrl: string
+  image: string
   subtitle: string
 }
 
 const BACKERS: Backer[] = [
   {
     name: "Kyle Samani",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e37cbec5aa263e7564_Ellipse%20212.png",
+    image: "/img/homepage/investors2/kyle.png",
     subtitle: "Multicoin Capital"
   },
   {
     name: "David Sacks",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e368ab2d208e3f3a5f_Ellipse%20213.png",
+    image: "/img/homepage/investors2/david.png",
     subtitle: "Craft Ventures"
   },
   {
     name: "Wen-Wen Lam",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e330667323a65a622a_Ellipse%20214.png",
+    image: "/img/homepage/investors2/wenwen.png",
     subtitle: "Gradient Ventures"
   },
   {
     name: "Jake Paul",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e3ded8c33ed54674d6_Ellipse%20215.png",
+    image: "/img/homepage/investors2/jake.png",
     subtitle: "Antifund"
   },
   {
     name: "Ryan Wilson",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e398443ed32be2ef71_Ellipse%20216.png",
+    image: "/img/homepage/investors2/ryan.png",
     subtitle: "ThankYouX"
   },
   {
     name: "Paris Hilton",
-    imageUrl:
-      "https://uploads-ssl.webflow.com/631e9ffe3bcb9ca6e534880b/632082e3d40274418c1bdc82_Ellipse%20211.png",
+    image: "/img/homepage/investors2/paris.png",
     subtitle: "Celebrity"
   }
 ]
@@ -58,7 +52,7 @@ export const Backers = () => {
             className="flex flex-col items-center space-y-2"
           >
             <img
-              src={backer.imageUrl}
+              src={backer.image}
               alt={backer.name}
               className="h-24 w-24 md:h-32 md:w-32"
             />
