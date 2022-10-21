@@ -67,7 +67,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
       </p>
       <button
         onClick={() => {
-          isCreator ? setPass(pass) : null // TODO: add pass pinning
+          isCreator ? null : setPass(pass) // TODO: add pass pinning
         }}
         className="mt-3 w-full rounded-[50px] bg-passes-primary-color py-2.5 text-center"
       >
