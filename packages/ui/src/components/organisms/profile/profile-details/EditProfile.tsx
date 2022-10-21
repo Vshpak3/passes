@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { GetProfileResponseDto } from "@passes/api-client"
+import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import Discord from "public/icons/profile-discord-icon.svg"
 import Facebook from "public/icons/profile-facebook-icon.svg"
@@ -194,7 +195,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       open={true}
       onClose={() => setEditProfileModalOpen(false)}
       footer={
-        <div className="left-20 mx-0 -mb-4 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
+        <div className="left-20 mx-0 mb-6 flex cursor-pointer self-center  xs:mx-5 sm:mx-12 md:mx-0  md:-mb-4">
           <PassesPinkButton
             name="Save"
             className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
@@ -203,10 +204,20 @@ export const EditProfile: FC<EditProfileProps> = ({
           />
         </div>
       }
+      title={
+        <div className="flex w-full flex-row justify-end py-[8px] px-[8px] xs:px-[16px] md:hidden">
+          <button
+            className=" h-[30px] w-[30px]"
+            onClick={() => setEditProfileModalOpen(false)}
+          >
+            <ExitIcon />
+          </button>
+        </div>
+      }
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-5 px-0 xs:px-5 sm:px-12 md:px-0"
+        className="flex flex-col gap-5 px-0 py-6 xs:px-5 sm:px-12 md:py-0 md:px-0"
       >
         <FormImage
           setValue={setValue}
