@@ -10,14 +10,16 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
 import { useFanWall } from "src/hooks/useFanWall"
-import { useProfile } from "src/hooks/useProfile"
 
 interface FanWallCommentProps {
   comment: FanWallCommentDto
+  ownsProfile: boolean
 }
 
-export const FanWallComment: FC<FanWallCommentProps> = ({ comment }) => {
-  const { ownsProfile } = useProfile()
+export const FanWallComment: FC<FanWallCommentProps> = ({
+  comment,
+  ownsProfile
+}) => {
   const [removed, setRemoved] = useState<boolean>(false)
   const [showHidden, setShowHidden] = useState(false)
   const { deleteFanWallComment, hideFanWallComment, unhideFanWallComment } =

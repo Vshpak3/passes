@@ -31,10 +31,15 @@ const FanWallFeedEnd = (
 
 export interface FanWallFeedProps {
   profileUserId: string
+  ownsProfile: boolean
 }
 
-export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
+export const FanWallFeed: FC<FanWallFeedProps> = ({
+  profileUserId,
+  ownsProfile
+}) => {
   const { accessToken } = useUser()
+
   return (
     <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
       keyValue={`/fanwall/${profileUserId}`}
@@ -49,7 +54,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({ profileUserId }) => {
       emptyElement={FanWallFeedEnd}
       endElement={FanWallFeedEnd}
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
-        return <FanWallComment comment={arg} />
+        return <FanWallComment comment={arg} ownsProfile={ownsProfile} />
       }}
     >
       {!!accessToken.length && (

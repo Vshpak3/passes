@@ -10,7 +10,6 @@ const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
 
 const MessagesPage = () => {
   const router = useRouter()
-
   return (
     <Suspense fallback={<CenterLoader />}>
       <div className="flex h-screen flex-col">

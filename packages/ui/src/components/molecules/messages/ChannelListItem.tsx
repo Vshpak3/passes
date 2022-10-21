@@ -1,6 +1,6 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
-import { FC } from "react"
+import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
@@ -12,7 +12,7 @@ interface ChannelListItemProps {
   isSelected?: boolean
 }
 
-export const ChannelListItem: FC<ChannelListItemProps> = ({
+const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   onClick,
   channel,
   isSelected
@@ -56,3 +56,5 @@ export const ChannelListItem: FC<ChannelListItemProps> = ({
     </div>
   )
 }
+
+export const ChannelListItem = memo(ChannelListItemUnmemo)

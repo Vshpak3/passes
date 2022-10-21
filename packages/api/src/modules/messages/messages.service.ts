@@ -115,7 +115,7 @@ export class MessagesService {
   ): Promise<ChannelMemberDto> {
     const otherUser = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: getChannelRequestDto.userId })
-      .select('id')
+      .select('id', 'is_creator')
       .first()
 
     if (!otherUser) {
@@ -135,6 +135,13 @@ export class MessagesService {
     if (!lookup) {
       const channelData = {
         id: v4(),
+      }
+      const user = await this.dbReader<UserEntity>(UserEntity.table)
+        .where({ id: userId })
+        .select('is_creator')
+        .first()
+      if (!otherUser.is_creator && !user?.is_creator) {
+        throw new ChannelNotFoundException('can not create channel to user')
       }
       await this.dbWriter.transaction(async (trx) => {
         await trx<ChannelEntity>(ChannelEntity.table).insert(channelData)

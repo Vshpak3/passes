@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { NavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
+import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { useProfile } from "src/hooks/useProfile"
 
 import { FanWallFeed } from "./FanWallFeed"
@@ -7,7 +7,7 @@ import { PassesFeed } from "./PassesFeed"
 import { PostFeed } from "./PostFeed"
 
 export interface ProfileContentFeedProps {
-  activeTab: NavigationOptions
+  activeTab: ProfileNavigationOptions
 }
 
 export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
@@ -20,13 +20,15 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   }
 
   switch (activeTab) {
-    case NavigationOptions.POST:
+    case ProfileNavigationOptions.POST:
       return (
         <PostFeed profileUserId={profileUserId} ownsProfile={ownsProfile} />
       )
-    case NavigationOptions.FANWALL:
-      return <FanWallFeed profileUserId={profileUserId} />
-    case NavigationOptions.PASSES:
+    case ProfileNavigationOptions.FANWALL:
+      return (
+        <FanWallFeed profileUserId={profileUserId} ownsProfile={ownsProfile} />
+      )
+    case ProfileNavigationOptions.PASSES:
       return <PassesFeed creatorId={profileUserId} />
   }
 }

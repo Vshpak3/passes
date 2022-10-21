@@ -4,6 +4,7 @@ import {
   GetChannelsRequestDtoOrderTypeEnum,
   ListMemberDto
 } from "@passes/api-client/models"
+import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
@@ -14,16 +15,31 @@ interface MessagesV2Props {
 }
 
 export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
+  const router = useRouter()
   const [channelOrderType, setChannelOrderType] =
     useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
 
   const [gallery, setGallery] = useState(false)
-
   const { user } = useUser()
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
     setSelectedChannel(channel)
   }
+
+  useEffect(() => {
+    if (
+      selectedChannel &&
+      router.isReady &&
+      router.query.user !== selectedChannel.otherUserId
+    ) {
+      // pushState messes with the ability to go back
+      window.history.replaceState(
+        window.history.state,
+        "",
+        router.basePath + "?user=" + selectedChannel.otherUserId
+      )
+    }
+  }, [router, selectedChannel])
 
   useEffect(() => {
     if (defaultUserId) {
@@ -34,7 +50,11 @@ export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
         })
         setSelectedChannel(channel)
       }
-      fetch()
+      try {
+        fetch()
+      } catch (err) {
+        null
+      }
     }
   }, [defaultUserId])
 

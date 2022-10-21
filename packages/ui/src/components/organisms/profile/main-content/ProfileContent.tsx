@@ -1,11 +1,26 @@
-import { FC, memo, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 
 import { ProfileContentFeed } from "./feed/ProfileContentFeed"
-import { NavigationOptions, ProfileNavigation } from "./ProfileNavigation"
+import {
+  ProfileNavigation,
+  ProfileNavigationOptions
+} from "./ProfileNavigation"
 
-const UnMemoizedProfileContent: FC = () => {
-  const [activeTab, setActiveTab] = useState(NavigationOptions.POST)
+interface ProfileContentProps {
+  tab: ProfileNavigationOptions
+}
 
+const UnMemoizedProfileContent: FC<ProfileContentProps> = ({
+  tab
+}: ProfileContentProps) => {
+  if (!Object.values(ProfileNavigationOptions).includes(tab)) {
+    tab = ProfileNavigationOptions.POST
+  }
+
+  const [activeTab, setActiveTab] = useState(tab)
+  useEffect(() => {
+    window.location.hash = activeTab
+  }, [activeTab])
   return (
     <>
       <ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />

@@ -1,30 +1,30 @@
 import classNames from "classnames"
 import { Dispatch, FC, SetStateAction } from "react"
 
-export enum NavigationOptions {
-  POST,
-  FANWALL,
-  PASSES
+export enum ProfileNavigationOptions {
+  POST = "post",
+  FANWALL = "fanwall",
+  PASSES = "passes"
 }
 
 const navigationTabs = [
   {
-    id: NavigationOptions.POST,
+    id: ProfileNavigationOptions.POST,
     name: "Post"
   },
   {
-    id: NavigationOptions.FANWALL,
+    id: ProfileNavigationOptions.FANWALL,
     name: "Fan Wall"
   },
   {
-    id: NavigationOptions.PASSES,
+    id: ProfileNavigationOptions.PASSES,
     name: "Passes"
   }
 ]
 
 interface ProfileNavigationProps {
-  setActiveTab: Dispatch<SetStateAction<NavigationOptions>>
-  activeTab: NavigationOptions
+  setActiveTab: Dispatch<SetStateAction<ProfileNavigationOptions>>
+  activeTab: ProfileNavigationOptions
 }
 
 export const ProfileNavigation: FC<ProfileNavigationProps> = ({
