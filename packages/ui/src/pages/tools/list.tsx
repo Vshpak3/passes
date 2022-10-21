@@ -105,9 +105,6 @@ const FanLists: NextPage = () => {
             <span className="cursor-pointer border-b-[3px] border-b-[#9C4DC1] py-[16px] px-[12px] text-base font-bold">
               Created List
             </span>
-            <span className="cursor-pointer py-[16px] px-[12px] text-base font-bold opacity-[0.5]">
-              Pass Holders
-            </span>
           </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
             <SortDropdown
