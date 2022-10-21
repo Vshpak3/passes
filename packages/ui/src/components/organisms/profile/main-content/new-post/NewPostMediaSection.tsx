@@ -21,7 +21,7 @@ const MAX_IMAGE_SIZE_NAME = "10 megabytes"
 const MAX_VIDEO_SIZE = 200 * MB
 const MAX_VIDEO_SIZE_NAME = "200 megabytes"
 
-const ACCEPTED_MEDIA_TYPES: FileAccept = [
+export const ACCEPTED_MEDIA_TYPES: FileAccept = [
   ".png",
   ".jpg",
   ".jpeg",

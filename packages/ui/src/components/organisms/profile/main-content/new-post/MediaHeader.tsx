@@ -13,6 +13,8 @@ import {
   FormRegister
 } from "src/components/types/FormTypes"
 
+import { ACCEPTED_MEDIA_TYPES } from "./NewPostMediaSection"
+
 const messagesMediaTypes = [
   {
     name: "Photo",
@@ -39,7 +41,7 @@ const mediaTypes = [
   {
     name: "Media",
     Icon: Photos,
-    accept: [".png", ".jpg", ".jpeg", ".mp4", ".mov", ".qt", ".mp3"],
+    accept: ACCEPTED_MEDIA_TYPES,
     multiple: true,
     type: "button"
   },

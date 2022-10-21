@@ -1,16 +1,12 @@
 import React from "react"
 import { Button } from "src/components/atoms/Button"
+import { ContentService } from "src/helpers/content"
 import { downloadFile } from "src/helpers/downloadFile"
 
 export const DownloadW9FormButton = () => {
   return (
     <Button
-      onClick={() =>
-        downloadFile(
-          `${process.env.NEXT_PUBLIC_CDN_URL}/assets/w9.pdf`,
-          "w9.pdf"
-        )
-      }
+      onClick={() => downloadFile(ContentService.w9PublicPdfPath(), "w9.pdf")}
       variant="primary"
       style={{
         background: "rgba(255, 254, 255, 0.15)",

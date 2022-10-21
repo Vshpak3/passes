@@ -21,7 +21,7 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
     >
       <div className="flex flex-row justify-center">
         <img
-          src={ContentService.profileImage(profileUserId)}
+          src={ContentService.profileImagePath(profileUserId)}
           className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
           alt=""
           onError={({ currentTarget }) => {

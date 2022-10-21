@@ -122,7 +122,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
         username,
         displayName: displayName || "",
         id: userId,
-        avatar: ContentService.profileThumbnail(userId)
+        avatar: ContentService.profileThumbnailPath(userId)
       })
     )
 

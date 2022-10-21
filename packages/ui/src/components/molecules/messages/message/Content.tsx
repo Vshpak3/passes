@@ -1,10 +1,12 @@
 import { ContentDto, MessageDto } from "@passes/api-client"
-import React, { useState } from "react"
+import { FC, useState } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
+import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
-interface Props {
+
+interface ContentProps {
   paid: boolean
   contents: any
   price: number | any
@@ -12,13 +14,13 @@ interface Props {
   isOwnMessage: boolean
 }
 
-export const Content = ({
+export const Content: FC<ContentProps> = ({
   contents,
   paid,
   price,
   message,
   isOwnMessage
-}: Props) => {
+}) => {
   const [openBuyMessageModal, setOpenBuyMessageModal] = useState(false)
   const { images, video } = contentTypeCounter(contents)
   const isPaid =
@@ -55,7 +57,7 @@ export const Content = ({
         {contents.map((content: ContentDto, index: any) => (
           <div key={index} className="col-span-1">
             <img
-              src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${content.userId}/${content.contentId}.jpeg`}
+              src={ContentService.userContentMediaPath(content)}
               alt=""
               className={`w-full rounded-md object-contain ${isPaid}`}
             />

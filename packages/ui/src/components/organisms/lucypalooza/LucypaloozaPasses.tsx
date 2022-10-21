@@ -48,7 +48,7 @@ export const PassList: FC<PassListProps> = ({ passes, setPassId, passId }) => {
           ethPrice={pass.ethPrice ?? 0}
           img={{
             url: pass.creatorId
-              ? ContentService.passAnimation(pass.passId, "mp4")
+              ? ContentService.passAnimationPath(pass.passId, "mp4")
               : "",
             alt: "pass card"
           }}

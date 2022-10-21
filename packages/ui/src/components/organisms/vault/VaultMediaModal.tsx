@@ -26,13 +26,13 @@ export const VaultMediaModal: FC<VaultMediaModalProps> = ({
       <div className="flex flex-row justify-center">
         {content && content.contentType === "image" && (
           <ImageWithDefault
-            src={ContentService.userContentThumbnail(content)}
+            src={ContentService.userContentThumbnailPath(content)}
             className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
             defaultColor="black/50"
           />
         )}
         {content && content.contentType === "video" && (
-          <VaultVideo videoUrl={ContentService.userContentMedia(content)} />
+          <VaultVideo videoUrl={ContentService.userContentMediaPath(content)} />
         )}
       </div>
     </Modal>

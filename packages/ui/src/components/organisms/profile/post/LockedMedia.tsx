@@ -18,7 +18,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({ post }) => {
 
   const showcaseImg = useMemo(() => {
     if (contents?.[0]?.contentType === "image") {
-      return ContentService.userContentMedia(contents[0])
+      return ContentService.userContentMediaPath(contents[0])
     }
   }, [contents])
 

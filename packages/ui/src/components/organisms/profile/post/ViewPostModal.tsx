@@ -49,7 +49,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   // Set image if it exists in post
   useEffect(() => {
     if (post.contents?.[0]?.contentType === "image") {
-      setShowcaseImg(ContentService.userContentMedia(post.contents[0]))
+      setShowcaseImg(ContentService.userContentMediaPath(post.contents[0]))
     }
   }, [post.contents])
 

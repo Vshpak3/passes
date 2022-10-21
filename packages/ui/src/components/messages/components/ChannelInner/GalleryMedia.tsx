@@ -89,7 +89,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                       ref={imgRef}
                       onLoad={startLoadingHandler}
                       key={c.contentId}
-                      src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${c.userId}/${c.contentId}.jpeg`}
+                      src={ContentService.userContentMediaPath(c)}
                       alt=""
                       className="w-full rounded-[20px] object-cover shadow-xl"
                     />
@@ -109,7 +109,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                 ref={imgRef}
                 onLoad={startLoadingHandler}
                 key={contents[0].contentId}
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${contents[0].userId}/${contents[0].contentId}.jpeg`}
+                src={ContentService.userContentMediaPath(contents[0])}
                 alt=""
                 className="w-full rounded-[20px] object-cover opacity-20 shadow-xl blur"
               />
@@ -158,7 +158,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                             ref={imgRef}
                             onLoad={startLoadingHandler}
                             key={c.contentId}
-                            src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${c.userId}/${c.contentId}.jpeg`}
+                            src={ContentService.userContentMediaPath(c)}
                             alt=""
                             className="w-full rounded-[20px] object-cover opacity-20 shadow-xl blur"
                           />
@@ -170,7 +170,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                       return (
                         <PostVideo
                           key={c.contentId}
-                          videoUrl={ContentService.userContentMedia(c)}
+                          videoUrl={ContentService.userContentMediaPath(c)}
                         />
                       )
                     } else {
@@ -184,7 +184,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                     ref={imgRef}
                     onLoad={startLoadingHandler}
                     key={contents[0].contentId}
-                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${contents[0].userId}/${contents[0].contentId}.jpeg`}
+                    src={ContentService.userContentMediaPath(contents[0])}
                     alt=""
                     className="w-full rounded-[20px] object-cover opacity-20 shadow-xl blur"
                   />

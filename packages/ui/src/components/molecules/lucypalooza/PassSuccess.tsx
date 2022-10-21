@@ -50,7 +50,7 @@ export const PassSuccess: FC<PassSuccessProps> = ({ pass }) => {
         {passId && (
           <video autoPlay loop muted>
             <source
-              src={passId && ContentService.passAnimation(passId, "mp4")}
+              src={passId && ContentService.passAnimationPath(passId, "mp4")}
               type="video/mp4"
             />
           </video>

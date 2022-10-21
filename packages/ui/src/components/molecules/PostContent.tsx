@@ -27,7 +27,7 @@ export const PostContent: FC<PostContentProps> = ({
       contentElement = (
         <PostVideo
           key={content.contentId}
-          videoUrl={ContentService.userContentMedia(content)}
+          videoUrl={ContentService.userContentMediaPath(content)}
         />
       )
       break

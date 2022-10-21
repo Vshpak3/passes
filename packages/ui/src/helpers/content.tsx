@@ -18,14 +18,14 @@ export class ContentService {
 
   // Profile
 
-  static profileImage(userId: string): string {
+  static profileImagePath(userId: string): string {
     return getUrlPath("profile", userId, "profile-image.jpeg")
   }
 
-  static profileThumbnail(userId: string): string {
+  static profileThumbnailPath(userId: string): string {
     // In dev there is no lambda to generate the thumbnail so use the profile image itself
     if (isDev) {
-      return ContentService.profileImage(userId)
+      return ContentService.profileImagePath(userId)
     }
     return getUrlPath("profile", userId, "profile-thumbnail.jpeg")
   }
@@ -36,7 +36,7 @@ export class ContentService {
 
   // Passes/NFTs
 
-  static passHolderImage(
+  static passHolderImagePath(
     passId: string,
     passHolderId: string,
     imageType: PassDtoImageTypeEnum
@@ -44,7 +44,7 @@ export class ContentService {
     return getUrlPath("nft", passId, passHolderId, `media.${imageType}`)
   }
 
-  static passHolderAnimation(
+  static passHolderAnimationPath(
     passId: string,
     passHolderId: string,
     animationType: PassDtoAnimationTypeEnum
@@ -52,11 +52,14 @@ export class ContentService {
     return getUrlPath("nft", passId, passHolderId, `media.${animationType}`)
   }
 
-  static passImage(passId: string, imageType: PassDtoImageTypeEnum): string {
+  static passImagePath(
+    passId: string,
+    imageType: PassDtoImageTypeEnum
+  ): string {
     return getUrlPath("nft", passId, `media.${imageType}`)
   }
 
-  static passAnimation(
+  static passAnimationPath(
     passId: string,
     animationType: PassDtoAnimationTypeEnum
   ): string {
@@ -65,7 +68,7 @@ export class ContentService {
 
   // User Content
 
-  static userContentMedia(content: ContentDto): string {
+  static userContentMediaPath(content: ContentDto): string {
     if (content.signedUrl) {
       return content.signedUrl
     }
@@ -90,10 +93,10 @@ export class ContentService {
     )
   }
 
-  static userContentThumbnail(content: ContentDto): string {
+  static userContentThumbnailPath(content: ContentDto): string {
     // In dev there is no lambda to generate the thumbnail so use the media itself
     if (isDev) {
-      return ContentService.userContentMedia(content)
+      return ContentService.userContentMediaPath(content)
     }
     return getUrlPath(
       "media",
@@ -104,8 +107,8 @@ export class ContentService {
 
   // Other
 
-  static w9Pdf(userId: string): string {
-    return getUrlPath("w9", userId, "upload.pdf")
+  static w9PublicPdfPath(): string {
+    return getUrlPath("assets", "w9.pdf")
   }
 
   // Upload methods

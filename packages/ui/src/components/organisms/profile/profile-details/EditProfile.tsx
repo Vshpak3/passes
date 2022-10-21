@@ -252,7 +252,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                 src={
                   profileImage?.length
                     ? URL.createObjectURL(profileImage[0])
-                    : ContentService.profileThumbnail(profileUserId || "")
+                    : ContentService.profileThumbnailPath(profileUserId || "")
                 }
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null

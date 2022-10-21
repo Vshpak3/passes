@@ -17,7 +17,7 @@ export const ProfileImage: FC<ProfileImageProps> = ({
     onClick={onClick}
   >
     <img
-      src={override ? override : ContentService.profileThumbnail(userId)}
+      src={override ? override : ContentService.profileThumbnailPath(userId)}
       className="object-cover drop-shadow-profile-photo"
       alt=""
       onError={({ currentTarget }) => {

@@ -18,6 +18,7 @@ import {
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/Media"
 import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/MediaHeader"
+import { ACCEPTED_MEDIA_TYPES } from "src/components/organisms/profile/main-content/new-post/NewPostMediaSection"
 import { ContentService } from "src/helpers/content"
 import { usePay } from "src/hooks/usePay"
 
@@ -345,15 +346,7 @@ export const InputMessage: FC<Props> = ({
                         </div>
                       }
                       options={{ onChange: onFileInputChange }}
-                      accept={[
-                        ".png",
-                        ".jpg",
-                        ".jpeg",
-                        ".mp4",
-                        ".mov",
-                        ".qt",
-                        ".mp3"
-                      ]}
+                      accept={ACCEPTED_MEDIA_TYPES}
                       errors={errors}
                     />
                   )}

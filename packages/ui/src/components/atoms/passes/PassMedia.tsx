@@ -22,7 +22,7 @@ export const PassMedia: FC<PassMediaProps> = ({
     return animationType ? (
       <video autoPlay loop muted>
         <source
-          src={ContentService.passHolderAnimation(
+          src={ContentService.passHolderAnimationPath(
             passId,
             passHolderId,
             animationType
@@ -32,7 +32,11 @@ export const PassMedia: FC<PassMediaProps> = ({
       </video>
     ) : (
       <img
-        src={ContentService.passHolderImage(passId, passHolderId, imageType)}
+        src={ContentService.passHolderImagePath(
+          passId,
+          passHolderId,
+          imageType
+        )}
         alt="no media exists"
       />
     )
@@ -40,13 +44,13 @@ export const PassMedia: FC<PassMediaProps> = ({
     return animationType ? (
       <video autoPlay loop muted>
         <source
-          src={ContentService.passAnimation(passId, animationType)}
+          src={ContentService.passAnimationPath(passId, animationType)}
           type="video/mp4"
         />
       </video>
     ) : (
       <img
-        src={ContentService.passImage(passId, imageType)}
+        src={ContentService.passImagePath(passId, imageType)}
         alt="no media exists"
       />
     )

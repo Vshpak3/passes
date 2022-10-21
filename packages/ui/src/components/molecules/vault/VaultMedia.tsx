@@ -60,7 +60,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         onClick={handleClick}
       >
         <ImageWithDefault // All content types have an image thumbnail
-          src={ContentService.userContentThumbnail(content)}
+          src={ContentService.userContentThumbnailPath(content)}
           defaultColor="black/50"
         />
         <div className="flex p-3">
