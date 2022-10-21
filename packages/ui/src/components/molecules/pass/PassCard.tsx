@@ -3,7 +3,6 @@ import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import React, { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/useBuyPassModal"
 import { useUser } from "src/hooks/useUser"
@@ -27,12 +26,16 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         <div className="align-items flex w-full flex-row items-center justify-between">
           <div className="text-[18px] font-[700]">{pass.title}</div>
           <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-            <ConditionRendering condition={pass.chain === "eth"}>
-              <EthereumIcon /> Ethereum
-            </ConditionRendering>
-            <ConditionRendering condition={pass.chain === "sol"}>
-              <SolanaIcon /> Solana
-            </ConditionRendering>
+            {pass.chain === "eth" && (
+              <>
+                <EthereumIcon /> Ethereum
+              </>
+            )}
+            {pass.chain === "sol" && (
+              <>
+                <SolanaIcon /> Solana
+              </>
+            )}
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
