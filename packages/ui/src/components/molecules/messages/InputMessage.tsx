@@ -18,7 +18,11 @@ import {
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/Media"
 import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/MediaHeader"
-import { ACCEPTED_MEDIA_TYPES } from "src/components/organisms/profile/main-content/new-post/NewPostMediaSection"
+import {
+  ACCEPTED_MEDIA_TYPES,
+  MAX_FILE_SIZE,
+  MAX_FILES
+} from "src/config/messages"
 import { ContentService } from "src/helpers/content"
 import { usePay } from "src/hooks/usePay"
 
@@ -28,10 +32,6 @@ interface Props {
   isCreator: boolean
   user: any
 }
-
-const MB = 1048576
-const MAX_FILE_SIZE = 10 * MB
-const MAX_FILES = 9
 
 const api = new MessagesApi()
 export const InputMessage: FC<Props> = ({

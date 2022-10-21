@@ -12,8 +12,7 @@ import {
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-
-import { ACCEPTED_MEDIA_TYPES } from "./NewPostMediaSection"
+import { ACCEPTED_MEDIA_TYPES } from "src/config/post"
 
 const messagesMediaTypes = [
   {
@@ -51,6 +50,7 @@ const mediaTypes = [
     type: "schedule"
   }
 ]
+
 type UploadPostMediaProps = {
   messages?: boolean
   register: FormRegister

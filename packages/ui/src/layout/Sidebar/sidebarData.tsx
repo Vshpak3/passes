@@ -4,14 +4,19 @@ import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
 import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
+import { isProd } from "src/helpers/env"
 
 export const creatorToolsItems: SidebarNavigation[] = [
-  // {
-  //   id: "manage-passes",
-  //   name: "Manage Passes",
-  //   href: "/tools/manage-passes",
-  //   creatorOnly: true
-  // },
+  ...(!isProd
+    ? [
+        {
+          id: "manage-passes",
+          name: "Manage Passes",
+          href: "/tools/manage-passes",
+          creatorOnly: true
+        }
+      ]
+    : []),
   {
     id: "list",
     name: "List",

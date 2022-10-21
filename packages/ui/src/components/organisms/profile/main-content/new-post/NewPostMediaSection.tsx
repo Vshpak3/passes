@@ -8,28 +8,17 @@ import Slider from "react-slick"
 import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
 import { NewPostMediaModal } from "src/components/organisms/NewPostMediaModal"
-import { FileAccept } from "src/components/types/FormTypes"
+import {
+  ACCEPTED_MEDIA_TYPES,
+  MAX_FILE_COUNT,
+  MAX_IMAGE_SIZE,
+  MAX_IMAGE_SIZE_NAME,
+  MAX_VIDEO_SIZE,
+  MAX_VIDEO_SIZE_NAME
+} from "src/config/post"
 
 import { MediaFile } from "./Media"
 import { NewPostFormProps } from "./NewPostEditor"
-
-const MAX_IMAGE_COUNT = 10
-
-const MB = 1048576
-const MAX_IMAGE_SIZE = 10 * MB
-const MAX_IMAGE_SIZE_NAME = "10 megabytes"
-const MAX_VIDEO_SIZE = 200 * MB
-const MAX_VIDEO_SIZE_NAME = "200 megabytes"
-
-export const ACCEPTED_MEDIA_TYPES: FileAccept = [
-  ".png",
-  ".jpg",
-  ".jpeg",
-  ".mp4",
-  ".mov"
-  // ".qt"
-  // ".mp3"
-]
 
 const START_SLIDER_AFTER_FILES_LENGTH = 2
 
@@ -70,7 +59,6 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
   files,
   setFiles
 }) => {
-  const [containsVideo, setContainsVideo] = useState(false)
   const [selectedMedia, setSelectedMedia] = useState<File>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
 
@@ -91,55 +79,37 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
     onMediaChange([...event.target.files])
     event.target.value = ""
   }
+
   const onRemove = (index: number, e: MouseEvent<HTMLDivElement>) => {
     const newFiles = files.filter((_, i) => i !== index)
     e.stopPropagation()
     setFiles(newFiles)
-    if (newFiles.length === 0) {
-      setContainsVideo(false)
-    }
   }
 
   const onMediaChange = (fileProps: File[]) => {
     // Validate properties of each file
     for (const file of fileProps) {
-      const isVideo = (file as File).type.startsWith("video/")
-
       const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)
       if (!type || (type !== "image" && type !== "video")) {
         toast.error(`Invalid media type ${file.type}`)
         return
       }
 
-      if (type === "video") {
-        if (isVideo && files.length >= 1) {
-          toast.error("A post can only contain a single video")
-          return
-        }
-        if (files.length > 1) {
-          toast.error("A post cannot contain both a video and images")
-          return
-        }
-        if (file.size > MAX_VIDEO_SIZE) {
-          toast.error(`Videos cannot be larger than ${MAX_VIDEO_SIZE_NAME}`)
-          return
-        }
-        setContainsVideo(true)
+      if (fileProps.length + files.length > MAX_FILE_COUNT) {
+        toast.error(
+          `Can only have a maximum of ${MAX_FILE_COUNT} pictures/videos`
+        )
+        return
       }
 
-      if (type === "image") {
-        if (isVideo) {
-          toast.error("A post cannot contain both a video and images")
-          return
-        }
-        if (fileProps.length + files.length > MAX_IMAGE_COUNT) {
-          toast.error(`Can only have a maximum of ${MAX_IMAGE_COUNT} images`)
-          return
-        }
-        if (file.size > MAX_IMAGE_SIZE) {
-          toast.error(`Images cannot be larger than ${MAX_IMAGE_SIZE_NAME}`)
-          return
-        }
+      if (type === "video" && file.size > MAX_VIDEO_SIZE) {
+        toast.error(`Videos cannot be larger than ${MAX_VIDEO_SIZE_NAME}`)
+        return
+      }
+
+      if (type === "image" && file.size > MAX_IMAGE_SIZE) {
+        toast.error(`Images cannot be larger than ${MAX_IMAGE_SIZE_NAME}`)
+        return
       }
     }
 
@@ -158,15 +128,15 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
           accept={["image", "video"]}
           options={{ onChange: onDragDropChange }}
           errors={errors}
-          helperText={`You may upload 1 video or up to ${MAX_IMAGE_COUNT} photos per post`}
+          helperText={`You may upload up to ${MAX_FILE_COUNT} pictures/videos per post`}
         />
       ) : (
         <div
-          className={`${
-            files.length <= START_SLIDER_AFTER_FILES_LENGTH && "flex"
-          } w-full flex-col items-${
-            containsVideo ? "center" : "start"
-          } justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9`}
+          className={classNames({
+            flex: files.length <= START_SLIDER_AFTER_FILES_LENGTH,
+            "w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9":
+              true
+          })}
         >
           {selectedMedia && (
             <NewPostMediaModal
@@ -214,7 +184,7 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
                   </div>
                 ))}
               </div>
-              {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+              {files.length !== MAX_FILE_COUNT && (
                 <FormInput
                   register={register}
                   name="drag-drop"
@@ -253,7 +223,7 @@ export const NewPostMediaSection: FC<NewPostMediaSectionProps> = ({
                   </div>
                 ))}
                 <div className="absolute top-[50%] ml-[15px] translate-y-[-50%]">
-                  {!containsVideo && files.length !== MAX_IMAGE_COUNT && (
+                  {files.length !== MAX_FILE_COUNT && (
                     <FormInput
                       register={register}
                       name="drag-drop"
