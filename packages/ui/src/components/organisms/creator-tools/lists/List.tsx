@@ -4,8 +4,8 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
-import { AlertIcon } from "src/icons/alert-icon"
-import { DeleteIcon } from "src/icons/delete-icon"
+import { AlertIcon } from "src/icons/AlertIcon"
+import { DeleteIcon } from "src/icons/DeleteIcon"
 
 interface ListProps {
   list: ListDto

@@ -12,7 +12,7 @@ import React, {
 } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
-import { MessagesVaultDialog } from "src/components/molecules/direct-messages/messages-vault-dialog"
+import { MessagesVaultDialog } from "src/components/molecules/direct-messages/MessagesVaultDialog"
 import {
   Media,
   MediaFile

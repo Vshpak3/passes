@@ -22,8 +22,8 @@ import {
 import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowerToListModal"
 import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
 import { errorMessage } from "src/helpers/error"
-import { AddIcon } from "src/icons/add-icon"
-import { InfoIconOutlined } from "src/icons/info-icon"
+import { AddIcon } from "src/icons/AddIcon"
+import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
 
 import { ListMember } from "./ListMember"
 import { SortDropdown, SortOption } from "./SortDropdown"

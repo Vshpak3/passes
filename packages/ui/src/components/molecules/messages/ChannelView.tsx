@@ -1,7 +1,7 @@
 import { MessagesApi, UserApi } from "@passes/api-client"
 import { ChannelMemberDto } from "@passes/api-client/models"
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
-import { ChannelGalleryView } from "src/components/molecules/direct-messages/messages-channel-gallery-view"
+import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"

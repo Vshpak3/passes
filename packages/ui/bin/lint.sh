@@ -41,16 +41,26 @@ report_problem_file "${uppercase_pages}" \
   "To fix, please move them to the components directory."
 
 # Detect any newly added JavaScript files.
-javascript_files=$(find src -type f -name '*.js*' | sort)
+javascript_files=$(find src -type f -name '*.js*')
 report_problem_file "${javascript_files}" \
   "The following files are newly added JavaScript files:" \
   "To fix, please convert to Typescript."
 
 # Detect any newly added non-TS files.
-not_allowed_files=$(find src -type f -not -name '*.ts*' | grep -v '.css$' | sort)
+not_allowed_files=$(find src -type f -not -name '*.ts*' | grep -v '.css$')
 report_problem_file "${not_allowed_files}" \
   "The following files are not Typescript nor CSS:" \
   "To fix, please remove."
+
+# Find incorrect names files.
+incorrect_named=$(find src -name '*-*.ts*' \
+  -not -path 'src/config/*' \
+  -not -path 'src/pages/*' \
+  -not -path 'src/helpers/*'
+)
+report_problem_file "${incorrect_named}" \
+  "The following files do not follow our naming conventions:" \
+  "To fix, please rename."
 
 # Detect assets that are no longer being used.
 extra_assets=($(

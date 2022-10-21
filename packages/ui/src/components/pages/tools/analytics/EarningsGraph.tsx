@@ -29,7 +29,7 @@ import {
   getNYearsAgoDate
 } from "src/helpers/formatters"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
-import { Caret } from "src/icons/caret"
+import { Caret } from "src/icons/Caret"
 
 ChartJS.register(
   CategoryScale,

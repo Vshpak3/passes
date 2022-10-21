@@ -10,7 +10,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/free-messages-left-container"
+import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/FreeMessagesLeftContainer"
 import { useUser } from "src/hooks/useUser"
 
 import { ChannelMessage } from "./ChannelMessage"

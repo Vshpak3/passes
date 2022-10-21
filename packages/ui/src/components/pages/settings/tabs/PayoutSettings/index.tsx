@@ -14,8 +14,8 @@ import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { useUser } from "src/hooks/useUser"
-import { BankIcon } from "src/icons/bank-icon"
-import { WalletIcon } from "src/icons/wallet-icon"
+import { BankIcon } from "src/icons/BankIcon"
+import { WalletIcon } from "src/icons/WalletIcon"
 
 const PayoutSettings = () => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps

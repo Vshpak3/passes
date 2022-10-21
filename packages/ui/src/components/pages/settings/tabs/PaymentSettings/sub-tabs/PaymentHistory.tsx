@@ -15,12 +15,12 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Payin } from "src/components/molecules/payment/payin"
+import { Payin } from "src/components/molecules/payment/Payin"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { Tab } from "src/components/pages/settings/Tab"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useUser } from "src/hooks/useUser"
-import { ChevronDown } from "src/icons/chevron-down"
+import { ChevronDown } from "src/icons/ChevronDown"
 
 const api = new PaymentApi()
 
