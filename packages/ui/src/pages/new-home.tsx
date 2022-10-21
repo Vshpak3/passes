@@ -14,7 +14,7 @@ import { TrackStats } from "src/components/organisms/home/TrackStats"
 
 const Home: NextPage = () => {
   return (
-    <div className="mx-auto">
+    <div className="mx-auto bg-black">
       <Navbar />
       <Hero />
       <CreatorCarousel />
