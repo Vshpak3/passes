@@ -1,4 +1,8 @@
-import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
+import {
+  PassDto,
+  PassDtoTypeEnum,
+  PassHolderDtoChainEnum
+} from "@passes/api-client"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import React, { FC } from "react"
@@ -26,15 +30,16 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         <div className="align-items flex w-full flex-row items-center justify-between">
           <div className="text-[18px] font-[700]">{pass.title}</div>
           <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-            {pass.chain === "eth" && (
+            {pass.chain === PassHolderDtoChainEnum.Eth ? (
               <>
                 <EthereumIcon /> Ethereum
               </>
-            )}
-            {pass.chain === "sol" && (
-              <>
-                <SolanaIcon /> Solana
-              </>
+            ) : (
+              pass.chain === PassHolderDtoChainEnum.Sol && (
+                <>
+                  <SolanaIcon /> Solana
+                </>
+              )
             )}
           </div>
         </div>

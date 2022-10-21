@@ -1,4 +1,8 @@
-import { CreateWalletRequestDto, WalletApi } from "@passes/api-client"
+import {
+  CreateWalletRequestDto,
+  CreateWalletRequestDtoChainEnum,
+  WalletApi
+} from "@passes/api-client"
 import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
@@ -57,7 +61,7 @@ export const Wallets = () => {
         walletAddress,
         signedMessage: signature,
         rawMessage: rawMessage,
-        chain: "eth"
+        chain: CreateWalletRequestDtoChainEnum.Eth
       }
 
       const api = new WalletApi()
@@ -100,7 +104,7 @@ export const Wallets = () => {
         walletAddress,
         signedMessage: signature,
         rawMessage,
-        chain: "sol"
+        chain: CreateWalletRequestDtoChainEnum.Sol
       }
 
       const api = new WalletApi()

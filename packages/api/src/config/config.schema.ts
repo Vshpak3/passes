@@ -187,8 +187,7 @@ export const configConfiguration = async function (): Promise<
 async function waitForValues(dictionary) {
   for (const key in dictionary) {
     const value = dictionary[key]
-    // eslint-disable-next-line eqeqeq
-    if (value.constructor == Object) {
+    if (value.constructor === Object) {
       dictionary[key] = await waitForValues(value)
     } else {
       dictionary[key] = await value

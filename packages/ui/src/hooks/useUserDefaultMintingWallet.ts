@@ -20,7 +20,9 @@ export const useUserDefaultMintingWallets = () => {
     mutate: mutateEthWallet
   } = useSWR<WalletDto>(accessToken ? "/mint/wallet/eth" : null, async () => {
     return await api.getDefaultWallet({
-      getDefaultWalletRequestDto: { chain: "eth" }
+      getDefaultWalletRequestDto: {
+        chain: GetDefaultWalletRequestDtoChainEnum.Eth
+      }
     })
   })
 
@@ -30,7 +32,9 @@ export const useUserDefaultMintingWallets = () => {
     mutate: mutateSolWallet
   } = useSWR<WalletDto>(accessToken ? "/mint/wallet/sol" : null, async () => {
     return await api.getDefaultWallet({
-      getDefaultWalletRequestDto: { chain: "sol" }
+      getDefaultWalletRequestDto: {
+        chain: GetDefaultWalletRequestDtoChainEnum.Sol
+      }
     })
   })
 

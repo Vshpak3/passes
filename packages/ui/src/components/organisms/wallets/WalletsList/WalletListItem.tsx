@@ -1,6 +1,7 @@
 import {
   GetDefaultWalletRequestDtoChainEnum,
-  WalletDto
+  WalletDto,
+  WalletDtoChainEnum
 } from "@passes/api-client"
 import Clipboard from "public/icons/clipboard.svg"
 import DefaultIcon from "public/icons/defaultWalletTypeIcon.svg"
@@ -36,26 +37,26 @@ export const WalletListItem: FC<WalletListItemProps> = ({
   const AUTH_TOOLTIP_TEXT =
     "Unauthenticated Wallet: can only be used for Payouts."
 
-  const walletTypeIcon = (value: string, isAuthWallet: boolean) => {
+  const walletTypeIcon = (value: WalletDtoChainEnum, isAuthWallet: boolean) => {
     if (isAuthWallet) {
       switch (value) {
-        case "eth":
+        case WalletDtoChainEnum.Eth:
           return <Metamask width="40px" />
-        case "sol":
+        case WalletDtoChainEnum.Sol:
           return <Phantom width="40px" />
       }
     }
     return <DefaultIcon />
   }
 
-  const walletTypeName = (value: string, isAuthWallet: boolean) => {
+  const walletTypeName = (value: WalletDtoChainEnum, isAuthWallet: boolean) => {
     if (!isAuthWallet) {
       return "Cold"
     }
     switch (value) {
-      case "eth":
+      case WalletDtoChainEnum.Eth:
         return "Metamask"
-      case "sol":
+      case WalletDtoChainEnum.Sol:
         return "Phantom"
     }
     return value

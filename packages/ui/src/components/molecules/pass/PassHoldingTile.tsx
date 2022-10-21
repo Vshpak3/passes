@@ -1,4 +1,4 @@
-import { PassHolderDto } from "@passes/api-client"
+import { PassHolderDto, PassHolderDtoChainEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
@@ -45,15 +45,16 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
           <div className="align-items flex w-full flex-row items-center justify-between">
             <div className="text-[18px] font-[700]">{passHolder.title}</div>
             <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-              {passHolder.chain === "eth" && (
+              {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
                 <>
                   <EthereumIcon /> Ethereum
                 </>
-              )}
-              {passHolder.chain === "sol" && (
-                <>
-                  <SolanaIcon /> Solana
-                </>
+              ) : (
+                passHolder.chain === PassHolderDtoChainEnum.Sol && (
+                  <>
+                    <SolanaIcon /> Solana
+                  </>
+                )
               )}
             </div>
           </div>
@@ -78,7 +79,7 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
             </div>
           )}
           <div className="mt-[12px] w-full">
-            {passHolder.chain === "eth" && (
+            {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
               <button
                 onClick={() =>
                   router.push(
@@ -92,16 +93,19 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
               >
                 View on EtherScan
               </button>
-            )}
-            {passHolder.chain === "sol" && (
-              <button
-                onClick={() =>
-                  router.push("https://solscan.io/token/" + passHolder.address)
-                }
-                className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold"
-              >
-                View on SolanaScan
-              </button>
+            ) : (
+              passHolder.chain === PassHolderDtoChainEnum.Sol && (
+                <button
+                  onClick={() =>
+                    router.push(
+                      "https://solscan.io/token/" + passHolder.address
+                    )
+                  }
+                  className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold"
+                >
+                  View on SolanaScan
+                </button>
+              )
             )}
           </div>
           {!!passHolder.expiresAt && (
