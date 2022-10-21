@@ -34,6 +34,8 @@ import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { ContentDeleteError, NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
+export const VAULT_LIMIT = 9 // should be a multiple of 3
+
 @Injectable()
 export class ContentService {
   constructor(
@@ -160,6 +162,7 @@ export class ContentService {
     if (type) {
       query = query.andWhere({ content_type: type })
     }
+    query = query.limit(VAULT_LIMIT)
     query = createPaginatedQuery(
       query,
       ContentEntity.table,
