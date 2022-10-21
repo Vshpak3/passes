@@ -31,7 +31,7 @@ export class LambdaService {
   async invoke(command: InvokeCommand): Promise<string> {
     const res = await this.client.send(command)
 
-    if (res.StatusCode != HttpStatus.OK) {
+    if (res.StatusCode !== HttpStatus.OK) {
       throw new LambdaResponseStatusError('', res.StatusCode)
     }
     if (res.FunctionError) {

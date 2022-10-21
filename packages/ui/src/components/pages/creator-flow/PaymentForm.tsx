@@ -43,11 +43,11 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
-          bankType === BankTypeEnum.US || bankType == BankTypeEnum.NON_IBAN
+          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
             ? values["accountNumber"]
             : undefined,
         routingNumber:
-          bankType === BankTypeEnum.US || bankType == BankTypeEnum.NON_IBAN
+          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
             ? values["routingNumber"]
             : undefined,
         iban: bankType === BankTypeEnum.IBAN ? values["iban"] : undefined,

@@ -26,6 +26,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     curly: 'error',
+    eqeqeq: 'error',
     'import/no-default-export': 'error',
     'no-trailing-spaces': 'error',
     'simple-import-sort/exports': 'error',

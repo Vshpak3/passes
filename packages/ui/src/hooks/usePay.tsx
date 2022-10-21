@@ -111,7 +111,7 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = getPhantomProvider()
-    if (provider == undefined) {
+    if (provider === undefined) {
       //display message to user
       cancelPayinCallback()
       throw new Error("no provider exists")
@@ -139,7 +139,7 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = (await detectEthereumProvider()) as EthereumProvider
-    if (provider == undefined) {
+    if (provider === undefined) {
       //display message to user
       cancelPayinCallback()
       throw new Error("no provider exists")
@@ -165,7 +165,7 @@ export const usePay = (
       cancelPayinCallback()
       throw new Error("no provider exists")
     }
-    if (registerResponse.amountEth == undefined) {
+    if (registerResponse.amountEth === undefined) {
       //display message to user
       cancelPayinCallback()
       throw new Error("can't purchase with Eth")

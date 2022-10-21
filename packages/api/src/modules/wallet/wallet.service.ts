@@ -208,9 +208,9 @@ export class WalletService {
       )
     }
     if (
-      chain == ChainEnum.ETH ||
-      chain == ChainEnum.MATIC ||
-      chain == ChainEnum.AVAX
+      chain === ChainEnum.ETH ||
+      chain === ChainEnum.MATIC ||
+      chain === ChainEnum.AVAX
     ) {
       return ethers.utils.getAddress(address)
     }
@@ -244,7 +244,7 @@ export class WalletService {
     )
     const userWalletRedisKey = this.getUserWalletRedisKey(userId, walletAddress)
     let authMessage = await this.redisService.get(userWalletRedisKey)
-    if (authMessage == null) {
+    if (authMessage === null) {
       authMessage = this.getRawMessage(walletAddress, v4())
     }
     await this.redisService.set(
@@ -376,6 +376,6 @@ export class WalletService {
         .where({ wallet_id: walletId })
         .update({ holder_id: null })
     }
-    return knexResult == 1
+    return knexResult === 1
   }
 }

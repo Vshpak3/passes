@@ -332,7 +332,7 @@ export class MessagesService {
       text,
       previewIndex,
     } = createBatchMessageDto
-    if (contentIds.length == 0 && price) {
+    if (contentIds.length === 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
 
@@ -448,7 +448,7 @@ export class MessagesService {
   ) {
     const { text, contentIds, channelId, tipAmount, price, previewIndex } =
       sendMessageDto
-    if (contentIds.length == 0 && price) {
+    if (contentIds.length === 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }
     const channelMember = await this.dbReader<ChannelMemberEntity>(

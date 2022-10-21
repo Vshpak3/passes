@@ -86,7 +86,7 @@ export class ListService {
         user_id: userId,
         name: createListDto.name,
       })
-      if (listMemberRecords.length != 0) {
+      if (listMemberRecords.length !== 0) {
         await trx<ListMemberEntity>(ListMemberEntity.table)
           .insert(listMemberRecords)
           .onConflict(['list_id', 'user_id'])

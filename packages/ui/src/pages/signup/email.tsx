@@ -42,7 +42,7 @@ const SignupEmailPage: FC = () => {
   const [hasSentEmail, setHasSentEmail] = useState(false)
 
   useEffect(() => {
-    setHasSentEmail(router.query.hasEmail == "true")
+    setHasSentEmail(router.query.hasEmail === "true")
   }, [router])
 
   const verifyEmail = async (email: string) => {

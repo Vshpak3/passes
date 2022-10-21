@@ -108,7 +108,7 @@ export const configConfiguration = async function (): Promise<
     monitoring: {
       sentryDsn: getConfigValue('MONITORING_SENTRY_DSN'),
       sentryEnabled:
-        (await getConfigValue('MONITORING_SENTRY_DSN')) != 'disable',
+        (await getConfigValue('MONITORING_SENTRY_DSN')) !== 'disable',
     },
     s3_bucket: {
       nft: getConfigValue('S3_BUCKET_NFT'),
@@ -187,6 +187,7 @@ export const configConfiguration = async function (): Promise<
 async function waitForValues(dictionary) {
   for (const key in dictionary) {
     const value = dictionary[key]
+    // eslint-disable-next-line eqeqeq
     if (value.constructor == Object) {
       dictionary[key] = await waitForValues(value)
     } else {

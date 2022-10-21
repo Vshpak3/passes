@@ -39,7 +39,7 @@ export class InternalSigner extends Signer {
   ): Promise<string> {
     await this.getAddress()
     return await resolveProperties(transaction).then(async (tx) => {
-      if (tx.from != null) {
+      if (tx.from !== null) {
         if (getAddress(tx.from) !== this.address) {
           throw new InternalServerErrorException(
             'transaction from address mismatch',

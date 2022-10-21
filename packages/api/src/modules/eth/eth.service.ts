@@ -191,7 +191,11 @@ export class EthService {
       .where({ id: walletId, user_id: userId })
       .select('address', 'user_id', 'chain')
       .first()
-    if (!wallet || wallet.user_id != userId || wallet.chain != ChainEnum.ETH) {
+    if (
+      !wallet ||
+      wallet.user_id !== userId ||
+      wallet.chain !== ChainEnum.ETH
+    ) {
       throw new BadRequestException('invalid wallet id specified')
     }
     const nfts: OwnedNft[] = []

@@ -78,7 +78,7 @@ export class ContentService {
           user_id: userId,
         })
         .update('deleted_at', new Date())
-      if (count != contentIds.length) {
+      if (count !== contentIds.length) {
         throw new ContentDeleteError('could not delete all contents')
       }
     })

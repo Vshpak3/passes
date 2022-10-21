@@ -193,7 +193,7 @@ export const Passes = () => {
                   !defaultPayinMethod ||
                   defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
                   !passId ||
-                  passId.length == 0
+                  passId.length === 0
                 }
                 onSuccess={() => {
                   switch (defaultPayinMethod?.method) {

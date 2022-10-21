@@ -68,7 +68,7 @@ export class UserService {
       .where({ id: userId })
       .select(['email'])
       .first()
-    if (!user || user.email != 'patrick@passes.com') {
+    if (!user || user.email !== 'patrick@passes.com') {
       throw new InternalServerErrorException(
         `Unexpected missing user: ${userId}`,
       )

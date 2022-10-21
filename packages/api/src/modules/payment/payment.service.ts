@@ -1683,7 +1683,7 @@ export class PaymentService {
         payin_status: PayinStatusEnum.UNCREATED_READY,
       })
     // check for completed update
-    if (rows == 1) {
+    if (rows === 1) {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
@@ -1707,7 +1707,7 @@ export class PaymentService {
         payin_status: PayinStatusEnum.FAILED_READY,
       })
     // check for completed update
-    if (rows == 1) {
+    if (rows === 1) {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
@@ -1733,7 +1733,7 @@ export class PaymentService {
         payin_status: PayinStatusEnum.SUCCESSFUL_READY,
       })
     // check for completed update
-    if (rows == 1) {
+    if (rows === 1) {
       const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
         .where({ id: payinId })
         .andWhere({ user_id: userId })
@@ -1876,7 +1876,7 @@ export class PaymentService {
       ])
       .update({ payout_status: PayoutStatusEnum.FAILED })
     // check for completed update
-    if (rows == 1) {
+    if (rows === 1) {
       const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
         .where({ id: payoutId })
         .select('amount')
@@ -1901,7 +1901,7 @@ export class PaymentService {
         PayoutStatusEnum.PENDING,
       ])
       .update({ payout_status: PayoutStatusEnum.SUCCESSFUL })
-    if (rows == 1) {
+    if (rows === 1) {
       const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
         .where({ id: payoutId })
         .select('amount')
