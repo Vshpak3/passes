@@ -15,7 +15,7 @@ import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
-import { SidebarDefaultProps } from "./types"
+import { SidebarDefaultProps } from "./Types"
 
 export const SidebarDefault: FC<SidebarDefaultProps> = ({
   navigation,

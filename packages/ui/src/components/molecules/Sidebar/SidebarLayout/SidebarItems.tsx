@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import { FC, Fragment } from "react"
 
-import { SidebarNavigation } from "./types"
+import { SidebarNavigation } from "./Types"
 
 interface SidebarChildItemProps {
   subItem: SidebarNavigation

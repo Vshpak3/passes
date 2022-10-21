@@ -6,7 +6,6 @@ import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
-import { PostStatisticsButton } from "src/components/molecules/post/PostStatisticsButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { Dialog } from "src/components/organisms/Dialog"
 import {
@@ -55,19 +54,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   const postUnlocked = !post.purchasable
 
-  const {
-    createdAt,
-    earningsPurchases,
-    isLiked,
-    numLikes,
-    numPurchases,
-    numComments,
-    purchasable,
-    postId,
-    userId,
-    totalTipAmount,
-    username
-  } = post
+  const { isLiked, numLikes, purchasable, postId, userId, username } = post
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, {

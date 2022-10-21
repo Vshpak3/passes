@@ -17,7 +17,7 @@ import { errorMessage } from "src/helpers/error"
 import { updateProfile } from "src/helpers/updateProfile"
 import { useUser } from "src/hooks/useUser"
 
-import { creatorFlowProfileSchema } from "./helper/creatorFlowProfileSchema"
+import { creatorFlowProfileSchema } from "./helper/CreatorFlowProfileSchema"
 
 interface CreatorFlowCustomizeFormProps {
   displayName: string

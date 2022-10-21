@@ -4,10 +4,7 @@ import PinIcon from "public/icons/pin.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
-import {
-  PostStatisticsButton,
-  PostStatisticsButtonProps
-} from "src/components/molecules/post/PostStatisticsButton"
+import { PostStatisticsButtonProps } from "src/components/molecules/post/PostStatisticsButton"
 import {
   Dropdown,
   DropdownOption
@@ -27,12 +24,10 @@ interface PostHeaderProps
 export const PostHeader: FC<PostHeaderProps> = ({
   createdAt,
   displayName,
-  isOwner,
   userId,
   username,
   isPinned,
-  dropdownOptions,
-  statisticsButtonProps
+  dropdownOptions
 }) => {
   return (
     <div className="flex w-full items-center justify-between">

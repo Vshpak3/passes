@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const Admin = dynamic(() => import("src/components/pages/admin"), {
+const Admin = dynamic(() => import("src/components/pages/Admin"), {
   suspense: true,
   ssr: false
 })
