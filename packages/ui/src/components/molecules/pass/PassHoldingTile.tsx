@@ -4,7 +4,6 @@ import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 interface PassHoldingTileProps {
   passHolder: PassHolderDto
 }
@@ -46,12 +45,16 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
           <div className="align-items flex w-full flex-row items-center justify-between">
             <div className="text-[18px] font-[700]">{passHolder.title}</div>
             <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-              <ConditionRendering condition={passHolder.chain === "eth"}>
-                <EthereumIcon /> Ethereum
-              </ConditionRendering>
-              <ConditionRendering condition={passHolder.chain === "sol"}>
-                <SolanaIcon /> Solana
-              </ConditionRendering>
+              {passHolder.chain === "eth" && (
+                <>
+                  <EthereumIcon /> Ethereum
+                </>
+              )}
+              {passHolder.chain === "sol" && (
+                <>
+                  <SolanaIcon /> Solana
+                </>
+              )}
             </div>
           </div>
           <div className="border-b border-b-[#2C282D] py-[12px]">
@@ -75,7 +78,7 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
             </div>
           )}
           <div className="mt-[12px] w-full">
-            <ConditionRendering condition={passHolder.chain === "eth"}>
+            {passHolder.chain === "eth" && (
               <button
                 onClick={() =>
                   router.push(
@@ -89,8 +92,8 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
               >
                 View on EtherScan
               </button>
-            </ConditionRendering>
-            <ConditionRendering condition={passHolder.chain === "sol"}>
+            )}
+            {passHolder.chain === "sol" && (
               <button
                 onClick={() =>
                   router.push("https://solscan.io/token/" + passHolder.address)
@@ -99,7 +102,7 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
               >
                 View on SolanaScan
               </button>
-            </ConditionRendering>
+            )}
           </div>
           {!!passHolder.expiresAt && (
             <div className="mt-[12px] w-full">
