@@ -17,11 +17,7 @@ interface TipPostModalProps extends ModalProps {
   postId: PostDto["postId"]
 }
 
-export const TipPostModal: FC<TipPostModalProps> = ({
-  isOpen,
-  setOpen,
-  postId
-}) => {
+const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   const {

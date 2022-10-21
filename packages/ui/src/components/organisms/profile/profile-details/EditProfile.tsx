@@ -23,7 +23,7 @@ import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { object, string } from "yup"
 
-export const editProfileSchema = object({
+const editProfileSchema = object({
   displayName: string()
     .transform((name) => name.trim())
     .required("Please enter a display name"),

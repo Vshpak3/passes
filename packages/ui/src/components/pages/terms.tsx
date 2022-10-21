@@ -1,6 +1,6 @@
 import { Wordmark } from "src/components/atoms/Wordmark"
 
-export const TermsOfService = () => {
+const TermsOfService = () => {
   return (
     <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">
       <Wordmark height={28} width={122} />

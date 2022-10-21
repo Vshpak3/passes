@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { FC, PropsWithChildren, useEffect, useState } from "react"
 import {
   authRouter,
   authStateMachine,
@@ -7,7 +7,6 @@ import {
 import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
-import { PropsWithChildren } from "types"
 
 interface AuthWrapperProps {
   // isPage will handle redirecting user to /login if not logged in;

@@ -21,7 +21,7 @@ import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const api = new VerificationApi()
 
-export const CreatorFlow = () => {
+const CreatorFlow = () => {
   const { user, setAccessToken } = useUser()
   const router = useRouter()
 

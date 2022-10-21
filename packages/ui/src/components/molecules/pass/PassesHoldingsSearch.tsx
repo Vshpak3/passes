@@ -1,5 +1,6 @@
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
+
 interface MyPassSearchBarProps {
   onChange: any
   passSearchTerm: any

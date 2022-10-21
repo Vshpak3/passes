@@ -32,7 +32,6 @@ export type FormOptions = Partial<{
   onBlur?: (event: any) => void
 }>
 export type FormRegister = any
-export type FormControl = any
 export type FormErrors = any
 export type FormSelectOptions = Array<
   string | { value: string | number; label: string }

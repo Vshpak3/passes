@@ -12,10 +12,7 @@ interface SidebarChildItemProps {
   isActive: boolean
 }
 
-export const SidebarChildItem: FC<SidebarChildItemProps> = ({
-  subItem,
-  isActive
-}) => {
+const SidebarChildItem: FC<SidebarChildItemProps> = ({ subItem, isActive }) => {
   return (
     <Link key={subItem.name} href={subItem.href} as={subItem.href}>
       <span

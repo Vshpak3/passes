@@ -6,7 +6,7 @@ interface ProfileStatItemMobileProps {
   label: any
 }
 
-export const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
+const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
   stat,
   label
 }) => (

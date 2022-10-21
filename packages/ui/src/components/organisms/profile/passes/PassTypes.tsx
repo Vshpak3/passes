@@ -1,7 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-empty-collection */
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-empty-function */
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
 
@@ -21,7 +17,9 @@ export const PassTypes: FC<PassesProps> = () => {
         Pass Types
       </span>
       <div className="overflow-x-none relative mx-0 mt-4 flex flex-col items-start">
-        {creatorPasses?.map((pass, index) => (
+        {/* eslint-disable-next-line sonarjs/no-empty-collection */}
+        {creatorPasses.map((pass, index) => (
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           <PassCardDesktop key={index} pass={pass} setModalOpen={() => {}} />
         ))}
       </div>

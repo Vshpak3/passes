@@ -29,7 +29,7 @@ const subTabs = [
   // }
 ]
 
-export const AccountSettings: FC = () => {
+const AccountSettings: FC = () => {
   const { addTabToStackHandler } = useSettings() as SettingsContextProps
 
   return (

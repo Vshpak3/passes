@@ -2,8 +2,8 @@ import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
 
 import { PassDto, PostDto } from "@passes/api-client"
-import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
+import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import Router from "next/router"
@@ -20,6 +20,8 @@ import { BuyPassModal } from "src/components/organisms/payment/BuyPassModal"
 import { BuyPostModal } from "src/components/organisms/payment/BuyPostModal"
 import { ViewPostModal } from "src/components/organisms/profile/post/ViewPostModal"
 import { ReportModal } from "src/components/organisms/ReportModal"
+import { SegmentConfig } from "src/config/app/segment"
+import { GlobalSWRConfig } from "src/config/app/swr"
 import { BlockModalContext, BlockModalData } from "src/contexts/BlockModal"
 import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
@@ -29,29 +31,7 @@ import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 import { useUser } from "src/hooks/useUser"
-import { SWRConfig, SWRConfiguration } from "swr"
-
-export const swrConfig: SWRConfiguration = {
-  // enable or disable automatic revalidation when component is mounted
-  revalidateOnMount: false,
-
-  // automatically revalidate when window gets focused
-  revalidateOnFocus: false,
-
-  // only revalidate once during a time span in milliseconds
-  focusThrottleInterval: 10000,
-
-  // polling when the window is invisible
-  refreshWhenHidden: false,
-
-  // polling when the browser is offline
-  refreshWhenOffline: false,
-
-  // automatically revalidate when the browser regains a network connection
-  revalidateOnReconnect: false,
-
-  revalidateIfStale: false
-}
+import { SWRConfig } from "swr"
 
 // Only show nprogress after this many milliseconds (slow loading)
 const LOADING_DEBOUNCE_TIME = 500
@@ -141,7 +121,7 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
                 )}
                 <ToastContainer
                   position="bottom-center"
-                  autoClose={5000}
+                  autoClose={ms("4 seconds")}
                   hideProgressBar={true}
                   newestOnTop={false}
                   closeOnClick
@@ -164,28 +144,25 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const { hasRefreshed } = useTokenRefresh()
   const { setAccessToken, mutate } = useUser()
-  // Refresh once on page load then repeatedly
   useEffect(() => {
     mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setAccessToken])
-  const getLayout = Component.getLayout ?? ((page) => page)
+
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
   ])
+
+  const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(
     <NextThemeProvider attribute="class" disableTransitionOnChange>
       <DefaultHead />
       <Script
-        dangerouslySetInnerHTML={{
-          __html: snippet.min({
-            apiKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY
-          })
-        }}
+        dangerouslySetInnerHTML={{ __html: SegmentConfig }}
         id="segmentScript"
       />
-      <SWRConfig value={swrConfig}>
+      <SWRConfig value={GlobalSWRConfig}>
         <DndProvider backend={HTML5Backend}>
           <SubApp Component={Component} pageProps={pageProps} />
         </DndProvider>

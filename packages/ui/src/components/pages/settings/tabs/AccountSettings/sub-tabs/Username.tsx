@@ -15,7 +15,7 @@ interface UsernameFormProps {
   username: string
 }
 
-export const Username: FC = () => {
+const Username: FC = () => {
   const { user, loading, updateUsername } = useUser()
 
   const {

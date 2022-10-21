@@ -1,6 +1,4 @@
 import { PublicKey } from "@solana/web3.js"
-import { ReactNode } from "react"
-
 type PhantomEvent = "disconnect" | "connect" | "accountChanged"
 
 interface PhantomProviderConnectOpts {
@@ -24,8 +22,6 @@ interface PhantomProviderRequest {
     display: string
   }
 }
-
-export type PropsWithChildren<P> = P & { children?: ReactNode }
 
 declare global {
   interface Window {

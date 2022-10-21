@@ -16,7 +16,7 @@ interface SidebarMobileItemProps extends SidebarMobileItemBaseProps {
   onClick: () => void
 }
 
-export const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
+const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
   active,
   item,
   onClick
@@ -39,7 +39,7 @@ export const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
   )
 }
 
-export const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
+const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
   item,
   active
 }) => (

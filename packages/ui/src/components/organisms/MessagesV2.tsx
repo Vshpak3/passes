@@ -10,7 +10,7 @@ interface MessagesV2Props {
   defaultUserId?: string
 }
 
-export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
+const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
   const router = useRouter()
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
   const [gallery, setGallery] = useState(false)

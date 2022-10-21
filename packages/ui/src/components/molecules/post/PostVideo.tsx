@@ -74,5 +74,3 @@ export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
   // @ts-ignore
   return <Video ref={videoRef} />
 }
-
-export default PostVideo // eslint-disable-line import/no-default-export

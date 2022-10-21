@@ -152,7 +152,7 @@ const composeMediaGridLayout = (length: number, index: number) => {
   }
 }
 
-export const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
+const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
   const renderFilePreview = files.map((file: File, index: number) => {
     const gridLayout = composeMediaGridLayout(files.length, index)
     const onRemoveFile = () => onRemove(index)

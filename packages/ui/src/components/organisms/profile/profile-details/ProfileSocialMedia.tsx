@@ -33,7 +33,7 @@ interface ProfileSocialMediaButtonProps {
   username: string
 }
 
-export const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
+const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   type,
   username
 }) => (

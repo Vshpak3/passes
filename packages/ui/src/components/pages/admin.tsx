@@ -11,7 +11,7 @@ import { useUser } from "src/hooks/useUser"
 
 const ADMIN_EMAIL = "@passes.com"
 
-export const AdminPage = () => {
+const AdminPage = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
   const {
