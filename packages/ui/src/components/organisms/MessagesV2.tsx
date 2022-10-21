@@ -1,11 +1,7 @@
 import { MessagesApi } from "@passes/api-client"
-import {
-  ChannelMemberDto,
-  GetChannelsRequestDtoOrderTypeEnum,
-  ListMemberDto
-} from "@passes/api-client/models"
+import { ChannelMemberDto, ListMemberDto } from "@passes/api-client/models"
 import { useRouter } from "next/router"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { useUser } from "src/hooks/useUser"
@@ -16,8 +12,6 @@ interface MessagesV2Props {
 
 export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
   const router = useRouter()
-  const [channelOrderType, setChannelOrderType] =
-    useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
