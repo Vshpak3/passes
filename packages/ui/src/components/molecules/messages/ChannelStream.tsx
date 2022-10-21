@@ -15,8 +15,7 @@ import { useUser } from "src/hooks/useUser"
 
 import { ChannelMessage } from "./ChannelMessage"
 
-const api = new MessagesApi()
-export interface ChannelStreamProps {
+interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
   isCreator?: boolean
@@ -34,6 +33,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   otherUserUsername,
   user
 }) => {
+  const api = new MessagesApi()
+
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
   const [messages, setMessages] = useState<MessageDto[]>([])
 

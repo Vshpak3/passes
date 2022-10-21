@@ -12,7 +12,7 @@ import { useProfile } from "src/hooks/profile/useProfile"
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 import { ProfileStatsMobile } from "./ProfileStats"
 
-export interface ProfileInformationProps {
+interface ProfileInformationProps {
   onChat: () => void
 }
 

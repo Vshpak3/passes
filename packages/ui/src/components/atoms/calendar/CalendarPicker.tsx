@@ -15,7 +15,7 @@ import {
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
-export const CALENDAR_POPUP_ID = "calendar-popper"
+const CALENDAR_POPUP_ID = "calendar-popper"
 
 export enum TimeShiftEnum {
   "AM",

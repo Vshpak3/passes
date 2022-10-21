@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import clsx from "clsx"
-import HeaderChatIcon from "public/icons/header-chat-icon.svg"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, PropsWithChildren } from "react"
@@ -171,13 +170,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   )
 }
 
-export const PassesPurpleButton: FC<GenericButtonProps> = ({ name }) => (
-  <button className="flex w-full items-center justify-center rounded-full border border-solid border-passes-secondary-color bg-passes-secondary-color py-[10px] text-base font-semibold text-white shadow-sm lg:hidden">
-    <UnlockLockIcon className="mr-[14px] flex h-6 w-6" />
-    {name}
-  </button>
-)
-
 export const PassesPinkButton: FC<GenericButtonProps> = ({
   type,
   name,
@@ -236,13 +228,6 @@ export const PostUnlockButton: FC<GenericButtonProps> = ({
     onClick={onClick}
   >
     <UnlockLockIcon className="flex h-6 w-6" />
-    {name}
-  </button>
-)
-
-export const HeaderChatButton: FC<GenericButtonProps> = ({ name }) => (
-  <button className="flex h-[49px] w-full min-w-[105px] items-center justify-center gap-[10px] rounded-md border border-transparent bg-[#1b141d]/50 text-base font-semibold text-white ">
-    <HeaderChatIcon className="" />
     {name}
   </button>
 )

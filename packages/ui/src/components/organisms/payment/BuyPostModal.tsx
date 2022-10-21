@@ -14,7 +14,7 @@ import { plural } from "src/helpers/plural"
 import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-export interface BuyPostModalProps {
+interface BuyPostModalProps {
   post: PostDto | null
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }

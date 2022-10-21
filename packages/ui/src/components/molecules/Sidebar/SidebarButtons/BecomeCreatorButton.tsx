@@ -3,7 +3,7 @@ import PlusSign from "public/icons/plus-sign.svg"
 import { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 
-export interface BecomeCreatorButtonProps {
+interface BecomeCreatorButtonProps {
   isMobile?: boolean
 }
 

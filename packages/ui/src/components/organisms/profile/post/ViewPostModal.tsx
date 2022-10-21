@@ -33,7 +33,7 @@ import { usePost } from "src/hooks/profile/usePost"
 import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 
-export interface ViewPostModalProps {
+interface ViewPostModalProps {
   post: PostDto & { setIsRemoved?: Dispatch<SetStateAction<boolean>> }
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }

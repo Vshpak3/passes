@@ -3,7 +3,7 @@ import React, { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
-export interface PaymentModalInfo {
+interface PaymentModalInfo {
   passId: string
   price: number
   title: string
@@ -33,6 +33,7 @@ function getPassButton(pass: PassDto, setModalOpen: OpenPassModal) {
       return null
   }
 }
+
 function getPassPrice(pass: PassDto) {
   switch (pass.type) {
     case PassDtoTypeEnum.Subscription:

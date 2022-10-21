@@ -6,9 +6,11 @@ import {
 import { connect } from "extendable-media-recorder-wav-encoder"
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
+
 let registered = false
 let skipOnStop = false
-export type ReactMediaRecorderRenderProps = {
+
+type ReactMediaRecorderRenderProps = {
   error: string
   muteAudio: () => void
   unMuteAudio: () => void

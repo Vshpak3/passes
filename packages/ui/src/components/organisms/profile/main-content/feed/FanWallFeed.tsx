@@ -29,7 +29,7 @@ const FanWallFeedEnd = (
   </div>
 )
 
-export interface FanWallFeedProps {
+interface FanWallFeedProps {
   profileUserId: string
   ownsProfile: boolean
 }

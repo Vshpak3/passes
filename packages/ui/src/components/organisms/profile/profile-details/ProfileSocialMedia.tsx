@@ -50,7 +50,7 @@ export const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   </>
 )
 
-export interface ProfileSocialMediaProps {
+interface ProfileSocialMediaProps {
   discordUsername: string | undefined | null
   facebookUsername: string | undefined | null
   instagramUsername: string | undefined | null
