@@ -5,6 +5,7 @@ import {
   PostDto
 } from "@passes/api-client"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
+import { FC } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -38,7 +39,7 @@ const ContentFeedEnd = (
   </div>
 )
 
-export const HomeContentFeed: React.FC = () => {
+export const HomeContentFeed: FC = () => {
   const api = new FeedApi()
   const { posts, isConnected } = usePostWebhook()
 

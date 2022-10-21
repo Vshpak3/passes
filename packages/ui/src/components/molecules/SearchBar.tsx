@@ -2,7 +2,7 @@ import { Combobox } from "@headlessui/react"
 import { UserDisplayInfoDto } from "@passes/api-client"
 import classNames from "classnames"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import React from "react"
+import React, { FC } from "react"
 import {
   EmptyResult,
   SearchResultOption
@@ -18,7 +18,7 @@ interface SearchBarProps {
   isDesktop?: boolean
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+export const SearchBar: FC<SearchBarProps> = ({
   searchValue,
   results,
   onSelect,

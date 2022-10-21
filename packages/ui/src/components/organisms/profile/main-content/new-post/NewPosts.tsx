@@ -1,5 +1,5 @@
 import { ContentDto, CreatePostRequestDto, PostDto } from "@passes/api-client"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Post } from "src/components/organisms/profile/post/Post"
 import { usePost } from "src/hooks/usePost"
@@ -11,7 +11,7 @@ interface NewPostsProps {
   setIsNewPostAdded: (value: boolean) => void
 }
 
-export const NewPosts: React.FC<NewPostsProps> = ({ setIsNewPostAdded }) => {
+export const NewPosts: FC<NewPostsProps> = ({ setIsNewPostAdded }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
   const { profileInfo, profileUsername } = useProfile()
   const { createPost } = usePost()

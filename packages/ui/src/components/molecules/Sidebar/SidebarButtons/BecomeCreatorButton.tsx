@@ -1,12 +1,13 @@
 import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
+import { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 
 export interface BecomeCreatorButtonProps {
   isMobile?: boolean
 }
 
-export const BecomeCreatorButton: React.FC<BecomeCreatorButtonProps> = ({
+export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
   isMobile
 }) => {
   const router = useRouter()

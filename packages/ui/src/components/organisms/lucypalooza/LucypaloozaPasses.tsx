@@ -23,7 +23,6 @@ import React, {
 } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { PassCard } from "src/components/molecules/lucypalooza/PassCard"
 import { PassSuccess } from "src/components/molecules/lucypalooza/PassSuccess"
 import { BuyPassButton } from "src/components/molecules/payment/buy-pass-button"
@@ -172,102 +171,100 @@ export const Passes = () => {
           <MemoPassList passes={passes} setPassId={setPassId} passId={passId} />
         )}
       </div>
-      <ConditionRendering condition={!isLoading}>
-        <ConditionRendering
-          condition={!!passId && !passHolder && isPaying === false}
-        >
-          <div className="mx-auto w-full max-w-[480px] bg-black">
-            <br />
-            <span>
-              <b>
-                Paying with crypto will mint directly to the paying address. If
-                you pay with card, we will keep it for you in a custodial wallet
-                that you can transfer later!
-              </b>
-            </span>
-            <PaymentSettings
-              isEmbedded
-              onSetDefaultPayment={onSetDefaultPayment}
-            />
-            <BuyPassButton
-              passId={passId ?? ""}
-              isDisabled={
-                !defaultPayinMethod ||
-                defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
-                !passId ||
-                passId.length == 0
-              }
-              onSuccess={() => {
-                switch (defaultPayinMethod?.method) {
-                  case PayinMethodDtoMethodEnum.CircleCard:
-                    toast.success("Thank you for your purchase!")
-                    break
-                  case PayinMethodDtoMethodEnum.MetamaskCircleEth:
-                  case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
-                  case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
-                    toast.info(
-                      "Transaction sent, please monitor for success or failure"
-                    )
-                    break
-                  default:
-                    toast.error("No method selected while trying to pay")
+      {!isLoading && (
+        <>
+          {!!passId && !passHolder && isPaying === false && (
+            <div className="mx-auto w-full max-w-[480px] bg-black">
+              <br />
+              <span>
+                <b>
+                  Paying with crypto will mint directly to the paying address.
+                  If you pay with card, we will keep it for you in a custodial
+                  wallet that you can transfer later!
+                </b>
+              </span>
+              <PaymentSettings
+                isEmbedded
+                onSetDefaultPayment={onSetDefaultPayment}
+              />
+              <BuyPassButton
+                passId={passId ?? ""}
+                isDisabled={
+                  !defaultPayinMethod ||
+                  defaultPayinMethod.method === PayinMethodDtoMethodEnum.None ||
+                  !passId ||
+                  passId.length == 0
                 }
-                setIsPaying(true)
-              }}
-            />
-          </div>
-        </ConditionRendering>
-        {
-          // Oleh TODO: use the same condition to disable the whole Payment part (the above part^)
-          // instead of a new render
-        }
-        <ConditionRendering condition={!passHolder && isPaying}>
-          <div className="flex h-[50vh] w-full flex-col items-center justify-center">
-            <span className="text-xl font-bold">
-              We are processing your payment and minting your pass!
-            </span>
-            <div className="my-5">
-              <Button tag="button" variant="pink" disabled={true}>
-                <span className="px-20 text-xl">Processing...</span>
-              </Button>
+                onSuccess={() => {
+                  switch (defaultPayinMethod?.method) {
+                    case PayinMethodDtoMethodEnum.CircleCard:
+                      toast.success("Thank you for your purchase!")
+                      break
+                    case PayinMethodDtoMethodEnum.MetamaskCircleEth:
+                    case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
+                    case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
+                      toast.info(
+                        "Transaction sent, please monitor for success or failure"
+                      )
+                      break
+                    default:
+                      toast.error("No method selected while trying to pay")
+                  }
+                  setIsPaying(true)
+                }}
+              />
             </div>
-            <span>
-              Please wait. This might take a few minutes, do not go back or
-              refresh this page.
-            </span>
-            {payin &&
-              payin.payinMethod.method ===
-                PayinMethodDtoMethodEnum.CircleCard && (
-                <span>
-                  For card payments, please verify your payment with your
-                  provider.
-                </span>
-              )}
-            {payin &&
-              payin.payinMethod.method !==
-                PayinMethodDtoMethodEnum.CircleCard && (
-                <>
+          )}
+          {
+            // Oleh TODO: use the same condition to disable the whole Payment part (the above part^)
+            // instead of a new render
+          }
+          {!passHolder && isPaying && (
+            <div className="flex h-[50vh] w-full flex-col items-center justify-center">
+              <span className="text-xl font-bold">
+                We are processing your payment and minting your pass!
+              </span>
+              <div className="my-5">
+                <Button tag="button" variant="pink" disabled={true}>
+                  <span className="px-20 text-xl">Processing...</span>
+                </Button>
+              </div>
+              <span>
+                Please wait. This might take a few minutes, do not go back or
+                refresh this page.
+              </span>
+              {payin &&
+                payin.payinMethod.method ===
+                  PayinMethodDtoMethodEnum.CircleCard && (
                   <span>
-                    We are waiting for your crypto payment. If the transaction
-                    was cancelled or failed, please cancel payemnt.
+                    For card payments, please verify your payment with your
+                    provider.
                   </span>
-                  <div className="mt-5">
-                    <Button
-                      onClick={handleCancel}
-                      tag="button"
-                      variant="purple-light"
-                    >
-                      <span className="px-20 text-lg">Cancel</span>
-                    </Button>
-                  </div>
-                </>
-              )}
-          </div>
-        </ConditionRendering>
-        <ConditionRendering condition={!!passHolder}>
-          {passHolder && <PassSuccess pass={passHolder} />}
-        </ConditionRendering>
-      </ConditionRendering>
+                )}
+              {payin &&
+                payin.payinMethod.method !==
+                  PayinMethodDtoMethodEnum.CircleCard && (
+                  <>
+                    <span>
+                      We are waiting for your crypto payment. If the transaction
+                      was cancelled or failed, please cancel payemnt.
+                    </span>
+                    <div className="mt-5">
+                      <Button
+                        onClick={handleCancel}
+                        tag="button"
+                        variant="purple-light"
+                      >
+                        <span className="px-20 text-lg">Cancel</span>
+                      </Button>
+                    </div>
+                  </>
+                )}
+            </div>
+          )}
+          {!!passHolder && <PassSuccess pass={passHolder} />}
+        </>
+      )}
     </section>
   )
 }

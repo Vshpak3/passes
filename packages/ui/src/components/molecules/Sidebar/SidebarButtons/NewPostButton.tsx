@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { NewPostPopup } from "src/components/molecules/scheduler/NewPostPopup"
 import { useUser } from "src/hooks/useUser"
@@ -8,7 +8,7 @@ export interface NewPostButtonProps {
   isMobile?: boolean
 }
 
-export const NewPostButton: React.FC<NewPostButtonProps> = ({ isMobile }) => {
+export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const router = useRouter()
   const { user } = useUser()

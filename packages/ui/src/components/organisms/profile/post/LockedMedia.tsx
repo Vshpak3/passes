@@ -1,5 +1,5 @@
 import { PostDto } from "@passes/api-client"
-import { useMemo } from "react"
+import { FC, useMemo } from "react"
 import { PostUnlockButton } from "src/components/atoms/Button"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -11,7 +11,7 @@ interface LockedMediaProps {
   post: PostDto
 }
 
-export const LockedMedia: React.FC<LockedMediaProps> = ({ post }) => {
+export const LockedMedia: FC<LockedMediaProps> = ({ post }) => {
   const { setPost } = useBuyPostModal()
   const { contents, price } = post
   const { images, video } = contentTypeCounter(contents)

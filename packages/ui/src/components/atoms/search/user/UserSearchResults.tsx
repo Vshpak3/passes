@@ -9,7 +9,7 @@ interface EmptyResultProps {
   text: string
 }
 
-export const EmptyResult: React.FC<EmptyResultProps> = ({ text }) => (
+export const EmptyResult: FC<EmptyResultProps> = ({ text }) => (
   <Combobox.Option value="placeholder" disabled>
     <li className="my-4 pl-6 text-[#ffffff]/30">
       <div>Search for {formatText(text)}</div>

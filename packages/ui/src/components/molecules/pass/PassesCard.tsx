@@ -1,9 +1,8 @@
-import { PassDto } from "@passes/api-client"
+import { PassDto, PassDtoChainEnum } from "@passes/api-client"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 
 interface PassTileCardProps {
   pass: PassDto
@@ -25,12 +24,17 @@ export const PassTileCard: FC<PassTileCardProps> = ({ pass }) => {
             <div className="align-items flex w-full flex-row items-center justify-between">
               <div className="text-[18px] font-[700]">{pass.title}</div>
               <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-                <ConditionRendering condition={pass.chain === "eth"}>
-                  <EthereumIcon /> Ethereum
-                </ConditionRendering>
-                <ConditionRendering condition={pass.chain === "sol"}>
-                  <SolanaIcon /> Solana
-                </ConditionRendering>
+                {pass.chain === PassDtoChainEnum.Eth ? (
+                  <>
+                    <EthereumIcon /> Ethereum
+                  </>
+                ) : (
+                  pass.chain === PassDtoChainEnum.Sol ?? (
+                    <>
+                      <SolanaIcon /> Solana
+                    </>
+                  )
+                )}
               </div>
             </div>
             <div className="border-b border-b-[#2C282D] py-[12px]">
@@ -44,16 +48,17 @@ export const PassTileCard: FC<PassTileCardProps> = ({ pass }) => {
               </span>
             </div>
             <div className="mt-[12px] w-full">
-              <ConditionRendering condition={pass.chain === "eth"}>
+              {pass.chain === PassDtoChainEnum.Eth ? (
                 <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
                   View on EtherScan
                 </button>
-              </ConditionRendering>
-              <ConditionRendering condition={pass.chain === "sol"}>
-                <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
-                  View on SolanaScan
-                </button>
-              </ConditionRendering>
+              ) : (
+                pass.chain === PassDtoChainEnum.Sol && (
+                  <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
+                    View on SolanaScan
+                  </button>
+                )
+              )}
             </div>
             <div className="mt-[12px] w-full">
               <span className="text-[#767676]">

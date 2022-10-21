@@ -1,6 +1,6 @@
 import { LikeApi, PostDto } from "@passes/api-client"
 import HeartIcon from "public/icons/post-heart-icon.svg"
-import React, { useCallback, useMemo, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 import { errorMessage } from "src/helpers/error"
 import { compactNumberFormatter } from "src/helpers/formatters"
 
@@ -9,7 +9,7 @@ type LikeButtonProps = Pick<
   "isLiked" | "numLikes" | "purchasable" | "postId"
 >
 
-export const LikeButton: React.FC<LikeButtonProps> = ({
+export const LikeButton: FC<LikeButtonProps> = ({
   isLiked: initialIsLiked,
   numLikes: initialNumLikes,
   purchasable,

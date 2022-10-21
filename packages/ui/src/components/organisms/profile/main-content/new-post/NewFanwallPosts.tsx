@@ -2,7 +2,7 @@ import {
   CreateFanWallCommentRequestDto,
   FanWallCommentDto
 } from "@passes/api-client"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { FanWallComment } from "src/components/organisms/profile/main-content/feed/FanWallComment"
 import { useUser } from "src/hooks/useUser"
 
@@ -12,7 +12,7 @@ interface NewFanwallPosts {
   profileUserId: string
 }
 
-export const NewFanwallPosts: React.FC<NewFanwallPosts> = ({
+export const NewFanwallPosts: FC<NewFanwallPosts> = ({
   profileUserId
 }: NewFanwallPosts) => {
   const [newComments, setNewComments] = useState<FanWallCommentDto[]>([])

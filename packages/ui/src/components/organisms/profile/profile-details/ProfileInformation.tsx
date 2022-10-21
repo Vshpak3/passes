@@ -99,7 +99,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   )
 }
 
-export const ProfileInformationMobile: React.FC<ProfileInformationProps> = ({
+export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
   onChat
 }) => {
   const { profileStats, ownsProfile, profileInfo, profileUsername } =

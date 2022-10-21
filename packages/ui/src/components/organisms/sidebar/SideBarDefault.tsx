@@ -1,5 +1,5 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
 import { CreatorToolsItem } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsItem"
@@ -17,7 +17,7 @@ import { useUser } from "src/hooks/useUser"
 
 import { SidebarDefaultProps } from "./types"
 
-export const SidebarDefault: React.FC<SidebarDefaultProps> = ({
+export const SidebarDefault: FC<SidebarDefaultProps> = ({
   navigation,
   active
 }) => {

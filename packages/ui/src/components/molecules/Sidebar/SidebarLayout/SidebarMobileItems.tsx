@@ -39,7 +39,7 @@ export const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
   )
 }
 
-export const SidebarMobileItemInner: React.FC<SidebarMobileItemBaseProps> = ({
+export const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
   item,
   active
 }) => (

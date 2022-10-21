@@ -1,6 +1,5 @@
 import { useRouter } from "next/router"
 import { Suspense, useEffect } from "react"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { Faq } from "src/components/molecules/lucypalooza/Faq"
 import { Hero } from "src/components/organisms/lucypalooza/LucypaloozaHero"
 import { Passes } from "src/components/organisms/lucypalooza/LucypaloozaPasses"
@@ -37,11 +36,11 @@ export const LucyPalooza = () => {
         </div>
 
         <Hero />
-        <ConditionRendering condition={!!user}>
+        {!!user && (
           <Suspense fallback={`Loading...`}>
             <Passes />
           </Suspense>
-        </ConditionRendering>
+        )}
         <Faq />
 
         <section className="mt-[226px] text-center">
