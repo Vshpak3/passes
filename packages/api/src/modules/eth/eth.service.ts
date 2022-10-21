@@ -20,6 +20,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { localMockedAwsDev } from '../../util/aws.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -327,6 +328,10 @@ export class EthService {
     symbol: string,
     royalties: number,
   ): Promise<string> {
+    if (localMockedAwsDev()) {
+      return ''
+    }
+
     const masterWallet = new InternalSigner(
       ETH_MASTER_WALLET_LAMBDA_KEY_ID,
       this.lambdaService,

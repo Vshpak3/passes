@@ -1,4 +1,11 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common'
 import { ApiTags } from '@nestjs/swagger'
 import { Response } from 'express'
 
@@ -7,7 +14,9 @@ import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens-dto'
+import { JwtGeneralGuard } from '../auth/jwt/general/jwt-general.guard'
 import { CreatePassResponseDto } from '../pass/dto/create-pass.dto'
+import { AdminGuard } from './admin.guard'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
 import { AdminDto } from './dto/admin.dto'
@@ -24,6 +33,7 @@ import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
 
+@UseGuards(JwtGeneralGuard, AdminGuard)
 @ApiTags('admin')
 @Controller('admin')
 export class AdminController {
@@ -37,7 +47,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: AccessTokensResponseDto,
     responseDesc: 'Access token for impersonated user',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('impersonate')
   async impersonateUser(
@@ -57,7 +67,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'User was marked as adult',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('adult')
   async flagAsAdult(@Body() body: AdminDto): Promise<void> {
@@ -69,7 +79,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'User was set up as a creator',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('creator')
   async setupCreator(@Body() body: AdminDto): Promise<void> {
@@ -81,7 +91,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass was added',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/add')
   async addExternalPass(
@@ -95,7 +105,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass was updated',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/update')
   async updateExternalPass(
@@ -111,7 +121,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass was deleted',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/delete')
   async deleteExternalPass(
@@ -127,7 +137,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass was added',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/address/add')
   async addExternalPassAddress(
@@ -143,7 +153,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass was deleted',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/address/delete')
   async deleteExternalPassAddress(
@@ -159,7 +169,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass for user was added',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/user/add')
   async addUserExternalPass(
@@ -175,7 +185,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'External pass for user deleted',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('external-pass/user/delete')
   async deleteUserExternalPass(
@@ -191,7 +201,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
     responseDesc: 'Creator fee was set',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('creator-fee/set')
   async setCreatorFee(
@@ -205,7 +215,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: GetCreatorFeeResponseDto,
     responseDesc: 'Creator fee was received',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('creator-fee/get')
   async getCreatorFee(
@@ -219,7 +229,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Unprocessed chargebacks were retrieved',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('chargeback/unprocessed')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -232,7 +242,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Chargeback was updated',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('chargeback/update')
   async updateChargeback(
@@ -246,7 +256,7 @@ export class AdminController {
     responseStatus: HttpStatus.OK,
     responseType: CreatePassResponseDto,
     responseDesc: 'Pass created',
-    role: RoleEnum.ADMIN,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('pass/create')
   async createManualPass(

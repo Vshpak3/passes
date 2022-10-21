@@ -7,17 +7,18 @@ import { ConfigService } from '@nestjs/config'
 import { AuthGuard } from '@nestjs/passport'
 
 import { UserDto } from '../user/dto/user.dto'
-// import { UserService } from '../user/user.service'
+import { UserService } from '../user/user.service'
 
 const ADMIN_EMAIL = '@passes.com'
 
 @Injectable()
-export class AdminGuard extends AuthGuard('jwt') {
+export class AdminGuard extends AuthGuard('jwt-admin') {
   private env: string
   private secret: string
 
   constructor(
-    private readonly configService: ConfigService, // private readonly userService: UserService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
   ) {
     super()
     this.secret = this.configService.get('admin.secret') as string
@@ -25,7 +26,7 @@ export class AdminGuard extends AuthGuard('jwt') {
   }
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {
-    const reqUser = {} as UserDto //await this.userService.findOne({ id })
+    const reqUser = await this.userService.findOne({ id })
 
     // Skip admin check in local development
     if (this.env === 'dev') {

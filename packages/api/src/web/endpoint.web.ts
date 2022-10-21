@@ -1,7 +1,6 @@
 import { applyDecorators, HttpCode, UseGuards } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
 
-import { AdminGuard } from '../modules/admin/admin.guard'
 import { Role, RoleEnum } from '../modules/auth/core/auth.role'
 import { JwtCreatorOnlyGuard } from '../modules/auth/jwt/creator-only/jwt-creator-only.guard'
 import { JwtGeneralGuard } from '../modules/auth/jwt/general/jwt-general.guard'
@@ -31,9 +30,6 @@ export function ApiEndpoint(options: ApiOptions) {
       break
     case RoleEnum.GENERAL:
       authDecorators = [ApiBearerAuth(), UseGuards(JwtGeneralGuard)]
-      break
-    case RoleEnum.ADMIN:
-      authDecorators = [ApiBearerAuth(), UseGuards(JwtGeneralGuard, AdminGuard)]
       break
     case RoleEnum.CREATOR_ONLY:
       authDecorators = [ApiBearerAuth(), UseGuards(JwtCreatorOnlyGuard)]
