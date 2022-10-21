@@ -5,7 +5,7 @@ import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 
-export interface CreatorSearchBarProps {
+interface CreatorSearchBarProps {
   isDesktop?: boolean
 }
 

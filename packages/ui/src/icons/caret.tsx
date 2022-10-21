@@ -1,6 +1,6 @@
 import { SVGProps } from "react"
 
-export interface CaretProps extends SVGProps<SVGSVGElement> {
+interface CaretProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
 }

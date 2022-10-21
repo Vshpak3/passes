@@ -8,12 +8,12 @@ import { addSeconds } from "date-fns"
 import { useEffect, useState } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
-export type DateProps = {
+type DateProps = {
   month: number
   year: number
 }
 
-export const CACHE_KEY_SCHEDULED_EVENTS = "/scheduled"
+const CACHE_KEY_SCHEDULED_EVENTS = "/scheduled"
 
 export const useScheduledEvents = (defaultDate?: DateProps) => {
   const api = new ScheduledApi()

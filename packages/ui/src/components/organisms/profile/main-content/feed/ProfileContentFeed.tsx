@@ -6,7 +6,7 @@ import { FanWallFeed } from "./FanWallFeed"
 import { PassesFeed } from "./PassesFeed"
 import { PostFeed } from "./PostFeed"
 
-export interface ProfileContentFeedProps {
+interface ProfileContentFeedProps {
   activeTab: ProfileNavigationOptions
 }
 

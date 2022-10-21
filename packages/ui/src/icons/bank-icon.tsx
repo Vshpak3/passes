@@ -1,6 +1,6 @@
 import { SVGProps } from "react"
 
-export interface BankIconProps extends SVGProps<SVGSVGElement> {
+interface BankIconProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
 }

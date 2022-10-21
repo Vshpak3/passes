@@ -1,6 +1,6 @@
 import { SVGProps } from "react"
 
-export interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
+interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
 }

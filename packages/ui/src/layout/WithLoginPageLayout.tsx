@@ -8,7 +8,7 @@ interface LoginWrapperProps {
   routeOnlyIfAuth?: boolean
 }
 
-export const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
+const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   children,
   routeOnlyIfAuth
 }) => {

@@ -26,7 +26,7 @@ const PostFeedEnd = (
   </div>
 )
 
-export interface PostFeedProps {
+interface PostFeedProps {
   profileUserId: string
   ownsProfile: boolean
 }

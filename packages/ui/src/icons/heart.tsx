@@ -1,6 +1,6 @@
 import { SVGProps } from "react"
 
-export interface HeartProps extends SVGProps<SVGSVGElement> {
+interface HeartProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
   variant?: "filled" | "solid"

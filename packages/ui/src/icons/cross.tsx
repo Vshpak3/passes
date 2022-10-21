@@ -2,7 +2,7 @@
 
 import { SVGProps } from "react"
 
-export interface CrossProps extends SVGProps<SVGSVGElement> {
+interface CrossProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
   alternate?: boolean
