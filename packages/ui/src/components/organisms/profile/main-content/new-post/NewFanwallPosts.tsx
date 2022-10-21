@@ -10,10 +10,12 @@ import { NewFanwallPost } from "./NewFanwallPost"
 
 interface NewFanwallPosts {
   profileUserId: string
+  ownsProfile: boolean
 }
 
 export const NewFanwallPosts: FC<NewFanwallPosts> = ({
-  profileUserId
+  profileUserId,
+  ownsProfile
 }: NewFanwallPosts) => {
   const [newComments, setNewComments] = useState<FanWallCommentDto[]>([])
   const { user } = useUser()
@@ -46,7 +48,11 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
     <>
       <NewFanwallPost creatorId={profileUserId || ""} createPost={createPost} />
       {newComments.map((comment) => (
-        <FanWallComment key={comment.fanWallCommentId} comment={comment} />
+        <FanWallComment
+          key={comment.fanWallCommentId}
+          comment={comment}
+          ownsProfile={ownsProfile}
+        />
       ))}
     </>
   )

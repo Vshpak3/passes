@@ -58,7 +58,10 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
       }}
     >
       {!!accessToken.length && (
-        <NewFanwallPosts profileUserId={profileUserId} />
+        <NewFanwallPosts
+          profileUserId={profileUserId}
+          ownsProfile={ownsProfile}
+        />
       )}
     </InfiniteScrollPagination>
   )

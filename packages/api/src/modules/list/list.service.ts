@@ -105,7 +105,7 @@ export class ListService {
         deleted_at: null,
       })
       .update({ deleted_at: new Date() })
-    return dbResult == 1
+    return dbResult === 1
   }
 
   async fillAutomatedLists(lists: any[]) {
