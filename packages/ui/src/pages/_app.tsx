@@ -4,10 +4,9 @@ import "src/styles/global/main.css"
 import { PostDto } from "@passes/api-client"
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
-import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
-import Router, { useRouter } from "next/router"
+import Router from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
@@ -25,8 +24,8 @@ import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext, ReportModalData } from "src/contexts/ReportModal"
 import { ViewPostModalContext } from "src/contexts/ViewPostModal"
-import { refreshAccessToken } from "src/helpers/token"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
+import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 import { useUser } from "src/hooks/useUser"
 import { SWRConfig, SWRConfiguration } from "swr"
 
@@ -51,9 +50,6 @@ export const swrConfig: SWRConfiguration = {
 
   revalidateIfStale: false
 }
-
-// Try to refresh the access token every this many minutes
-const CHECK_FOR_AUTH_REFRESH = ms("5 minutes")
 
 // Only show nprogress after this many milliseconds (slow loading)
 const LOADING_DEBOUNCE_TIME = 500
@@ -81,8 +77,6 @@ type AppPropsWithLayout = AppProps & {
 }
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
-  const [refresh, setRefresh] = useState(0)
-  const [hasRefreshed, setHasRefreshed] = useState(false)
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
@@ -95,42 +89,18 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     null
   )
 
-  const router = useRouter()
+  const { hasRefreshed } = useTokenRefresh()
   const { setAccessToken, mutate } = useUser()
-
-  // Refresh once on page load then repeatedly
-  useEffect(() => {
-    const refreshAuth = async () => {
-      await refreshAccessToken()
-        .then((r) => {
-          if (r) {
-            setAccessToken(r)
-          }
-          return r
-        })
-        .catch(() => undefined)
-
-      setHasRefreshed(true)
-    }
-
-    refreshAuth()
-    const interval = setInterval(async () => {
-      refreshAuth()
-      setRefresh(refresh + 1)
-    }, CHECK_FOR_AUTH_REFRESH)
-
-    return () => clearInterval(interval)
-  }, [refresh, router, setAccessToken])
-
-  useMessageToDevelopers([
-    "Hey developers! We're hiring: https://jobs.lever.co/Passes",
-    "Have an awesome day :-)"
-  ])
 
   useEffect(() => {
     mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setAccessToken])
+
+  useMessageToDevelopers([
+    "Hey developers! We're hiring: https://jobs.lever.co/Passes",
+    "Have an awesome day :-)"
+  ])
 
   const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(
@@ -208,4 +178,4 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   )
 }
 
-export default App // no WithNormalPageLayout
+export default App
