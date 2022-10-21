@@ -1,9 +1,9 @@
 import { PassDto } from "@passes/api-client"
+import EthereumIcon from "public/icons/eth.svg"
+import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { ConditionRendering } from "src/components/molecules/ConditionRendering"
-import { EthereumIcon } from "src/icons/eth-icon"
-import { SolanaIcon } from "src/icons/sol-icon"
 
 interface PassTileCardProps {
   pass: PassDto
@@ -20,11 +20,7 @@ export const PassTileCard: FC<PassTileCardProps> = ({ pass }) => {
             animationType={pass.animationType}
           />
         </div>
-        <div
-          className={
-            " grow cursor-pointer rounded-xl drop-shadow transition-colors"
-          }
-        >
+        <div className="grow cursor-pointer rounded-xl drop-shadow transition-colors">
           <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
             <div className="align-items flex w-full flex-row items-center justify-between">
               <div className="text-[18px] font-[700]">{pass.title}</div>
