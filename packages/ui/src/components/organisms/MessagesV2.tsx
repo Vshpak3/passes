@@ -19,7 +19,6 @@ export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
   const [channelOrderType, setChannelOrderType] =
     useState<GetChannelsRequestDtoOrderTypeEnum>("recent")
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
-
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
@@ -75,8 +74,6 @@ export const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
   return (
     <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
       <ChannelList
-        channelOrderType={channelOrderType}
-        setChannelOrderType={setChannelOrderType}
         onUserSelect={onUserSelect}
         selectedChannel={selectedChannel}
         onChannelClicked={handleChannelClicked}

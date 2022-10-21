@@ -1,8 +1,7 @@
-import { Fade, Popper } from "@mui/material"
 import {
   GetListMembersRequestDto,
-  GetListMembersRequestDtoOrderEnum,
-  GetListMembersRequestDtoOrderTypeEnum,
+  GetListMembersRequestDtoOrderEnum as Order,
+  GetListMembersRequestDtoOrderTypeEnum as OrderType,
   GetListMembersResponseDto,
   GetListResponseDto,
   GetListResponseDtoTypeEnum,
@@ -14,7 +13,6 @@ import { debounce } from "lodash"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
-import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import {
@@ -28,7 +26,7 @@ import { AddIcon } from "src/icons/add-icon"
 import { InfoIconOutlined } from "src/icons/info-icon"
 
 import { ListMember } from "./ListMember"
-import { SortListPopup } from "./SortListPopup"
+import { SortDropdown, SortOption } from "./SortDropdown"
 
 type ListDetailProps = {
   listId: string
@@ -45,17 +43,8 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [resets, setResets] = useState(0)
   const [search, setSearch] = useState<string>("")
 
-  const [orderType, setOrderType] =
-    useState<GetListMembersRequestDtoOrderTypeEnum>(
-      GetListMembersRequestDtoOrderTypeEnum.CreatedAt
-    )
-
-  const [order, setOrder] = useState<GetListMembersRequestDtoOrderEnum>(
-    GetListMembersRequestDtoOrderEnum.Asc
-  )
-
-  const [anchorSortPopperEl, setAnchorSortPopperEl] =
-    useState<null | HTMLElement>(null)
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
+  const [order, setOrder] = useState<Order>(Order.Asc)
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -86,21 +75,12 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     [resets]
   )
 
-  const handleOpenPopper = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorSortPopperEl(anchorSortPopperEl ? null : event.currentTarget)
-    },
-    [anchorSortPopperEl]
-  )
-
-  const handleSaveOrdering = async (selection: string) => {
-    const split = selection.split(":")
-    const orderTypeInner = split[0] as GetListMembersRequestDtoOrderTypeEnum
-    const orderInner = split[1] as GetListMembersRequestDtoOrderEnum
-
-    setOrderType(orderTypeInner)
-    setOrder(orderInner)
-    setAnchorSortPopperEl(null)
+  const onSortSelect = async ({
+    orderType,
+    order
+  }: SortOption<OrderType, Order>) => {
+    setOrderType(orderType)
+    setOrder(order || "desc")
   }
 
   const handleRemoveFan = async (user_id: string) => {
@@ -161,8 +141,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     [listId]
   )
 
-  const sortPopperOpen = Boolean(anchorSortPopperEl)
-  const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
   const router = useRouter()
 
   return (
@@ -201,13 +179,28 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                 className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
               />
             </span>
-            <div
-              aria-describedby={sortPopperId}
-              onClick={handleOpenPopper}
-              className="cursor-pointer"
-            >
-              <FilterIcon />
-            </div>
+            <SortDropdown
+              selection={{ orderType, order }}
+              options={[
+                {
+                  orderType: OrderType.Username,
+                  order: "asc"
+                },
+                {
+                  orderType: OrderType.Username,
+                  order: "desc"
+                },
+                {
+                  orderType: OrderType.CreatedAt,
+                  order: "asc"
+                },
+                {
+                  orderType: OrderType.CreatedAt,
+                  order: "desc"
+                }
+              ]}
+              onSelect={onSortSelect}
+            />
           </div>
 
           <div className="flex items-center justify-center gap-3">
@@ -222,53 +215,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             )}
           </div>
         </li>
-        <Popper
-          id={sortPopperId}
-          open={sortPopperOpen}
-          anchorEl={anchorSortPopperEl}
-          transition
-          placement="bottom-end"
-          modifiers={[
-            {
-              name: "offset",
-              options: {
-                offset: [0, 8]
-              }
-            }
-          ]}
-        >
-          {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-              <div>
-                <SortListPopup
-                  defaultOption={{ orderType, order }}
-                  options={[
-                    {
-                      orderType: GetListMembersRequestDtoOrderTypeEnum.Username,
-                      order: "asc"
-                    },
-                    {
-                      orderType: GetListMembersRequestDtoOrderTypeEnum.Username,
-                      order: "desc"
-                    },
-                    {
-                      orderType:
-                        GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
-                      order: "asc"
-                    },
-                    {
-                      orderType:
-                        GetListMembersRequestDtoOrderTypeEnum.CreatedAt,
-                      order: "desc"
-                    }
-                  ]}
-                  onSave={handleSaveOrdering}
-                />
-              </div>
-            </Fade>
-          )}
-        </Popper>
-
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
           keyValue={`list/list-members/${listId}`}
           fetch={async (req: GetListMembersRequestDto) => {

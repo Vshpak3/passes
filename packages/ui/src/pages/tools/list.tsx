@@ -1,9 +1,7 @@
-import { Fade } from "@mui/material"
-import Popper from "@mui/material/Popper"
 import {
   GetListsRequestsDto,
-  GetListsRequestsDtoOrderEnum,
-  GetListsRequestsDtoOrderTypeEnum,
+  GetListsRequestsDtoOrderEnum as Order,
+  GetListsRequestsDtoOrderTypeEnum as OrderType,
   GetListsResponseDto,
   ListDto
 } from "@passes/api-client"
@@ -11,7 +9,6 @@ import { ListApi } from "@passes/api-client/apis"
 import { debounce } from "lodash"
 import { NextPage } from "next"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
-import FilterIcon from "public/icons/three-lines-icon.svg"
 import React, { useCallback, useState } from "react"
 import {
   ComponentArg,
@@ -19,7 +16,10 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { CreateNewListModal } from "src/components/molecules/list/CreateNewListModal"
 import { List } from "src/components/organisms/creator-tools/lists/List"
-import { SortListPopup } from "src/components/organisms/creator-tools/lists/SortListPopup"
+import {
+  SortDropdown,
+  SortOption
+} from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { errorMessage } from "src/helpers/error"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
@@ -31,15 +31,9 @@ const FanLists: NextPage = () => {
   const [resets, setResets] = useState(0)
   const [newListModalState, setNewListModalState] = useState(false)
 
-  const [orderType, setOrderType] = useState<GetListsRequestsDtoOrderTypeEnum>(
-    GetListsRequestsDtoOrderTypeEnum.Name
-  )
-  const [order, setOrder] = useState<GetListsRequestsDtoOrderEnum>(
-    GetListsRequestsDtoOrderEnum.Asc
-  )
+  const [orderType, setOrderType] = useState<OrderType>(OrderType.Name)
+  const [order, setOrder] = useState<Order>(Order.Asc)
   const [search, setSearch] = useState<string>("")
-  const [anchorSortPopperEl, setAnchorSortPopperEl] =
-    useState<null | HTMLElement>(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
@@ -50,21 +44,12 @@ const FanLists: NextPage = () => {
     [setSearch]
   )
 
-  const handleOpenPopper = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => {
-      setAnchorSortPopperEl(anchorSortPopperEl ? null : event.currentTarget)
-    },
-    [anchorSortPopperEl]
-  )
-
-  const handleSaveOrdering = async (selection: string) => {
-    const split = selection.split(":")
-    const orderTypeInner = split[0] as GetListsRequestsDtoOrderTypeEnum
-    const orderInner = split[1] as GetListsRequestsDtoOrderEnum
-
-    setOrderType(orderTypeInner)
-    setOrder(orderInner)
-    setAnchorSortPopperEl(null)
+  const onSortSelect = async ({
+    orderType,
+    order
+  }: SortOption<OrderType, Order>) => {
+    setOrderType(orderType)
+    setOrder(order || "desc")
   }
 
   const handleCreateNewListModal = () => {
@@ -86,9 +71,6 @@ const FanLists: NextPage = () => {
       errorMessage(error, true)
     }
   }
-
-  const sortPopperOpen = Boolean(anchorSortPopperEl)
-  const sortPopperId = sortPopperOpen ? "sort-popper" : undefined
 
   return (
     <div className="text-white">
@@ -117,51 +99,6 @@ const FanLists: NextPage = () => {
         setOpen={setNewListModalState}
       />
 
-      <Popper
-        id={sortPopperId}
-        open={sortPopperOpen}
-        anchorEl={anchorSortPopperEl}
-        transition
-        placement="bottom-end"
-        modifiers={[
-          {
-            name: "offset",
-            options: {
-              offset: [0, 8]
-            }
-          }
-        ]}
-      >
-        {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <div>
-              <SortListPopup
-                defaultOption={{ orderType, order }}
-                options={[
-                  {
-                    orderType: GetListsRequestsDtoOrderTypeEnum.Name,
-                    order: "asc"
-                  },
-                  {
-                    orderType: GetListsRequestsDtoOrderTypeEnum.Name,
-                    order: "desc"
-                  },
-                  {
-                    orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt,
-                    order: "asc"
-                  },
-                  {
-                    orderType: GetListsRequestsDtoOrderTypeEnum.CreatedAt,
-                    order: "desc"
-                  }
-                ]}
-                onSave={handleSaveOrdering}
-              />
-            </div>
-          </Fade>
-        )}
-      </Popper>
-
       <ul className="px-7 ">
         <li className="flex items-center justify-between py-5">
           <div className="flex flex-row justify-between gap-[32px] border-b border-[#2C282D]">
@@ -173,13 +110,28 @@ const FanLists: NextPage = () => {
             </span>
           </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
-            <div
-              aria-describedby={sortPopperId}
-              onClick={handleOpenPopper}
-              className="cursor-pointer"
-            >
-              <FilterIcon />
-            </div>
+            <SortDropdown
+              selection={{ orderType, order }}
+              options={[
+                {
+                  orderType: OrderType.Name,
+                  order: "asc"
+                },
+                {
+                  orderType: OrderType.Name,
+                  order: "desc"
+                },
+                {
+                  orderType: OrderType.CreatedAt,
+                  order: "asc"
+                },
+                {
+                  orderType: OrderType.CreatedAt,
+                  order: "desc"
+                }
+              ]}
+              onSelect={onSortSelect}
+            />
           </div>
         </li>
         <InfiniteScrollPagination<ListDto, GetListsResponseDto>

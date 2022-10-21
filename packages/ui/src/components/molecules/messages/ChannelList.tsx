@@ -2,7 +2,7 @@ import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
   GetChannelsRequestDto,
-  GetChannelsRequestDtoOrderTypeEnum,
+  GetChannelsRequestDtoOrderTypeEnum as OrderType,
   GetChannelsResponseDto,
   ListMemberDto
 } from "@passes/api-client/models"
@@ -12,31 +12,32 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { OrderDropDown } from "src/components/molecules/OrderDropDown"
+import {
+  SortDropdown,
+  SortOption
+} from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { useUser } from "src/hooks/useUser"
 
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 
 interface ChannelListProps {
-  channelOrderType: GetChannelsRequestDtoOrderTypeEnum
-  setChannelOrderType: (order: GetChannelsRequestDtoOrderTypeEnum) => void
   onUserSelect: (user: ListMemberDto) => void
   selectedChannel?: ChannelMemberDto
   onChannelClicked: (channel: ChannelMemberDto) => void
 }
 
 export const ChannelList: FC<ChannelListProps> = ({
-  channelOrderType,
-  setChannelOrderType,
   selectedChannel,
   onChannelClicked
 }) => {
-  const channelOrders = [
-    { id: GetChannelsRequestDtoOrderTypeEnum.Recent, name: "Most recent" },
-    { id: GetChannelsRequestDtoOrderTypeEnum.Tip, name: "Highest Tip amount" }
-  ]
+  const [channelOrderType, setChannelOrderType] = useState<OrderType>("recent")
   const { user } = useUser()
+
+  const sortOptions: SortOption<OrderType>[] = [
+    { orderType: OrderType.Recent },
+    { orderType: OrderType.Tip }
+  ]
 
   const DEBOUNCE_TIMEOUT = 500
   const [search, setSearch] = useState<string>("")
@@ -48,16 +49,21 @@ export const ChannelList: FC<ChannelListProps> = ({
     }, DEBOUNCE_TIMEOUT),
     []
   )
+
+  const onSortSelect = useCallback((option: SortOption<OrderType>) => {
+    setChannelOrderType(option.orderType)
+  }, [])
+
   return (
     <div className="min-w-[35%] overflow-y-auto border-r border-[#fff]/10 p-[30px] ">
       <div className="border-b border-[#fff]/10 pb-6">
         <div className="flex justify-between pb-6">
           <span className="text-base font-medium">Find people</span>
           {!!user?.isCreator && (
-            <OrderDropDown
-              orders={channelOrders}
-              activeOrder={channelOrderType}
-              setActiveOrder={setChannelOrderType as (order: string) => void}
+            <SortDropdown
+              selection={{ orderType: channelOrderType }}
+              options={sortOptions}
+              onSelect={onSortSelect}
             />
           )}
         </div>

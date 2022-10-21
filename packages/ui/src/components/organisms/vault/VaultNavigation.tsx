@@ -3,14 +3,24 @@ import {
   ContentDto,
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultDeleteModal } from "src/components/molecules/vault/VaultDelete"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
 import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
-import { VaultSortDropdown } from "src/components/molecules/vault/VaultSort"
+import {
+  SortDropdown,
+  SortOption
+} from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+
+type OrderType = "recent" | "oldest"
+
+const sortOptions: SortOption<OrderType>[] = [
+  { orderType: "recent" },
+  { orderType: "oldest" }
+]
 
 interface VaultNavigationProps {
   selectedItems: ContentDto[]
@@ -49,6 +59,13 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   const [deleteModalActive, setDeleteModalActive] = useState(false)
   const toggleDeleteModal = () => setDeleteModalActive(!deleteModalActive)
 
+  const onSortSelect = useCallback(
+    (option: SortOption<OrderType>) => {
+      setOrder(option.orderType === "recent" ? "desc" : "asc")
+    },
+    [setOrder]
+  )
+
   return (
     <div className="-mt-[180px] mb-[28px] flex w-full flex-col justify-between">
       <div className="align-items flex items-center justify-between">
@@ -81,7 +98,11 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
               // TODO: connect with API to add items
               onClick={() => undefined}
             />
-            <VaultSortDropdown order={order} setOrder={setOrder} />
+            <SortDropdown
+              selection={{ orderType: order === "desc" ? "recent" : "oldest" }}
+              options={sortOptions}
+              onSelect={onSortSelect}
+            />
           </div>
         )}
       </div>
