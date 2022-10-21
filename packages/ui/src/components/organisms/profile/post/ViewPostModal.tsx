@@ -147,7 +147,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                   <TimeAgo date={post.createdAt} minPeriod={30} />
                 </span>
               )}
-              {post.isOwner && (
+              {/* {post.isOwner && (
                 <PostStatisticsButton
                   numLikes={numLikes}
                   earningsPurchases={earningsPurchases}
@@ -156,7 +156,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                   numComments={numComments}
                   totalTipAmount={totalTipAmount}
                 />
-              )}
+              )} */}
             </div>
             <Dropdown items={dropdownOptions} />
           </div>
