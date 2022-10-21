@@ -5,10 +5,10 @@ import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
-import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
+import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useUser } from "src/hooks/useUser"
 
 interface UsernameFormProps {

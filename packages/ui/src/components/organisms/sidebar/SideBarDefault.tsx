@@ -10,7 +10,7 @@ import {
   SidebarDropdown,
   SidebarItem
 } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
-import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
+import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"

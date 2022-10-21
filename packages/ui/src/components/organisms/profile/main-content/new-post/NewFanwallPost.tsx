@@ -4,8 +4,8 @@ import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useProfile } from "src/hooks/profile/useProfile"
+import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),

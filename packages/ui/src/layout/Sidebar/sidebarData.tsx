@@ -3,7 +3,7 @@ import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
 import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
-import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/types"
+import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 
 export const creatorToolsItems: SidebarNavigation[] = [
   // {

@@ -52,15 +52,21 @@ report_problem_file "${not_allowed_files}" \
   "The following files are not Typescript nor CSS:" \
   "To fix, please remove."
 
-# Find incorrect names files.
-incorrect_named=$(find src -name '*-*.ts*' \
+# Find files named with dashes.
+files_with_dashes=$(find src -name '*-*.ts*' \
   -not -path 'src/config/*' \
   -not -path 'src/pages/*' \
   -not -path 'src/helpers/*'
 )
-report_problem_file "${incorrect_named}" \
-  "The following files do not follow our naming conventions:" \
-  "To fix, please rename."
+report_problem_file "${files_with_dashes}" \
+  "The following files have dashes in them:" \
+  "To fix, please convert to PascalCase."
+
+# Find files starting with lowercase.
+files_with_lowercase=$(find src/components -name '[a-z]*' -type f -not -path '*/index.tsx')
+report_problem_file "${files_with_lowercase}" \
+  "The following files in the components directory start with a lowercase:" \
+  "To fix, please convert to PascalCase."
 
 # Detect assets that are no longer being used.
 extra_assets=($(
