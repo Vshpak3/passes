@@ -1,12 +1,13 @@
+import classNames from "classnames"
 import React from "react"
 
-export const ChevronDown = () => (
+export const ChevronDown = ({ className }: { className?: string }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="10"
     height="10"
     fill="currentColor"
-    className="bi bi-chevron-down"
+    className={classNames("bi bi-chevron-down", className)}
     viewBox="0 0 16 16"
   >
     <path

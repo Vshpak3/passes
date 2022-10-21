@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.heroSlider {
+  height: 352px;
+  background-size: 2352px 352px;
+  animation: slide 60s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 5888px;
+  }
+}
+
 .slick-track {
   display: flex;
   position: relative;
