@@ -9,6 +9,7 @@ import { NextPage } from "next"
 import { AppProps } from "next/app"
 import Router, { useRouter } from "next/router"
 import Script from "next/script"
+import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
 import { ReactElement, ReactNode, useEffect, useRef, useState } from "react"
 import { DndProvider } from "react-dnd"
@@ -27,7 +28,6 @@ import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { refreshAccessToken } from "src/helpers/token"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useUser } from "src/hooks/useUser"
-import { Providers } from "src/providers"
 import { SWRConfig, SWRConfiguration } from "swr"
 
 export const swrConfig: SWRConfiguration = {
@@ -134,7 +134,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(
-    <Providers Component={Component} pageProps={pageProps}>
+    <NextThemeProvider attribute="class" disableTransitionOnChange>
       <DefaultHead />
       <Script
         dangerouslySetInnerHTML={{
@@ -203,7 +203,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           </GlobalCacheContext.Provider>
         </DndProvider>
       </SWRConfig>
-    </Providers>,
+    </NextThemeProvider>,
     hasRefreshed
   )
 }
