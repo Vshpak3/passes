@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/settings"
@@ -102,54 +101,53 @@ const AddBank = () => {
           errors={errors}
         />
       </div>
-      <ConditionRendering
-        condition={
-          bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN
-        }
-      >
-        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
-          Routing Number
-        </span>
-        <FormInput
-          register={register}
-          type="text"
-          name="routing-number"
-          placeholder="4444 1902 0192 0100"
-          errors={errors}
-          options={{
-            required: { message: "Routing number is required", value: true }
-          }}
-        />
+      {bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN ? (
+        <>
+          <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
+            Routing Number
+          </span>
+          <FormInput
+            register={register}
+            type="text"
+            name="routing-number"
+            placeholder="4444 1902 0192 0100"
+            errors={errors}
+            options={{
+              required: { message: "Routing number is required", value: true }
+            }}
+          />
 
-        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
-          Account Number
-        </span>
-        <FormInput
-          register={register}
-          type="text"
-          name="account-number"
-          placeholder="-"
-          errors={errors}
-          options={{
-            required: { message: "Account number is required", value: true }
-          }}
-        />
-      </ConditionRendering>
-      <ConditionRendering condition={bankType === BankTypeEnum.IBAN}>
-        <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
-          IBAN
-        </span>
-        <FormInput
-          register={register}
-          type="text"
-          name="iban"
-          placeholder="IBAN"
-          errors={errors}
-          options={{
-            required: { message: "IBAN is required", value: true }
-          }}
-        />
-      </ConditionRendering>
+          <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
+            Account Number
+          </span>
+          <FormInput
+            register={register}
+            type="text"
+            name="account-number"
+            placeholder="-"
+            errors={errors}
+            options={{
+              required: { message: "Account number is required", value: true }
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
+            IBAN
+          </span>
+          <FormInput
+            register={register}
+            type="text"
+            name="iban"
+            placeholder="IBAN"
+            errors={errors}
+            options={{
+              required: { message: "IBAN is required", value: true }
+            }}
+          />
+        </>
+      )}
       <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
         Bank Info
       </span>

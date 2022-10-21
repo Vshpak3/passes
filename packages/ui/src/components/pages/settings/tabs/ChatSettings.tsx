@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { chatSettingsSchema } from "src/helpers/validation"
@@ -88,7 +87,7 @@ const ChatSettings = () => {
         title="Chat Settings"
         description="Setup auto welcome message, and manage messages without tips."
       />
-      <ConditionRendering condition={!isLoading}>
+      {!isLoading && (
         <form className="mt-6" onSubmit={handleSubmit(saveChatSettingsHandler)}>
           <div
             className={classNames(
@@ -157,7 +156,7 @@ const ChatSettings = () => {
             <span>Save</span>
           </Button>
         </form>
-      </ConditionRendering>
+      )}
     </>
   )
 }

@@ -1,8 +1,7 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { Tab } from "src/components/pages/settings/Tab"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
@@ -37,7 +36,7 @@ const ProfileSettings = () => {
       title="Profile"
       description="Manage what information you and your fans see and share on Twitter."
     >
-      <ConditionRendering condition={!isLoading}>
+      {!isLoading && (
         <form
           className="mt-[22px]"
           onSubmit={handleSubmit(saveProfileSettingsHandler)}
@@ -102,7 +101,7 @@ const ProfileSettings = () => {
             <span>Save</span>
           </Button>
         </form>
-      </ConditionRendering>
+      )}
     </Tab>
   )
 }

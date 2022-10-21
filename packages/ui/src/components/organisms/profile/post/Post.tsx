@@ -3,7 +3,6 @@ import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { FormattedText } from "src/components/atoms/FormattedText"
-import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
@@ -101,53 +100,55 @@ export const Post: FC<PostProps> = ({
   const setPostHandler = () => setPost({ ...post, setIsRemoved })
 
   return (
-    <ConditionRendering condition={!isRemoved}>
-      <div className="mt-6">
-        <FormContainer
-          borderColor={
-            isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
-          }
-          className={"!min-h-[10px] w-full rounded-[20px] border px-5 pt-5"}
-        >
-          <PostHeader
-            createdAt={createdAt}
-            displayName={displayName}
-            isOwner={isOwner}
-            userId={userId}
-            username={username}
-            isPinned={isPinned}
-            dropdownOptions={dropdownOptions}
-            statisticsButtonProps={{
-              createdAt,
-              earningsPurchases,
-              numComments,
-              numLikes,
-              numPurchases,
-              totalTipAmount
-            }}
-          />
+    <>
+      {!isRemoved && (
+        <div className="mt-6">
+          <FormContainer
+            borderColor={
+              isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
+            }
+            className={"!min-h-[10px] w-full rounded-[20px] border px-5 pt-5"}
+          >
+            <PostHeader
+              createdAt={createdAt}
+              displayName={displayName}
+              isOwner={isOwner}
+              userId={userId}
+              username={username}
+              isPinned={isPinned}
+              dropdownOptions={dropdownOptions}
+              statisticsButtonProps={{
+                createdAt,
+                earningsPurchases,
+                numComments,
+                numLikes,
+                numPurchases,
+                totalTipAmount
+              }}
+            />
 
-          <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
-            <FormattedText text={text} tags={tags} />
-          </p>
-          {!!contents?.length && (
-            <>
-              {!purchasable ? (
-                <PostMedia
-                  postId={postId}
-                  contents={contents}
-                  isNewPost={isNewPost}
-                  setPostHandler={setPostHandler}
-                />
-              ) : (
-                <LockedMedia post={post} />
-              )}
-            </>
-          )}
-          <PostEngagement post={post} />
-        </FormContainer>
-      </div>
-    </ConditionRendering>
+            <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
+              <FormattedText text={text} tags={tags} />
+            </p>
+            {!!contents?.length && (
+              <>
+                {!purchasable ? (
+                  <PostMedia
+                    postId={postId}
+                    contents={contents}
+                    isNewPost={isNewPost}
+                    setPostHandler={setPostHandler}
+                  />
+                ) : (
+                  <LockedMedia post={post} />
+                )}
+              </>
+            )}
+            <PostEngagement post={post} />
+          </FormContainer>
+        </div>
+      )}
+    </>
   )
 }
 
