@@ -12,6 +12,7 @@ interface VaultMediaItemProps {
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
   handleClickOnItem: (item: ContentDto) => void
+  index?: number
 }
 
 export const VaultMediaItem: FC<VaultMediaItemProps> = ({
@@ -20,7 +21,8 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   setSelectedItems,
   isVideoSelected,
   isMaxFileCountSelected,
-  handleClickOnItem
+  handleClickOnItem,
+  index
 }) => {
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
@@ -51,24 +53,37 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   const opacityStyle =
     selectedItems.length > 0 && !isSelected ? "opacity-50" : "opacity-100"
   return (
-    <div className="group">
+    <div
+      className={classNames(
+        index && index % 3 === 1 && "lg:pt-[20px]",
+        index && index === 1 && "lg:pt-[0px]",
+        "group"
+      )}
+    >
       <div
         className={classNames(
           opacityStyle,
-          "dropdown-shadow aspect-w-1 aspect-h-1 w-full cursor-pointer overflow-hidden rounded-[5px] bg-gray-200 md:rounded-[20px] xl:aspect-w-8 xl:aspect-h-8"
+          index && index === 1 && "lg:pb-[50px]",
+          isSelected
+            ? "border-1-[#9C4DC1]"
+            : "border-1-[rgba(27, 20, 29, 0.5)]",
+          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[20px] border bg-black px-0 pb-[30px]"
         )}
         onClick={handleClick}
       >
-        <ImageWithDefault // All content types have an image thumbnail
-          src={ContentService.userContentThumbnailPath(content)}
-          defaultColor="black/50"
-        />
-        <div className="flex p-3">
-          <div className="mr-auto h-[23px] w-[50px] rounded-md bg-transparent md:bg-[#00000030] ">
+        <div className="mx-[30px]">
+          <ImageWithDefault // All content types have an image thumbnail
+            src={ContentService.userContentThumbnailPath(content)}
+            defaultColor="black/50"
+            className="h-[234px] w-[307px] rounded-[20px] object-cover"
+          />
+        </div>
+        <div className="flex justify-end p-[10px]">
+          <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
             <div
               onMouseDown={(e) => e.preventDefault()}
               onCopy={(e) => e.preventDefault()}
-              className="hidden text-center text-[11px] font-semibold text-white md:block"
+              className="text-center text-[12px] font-medium uppercase text-white opacity-50"
             >
               {format(content.createdAt || new Date(), "LLL dd")}
             </div>

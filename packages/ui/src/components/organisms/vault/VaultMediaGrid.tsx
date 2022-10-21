@@ -45,14 +45,14 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="max-h-[65vh] justify-center overflow-y-scroll">
+    <div className="max-h-[65vh] min-w-fit justify-center overflow-y-scroll">
       <VaultMediaModal
         content={content}
         isViewMediaModal={isViewMediaModal}
         setIsViewMediaModal={setIsViewMediaModal}
       />
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="">
         <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
           keyValue={`vault`}
           fetch={async (req: GetVaultQueryRequestDto) => {
@@ -69,7 +69,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               <div className="col-span-1 w-[115px] md:w-[320px]" />
             </>
           }
-          KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
+          KeyedComponent={({ arg, index }: ComponentArg<ContentDto>) => {
             return (
               <>
                 {!deletedItems.some((x) => x.contentId === arg.contentId) && (
@@ -80,12 +80,14 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
                     isVideoSelected={isVideoSelected}
                     isMaxFileCountSelected={isMaxFileCountSelected}
                     handleClickOnItem={handleClickOnItem}
+                    index={index}
                   />
                 )}
               </>
             )
           }}
-          classes="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
+          //"sidebar-collapse:grid-cols-3"
+          classes="mt-[25px] grid grid-cols-1-[365px_minmax(165px,_200px)_400px] sm:grid-cols-2 lg:grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20"
         />
       </div>
     </div>
