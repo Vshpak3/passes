@@ -4,7 +4,7 @@ import { Backers } from "src/components/organisms/home/Backers"
 import { ConnectWithFans } from "src/components/organisms/home/ConnectWithFans"
 import { CreatorCarousel } from "src/components/organisms/home/CreatorCarousel"
 import { FanTips } from "src/components/organisms/home/FanTips"
-import { FAQ } from "src/components/organisms/home/FAQ"
+// import { FAQ } from "src/components/organisms/home/FAQ"
 import { Footer } from "src/components/organisms/home/Footer"
 import { Hero } from "src/components/organisms/home/Hero"
 import { MonthlyMemberships } from "src/components/organisms/home/MonthlyMemberships"
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
       <ConnectWithFans />
       <TrackStats />
       <FanTips />
-      <FAQ />
+      {/* <FAQ /> */}
       <SupportingCreators />
       <Backers />
       <Footer />
