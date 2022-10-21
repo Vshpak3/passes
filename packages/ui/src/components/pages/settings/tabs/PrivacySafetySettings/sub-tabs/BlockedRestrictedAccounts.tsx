@@ -6,7 +6,7 @@ import {
   SearchFollowRequestDto,
   SearchFollowRequestDtoOrderEnum
 } from "@passes/api-client"
-import React from "react"
+import { memo } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -45,4 +45,4 @@ const BlockedRestrictedAccounts = () => {
   )
 }
 
-export default BlockedRestrictedAccounts // eslint-disable-line import/no-default-export
+export default memo(BlockedRestrictedAccounts) // eslint-disable-line import/no-default-export

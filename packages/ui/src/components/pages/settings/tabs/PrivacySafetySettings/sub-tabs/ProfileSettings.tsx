@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -106,4 +106,4 @@ const ProfileSettings = () => {
   )
 }
 
-export default ProfileSettings // eslint-disable-line import/no-default-export
+export default memo(ProfileSettings) // eslint-disable-line import/no-default-export

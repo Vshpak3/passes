@@ -3,7 +3,7 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
-import { useState } from "react"
+import { memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
@@ -290,4 +290,4 @@ const AddBank = () => {
   )
 }
 
-export default AddBank // eslint-disable-line import/no-default-export
+export default memo(AddBank) // eslint-disable-line import/no-default-export

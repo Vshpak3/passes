@@ -6,7 +6,7 @@ import { PassTypes } from "src/components/organisms/profile/passes/PassTypes"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { useProfile } from "src/hooks/useProfile"
 
-export const Profile: FC = () => {
+const ProfileUnmemo: FC = () => {
   const { profileInfo, loadingProfileInfo, hasInitialFetch } = useProfile()
   return (
     <>
@@ -31,4 +31,5 @@ export const Profile: FC = () => {
   )
 }
 
-export default memo(Profile) // eslint-disable-line import/no-default-export
+// eslint-disable-next-line import/no-default-export
+export default memo(ProfileUnmemo)

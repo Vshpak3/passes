@@ -1,7 +1,7 @@
 import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
 
-import { PostDto } from "@passes/api-client"
+import { PassDto, PostDto } from "@passes/api-client"
 import * as snippet from "@segment/snippet"
 import debounce from "lodash.debounce"
 import { NextPage } from "next"
@@ -16,10 +16,12 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModal } from "src/components/organisms/BlockModal"
+import { BuyPassModal } from "src/components/organisms/payment/BuyPassModal"
 import { BuyPostModal } from "src/components/organisms/payment/BuyPostModal"
 import { ViewPostModal } from "src/components/organisms/profile/post/ViewPostModal"
 import { ReportModal } from "src/components/organisms/ReportModal"
 import { BlockModalContext, BlockModalData } from "src/contexts/BlockModal"
+import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext, ReportModalData } from "src/contexts/ReportModal"
@@ -76,10 +78,16 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
 }
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+type SubAppProps = {
+  Component: NextPageWithLayout
+  pageProps: any
+}
+
+const SubApp = ({ Component, pageProps }: SubAppProps) => {
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+  const [buyPass, setBuyPass] = useState<PassDto | null>(null)
 
   const [isReportModalOpen, setIsReportModalOpen] = useState(false)
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
@@ -89,20 +97,83 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     null
   )
 
+  return (
+    <GlobalCacheContext.Provider value={{ usernames: {} }}>
+      <ViewPostModalContext.Provider
+        value={{
+          setPost: setViewPost,
+          viewPostActiveIndex
+        }}
+      >
+        <ReportModalContext.Provider
+          value={{ setIsReportModalOpen, setReportModalData }}
+        >
+          <BlockModalContext.Provider
+            value={{ setIsBlockModalOpen, setBlockModalData }}
+          >
+            <BuyPostModalContext.Provider value={{ setPost: setBuyPost }}>
+              <BuyPassModalContext.Provider value={{ setPass: setBuyPass }}>
+                <Component {...pageProps} />
+                {viewPost && (
+                  <ViewPostModal post={viewPost} setPost={setViewPost} />
+                )}
+                {buyPost && (
+                  <BuyPostModal post={buyPost} setPost={setBuyPost} />
+                )}
+                {buyPass && (
+                  <BuyPassModal pass={buyPass} setPass={setBuyPass} />
+                )}
+                {isReportModalOpen && (
+                  <ReportModal
+                    isOpen={isReportModalOpen}
+                    setOpen={setIsReportModalOpen}
+                    username={reportModalData?.username || ""}
+                    userId={reportModalData?.userId || ""}
+                  />
+                )}
+                {isBlockModalOpen && (
+                  <BlockModal
+                    isOpen={isBlockModalOpen}
+                    setOpen={setIsBlockModalOpen}
+                    username={blockModalData?.username || ""}
+                    userId={blockModalData?.userId || ""}
+                  />
+                )}
+                <ToastContainer
+                  position="bottom-center"
+                  autoClose={5000}
+                  hideProgressBar={true}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable={false}
+                  pauseOnHover
+                  limit={3}
+                  theme="colored"
+                />
+              </BuyPassModalContext.Provider>
+            </BuyPostModalContext.Provider>
+          </BlockModalContext.Provider>
+        </ReportModalContext.Provider>
+      </ViewPostModalContext.Provider>
+    </GlobalCacheContext.Provider>
+  )
+}
+
+const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const { hasRefreshed } = useTokenRefresh()
   const { setAccessToken, mutate } = useUser()
-
+  // Refresh once on page load then repeatedly
   useEffect(() => {
     mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setAccessToken])
-
+  const getLayout = Component.getLayout ?? ((page) => page)
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
   ])
-
-  const getLayout = Component.getLayout ?? ((page) => page)
   return getLayout(
     <NextThemeProvider attribute="class" disableTransitionOnChange>
       <DefaultHead />
@@ -116,61 +187,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       />
       <SWRConfig value={swrConfig}>
         <DndProvider backend={HTML5Backend}>
-          <GlobalCacheContext.Provider value={{ usernames: {} }}>
-            <ViewPostModalContext.Provider
-              value={{
-                setPost: setViewPost,
-                viewPostActiveIndex
-              }}
-            >
-              <ReportModalContext.Provider
-                value={{ setIsReportModalOpen, setReportModalData }}
-              >
-                <BlockModalContext.Provider
-                  value={{ setIsBlockModalOpen, setBlockModalData }}
-                >
-                  <BuyPostModalContext.Provider value={{ setPost: setBuyPost }}>
-                    <Component {...pageProps} />
-                    {viewPost && (
-                      <ViewPostModal post={viewPost} setPost={setViewPost} />
-                    )}
-                    {buyPost && (
-                      <BuyPostModal post={buyPost} setPost={setBuyPost} />
-                    )}
-                    {isReportModalOpen && (
-                      <ReportModal
-                        isOpen={isReportModalOpen}
-                        setOpen={setIsReportModalOpen}
-                        username={reportModalData?.username || ""}
-                        userId={reportModalData?.userId || ""}
-                      />
-                    )}
-                    {isBlockModalOpen && (
-                      <BlockModal
-                        isOpen={isBlockModalOpen}
-                        setOpen={setIsBlockModalOpen}
-                        username={blockModalData?.username || ""}
-                        userId={blockModalData?.userId || ""}
-                      />
-                    )}
-                    <ToastContainer
-                      position="bottom-center"
-                      autoClose={5000}
-                      hideProgressBar={true}
-                      newestOnTop={false}
-                      closeOnClick
-                      rtl={false}
-                      pauseOnFocusLoss
-                      draggable={false}
-                      pauseOnHover
-                      limit={3}
-                      theme="colored"
-                    />
-                  </BuyPostModalContext.Provider>
-                </BlockModalContext.Provider>
-              </ReportModalContext.Provider>
-            </ViewPostModalContext.Provider>
-          </GlobalCacheContext.Provider>
+          <SubApp Component={Component} pageProps={pageProps} />
         </DndProvider>
       </SWRConfig>
     </NextThemeProvider>,

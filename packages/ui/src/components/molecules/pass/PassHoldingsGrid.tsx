@@ -12,7 +12,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { SelectPassHolderTab } from "src/components/atoms/passes/SelectPassHolderTab"
 
-import { PassTileCard } from "./PassesCard"
+import { PassHoldingTile } from "./PassHoldingTile"
 
 export const PassHoldingsGrid: FC = () => {
   const [passType, setPassType] = useState<PassDtoTypeEnum>(
@@ -54,7 +54,7 @@ export const PassHoldingsGrid: FC = () => {
           order: "desc"
         }}
         KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
-          return <PassTileCard pass={arg} />
+          return <PassHoldingTile passHolder={arg} />
         }}
       />
     </div>

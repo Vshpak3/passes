@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -74,4 +74,4 @@ const PostsSettings = () => {
   )
 }
 
-export default PostsSettings // eslint-disable-line import/no-default-export
+export default memo(PostsSettings) // eslint-disable-line import/no-default-export

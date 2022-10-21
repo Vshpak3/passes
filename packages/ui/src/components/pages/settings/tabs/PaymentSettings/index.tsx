@@ -12,7 +12,7 @@ import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button } from "src/components/atoms/Button"
 import { Select } from "src/components/atoms/Select"
@@ -429,4 +429,4 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
   )
 }
 
-export default PaymentSettings // eslint-disable-line import/no-default-export
+export default memo(PaymentSettings) // eslint-disable-line import/no-default-export

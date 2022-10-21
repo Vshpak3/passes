@@ -129,7 +129,7 @@ const SignupInfoPage: FC = () => {
       const timer = setTimeout(() => {
         mutate()
         setCount(count + 1)
-      }, 3e3)
+      }, 1e3)
       return () => clearTimeout(timer)
     }
   }, [count, isSubmitting, mutate])

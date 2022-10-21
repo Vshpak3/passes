@@ -1,4 +1,5 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
+import { memo } from "react"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/settings"
@@ -87,4 +88,4 @@ const AccountInformation = () => {
   )
 }
 
-export default AccountInformation // eslint-disable-line import/no-default-export
+export default memo(AccountInformation) // eslint-disable-line import/no-default-export

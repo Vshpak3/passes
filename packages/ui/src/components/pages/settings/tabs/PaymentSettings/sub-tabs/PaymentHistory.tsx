@@ -10,7 +10,7 @@ import {
 } from "@passes/api-client"
 import { format } from "date-fns"
 import { useRouter } from "next/router"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { memo, useCallback, useEffect, useRef, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -169,4 +169,4 @@ const PaymentHistory = () => {
   )
 }
 
-export default PaymentHistory // eslint-disable-line import/no-default-export
+export default memo(PaymentHistory) // eslint-disable-line import/no-default-export

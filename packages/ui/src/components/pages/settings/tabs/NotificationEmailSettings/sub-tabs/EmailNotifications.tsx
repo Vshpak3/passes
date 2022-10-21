@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
@@ -174,4 +174,4 @@ const EmailNotifications = () => {
   )
 }
 
-export default EmailNotifications // eslint-disable-line import/no-default-export
+export default memo(EmailNotifications) // eslint-disable-line import/no-default-export

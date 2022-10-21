@@ -8,7 +8,7 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import {
@@ -46,7 +46,8 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 const LoginPage: FC = () => {
   const router = useRouter()
   const { safePush } = useSafeRouter()
-  const { mutate, setAccessToken, setRefreshToken } = useUser()
+  const { mutate, setAccessToken, setRefreshToken, accessToken, user } =
+    useUser()
 
   const {
     register,
@@ -65,16 +66,30 @@ const LoginPage: FC = () => {
     if (!setRes) {
       return
     }
-
-    mutate()
-
-    authRouter(safePush, jwtDecode<JWTUserClaims>(res.accessToken))
   }
+
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    if (isSubmitting) {
+      const timer = setTimeout(() => {
+        mutate()
+        setCount(count + 1)
+      }, 1e3)
+      return () => clearTimeout(timer)
+    }
+  }, [count, isSubmitting, mutate])
+
+  useEffect(() => {
+    if (user) {
+      authRouter(safePush, jwtDecode<JWTUserClaims>(accessToken))
+    }
+  }, [router, user, accessToken, safePush])
 
   const onSubmit = async (data: LoginPageSchema) => {
     try {
       setIsSubmitting(true)
       await loginUser(data.email, data.password)
+      toast.success("Please wait as we redirect you")
     } catch (error: any) {
       toast.error("Invalid credentials")
       console.error(await errorMessage(error))

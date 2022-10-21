@@ -1,20 +1,19 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
+import EthereumIcon from "public/icons/eth.svg"
+import SolanaIcon from "public/icons/sol.svg"
 import React, { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+import { ConditionRendering } from "src/components/molecules/ConditionRendering"
 import { formatText } from "src/helpers/formatters"
+import { useBuyPassModal } from "src/hooks/useBuyPassModal"
 import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {
   pass: PassDto
 }
 
-const passType: Record<PassDtoTypeEnum, string> = {
-  subscription: "Subscription Pass",
-  lifetime: "Lifetime Pass",
-  external: "External"
-}
-
 export const PassCard: FC<PassCardProps> = ({ pass }) => {
+  const { setPass } = useBuyPassModal()
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
   return (
@@ -24,24 +23,53 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         imageType={pass.imageType}
         animationType={pass.animationType}
       />
-      <span className="mt-3 inline-block text-sm font-medium leading-4">
-        {passType[pass.type] ?? pass.type}
-      </span>
-      <h2 className="mt-[3px] text-base font-bold leading-5">
-        {formatText(pass.title)}
-      </h2>
-      <p className="mt-2.5 text-xs font-medium leading-[18px] text-white/70">
+      <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
+        <div className="align-items flex w-full flex-row items-center justify-between">
+          <div className="text-[18px] font-[700]">{pass.title}</div>
+          <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
+            <ConditionRendering condition={pass.chain === "eth"}>
+              <EthereumIcon /> Ethereum
+            </ConditionRendering>
+            <ConditionRendering condition={pass.chain === "sol"}>
+              <SolanaIcon /> Solana
+            </ConditionRendering>
+          </div>
+        </div>
+        {pass.type === PassDtoTypeEnum.Subscription && (
+          <div className="align-items flex w-full flex-row items-center justify-between">
+            <div className="text-[18px] font-[700]">
+              {pass.totalMessages !== null && pass.totalMessages > 0 && (
+                <div className="mt-[12px]">
+                  <span className="ml-2 text-[14px] font-light">
+                    {pass.totalMessages} free message(s)
+                  </span>
+                </div>
+              )}
+              {pass.totalMessages === null && (
+                <div className="mt-[12px]">
+                  <span className="ml-2 text-[14px] font-light">
+                    Unlimited free messages
+                  </span>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
+              {pass.freetrial ? "Free trial" : "No free trial"}
+            </div>
+          </div>
+        )}
+      </div>
+      <p className="mt-2.5 border-b border-t border-b-[#2C282D] border-t-[#2C282D] text-xs font-medium leading-[18px] text-white/70">
         {formatText(pass.description)}
       </p>
-      <button className="mt-3 w-full rounded-[50px] bg-passes-primary-color py-2.5 text-center">
+      <button
+        onClick={() => {
+          isCreator ? setPass(pass) : null // TODO: add pass pinning
+        }}
+        className="mt-3 w-full rounded-[50px] bg-passes-primary-color py-2.5 text-center"
+      >
         {isCreator ? "Pin Pass" : "Purchase Pass"}
       </button>
-
-      {isCreator && (
-        <p className="mt-1.5 text-xs font-medium leading-[18px] text-white/70">
-          *Pinned passes are shown on the right side of your profile page
-        </p>
-      )}
 
       <p className="mt-[14px] text-sm font-medium leading-[16px]">
         ${pass.price}

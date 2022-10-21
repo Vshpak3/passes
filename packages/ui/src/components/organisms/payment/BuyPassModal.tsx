@@ -9,30 +9,27 @@ import { PayinMethodDisplay } from "src/components/molecules/payment/payin-metho
 import { Modal } from "src/components/organisms/Modal"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
-interface BuyMessageModalProps {
-  pass: PassDto
-  setOpen: Dispatch<SetStateAction<boolean>>
-  isOpen: boolean
+interface BuyPassModalProps {
+  pass: PassDto | null
+  setPass: Dispatch<SetStateAction<PassDto | null>>
 }
 
-export const BuyPostModal: FC<BuyMessageModalProps> = ({
-  pass,
-  setOpen,
-  isOpen
-}) => {
+export const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={true} setOpen={() => setPass(null)}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
           Buy{" "}
-          {pass.type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Subscription"}{" "}
+          {pass?.type === PassDtoTypeEnum.Lifetime
+            ? "Lifetime"
+            : "Subscription"}{" "}
           Pass
         </span>
         <span className="text-white">
-          ${pass.price.toFixed(2)}
-          {pass.duration ? "/30 days" : ""}
+          ${pass?.price.toFixed(2)}
+          {pass?.duration ? "/30 days" : ""}
         </span>
       </div>
       <div>
@@ -41,7 +38,7 @@ export const BuyPostModal: FC<BuyMessageModalProps> = ({
             payinMethod={defaultPayinMethod}
             card={defaultCard}
             closeModal={() => {
-              setOpen(false)
+              setPass(null)
             }}
           />
         )}
@@ -57,8 +54,8 @@ export const BuyPostModal: FC<BuyMessageModalProps> = ({
           !defaultPayinMethod ||
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
-        passId={pass.passId}
-        onSuccess={() => setOpen(false)}
+        passId={pass?.passId ?? ""}
+        onSuccess={() => setPass(null)}
       />
     </Modal>
   )

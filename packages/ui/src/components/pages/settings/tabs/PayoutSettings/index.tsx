@@ -6,7 +6,7 @@ import classNames from "classnames"
 import { useRouter } from "next/router"
 import Clipboard from "public/icons/clipboard.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import { useEffect } from "react"
+import { memo, useEffect } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
@@ -273,4 +273,4 @@ const PayoutSettings = () => {
   )
 }
 
-export default PayoutSettings // eslint-disable-line import/no-default-export
+export default memo(PayoutSettings) // eslint-disable-line import/no-default-export

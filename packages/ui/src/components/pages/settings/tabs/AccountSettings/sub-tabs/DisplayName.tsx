@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FC } from "react"
+import { FC, memo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
@@ -79,4 +79,4 @@ const DisplayName: FC = () => {
   )
 }
 
-export default DisplayName // eslint-disable-line import/no-default-export
+export default memo(DisplayName) // eslint-disable-line import/no-default-export

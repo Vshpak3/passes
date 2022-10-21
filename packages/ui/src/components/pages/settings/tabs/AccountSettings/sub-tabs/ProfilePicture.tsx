@@ -1,5 +1,5 @@
 import CameraIcon from "public/icons/profile-camera-icon.svg"
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
@@ -122,4 +122,4 @@ const ProfilePicture: FC = () => {
   )
 }
 
-export default ProfilePicture // eslint-disable-line import/no-default-export
+export default memo(ProfilePicture) // eslint-disable-line import/no-default-export

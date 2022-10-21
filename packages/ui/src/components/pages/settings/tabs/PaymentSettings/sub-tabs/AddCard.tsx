@@ -9,7 +9,7 @@ import { SHA256 } from "crypto-js"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
@@ -322,4 +322,4 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   )
 }
 
-export default AddCard // eslint-disable-line import/no-default-export
+export default memo(AddCard) // eslint-disable-line import/no-default-export

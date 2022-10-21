@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { memo, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -40,4 +40,4 @@ const DeactivateAccount = () => {
   )
 }
 
-export default DeactivateAccount // eslint-disable-line import/no-default-export
+export default memo(DeactivateAccount) // eslint-disable-line import/no-default-export

@@ -1,6 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi, UpdatePasswordRequestDto } from "@passes/api-client"
 import Link from "next/link"
+import { memo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
@@ -120,4 +121,4 @@ const ChangePassword = () => {
   )
 }
 
-export default ChangePassword // eslint-disable-line import/no-default-export
+export default memo(ChangePassword) // eslint-disable-line import/no-default-export

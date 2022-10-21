@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { useEffect, useState } from "react"
+import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -169,4 +169,4 @@ const ChatSettingsCreatorWrapper = () => {
   )
 }
 
-export default ChatSettingsCreatorWrapper // eslint-disable-line import/no-default-export
+export default memo(ChatSettingsCreatorWrapper) // eslint-disable-line import/no-default-export
