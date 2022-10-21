@@ -25,14 +25,11 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   creatorOnly,
   hasRefreshed = true
 }) => {
-  const { user, userClaims, loading } = useUser()
+  const { userClaims } = useUser()
   const { safePush } = useSafeRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
   useEffect(() => {
-    if (loading) {
-      return
-    }
     if (!hasRefreshed) {
       return
     }
@@ -53,8 +50,8 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
       return
     }
 
-    let _authed = user && authStateMachine(userClaims) === AuthStates.AUTHED
-    if (creatorOnly && user && !user.isCreator) {
+    let _authed = authStateMachine(userClaims) === AuthStates.AUTHED
+    if (creatorOnly && !userClaims?.isCreator) {
       _authed = false
     }
 
@@ -62,16 +59,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isPage && !_authed) {
       authRouter(safePush, userClaims)
     }
-  }, [
-    isPage,
-    skipAuth,
-    creatorOnly,
-    user,
-    userClaims,
-    hasRefreshed,
-    loading,
-    safePush
-  ])
+  }, [isPage, skipAuth, creatorOnly, userClaims, hasRefreshed, safePush])
 
   return authed ? <>{children}</> : <></>
 }
