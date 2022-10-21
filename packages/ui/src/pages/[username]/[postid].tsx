@@ -1,7 +1,7 @@
 import { useRouter } from "next/router"
 import { Loader } from "src/components/atoms/Loader"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
-import { useSinglePost } from "src/hooks/useSinglePost"
+import { useSinglePost } from "src/hooks/profile/useSinglePost"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import { NotFoundPage } from "src/pages/404"
 

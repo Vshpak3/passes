@@ -2,9 +2,8 @@ import { CreatorStatsApi, ProfileApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { ProfileUpdate } from "src/helpers/updateProfile"
+import { useUser } from "src/hooks/useUser"
 import useSWR, { useSWRConfig } from "swr"
-
-import { useUser } from "./useUser"
 
 const CACHE_KEY_PROFILE_INFO = "/profile/info"
 const CACHE_KEY_PROFILE_STATS = "/profile/stats"

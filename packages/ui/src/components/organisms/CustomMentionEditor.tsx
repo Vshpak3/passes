@@ -23,7 +23,7 @@ import React, {
 } from "react"
 import { UserSearchResult } from "src/components/atoms/search/user/UserSearchResults"
 import { ContentService } from "src/helpers/content"
-import { useCreatorSearch } from "src/hooks/useCreatorSearch"
+import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 
 const MENTION_LIMIT = 5

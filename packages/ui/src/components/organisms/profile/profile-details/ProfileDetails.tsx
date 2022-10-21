@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import { FC, useState } from "react"
-import { useProfile } from "src/hooks/useProfile"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 import { EditProfile } from "./EditProfile"
 import { EditProfileAction } from "./EditProfileAction"

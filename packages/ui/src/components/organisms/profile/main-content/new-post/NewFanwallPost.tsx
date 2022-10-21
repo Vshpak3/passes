@@ -5,7 +5,7 @@ import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useFormSubmitTimeout } from "src/components/messages/utils/useFormSubmitTimeout"
-import { useProfile } from "src/hooks/useProfile"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),

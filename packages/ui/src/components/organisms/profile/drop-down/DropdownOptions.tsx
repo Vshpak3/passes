@@ -1,8 +1,8 @@
 import { BlockModalData } from "src/contexts/BlockModal"
 import { ReportModalData } from "src/contexts/ReportModal"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
-import { useBlockModal } from "src/hooks/useBlockModal"
-import { useReportModal } from "src/hooks/useReportModal"
+import { useBlockModal } from "src/hooks/profile/useBlockModal"
+import { useReportModal } from "src/hooks/profile/useReportModal"
 
 import { DropdownOption } from "./Dropdown"
 

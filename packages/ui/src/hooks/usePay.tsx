@@ -23,7 +23,7 @@ import {
 import { sleep } from "src/helpers/sleep"
 import { accessTokenKey } from "src/helpers/token"
 
-import { useLocalStorage } from "./useLocalStorage"
+import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,

@@ -1,9 +1,10 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
-import { useLocalStorage } from "src/hooks/useLocalStorage"
 import { swrConfig } from "src/pages/_app"
 import useSWR, { useSWRConfig } from "swr"
+
+import { useLocalStorage } from "./storage/useLocalStorage"
 
 export interface JWTUserClaims {
   sub: string
@@ -29,7 +30,7 @@ export const useUser = () => {
     data: user,
     isValidating: loading,
     mutate
-  } = useSWR(
+  } = useSWR<GetUserResponseDto | undefined, any>(
     accessToken ? CACHE_KEY_USER : null,
     async () => {
       // When this flag is false there is not yet a user to retrieve

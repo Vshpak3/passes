@@ -9,7 +9,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
-import { useFanWall } from "src/hooks/useFanWall"
+import { useFanWall } from "src/hooks/profile/useFanWall"
 
 interface FanWallCommentProps {
   comment: FanWallCommentDto

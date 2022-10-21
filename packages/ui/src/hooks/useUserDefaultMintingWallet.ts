@@ -8,7 +8,7 @@ import { errorMessage } from "src/helpers/error"
 import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
-import { useLocalStorage } from "./useLocalStorage"
+import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const useUserDefaultMintingWallets = () => {
   const [accessToken] = useLocalStorage(accessTokenKey, "")

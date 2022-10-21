@@ -4,7 +4,7 @@ import AudienceIcon from "public/icons/post-audience-icon.svg"
 import { FC, useState } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
-import { useCreatorPasses } from "src/hooks/useCreatorPasses"
+import { useCreatorPasses } from "src/hooks/passes/useCreatorPasses"
 
 import { NewPostFormProps } from "./NewPostEditor"
 
@@ -17,7 +17,7 @@ export const NewPostPassesDropdown: FC<NewPostPassesDropdownProps> = ({
   register,
   onChange
 }) => {
-  // TODO: add pagination here
+  // TODO: use usePassesSearch
   const { passes } = useCreatorPasses()
 
   const [dropdownVisible, setDropdownVisible] = useState(false)

@@ -5,7 +5,7 @@ import {
   PostContentProps
 } from "src/components/molecules/PostContent"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
-import { useViewPostModal } from "src/hooks/useViewPostModal"
+import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 
 export interface PostMediaContentProps {
   postId: string

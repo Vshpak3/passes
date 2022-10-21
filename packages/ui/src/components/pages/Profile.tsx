@@ -5,7 +5,7 @@ import { ProfileContent } from "src/components/organisms/profile/main-content/Pr
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { PassTypes } from "src/components/organisms/profile/passes/PassTypes"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
-import { useProfile } from "src/hooks/useProfile"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 const ProfileUnmemo: FC = () => {
   const { profileInfo, loadingProfileInfo, hasInitialFetch } = useProfile()

@@ -23,7 +23,7 @@ import {
 } from "src/components/molecules/pass/CreatePass"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { FormContainer } from "src/components/organisms/FormContainer"
-import { createPassSchema, useCreatePass } from "src/hooks/useCreatePass"
+import { createPassSchema, useCreatePass } from "src/hooks/passes/useCreatePass"
 
 interface CreatePassFormProps {
   passType: string

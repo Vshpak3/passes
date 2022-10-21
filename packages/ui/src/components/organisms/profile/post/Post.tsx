@@ -10,10 +10,10 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
-import { useFeed } from "src/hooks/useFeed"
-import { usePost } from "src/hooks/usePost"
+import { useFeed } from "src/hooks/profile/useFeed"
+import { usePost } from "src/hooks/profile/usePost"
+import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useUser } from "src/hooks/useUser"
-import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"

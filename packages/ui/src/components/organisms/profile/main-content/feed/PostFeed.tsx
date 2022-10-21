@@ -7,7 +7,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { useFeed } from "src/hooks/useFeed"
+import { useFeed } from "src/hooks/profile/useFeed"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
 const PostFeedLoader = (

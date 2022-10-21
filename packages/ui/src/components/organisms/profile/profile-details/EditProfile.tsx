@@ -20,7 +20,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation"
-import { useProfile } from "src/hooks/useProfile"
+import { useProfile } from "src/hooks/profile/useProfile"
 import { object, string } from "yup"
 
 export const editProfileSchema = object({

@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
-import { useLocalStorage } from "./useLocalStorage"
+import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const useUserConnectedWallets = () => {
   const [accessToken] = useLocalStorage(accessTokenKey, "")

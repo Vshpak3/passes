@@ -2,8 +2,8 @@ import { ContentDto, CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { usePost } from "src/hooks/usePost"
-import { useProfile } from "src/hooks/useProfile"
+import { usePost } from "src/hooks/profile/usePost"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 import { NewPostEditor } from "./NewPostEditor"
 

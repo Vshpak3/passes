@@ -29,9 +29,9 @@ import {
   formatText
 } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
+import { usePost } from "src/hooks/profile/usePost"
+import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
-import { usePost } from "src/hooks/usePost"
-import { useViewPostModal } from "src/hooks/useViewPostModal"
 
 export interface ViewPostModalProps {
   post: PostDto & { setIsRemoved?: Dispatch<SetStateAction<boolean>> }

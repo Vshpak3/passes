@@ -23,7 +23,7 @@ import { EIcon } from "src/components/atoms/Input"
 import { encrypt } from "src/helpers/openpgp"
 import { accessTokenKey } from "src/helpers/token"
 import { creditCardSchema } from "src/helpers/validation"
-import { useLocalStorage } from "src/hooks/useLocalStorage"
+import { useLocalStorage } from "src/hooks/storage/useLocalStorage"
 import { v4 } from "uuid"
 
 import { Modal } from "./Modal"

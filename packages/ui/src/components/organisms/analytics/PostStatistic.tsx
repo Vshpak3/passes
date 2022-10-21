@@ -3,7 +3,7 @@ import { useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { formatText } from "src/helpers/formatters"
-import { usePost } from "src/hooks/usePost"
+import { usePost } from "src/hooks/profile/usePost"
 
 interface PostStatisticProps {
   post: PostDto

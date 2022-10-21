@@ -1,6 +1,6 @@
 import { FC } from "react"
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
-import { useProfile } from "src/hooks/useProfile"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 import { FanWallFeed } from "./FanWallFeed"
 import { PassesFeed } from "./PassesFeed"

@@ -1,9 +1,8 @@
 import { FollowApi } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
+import { useUser } from "src/hooks/useUser"
 import useSWR, { useSWRConfig } from "swr"
-
-import { useUser } from "./useUser"
 
 const CACHE_KEY_FOLLOW = "/profile/follow/"
 
@@ -12,7 +11,7 @@ export const useFollow = (creatorId?: string) => {
   const { user } = useUser()
   const router = useRouter()
 
-  const { data: isFollowing, mutate } = useSWR(
+  const { data: isFollowing, mutate } = useSWR<boolean | undefined, any>(
     creatorId ? [CACHE_KEY_FOLLOW, creatorId] : null,
     async () => {
       if (user?.userId === creatorId) {

@@ -6,8 +6,8 @@ import {
   RoundedIconButton
 } from "src/components/atoms/Button"
 import { compactNumberFormatter, formatText } from "src/helpers/formatters"
-import { useFollow } from "src/hooks/useFollow"
-import { useProfile } from "src/hooks/useProfile"
+import { useFollow } from "src/hooks/profile/useFollow"
+import { useProfile } from "src/hooks/profile/useProfile"
 
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 import { ProfileStatsMobile } from "./ProfileStats"

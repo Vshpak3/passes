@@ -14,7 +14,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
-import { useComment } from "src/hooks/useComment"
+import { useComment } from "src/hooks/profile/useComment"
 
 interface CommentProps {
   comment: CommentDto

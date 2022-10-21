@@ -4,7 +4,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { PostStatistic } from "src/components/organisms/analytics/PostStatistic"
-import { usePost } from "src/hooks/usePost"
+import { usePost } from "src/hooks/profile/usePost"
 
 export const PostStatistics = () => {
   const { getPosts } = usePost()

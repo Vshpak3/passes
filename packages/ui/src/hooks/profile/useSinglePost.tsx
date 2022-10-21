@@ -12,7 +12,7 @@ export const useSinglePost = (postId: string) => {
     mutate
   } = useSWR(postId ? ["/posts/", postId] : null, async () => {
     if (!postId) {
-      return null
+      return
     }
     setHasInitialFetch(true)
     return await api.findPost({

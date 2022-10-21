@@ -11,7 +11,7 @@ import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
-import { useExternalPasses } from "src/hooks/useExternalPasses"
+import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 export interface BuyPostModalProps {

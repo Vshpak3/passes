@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 import { FC, useCallback } from "react"
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { useCreatorSearch } from "src/hooks/useCreatorSearch"
+import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 
 export interface CreatorSearchBarProps {
   isDesktop?: boolean
