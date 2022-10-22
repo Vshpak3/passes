@@ -25,6 +25,9 @@ const MAX_PINNED_POST = 3
 interface PostProps {
   post: PostDto
   postByUrl?: boolean
+  // Whether or not the post is from shown in the non-profile home feed
+  inHomeFeed?: boolean
+  // Whether or not the post was from returned from the feed API
   isPinned?: boolean
   isNewPost?: boolean
   pinnedPostCount?: number
@@ -32,6 +35,7 @@ interface PostProps {
 
 export const Post: FC<PostProps> = ({
   post,
+  inHomeFeed = false,
   postByUrl = false,
   isPinned = false,
   isNewPost = false,
@@ -63,7 +67,7 @@ export const Post: FC<PostProps> = ({
   } = post
 
   const [isRemoved, setIsRemoved] = useState(
-    !!pinnedAt !== isPinned && !postByUrl
+    !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
   )
 
   const dropdownOptions: DropdownOption[] = [

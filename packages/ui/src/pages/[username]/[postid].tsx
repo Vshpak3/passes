@@ -1,4 +1,5 @@
 import { useRouter } from "next/router"
+import { useEffect } from "react"
 import { Loader } from "src/components/atoms/Loader"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
 import { useSinglePost } from "src/hooks/profile/useSinglePost"
@@ -7,12 +8,18 @@ import { NotFoundPage } from "src/pages/404"
 
 const PostByUrlPage = () => {
   const router = useRouter()
-  const postId = router.query?.postid as string
-  const { post, loading, hasInitialFetch } = useSinglePost(postId)
+  const { post, setPostId, loadingPost, hasInitialFetch } =
+    useSinglePost(undefined)
+
+  useEffect(() => {
+    if (router.query?.postid) {
+      setPostId(router.query.postid as string)
+    }
+  }, [router, setPostId])
 
   return (
     <>
-      {!post && loading ? (
+      {!hasInitialFetch || loadingPost ? (
         <div className="pt-[100px]">
           <Loader />
         </div>

@@ -61,7 +61,10 @@ export const HomeContentFeed: FC = () => {
                 endElement={ContentFeedEnd}
                 KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
                   return (
-                    <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
+                    <Post
+                      post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
+                      inHomeFeed={true}
+                    />
                   )
                 }}
               />
