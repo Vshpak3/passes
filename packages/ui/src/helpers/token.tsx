@@ -24,11 +24,13 @@ export const setSignedCookies = (signedCookies?: any) => {
     return
   }
   // set signed cookies if exists
+  const cdn = process.env.NEXT_PUBLIC_CDN_URL?.split(".") ?? []
+  const domain = `.${cdn[1]}.${cdn[2]}`
   Object.entries(signedCookies as any).forEach(([key, value]) => {
     try {
       const cookies = new Cookies()
       if (value !== undefined) {
-        cookies.set(key, value)
+        cookies.set(key, value, { domain })
       } else {
         cookies.remove(key)
       }
