@@ -157,3 +157,4 @@ const PostUnmemo: FC<PostProps> = ({
 }
 
 export const Post = memo(PostUnmemo)
+export default Post // eslint-disable-line import/no-default-export
