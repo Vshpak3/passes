@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { v4 } from 'uuid'
 
@@ -54,7 +50,7 @@ export class AuthService {
       .first()
 
     if (!authRecord) {
-      throw new InternalServerErrorException('Unexpected missing auth record')
+      throw new BadRequestException('Unexpected missing auth record')
     }
 
     // Block endpoint if verified. Do not block if only the email is set
@@ -179,7 +175,7 @@ export class AuthService {
       .first()
 
     if (!authRecord) {
-      throw new InternalServerErrorException('Unexpected missing auth record')
+      throw new BadRequestException('Unexpected missing auth record')
     }
 
     if (authRecord.user_id) {
