@@ -15,6 +15,7 @@ type MediaFileProp = {
   contentHeight?: number
   contentWidth?: number
   isPassUpload?: boolean
+  objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
 }
 
 type MediaProp = {
@@ -28,6 +29,7 @@ type MediaProp = {
   contentHeight?: number
   contentWidth?: number
   isPassUpload?: boolean
+  objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
 }
 
 export const MediaFile: FC<MediaFileProp> = ({
@@ -39,7 +41,8 @@ export const MediaFile: FC<MediaFileProp> = ({
   preview,
   contentHeight,
   contentWidth,
-  isPassUpload
+  isPassUpload,
+  objectFit
 }) => {
   const src = URL.createObjectURL(file)
   let type!: ContentDtoContentTypeEnum
@@ -64,6 +67,7 @@ export const MediaFile: FC<MediaFileProp> = ({
       contentHeight={contentHeight}
       contentWidth={contentWidth}
       isPassUpload={isPassUpload}
+      objectFit={objectFit}
     />
   )
 }
@@ -78,7 +82,8 @@ export const Media: FC<MediaProp> = ({
   preview,
   contentHeight = 300,
   contentWidth = 300,
-  isPassUpload
+  isPassUpload,
+  objectFit = "cover"
 }) => {
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
@@ -103,7 +108,7 @@ export const Media: FC<MediaProp> = ({
           width={`${contentWidth}px`}
           height={`${contentHeight}px`}
           src={src}
-          objectFit="cover"
+          objectFit={objectFit}
         />
         {!preview && (
           <div

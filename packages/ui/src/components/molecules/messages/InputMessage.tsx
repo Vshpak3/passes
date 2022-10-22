@@ -13,6 +13,7 @@ import React, {
   useState
 } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/MessagesVaultDialog"
 import {
@@ -85,9 +86,13 @@ export const InputMessage: FC<Props> = ({
     event.target.value = ""
   }
 
-  const onMediaChange = (filesProp: any) => {
+  const onMediaChange = (filesProp: File[]) => {
+    if (files.length + filesProp.length > MAX_FILES) {
+      toast.error(`Only ${MAX_FILES} files per messages allowed`)
+      return
+    } // TODO: max file limit error message
     let maxFileSizeExceeded = false
-    const _files = filesProp.filter((file: any) => {
+    const _files = filesProp.filter((file: File) => {
       if (!MAX_FILE_SIZE) {
         return true
       }
@@ -99,12 +104,9 @@ export const InputMessage: FC<Props> = ({
     })
 
     if (maxFileSizeExceeded) {
-      // TODO: show error message
+      toast.error("some files were too big to upload")
     }
 
-    if (files.length + _files.length > MAX_FILES) {
-      return
-    } // TODO: max file limit error message
     setFiles([...files, ..._files])
   }
 
@@ -332,19 +334,27 @@ export const InputMessage: FC<Props> = ({
                               ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
                               : null
                           )}
-                          // TODO:this logic should be done on backend
                         />
                       </div>
                     ))}
                     {files.map((file: any, index: any) => (
                       <div
                         key={index}
-                        className="border-1 relative flex flex-shrink-0 items-center justify-center rounded-[6px] border border-[#9C4DC1] p-2 pt-3"
+                        className={classNames(
+                          file.type.startsWith("image/")
+                            ? "h-[200px] w-[130px] rounded-[6px] object-contain"
+                            : file.type.startsWith("video/")
+                            ? "absolute inset-0 m-auto h-[334px] max-h-full min-h-full w-[250px] min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : file.type.startsWith("audio/")
+                            ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : "",
+                          "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-[6px]"
+                        )}
                       >
                         <MediaFile
                           onRemove={() => onRemove(index)}
                           file={file}
-                          preview={true}
+                          // preview={true}
                           contentWidth={109}
                           contentHeight={83}
                           className={classNames(
@@ -354,7 +364,7 @@ export const InputMessage: FC<Props> = ({
                               ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
                               : file.type.startsWith("aduio/")
                               ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : null
+                              : ""
                           )}
                         />
                       </div>

@@ -4,12 +4,12 @@ import dynamic from "next/dynamic"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter as NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
-import { NewPostHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
+import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
 import { ContentService } from "src/helpers/content"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 
-import { NewPostMediaSection } from "./NewPostMediaSection"
 import { NewPostPaidSection } from "./NewPostPaidSection"
 
 const CustomMentionEditor = dynamic(
@@ -136,7 +136,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       <div className="min-h-12 flex flex-col items-start justify-start rounded-[20px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
           <>
-            <NewPostHeader
+            <NewPostEditorHeader
               title="New post"
               onClose={closeEditor}
               register={register}
@@ -170,7 +170,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
             />
           </div>
           {!onlyText && extended && (
-            <NewPostMediaSection
+            <MediaSection
               register={register}
               errors={errors}
               files={files}

@@ -17,6 +17,7 @@ export const NewPostMediaModal: FC<NewPostModalProps> = ({
   modalContainerClassname,
   childrenClassname
 }) => {
+  const min = Math.min(Math.min(window.innerWidth, window.innerHeight), 800)
   return (
     <Modal
       isNewPost
@@ -30,8 +31,9 @@ export const NewPostMediaModal: FC<NewPostModalProps> = ({
         preview
         file={file}
         className="m-0 rounded-[6px] p-0"
-        contentHeight={545}
-        contentWidth={400}
+        contentHeight={min}
+        contentWidth={min}
+        objectFit="contain"
       />
     </Modal>
   )
