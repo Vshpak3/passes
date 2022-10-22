@@ -1,6 +1,5 @@
 import {
   ContentApi,
-  ContentBareDto,
   ContentDto,
   ContentDtoContentTypeEnum,
   PassDtoAnimationTypeEnum,
@@ -229,7 +228,7 @@ export class ContentService {
     return await Promise.all(
       files.map(async (file: ContentFile) => {
         if (!file.file) {
-          return file.contentId ?? ""
+          return file.content?.contentId ?? ""
         }
         const _contentType = contentType ?? this.getFileContentType(file.file)
         if (!_contentType) {
