@@ -62,7 +62,6 @@ const LoginPage: FC = () => {
     const res = await api.loginWithEmailPassword({
       localUserLoginRequestDto: { email, password }
     })
-    console.log(res)
     const setRes = setTokens(res, setAccessToken, setRefreshToken)
     setSignedCookies(res.signedCookies)
     if (!setRes) {
