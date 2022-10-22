@@ -14,7 +14,6 @@ import {
   TabsEnum,
   tabToPath
 } from "src/config/settings"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 export interface SettingsContextProps {
   showSettingsTab: boolean
@@ -35,7 +34,6 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
   const [showSettingsTab, setShowSettingsTab] = useState(false)
   const router = useRouter()
-  const { isMobile } = useWindowSize()
 
   const addTabToStackHandler = (tab: SubTabsEnum) => {
     if (!subTabsStack.includes(tab)) {

@@ -7,7 +7,7 @@ import {
   FormRegister
 } from "src/components/types/FormTypes"
 
-interface PostHeaderProps {
+interface NewPostEditorHeaderProps {
   title?: string
   onClose: () => void
   messages?: boolean
@@ -16,7 +16,7 @@ interface PostHeaderProps {
   options?: FormOptions
 }
 
-export const PostHeader: FC<PostHeaderProps> = ({
+export const NewPostEditorHeader: FC<NewPostEditorHeaderProps> = ({
   title,
   onClose,
   messages,
