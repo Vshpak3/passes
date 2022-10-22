@@ -12,7 +12,6 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/profile/useFeed"
 import { usePost } from "src/hooks/profile/usePost"
-import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useUser } from "src/hooks/useUser"
 
 import { LockedMedia } from "./LockedMedia"
@@ -44,7 +43,6 @@ const PostUnmemo: FC<PostProps> = ({
   const router = useRouter()
   const { user } = useUser()
   const { removePost } = usePost()
-  const { setPost } = useViewPostModal()
   const { mutatePinnedPosts, pinPost, unpinPost } = useFeed(post.userId)
 
   const {
@@ -101,8 +99,6 @@ const PostUnmemo: FC<PostProps> = ({
     DropDownCopyLink(username, postId)
   ]
 
-  const setPostHandler = () => setPost({ ...post, setIsRemoved })
-
   return (
     <>
       {!isRemoved && (
@@ -141,7 +137,6 @@ const PostUnmemo: FC<PostProps> = ({
                     postId={postId}
                     contents={contents}
                     isNewPost={isNewPost}
-                    setPostHandler={setPostHandler}
                   />
                 ) : (
                   <LockedMedia post={post} />

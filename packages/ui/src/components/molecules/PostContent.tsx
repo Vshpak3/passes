@@ -1,20 +1,19 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
-import { FC, ForwardedRef, forwardRef } from "react"
+import { FC, ForwardedRef, forwardRef, useState } from "react"
 import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
+import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
 
 import { PostVideo } from "./post/PostVideo"
 
 export interface PostContentProps extends PostImageProps {
-  setPostHandler?: () => void
   ref: ForwardedRef<HTMLImageElement>
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
-  (
-    { content, setPostHandler, onMediaLoad },
-    ref: ForwardedRef<HTMLImageElement>
-  ) => {
+  ({ content, onMediaLoad }, ref: ForwardedRef<HTMLImageElement>) => {
+    const [openModal, setOpenModal] = useState(true)
+
     let contentElement: JSX.Element | undefined
 
     switch (content.contentType) {
@@ -34,9 +33,20 @@ export const PostContent: FC<PostContentProps> = forwardRef(
     }
 
     return contentElement ? (
-      <button className="w-full" onClick={setPostHandler}>
-        {contentElement}
-      </button>
+      <>
+        <button className="w-full" onClick={() => setOpenModal(true)}>
+          {contentElement}
+        </button>
+        {openModal && (
+          <MediaModal
+            isOpen={openModal}
+            setOpen={setOpenModal}
+            file={{ content }}
+            modalContainerClassname="p-0"
+            childrenClassname="p-0"
+          />
+        )}
+      </>
     ) : (
       <></>
     )

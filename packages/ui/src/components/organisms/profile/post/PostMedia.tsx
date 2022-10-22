@@ -14,8 +14,7 @@ interface PostMediaProps extends PostMediaContentProps {
 export const PostMedia: FC<PostMediaProps> = ({
   postId,
   contents = [],
-  isNewPost = false,
-  setPostHandler
+  isNewPost = false
 }) => {
   const [seconds, setSeconds] = useState(1)
   const [isProcessing, setIsProcessing] = useState(
@@ -55,11 +54,7 @@ export const PostMedia: FC<PostMediaProps> = ({
           Your content is being processed.
         </div>
       ) : (
-        <PostMediaContent
-          postId={postId}
-          contents={postContent}
-          setPostHandler={setPostHandler}
-        />
+        <PostMediaContent postId={postId} contents={postContent} />
       )}
     </div>
   )
