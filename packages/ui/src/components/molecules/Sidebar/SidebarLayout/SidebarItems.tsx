@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import { FC, Fragment } from "react"
@@ -14,7 +13,7 @@ interface SidebarChildItemProps {
 
 const SidebarChildItem: FC<SidebarChildItemProps> = ({ subItem, isActive }) => {
   return (
-    <Link key={subItem.name} href={subItem.href} as={subItem.href}>
+    <a key={subItem.name} href={subItem.href}>
       <span
         className={classNames(
           isActive
@@ -25,7 +24,7 @@ const SidebarChildItem: FC<SidebarChildItemProps> = ({ subItem, isActive }) => {
       >
         {subItem.name}
       </span>
-    </Link>
+    </a>
   )
 }
 
@@ -55,10 +54,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 "group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex"
               )}
             >
-              <Link
-                href={item.href}
-                as={item.href}
-                passHref
+              <a
                 className={classNames(
                   isItemActive
                     ? "text-white"
@@ -78,7 +74,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                   />
                   {item.name}
                 </>
-              </Link>
+              </a>
               <ChevronDown
                 className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
               />
@@ -123,10 +119,8 @@ const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
       )}
     >
-      <Link
+      <a
         href={item.href}
-        as={item.href}
-        passHref
         className={classNames(
           isActive ? "text-white" : "hover:text-white",
           "group flex"
@@ -143,7 +137,7 @@ const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
             aria-hidden="true"
           />
         </span>
-      </Link>
+      </a>
     </span>
   )
 }
@@ -159,9 +153,8 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         "group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex"
       )}
     >
-      <Link
+      <a
         href={item.href}
-        as={item.href}
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
           "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
@@ -179,7 +172,7 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
           />
           {item.name}
         </span>
-      </Link>
+      </a>
     </span>
   )
 }

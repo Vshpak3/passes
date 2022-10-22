@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
-import Link from "next/link"
 import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import { FC, Fragment } from "react"
@@ -23,7 +22,7 @@ const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
 }) => {
   const isActive = item.id === active
   return (
-    <Link key={item.name} as={item.href} href={item.href}>
+    <a key={item.name} href={item.href}>
       <span
         onClick={onClick}
         className={classNames(
@@ -35,7 +34,7 @@ const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
       >
         {item.name}
       </span>
-    </Link>
+    </a>
   )
 }
 
@@ -43,9 +42,8 @@ const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
   item,
   active
 }) => (
-  <Link
+  <a
     href={item.href}
-    as={item.href}
     className={classNames(
       item.id === active
         ? "text-white"
@@ -65,7 +63,7 @@ const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
       />
       <span>{item.name}</span>
     </div>
-  </Link>
+  </a>
 )
 
 export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({

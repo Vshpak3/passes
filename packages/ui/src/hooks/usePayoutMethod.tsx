@@ -19,10 +19,14 @@ export const usePayoutMethod = () => {
     data: payoutMethod,
     isValidating: isLoadingPayoutMethod,
     mutate: mutatePayoutMethod
-  } = useSWR<PayoutMethodDto>(CACHE_KEY_PAYOUT_METHOD, async () => {
-    setTimeout(() => undefined, 500)
-    return await api.getDefaultPayoutMethod()
-  })
+  } = useSWR<PayoutMethodDto>(
+    CACHE_KEY_PAYOUT_METHOD,
+    async () => {
+      setTimeout(() => undefined, 500)
+      return await api.getDefaultPayoutMethod()
+    },
+    { revalidateOnFocus: true }
+  )
 
   const {
     data: banks,

@@ -12,9 +12,13 @@ export const usePayinMethod = () => {
     data: payinMethod,
     isValidating: isLoadingPayinMethod,
     mutate: mutatePayinMethod
-  } = useSWR<PayinMethodDto>(CACHE_KEY_PAYIN_METHOD, async () => {
-    return await api.getDefaultPayinMethod()
-  })
+  } = useSWR<PayinMethodDto>(
+    CACHE_KEY_PAYIN_METHOD,
+    async () => {
+      return await api.getDefaultPayinMethod()
+    },
+    { revalidateOnFocus: true }
+  )
 
   const {
     data: cards,

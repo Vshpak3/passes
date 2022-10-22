@@ -1,4 +1,5 @@
 import axios from "axios"
+import Link from "next/link"
 // import Image from "next/image"
 import { useRouter } from "next/router"
 import { MouseEventHandler, useEffect, useState } from "react"
@@ -12,8 +13,6 @@ const HomePage = () => {
   const [emailAddress, setEmailAddress] = useState("")
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false)
   const [emailFeedback, setEmailFeedback] = useState("")
-
-  const routeToLogin = () => router.push("/login")
 
   const handleSubmitEmail: MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault()
@@ -112,13 +111,14 @@ const HomePage = () => {
             <CardCarousel />
           </div>
           <div className="align-items mx-auto flex justify-center">
-            <button
-              type="button"
-              onClick={routeToLogin}
-              className="shadow-accent-volume hover:bg-accent-dark bg-accent mt-20 w-36 rounded-full border-none py-3 px-8 text-center font-semibold text-white transition-all"
-            >
-              Login
-            </button>
+            <Link href="/login">
+              <button
+                type="button"
+                className="shadow-accent-volume hover:bg-accent-dark bg-accent mt-20 w-36 rounded-full border-none py-3 px-8 text-center font-semibold text-white transition-all"
+              >
+                Login
+              </button>
+            </Link>
           </div>
           <p className="text-jacarta-700 mx-auto mt-20 max-w-2xl text-center text-lg dark:text-white">
             Join our mailing list to stay in the loop

@@ -80,10 +80,12 @@ const ChangePassword = () => {
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
-          <Link href="/forgot-password" passHref>
-            <a className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100">
-              Forgot Password?
-            </a>
+          <Link
+            href="/forgot-password"
+            passHref
+            className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100"
+          >
+            Forgot Password?
           </Link>
         </div>
 

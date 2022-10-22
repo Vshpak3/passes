@@ -13,11 +13,11 @@ import { ProfileSocialMedia } from "./ProfileSocialMedia"
 import { ProfileStatsMobile } from "./ProfileStats"
 
 interface ProfileInformationProps {
-  onChat: () => void
+  chatLink: string
 }
 
 export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
-  onChat
+  chatLink
 }) => {
   const {
     profileStats,
@@ -45,12 +45,11 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         {!ownsProfile && (
           <div className="align-center flex items-center space-x-3">
             {!!profileInfo?.isCreator && (
-              <RoundedIconButton
-                className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-                onClick={onChat}
-              >
-                <ChatIcon />
-              </RoundedIconButton>
+              <a href={chatLink}>
+                <RoundedIconButton className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
+                  <ChatIcon />
+                </RoundedIconButton>
+              </a>
             )}
             <PassesPinkButton
               name={isFollowing ? "Unfollow" : "Follow"}
@@ -100,7 +99,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 }
 
 export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
-  onChat
+  chatLink
 }) => {
   const { profileStats, ownsProfile, profileInfo, profileUsername } =
     useProfile()
@@ -136,12 +135,11 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
       {!ownsProfile && (
         <div className="flex space-x-3">
           {!!profileInfo?.isCreator && (
-            <RoundedIconButton
-              className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0"
-              onClick={onChat}
-            >
-              <ChatIcon />
-            </RoundedIconButton>
+            <a href={chatLink}>
+              <RoundedIconButton className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
+                <ChatIcon />
+              </RoundedIconButton>
+            </a>
           )}
           <PassesPinkButton
             name={isFollowing ? "Unfollow" : "Follow"}

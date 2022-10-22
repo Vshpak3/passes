@@ -330,11 +330,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                       />
                       <span className="text-base">
                         By checking this box I agree to Passes
-                        <Link href="/terms">
-                          <a className="text-passes-pink-100">
-                            {" "}
-                            Terms and Conditions
-                          </a>
+                        <Link href="/terms" className="text-passes-pink-100">
+                          {" "}
+                          Terms and Conditions
                         </Link>
                       </span>
                     </label>

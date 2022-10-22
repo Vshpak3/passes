@@ -49,9 +49,6 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
-            closeModal={() => {
-              setOpen(false)
-            }}
           />
         )}
       </div>

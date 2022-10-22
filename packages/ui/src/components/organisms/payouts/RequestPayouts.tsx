@@ -5,7 +5,7 @@ import {
   UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
 } from "@passes/api-client"
 import classNames from "classnames"
-import { useRouter } from "next/router"
+import Link from "next/link"
 import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down-icon.svg"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -39,7 +39,6 @@ type PayoutFrequencyOption = {
 }
 
 export const RequestPayouts = () => {
-  const router = useRouter()
   const { defaultPayoutMethod, defaultBank, defaultWallet } = usePayoutMethod()
   const { creatorSettings, updateCreatorSettings } = useCreatorSettings()
   const [balance, setBalance] = useState(0)
@@ -160,11 +159,12 @@ export const RequestPayouts = () => {
               )}
             </div>
             <div>
-              <PassesPinkButton
-                className="ml-2 flex px-[18px]"
-                name="Manage Payment Method"
-                onClick={() => router.push("/settings/payout")}
-              />
+              <Link href="/settings/payout">
+                <PassesPinkButton
+                  className="ml-2 flex px-[18px]"
+                  name="Manage Payment Method"
+                />
+              </Link>
             </div>
           </div>
           {defaultBank && (

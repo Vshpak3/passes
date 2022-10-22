@@ -1,5 +1,4 @@
 import axios from "axios"
-import Link from "next/link"
 import React, { MouseEventHandler, useState } from "react"
 
 export const Hero = () => {
@@ -35,7 +34,7 @@ export const Hero = () => {
     <div className="bg-[url('/img/homepage/hero-bkg.webp')] bg-cover bg-no-repeat">
       <div className="bg-fill mx-auto max-w-7xl overflow-clip px-4 py-24">
         <div className="flex flex-col items-center space-y-8">
-          <Link href="https://jobs.lever.co/Passes">
+          <a href="https://jobs.lever.co/Passes">
             <span
               className="mx-auto cursor-pointer rounded-full px-4 py-2"
               style={{
@@ -45,7 +44,7 @@ export const Hero = () => {
             >
               We&apos;re hiring! See Open positions
             </span>
-          </Link>
+          </a>
           <h3 className="mx-auto max-w-lg text-center text-5xl font-extrabold leading-[3.5rem]">
             Exclusive Content from creators to fans
           </h3>

@@ -37,9 +37,6 @@ export const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
-            closeModal={() => {
-              setPass(null)
-            }}
           />
         )}
       </div>

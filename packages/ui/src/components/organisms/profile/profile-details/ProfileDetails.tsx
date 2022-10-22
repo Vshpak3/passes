@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import { useProfile } from "src/hooks/profile/useProfile"
 
@@ -12,7 +11,6 @@ import {
 } from "./ProfileInformation"
 
 export const ProfileDetails: FC = () => {
-  const router = useRouter()
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
   const { ownsProfile, profileUserId } = useProfile()
@@ -21,9 +19,7 @@ export const ProfileDetails: FC = () => {
     useState<boolean>(false)
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
-  const onChat = async () => {
-    router.push(`/messages?user=${profileUserId}`)
-  }
+  const chatLink = `/messages?user=${profileUserId}`
 
   if (!profileUserId) {
     return <></>
@@ -55,7 +51,7 @@ export const ProfileDetails: FC = () => {
           )}
 
           <div className="col-span-4 flex flex-col px-5 pt-4">
-            <ProfileInformationDesktop onChat={onChat} />
+            <ProfileInformationDesktop chatLink={chatLink} />
           </div>
         </div>
 
@@ -68,7 +64,7 @@ export const ProfileDetails: FC = () => {
           {ownsProfile && (
             <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
           )}
-          <ProfileInformationMobile onChat={onChat} />
+          <ProfileInformationMobile chatLink={chatLink} />
         </div>
       </div>
     </>

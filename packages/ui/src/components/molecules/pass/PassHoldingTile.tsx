@@ -1,5 +1,5 @@
 import { PassHolderDto, PassHolderDtoChainEnum } from "@passes/api-client"
-import { useRouter } from "next/router"
+import Link from "next/link"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
@@ -26,7 +26,6 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
   // const now = Date.now()
 
   // const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
-  const router = useRouter()
   return (
     <div className="col-span-1 w-full min-w-[400px] max-w-[400px] rounded rounded-[20px] border border-[#2C282D] py-[24px] px-[16px] ">
       <div className="aspect-[1/1] w-full rounded-[20px]">
@@ -80,31 +79,25 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
           )}
           <div className="mt-[12px] w-full">
             {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
-              <button
-                onClick={() =>
-                  router.push(
-                    "https://etherscan.io/nft/" +
-                      passHolder.address +
-                      "/" +
-                      parseInt(passHolder.tokenId ?? "0x0", 16).toString()
-                  )
+              <Link
+                href={
+                  "https://etherscan.io/nft/" +
+                  passHolder.address +
+                  "/" +
+                  parseInt(passHolder.tokenId ?? "0x0", 16).toString()
                 }
-                className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold"
               >
-                View on EtherScan
-              </button>
+                <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
+                  View on EtherScan
+                </button>
+              </Link>
             ) : (
               passHolder.chain === PassHolderDtoChainEnum.Sol && (
-                <button
-                  onClick={() =>
-                    router.push(
-                      "https://solscan.io/token/" + passHolder.address
-                    )
-                  }
-                  className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold"
-                >
-                  View on SolanaScan
-                </button>
+                <Link href={"https://solscan.io/token/" + passHolder.address}>
+                  <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
+                    View on SolanaScan
+                  </button>
+                </Link>
               )
             )}
           </div>
