@@ -158,12 +158,12 @@ export function DtoProperty(options: DtoOptions) {
     apiProperties.required = false
   }
 
+  decorators.push(ApiProperty(apiProperties))
+
   // Check for lower case option
   if (options.forceLower) {
     decorators.push(Transform((s) => s.value?.toLowerCase()))
   }
-
-  decorators.push(ApiProperty(apiProperties))
 
   return applyDecorators(...decorators)
 }
