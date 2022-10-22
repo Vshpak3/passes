@@ -13,9 +13,13 @@ import React, {
 } from "react"
 import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
-import { MessagesVaultDialog } from "src/components/molecules/direct-messages/MessagesVaultDialog"
+import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
-import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/MediaHeader"
+import {
+  MediaSelector,
+  PhotoSelector,
+  VideoSelector
+} from "src/components/organisms/MediaSelector"
 import { ContentService } from "src/helpers/content"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
@@ -40,6 +44,7 @@ export const InputMessage: FC<Props> = ({
     register,
     formState: { errors },
     handleSubmit,
+    // setValue,
     setError,
     clearErrors,
     reset,
@@ -51,23 +56,18 @@ export const InputMessage: FC<Props> = ({
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  const [hasVault, setHasVault] = useState(false)
   // const [scheduled, setScheduled] = useState<any>()
-  const [postPrice, setPostPrice] = useState<number>(0)
+  const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
+  // const setScheduledTime = (date: Date | null) => {
+  //   setValue("scheduledAt", date, { shouldValidate: true })
+  // }
 
   const onMediaHeaderChange = (prop: any) => {
-    // if (Object.prototype.toString.call(prop) === "[object Date]") {
-    //   setScheduled(prop)
-    //   return
-    // }
-    // TODO: Scheduled message will be added later
+    setActiveMediaHeader("")
     if (prop?.target?.files.length > 0) {
       return onFileInputChange(prop)
-    } else if (prop === "Vault") {
-      setHasVault(true)
     }
-    setActiveMediaHeader(prop)
   }
 
   const onFileInputChange = (event: any) => {
@@ -91,12 +91,12 @@ export const InputMessage: FC<Props> = ({
         contentIds: contentIds,
         channelId,
         tipAmount: tip,
-        price: Number(postPrice),
+        price: Number(messagePrice),
         previewIndex: 0
       }
     })
     setFiles([])
-    setPostPrice(0)
+    setMessagePrice(0)
     setVaultContent([])
     reset()
     return result
@@ -180,7 +180,7 @@ export const InputMessage: FC<Props> = ({
 
   const handleChange = (event: any) => {
     const limit = 5
-    setPostPrice(event.target.value.slice(0, limit))
+    setMessagePrice(event.target.value.slice(0, limit))
   }
   const options = {}
   return (
@@ -207,7 +207,7 @@ export const InputMessage: FC<Props> = ({
                 </div>
                 <input
                   type="number"
-                  value={postPrice}
+                  value={messagePrice}
                   name="postPrice"
                   autoFocus
                   id="postPrice"
@@ -256,20 +256,22 @@ export const InputMessage: FC<Props> = ({
               addNewMedia={addNewMedia}
             />
           )}
-        </div>
 
-        {isCreator && (
-          <div className="flex w-full items-center justify-between">
-            <MediaHeader
-              messages={true}
-              activeMediaHeader={activeMediaHeader}
-              register={register}
-              errors={errors}
-              onChange={onMediaHeaderChange}
-              postTime={null}
-            />
-          </div>
-        )}
+          {isCreator && (
+            <div className="flex w-full items-center justify-between">
+              <MediaSelector
+                activeMediaHeader={activeMediaHeader}
+                // setActiveMediaHeader={setActiveMediaHeader}
+                register={register}
+                errors={errors}
+                onChange={onMediaHeaderChange}
+                selectors={[PhotoSelector, VideoSelector]}
+              >
+                <VaultSelector selectVaultContent={addContent} />
+              </MediaSelector>
+            </div>
+          )}
+        </div>
       </div>
       <div className="order-1 col-span-3 h-full border-l border-gray-800 sm:order-2 sm:col-span-1">
         <div className=" flex h-full flex-col justify-between sm:items-center sm:justify-center">
@@ -326,15 +328,6 @@ export const InputMessage: FC<Props> = ({
             {/* {blocked && <span className="text-red-500">{String(blocked)}</span>} */}
           </div>
         </div>
-        <>
-          {hasVault && (
-            <MessagesVaultDialog
-              hasVault={hasVault}
-              setHasVault={setHasVault}
-              setContent={addContent}
-            />
-          )}
-        </>
       </div>
     </form>
   )

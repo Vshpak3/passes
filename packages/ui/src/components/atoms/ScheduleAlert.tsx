@@ -2,12 +2,12 @@ import { format } from "date-fns"
 import { XCircle } from "lucide-react"
 import { FC } from "react"
 
-interface PostScheduleAlertProps {
+interface ScheduleAlertProps {
   scheduledPostTime: Date | null
   onRemoveScheduledPostTime: () => void
 }
 
-export const PostScheduleAlert: FC<PostScheduleAlertProps> = ({
+export const ScheduleAlert: FC<ScheduleAlertProps> = ({
   scheduledPostTime,
   onRemoveScheduledPostTime
 }) => {

@@ -39,6 +39,7 @@ type FormInputProps = {
   tagsFromServer?: string[]
   iconAlign?: EIcon
   onFocus?: (event: Event) => void
+  onBlur?: (event: Event) => void
   value?: string
   mask?: string
   checked?: boolean
@@ -208,6 +209,7 @@ export const FormInput: FC<FormInputProps> = ({
         register={register}
         options={options}
         errors={errors}
+        multiple={multiple}
         {...rest}
       />
     ),

@@ -43,7 +43,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   isExtended = false,
   onClose
 }) => {
-  const { files, setFiles, addNewMedia, onRemove } = useMedia()
+  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState<string[]>([])
@@ -193,6 +193,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               disableForm={disableForm}
               setScheduledTime={setScheduledTime}
               scheduledTime={getValues()?.scheduledAt}
+              addContent={addContent}
             />
           </>
         )}

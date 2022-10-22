@@ -1,27 +1,29 @@
 import { CircularProgress } from "@mui/material"
+import { ContentDto } from "@passes/api-client"
 import { FC } from "react"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
-import { PostScheduleAlert } from "src/components/atoms/PostScheduleAlert"
+import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { Text } from "src/components/atoms/Text"
-
-import { MediaSelector } from "./MediaSelector"
+import { VaultSelector } from "src/components/atoms/VaultSelector"
 
 interface NewPostEditorFooterProps {
   disableForm?: boolean
   setScheduledTime: (date: Date | null) => void
   scheduledTime: Date | null
+  addContent: (content: ContentDto[]) => void
 }
 
 export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
   disableForm,
   setScheduledTime,
-  scheduledTime
+  scheduledTime,
+  addContent
 }) => {
   return (
     <div className="w-full">
       {scheduledTime && (
-        <PostScheduleAlert
+        <ScheduleAlert
           scheduledPostTime={scheduledTime}
           onRemoveScheduledPostTime={() => setScheduledTime(null)}
         />
@@ -29,7 +31,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
       <div className="mt-4 flex justify-end gap-[10px]">
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
-            <MediaSelector name="Media" activeHeader="Media" />
+            <VaultSelector selectVaultContent={addContent} expanded={true} />
             <CalendarSelector
               name="Schedule"
               activeHeader="Schedule"

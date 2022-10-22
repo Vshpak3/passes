@@ -22,6 +22,7 @@ type FileProps = {
   accept?: FileAccept
   trigger?: JSX.Element
   className?: string
+  onBlur?: (event: Event) => void
 }
 
 const acceptProp = (accept?: FileAccept) =>
@@ -50,6 +51,7 @@ export const File: FC<FileProps> = ({
   accept,
   trigger,
   className,
+  onBlur,
   ...rest
 }) => {
   const uploadRef = useRef<HTMLInputElement | null>(null)
@@ -73,6 +75,7 @@ export const File: FC<FileProps> = ({
           accept={acceptProp(accept)}
           className="hidden"
           multiple={multiple}
+          onBlur={onBlur}
           {...reg}
           {...rest}
         />
