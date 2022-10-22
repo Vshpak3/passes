@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import { FC, Fragment } from "react"
@@ -22,19 +23,21 @@ const SidebarMobileChildItem: FC<SidebarMobileItemProps> = ({
 }) => {
   const isActive = item.id === active
   return (
-    <a key={item.name} href={item.href}>
-      <span
-        onClick={onClick}
-        className={classNames(
-          isActive
-            ? "rounded-[56px] bg-[#FFFEFF]/10 text-white"
-            : " group-hover:stroke-[#ffffff]/8 text-[#eeedef]/50 group-hover:text-white group-hover:text-white",
-          "group group ml-5 flex flex cursor-pointer cursor-pointer items-center items-center py-[10px] px-[20px] text-base font-semibold tracking-[0.003em] text-white"
-        )}
-      >
-        {item.name}
-      </span>
-    </a>
+    <Link key={item.name} as={item.href} href={item.href}>
+      <a>
+        <span
+          onClick={onClick}
+          className={classNames(
+            isActive
+              ? "rounded-[56px] bg-[#FFFEFF]/10 text-white"
+              : " group-hover:stroke-[#ffffff]/8 text-[#eeedef]/50 group-hover:text-white group-hover:text-white",
+            "group group ml-5 flex flex cursor-pointer cursor-pointer items-center items-center py-[10px] px-[20px] text-base font-semibold tracking-[0.003em] text-white"
+          )}
+        >
+          {item.name}
+        </span>
+      </a>
+    </Link>
   )
 }
 
@@ -42,8 +45,9 @@ const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
   item,
   active
 }) => (
-  <a
+  <Link
     href={item.href}
+    as={item.href}
     className={classNames(
       item.id === active
         ? "text-white"
@@ -51,19 +55,21 @@ const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
       "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
     )}
   >
-    <div className="flex">
-      <item.icon
-        className={classNames(
-          item.id === active
-            ? "fill-transparent stroke-white stroke-2"
-            : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-          "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
-        )}
-        aria-hidden="true"
-      />
-      <span>{item.name}</span>
-    </div>
-  </a>
+    <a>
+      <div className="flex">
+        <item.icon
+          className={classNames(
+            item.id === active
+              ? "fill-transparent stroke-white stroke-2"
+              : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+            "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
+          )}
+          aria-hidden="true"
+        />
+        <span>{item.name}</span>
+      </div>
+    </a>
+  </Link>
 )
 
 export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({

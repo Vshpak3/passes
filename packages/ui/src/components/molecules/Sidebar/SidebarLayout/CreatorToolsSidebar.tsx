@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
+import Link from "next/link"
 import { FC, Fragment } from "react"
 import { creatorToolsItems } from "src/layout/Sidebar/sidebarData"
 
@@ -59,7 +60,8 @@ export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
                               "group flex cursor-pointer items-start justify-center rounded-full px-4 py-2 "
                             )}
                           >
-                            <a
+                            <Link
+                              as={item.href}
                               href={item.href}
                               className={classNames(
                                 item.id === active
@@ -68,8 +70,8 @@ export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
                                 "group flex cursor-pointer items-start text-base font-semibold tracking-[0.003em] text-white "
                               )}
                             >
-                              {item.name}
-                            </a>
+                              <a>{item.name}</a>
+                            </Link>
                           </span>
                         </Fragment>
                       )

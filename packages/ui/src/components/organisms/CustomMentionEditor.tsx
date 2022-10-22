@@ -12,6 +12,7 @@ import {
   EditorState,
   getDefaultKeyBinding
 } from "draft-js"
+import Link from "next/link"
 import React, {
   FC,
   ReactElement,
@@ -91,9 +92,9 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
       mentionComponent: ({ mention }) => (
-        <a className="text-[rgb(191,122,240)]" href={`/${mention.username}`}>
-          @{mention.username}
-        </a>
+        <Link href={`/${mention.username}`}>
+          <a className="text-[rgb(191,122,240)]">@{mention.username}</a>
+        </Link>
       ),
       mentionPrefix: TRIGGER
     })

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { FC } from "react"
 import { Text } from "src/components/atoms/Text"
 
@@ -21,7 +22,9 @@ export const NameDisplay: FC<NameDisplayProps> = ({
     </>
   )
   return linked ? (
-    <a href={`${window.location.origin}/${username}`}>{text}</a>
+    <Link href={`${window.location.origin}/${username}`}>
+      <a>{text}</a>
+    </Link>
   ) : (
     text
   )

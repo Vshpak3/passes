@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import ChevronDown from "public/icons/sidebar-chevron-down-icon.svg"
 import { FC, Fragment } from "react"
@@ -13,18 +14,20 @@ interface SidebarChildItemProps {
 
 const SidebarChildItem: FC<SidebarChildItemProps> = ({ subItem, isActive }) => {
   return (
-    <a key={subItem.name} href={subItem.href}>
-      <span
-        className={classNames(
-          isActive
-            ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 px-[25px]"
-            : "text-[#eeedef]/50 hover:text-white",
-          "group hidden cursor-pointer items-center py-[10px] text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
-        )}
-      >
-        {subItem.name}
-      </span>
-    </a>
+    <Link key={subItem.name} href={subItem.href} as={subItem.href}>
+      <a>
+        <span
+          className={classNames(
+            isActive
+              ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 px-[25px]"
+              : "text-[#eeedef]/50 hover:text-white",
+            "group hidden cursor-pointer items-center py-[10px] text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          )}
+        >
+          {subItem.name}
+        </span>
+      </a>
+    </Link>
   )
 }
 
@@ -54,7 +57,10 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 "group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex"
               )}
             >
-              <a
+              <Link
+                href={item.href}
+                as={item.href}
+                passHref
                 className={classNames(
                   isItemActive
                     ? "text-white"
@@ -74,7 +80,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                   />
                   {item.name}
                 </>
-              </a>
+              </Link>
               <ChevronDown
                 className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
               />
@@ -119,25 +125,29 @@ const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
       )}
     >
-      <a
+      <Link
         href={item.href}
+        as={item.href}
+        passHref
         className={classNames(
           isActive ? "text-white" : "hover:text-white",
           "group flex"
         )}
       >
-        <span>
-          <item.icon
-            className={classNames(
-              isActive
-                ? "fill-transparent stroke-white stroke-2"
-                : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-              "flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
-            )}
-            aria-hidden="true"
-          />
-        </span>
-      </a>
+        <a>
+          <span>
+            <item.icon
+              className={classNames(
+                isActive
+                  ? "fill-transparent stroke-white stroke-2"
+                  : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                "flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
+              )}
+              aria-hidden="true"
+            />
+          </span>
+        </a>
+      </Link>
     </span>
   )
 }
@@ -153,26 +163,29 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         "group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex"
       )}
     >
-      <a
+      <Link
         href={item.href}
+        as={item.href}
         className={classNames(
           isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
           "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
-        <span className={classNames("flex flex-row")}>
-          <item.icon
-            className={classNames(
-              isActive
-                ? "fill-transparent stroke-white stroke-2"
-                : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-              "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
-            )}
-            aria-hidden="true"
-          />
-          {item.name}
-        </span>
-      </a>
+        <a>
+          <span className={classNames("flex flex-row")}>
+            <item.icon
+              className={classNames(
+                isActive
+                  ? "fill-transparent stroke-white stroke-2"
+                  : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
+              )}
+              aria-hidden="true"
+            />
+            {item.name}
+          </span>
+        </a>
+      </Link>
     </span>
   )
 }
