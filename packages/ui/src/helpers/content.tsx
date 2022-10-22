@@ -6,6 +6,7 @@ import {
   PassDtoImageTypeEnum
 } from "@passes/api-client"
 import path from "path"
+import { toast } from "react-toastify"
 import { ContentFile } from "src/hooks/useMedia"
 
 import { isDev } from "./env"
@@ -168,16 +169,20 @@ export class ContentService {
   }
 
   private async uploadFile(url: string, file: File): Promise<string> {
-    const response = await fetch(url, {
-      method: "PUT",
-      // omit cookies in dev
-      credentials: !isDev ? "include" : undefined,
-      body: file
-    })
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        // omit cookies in dev
+        credentials: !isDev ? "include" : undefined,
+        body: file
+      })
 
-    if (!response.status.toString().startsWith("2")) {
-      console.error(await response.text())
-      throw new Error("There was an error uploading the file")
+      if (!response.status.toString().startsWith("2")) {
+        console.error(await response.text())
+        throw new Error("There was an error uploading the file")
+      }
+    } catch (err: any) {
+      toast.error("There was an error uploading the file")
     }
 
     // remove signatures from uploaded file

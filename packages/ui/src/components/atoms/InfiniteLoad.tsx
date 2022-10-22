@@ -1,5 +1,10 @@
-import React, { PropsWithChildren, useEffect, useState } from "react"
-import useSWRInfinite from "swr/infinite"
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState
+} from "react"
+import useSWRInfinite, { SWRInfiniteConfiguration } from "swr/infinite"
 
 import { ComponentArg, Key, PagedData } from "./InfiniteScroll"
 
@@ -14,6 +19,7 @@ interface InfiniteLoadProps<A, T extends PagedData<A>> {
   endElement?: JSX.Element
   loadMoreMessage?: string
   loadMorePosition?: LoadMsgPositionEnum
+  options?: SWRInfiniteConfiguration
 
   resets?: number // increment to manually reset list
   isReverse?: boolean
@@ -40,7 +46,13 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   endElement,
   loadMoreMessage = "Load more",
   loadMorePosition = LoadMsgPositionEnum.BOTTOM,
-
+  options = {
+    revalidateOnMount: true,
+    revalidateAll: false,
+    revalidateFirstPage: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  },
   isReverse,
   resets = 0,
   children
@@ -61,18 +73,12 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   const { data, size, setSize, isValidating } = useSWRInfinite<T>(
     getKey,
     fetchData,
-    {
-      revalidateOnMount: true,
-      revalidateAll: false,
-      revalidateFirstPage: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+    options
   )
 
-  const triggerFetch = () => {
-    setSize(size + 1)
-  }
+  const triggerFetch = useCallback(() => {
+    setSize((size) => size + 1)
+  }, [setSize])
   const [flattenedData, setFlattenedData] = useState<A[]>([])
 
   useEffect(() => {
@@ -90,9 +96,11 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  if (size < 2) {
-    triggerFetch()
-  }
+  useEffect(() => {
+    if (size < 2) {
+      triggerFetch()
+    }
+  }, [size, triggerFetch])
 
   useEffect(() => {
     if (isReverse) {

@@ -2,7 +2,10 @@ import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
 import { FC, useRef } from "react"
+import { useForm } from "react-hook-form"
 import { MdAdd, MdDelete } from "react-icons/md"
+import { FormInput } from "src/components/atoms/FormInput"
+import { ACCEPTED_MEDIA_TYPES } from "src/config/media_limits"
 
 const filterStyles = {
   button: "rounded-[56px] bg-[#FFFEFF]/10 hover:bg-[#EDEDED]",
@@ -109,6 +112,7 @@ export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
 }
 
 export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
+  const { register } = useForm()
   const inputRef = useRef<HTMLInputElement>(null)
   const handleSelectContent = () => {
     inputRef.current?.click()
@@ -119,13 +123,15 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
       onClick={handleSelectContent}
       className="cursor-pointer rounded-[50%] bg-[#ffffff40] p-[4px] text-white"
     >
-      <input
+      <FormInput
+        register={register}
+        name="file"
         type="file"
-        className="hidden"
-        ref={inputRef}
-        onChange={(e) => onClick(e.target.files)}
+        multiple={true}
+        trigger={<MdAdd size={16} />}
+        options={{ onChange: onClick }}
+        accept={ACCEPTED_MEDIA_TYPES}
       />
-      <MdAdd size={16} />
     </div>
   )
 }

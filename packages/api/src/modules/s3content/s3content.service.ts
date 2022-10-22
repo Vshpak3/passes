@@ -6,7 +6,11 @@ import {
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3'
-import { getSignedCookies, getSignedUrl } from '@aws-sdk/cloudfront-signer'
+import {
+  CloudfrontSignedCookiesOutput,
+  getSignedCookies,
+  getSignedUrl,
+} from '@aws-sdk/cloudfront-signer'
 import { getSignedUrl as getPresignedUrl } from '@aws-sdk/s3-request-presigner'
 import {
   BadRequestException,
@@ -110,7 +114,10 @@ export class S3ContentService {
    * @param res response object
    * @param path path to give access to
    */
-  async signCookies(res: Response, path = '') {
+  async signCookies(
+    res: Response,
+    path = '',
+  ): Promise<CloudfrontSignedCookiesOutput | undefined> {
     if (this.env === 'dev') {
       return
     }
@@ -144,6 +151,7 @@ export class S3ContentService {
     Object.entries(cookies).forEach(([key, value]) =>
       res.cookie(key, value, this.cookieOptions),
     )
+    return cookies
   }
 
   /**

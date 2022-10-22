@@ -3,7 +3,10 @@ import * as querystring from 'node:querystring'
 import { Response } from 'express'
 
 import { AuthRecord } from '../modules/auth/core/auth-record'
-import { AccessTokensResponseDto } from '../modules/auth/dto/access-tokens-dto'
+import {
+  AccessTokensResponseDto,
+  CloudfrontSignedCookiesOutput,
+} from '../modules/auth/dto/access-tokens.dto'
 import { JwtService } from '../modules/auth/jwt/jwt.service'
 import { S3ContentService } from '../modules/s3content/s3content.service'
 
@@ -18,10 +21,15 @@ export async function createTokens(
   if (authRecord.isVerified) {
     refreshToken = jwtService.createRefreshToken(authRecord)
   }
+
+  let signedCookies: CloudfrontSignedCookiesOutput | undefined = undefined
   if (authRecord.isCreator) {
-    await s3contentService.signCookies(res, `*/${authRecord.id}`)
+    signedCookies = await s3contentService.signCookies(
+      res,
+      `*/${authRecord.id}`,
+    )
   }
-  return new AccessTokensResponseDto(accessToken, refreshToken)
+  return new AccessTokensResponseDto(accessToken, refreshToken, signedCookies)
 }
 
 /**
@@ -43,6 +51,8 @@ export async function redirectAfterOAuthLogin(
 
   const url = this.configService.get('clientUrl')
   return res.redirect(
-    `${url}/auth/success?${querystring.stringify({ ...tokens })}`,
+    `${url}/auth/success?${querystring.stringify({
+      ...{ accessToken: tokens.accessToken, refreshToken: tokens.refreshToken },
+    })}`,
   )
 }

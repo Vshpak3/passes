@@ -19,6 +19,31 @@ export const tokenStillValid = (
   return token.exp - Date.now() / 1000 > timeRemaining
 }
 
+export const setSignedCookies = (signedCookies?: any) => {
+  if (!signedCookies) {
+    return
+  }
+  // set signed cookies if exists
+  Object.keys(signedCookies as any).forEach((key) => {
+    const value = (signedCookies as any)[key]
+    if (typeof window === "undefined") {
+      console.error(
+        `Tried setting localStorage key “${key}” even though environment is not a client`
+      )
+    }
+    try {
+      if (value === undefined) {
+        window.localStorage.removeItem(key)
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(value))
+      }
+      window.dispatchEvent(new Event("local-storage"))
+    } catch (error) {
+      console.error(`Error setting localStorage key "${key}":`, error)
+    }
+  })
+}
+
 const _refreshAccessToken = async (
   refreshToken: string
 ): Promise<string | undefined> => {
@@ -27,6 +52,9 @@ const _refreshAccessToken = async (
     const res = await authApi.refreshAccessToken({
       refreshAuthTokenRequestDto: { refreshToken: JSON.parse(refreshToken) }
     })
+
+    setSignedCookies(res.signedCookies)
+
     if (!res.accessToken) {
       console.error("Did not receive an access token")
       return undefined

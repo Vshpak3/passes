@@ -53,6 +53,13 @@ const CommentFeedUnmemo: FC<CommentFeedProps> = ({
       }
       loadMoreMessage="Load previous comments"
       loadMorePosition={LoadMsgPositionEnum.BOTTOM}
+      options={{
+        revalidateOnMount: false,
+        revalidateAll: false,
+        revalidateFirstPage: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+      }}
     />
   )
 }

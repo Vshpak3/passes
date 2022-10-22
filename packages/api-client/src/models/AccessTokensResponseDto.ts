@@ -31,6 +31,12 @@ export interface AccessTokensResponseDto {
      * @memberof AccessTokensResponseDto
      */
     refreshToken: string;
+    /**
+     * 
+     * @type {object}
+     * @memberof AccessTokensResponseDto
+     */
+    signedCookies?: object;
 }
 
 /**
@@ -56,6 +62,7 @@ export function AccessTokensResponseDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'accessToken': json['accessToken'],
         'refreshToken': json['refreshToken'],
+        'signedCookies': !exists(json, 'signedCookies') ? undefined : json['signedCookies'],
     };
 }
 
@@ -70,6 +77,7 @@ export function AccessTokensResponseDtoToJSON(value?: AccessTokensResponseDto | 
         
         'accessToken': value.accessToken,
         'refreshToken': value.refreshToken,
+        'signedCookies': value.signedCookies,
     };
 }
 

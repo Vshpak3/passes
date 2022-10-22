@@ -1,6 +1,6 @@
 import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 import { toast } from "react-toastify"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { FormContainer } from "src/components/organisms/FormContainer"
@@ -33,7 +33,7 @@ interface PostProps {
   pinnedPostCount?: number
 }
 
-export const Post: FC<PostProps> = ({
+const PostUnmemo: FC<PostProps> = ({
   post,
   inHomeFeed = false,
   postByUrl = false,
@@ -156,4 +156,4 @@ export const Post: FC<PostProps> = ({
   )
 }
 
-export default Post // eslint-disable-line import/no-default-export
+export const Post = memo(PostUnmemo)

@@ -77,9 +77,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
             {selectedItems && selectedItems?.length > 0 && (
               <>
                 {isDiffTypesSelected && (
-                  <div>
-                    10 photos or 1 video can be posted at any given time
-                  </div>
+                  <div>20 media files can be posted at any given time</div>
                 )}
                 <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
                 {!isDiffTypesSelected && (
