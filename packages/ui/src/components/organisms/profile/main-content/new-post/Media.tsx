@@ -100,7 +100,7 @@ export const Media: FC<MediaProp> = ({
       </>
     ),
     image: (
-      <div className="relative" onClick={onSelect}>
+      <>
         <Image
           className={className}
           alt=""
@@ -127,7 +127,7 @@ export const Media: FC<MediaProp> = ({
             )}
           </div>
         )}
-      </div>
+      </>
     ),
     audio: (
       <>

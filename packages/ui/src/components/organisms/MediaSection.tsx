@@ -13,8 +13,6 @@ import { ContentFile } from "src/hooks/useMedia"
 
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
-const START_SLIDER_AFTER_FILES_LENGTH = 2
-
 const sliderSettings = {
   infinite: false,
   slidesToShow: 2,
@@ -92,8 +90,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
       ) : (
         <div
           className={classNames({
-            flex: files.length <= START_SLIDER_AFTER_FILES_LENGTH,
-            "w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9":
+            "flex w-full flex-col items-start justify-start gap-6  rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9":
               true
           })}
         >
@@ -121,6 +118,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                         }
                         src={ContentService.userContentMediaPath(content)}
                         type={content.contentType}
+                        iconClassName="bottom-[100px]"
                         className={classNames(
                           content.contentType.startsWith("image/")
                             ? "cursor-pointer rounded-[6px] object-contain"
@@ -136,13 +134,13 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   {file && (
                     <div
                       key={index}
-                      className="relative left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
+                      className="left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
                     >
                       <MediaFile
                         onRemove={(e: MouseEvent<HTMLDivElement>) =>
                           onRemove(index, e)
                         }
-                        iconClassName="bottom-[300px] left-[100px]"
+                        iconClassName="bottom-[100px]"
                         onSelect={() => onMediaFileSelect({ file, content })}
                         file={file}
                       />

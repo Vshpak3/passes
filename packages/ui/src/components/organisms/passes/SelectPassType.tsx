@@ -5,7 +5,6 @@ import SubscriptionImg from "public/icons/subscription-pass.svg"
 import { FC } from "react"
 import { CreatePassHeader } from "src/components/atoms/passes/CreatePass"
 import { CreatePassOption } from "src/components/molecules/pass/CreatePassOption"
-import { CREATE_NEW_PASS_PATH } from "src/pages/tools/manage-passes"
 
 interface SelectPassTypeProps {
   initialCreation?: boolean
@@ -21,7 +20,7 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
   }`
 
   const redirectToCreatePass = (type: string) => () =>
-    router.push(`${CREATE_NEW_PASS_PATH}?passType=${type}`)
+    router.push(`/tools/manage-passes/create?passType=${type}`)
 
   return (
     <div className="mx-auto -mt-[160px] grid w-full max-w-[1000px] grid-cols-10 justify-center gap-5 px-4 lg:px-0">
