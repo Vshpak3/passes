@@ -1,11 +1,10 @@
 import { MessagesApi, UserApi } from "@passes/api-client"
-import { ChannelMemberDto } from "@passes/api-client/models"
+import { ChannelMemberDto, ContentDto } from "@passes/api-client/models"
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"
-// import { InputMessageCreatorPerspective } from "./InputMessageCreatorPerspective"
 import { InputMessage } from "./InputMessage"
 
 interface ChannelViewProps {
@@ -14,6 +13,8 @@ interface ChannelViewProps {
   setGallery: Dispatch<SetStateAction<any>>
   isCreator: boolean
   user: any
+  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
+  setVaultContent: Dispatch<SetStateAction<any>>
 }
 
 export const ChannelView: FC<ChannelViewProps> = ({
@@ -21,7 +22,9 @@ export const ChannelView: FC<ChannelViewProps> = ({
   gallery,
   setGallery,
   isCreator,
-  user
+  user,
+  vaultContent,
+  setVaultContent
 }) => {
   const [paid, setPaid] = useState<boolean | undefined>()
   const [freeMessages, setFreeMessages] = useState<number | null | undefined>(
@@ -87,6 +90,8 @@ export const ChannelView: FC<ChannelViewProps> = ({
                   minimumTip={minimumTip}
                   isCreator={isCreator}
                   user={user}
+                  vaultContent={vaultContent}
+                  setVaultContent={setVaultContent}
                 />
               )}
             </>

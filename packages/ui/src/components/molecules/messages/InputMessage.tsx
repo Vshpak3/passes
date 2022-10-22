@@ -1,11 +1,13 @@
-import { PayinDataDtoBlockedEnum } from "@passes/api-client"
+import { ContentDto, PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import { debounce } from "lodash"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, {
+  Dispatch,
   FC,
   KeyboardEvent,
+  SetStateAction,
   useCallback,
   useEffect,
   useState
@@ -31,6 +33,8 @@ interface Props {
   minimumTip?: number | null
   isCreator: boolean
   user: any
+  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
+  setVaultContent: Dispatch<SetStateAction<any>>
 }
 
 const api = new MessagesApi()
@@ -38,7 +42,9 @@ export const InputMessage: FC<Props> = ({
   channelId,
   minimumTip,
   isCreator,
-  user
+  user,
+  vaultContent,
+  setVaultContent
 }) => {
   const {
     register,
@@ -50,9 +56,9 @@ export const InputMessage: FC<Props> = ({
     watch
   } = useForm()
   const [tip, setTip] = useState(0)
-  const message = watch("message")
+  const message = watch("message", "")
   const [files, setFiles] = useState<any[]>([])
-  const [contentIds, setContentIds] = useState<any[]>([])
+  const [content, setContent] = useState<any[]>([...vaultContent])
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
   // const [scheduled, setScheduled] = useState<any>()
@@ -113,10 +119,16 @@ export const InputMessage: FC<Props> = ({
           inMessage: true
         }
       )
-      contentIdsToUpload = [...uploadedContentIds, ...contentIds]
+      contentIdsToUpload = [
+        ...uploadedContentIds,
+        ...content.map((c) => c.contentId)
+      ]
     }
-    if (contentIds.length > 0) {
-      contentIdsToUpload = [...contentIds, ...contentIdsToUpload]
+    if (content.length > 0) {
+      contentIdsToUpload = [
+        ...content.map((c) => c.contentId),
+        ...contentIdsToUpload
+      ]
     }
     const result = await api.sendMessage({
       sendMessageRequestDto: {
@@ -130,7 +142,8 @@ export const InputMessage: FC<Props> = ({
     })
     setFiles([])
     setPostPrice(0)
-    setContentIds([])
+    setContent([])
+    setVaultContent([])
     reset()
     return result
   }
@@ -218,7 +231,6 @@ export const InputMessage: FC<Props> = ({
     const limit = 5
     setPostPrice(event.target.value.slice(0, limit))
   }
-
   const options = {}
   return (
     <form
@@ -284,10 +296,10 @@ export const InputMessage: FC<Props> = ({
               clearErrors()
             }}
           />
-          {(files.length > 0 || contentIds.length > 0) && (
+          {(files.length > 0 || content.length > 0) && (
             <div
               className={classNames(
-                message.length
+                message?.length
                   ? "border-b-passes-primary-color"
                   : "border-[#2C282D]",
                 "w-full items-center self-start overflow-y-auto border-x-0 border-b border-[#2C282D] pt-1 pb-5"
@@ -296,15 +308,30 @@ export const InputMessage: FC<Props> = ({
               <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg  border-transparent p-1">
                 <div className="flex items-center justify-start gap-6">
                   <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto md:max-w-[320px]">
-                    {contentIds.map((contentId, index) => (
+                    {content.map((content, index) => (
                       <div
                         key={index}
-                        className="relative flex  flex-shrink-0 items-center justify-center rounded-[6px]"
+                        className="border-1 relative flex flex-shrink-0 items-center justify-center rounded-[6px] border border-[#9C4DC1] p-2 pt-3"
                       >
                         <Media
                           onRemove={() => onRemove(index)}
-                          src={`${process.env.NEXT_PUBLIC_CDN_URL}/media/${user?.id}/${contentId}.jpeg`}
-                          type="image"
+                          src={ContentService.userContentMediaPath({
+                            ...content,
+                            userId: user.userId
+                          })}
+                          preview={true}
+                          type={content.contentType}
+                          contentWidth={109}
+                          contentHeight={83}
+                          className={classNames(
+                            content.contentType.startsWith("image/")
+                              ? "cursor-pointer rounded-[6px] object-contain"
+                              : content.contentType.startsWith("video/")
+                              ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                              : content.contentType.startsWith("aduio/")
+                              ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                              : null
+                          )}
                           // TODO:this logic should be done on backend
                         />
                       </div>
@@ -334,7 +361,7 @@ export const InputMessage: FC<Props> = ({
                     ))}
                   </div>
 
-                  {(files.length > 0 || contentIds.length > 0) && (
+                  {(files.length > 0 || content.length > 0) && (
                     <FormInput
                       register={register}
                       name="drag-drop"
@@ -429,7 +456,8 @@ export const InputMessage: FC<Props> = ({
             <MessagesVaultDialog
               hasVault={hasVault}
               setHasVault={setHasVault}
-              setContentIds={setContentIds}
+              setContent={setContent}
+              content={content}
             />
           )}
         </>

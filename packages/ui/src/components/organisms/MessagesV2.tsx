@@ -1,16 +1,26 @@
 import { MessagesApi } from "@passes/api-client"
-import { ChannelMemberDto, ListMemberDto } from "@passes/api-client/models"
+import {
+  ChannelMemberDto,
+  ContentDto,
+  ListMemberDto
+} from "@passes/api-client/models"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { useUser } from "src/hooks/useUser"
 
 interface MessagesV2Props {
   defaultUserId?: string
+  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
+  setVaultContent: Dispatch<SetStateAction<any>>
 }
 
-const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
+export const MessagesV2 = ({
+  defaultUserId,
+  vaultContent,
+  setVaultContent
+}: MessagesV2Props) => {
   const router = useRouter()
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
   const [gallery, setGallery] = useState(false)
@@ -79,6 +89,8 @@ const MessagesV2 = ({ defaultUserId }: MessagesV2Props) => {
           setGallery={setGallery}
           isCreator={!!user?.isCreator}
           user={user}
+          vaultContent={vaultContent}
+          setVaultContent={setVaultContent}
         />
       )}
     </div>

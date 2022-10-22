@@ -10,7 +10,7 @@ import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"
 
 interface VaultProps {
-  passSelectedItems?: (selectedItems: string[]) => void
+  passSelectedItems?: (selectedItems: any) => void
 }
 
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
@@ -64,7 +64,7 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
   const setItems = (items: ContentDto[]) => {
     setSelectedItems(items)
     if (passSelectedItems) {
-      passSelectedItems(items.map((c) => c.contentId))
+      passSelectedItems(items)
     }
   }
   const router = useRouter()
@@ -73,7 +73,12 @@ export const Vault = ({ passSelectedItems }: VaultProps) => {
       {
         pathname: "/messages",
         query: {
-          contentIds: selectedItems.map((c) => c.contentId)
+          content: JSON.stringify(
+            selectedItems.map(({ contentId, contentType }) => ({
+              contentId,
+              contentType
+            }))
+          )
         }
       },
       "/messages"

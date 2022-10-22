@@ -6,21 +6,23 @@ import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 interface MessagesVaultDialogProps {
   hasVault: boolean
   setHasVault: Dispatch<SetStateAction<any>>
-  setContentIds: Dispatch<SetStateAction<any>>
+  setContent: Dispatch<SetStateAction<any>>
+  content: string[]
 }
 export const MessagesVaultDialog: FC<MessagesVaultDialogProps> = ({
   hasVault,
   setHasVault,
-  setContentIds
+  setContent,
+  content
 }) => {
   const [selectedItems, setSelectedItems] = useState<Array<string>>([])
   const pushToMessages = () => {
-    setContentIds(selectedItems)
+    setContent([...content, ...selectedItems])
     setHasVault(false)
   }
   return (
     <Dialog
-      className="flex h-[90vh] w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:max-w-[544px] md:rounded-[20px]"
+      className="flex h-full w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all  md:rounded-[20px]"
       open={hasVault}
       footer={
         <div className="relative h-full pt-5">
@@ -46,7 +48,7 @@ export const MessagesVaultDialog: FC<MessagesVaultDialogProps> = ({
       }
     >
       <AuthWrapper isPage creatorOnly={true}>
-        <div className="mx-auto w-full px-2 md:px-5 sidebar-collapse:max-w-[1100px]">
+        <div className="">
           <Vault passSelectedItems={setSelectedItems} />
         </div>
       </AuthWrapper>
