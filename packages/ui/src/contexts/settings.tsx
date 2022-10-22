@@ -58,21 +58,6 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }
 
-  // If on desktop, set AccountSettings to active by default
-  useEffect(() => {
-    if (!isMobile && !activeTab) {
-      setActiveTab(0)
-      router.replace(
-        `/settings/${tabToPath[TabsEnum.AccountSettings]}`,
-        undefined,
-        {
-          shallow: true
-        }
-      )
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isMobile])
-
   useEffect(() => {
     if (activeTab) {
       router.replace(`/settings/${tabToPath[activeTab]}`, undefined, {

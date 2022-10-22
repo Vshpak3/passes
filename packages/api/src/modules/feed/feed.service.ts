@@ -15,7 +15,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { GetFeedRequestDto } from './dto/get-feed-dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 
-export const FEED_LIMIT = 5
+const MAX_POST_PER_FEED_REQUEST = 5
 
 @Injectable()
 export class FeedService {
@@ -75,7 +75,7 @@ export class FeedService {
         )
       })
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
-      .limit(FEED_LIMIT)
+      .limit(MAX_POST_PER_FEED_REQUEST)
     query = createPaginatedQuery(
       query,
       PostEntity.table,
@@ -142,7 +142,7 @@ export class FeedService {
           new Date(),
         )
       })
-      .limit(FEED_LIMIT)
+      .limit(MAX_POST_PER_FEED_REQUEST)
 
     if (pinned) {
       query = query.whereNotNull(`${PostEntity.table}.pinned_at`)

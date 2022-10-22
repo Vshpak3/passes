@@ -137,6 +137,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     setShowSettingsTab
   } = useSettings() as SettingsContextProps
   const { isMobile } = useWindowSize()
+  // console.log(settingsPath)
 
   useEffect(() => {
     if (!settingsPath) {
@@ -158,6 +159,13 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     // Leave out settingsPath
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setActiveTab, setSubTabsStack, isMobile])
+
+  // If on desktop, set AccountSettings to active by default
+  useEffect(() => {
+    if (!settingsPath && !isMobile && !activeTab) {
+      setActiveTab(TabsEnum.AccountSettings)
+    }
+  }, [settingsPath, isMobile, activeTab, setActiveTab])
 
   return (
     <>
