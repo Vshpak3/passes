@@ -8,7 +8,6 @@ import { PostContent } from "src/components/molecules/PostContent"
 interface CarouselProps {
   contents: ContentDto[]
   onMediaLoad?: () => () => void
-  setPostHandler?: () => void
   afterChangeHandler?: (current: number) => void
   activeIndex?: number
 }
@@ -16,7 +15,6 @@ interface CarouselProps {
 export const Carousel: FC<CarouselProps> = ({
   contents,
   onMediaLoad,
-  setPostHandler,
   afterChangeHandler,
   activeIndex = 0
 }) => {
@@ -74,7 +72,6 @@ export const Carousel: FC<CarouselProps> = ({
               content={c}
               ref={imgRef}
               onMediaLoad={onMediaLoad}
-              setPostHandler={setPostHandler}
             />
           )
         })}
