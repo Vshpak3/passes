@@ -1,4 +1,5 @@
 import { PostDto } from "@passes/api-client"
+import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
@@ -25,24 +26,40 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
   return (
     <div className="flex flex-row justify-between border-b border-passes-dark-200">
       <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700]">
-          {post.createdAt.toLocaleString()}
-        </span>
+        <Link href={`/${post.userId}/${post.postId}`}>
+          <a>
+            <span className="text-[14px] font-[700]">
+              {post.createdAt.toLocaleString()}
+            </span>
+          </a>
+        </Link>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-start overflow-hidden">
-        <span className="w-full overflow-hidden text-ellipsis text-[14px] font-[700]">
-          {formatText(post.text)}
-        </span>
+        <Link href={`/${post.userId}/${post.postId}`}>
+          <a>
+            <span className="w-full overflow-hidden truncate text-ellipsis text-[14px] font-[700]">
+              {formatText(post.text)}
+            </span>
+          </a>
+        </Link>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">
-          {post.contents?.length ?? 0}
-        </span>
+        <Link href={`/${post.userId}/${post.postId}`}>
+          <a>
+            <span className="text-[12px] font-[500]">
+              {post.contents?.length ?? 0}
+            </span>
+          </a>
+        </Link>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">
-          {"$" + (post.price ?? 0).toFixed(2)}
-        </span>
+        <Link href={`/${post.userId}/${post.postId}`}>
+          <a>
+            <span className="text-[12px] font-[500]">
+              {"$" + (post.price ?? 0).toFixed(2)}
+            </span>
+          </a>
+        </Link>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">{post.numPurchases}</span>
@@ -53,6 +70,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[12px] font-[500]">{post.earningsPurchases}</span>
       </div>
+
       <div className="flex h-[72px] flex-1 items-center justify-start">
         {!deleted && !post.deletedAt ? (
           <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-passes-pink-100">

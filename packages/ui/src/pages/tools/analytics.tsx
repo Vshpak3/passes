@@ -1,5 +1,5 @@
 import { NextPage } from "next"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
 import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
@@ -9,10 +9,18 @@ import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Analytics: NextPage = () => {
-  const [analyticsTab, setAnalyticsTab] = useState("earnings")
-  const { userBalance } = useCreatorBalance()
+  let tab = window.location.hash.slice(1) as AnalyticsNavigationOptions
+  if (!Object.values(AnalyticsNavigationOptions).includes(tab)) {
+    tab = AnalyticsNavigationOptions.EARNINGS
+  }
 
-  const handleAnalyticsTabClick = (value: string) => {
+  const [analyticsTab, setAnalyticsTab] = useState(tab)
+  const { userBalance } = useCreatorBalance()
+  useEffect(() => {
+    window.location.hash = analyticsTab
+  }, [analyticsTab])
+
+  const handleAnalyticsTabClick = (value: AnalyticsNavigationOptions) => {
     setAnalyticsTab(value)
   }
 
@@ -31,28 +39,35 @@ const Analytics: NextPage = () => {
           </TabButton>
         ))}
       </div>
-      {analyticsTab === "earnings" && (
+      {analyticsTab === AnalyticsNavigationOptions.EARNINGS && (
         <EarningsGraph userBalance={userBalance?.amount} />
       )}
-      {analyticsTab === "posts" && <PostStatistics />}
+      {analyticsTab === AnalyticsNavigationOptions.POSTS && <PostStatistics />}
 
-      {analyticsTab === "messages" && <MessageStatistics />}
+      {analyticsTab === AnalyticsNavigationOptions.MESSAGES && (
+        <MessageStatistics />
+      )}
     </div>
   )
+}
+enum AnalyticsNavigationOptions {
+  EARNINGS = "earnings",
+  POSTS = "posts",
+  MESSAGES = "messages"
 }
 
 const ANALYTICS_OPTIONS = [
   {
     label: "Earnings",
-    value: "earnings"
+    value: AnalyticsNavigationOptions.EARNINGS
   },
   {
     label: "Posts",
-    value: "posts"
+    value: AnalyticsNavigationOptions.POSTS
   },
   {
     label: "Messages",
-    value: "messages"
+    value: AnalyticsNavigationOptions.MESSAGES
   }
 ]
 

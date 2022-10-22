@@ -12,7 +12,7 @@ export interface PostContentProps extends PostImageProps {
 
 export const PostContent: FC<PostContentProps> = forwardRef(
   ({ content, onMediaLoad }, ref: ForwardedRef<HTMLImageElement>) => {
-    const [openModal, setOpenModal] = useState(true)
+    const [openModal, setOpenModal] = useState(false)
 
     let contentElement: JSX.Element | undefined
 
