@@ -80,8 +80,8 @@ export const Media: FC<MediaProp> = ({
   onRemove,
   onSelect,
   preview,
-  contentHeight = 300,
-  contentWidth = 300,
+  contentHeight = 200,
+  contentWidth = 200,
   isPassUpload,
   objectFit = "cover"
 }) => {

@@ -10,7 +10,7 @@ import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"
 
 interface VaultProps {
-  passSelectedItems?: (selectedItems: any) => void
+  passSelectedItems?: (selectedItems: ContentDto[]) => void
 }
 
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined

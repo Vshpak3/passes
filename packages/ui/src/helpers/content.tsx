@@ -1,11 +1,13 @@
 import {
   ContentApi,
+  ContentBareDto,
   ContentDto,
   ContentDtoContentTypeEnum,
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
 } from "@passes/api-client"
 import path from "path"
+import { ContentFile } from "src/hooks/useMedia"
 
 import { isDev } from "./env"
 
@@ -217,7 +219,7 @@ export class ContentService {
    * @returns Content array
    */
   async uploadContent(
-    files: File[],
+    files: ContentFile[],
     contentType?: ContentDtoContentTypeEnum,
     requestConfig?: { inPost: boolean; inMessage: boolean }
   ): Promise<string[]> {
@@ -225,8 +227,11 @@ export class ContentService {
       return await Promise.resolve([])
     }
     return await Promise.all(
-      files.map(async (file: File) => {
-        const _contentType = contentType ?? this.getFileContentType(file)
+      files.map(async (file: ContentFile) => {
+        if (!file.file) {
+          return file.contentId ?? ""
+        }
+        const _contentType = contentType ?? this.getFileContentType(file.file)
         if (!_contentType) {
           throw new Error("invalid file type")
         }
@@ -237,7 +242,7 @@ export class ContentService {
             inMessage: requestConfig?.inMessage
           }
         })
-        const result = await this.uploadFile(url, file)
+        const result = await this.uploadFile(url, file.file)
         return this.parseContentUrl(result).id
       })
     )

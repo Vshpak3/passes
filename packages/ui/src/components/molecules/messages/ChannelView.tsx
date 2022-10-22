@@ -1,5 +1,9 @@
 import { MessagesApi, UserApi } from "@passes/api-client"
-import { ChannelMemberDto, ContentDto } from "@passes/api-client/models"
+import {
+  ChannelMemberDto,
+  ContentDto,
+  GetUserResponseDto
+} from "@passes/api-client/models"
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 
@@ -12,8 +16,8 @@ interface ChannelViewProps {
   gallery: boolean
   setGallery: Dispatch<SetStateAction<any>>
   isCreator: boolean
-  user: any
-  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
+  user: GetUserResponseDto
+  vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<any>>
 }
 
@@ -89,7 +93,6 @@ export const ChannelView: FC<ChannelViewProps> = ({
                   channelId={selectedChannel.channelId}
                   minimumTip={minimumTip}
                   isCreator={isCreator}
-                  user={user}
                   vaultContent={vaultContent}
                   setVaultContent={setVaultContent}
                 />

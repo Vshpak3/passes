@@ -12,7 +12,7 @@ import {
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-import { ACCEPTED_MEDIA_TYPES } from "src/config/post"
+import { ACCEPTED_MEDIA_TYPES } from "src/config/media_limits"
 
 const messagesMediaTypes = [
   {

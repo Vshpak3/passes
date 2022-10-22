@@ -2,44 +2,38 @@ import classNames from "classnames"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
-import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react"
+import { FC, MouseEvent, useState } from "react"
 import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import Slider from "react-slick"
-import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
-import { NewPostMediaModal } from "src/components/organisms/NewPostMediaModal"
-import {
-  ACCEPTED_MEDIA_TYPES,
-  MAX_FILE_COUNT,
-  MAX_IMAGE_SIZE,
-  MAX_IMAGE_SIZE_NAME,
-  MAX_VIDEO_SIZE,
-  MAX_VIDEO_SIZE_NAME
-} from "src/config/post"
+import { MediaModal } from "src/components/organisms/MediaModal"
+import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media_limits"
+import { ContentService } from "src/helpers/content"
+import { ContentFile } from "src/hooks/useMedia"
 
-import { MediaFile } from "./profile/main-content/new-post/Media"
-import { NewPostFormProps } from "./profile/main-content/new-post/NewPostEditor"
+import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 const START_SLIDER_AFTER_FILES_LENGTH = 2
 
 const sliderSettings = {
   infinite: false,
-  slidesToShow: 3,
+  slidesToShow: 2,
   slidesToScroll: 1,
   nextArrow: <NextImageArrow />,
   prevArrow: <PrevImageArrow />,
+  adaptiveHeight: true,
   responsive: [
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 3,
+        slidesToShow: 1,
         slidesToScroll: 1
       }
     },
     {
       breakpoint: 640,
       settings: {
-        slidesToShow: 2,
+        slidesToShow: 1,
         slidesToScroll: 1
       }
     }
@@ -47,28 +41,29 @@ const sliderSettings = {
 }
 
 interface MediaSectionProps {
-  register: UseFormRegister<NewPostFormProps>
+  register: UseFormRegister<any>
   errors: FieldErrorsImpl
-  files: File[]
-  setFiles: Dispatch<SetStateAction<File[]>>
+  addNewMedia: (newFiles: File[]) => void
+  files: ContentFile[]
+  onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
   register,
   errors,
+  addNewMedia,
   files,
-  setFiles
+  onRemove
 }) => {
-  const [selectedMedia, setSelectedMedia] = useState<File>()
+  const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-
-  const onMediaFileSelect = (file: File) => {
+  const onMediaFileSelect = (file: ContentFile) => {
     setSelectedMedia(file)
     setIsNewPostModalOpen(true)
   }
 
   const onFileInputChange = (event: any) => {
-    onMediaChange([...event.target.files])
+    addNewMedia([...event.target.files])
     event.target.value = ""
   }
 
@@ -76,44 +71,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
     if (event?.target?.files) {
       return onFileInputChange(event)
     }
-    onMediaChange([...event.target.files])
+    addNewMedia([...event.target.files])
     event.target.value = ""
-  }
-
-  const onRemove = (index: number, e: MouseEvent<HTMLDivElement>) => {
-    const newFiles = files.filter((_, i) => i !== index)
-    e.stopPropagation()
-    setFiles(newFiles)
-  }
-
-  const onMediaChange = (fileProps: File[]) => {
-    // Validate properties of each file
-    for (const file of fileProps) {
-      const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)
-      if (!type || (type !== "image" && type !== "video")) {
-        toast.error(`Invalid media type ${file.type}`)
-        return
-      }
-
-      if (fileProps.length + files.length > MAX_FILE_COUNT) {
-        toast.error(
-          `Can only have a maximum of ${MAX_FILE_COUNT} pictures/videos`
-        )
-        return
-      }
-
-      if (type === "video" && file.size > MAX_VIDEO_SIZE) {
-        toast.error(`Videos cannot be larger than ${MAX_VIDEO_SIZE_NAME}`)
-        return
-      }
-
-      if (type === "image" && file.size > MAX_IMAGE_SIZE) {
-        toast.error(`Images cannot be larger than ${MAX_IMAGE_SIZE_NAME}`)
-        return
-      }
-    }
-
-    setFiles([...files, ...fileProps])
   }
 
   return (
@@ -138,8 +97,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
               true
           })}
         >
-          {selectedMedia && (
-            <NewPostMediaModal
+          {!!selectedMedia?.file && (
+            <MediaModal
               isOpen={isNewPostModalOpen}
               setOpen={setIsNewPostModalOpen}
               file={selectedMedia}
@@ -147,22 +106,49 @@ export const MediaSection: FC<MediaSectionProps> = ({
               childrenClassname="p-0"
             />
           )}
-          <div className="flex w-full items-center justify-center">
-            <Slider className="w-[320px] sm:min-w-[400px]" {...sliderSettings}>
-              {files.map((file, index) => (
-                <div
-                  key={index}
-                  className="relative left-0 flex h-[200px] max-w-[130px] flex-shrink-0 items-center overflow-hidden rounded-[6px]"
-                >
-                  <MediaFile
-                    onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                      onRemove(index, e)
-                    }
-                    iconClassName="bottom-[300px] left-[100px]"
-                    onSelect={() => onMediaFileSelect(file)}
-                    file={file}
-                  />
-                </div>
+          <div className="w-100 flex items-center justify-center">
+            <Slider className="max-w-[500px]" {...sliderSettings}>
+              {files.map(({ file, content }, index) => (
+                <>
+                  {content && (
+                    <div
+                      key={index}
+                      className="border-1 relative flex flex-shrink-0 items-center justify-center rounded-[6px] border border-[#9C4DC1] p-2 pt-3"
+                    >
+                      <Media
+                        onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                          onRemove(index, e)
+                        }
+                        src={ContentService.userContentMediaPath(content)}
+                        type={content.contentType}
+                        className={classNames(
+                          content.contentType.startsWith("image/")
+                            ? "cursor-pointer rounded-[6px] object-contain"
+                            : content.contentType.startsWith("video/")
+                            ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : content.contentType.startsWith("aduio/")
+                            ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                            : null
+                        )}
+                      />
+                    </div>
+                  )}
+                  {file && (
+                    <div
+                      key={index}
+                      className="relative left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
+                    >
+                      <MediaFile
+                        onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                          onRemove(index, e)
+                        }
+                        iconClassName="bottom-[300px] left-[100px]"
+                        onSelect={() => onMediaFileSelect({ file, content })}
+                        file={file}
+                      />
+                    </div>
+                  )}
+                </>
               ))}
               <div className="absolute top-[50%] ml-[15px] translate-y-[-50%]">
                 {files.length !== MAX_FILE_COUNT && (

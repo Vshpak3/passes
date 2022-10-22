@@ -2,7 +2,6 @@ import { ContentDto, PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import { debounce } from "lodash"
-import PlusIcon from "public/icons/post-plus-icon.svg"
 import React, {
   Dispatch,
   FC,
@@ -13,29 +12,20 @@ import React, {
   useState
 } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 import { FormInput } from "src/components/atoms/FormInput"
 import { MessagesVaultDialog } from "src/components/molecules/direct-messages/MessagesVaultDialog"
-import {
-  Media,
-  MediaFile
-} from "src/components/organisms/profile/main-content/new-post/Media"
+import { MediaSection } from "src/components/organisms/MediaSection"
 import { MediaHeader } from "src/components/organisms/profile/main-content/new-post/MediaHeader"
-import {
-  ACCEPTED_MEDIA_TYPES,
-  MAX_FILE_SIZE,
-  MAX_FILES
-} from "src/config/messages"
 import { ContentService } from "src/helpers/content"
+import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
 interface Props {
   channelId: string
   minimumTip?: number | null
   isCreator: boolean
-  user: any
-  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
-  setVaultContent: Dispatch<SetStateAction<any>>
+  vaultContent: ContentDto[]
+  setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
 }
 
 const api = new MessagesApi()
@@ -43,7 +33,6 @@ export const InputMessage: FC<Props> = ({
   channelId,
   minimumTip,
   isCreator,
-  user,
   vaultContent,
   setVaultContent
 }) => {
@@ -58,8 +47,9 @@ export const InputMessage: FC<Props> = ({
   } = useForm()
   const [tip, setTip] = useState(0)
   const message = watch("message", "")
-  const [files, setFiles] = useState<any[]>([])
-  const [content, setContent] = useState<any[]>([...vaultContent])
+  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
+    vaultContent.map((content) => new ContentFile(undefined, content))
+  )
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [hasVault, setHasVault] = useState(false)
   // const [scheduled, setScheduled] = useState<any>()
@@ -81,61 +71,24 @@ export const InputMessage: FC<Props> = ({
   }
 
   const onFileInputChange = (event: any) => {
-    const files = [...event.target.files]
-    onMediaChange(files)
+    const files = [...event.target.files] as File[]
+    addNewMedia(files)
     event.target.value = ""
   }
 
-  const onMediaChange = (filesProp: File[]) => {
-    if (files.length + filesProp.length > MAX_FILES) {
-      toast.error(`Only ${MAX_FILES} files per messages allowed`)
-      return
-    } // TODO: max file limit error message
-    let maxFileSizeExceeded = false
-    const _files = filesProp.filter((file: File) => {
-      if (!MAX_FILE_SIZE) {
-        return true
-      }
-      if (file.size < MAX_FILE_SIZE) {
-        return true
-      }
-      maxFileSizeExceeded = true
-      return false
-    })
-
-    if (maxFileSizeExceeded) {
-      toast.error("some files were too big to upload")
-    }
-
-    setFiles([...files, ..._files])
-  }
-
   const registerMessage = async () => {
-    let contentIdsToUpload: any[] = []
-    if (files.length > 0) {
-      const uploadedContentIds = await new ContentService().uploadContent(
-        files,
-        undefined,
-        {
-          inPost: false,
-          inMessage: true
-        }
-      )
-      contentIdsToUpload = [
-        ...uploadedContentIds,
-        ...content.map((c) => c.contentId)
-      ]
-    }
-    if (content.length > 0) {
-      contentIdsToUpload = [
-        ...content.map((c) => c.contentId),
-        ...contentIdsToUpload
-      ]
-    }
+    const contentIds = await new ContentService().uploadContent(
+      files,
+      undefined,
+      {
+        inPost: false,
+        inMessage: true
+      }
+    )
     const result = await api.sendMessage({
       sendMessageRequestDto: {
         text: message,
-        contentIds: contentIdsToUpload,
+        contentIds: contentIds,
         channelId,
         tipAmount: tip,
         price: Number(postPrice),
@@ -144,7 +97,6 @@ export const InputMessage: FC<Props> = ({
     })
     setFiles([])
     setPostPrice(0)
-    setContent([])
     setVaultContent([])
     reset()
     return result
@@ -216,9 +168,6 @@ export const InputMessage: FC<Props> = ({
       e.preventDefault()
     }
   }
-  const onRemove = (index: any) => {
-    setFiles(files.filter((_: any, i: any) => i !== index))
-  }
 
   useEffect(() => {
     if (channelId && !isNaN(tip)) {
@@ -239,7 +188,7 @@ export const InputMessage: FC<Props> = ({
       className="grid w-full grid-cols-3 border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="order-2 col-span-3 sm:order-1 sm:col-span-2">
+      <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-2">
         {isCreator && (
           <div className="flex min-h-[45px] items-center justify-start gap-4 px-3 pt-2">
             <FormInput
@@ -298,98 +247,14 @@ export const InputMessage: FC<Props> = ({
               clearErrors()
             }}
           />
-          {(files.length > 0 || content.length > 0) && (
-            <div
-              className={classNames(
-                message?.length
-                  ? "border-b-passes-primary-color"
-                  : "border-[#2C282D]",
-                "w-full items-center self-start overflow-y-auto border-x-0 border-b border-[#2C282D] pt-1 pb-5"
-              )}
-            >
-              <div className="flex w-full flex-col items-start justify-start gap-6 overflow-hidden rounded-lg  border-transparent p-1">
-                <div className="flex items-center justify-start gap-6">
-                  <div className="flex max-w-[190px] flex-nowrap items-center gap-6 overflow-x-auto md:max-w-[320px]">
-                    {content.map((content, index) => (
-                      <div
-                        key={index}
-                        className="border-1 relative flex flex-shrink-0 items-center justify-center rounded-[6px] border border-[#9C4DC1] p-2 pt-3"
-                      >
-                        <Media
-                          onRemove={() => onRemove(index)}
-                          src={ContentService.userContentMediaPath({
-                            ...content,
-                            userId: user.userId
-                          })}
-                          preview={true}
-                          type={content.contentType}
-                          contentWidth={109}
-                          contentHeight={83}
-                          className={classNames(
-                            content.contentType.startsWith("image/")
-                              ? "cursor-pointer rounded-[6px] object-contain"
-                              : content.contentType.startsWith("video/")
-                              ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : content.contentType.startsWith("aduio/")
-                              ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : null
-                          )}
-                        />
-                      </div>
-                    ))}
-                    {files.map((file: any, index: any) => (
-                      <div
-                        key={index}
-                        className={classNames(
-                          file.type.startsWith("image/")
-                            ? "h-[200px] w-[130px] rounded-[6px] object-contain"
-                            : file.type.startsWith("video/")
-                            ? "absolute inset-0 m-auto h-[334px] max-h-full min-h-full w-[250px] min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                            : file.type.startsWith("audio/")
-                            ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                            : "",
-                          "relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-[6px]"
-                        )}
-                      >
-                        <MediaFile
-                          onRemove={() => onRemove(index)}
-                          file={file}
-                          // preview={true}
-                          contentWidth={109}
-                          contentHeight={83}
-                          className={classNames(
-                            file.type.startsWith("image/")
-                              ? "cursor-pointer rounded-[6px] object-contain"
-                              : file.type.startsWith("video/")
-                              ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : file.type.startsWith("aduio/")
-                              ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                              : ""
-                          )}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  {(files.length > 0 || content.length > 0) && (
-                    <FormInput
-                      register={register}
-                      name="drag-drop"
-                      type="file"
-                      multiple={true}
-                      trigger={
-                        <div className="box-border flex h-[110px] w-[127px]  items-center justify-center rounded-[8px] border-[1px] border-dashed border-passes-secondary-color bg-passes-secondary-color/10">
-                          <PlusIcon />
-                        </div>
-                      }
-                      options={{ onChange: onFileInputChange }}
-                      accept={ACCEPTED_MEDIA_TYPES}
-                      errors={errors}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+          {files.length > 0 && (
+            <MediaSection
+              register={register}
+              errors={errors}
+              files={files}
+              onRemove={onRemove}
+              addNewMedia={addNewMedia}
+            />
           )}
         </div>
 
@@ -466,8 +331,7 @@ export const InputMessage: FC<Props> = ({
             <MessagesVaultDialog
               hasVault={hasVault}
               setHasVault={setHasVault}
-              setContent={setContent}
-              content={content}
+              setContent={addContent}
             />
           )}
         </>

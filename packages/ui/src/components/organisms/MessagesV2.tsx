@@ -12,7 +12,7 @@ import { useUser } from "src/hooks/useUser"
 
 interface MessagesV2Props {
   defaultUserId?: string
-  vaultContent: Pick<ContentDto, "contentId" | "contentType">[]
+  vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<any>>
 }
 
@@ -61,17 +61,11 @@ export const MessagesV2 = ({
     }
   }, [defaultUserId])
 
-  const createChannel = (userId: string) => {
-    const api = new MessagesApi()
-    return api.getOrCreateChannel({
-      getChannelRequestDto: {
-        userId
-      }
-    })
-  }
-
   const onUserSelect = async (user: ListMemberDto) => {
-    const channel = await createChannel(user.userId)
+    const api = new MessagesApi()
+    const channel = await api.getChannel({
+      getChannelRequestDto: { userId: user.userId }
+    })
     setSelectedChannel(channel)
   }
 

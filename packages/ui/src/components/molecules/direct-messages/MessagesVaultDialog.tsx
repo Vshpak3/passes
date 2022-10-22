@@ -1,3 +1,4 @@
+import { ContentDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction, useState } from "react"
 import { Dialog } from "src/components/organisms/Dialog"
 import { Vault } from "src/components/pages/tools/Vault"
@@ -6,18 +7,16 @@ import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 interface MessagesVaultDialogProps {
   hasVault: boolean
   setHasVault: Dispatch<SetStateAction<any>>
-  setContent: Dispatch<SetStateAction<any>>
-  content: string[]
+  setContent: (contents: ContentDto[]) => void
 }
 export const MessagesVaultDialog: FC<MessagesVaultDialogProps> = ({
   hasVault,
   setHasVault,
-  setContent,
-  content
+  setContent
 }) => {
-  const [selectedItems, setSelectedItems] = useState<Array<string>>([])
+  const [selectedItems, setSelectedItems] = useState<ContentDto[]>([])
   const pushToMessages = () => {
-    setContent([...content, ...selectedItems])
+    setContent(selectedItems)
     setHasVault(false)
   }
   return (

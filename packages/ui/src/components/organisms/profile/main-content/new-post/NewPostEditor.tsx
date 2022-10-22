@@ -9,6 +9,7 @@ import { NewPostEditorFooter as NewPostEditorFooter } from "src/components/organ
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
 import { ContentService } from "src/helpers/content"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
+import { useMedia } from "src/hooks/useMedia"
 
 import { NewPostPaidSection } from "./NewPostPaidSection"
 
@@ -42,7 +43,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   isExtended = false,
   onClose
 }) => {
-  const [files, setFiles] = useState<File[]>([])
+  const { files, setFiles, addNewMedia, onRemove } = useMedia()
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [selectedPasses, setSelectedPasses] = useState<string[]>([])
@@ -174,7 +175,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               register={register}
               errors={errors}
               files={files}
-              setFiles={setFiles}
+              onRemove={onRemove}
+              addNewMedia={addNewMedia}
             />
           )}
         </div>

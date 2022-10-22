@@ -1,6 +1,7 @@
 import {
   GetMessagesRequestDto,
   GetMessagesResponseDto,
+  GetUserResponseDto,
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
@@ -22,7 +23,7 @@ interface ChannelStreamProps {
   minimumTip?: number | null
   otherUserDisplayName: string | undefined
   otherUserUsername: string
-  user: any
+  user: GetUserResponseDto
 }
 
 export const ChannelStream: FC<ChannelStreamProps> = ({

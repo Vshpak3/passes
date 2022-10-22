@@ -1,7 +1,9 @@
+import { ContentBareDto, ContentDto } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import { memo, Suspense, useState } from "react"
 import { CenterLoader } from "src/components/atoms/CenterLoader"
+import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
   suspense: true,
@@ -11,8 +13,11 @@ const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
 const MessagesPage = () => {
   const router = useRouter()
   const { content } = router.query
-  const [vaultContent, setVaultContent] = useState(
-    JSON.parse((content as string) ?? "[]")
+  const { user } = useUser()
+  const [vaultContent, setVaultContent] = useState<ContentDto[]>(
+    JSON.parse((content as string) ?? "[]").map((bare: ContentBareDto) => {
+      return { ...bare, user: user?.userId ?? "" }
+    })
   )
   return (
     <Suspense fallback={<CenterLoader />}>
