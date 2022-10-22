@@ -29,10 +29,10 @@ export const setSignedCookies = (signedCookies?: any) => {
   Object.entries(signedCookies as any).forEach(([key, value]) => {
     try {
       const cookies = new Cookies()
+
+      cookies.remove(key)
       if (value !== undefined) {
         cookies.set(key, value, { domain })
-      } else {
-        cookies.remove(key)
       }
     } catch (error) {
       console.error(`Error setting cookies key "${key}":`, error)
