@@ -42,9 +42,19 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
         item={item}
       />
     ) : (
-      <SidebarDropdown key={`sidebar-${item.id}`} active={active} item={item} />
+      <>
+        <SidebarDropdown
+          key={`sidebar-${item.id}`}
+          active={active}
+          item={item}
+        />
+        <CreatorToolsItem
+          active={active}
+          openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
+        />
+      </>
     )
-
+    // TOOO: make the dropdown more generic
     return (
       <AuthWrapper
         key={`sidebar-${item.id}`}
@@ -63,12 +73,6 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
           <SidebarHeader />
           <nav className="flex flex-col items-center gap-3 pt-[50px] sidebar-collapse:items-start sidebar-collapse:gap-[0px]">
             {renderSidebarItems}
-            <AuthWrapper creatorOnly={true}>
-              <CreatorToolsItem
-                active={active}
-                openCollapsedAdditionalSidebar={openCollapsedAdditionalSidebar}
-              />
-            </AuthWrapper>
             <AuthWrapper>
               {user?.isCreator ? (
                 <NewPostButton />

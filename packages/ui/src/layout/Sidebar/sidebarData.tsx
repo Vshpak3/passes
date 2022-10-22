@@ -74,18 +74,18 @@ export const navigation: SidebarNavigation[] = [
     creatorOnly: false
   },
   {
+    id: "settings",
+    name: "Settings",
+    href: "/settings",
+    icon: SettingsIcon,
+    creatorOnly: false
+  },
+  {
     id: "tools",
     name: "Creator Tools",
     href: "",
     icon: CreatorToolsIcon,
     creatorOnly: true,
     children: creatorToolsItems
-  },
-  {
-    id: "settings",
-    name: "Settings",
-    href: "/settings",
-    icon: SettingsIcon,
-    creatorOnly: false
   }
 ]

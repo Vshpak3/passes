@@ -183,6 +183,7 @@ export class ContentService {
       }
     } catch (err: any) {
       toast.error("There was an error uploading the file")
+      throw err
     }
 
     // remove signatures from uploaded file

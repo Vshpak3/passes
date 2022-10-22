@@ -1,7 +1,7 @@
 import { AuthApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { JWTUserClaims } from "src/hooks/useUser"
-
+import Cookies from "universal-cookie"
 export const accessTokenKey = "access-token"
 export const refreshTokenKey = "refresh-token"
 
@@ -24,22 +24,16 @@ export const setSignedCookies = (signedCookies?: any) => {
     return
   }
   // set signed cookies if exists
-  Object.keys(signedCookies as any).forEach((key) => {
-    const value = (signedCookies as any)[key]
-    if (typeof window === "undefined") {
-      console.error(
-        `Tried setting localStorage key “${key}” even though environment is not a client`
-      )
-    }
+  Object.entries(signedCookies as any).forEach(([key, value]) => {
     try {
-      if (value === undefined) {
-        window.localStorage.removeItem(key)
+      const cookies = new Cookies()
+      if (value !== undefined) {
+        cookies.set(key, value)
       } else {
-        window.localStorage.setItem(key, JSON.stringify(value))
+        cookies.remove(key)
       }
-      window.dispatchEvent(new Event("local-storage"))
     } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error)
+      console.error(`Error setting cookies key "${key}":`, error)
     }
   })
 }
