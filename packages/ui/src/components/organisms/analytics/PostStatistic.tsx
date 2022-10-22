@@ -1,5 +1,5 @@
 import { PostDto } from "@passes/api-client"
-import { useState } from "react"
+import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { formatText } from "src/helpers/formatters"
@@ -9,7 +9,7 @@ interface PostStatisticProps {
   post: PostDto
 }
 
-export const PostStatistic = ({ post }: PostStatisticProps) => {
+export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
   const [deleted, setDeleted] = useState<boolean>(false)
   const { removePost } = usePost()
 

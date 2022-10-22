@@ -1,4 +1,4 @@
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 interface CaretProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -6,11 +6,11 @@ interface CaretProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-export const Caret = ({
+export const Caret: FC<CaretProps> = ({
   width = 15,
   height = 15,
   ...restOfProps
-}: CaretProps) => (
+}) => (
   <svg
     width={width}
     height={height}

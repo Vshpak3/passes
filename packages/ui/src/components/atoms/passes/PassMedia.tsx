@@ -17,7 +17,7 @@ export const PassMedia: FC<PassMediaProps> = ({
   passHolderId,
   imageType,
   animationType
-}: PassMediaProps) => {
+}) => {
   if (passHolderId) {
     return animationType ? (
       <video autoPlay loop muted>

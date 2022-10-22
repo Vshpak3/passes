@@ -39,10 +39,10 @@ interface VaultAddItemProps {
   onClick: (files: FileList | null) => void
 }
 
-export const VaultDeselectButton = ({
+export const VaultDeselectButton: FC<VaultDeselectButtonProps> = ({
   isVisible,
   deselectAll
-}: VaultDeselectButtonProps) => (
+}) => (
   <div
     className="h-[18px] w-[18px] cursor-pointer items-center justify-center text-[#000000]"
     onClick={deselectAll}
@@ -108,9 +108,7 @@ export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
   )
 }
 
-export const VaultAddButton: FC<VaultAddItemProps> = ({
-  onClick
-}: VaultAddItemProps) => {
+export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const handleSelectContent = () => {
     inputRef.current?.click()

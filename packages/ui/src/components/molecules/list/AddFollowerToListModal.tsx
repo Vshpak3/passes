@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
-import React from "react"
+import React, { FC } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
@@ -10,11 +10,11 @@ interface AddFollowerToListModalProps extends ModalProps {
   onSubmit(listName: string): void
 }
 
-const AddFollowerToListModal = ({
+const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
   onSubmit,
   setOpen,
   ...rest
-}: AddFollowerToListModalProps) => {
+}) => {
   const { results, searchValue, onChangeInput, onSearchFocus, searchRef } =
     useFollowerSearch()
 

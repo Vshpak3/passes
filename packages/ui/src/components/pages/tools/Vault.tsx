@@ -5,7 +5,7 @@ import {
   GetVaultQueryRequestDtoTypeEnum
 } from "@passes/api-client"
 import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"
 
@@ -29,7 +29,7 @@ const checkDifferentTypesSelected = (selectedItems: ContentDto[]) => {
   return typesSelected.length > 1 ? true : false
 }
 
-export const Vault = ({ passSelectedItems }: VaultProps) => {
+export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
   const [selectedItems, setSelectedItems] = useState<Array<ContentDto>>([])
   const [deletedItems, setDeletedItems] = useState<Array<ContentDto>>([])
   const [vaultType, setVaultType] = useState<VaultType>()

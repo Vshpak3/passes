@@ -1,6 +1,6 @@
 import React from "react"
 
-export interface Backer {
+interface Backer {
   name: string
   image: string
   subtitle: string

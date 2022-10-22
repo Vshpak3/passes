@@ -27,7 +27,7 @@ interface NewFanwallPostFormProps {
 export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   createPost,
   creatorId
-}: NewFanwallPostProps) => {
+}) => {
   const { profileInfo } = useProfile()
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)

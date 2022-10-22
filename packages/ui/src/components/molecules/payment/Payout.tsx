@@ -4,13 +4,13 @@ import {
   PayoutDtoPayoutStatusEnum,
   PayoutMethodDtoMethodEnum
 } from "@passes/api-client"
-import React from "react"
+import React, { FC } from "react"
 
 interface PayoutProps {
   payout: PayoutDto
 }
 
-export const Payout = ({ payout }: PayoutProps) => {
+export const Payout: FC<PayoutProps> = ({ payout }) => {
   let payoutInfo: JSX.Element = <></>
   let method = ""
   let status = ""

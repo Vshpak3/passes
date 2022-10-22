@@ -1,6 +1,6 @@
 // Adapted from: https://icons.modulz.app
 
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 interface CrossProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -8,12 +8,12 @@ interface CrossProps extends SVGProps<SVGSVGElement> {
   alternate?: boolean
 }
 
-export const Cross = ({
+export const Cross: FC<CrossProps> = ({
   alternate = false,
   width = 15,
   height = 15,
   ...restOfProps
-}: CrossProps) => (
+}) => (
   <svg
     width={width}
     height={height}

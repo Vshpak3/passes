@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 
-export interface SupportingCreatorTag {
+interface SupportingCreatorTag {
   name: string
   icon: ReactNode
 }

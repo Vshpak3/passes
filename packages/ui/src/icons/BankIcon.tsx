@@ -1,4 +1,4 @@
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 interface BankIconProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -6,11 +6,11 @@ interface BankIconProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://icons.modulz.app
-export const BankIcon = ({
+export const BankIcon: FC<BankIconProps> = ({
   width = 15,
   height = 15,
   ...restOfProps
-}: BankIconProps) => (
+}) => (
   <svg
     width={width}
     height={height}

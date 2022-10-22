@@ -89,6 +89,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
+
   if (size < 2) {
     triggerFetch()
   }

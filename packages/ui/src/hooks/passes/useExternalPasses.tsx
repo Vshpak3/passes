@@ -2,11 +2,13 @@ import { PassApi } from "@passes/api-client"
 import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
 
+const CACHE_KEY_PASSES_EXTERNAL = "/pass/external"
+
 export const useExternalPasses = () => {
   const { user } = useUser()
 
-  const { data: externalPasses = [], isValidating: isLoadingExternalPasses } =
-    useSWR(user ? "/pass/external" : null, async () => {
+  const { data: externalPasses = [], isValidating: loadingExternalPasses } =
+    useSWR(user ? CACHE_KEY_PASSES_EXTERNAL : null, async () => {
       const api = new PassApi()
       return (
         await api.getExternalPasses({
@@ -19,6 +21,6 @@ export const useExternalPasses = () => {
 
   return {
     externalPasses,
-    isLoadingExternalPasses
+    loadingExternalPasses
   }
 }

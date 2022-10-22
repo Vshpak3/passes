@@ -2,7 +2,7 @@ import { Popover } from "@mui/material"
 import classNames from "classnames"
 import Image from "next/image"
 import EditIcon from "public/icons/edit-icon.svg"
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 
 interface UpdateListNamePopperProps {
@@ -10,10 +10,10 @@ interface UpdateListNamePopperProps {
   value: string
 }
 
-const UpdateListNamePopper = ({
+const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
   onSubmit,
   value
-}: UpdateListNamePopperProps) => {
+}) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null)
   const [listName, setListName] = useState<string>(value)
 

@@ -23,7 +23,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   otherUserDisplayName,
   otherUserUsername,
   user
-}: ChannelMessageProps) => {
+}) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
   return (

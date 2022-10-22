@@ -1,4 +1,4 @@
-import { SVGProps } from "react"
+import { FC, SVGProps } from "react"
 
 interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
   width?: number
@@ -6,11 +6,11 @@ interface CheckVerifiedProps extends SVGProps<SVGSVGElement> {
 }
 
 // Adapted from: https://help.twitter.com/en/managing-your-account/about-twitter-verified-accounts
-export const CheckVerified = ({
+export const CheckVerified: FC<CheckVerifiedProps> = ({
   width = 15,
   height = 15,
   ...restOfProps
-}: CheckVerifiedProps) => (
+}) => (
   <svg
     width={width}
     height={height}

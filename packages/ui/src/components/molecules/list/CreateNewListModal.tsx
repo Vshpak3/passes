@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 import { Button } from "src/components/atoms/Button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 
@@ -7,11 +7,11 @@ interface CreateNewListModalProps extends ModalProps {
   onSubmit(listName: string): void
 }
 
-const CreateNewListModal = ({
+const CreateNewListModal: FC<CreateNewListModalProps> = ({
   onSubmit,
   setOpen,
   ...rest
-}: CreateNewListModalProps) => {
+}) => {
   const [listName, setListName] = useState<string>("")
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setListName(e.target.value)

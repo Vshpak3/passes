@@ -1,4 +1,3 @@
-import { CreatorStatsApi } from "@passes/api-client"
 import { NextPage } from "next"
 import { useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
@@ -6,15 +5,13 @@ import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsH
 import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
 import { MessageStatistics } from "src/components/pages/tools/analytics/MessageStatistics"
 import { PostStatistics } from "src/components/pages/tools/analytics/PostStatistics"
+import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
-import useSWR from "swr"
 
 const Analytics: NextPage = () => {
   const [analyticsTab, setAnalyticsTab] = useState("earnings")
-  const { data: userBalance } = useSWR("/creator-stats/balance", async () => {
-    const api = new CreatorStatsApi()
-    return await api.getAvailableBalance()
-  })
+  const { userBalance } = useCreatorBalance()
+
   const handleAnalyticsTabClick = (value: string) => {
     setAnalyticsTab(value)
   }

@@ -25,15 +25,7 @@ export const TimePicker: FC<TimePickerProps> = ({
     setShowDropdown(false)
   })
 
-  const setTime = ({
-    minutes,
-    hours,
-    timeShift
-  }: {
-    minutes?: number
-    hours?: number
-    timeShift?: TimeShiftEnum
-  }) => {
+  const setTime = ({ minutes, hours, timeShift }: Partial<Time>) => {
     _setTime(
       Object.assign(
         { ...time },

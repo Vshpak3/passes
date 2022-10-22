@@ -48,11 +48,7 @@ export const createPassSchema = yup.object({
     )
 })
 
-interface CreatePassProps {
-  passType: string
-}
-
-export const useCreatePass = ({ passType }: CreatePassProps) => {
+export const useCreatePass = (passType: string) => {
   const [files, setFiles] = useState<File[]>([])
   const [fileUploadError, setFileUploadError] = useState<string | null>(null)
   const isLifetimePass = passType === PassDtoTypeEnum.Lifetime

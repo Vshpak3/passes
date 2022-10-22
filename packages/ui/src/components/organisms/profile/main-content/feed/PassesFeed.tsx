@@ -34,9 +34,7 @@ const PASS_DROPDOWN_OPTIONS = [
     label: "Subscription Passes"
   }
 ]
-export const PassesFeed: FC<PassesFeedProps> = ({
-  creatorId
-}: PassesFeedProps) => {
+export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
   const [selectedPassTypes, setSelectedPassTypes] = useState<Array<any>>([])
 
   const handlePassSelect = (newValues: Array<PassDtoTypeEnum>) => {

@@ -1,11 +1,11 @@
 import { ContentDto } from "@passes/api-client"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
-import { ReactNode, useRef, useState } from "react"
+import { FC, ReactNode, useRef, useState } from "react"
 import Slider, { LazyLoadTypes } from "react-slick"
 import { PostContent } from "src/components/molecules/PostContent"
 
-interface SliderProps {
+interface CarouselProps {
   contents: ContentDto[]
   onMediaLoad?: () => () => void
   setPostHandler?: () => void
@@ -13,13 +13,13 @@ interface SliderProps {
   activeIndex?: number
 }
 
-export const Carousel = ({
+export const Carousel: FC<CarouselProps> = ({
   contents,
   onMediaLoad,
   setPostHandler,
   afterChangeHandler,
   activeIndex = 0
-}: SliderProps) => {
+}) => {
   const [activeSlideIndex, setActiveSlideIndex] = useState(activeIndex)
   const sliderSettings = {
     dots: true,

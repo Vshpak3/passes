@@ -2,6 +2,8 @@ import { PostApi } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 
+const CACHE_KEY_POST = "/posts"
+
 export const useSinglePost = (_postId?: string) => {
   const [postId, setPostId] = useState(_postId)
 
@@ -11,8 +13,8 @@ export const useSinglePost = (_postId?: string) => {
   const {
     data: post,
     isValidating: loadingPost,
-    mutate
-  } = useSWR(postId ? ["/posts/", postId] : null, async () => {
+    mutate: mutatePost
+  } = useSWR(postId ? [CACHE_KEY_POST, postId] : null, async () => {
     if (!postId) {
       return
     }
@@ -28,9 +30,9 @@ export const useSinglePost = (_postId?: string) => {
   const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(!!post)
 
   useEffect(() => {
-    mutate()
+    mutatePost()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId])
 
-  return { post, loadingPost, mutate, setPostId, hasInitialFetch }
+  return { post, loadingPost, mutatePost, setPostId, hasInitialFetch }
 }

@@ -78,7 +78,7 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
     getValues,
     trigger,
     isSubmitSuccessful
-  } = useCreatePass({ passType })
+  } = useCreatePass(passType)
   const [massagesValue, setMassagesValue] = useState<string | null>(null)
   const [supplyValue, setSupplyValue] = useState<string | null>(null)
   const [showCreatePassConfirmationModal, setShowCreatePassConfirmationModal] =
