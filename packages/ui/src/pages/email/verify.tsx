@@ -9,6 +9,7 @@ import {
   authStateMachine,
   AuthStates
 } from "src/helpers/authRouter"
+import { queryParam } from "src/helpers/query"
 import { setTokens } from "src/helpers/setTokens"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
@@ -35,7 +36,7 @@ const VerifyEmailPage = () => {
 
   const verifyEmail = async () => {
     try {
-      const id = router.query.id
+      const id = queryParam(router.query.id)
 
       // Needs to match /email/verify?id=${id}
       if (!id) {
@@ -43,7 +44,7 @@ const VerifyEmailPage = () => {
         return
       }
 
-      const verificationToken = Array.isArray(id) ? id[0] : (id as string)
+      const verificationToken = id
 
       const api = new AuthApi()
       const res = await api.verifyUserEmail({

@@ -6,6 +6,7 @@ import {
   AuthStates,
   authStateToRoute
 } from "src/helpers/authRouter"
+import { queryParam } from "src/helpers/query"
 import { setTokens } from "src/helpers/setTokens"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
@@ -20,15 +21,8 @@ const AuthSuccess: FC = () => {
       return
     }
 
-    let { accessToken, refreshToken } = router.query
-
-    accessToken = Array.isArray(accessToken)
-      ? accessToken[0]
-      : (accessToken as string)
-
-    refreshToken = Array.isArray(refreshToken)
-      ? refreshToken[0]
-      : (refreshToken as string)
+    const accessToken = queryParam(router.query.accessToken) as string
+    const refreshToken = queryParam(router.query.refreshToken) as string
 
     const setRes = setTokens(
       { accessToken, refreshToken },

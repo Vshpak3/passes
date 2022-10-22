@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import { Loader } from "src/components/atoms/Loader"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
+import { queryParam } from "src/helpers/query"
 import { useSinglePost } from "src/hooks/profile/useSinglePost"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import { NotFoundPage } from "src/pages/404"
@@ -13,7 +14,7 @@ const PostByUrlPage = () => {
 
   useEffect(() => {
     if (router.query?.postid) {
-      setPostId(router.query.postid as string)
+      setPostId(queryParam(router.query.postid))
     }
   }, [router, setPostId])
 

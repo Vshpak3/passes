@@ -51,8 +51,8 @@ export const PostMedia: FC<PostMediaProps> = ({
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
       {isProcessing ? (
-        <div className="relative mb-[30px] rounded-md border-2 border-passes-purple-100 px-[25px] py-[15px]">
-          Please wait; your content is being processed.
+        <div className="relative mb-[30px] rounded-md border border-passes-purple-100 px-[25px] py-[15px]">
+          Your content is being processed.
         </div>
       ) : (
         <PostMediaContent

@@ -1,7 +1,3 @@
-import { PassDtoTypeEnum } from "@passes/api-client"
-import { useRouter } from "next/router"
-import LimitedEditionImg from "public/icons/limited-edition-pass.svg"
-import SubscriptionImg from "public/icons/subscription-pass.svg"
 import { FC, useState } from "react"
 import {
   CreatePassButton,
@@ -11,56 +7,19 @@ import {
   PassNameInput,
   PassNumberInput
 } from "src/components/atoms/passes/CreatePass"
-import {
-  CreatePassOption,
-  PassDirectMessage,
-  PassFileUpload,
-  PassFreeTrial,
-  PassLifetimeOptions,
-  PassPrice,
-  PassRenewal,
-  PassSupply
-} from "src/components/molecules/pass/CreatePass"
+import { PassDirectMessage } from "src/components/molecules/pass/create/PassDirectMessage"
+import { PassFileUpload } from "src/components/molecules/pass/create/PassFile"
+import { PassFreeTrial } from "src/components/molecules/pass/create/PassFreeTrial"
+import { PassLifetimeOptions } from "src/components/molecules/pass/create/PassLifetimeOptions"
+import { PassPrice } from "src/components/molecules/pass/create/PassPrice"
+import { PassRenewal } from "src/components/molecules/pass/create/PassRenewal"
+import { PassSupply } from "src/components/molecules/pass/create/PassSupply"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { createPassSchema, useCreatePass } from "src/hooks/passes/useCreatePass"
 
 interface CreatePassFormProps {
   passType: string
-}
-
-const CREATE_PASS_URL = "/tools/manage-passes/create"
-
-export const SelectPassType = ({ initialCreation = false }) => {
-  const router = useRouter()
-  const createPassTitle = `Create a Pass${
-    initialCreation ? " to get started" : ""
-  }`
-  const redirectToCreatePass = (type: string) => () =>
-    router.push(`${CREATE_PASS_URL}?passType=${type}`)
-
-  return (
-    <div className="mx-auto -mt-[160px] grid w-full max-w-[1000px] grid-cols-10 justify-center gap-5 px-4 lg:px-0">
-      <CreatePassHeader title={createPassTitle} />
-      <CreatePassOption
-        colStyle="lg:col-[3_/_span_3]"
-        icon={<SubscriptionImg />}
-        title="Subscription"
-        subtitle="Subscription Passes are unlimited in quantity and can be paid for
-            by fans on a recurring basis before they expire."
-        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Subscription)}
-      />
-      <CreatePassOption
-        colStyle="lg:col-[6_/_span_3]"
-        icon={<LimitedEditionImg />}
-        title="Lifetime Passes"
-        subtitle="Lifetime Passes are limited in quantity which means once they
-            sell out they can only be bought on the secondary market. Fans
-            can make a one-time payment to buy these."
-        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Lifetime)}
-      />
-    </div>
-  )
 }
 
 export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {

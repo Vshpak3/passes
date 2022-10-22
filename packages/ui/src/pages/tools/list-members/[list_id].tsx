@@ -2,6 +2,7 @@ import { NextPage } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+import { queryParam } from "src/helpers/query"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ListDetail = dynamic(
@@ -14,10 +15,11 @@ const FanDetailLists: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (router && router.query) {
-      setListId(router.query.list_id as string)
+    if (router.query?.list_id) {
+      setListId(queryParam(router.query.list_id))
     }
   }, [router])
+
   return (
     <>
       {listId !== undefined && listId.length > 0 && (
