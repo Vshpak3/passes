@@ -17,9 +17,8 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
 }) => {
   const { profileUserId } = useProfile()
 
-  const { results, setSearchValue, searchValue } = usePassesSearch(
-    profileUserId || ""
-  )
+  const { results, setSearchValue, searchValue } =
+    usePassesSearch(profileUserId)
 
   const searchOptions = useMemo(
     () =>
