@@ -381,7 +381,7 @@ export class PostService {
       notification: PostNotificationEnum.PAYING,
       recieverId: userId,
     }
-    await this.redisService.publish('message', JSON.stringify(notification))
+    await this.redisService.publish('post', JSON.stringify(notification))
   }
 
   async failPostPurchase(userId: string, postId: string, payinId: string) {
@@ -454,7 +454,7 @@ export class PostService {
       notification: PostNotificationEnum.PAID,
       recieverId: userId,
     }
-    await this.redisService.publish('message', JSON.stringify(notification))
+    await this.redisService.publish('post', JSON.stringify(notification))
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
@@ -825,7 +825,7 @@ export class PostService {
         recieverId: post.user_id,
         contents,
       }
-      await this.redisService.publish('message', JSON.stringify(notification))
+      await this.redisService.publish('post', JSON.stringify(notification))
     }
 
     return isProcessed

@@ -6,6 +6,7 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import { FC, useEffect, useRef, useState } from "react"
+import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 import {
   ComponentArg,
@@ -96,8 +97,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 ...pendingMessages
               ])
               break
-            case "paying":
             case "failed_payment":
+              toast.error("Payment for post failed")
+            // eslint-disable-next-line no-fallthrough
+            case "paying":
             case "paid":
               setMessages((messages) =>
                 messages.map((message) => {

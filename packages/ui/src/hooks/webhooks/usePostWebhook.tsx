@@ -1,5 +1,6 @@
 import { PostApi, PostDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 import { sleep } from "src/helpers/sleep"
 import { useUser } from "src/hooks/useUser"
@@ -49,6 +50,7 @@ export const usePostWebhook = () => {
       socket.on("post", async (data) => {
         let post = data as PostDto & { notification: string }
         // eslint-disable-next-line sonarjs/no-small-switch
+        console.log(post)
         switch (post.notification) {
           case "paid":
             await sleep("1 second")
@@ -58,6 +60,9 @@ export const usePostWebhook = () => {
               })),
               ...post
             }
+            break
+          case "failed_payment":
+            toast.error("Payment for post failed")
             break
         }
         setPosts((posts) => {
