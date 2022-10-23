@@ -12,7 +12,7 @@ import { MessageNotificationDto } from './dto/message-notification.dto'
 export class MessagesGateway extends GatewayBase {
   constructor(
     private readonly configService: ConfigService,
-    @InjectRedis('subscriber') private readonly redisService: Redis,
+    @InjectRedis('message_subscriber') private readonly redisService: Redis,
   ) {
     super()
     this.secret = configService.get<string>('jwt.authSecret') as string

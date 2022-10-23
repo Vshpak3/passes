@@ -12,7 +12,7 @@ import { PostNotificationDto } from './dto/post-notification.dto'
 export class PostGateway extends GatewayBase {
   constructor(
     private readonly configService: ConfigService,
-    @InjectRedis('subscriber') private readonly redisService: Redis,
+    @InjectRedis('post_publisher') private readonly redisService: Redis,
   ) {
     super()
     this.secret = configService.get<string>('jwt.authSecret') as string
@@ -25,10 +25,13 @@ export class PostGateway extends GatewayBase {
       this.redisService.on
     ) {
       await this.redisService.subscribe('post')
-      await this.redisService.on('post', (_event: string, dataStr: string) => {
-        const post: PostNotificationDto = JSON.parse(dataStr)
-        this.send(post.recieverId, 'post', post)
-      })
+      await this.redisService.on(
+        'message',
+        (_channel: string, dataStr: string) => {
+          const post: PostNotificationDto = JSON.parse(dataStr)
+          this.send(post.recieverId, 'post', post)
+        },
+      )
     }
   }
 }

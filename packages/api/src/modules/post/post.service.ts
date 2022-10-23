@@ -89,7 +89,7 @@ export class PostService {
     private readonly passService: PassService,
     private readonly contentService: ContentService,
 
-    @InjectRedis('publisher') private readonly redisService: Redis,
+    @InjectRedis('post_subscriber') private readonly redisService: Redis,
   ) {}
 
   async validateCreatePost(

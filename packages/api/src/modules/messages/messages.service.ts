@@ -104,7 +104,7 @@ export class MessagesService {
     private readonly passService: PassService,
     private readonly listService: ListService,
     private readonly contentService: ContentService,
-    @InjectRedis('publisher') private readonly redisService: Redis,
+    @InjectRedis('message_publisher') private readonly redisService: Redis,
   ) {
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
   }
