@@ -20,7 +20,7 @@ export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
         <span className="text-[#ffff]/90">
           Want to update your default payment method or add a new one?
         </span>
-        <Link href="/settings/wallet">Settings</Link>
+        <Link href="/settings/payment">Settings</Link>
       </div>
     </>
   )
