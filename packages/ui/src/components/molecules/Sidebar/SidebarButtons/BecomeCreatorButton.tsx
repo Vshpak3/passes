@@ -5,24 +5,32 @@ import { Button } from "src/components/atoms/Button"
 
 interface BecomeCreatorButtonProps {
   isMobile?: boolean
+  close?: () => void
 }
 
 export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
-  isMobile
+  isMobile,
+  close
 }) => {
   const router = useRouter()
-
+  const onClick = () => {
+    if (close) {
+      close()
+    }
+    router.push("/creator-flow")
+  }
   return (
     <>
       <div className="flex items-center justify-center sidebar-collapse:hidden">
-        <button
-          className={`flex h-12 w-12 items-center justify-center rounded-[50%] bg-passes-secondary-color ${
+        <Button
+          className={`flex h-12 w-12 items-center justify-center rounded-[50%] ${
             isMobile ? "hidden" : "sidebar-collapse:hidden"
           }`}
-          onClick={() => router.push("/creator-flow")}
+          onClick={onClick}
+          variant="pink"
         >
           <PlusSign className="h-4 w-4 " />
-        </button>
+        </Button>
       </div>
       <div
         className={`${
@@ -30,7 +38,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
         } sidebar-collapse:flex sidebar-collapse:items-center sidebar-collapse:justify-center sidebar-collapse:self-center`}
       >
         <Button
-          onClick={() => router.push("/creator-flow")}
+          onClick={onClick}
           className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
           variant="pink"
         >
