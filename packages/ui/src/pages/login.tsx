@@ -22,7 +22,6 @@ import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
 import { setTokens } from "src/helpers/setTokens"
-import { setSignedCookies } from "src/helpers/token"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
@@ -64,7 +63,6 @@ const LoginPage: FC = () => {
       localUserLoginRequestDto: { email, password }
     })
     const setRes = setTokens(res, setAccessToken, setRefreshToken)
-    setSignedCookies(res.signedCookies)
     if (!setRes) {
       return
     }

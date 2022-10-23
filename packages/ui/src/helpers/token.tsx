@@ -1,7 +1,6 @@
 import { AuthApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { JWTUserClaims } from "src/hooks/useUser"
-import Cookies from "universal-cookie"
 export const accessTokenKey = "access-token"
 export const refreshTokenKey = "refresh-token"
 
@@ -19,27 +18,6 @@ export const tokenStillValid = (
   return token.exp - Date.now() / 1000 > timeRemaining
 }
 
-export const setSignedCookies = (signedCookies?: any) => {
-  if (!signedCookies) {
-    return
-  }
-  // set signed cookies if exists
-  const cdn = process.env.NEXT_PUBLIC_CDN_URL?.split(".") ?? []
-  const domain = `.${cdn[1]}.${cdn[2]}`
-  Object.entries(signedCookies as any).forEach(([key, value]) => {
-    try {
-      const cookies = new Cookies()
-
-      cookies.remove(key)
-      if (value !== undefined) {
-        cookies.set(key, value, { domain })
-      }
-    } catch (error) {
-      console.error(`Error setting cookies key "${key}":`, error)
-    }
-  })
-}
-
 const _refreshAccessToken = async (
   refreshToken: string
 ): Promise<string | undefined> => {
@@ -48,8 +26,6 @@ const _refreshAccessToken = async (
     const res = await authApi.refreshAccessToken({
       refreshAuthTokenRequestDto: { refreshToken: JSON.parse(refreshToken) }
     })
-
-    setSignedCookies(res.signedCookies)
 
     if (!res.accessToken) {
       console.error("Did not receive an access token")
