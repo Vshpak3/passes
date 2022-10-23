@@ -28,7 +28,6 @@ interface PostProps {
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
-  isNewPost?: boolean
   pinnedPostCount?: number
 }
 
@@ -37,7 +36,6 @@ const PostUnmemo: FC<PostProps> = ({
   inHomeFeed = false,
   postByUrl = false,
   isPinned = false,
-  isNewPost = false,
   pinnedPostCount = 0
 }) => {
   const router = useRouter()
@@ -137,7 +135,6 @@ const PostUnmemo: FC<PostProps> = ({
                   <PostMedia
                     postId={postId}
                     contents={contents}
-                    isNewPost={isNewPost}
                     isProcessing={!contentProcessed}
                   />
                 ) : (

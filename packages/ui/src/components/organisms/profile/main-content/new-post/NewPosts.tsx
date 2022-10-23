@@ -84,7 +84,6 @@ export const NewPosts: FC<NewPostsProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
-          isNewPost={true}
         />
       ))}
     </>
