@@ -47,29 +47,21 @@ export const usePostWebhook = () => {
   useEffect(() => {
     if (socket) {
       socket.on("post", async (data) => {
-        const newPost = data as PostDto & { notification: string }
-        const newPosts: Record<string, Partial<PostDto>> = {}
-        switch (newPost.notification) {
-          case "paying":
-          case "failed_payment":
-            if (!newPosts[newPost.postId]) {
-              newPosts[newPost.postId] = {}
-            }
-            newPosts[newPost.postId] = {
-              paying: newPost.notification === "paying"
-            }
-            break
+        let post = data as PostDto & { notification: string }
+        // eslint-disable-next-line sonarjs/no-small-switch
+        switch (post.notification) {
           case "paid":
             await sleep("1 second")
-            newPosts[newPost.postId] = await api.findPost({
-              postId: newPost.postId
-            })
+            post = {
+              ...(await api.findPost({
+                postId: post.postId
+              })),
+              ...post
+            }
             break
-          case "processed":
-            newPosts[newPost.postId] = { contentProcessed: true }
         }
         setPosts((posts) => {
-          return { ...posts, ...newPosts }
+          return { ...posts, ...{ [post.postId]: post } }
         })
       })
       return () => {

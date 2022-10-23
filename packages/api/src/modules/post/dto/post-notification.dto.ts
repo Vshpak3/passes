@@ -1,10 +1,12 @@
+import { PartialType } from '@nestjs/swagger'
+
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
 import { PostEntity } from '../entities/post.entity'
 import { PostNotificationEnum } from '../enum/post.notification.enum'
 import { PostDto } from './post.dto'
 
-export class PostNotificationDto extends PostDto {
+export class PostNotificationDto extends PartialType(PostDto) {
   @DtoProperty({ type: 'uuid' })
   recieverId: string
 

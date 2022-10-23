@@ -375,18 +375,13 @@ export class PostService {
       })
       .onConflict(['post_id', 'user_id'])
       .merge(['payin_id', 'paying'])
-    await this.redisService.publish(
-      'message',
-      JSON.stringify(
-        new PostNotificationDto(
-          undefined,
-          false,
-          [],
-          userId,
-          PostNotificationEnum.PAYING,
-        ),
-      ),
-    )
+    const notification: PostNotificationDto = {
+      postId,
+      paying: true,
+      notification: PostNotificationEnum.PAYING,
+      recieverId: userId,
+    }
+    await this.redisService.publish('message', JSON.stringify(notification))
   }
 
   async failPostPurchase(userId: string, postId: string, payinId: string) {
@@ -400,18 +395,13 @@ export class PostService {
         post_id: postId,
       })
     if (updated) {
-      await this.redisService.publish(
-        'post',
-        JSON.stringify(
-          new PostNotificationDto(
-            undefined,
-            false,
-            [],
-            userId,
-            PostNotificationEnum.FAILED_PAYMENT,
-          ),
-        ),
-      )
+      const notification: PostNotificationDto = {
+        postId,
+        paying: false,
+        notification: PostNotificationEnum.FAILED_PAYMENT,
+        recieverId: userId,
+      }
+      await this.redisService.publish('post', JSON.stringify(notification))
     }
   }
 
@@ -458,18 +448,13 @@ export class PostService {
         }),
       )
     })
-    await this.redisService.publish(
-      'message',
-      JSON.stringify(
-        new PostNotificationDto(
-          undefined,
-          false,
-          [],
-          userId,
-          PostNotificationEnum.PAID,
-        ),
-      ),
-    )
+    const notification: PostNotificationDto = {
+      postId,
+      paying: false,
+      notification: PostNotificationEnum.PAID,
+      recieverId: userId,
+    }
+    await this.redisService.publish('message', JSON.stringify(notification))
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {
@@ -833,18 +818,14 @@ export class PostService {
         0,
         true,
       )
-      await this.redisService.publish(
-        'message',
-        JSON.stringify(
-          new PostNotificationDto(
-            undefined,
-            true,
-            contents,
-            post.user_id,
-            PostNotificationEnum.PROCESSED,
-          ),
-        ),
-      )
+      const notification: PostNotificationDto = {
+        postId,
+        paying: false,
+        notification: PostNotificationEnum.PROCESSED,
+        recieverId: post.user_id,
+        contents,
+      }
+      await this.redisService.publish('message', JSON.stringify(notification))
     }
 
     return isProcessed

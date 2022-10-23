@@ -58,6 +58,7 @@ export const usePay = (
               payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
             ) {
               setWaiting(undefined)
+              toast.success("Your card payment was successful!")
             } else if (
               payin.payinStatus !== PayinDtoPayinStatusEnum.Pending &&
               payin.payinStatus !== PayinDtoPayinStatusEnum.Created &&
@@ -99,6 +100,10 @@ export const usePay = (
       })
       if (response.actionRequired) {
         setWaiting(new Date())
+      } else {
+        toast.success(
+          "We have recieved your card payment. Please wait as we process it!"
+        )
       }
     } catch (error: any) {
       await cancelPayinCallback()
@@ -132,6 +137,7 @@ export const usePay = (
       provider.off("accountChanged")
       provider.off("disconnect")
     }
+    toast.info("Please wait as we confirm the transaction.")
   }
 
   const handleMetamaskCircleUSDC = async (
@@ -153,6 +159,7 @@ export const usePay = (
       registerResponse.amount * 10 ** 6,
       cancelPayinCallback
     )
+    toast.info("Please wait as we confirm the transaction.")
   }
 
   const handleMetamaskCircleEth = async (
@@ -179,6 +186,7 @@ export const usePay = (
       registerResponse.amountEth,
       cancelPayinCallback
     )
+    toast.info("Please wait as we confirm the transaction.")
   }
 
   const submit = async () => {
