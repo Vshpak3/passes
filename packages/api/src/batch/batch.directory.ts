@@ -25,5 +25,5 @@ export const TaskDirectory = {
   update_subscriptions_task: UpdateSubscriptionsTask,
   fail_stale_payins_task: FailStalePayinsTask,
   scheduled_events_task: ScheduledEventsTask,
-  refresh_content: RefreshContentTask,
+  refresh_content_task: RefreshContentTask,
 }
