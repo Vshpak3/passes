@@ -1,6 +1,5 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
-import Image from "next/image"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
 import { FC } from "react"
 import { Cross } from "src/icons/CrossIcon"
