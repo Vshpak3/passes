@@ -14,42 +14,37 @@ export const PostContent: FC<PostContentProps> = forwardRef(
   ({ content, onMediaLoad }, ref: ForwardedRef<HTMLImageElement>) => {
     const [openModal, setOpenModal] = useState(false)
 
-    let contentElement: JSX.Element | undefined
-
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
-        contentElement = (
-          <PostImage content={content} ref={ref} onMediaLoad={onMediaLoad} />
+        return (
+          <>
+            <button className="w-full" onClick={() => setOpenModal(true)}>
+              <PostImage
+                content={content}
+                ref={ref}
+                onMediaLoad={onMediaLoad}
+              />
+            </button>
+            {openModal && (
+              <MediaModal
+                isOpen={openModal}
+                setOpen={setOpenModal}
+                file={{ content }}
+                modalContainerClassname="p-0"
+                childrenClassname="p-0"
+              />
+            )}
+          </>
         )
-        break
       case ContentDtoContentTypeEnum.Video:
-        contentElement = (
+        return (
           <PostVideo
             key={content.contentId}
             videoUrl={ContentService.userContentMediaPath(content)}
           />
         )
-        break
     }
-
-    return contentElement ? (
-      <>
-        <button className="w-full" onClick={() => setOpenModal(true)}>
-          {contentElement}
-        </button>
-        {openModal && (
-          <MediaModal
-            isOpen={openModal}
-            setOpen={setOpenModal}
-            file={{ content }}
-            modalContainerClassname="p-0"
-            childrenClassname="p-0"
-          />
-        )}
-      </>
-    ) : (
-      <></>
-    )
+    return <></>
   }
 )
 
