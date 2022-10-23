@@ -50,7 +50,6 @@ export const usePostWebhook = () => {
       socket.on("post", async (data) => {
         let post = data as PostDto & { notification: string }
         // eslint-disable-next-line sonarjs/no-small-switch
-        console.log(post)
         switch (post.notification) {
           case "paid":
             await sleep("1 second")

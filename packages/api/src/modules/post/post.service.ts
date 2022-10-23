@@ -132,11 +132,13 @@ export class PostService {
         await trx<ContentEntity>(ContentEntity.table)
           .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
-        await trx<PostContentEntity>(PostContentEntity.table).insert(
-          contents.map((content) => {
-            return { post_id: postId, content_id: content.contentId }
-          }),
-        )
+        if (contents.length) {
+          await trx<PostContentEntity>(PostContentEntity.table).insert(
+            contents.map((content) => {
+              return { post_id: postId, content_id: content.contentId }
+            }),
+          )
+        }
 
         // TODO: schedule access add
         const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)

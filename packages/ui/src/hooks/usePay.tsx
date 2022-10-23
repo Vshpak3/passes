@@ -228,7 +228,10 @@ export const usePay = (
         callback()
       }
     } catch (error: any) {
-      errorMessage(error, true)
+      errorMessage(
+        error + "\n please check that you have sufficient funding.",
+        true
+      )
     } finally {
       setSubmitting(false)
       setLoading(false)
