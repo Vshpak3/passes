@@ -47,8 +47,8 @@ export const MediaModal: FC<ModalProps> = ({
           src={ContentService.userContentMediaPath(file.content)}
           preview={true}
           type={file.content.contentType}
-          contentWidth={109}
-          contentHeight={83}
+          contentWidth={min}
+          contentHeight={min}
           className="m-0 rounded-[6px] p-0"
         />
       )}

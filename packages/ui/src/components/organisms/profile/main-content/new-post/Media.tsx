@@ -101,14 +101,13 @@ export const Media: FC<MediaProp> = ({
     ),
     image: (
       <>
-        <Image
+        <img
           className={className}
           alt=""
-          layout="fixed"
           width={`${contentWidth}px`}
           height={`${contentHeight}px`}
           src={src}
-          objectFit={objectFit}
+          style={{ objectFit }}
         />
         {!preview && (
           <div
