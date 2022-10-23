@@ -32,7 +32,7 @@ export const useSearch = <T,>(
         setResults([])
       }
     }, debounceDelay),
-    [debounceDelay, fetcher]
+    [debounceDelay]
   )
 
   useEffect(() => {
