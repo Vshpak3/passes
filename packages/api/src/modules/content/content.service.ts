@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import ms from 'ms'
 import * as uuid from 'uuid'
 
 import {
@@ -115,6 +116,38 @@ export class ContentService {
     //   .whereIn('id', contentIds)
     //   .select('processed')
     // return content.every((c) => c.processed)
+  }
+
+  async checkProcessed(): Promise<void> {
+    const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
+      .where({ processed: false, failed: false })
+      .select('*')
+    const checks = await Promise.all(
+      contents.map(async (content) => {
+        return await this.s3contentService.doesObjectExist(
+          `media/${content.user_id}/${content.id}.${getContentTypeFormat(
+            content.content_type,
+          )}`,
+        )
+      }),
+    )
+    const now = Date.now()
+    const successfulIds = contents
+      .filter((_, ind) => checks[ind])
+      .map((content) => content.id)
+    await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .whereIn('id', successfulIds)
+      .update('processed', true)
+    const failedIds = contents
+      .filter(
+        (content, ind) =>
+          !checks[ind] && content.created_at.valueOf() + ms('20 minutes') < now,
+      )
+      .map((content) => content.id)
+    await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .whereIn('id', failedIds)
+      .update('failed', true)
+    return await this.dbReader()
   }
 
   async findContent(contentId: string): Promise<GetContentResponseDto> {

@@ -10,6 +10,7 @@ if (process.env.NEXT_PUBLIC_API_BASE_URL === undefined) {
 // Create custom passes config
 export const passesConfig: ConfigurationParameters = {
     basePath: process.env.NEXT_PUBLIC_API_BASE_URL,
+    credentials: "include"
 }
 
 export interface ConfigurationParameters {

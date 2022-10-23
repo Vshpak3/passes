@@ -61,6 +61,18 @@ export interface ContentDto {
      * @memberof ContentDto
      */
     inMessage?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ContentDto
+     */
+    processed?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ContentDto
+     */
+    failed?: boolean;
 }
 
 
@@ -105,6 +117,8 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'inPost': !exists(json, 'inPost') ? undefined : json['inPost'],
         'inMessage': !exists(json, 'inMessage') ? undefined : json['inMessage'],
+        'processed': !exists(json, 'processed') ? undefined : json['processed'],
+        'failed': !exists(json, 'failed') ? undefined : json['failed'],
     };
 }
 
@@ -124,6 +138,8 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'inPost': value.inPost,
         'inMessage': value.inMessage,
+        'processed': value.processed,
+        'failed': value.failed,
     };
 }
 

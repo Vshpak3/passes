@@ -58,6 +58,7 @@ import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
+import { PostContentEntity } from './entities/post-content.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
@@ -131,6 +132,11 @@ export class PostService {
         await trx<ContentEntity>(ContentEntity.table)
           .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
+        await trx<PostContentEntity>(PostContentEntity.table).insert(
+          contents.map((content) => {
+            return { post_id: postId, content_id: content.contentId }
+          }),
+        )
 
         // TODO: schedule access add
         const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)

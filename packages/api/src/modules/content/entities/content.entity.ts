@@ -25,4 +25,7 @@ export class ContentEntity extends BaseEntity {
 
   @Property({ default: false })
   processed: boolean
+
+  @Property({ default: false })
+  failed: boolean
 }

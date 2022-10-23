@@ -24,6 +24,12 @@ export class ContentDto {
   @DtoProperty({ type: 'boolean', optional: true })
   inMessage?: boolean
 
+  @DtoProperty({ type: 'boolean', optional: true })
+  processed?: boolean
+
+  @DtoProperty({ type: 'boolean', optional: true })
+  failed?: boolean
+
   constructor(content: ContentEntity, signedUrl?: string) {
     if (content) {
       this.contentId = content.id
@@ -33,6 +39,8 @@ export class ContentDto {
       this.createdAt = content.created_at
       this.inPost = content.in_post
       this.inMessage = content.in_message
+      this.processed = content.processed
+      this.failed = content.failed
     }
   }
 }
