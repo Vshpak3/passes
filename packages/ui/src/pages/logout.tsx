@@ -17,9 +17,9 @@ const Logout = () => {
   const { logout } = useUser()
 
   useEffect(() => {
-    deleteAllCookies()
     logout()
 
+    deleteAllCookies()
     safePush("/login")
   }, [safePush, logout])
 
