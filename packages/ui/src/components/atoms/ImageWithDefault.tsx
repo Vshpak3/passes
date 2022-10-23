@@ -26,8 +26,8 @@ export const ImageWithDefault: FC<ImageProps> = ({
           currentTarget.onerror = null
           // setHasErrored(true)
         }}
-        width={200}
-        height={200}
+        width={300}
+        height={300}
         style={{ objectFit: "cover" }}
       />
       {/* ) : defaultColor ? (

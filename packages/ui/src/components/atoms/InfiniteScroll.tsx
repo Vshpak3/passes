@@ -111,7 +111,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     <InfiniteScroll
       dataLength={flattenedData.length}
       className={"w-full " + classes ?? ""}
-      style={{ width: "100%", overflow: "hidden", ...style }}
+      style={{ width: "100%", ...style }}
       next={() => triggerFetch(size + 1)}
       hasMore={!data || !!data[data.length - 1].lastId}
       loader={loadingElement}

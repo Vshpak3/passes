@@ -12,7 +12,6 @@ interface VaultMediaItemProps {
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
   handleClickOnItem: (item: ContentDto) => void
-  // index?: number
 }
 
 export const VaultMediaItem: FC<VaultMediaItemProps> = ({
@@ -22,7 +21,6 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   isVideoSelected,
   isMaxFileCountSelected,
   handleClickOnItem
-  // index
 }) => {
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
@@ -53,17 +51,10 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   const opacityStyle =
     selectedItems.length > 0 && !isSelected ? "opacity-50" : "opacity-100"
   return (
-    <div
-      className={classNames(
-        // index && index % 3 === 1 && "lg:pt-[20px]",
-        // index && index === 1 && "lg:pt-[0px]",
-        "group"
-      )}
-    >
+    <div className={classNames("group mb-[20px]")}>
       <div
         className={classNames(
           opacityStyle,
-          "lg:pb-[20px]",
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
@@ -75,7 +66,6 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         <ImageWithDefault // All content types have an image thumbnail
           src={ContentService.userContentThumbnailPath(content)}
           defaultColor="black/50"
-          className="h-[234px] w-[307px] rounded-[15px] object-cover"
         />
         {/* </div> */}
         <div className="flex justify-end p-[10px]">
