@@ -17,6 +17,11 @@ const ManagePasses = () => {
           </Link>
         </div>
       </div>
+      <div className="flex items-center justify-between px-[47px] py-[45px]">
+        <div className="text-xl">
+          This page is for dev and staging. Do not review.
+        </div>
+      </div>
     </div>
   )
 }
