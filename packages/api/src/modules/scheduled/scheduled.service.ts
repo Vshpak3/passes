@@ -136,9 +136,8 @@ export class ScheduledService {
         ScheduledEventEntity.table,
       )
         .update('processor', processor)
-        .whereNull('processor')
-        .whereNull('deleted_at')
-        .where('processed', false)
+        .where({ processor: null, deleted_at: null, processed: false })
+        .andWhere('scheduled_at', '<', new Date())
         .limit(1)
 
       if (updated) {
