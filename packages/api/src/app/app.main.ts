@@ -5,6 +5,7 @@ import {
   INestApplicationContext,
   ValidationPipe,
 } from '@nestjs/common'
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface'
 import { NestFactory } from '@nestjs/core'
 import { IoAdapter } from '@nestjs/platform-socket.io'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
@@ -55,15 +56,20 @@ export class App {
       }),
     )
 
-    const corsConfig = {
+    const corsConfig: CorsOptions = {
       origin: '*',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,
+      credentials: true,
     }
 
     if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'stage') {
-      corsConfig.origin = process.env.CLIENT_URL ?? ''
+      corsConfig.origin = new RegExp(
+        `(https?://(?:.+\\.)?${(
+          process.env.CLOUDFRONT_COOKIE_DOMAIN ?? ''
+        ).replace('.', '\\.')}(?::\\d{1,5})?)`,
+      )
     }
 
     this.app.enableCors(corsConfig)
