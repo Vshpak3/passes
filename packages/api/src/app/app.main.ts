@@ -57,19 +57,15 @@ export class App {
     )
 
     const corsConfig: CorsOptions = {
-      origin: '*',
+      origin: [
+        process.env.CLIENT_URL ?? '',
+        process.env.CLOUDFRONT_COOKIE_DOMAIN ?? '',
+        `.${process.env.CLOUDFRONT_COOKIE_DOMAIN}` ?? '',
+      ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       preflightContinue: false,
       optionsSuccessStatus: 204,
       credentials: true,
-    }
-
-    if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'stage') {
-      corsConfig.origin = [
-        process.env.CLIENT_URL ?? '',
-        process.env.CLOUDFRONT_COOKIE_DOMAIN ?? '',
-        `.${process.env.CLOUDFRONT_COOKIE_DOMAIN}` ?? '',
-      ]
     }
 
     this.app.enableCors(corsConfig)
