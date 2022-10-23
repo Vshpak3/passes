@@ -11,6 +11,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
+import { MediaModal } from "src/components/organisms/MediaModal"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
 import { VaultMediaModal } from "./VaultMediaModal"
@@ -46,10 +47,10 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
 
   return (
     <div className="max-h-[65vh] min-w-fit justify-center">
-      <VaultMediaModal
-        content={content}
-        isViewMediaModal={isViewMediaModal}
-        setIsViewMediaModal={setIsViewMediaModal}
+      <MediaModal
+        file={{ content }}
+        isOpen={isViewMediaModal}
+        setOpen={setIsViewMediaModal}
       />
 
       <div className="">

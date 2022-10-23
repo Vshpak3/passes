@@ -63,21 +63,21 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
       <div
         className={classNames(
           opacityStyle,
-          index && index === 1 && "lg:pb-[50px]",
+          // index && index === 1 && "lg:pb-[50px]",
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0 pb-[30px]"
+          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0" // pb-[30px]"
         )}
         onClick={handleClick}
       >
-        <div className="mx-[30px]">
-          <ImageWithDefault // All content types have an image thumbnail
-            src={ContentService.userContentThumbnailPath(content)}
-            defaultColor="black/50"
-            className="h-[234px] w-[307px] rounded-[15px] object-cover"
-          />
-        </div>
+        {/* <div className="mx-[30px]"> */}
+        <ImageWithDefault // All content types have an image thumbnail
+          src={ContentService.userContentThumbnailPath(content)}
+          defaultColor="black/50"
+          className="h-[234px] w-[307px] rounded-[15px] object-cover"
+        />
+        {/* </div> */}
         <div className="flex justify-end p-[10px]">
           <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
             <div
