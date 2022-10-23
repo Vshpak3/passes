@@ -65,11 +65,11 @@ export class App {
     }
 
     if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'stage') {
-      corsConfig.origin = new RegExp(
-        `(https?://(?:.+\\.)?${(
-          process.env.CLOUDFRONT_COOKIE_DOMAIN ?? ''
-        ).replace('.', '\\.')}(?::\\d{1,5})?)`,
-      )
+      corsConfig.origin = [
+        process.env.CLIENT_URL ?? '',
+        process.env.CLOUDFRONT_COOKIE_DOMAIN ?? '',
+        `.${process.env.CLOUDFRONT_COOKIE_DOMAIN}` ?? '',
+      ]
     }
 
     this.app.enableCors(corsConfig)

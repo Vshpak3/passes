@@ -61,7 +61,7 @@ export const SidebarMobile: FC<SidebarDefaultProps> = ({
       >
         {renderSidebarItems}
         <AuthWrapper>
-          {isOver18(user) ? (
+          {!user?.isCreator && isOver18(user) ? (
             <BecomeCreatorButton
               isMobile
               close={() => {
