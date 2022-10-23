@@ -13,6 +13,10 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/FreeMessagesLeftContainer"
+import {
+  MAX_RECONNECT_ATTEMPTS,
+  TIME_BETWEEN_RECONNECTS
+} from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
 
 import { ChannelMessage } from "./ChannelMessage"
@@ -45,6 +49,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const [socket, setSocket] = useState<Socket>()
 
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
+  const [attempts, setAttempts] = useState<number>(0)
   useEffect(() => {
     setSocket(
       accessToken && accessToken.length
@@ -63,6 +68,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     if (socket) {
       socket.on("connect", () => {
         setIsConnected(true)
+        setAttempts(0)
       })
       socket.on("disconnect", () => {
         setIsConnected(false)
@@ -76,6 +82,15 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       }
     }
   }, [socket])
+  useEffect(() => {
+    if (!isConnected && attempts < MAX_RECONNECT_ATTEMPTS) {
+      const interval = setTimeout(async () => {
+        socket?.connect()
+        setAttempts(attempts + 1)
+      }, TIME_BETWEEN_RECONNECTS)
+      return () => clearInterval(interval)
+    }
+  }, [isConnected, attempts, socket])
   useEffect(() => {
     if (socket) {
       socket.on("message", (data) => {
