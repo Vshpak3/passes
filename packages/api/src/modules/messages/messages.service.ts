@@ -453,8 +453,23 @@ export class MessagesService {
     userId: string,
     sendMessageDto: SendMessageRequestDto,
   ) {
-    const { text, contentIds, channelId, tipAmount, price, previewIndex } =
-      sendMessageDto
+    const {
+      text,
+      contentIds,
+      channelId,
+      tipAmount,
+      price,
+      previewIndex,
+      scheduledAt,
+    } = sendMessageDto
+    if (scheduledAt) {
+      throw new MessageSendError(
+        'We currently dont support scheduled normal direct messages',
+      )
+    }
+    if (tipAmount && price) {
+      throw new MessageSendError('send message with tip and price')
+    }
     if (contentIds.length === 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
     }

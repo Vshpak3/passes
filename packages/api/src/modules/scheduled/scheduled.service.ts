@@ -153,7 +153,12 @@ export class ScheduledService {
         }
         switch (event.type) {
           case ScheduledEventTypeEnum.CREATE_POST:
-            await this.postService.publishPost(event.user_id, event.body)
+            // eslint-disable-next-line no-case-declarations
+            const postId = await this.postService.publishPost(
+              event.user_id,
+              event.body,
+            )
+            await this.postService.checkPostContentProcessed(postId)
             break
           case ScheduledEventTypeEnum.SEND_MESSAGE:
             break

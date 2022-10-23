@@ -774,7 +774,7 @@ export class PostService {
   async checkPostContentProcessed(
     postId: string,
   ): Promise<PostContentProcessed> {
-    const post = await this.dbReader<PostEntity>(PostEntity.table)
+    const post = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select('contents', 'content_processed', 'user_id')
       .first()

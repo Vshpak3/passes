@@ -45,7 +45,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="max-h-[65vh] min-w-fit justify-center overflow-y-scroll">
+    <div className="max-h-[65vh] min-w-fit justify-center">
       <VaultMediaModal
         content={content}
         isViewMediaModal={isViewMediaModal}

@@ -176,6 +176,7 @@ export class ContentService {
       .whereNull('deleted_at')
       .andWhere({
         user_id: userId,
+        processed: true,
       })
     switch (category) {
       // filter content that has been used in messages
