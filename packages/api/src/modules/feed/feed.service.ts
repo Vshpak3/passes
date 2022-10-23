@@ -74,6 +74,7 @@ export class FeedService {
           new Date(),
         )
       })
+      .andWhere(`${PostEntity.table}.content_processed`, true)
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
       .limit(MAX_POST_PER_FEED_REQUEST)
     query = createPaginatedQuery(
@@ -134,6 +135,13 @@ export class FeedService {
         `${PostLikeEntity.table}.id as is_liked`,
       ])
       .where(`${PostEntity.table}.user_id`, creatorId)
+
+      .andWhere(function () {
+        return this.where(
+          `${PostEntity.table}.content_processed`,
+          true,
+        ).orWhere(`${PostEntity.table}.user_id`, userId)
+      })
       .whereNull(`${PostEntity.table}.deleted_at`)
       .andWhere(function () {
         return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
