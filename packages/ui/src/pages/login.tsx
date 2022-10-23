@@ -28,6 +28,7 @@ import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
+import { deleteAllCookies } from "./logout"
 import { PASSWORD_MIN_LENGTH } from "./signup"
 
 export interface LoginPageSchema {
@@ -89,6 +90,7 @@ const LoginPage: FC = () => {
   const onSubmit = async (data: LoginPageSchema) => {
     try {
       setIsSubmitting(true)
+      deleteAllCookies()
       await loginUser(data.email, data.password)
       toast.success("Please wait as we redirect you")
     } catch (error: any) {

@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
-function deleteAllCookies() {
+export function deleteAllCookies() {
   const cookies = document.cookie.split(";")
 
   for (let i = 0; i < cookies.length; i++) {
