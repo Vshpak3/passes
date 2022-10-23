@@ -22,6 +22,10 @@ describe('App e2e', () => {
     // Mock redis
     getRedisConnectionToken('subscriber'),
     getRedisConnectionToken('publisher'),
+    getRedisConnectionToken('message_subscriber'),
+    getRedisConnectionToken('message_publisher'),
+    getRedisConnectionToken('post_subscriber'),
+    getRedisConnectionToken('post_publisher'),
   ]
 
   beforeAll(async () => {
