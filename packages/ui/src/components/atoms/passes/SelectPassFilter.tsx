@@ -1,6 +1,6 @@
 import { PassDtoTypeEnum } from "@passes/api-client"
 import _ from "lodash"
-import ArrowDown from "public/icons/post-audience-chevron-icon.svg"
+import ArrowDown from "public/icons/chevron-down.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 

@@ -46,7 +46,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
-  const [selectedPasses, setSelectedPasses] = useState<string[]>([])
+  const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
 
   const {
     handleSubmit,
@@ -109,7 +109,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     const post: CreatePostRequestDto = {
       text: values.text,
       tags: values.tags,
-      passIds: selectedPasses,
+      passIds: selectedPasses.map((pass) => pass.passId),
       expiresAt: values.expiresAt,
       price: values.isPaid ? parseInt(values.price) : 0,
       contentIds,

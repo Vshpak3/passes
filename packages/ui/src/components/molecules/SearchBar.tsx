@@ -1,34 +1,29 @@
 import { Combobox } from "@headlessui/react"
-import { UserDisplayInfoDto } from "@passes/api-client"
 import classNames from "classnames"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import React, { FC } from "react"
-import {
-  EmptyResult,
-  SearchResultOption
-} from "src/components/atoms/search/user/UserSearchResults"
+import { EmptyResult } from "src/components/atoms/search/user/UserSearchResults"
 
 interface SearchBarProps {
   searchValue: string
-  results: UserDisplayInfoDto[]
-  onSelect: (value: string) => void
-  onChange: (e: any) => void
+  options: JSX.Element[]
+  onInputChange: (e: any) => void
   placeholder: string
   emptyText: string
   isDesktop?: boolean
+  onSelect?: (value: any) => void
 }
 
-export const SearchBar: FC<SearchBarProps> = ({
+export const SearchBar: React.FC<SearchBarProps> = ({
   searchValue,
-  results,
-  onSelect,
-  onChange,
+  options,
+  onInputChange,
   placeholder,
   emptyText,
+  onSelect,
   isDesktop = true
 }) => {
   return (
-    <Combobox value={searchValue}>
+    <Combobox value={searchValue} onChange={onSelect}>
       <div className="flex flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">
@@ -40,7 +35,7 @@ export const SearchBar: FC<SearchBarProps> = ({
               placeholder={placeholder}
               value={searchValue}
               autoComplete="off"
-              onChange={onChange}
+              onChange={onInputChange}
               className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0 xs:min-w-[320px] sm:min-w-[360px]"
             />
           </div>
@@ -55,19 +50,7 @@ export const SearchBar: FC<SearchBarProps> = ({
             "z-10 overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none xs:min-w-[320px] sm:min-w-[360px]"
           )}
         >
-          {results.length ? (
-            results.map((user: UserDisplayInfoDto) => (
-              <SearchResultOption
-                key={user.userId}
-                userId={user.userId}
-                displayName={user.displayName}
-                username={user.username}
-                onSelect={onSelect}
-              />
-            ))
-          ) : (
-            <EmptyResult text={emptyText} />
-          )}
+          {options.length ? options : <EmptyResult text={emptyText} />}
         </Combobox.Options>
       </div>
     </Combobox>

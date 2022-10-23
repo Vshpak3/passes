@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import { useRouter } from "next/router"
-import { FC, useCallback } from "react"
+import { FC, useCallback, useMemo } from "react"
+import { SearchResultOption } from "src/components/atoms/search/user/UserSearchResults"
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
@@ -25,6 +26,18 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
     []
   )
 
+  const searchOptions = useMemo(
+    () =>
+      results.map((result) => (
+        <SearchResultOption
+          key={result.userId}
+          {...result}
+          onSelect={() => goToProfile(result.username)}
+        />
+      )),
+    [results, goToProfile]
+  )
+
   return (
     <AuthWrapper>
       <div
@@ -34,13 +47,12 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
         )}
       >
         <SearchBar
-          isDesktop={isDesktop}
+          options={searchOptions}
           searchValue={searchValue}
-          onSelect={(creator: string) => goToProfile(creator)}
-          onChange={onChangeInput}
+          onInputChange={onChangeInput}
           placeholder="Find creator"
           emptyText="creators"
-          results={results}
+          isDesktop={isDesktop}
         />
       </div>
     </AuthWrapper>

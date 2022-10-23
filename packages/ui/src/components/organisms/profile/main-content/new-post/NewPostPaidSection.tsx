@@ -1,17 +1,17 @@
-import AudienceChevronIcon from "public/icons/post-audience-icon.svg"
-import DeleteIcon from "public/icons/post-audience-x-icon.svg"
-import { Dispatch, FC, SetStateAction } from "react"
+import { PassDto } from "@passes/api-client"
+import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
+import { Tag } from "src/components/atoms/Tag"
 import { formatText } from "src/helpers/formatters"
 
 import { NewPostFormProps } from "./NewPostEditor"
-import { NewPostPassesDropdown } from "./NewPostPassesDropdown"
+import { PassesSearchBar } from "./PassesSearchBar"
 
 interface NewPostPaidSectionProps {
   register: UseFormRegister<NewPostFormProps>
-  selectedPasses: string[]
-  setSelectedPasses: Dispatch<SetStateAction<string[]>>
+  selectedPasses: PassDto[]
+  setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
 }
 
 export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
@@ -19,13 +19,23 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
   selectedPasses,
   setSelectedPasses
 }) => {
-  const onPassSelect = (pass: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedPasses([...selectedPasses, pass.target.name])
-  }
+  const onPassSelect = useCallback(
+    (pass: PassDto) => {
+      setSelectedPasses((state) => [...state, pass])
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
-  const removePasses = (idToRemove: string) => {
-    setSelectedPasses(selectedPasses.filter((passId) => passId !== idToRemove))
-  }
+  const removePass = useCallback(
+    (idToRemove: string) => {
+      setSelectedPasses((state) =>
+        state.filter((pass) => pass.passId !== idToRemove)
+      )
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
 
   return (
     <>
@@ -37,7 +47,10 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           <span className="text-small leading-[22px] text-[#FFFFFF] ">
             These pass holders will be able to view your content for free
           </span>
-          <NewPostPassesDropdown register={register} onChange={onPassSelect} />
+          <PassesSearchBar
+            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
+            onSelect={onPassSelect}
+          />
         </div>
       </div>
       <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
@@ -62,19 +75,12 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           </div>
         </div>
         <div className="flex flex-wrap gap-[6px] transition-all">
-          {selectedPasses.map((pass: any, index: any) => (
-            <div
-              key={index}
-              className="flex flex-shrink-0 animate-fade-in-down items-start gap-[10px] rounded-[56px] border border-passes-dark-200 bg-[#100C11] py-[10px] px-[18px]"
-            >
-              <span>
-                <AudienceChevronIcon />
-              </span>
-              <span>{formatText(pass.title)}</span>
-              <span>
-                <DeleteIcon onClick={() => removePasses(pass.id)} />
-              </span>
-            </div>
+          {selectedPasses.map((pass: any) => (
+            <Tag
+              key={pass.passId}
+              title={formatText(pass.title) as string}
+              onClick={() => removePass(pass.passId)}
+            />
           ))}
         </div>
       </div>
