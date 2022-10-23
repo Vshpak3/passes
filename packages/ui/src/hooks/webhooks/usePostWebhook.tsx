@@ -1,4 +1,4 @@
-import { PostApi, PostDto } from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
@@ -6,9 +6,7 @@ import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
-import { sleep } from "src/helpers/sleep"
 import { useUser } from "src/hooks/useUser"
-const api = new PostApi()
 export const MAX_ATTEMPTS = 5
 export const usePostWebhook = () => {
   const { accessToken } = useUser()
@@ -63,18 +61,9 @@ export const usePostWebhook = () => {
   useEffect(() => {
     if (socket) {
       socket.on("post", async (data) => {
-        let post = data as PostDto & { notification: string }
+        const post = data as PostDto & { notification: string }
         // eslint-disable-next-line sonarjs/no-small-switch
         switch (post.notification) {
-          case "paid":
-            await sleep("1 second")
-            post = {
-              ...(await api.findPost({
-                postId: post.postId
-              })),
-              ...post
-            }
-            break
           case "failed_payment":
             toast.error("Payment for post failed")
             break

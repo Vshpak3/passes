@@ -4,6 +4,7 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
@@ -413,6 +414,16 @@ export class PostService {
     payinId: string,
     earnings: number,
   ) {
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId })
+      .select('contents', 'user_id', 'preview_index')
+      .first()
+    if (!post) {
+      throw new InternalServerErrorException(
+        `post not found when purchasing ${payinId}`,
+      )
+    }
+    const contents: ContentBareDto[] = JSON.parse(post.contents)
     await this.dbWriter.transaction(async (trx) => {
       await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
         .insert({
@@ -429,15 +440,6 @@ export class PostService {
         .where({ id: postId })
         .increment('earnings_purchases', earnings)
 
-      const contents: ContentBareDto[] = JSON.parse(
-        (
-          await trx<PostEntity>(PostEntity.table)
-            .where({ id: postId })
-            .select('contents')
-            .first()
-        )?.contents ?? '[]',
-      )
-
       await Promise.all(
         contents.map(async (content) => {
           await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
@@ -453,8 +455,16 @@ export class PostService {
     const notification: PostNotificationDto = {
       postId,
       paying: false,
+      paid: true,
       notification: PostNotificationEnum.PAID,
       recieverId: userId,
+      contents: this.contentService.getContentDtosFromBare(
+        contents,
+        true,
+        post.user_id,
+        post.preview_index,
+        false,
+      ),
     }
     await this.redisService.publish('post', JSON.stringify(notification))
   }
@@ -822,7 +832,7 @@ export class PostService {
       )
       const notification: PostNotificationDto = {
         postId,
-        paying: false,
+        contentProcessed: true,
         notification: PostNotificationEnum.PROCESSED,
         recieverId: post.user_id,
         contents,
