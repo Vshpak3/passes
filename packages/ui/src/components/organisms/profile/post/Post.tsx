@@ -1,6 +1,6 @@
 import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import { FC, memo, useState } from "react"
+import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { FormContainer } from "src/components/organisms/FormContainer"
@@ -12,7 +12,6 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/profile/useFeed"
 import { usePost } from "src/hooks/profile/usePost"
-import { useUser } from "src/hooks/useUser"
 
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
@@ -39,7 +38,6 @@ const PostUnmemo: FC<PostProps> = ({
   pinnedPostCount = 0
 }) => {
   const router = useRouter()
-  const { user } = useUser()
   const { removePost } = usePost()
   const { mutatePinnedPosts, pinPost, unpinPost } = useFeed(post.userId)
 
@@ -63,6 +61,12 @@ const PostUnmemo: FC<PostProps> = ({
     contentProcessed
   } = post
 
+  useEffect(() => {
+    if (postByUrl && !contentProcessed) {
+      router.push(`/${username}`)
+    }
+  }, [router, postByUrl, contentProcessed, username])
+
   const [isRemoved, setIsRemoved] = useState(
     !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
   )
@@ -75,8 +79,8 @@ const PostUnmemo: FC<PostProps> = ({
     ...DropDownGeneral("Delete", post.isOwner, async () => {
       await removePost(postId)
       setIsRemoved(true)
-      if (postByUrl && user) {
-        router.push(`/${user.username}`)
+      if (postByUrl) {
+        router.push(`/${username}`)
       }
     }),
     ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {

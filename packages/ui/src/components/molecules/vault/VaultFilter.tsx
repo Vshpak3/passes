@@ -14,8 +14,7 @@ interface CategoryFilterButton {
 const VAULT_TYPE_OPTIONS: TypeFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "image", label: "Image" },
-  { id: "video", label: "Video" },
-  { id: "gif", label: "GIF" }
+  { id: "video", label: "Video" }
 ]
 const VAULT_CATEGORY_OPTIONS: CategoryFilterButton[] = [
   { id: undefined, label: "All" },
