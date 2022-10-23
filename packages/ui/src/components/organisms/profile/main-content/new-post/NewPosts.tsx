@@ -9,9 +9,13 @@ import { NewPostEditor } from "./NewPostEditor"
 
 interface NewPostsProps {
   setIsNewPostAdded: (value: boolean) => void
+  postUpdates: Record<string, Partial<PostDto>>
 }
 
-export const NewPosts: FC<NewPostsProps> = ({ setIsNewPostAdded }) => {
+export const NewPosts: FC<NewPostsProps> = ({
+  setIsNewPostAdded,
+  postUpdates
+}) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
   const { profileInfo, profileUsername } = useProfile()
   const { createPost } = usePost()
@@ -77,7 +81,11 @@ export const NewPosts: FC<NewPostsProps> = ({ setIsNewPostAdded }) => {
     <>
       <NewPostEditor handleSavePost={handleSavePost} initialData={{}} />
       {newPosts.map((post) => (
-        <Post key={post.postId} post={post} isNewPost={true} />
+        <Post
+          key={post.postId}
+          post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
+          isNewPost={true}
+        />
       ))}
     </>
   )

@@ -179,7 +179,6 @@ models/PayoutDto.ts
 models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
-models/PostContentProcessed.ts
 models/PostDto.ts
 models/PostHistoryDto.ts
 models/PresignPassRequestDto.ts

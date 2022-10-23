@@ -56,9 +56,18 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           endElement={PostFeedEnd}
           hasInitialElement={isNewPostAdded}
         >
-          {ownsProfile && <NewPosts setIsNewPostAdded={setIsNewPostAdded} />}
+          {ownsProfile && (
+            <NewPosts
+              setIsNewPostAdded={setIsNewPostAdded}
+              postUpdates={posts}
+            />
+          )}
           {pinnedPosts.map((post) => (
-            <Post key={post.postId} post={post} isPinned={true} />
+            <Post
+              key={post.postId}
+              post={{ ...post, ...(posts[post.postId] ?? {}) }}
+              isPinned={true}
+            />
           ))}
         </InfiniteScrollPagination>
       )}

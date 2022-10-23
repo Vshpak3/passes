@@ -24,7 +24,6 @@ import type {
   GetPostsRequestDto,
   GetPostsResponseDto,
   PayinDataDto,
-  PostContentProcessed,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
   TipPostRequestDto,
@@ -49,8 +48,6 @@ import {
     GetPostsResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
-    PostContentProcessedFromJSON,
-    PostContentProcessedToJSON,
     PurchasePostRequestDtoFromJSON,
     PurchasePostRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
@@ -75,10 +72,6 @@ export interface GetPostHistoryRequest {
 
 export interface GetPostsRequest {
     getPostsRequestDto: GetPostsRequestDto;
-}
-
-export interface IsAllPostContentProcessedRequest {
-    postId: string;
 }
 
 export interface PinPostRequest {
@@ -261,41 +254,6 @@ export class PostApi extends runtime.BaseAPI {
      */
     async getPosts(requestParameters: GetPostsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostsResponseDto> {
         const response = await this.getPostsRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Checks if all content in a post is ready
-     */
-    async isAllPostContentProcessedRaw(requestParameters: IsAllPostContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PostContentProcessed>> {
-        if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling isAllPostContentProcessed.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/post/ready/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PostContentProcessedFromJSON(jsonValue));
-    }
-
-    /**
-     * Checks if all content in a post is ready
-     */
-    async isAllPostContentProcessed(requestParameters: IsAllPostContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PostContentProcessed> {
-        const response = await this.isAllPostContentProcessedRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

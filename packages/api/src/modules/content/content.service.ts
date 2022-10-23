@@ -19,6 +19,7 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 import { PassService } from '../pass/pass.service'
+import { PostContentEntity } from '../post/entities/post-content.entity'
 import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
@@ -118,7 +119,7 @@ export class ContentService {
     // return content.every((c) => c.processed)
   }
 
-  async checkProcessed(): Promise<void> {
+  async checkProcessed(): Promise<string[]> {
     const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .where({ processed: false, failed: false })
       .select('*')
@@ -147,7 +148,11 @@ export class ContentService {
     await this.dbWriter<ContentEntity>(ContentEntity.table)
       .whereIn('id', failedIds)
       .update('failed', true)
-    return await this.dbReader()
+    return (
+      await this.dbReader<PostContentEntity>(PostContentEntity.table)
+        .whereIn('content_id', successfulIds)
+        .distinct('post_id')
+    ).map((postContent) => postContent.post_id)
   }
 
   async findContent(contentId: string): Promise<GetContentResponseDto> {

@@ -2,6 +2,7 @@ import { CreateEarningHistoryTask } from './tasks/create-earning-history.batch'
 import { FailStalePayinsTask } from './tasks/fail-stale-payins.batch'
 import { PayoutCreatorsTask } from './tasks/payout-creators.batch'
 import { ProcessBlocksTask } from './tasks/process-blocks.batch'
+import { RefreshContentTask } from './tasks/refresh-content.batch'
 import { RefreshEthWalletTask } from './tasks/refresh-eth-wallet.batch'
 import { RefreshNumPostsTask } from './tasks/refresh-num-posts.batch'
 import { RefreshPersonasVerificationsTask } from './tasks/refresh-persona-verifications.batch'
@@ -24,4 +25,5 @@ export const TaskDirectory = {
   update_subscriptions_task: UpdateSubscriptionsTask,
   fail_stale_payins_task: FailStalePayinsTask,
   scheduled_events_task: ScheduledEventsTask,
+  refresh_content: RefreshContentTask,
 }

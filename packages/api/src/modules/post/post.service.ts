@@ -774,7 +774,7 @@ export class PostService {
       )
   }
 
-  async isAllPostContentProcessed(
+  async checkPostContentProcessed(
     postId: string,
   ): Promise<PostContentProcessed> {
     const post = await this.dbReader<PostEntity>(PostEntity.table)
@@ -786,35 +786,67 @@ export class PostService {
       throw new BadRequestException(`No post with id ${postId}`)
     }
 
-    const contents = JSON.parse(post.contents) as ContentBareDto[]
-    const response: PostContentProcessed = {
-      postId,
-      contents: this.contentService.getContentDtosFromBare(
-        contents,
+    // const contents = JSON.parse(post.contents) as ContentBareDto[]
+    // const response: PostContentProcessed = {
+    //   postId,
+    //   contents: this.contentService.getContentDtosFromBare(
+    //     contents,
+    //     true,
+    //     post.user_id,
+    //     0,
+    //     true,
+    //   ),
+    //   contentProcessed: true,
+    // }
+
+    // if (post.content_processed || contents.length === 0) {
+    //   return response
+    // }
+
+    // const isAllProcessed = await this.contentService.isAllProcessed(
+    //   post.user_id,
+    //   contents,
+    // )
+    const postContents = await this.dbWriter<PostContentEntity>(
+      PostContentEntity.table,
+    )
+      .innerJoin(
+        ContentEntity.table,
+        `${PostContentEntity.table}.content_id`,
+        `${ContentEntity.table}.id`,
+      )
+      .where(`${PostContentEntity.table}.post_id`, postId)
+      .select(`${ContentEntity.table}.processed`)
+    const isProcessed = postContents.reduce((processed, postContent) => {
+      return processed && postContent.processed
+    }, true)
+
+    if (isProcessed) {
+      await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ id: postId })
+        .update({ content_processed: true })
+      const contentsBare = JSON.parse(post.contents) as ContentBareDto[]
+      const contents = this.contentService.getContentDtosFromBare(
+        contentsBare,
         true,
         post.user_id,
         0,
         true,
-      ),
-      contentProcessed: true,
+      )
+      await this.redisService.publish(
+        'message',
+        JSON.stringify(
+          new PostNotificationDto(
+            undefined,
+            true,
+            contents,
+            post.user_id,
+            PostNotificationEnum.PROCESSED,
+          ),
+        ),
+      )
     }
 
-    if (post.content_processed || contents.length === 0) {
-      return response
-    }
-
-    const isAllProcessed = await this.contentService.isAllProcessed(
-      post.user_id,
-      contents,
-    )
-    if (isAllProcessed) {
-      await this.dbWriter<PostEntity>(PostEntity.table)
-        .where({ id: postId })
-        .update({ content_processed: true })
-      return response
-    }
-
-    response.contentProcessed = false
-    return response
+    return isProcessed
   }
 }

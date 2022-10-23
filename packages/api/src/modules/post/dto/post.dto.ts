@@ -117,6 +117,9 @@ export class PostDto extends PickType(UserDto, [
     contents?: ContentDto[],
   ) {
     super()
+    if (contents) {
+      this.contents = contents
+    }
     if (post) {
       this.text = post.text
       this.numLikes = post.num_likes
@@ -144,9 +147,6 @@ export class PostDto extends PickType(UserDto, [
         this.numPurchases = post.num_purchases
       }
       this.isOwner = isOwner
-      if (contents) {
-        this.contents = contents
-      }
       this.purchasable =
         !isOwner &&
         !this.paid &&

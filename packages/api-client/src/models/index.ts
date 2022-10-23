@@ -152,7 +152,6 @@ export * from './PayoutDto';
 export * from './PayoutMethodDto';
 export * from './PhantomCircleUSDCEntryRequestDto';
 export * from './PhantomCircleUSDCEntryResponseDto';
-export * from './PostContentProcessed';
 export * from './PostDto';
 export * from './PostHistoryDto';
 export * from './PresignPassRequestDto';

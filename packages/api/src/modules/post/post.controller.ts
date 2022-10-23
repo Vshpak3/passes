@@ -27,7 +27,6 @@ import {
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
 import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
-import { PostContentProcessed } from './dto/post-content-processed'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
@@ -212,19 +211,19 @@ export class PostController {
     )
   }
 
-  @ApiEndpoint({
-    summary: 'Checks if all content in a post is ready',
-    responseStatus: HttpStatus.OK,
-    responseType: PostContentProcessed,
-    responseDesc: 'Whether content is processed and processed content info',
-    role: RoleEnum.CREATOR_ONLY,
-  })
-  @Get('ready/:postId')
-  async isAllPostContentProcessed(
-    @Param('postId') postId: string,
-  ): Promise<PostContentProcessed> {
-    return await this.postService.isAllPostContentProcessed(postId)
-  }
+  // @ApiEndpoint({
+  //   summary: 'Checks if all content in a post is ready',
+  //   responseStatus: HttpStatus.OK,
+  //   responseType: PostContentProcessed,
+  //   responseDesc: 'Whether content is processed and processed content info',
+  //   role: RoleEnum.CREATOR_ONLY,
+  // })
+  // @Get('ready/:postId')
+  // async isAllPostContentProcessed(
+  //   @Param('postId') postId: string,
+  // ): Promise<PostContentProcessed> {
+  //   return await this.postService.isAllPostContentProcessed(postId)
+  // }
 
   @ApiEndpoint({
     summary: 'Gets posts',

@@ -65,6 +65,8 @@ export const usePostWebhook = () => {
               postId: newPost.postId
             })
             break
+          case "processed":
+            newPosts[newPost.postId] = { contentProcessed: true }
         }
         setPosts((posts) => {
           return { ...posts, ...newPosts }

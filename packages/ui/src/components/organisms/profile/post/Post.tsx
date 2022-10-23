@@ -61,7 +61,8 @@ const PostUnmemo: FC<PostProps> = ({
     text,
     totalTipAmount,
     userId,
-    username
+    username,
+    contentProcessed
   } = post
 
   const [isRemoved, setIsRemoved] = useState(
@@ -137,6 +138,7 @@ const PostUnmemo: FC<PostProps> = ({
                     postId={postId}
                     contents={contents}
                     isNewPost={isNewPost}
+                    isProcessing={!contentProcessed}
                   />
                 ) : (
                   <LockedMedia post={post} />
