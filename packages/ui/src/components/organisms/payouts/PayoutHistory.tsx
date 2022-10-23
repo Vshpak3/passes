@@ -70,7 +70,7 @@ export const PayoutHistory = () => {
     : undefined
   return (
     <div className="mb-5 flex w-full flex-col gap-4">
-      <div className="flex flex-row items-center justify-between rounded-[20px]  p-4">
+      <div className="flex flex-row items-center justify-between rounded-[15px]  p-4">
         <span className=" items-center text-[20px] font-[700] ">
           Payout History
         </span>

@@ -214,7 +214,7 @@ const CreatorFlow = () => {
           isOpen={isVerificationDialogOpen}
           setOpen={setIsVerificationDialogOpen}
           closable={false}
-          modalContainerClassname="!w-auto sm:flex hidden rounded-[20px] bg-[#1B141D]/50 backdrop-blur-[50px]"
+          modalContainerClassname="!w-auto sm:flex hidden rounded-[15px] bg-[#1B141D]/50 backdrop-blur-[50px]"
         >
           <div className="px-[72px] py-[95px] text-xl font-bold text-white">
             <div className="flex max-w-[624px] items-center justify-center">

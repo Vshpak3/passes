@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { FC } from "react"
 
 type ImageProps = {
   src: string
@@ -9,29 +9,32 @@ type ImageProps = {
 
 export const ImageWithDefault: FC<ImageProps> = ({
   src,
-  className,
-  defaultColor,
-  defaultEl
+  className
+  // defaultColor,
+  // defaultEl
 }) => {
-  const [hasErrored, setHasErrored] = useState(false)
+  // const [hasErrored, setHasErrored] = useState(false)
 
   return (
     <>
-      {!hasErrored ? (
-        <img
-          src={src}
-          className={className}
-          alt=""
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null
-            setHasErrored(true)
-          }}
-        />
-      ) : defaultColor ? (
+      {/* {!hasErrored ? ( */}
+      <img
+        src={src}
+        className={className}
+        alt="Can't find image"
+        onError={({ currentTarget }) => {
+          currentTarget.onerror = null
+          // setHasErrored(true)
+        }}
+        width={200}
+        height={200}
+        style={{ objectFit: "cover" }}
+      />
+      {/* ) : defaultColor ? (
         <div className={`bg-${defaultColor}`} />
       ) : (
         defaultEl
-      )}
+      )} */}
     </>
   )
 }

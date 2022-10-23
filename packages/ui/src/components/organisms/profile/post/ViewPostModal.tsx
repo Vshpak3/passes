@@ -71,15 +71,15 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   return (
     <Dialog open={true} className="z-10" onClose={() => setPost(null)}>
-      <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[20px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
+      <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[15px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
         <div className="relative flex flex-1">
           {!postUnlocked && imageToShow && (
             <div className="absolute h-[80%] w-[80%] translate-x-[10%] translate-y-[10%] [filter:blur(15px)]">
               <img src={imageToShow} alt="post" />
             </div>
           )}
-          <div className="relative mr-[27px] flex h-96 flex-1 flex-col space-y-[35px] rounded-[20px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px] lg:h-auto">
-            <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[20px]">
+          <div className="relative mr-[27px] flex h-96 flex-1 flex-col space-y-[35px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px] lg:h-auto">
+            <div className="relative flex flex-1 flex-col items-center justify-center overflow-hidden rounded-[15px]">
               {postUnlocked &&
                 post.contents &&
                 post.contents.length === 1 &&

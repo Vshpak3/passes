@@ -27,8 +27,8 @@ export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
 
   // const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
   return (
-    <div className="col-span-1 w-full min-w-[400px] max-w-[400px] rounded rounded-[20px] border border-[#2C282D] py-[24px] px-[16px] ">
-      <div className="aspect-[1/1] w-full rounded-[20px]">
+    <div className="col-span-1 w-full min-w-[400px] max-w-[400px] rounded rounded-[15px] border border-[#2C282D] py-[24px] px-[16px] ">
+      <div className="aspect-[1/1] w-full rounded-[15px]">
         <PassMedia
           passId={passHolder.passId}
           imageType={passHolder.imageType}

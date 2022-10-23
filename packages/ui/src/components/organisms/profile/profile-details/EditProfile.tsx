@@ -191,7 +191,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[20px]"
+      className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       open={true}
       onClose={() => setEditProfileModalOpen(false)}
       footer={
@@ -232,7 +232,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                 <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
                 <img
                   alt=""
-                  className="h-[115px] w-full cursor-pointer rounded-[10px] object-cover object-center"
+                  className="h-[115px] w-full cursor-pointer rounded-[15px] object-cover object-center"
                   src={
                     profileBannerImage?.length
                       ? URL.createObjectURL(profileBannerImage[0])

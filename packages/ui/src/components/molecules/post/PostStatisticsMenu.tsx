@@ -41,7 +41,7 @@ export const PostStatisticsMenu: FC<PostStatisticsMenuProps> = ({
   return (
     <div
       ref={menuEl}
-      className="absolute top-full right-0 z-50 min-w-[325px] translate-y-1 rounded-[20px] border border-white/[0.15] bg-[#0B090C] p-6 backdrop-blur-[15px]"
+      className="absolute top-full right-0 z-50 min-w-[325px] translate-y-1 rounded-[15px] border border-white/[0.15] bg-[#0B090C] p-6 backdrop-blur-[15px]"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-1.5 text-sm leading-6">

@@ -106,7 +106,7 @@ const PostUnmemo: FC<PostProps> = ({
             borderColor={
               isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
             }
-            className={"!min-h-[10px] w-full rounded-[20px] border px-5 pt-5"}
+            className={"!min-h-[10px] w-full rounded-[15px] border px-5 pt-5"}
           >
             <PostHeader
               createdAt={createdAt}

@@ -114,7 +114,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
         </label>
         <label htmlFor="calender-modal" className="modal cursor-pointer">
           <label
-            className="absolute flex w-fit items-center justify-center rounded-[20px] bg-[#fff]"
+            className="absolute flex w-fit items-center justify-center rounded-[15px] bg-[#fff]"
             htmlFor=""
           >
             {isDatePickerOpen && (
@@ -192,7 +192,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
               }
             ]
           }}
-          className="rounded-[20px] border border-[#FFFFFF26] bg-[#1B141D80] p-4"
+          className="rounded-[15px] border border-[#FFFFFF26] bg-[#1B141D80] p-4"
         />
       </div>
     </div>

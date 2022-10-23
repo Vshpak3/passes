@@ -60,7 +60,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
           <div className="relative text-right">
             <button
               type="button"
-              className="inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="popup-modal"
               onClick={handleClose}
             >

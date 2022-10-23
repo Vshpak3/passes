@@ -19,7 +19,7 @@ export const PostImage: FC<PostImageProps> = forwardRef(
         alt=""
         height={400}
         width={650}
-        className="h-[400px] w-full select-none rounded-[20px] object-cover"
+        className="h-[400px] w-full select-none rounded-[15px] object-cover"
       />
     )
   }

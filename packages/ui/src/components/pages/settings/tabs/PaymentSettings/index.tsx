@@ -187,7 +187,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
             hasDefaultPaymentMethod
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
-            "flex w-full gap-2 rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 py-6 px-6"
+            "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 py-6 px-6"
           )}
         >
           <span className="text-[15px] font-bold text-white">
@@ -359,7 +359,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
           {cards?.map((item) => (
             <div
               key={item.id}
-              className="my-5 flex rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
+              className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
             >
               <div className="flex-1">
                 <span className="text-[15px] font-[700]">{item.name}</span>

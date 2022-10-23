@@ -75,7 +75,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
     <>
       {!removed && (
         <div className="z-1 mt-6 flex">
-          <FormContainer className="!min-h-[10px] rounded-[20px] border border-white/10 px-5 pt-5">
+          <FormContainer className="!min-h-[10px] rounded-[15px] border border-white/10 px-5 pt-5">
             <PostHeader
               createdAt={createdAt}
               displayName={commenterDisplayName}

@@ -87,7 +87,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
             <button
               type="button"
               className={classNames(
-                "top-3 right-2.5 ml-auto inline-flex items-center rounded-[20px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
+                "top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
                 isNewPost && "absolute right-[20px] top-[20px] z-[6]"
               )}
               data-modal-toggle="popup-modal"

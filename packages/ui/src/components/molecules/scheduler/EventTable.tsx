@@ -59,14 +59,14 @@ export const EventTable: FC = () => {
         Scheduled Events In {format(new Date(year, month, 1), "LLLL")}
       </div>
       {!data?.length ? (
-        <div className="mb-[30px] flex h-[295px] w-full flex-col items-center justify-center rounded-[20px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
+        <div className="mb-[30px] flex h-[295px] w-full flex-col items-center justify-center rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
           <Calendar />
           <span className="mt-3 text-white opacity-50">
             There are no scheduled events for this month
           </span>
         </div>
       ) : (
-        <div className="mb-[30px] w-full overflow-auto rounded-[20px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
+        <div className="mb-[30px] w-full overflow-auto rounded-[15px] py-5 md:border md:border-[rgba(255,255,255,0.15)] md:bg-[rgba(27,20,29,0.5)] md:backdrop-blur-[50px]">
           {selectEventIdDelete && (
             <DeleteEventModal
               isDeleting={isDeleting}

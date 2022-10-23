@@ -17,7 +17,7 @@ export const FormContainer: FC<PropsWithChildren<FormContainerProps>> = ({
       className={classNames(
         className,
         borderColor,
-        "flex flex-grow flex-col items-stretch gap-4 bg-[#1b141d]/50 px-10 py-5 md:min-h-[400px] md:rounded-[20px] md:border md:px-5 md:pt-5"
+        "flex flex-grow flex-col items-stretch gap-4 bg-[#1b141d]/50 px-10 py-5 md:min-h-[400px] md:rounded-[15px] md:border md:px-5 md:pt-5"
       )}
     >
       {children}

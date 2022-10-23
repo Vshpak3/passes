@@ -74,7 +74,7 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
         <ArrowDown />
       </div>
       {showOptions && (
-        <ul className="absolute z-10 w-[338px] translate-y-1.5 rounded-[20px] border border-passes-dark-200 bg-[#1B141D] p-[26px]">
+        <ul className="absolute z-10 w-[338px] translate-y-1.5 rounded-[15px] border border-passes-dark-200 bg-[#1B141D] p-[26px]">
           <li className="mb-[18px] text-[16px] underline">All Pass Types</li>
           {PASS_DROPDOWN_OPTIONS.map((passType, i) => (
             <SelectPassFilterItem

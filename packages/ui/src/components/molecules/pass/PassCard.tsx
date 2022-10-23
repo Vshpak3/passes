@@ -20,7 +20,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
   return (
-    <div className="min-w-[218px] max-w-[218px] rounded-[20px] border border-passes-dark-200 bg-[#0E0A0F] px-5 py-4">
+    <div className="min-w-[218px] max-w-[218px] rounded-[15px] border border-passes-dark-200 bg-[#0E0A0F] px-5 py-4">
       <PassMedia
         passId={pass.passId}
         imageType={pass.imageType}

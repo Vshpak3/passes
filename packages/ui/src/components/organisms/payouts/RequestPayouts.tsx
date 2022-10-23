@@ -71,7 +71,7 @@ export const RequestPayouts = () => {
     <div className=" flex w-full flex-col gap-[24px]">
       <div className=" text-[24px] font-[700]">Request Payouts</div>
       <div className="flex flex-col gap-5 md:flex-row">
-        <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[20px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50 to-[#441E25] p-5">
+        <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[15px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50 to-[#441E25] p-5">
           <div className="mb-4 text-[16px] opacity-[50%]">
             Balance Available
           </div>
@@ -82,7 +82,7 @@ export const RequestPayouts = () => {
             Your earnings balance must be at least $25.00 to request a payout.
             Payouts are at most once every 3 days.
           </div>
-          <div className="rounded-[20px] border border-passes-dark-200 bg-[#1B141D]/50 p-5">
+          <div className="rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5">
             <div className="mb-5 text-[16px] font-[700] opacity-[0.8]">
               Request payout manually OR set a schedule for auto payouts.
             </div>
@@ -145,7 +145,7 @@ export const RequestPayouts = () => {
 
       <div className=" w-full text-[24px] font-[700]">Payout Destination</div>
       <div className="flex w-full flex-col gap-5 md:flex-row">
-        <div className="flex  w-full flex-col gap-[20px] rounded-[20px] border border-passes-dark-200 bg-[#1b141d80] p-5">
+        <div className="flex  w-full flex-col gap-[20px] rounded-[15px] border border-passes-dark-200 bg-[#1b141d80] p-5">
           <div className=" flex  w-full flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-[10px]">
               <span className="text-[14px] font-[700]">
@@ -185,7 +185,7 @@ export const RequestPayouts = () => {
           )}
           {defaultWallet && (
             <div className="flex flex-row items-center gap-[10px]">
-              <span className="rounded-[10px] bg-[#C943A8] p-[10px] ">
+              <span className="rounded-[15px] bg-[#C943A8] p-[10px] ">
                 <svg
                   width="22"
                   height="18"

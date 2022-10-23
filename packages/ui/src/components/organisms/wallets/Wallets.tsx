@@ -162,7 +162,7 @@ export const Wallets = () => {
   return (
     <div>
       <Modal
-        modalContainerClassname="rounded-[20px]"
+        modalContainerClassname="rounded-[15px]"
         isOpen={isModalOpen}
         setOpen={setIsModalOpen}
       >

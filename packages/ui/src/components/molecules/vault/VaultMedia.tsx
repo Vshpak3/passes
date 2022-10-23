@@ -67,7 +67,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[20px] border bg-black px-0 pb-[30px]"
+          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0 pb-[30px]"
         )}
         onClick={handleClick}
       >
@@ -75,7 +75,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           <ImageWithDefault // All content types have an image thumbnail
             src={ContentService.userContentThumbnailPath(content)}
             defaultColor="black/50"
-            className="h-[234px] w-[307px] rounded-[20px] object-cover"
+            className="h-[234px] w-[307px] rounded-[15px] object-cover"
           />
         </div>
         <div className="flex justify-end p-[10px]">

@@ -33,7 +33,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({ post }) => {
           />
         </div>
       )}
-      <div className="absolute inset-0 flex flex-col items-center justify-center space-y-[35px] rounded-[20px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
+      <div className="absolute inset-0 flex flex-col items-center justify-center space-y-[35px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
         <PostUnlockButton
           onClick={() => setPost(post)}
           name={`Unlock Post For ${formatCurrency(price ?? 0)}`}
