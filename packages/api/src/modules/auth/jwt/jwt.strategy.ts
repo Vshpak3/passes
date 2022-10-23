@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import { Strategy } from 'passport-strategy'
 
 import { BASE_CLAIMS } from './jwt.constants'
+import { JwtAuthPayload } from './jwt.payload'
 
 interface JwtFromRequestFunction {
   (req: Request): string | null
@@ -41,7 +42,7 @@ export class JwtStrategy extends Strategy {
   private verify: VerifyCallback
   private secret: string
   private jwtFromRequest: JwtFromRequestFunction
-  private verifyJwtField: Record<string, any>
+  private verifyJwtField: Record<keyof JwtAuthPayload, any>
   private skipAuth: boolean
 
   constructor(options: StrategyOptions, verify: VerifyCallback) {

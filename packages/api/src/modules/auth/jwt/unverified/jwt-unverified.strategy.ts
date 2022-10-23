@@ -16,6 +16,7 @@ export class JwtUnverifiedStrategy extends PassportStrategy(
     super({
       secret: configService.get<string>('jwt.authSecret'),
       jwtFromRequest: ExtractJwtFromAuthHeaderWithScheme(),
+      verifyJwtField: { isVerified: false },
     })
   }
 
