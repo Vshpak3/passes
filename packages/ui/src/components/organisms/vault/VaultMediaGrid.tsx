@@ -68,7 +68,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               <div className="col-span-1 w-[115px] md:w-[320px]" />
             </>
           }
-          KeyedComponent={({ arg, index }: ComponentArg<ContentDto>) => {
+          KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
             return (
               <>
                 {!deletedItems.some((x) => x.contentId === arg.contentId) && (
@@ -79,7 +79,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
                     isVideoSelected={isVideoSelected}
                     isMaxFileCountSelected={isMaxFileCountSelected}
                     handleClickOnItem={handleClickOnItem}
-                    index={index}
+                    // index={index}
                   />
                 )}
               </>

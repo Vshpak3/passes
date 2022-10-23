@@ -12,7 +12,7 @@ interface VaultMediaItemProps {
   isVideoSelected: boolean
   isMaxFileCountSelected: boolean
   handleClickOnItem: (item: ContentDto) => void
-  index?: number
+  // index?: number
 }
 
 export const VaultMediaItem: FC<VaultMediaItemProps> = ({
@@ -21,8 +21,8 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   setSelectedItems,
   isVideoSelected,
   isMaxFileCountSelected,
-  handleClickOnItem,
-  index
+  handleClickOnItem
+  // index
 }) => {
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
@@ -55,15 +55,15 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   return (
     <div
       className={classNames(
-        index && index % 3 === 1 && "lg:pt-[20px]",
-        index && index === 1 && "lg:pt-[0px]",
+        // index && index % 3 === 1 && "lg:pt-[20px]",
+        // index && index === 1 && "lg:pt-[0px]",
         "group"
       )}
     >
       <div
         className={classNames(
           opacityStyle,
-          // index && index === 1 && "lg:pb-[50px]",
+          "lg:pb-[20px]",
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
