@@ -22,7 +22,8 @@ export const MediaModal: FC<ModalProps> = ({
   modalContainerClassname,
   childrenClassname
 }) => {
-  const min = Math.min(Math.min(window.innerWidth, window.innerHeight), 800)
+  const width = window.innerWidth - 100
+  const height = window.innerHeight - 100
   return (
     <Modal
       isNewPost
@@ -37,8 +38,8 @@ export const MediaModal: FC<ModalProps> = ({
           preview
           file={file.file}
           className="m-0 rounded-[6px] p-0"
-          contentHeight={min}
-          contentWidth={min}
+          contentHeight={height}
+          contentWidth={width}
           objectFit="contain"
         />
       )}
@@ -47,8 +48,8 @@ export const MediaModal: FC<ModalProps> = ({
           src={ContentService.userContentMediaPath(file.content)}
           preview={true}
           type={file.content.contentType}
-          contentWidth={min}
-          contentHeight={min}
+          contentWidth={width}
+          contentHeight={height}
           className="m-0 rounded-[6px] p-0"
         />
       )}

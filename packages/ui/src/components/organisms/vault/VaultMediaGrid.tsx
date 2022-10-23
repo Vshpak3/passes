@@ -14,8 +14,6 @@ import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
-import { VaultMediaModal } from "./VaultMediaModal"
-
 interface VaultMediaGridProps {
   selectedItems: ContentDto[]
   setSelectedItems: (items: ContentDto[]) => void
