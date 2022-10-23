@@ -39,7 +39,6 @@ export const usePostWebhook = () => {
       })
       socket.on("disconnect", () => {
         setIsConnected(false)
-        setPosts({})
       })
       socket.connect()
       return () => {

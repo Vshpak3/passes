@@ -91,7 +91,7 @@ export const Media: FC<MediaProp> = ({
         {!preview && (
           <div
             onClick={onRemove}
-            className="relative bottom-[140px] left-[110px] z-[1] flex h-8 w-8 cursor-pointer items-center justify-center"
+            className="relative z-[5] h-[24px] w-[24px] cursor-pointer"
           >
             <DeleteIcon className="h-full w-full" />
           </div>

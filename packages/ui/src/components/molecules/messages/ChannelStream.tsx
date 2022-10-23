@@ -173,12 +173,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <div
             id="scrollableDiv"
             className="flex h-full flex-1 flex-col overflow-y-scroll"
-            // onScroll={handleScroll}
-            // ref={bottomOfChatRef}
             onFocus={onReadLastMessage}
             style={{
-              // height: 300,
-              // overflow: "auto",
               display: "flex",
               flexDirection: "column-reverse"
             }}
