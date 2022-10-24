@@ -1,11 +1,12 @@
 import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
-import { FC, useRef } from "react"
+import { ChangeEvent, Dispatch, FC, SetStateAction, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { MdAdd, MdDelete } from "react-icons/md"
 import { FormInput } from "src/components/atoms/FormInput"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media_limits"
+import { ContentFile } from "src/hooks/useMedia"
 
 const filterStyles = {
   button: "rounded-[56px] bg-[#FFFEFF]/10 hover:bg-[#EDEDED]",
@@ -39,7 +40,11 @@ interface VaultDeleteButtonProps {
   toggleDeleteModal: () => void
 }
 interface VaultAddItemProps {
-  onClick: (files: FileList | null) => void
+  onClick: Dispatch<SetStateAction<ContentFile[]>>
+}
+
+interface InputChange {
+  files: File[] | FileList | null
 }
 
 export const VaultDeselectButton: FC<VaultDeselectButtonProps> = ({
@@ -129,8 +134,13 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
         type="file"
         multiple={true}
         trigger={<MdAdd size={16} />}
-        options={{ onChange: onClick }}
+        options={{
+          onChange: <T extends InputChange>(e: ChangeEvent<T>) => {
+            e.target.files && onClick([{ file: e.target.files[0] }])
+          }
+        }}
         accept={ACCEPTED_MEDIA_TYPES}
+        className="hidden"
       />
     </div>
   )

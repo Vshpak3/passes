@@ -2,7 +2,7 @@ import classNames from "classnames"
 import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
-import { FC, MouseEvent, useState } from "react"
+import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react"
 import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import Slider from "react-slick"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -44,6 +44,8 @@ interface MediaSectionProps {
   addNewMedia: (newFiles: File[]) => void
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
+  vaultRegister?: unknown
+  setFiles?: Dispatch<SetStateAction<ContentFile[]>>
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({

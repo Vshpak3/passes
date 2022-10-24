@@ -3,7 +3,7 @@ import {
   ContentDto,
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
-import { FC, useCallback, useState } from "react"
+import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultDeleteModal } from "src/components/molecules/vault/VaultDelete"
@@ -14,6 +14,7 @@ import {
   SortOption
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+import { ContentFile } from "src/hooks/useMedia"
 
 type OrderType = "recent" | "oldest"
 
@@ -24,6 +25,7 @@ const sortOptions: SortOption<OrderType>[] = [
 
 interface VaultNavigationProps {
   selectedItems: ContentDto[]
+  setFiles: Dispatch<SetStateAction<ContentFile[]>>
   setSelectedItems: (items: ContentDto[]) => void
   setVaultType: (type: VaultType) => void
   setVaultCategory: (category: VaultCategory) => void
@@ -50,6 +52,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   order,
   deletedItems,
   setDeletedItems,
+  setFiles,
   embedded = false,
   isDiffTypesSelected = false
 }) => {
@@ -92,10 +95,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
               </>
             )}
 
-            <VaultAddButton
-              // TODO: connect with API to add items
-              onClick={() => undefined}
-            />
+            <VaultAddButton onClick={setFiles} />
             <SortDropdown
               selection={{ orderType: order === "desc" ? "recent" : "oldest" }}
               options={sortOptions}
