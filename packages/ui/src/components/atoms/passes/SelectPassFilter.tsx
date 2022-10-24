@@ -68,7 +68,7 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
       <div
         role="button"
         onClick={() => setShowOptions(true)}
-        className="flex cursor-pointer space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
+        className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
       >
         <span>All Pass Types</span>
         <ArrowDown />
