@@ -66,7 +66,8 @@ export const NewPosts: FC<NewPostsProps> = ({
       totalTipAmount: 0,
       isOwner: true,
       paying: false,
-      paid: false
+      paid: false,
+      yourTips: 0
     }
 
     setNewPosts([post, ...newPosts])
