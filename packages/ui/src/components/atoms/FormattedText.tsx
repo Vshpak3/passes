@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react"
 import { useGlobalCache } from "src/contexts/GlobalCache"
 import { formatReplacedText } from "src/helpers/formatters"
 import { getUsername } from "src/helpers/username"
+
 type FormattedTextProps = {
   tags: TagDto[]
   text: string

@@ -7,7 +7,7 @@ import {
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
-export const MAX_ATTEMPTS = 5
+
 export const usePostWebhook = () => {
   const { accessToken } = useUser()
 

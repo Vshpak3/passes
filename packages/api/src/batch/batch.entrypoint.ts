@@ -2,6 +2,8 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
 import { App } from '../app/app.main'
 import { TaskDirectory } from '../batch/batch.directory'
+
+// eslint-disable-next-line import/newline-after-import
 ;(async () => {
   const args = process.argv.slice(2)
   const batchTaskName = args[0]

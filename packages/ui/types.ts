@@ -1,4 +1,5 @@
 import { PublicKey } from "@solana/web3.js"
+
 type PhantomEvent = "disconnect" | "connect" | "accountChanged"
 
 interface PhantomProviderConnectOpts {

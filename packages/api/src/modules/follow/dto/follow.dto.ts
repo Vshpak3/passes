@@ -1,5 +1,6 @@
 import { DtoProperty } from '../../../web/dto.web'
 import { FollowEntity } from '../entities/follow.entity'
+
 export class FollowDto {
   @DtoProperty({ type: 'uuid' })
   id: string

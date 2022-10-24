@@ -13,15 +13,12 @@ export interface ReportModalData {
   username: string
 }
 
-export interface ReportModalProps {
+interface ReportModalProps {
   reportData: ReportModalData
   setReportData: Dispatch<SetStateAction<ReportModalData | null>>
 }
 
-export const ReportModal: FC<ReportModalProps> = ({
-  reportData,
-  setReportData
-}) => {
+const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
   const [reportValue, setReportValue] = useState()
 
   const { userId, username } = reportData

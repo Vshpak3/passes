@@ -3,6 +3,7 @@ import { PickType } from '@nestjs/swagger'
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { PayoutDto } from './payout.dto'
+
 export class GetPayoutsRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'createdAt',

@@ -22,7 +22,7 @@ interface MessagesV2Props {
   setMassMessage: Dispatch<SetStateAction<any>>
 }
 
-export const MessagesV2 = ({
+const MessagesV2 = ({
   defaultUserId,
   vaultContent,
   setVaultContent,

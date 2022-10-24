@@ -4,6 +4,7 @@ import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+
 interface PassHoldingTileProps {
   passHolder: PassHolderDto
 }

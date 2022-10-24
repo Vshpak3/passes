@@ -1,5 +1,6 @@
 import { parse } from "dom-parser-react"
 import { createElement, Fragment } from "react"
+
 const formatter = Intl.NumberFormat("en", { notation: "compact" })
 
 export function compactNumberFormatter(num: number) {

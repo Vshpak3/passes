@@ -11,7 +11,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { PaidMessageStatistic } from "src/components/organisms/analytics/PaidMessageStatistic"
 
-export const MessageStatistics = () => {
+const MessageStatistics = () => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between border-b border-passes-dark-200">

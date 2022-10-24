@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 
-export type List = {
+type List = {
   name: string
   listId: string
   type: string

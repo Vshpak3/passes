@@ -13,7 +13,7 @@ interface VaultMediaItemProps {
   handleClickOnItem: (item: ContentDto) => void
 }
 
-export const VaultMediaItem: FC<VaultMediaItemProps> = ({
+const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
   setSelectedItems,

@@ -14,7 +14,7 @@ interface BuyPassModalProps {
   setPass: Dispatch<SetStateAction<PassDto | null>>
 }
 
-export const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
+const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
 
   return (

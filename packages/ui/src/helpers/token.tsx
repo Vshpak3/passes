@@ -1,6 +1,7 @@
 import { AuthApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
 import { JWTUserClaims } from "src/hooks/useUser"
+
 export const accessTokenKey = "access-token"
 export const refreshTokenKey = "refresh-token"
 

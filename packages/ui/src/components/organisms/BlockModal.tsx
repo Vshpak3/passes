@@ -16,15 +16,12 @@ export interface BlockModalData {
   username: string
 }
 
-export interface BlockModalProps {
+interface BlockModalProps {
   blockData: BlockModalData
   setBlockData: Dispatch<SetStateAction<BlockModalData | null>>
 }
 
-export const BlockModal: FC<BlockModalProps> = ({
-  blockData,
-  setBlockData
-}) => {
+const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
   const [blockValue, setBlockValue] = useState()
 
   const { userId, username } = blockData

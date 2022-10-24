@@ -10,6 +10,7 @@ import { formatCurrency, formatText } from "src/helpers/formatters"
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
 import { Content } from "./message/Content"
+
 interface ChannelMessageProps {
   isOwnMessage?: boolean
   message: MessageDto

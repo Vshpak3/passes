@@ -28,6 +28,7 @@ module.exports = {
     curly: 'error',
     eqeqeq: 'error',
     'import/no-default-export': 'error',
+    'import/newline-after-import': 'error',
     'no-trailing-spaces': 'error',
     'simple-import-sort/exports': 'error',
     'simple-import-sort/imports': 'error',

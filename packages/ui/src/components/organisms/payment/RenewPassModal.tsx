@@ -14,7 +14,7 @@ interface RenewPassModalProps {
   isOpen: boolean
 }
 
-export const RenewPassModal: FC<RenewPassModalProps> = ({
+const RenewPassModal: FC<RenewPassModalProps> = ({
   passHolder,
   setOpen,
   isOpen

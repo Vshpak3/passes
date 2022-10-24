@@ -42,5 +42,3 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
     </Dialog>
   )
 }
-// eslint-disable-next-line import/no-default-export
-export default NewPostPopup

@@ -5,6 +5,7 @@ import { TabButton } from "src/components/atoms/Button"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
 import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
+
 const EarningsGraph = dynamic(
   () => import("src/components/pages/tools/analytics/EarningsGraph"),
   { ssr: false }

@@ -23,7 +23,7 @@ interface VaultProps {
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
 export type VaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
 
-export interface VaultFormProps {
+interface VaultFormProps {
   "drag-drop": File[]
 }
 

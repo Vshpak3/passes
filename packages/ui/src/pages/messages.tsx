@@ -7,6 +7,7 @@ import { memo, Suspense, useState } from "react"
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
+
 const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
   suspense: true,
   ssr: false

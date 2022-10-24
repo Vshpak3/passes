@@ -19,7 +19,7 @@ interface BuyPostModalProps {
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
-export const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
+const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const { externalPasses } = useExternalPasses()
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)

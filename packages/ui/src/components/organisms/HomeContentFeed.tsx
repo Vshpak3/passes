@@ -14,6 +14,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { Header } from "src/components/molecules/performance/Header"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
+
 const Post = dynamic(
   () => import("src/components/organisms/profile/post/Post"),
   { ssr: false }

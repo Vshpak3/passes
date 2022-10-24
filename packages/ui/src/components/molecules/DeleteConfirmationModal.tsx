@@ -3,7 +3,7 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useRef } from "react"
 import ReactModal from "react-modal"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-export interface DeleteConfirmationModalProps {
+interface DeleteConfirmationModalProps {
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
   onCancel(): void

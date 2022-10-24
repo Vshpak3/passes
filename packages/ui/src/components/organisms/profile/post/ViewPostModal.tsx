@@ -37,7 +37,7 @@ interface ViewPostModalProps {
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
-export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
+const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
   const { viewPostActiveIndex } = useViewPostModal()

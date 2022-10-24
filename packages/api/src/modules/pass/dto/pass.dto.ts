@@ -17,6 +17,7 @@ import { AccessTypeEnum } from '../enum/access.enum'
 import { PassTypeEnum } from '../enum/pass.enum'
 import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
+
 export class PassDto {
   @DtoProperty({ type: 'uuid' })
   passId: string
