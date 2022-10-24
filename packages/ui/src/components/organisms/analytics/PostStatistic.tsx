@@ -3,6 +3,7 @@ import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { formatText } from "src/helpers/formatters"
 import { usePost } from "src/hooks/profile/usePost"
 
@@ -12,6 +13,7 @@ interface PostStatisticProps {
 
 export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
   const [deleted, setDeleted] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const { removePost } = usePost()
 
   const deletePost = async () => {
@@ -21,6 +23,19 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
     } catch (error: any) {
       toast.error("Failed to delete: please contact support")
     }
+  }
+
+  const handleDelete = async () => {
+    await deletePost()
+    setOpenDeleteModal(false)
+  }
+
+  const handleCancel = () => {
+    setOpenDeleteModal(false)
+  }
+
+  const handleConfirmDelete = () => {
+    setOpenDeleteModal(true)
   }
 
   return (
@@ -74,7 +89,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
       <div className="flex h-[72px] flex-1 items-center justify-start">
         {!deleted && !post.deletedAt ? (
           <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-passes-pink-100">
-            <Button onClick={deletePost}>Delete</Button>
+            <Button onClick={handleConfirmDelete}>Delete</Button>
           </span>
         ) : (
           <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-gray-500">
@@ -82,6 +97,12 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
           </span>
         )}
       </div>
+      <DeleteConfirmationModal
+        onDelete={handleDelete}
+        onCancel={handleCancel}
+        setOpen={setOpenDeleteModal}
+        isOpen={openDeleteModal}
+      />
     </div>
   )
 }
