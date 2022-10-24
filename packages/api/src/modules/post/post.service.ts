@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -54,12 +55,10 @@ import {
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
-import { PostContentProcessed } from './dto/post-content-processed'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
 import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
-import { PostContentEntity } from './entities/post-content.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
@@ -133,13 +132,6 @@ export class PostService {
         await trx<ContentEntity>(ContentEntity.table)
           .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
-        if (contents.length) {
-          await trx<PostContentEntity>(PostContentEntity.table).insert(
-            contents.map((content) => {
-              return { post_id: postId, content_id: content.contentId }
-            }),
-          )
-        }
 
         // TODO: schedule access add
         const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)
@@ -771,9 +763,21 @@ export class PostService {
       )
   }
 
-  async checkPostContentProcessed(
-    postId: string,
-  ): Promise<PostContentProcessed> {
+  async checkRecentPostsContentProcessed() {
+    const postIds = (
+      await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ content_processed: false })
+        .andWhere('created_at', '>', new Date(Date.now() - ms('1 hour')))
+        .select('id')
+    ).map((post) => post.id)
+    await Promise.all(
+      postIds.map(async (postId) => {
+        await this.checkPostContentProcessed(postId)
+      }),
+    )
+  }
+
+  async checkPostContentProcessed(postId: string): Promise<void> {
     const post = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select('contents', 'content_processed', 'user_id')
@@ -783,40 +787,9 @@ export class PostService {
       throw new BadRequestException(`No post with id ${postId}`)
     }
 
-    // const contents = JSON.parse(post.contents) as ContentBareDto[]
-    // const response: PostContentProcessed = {
-    //   postId,
-    //   contents: this.contentService.getContentDtosFromBare(
-    //     contents,
-    //     true,
-    //     post.user_id,
-    //     0,
-    //     true,
-    //   ),
-    //   contentProcessed: true,
-    // }
+    const contents = JSON.parse(post.contents) as ContentBareDto[]
 
-    // if (post.content_processed || contents.length === 0) {
-    //   return response
-    // }
-
-    // const isAllProcessed = await this.contentService.isAllProcessed(
-    //   post.user_id,
-    //   contents,
-    // )
-    const postContents = await this.dbWriter<PostContentEntity>(
-      PostContentEntity.table,
-    )
-      .innerJoin(
-        ContentEntity.table,
-        `${PostContentEntity.table}.content_id`,
-        `${ContentEntity.table}.id`,
-      )
-      .where(`${PostContentEntity.table}.post_id`, postId)
-      .select(`${ContentEntity.table}.processed`)
-    const isProcessed = postContents.reduce((processed, postContent) => {
-      return processed && postContent.processed
-    }, true)
+    const isProcessed = await this.contentService.isAllProcessed(contents)
 
     if (isProcessed) {
       await this.dbWriter<PostEntity>(PostEntity.table)
@@ -840,6 +813,6 @@ export class PostService {
       await this.redisService.publish('post', JSON.stringify(notification))
     }
 
-    return isProcessed
+    // return isProcessed
   }
 }

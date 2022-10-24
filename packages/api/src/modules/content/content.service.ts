@@ -19,7 +19,6 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 import { PassService } from '../pass/pass.service'
-import { PostContentEntity } from '../post/entities/post-content.entity'
 import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
@@ -98,28 +97,28 @@ export class ContentService {
 
   // TODO: Update this logic in PASS-959
   // async isAllProcessed(contentIds: string[]): Promise<boolean> {
-  async isAllProcessed(
-    userId: string,
-    content: ContentBareDto[],
-  ): Promise<boolean> {
-    return (
-      await Promise.all(
-        content.map(async (content) => {
-          return await this.s3contentService.doesObjectExist(
-            `media/${userId}/${content.contentId}.${getContentTypeFormat(
-              content.contentType,
-            )}`,
-          )
-        }),
+  async isAllProcessed(contents: ContentBareDto[]): Promise<boolean> {
+    // return (
+    //   await Promise.all(
+    //     content.map(async (content) => {
+    //       return await this.s3contentService.doesObjectExist(
+    //         `media/${userId}/${content.contentId}.${getContentTypeFormat(
+    //           content.contentType,
+    //         )}`,
+    //       )
+    //     }),
+    //   )
+    // ).every((b) => b)
+    const content = await this.dbReader<ContentEntity>(ContentEntity.table)
+      .whereIn(
+        'id',
+        contents.map((content) => content.contentId),
       )
-    ).every((b) => b)
-    // const content = await this.dbReader<ContentEntity>(ContentEntity.table)
-    //   .whereIn('id', contentIds)
-    //   .select('processed')
-    // return content.every((c) => c.processed)
+      .select('processed')
+    return content.every((c) => c.processed)
   }
 
-  async checkProcessed(): Promise<string[]> {
+  async checkProcessed(): Promise<void> {
     const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .where({ processed: false, failed: false })
       .select('*')
@@ -148,11 +147,6 @@ export class ContentService {
     await this.dbWriter<ContentEntity>(ContentEntity.table)
       .whereIn('id', failedIds)
       .update('failed', true)
-    return (
-      await this.dbReader<PostContentEntity>(PostContentEntity.table)
-        .whereIn('content_id', successfulIds)
-        .distinct('post_id')
-    ).map((postContent) => postContent.post_id)
   }
 
   async findContent(contentId: string): Promise<GetContentResponseDto> {

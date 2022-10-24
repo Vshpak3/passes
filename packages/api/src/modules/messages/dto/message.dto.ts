@@ -47,6 +47,9 @@ export class MessageDto {
   @DtoProperty({ type: 'date' })
   sentAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  contentProcessed: boolean
+
   constructor(message: MessageEntity | undefined, contents: ContentDto[]) {
     if (message) {
       this.text = message.text

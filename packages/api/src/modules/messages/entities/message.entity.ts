@@ -58,4 +58,7 @@ export class MessageEntity extends BaseEntity {
   @Index()
   @Property({ defaultRaw: 'CURRENT_TIMESTAMP(3)', length: 3 })
   sent_at: Date
+
+  @Property({ default: false })
+  content_processed: boolean
 }

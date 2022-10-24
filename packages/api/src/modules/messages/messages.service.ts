@@ -8,6 +8,7 @@ import {
 import { ConfigService } from '@nestjs/config'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
+import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -1343,5 +1344,72 @@ export class MessagesService {
       }
     })
     return !!updated
+  }
+
+  async checkRecentMessagesContentProcessed() {
+    const messageIds = (
+      await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .where({ content_processed: false })
+        .andWhere('created_at', '>', new Date(Date.now() - ms('1 hour')))
+        .select('id')
+    ).map((message) => message.id)
+    await Promise.all(
+      messageIds.map(async (messageId) => {
+        await this.checkMessageContentProcessed(messageId)
+      }),
+    )
+  }
+
+  async checkMessageContentProcessed(messageId: string): Promise<void> {
+    const message = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .leftJoin(ChannelMemberEntity.table, function () {
+        this.on(
+          `${MessageEntity.table}.channel_id`,
+          `${ChannelMemberEntity.table}.channel_id`,
+        ).andOn(
+          `${MessageEntity.table}.sender_id`,
+          `${ChannelMemberEntity.table}.other_user_id`,
+        )
+      })
+      .where(`${MessageEntity.table}.id`, messageId)
+      .select(
+        'contents',
+        'content_processed',
+        'sender_id',
+        `${ChannelMemberEntity.table}.user_id`,
+      )
+      .first()
+
+    if (!message) {
+      throw new BadRequestException(`No message with id ${messageId}`)
+    }
+
+    if (message.content_processed) {
+      return
+    }
+
+    const contentsBare = JSON.parse(message.contents) as ContentBareDto[]
+    const isProcessed = await this.contentService.isAllProcessed(contentsBare)
+    if (isProcessed) {
+      await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .where({ id: messageId })
+        .update({ content_processed: true })
+      const contents = this.contentService.getContentDtosFromBare(
+        contentsBare,
+        true,
+        message.sender_id,
+        0,
+        true,
+      )
+      const notification: MessageNotificationDto = {
+        messageId,
+        contentProcessed: true,
+        notification: MessageNotificationEnum.PROCESSED,
+        recieverId: message.user_id,
+        senderId: message.sender_id,
+        contents,
+      }
+      await this.redisService.publish('message', JSON.stringify(notification))
+    }
   }
 }

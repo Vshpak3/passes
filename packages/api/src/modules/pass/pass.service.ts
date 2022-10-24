@@ -480,8 +480,11 @@ export class PassService {
     const { createdAt, search, creatorId, lastId, pinned, type } =
       getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
-      .andWhere({ creator_id: creatorId, minted: true })
+      .andWhere({ minted: true })
       .select('*')
+    if (creatorId) {
+      query = query.andWhere({ creator_id: creatorId })
+    }
 
     if (type) {
       query = query.andWhere('type', type)
