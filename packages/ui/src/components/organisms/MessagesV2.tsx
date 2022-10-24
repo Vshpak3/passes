@@ -2,27 +2,39 @@ import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
   ContentDto,
-  ListMemberDto
+  ListDto,
+  ListMemberDto,
+  PassDto
 } from "@passes/api-client/models"
 import { useRouter } from "next/router"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
+import { ChannelMassDM } from "src/components/molecules/messages/ChannelMassDM"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
+import { ChannelViewMassDM } from "src/components/molecules/messages/ChannelViewMassDM"
 import { useUser } from "src/hooks/useUser"
 
 interface MessagesV2Props {
   defaultUserId?: string
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<any>>
+  massMessage: boolean
+  setMassMessage: Dispatch<SetStateAction<any>>
 }
 
 export const MessagesV2 = ({
   defaultUserId,
   vaultContent,
-  setVaultContent
+  setVaultContent,
+  massMessage,
+  setMassMessage
 }: MessagesV2Props) => {
   const router = useRouter()
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
+  const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
+  const [selectedLists, setSelectedLists] = useState<ListDto[]>([])
+  const [excludedLists, setExcludedLists] = useState<ListDto[]>([])
+
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
@@ -71,12 +83,24 @@ export const MessagesV2 = ({
 
   return (
     <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
-      <ChannelList
-        onUserSelect={onUserSelect}
-        selectedChannel={selectedChannel}
-        onChannelClicked={handleChannelClicked}
-      />
-      {user && user.userId && (
+      {user && user.userId && massMessage ? (
+        <ChannelMassDM
+          selectedPasses={selectedPasses}
+          setSelectedPasses={setSelectedPasses}
+          selectedLists={selectedLists}
+          setSelectedLists={setSelectedLists}
+          excludedLists={excludedLists}
+          setExcludedLists={setExcludedLists}
+          userId={user?.userId}
+        />
+      ) : (
+        <ChannelList
+          onUserSelect={onUserSelect}
+          selectedChannel={selectedChannel}
+          onChannelClicked={handleChannelClicked}
+        />
+      )}
+      {user && user.userId && !massMessage ? (
         <ChannelView
           selectedChannel={selectedChannel}
           gallery={gallery}
@@ -85,6 +109,18 @@ export const MessagesV2 = ({
           user={user}
           vaultContent={vaultContent}
           setVaultContent={setVaultContent}
+        />
+      ) : (
+        <ChannelViewMassDM
+          vaultContent={vaultContent}
+          setVaultContent={setVaultContent}
+          selectedPasses={selectedPasses}
+          setSelectedPasses={setSelectedPasses}
+          selectedLists={selectedLists}
+          setSelectedLists={setSelectedLists}
+          excludedLists={excludedLists}
+          setExcludedLists={setExcludedLists}
+          setMassMessage={setMassMessage}
         />
       )}
     </div>

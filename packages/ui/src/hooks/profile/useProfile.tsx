@@ -17,7 +17,6 @@ export const useProfile = () => {
   const [profileUsername, setProfileUsername] = useState<string>()
 
   const { user: { username: loggedInUsername } = {} } = useUser()
-
   const {
     data: profileInfo,
     isValidating: loadingProfileInfo,

@@ -67,7 +67,10 @@ export const ChannelList: FC<ChannelListProps> = ({
             />
           )}
         </div>
-        <ChannelSearchInput handleSearch={handleChangeSearch} />
+        <ChannelSearchInput
+          handleSearch={handleChangeSearch}
+          placeholder="Search people.."
+        />
       </div>
 
       <div className="pt-6">

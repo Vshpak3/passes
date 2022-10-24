@@ -1,35 +1,30 @@
 import { Combobox } from "@headlessui/react"
-import { PassDto } from "@passes/api-client"
+import { ListDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useCallback, useMemo } from "react"
 import { SearchBar } from "src/components/molecules/SearchBar"
-import { useProfile } from "src/hooks/profile/useProfile"
-import { usePassesSearch } from "src/hooks/search/usePassesSearch"
+import { useListsSearch } from "src/hooks/search/useListsSearch"
 
-interface PassesSearchBarProps {
-  selectedPassIds: string[]
-  onSelect: (pass: PassDto) => void
-  userId?: string
+interface ListsSearchBarProps {
+  selectedListIds: string[]
+  onSelect: (list: ListDto) => void
+  userId: string
 }
 
-export const PassesSearchBar: FC<PassesSearchBarProps> = ({
-  selectedPassIds,
+export const ListsSearchBar: FC<ListsSearchBarProps> = ({
+  selectedListIds,
   onSelect,
   userId
 }) => {
-  const { profileUserId } = useProfile()
-
-  const { results, setSearchValue, searchValue } = usePassesSearch(
-    userId ? userId : profileUserId
-  )
+  const { results, setSearchValue, searchValue } = useListsSearch(userId)
 
   const searchOptions = useMemo(
     () =>
-      results.map((pass) => (
+      results.map((list) => (
         <Combobox.Option
-          key={pass.passId}
-          value={pass}
-          disabled={selectedPassIds.includes(pass.passId)}
+          key={list.listId}
+          value={list}
+          disabled={selectedListIds.includes(list.listId)}
         >
           {({ active, disabled }) => (
             <span
@@ -38,12 +33,12 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
                 "text-gray-500": disabled
               })}
             >
-              {pass.title}
+              {list.name}
             </span>
           )}
         </Combobox.Option>
       )),
-    [selectedPassIds, results]
+    [selectedListIds, results]
   )
 
   const onInputChange = useCallback(
@@ -56,8 +51,8 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
     <SearchBar
       options={searchOptions}
       searchValue={searchValue}
-      emptyText="passes"
-      placeholder="Find passes"
+      emptyText="lists"
+      placeholder="Find lists"
       onInputChange={onInputChange}
       onSelect={onSelect}
     />
