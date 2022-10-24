@@ -15,15 +15,15 @@ export const NameDisplay: FC<NameDisplayProps> = ({
 }) => {
   const text = (
     <>
-      {displayName}
-      <Text fontSize={11} className="text-gray-500">
+      <span>{displayName}</span>
+      <Text fontSize={11} className="ml-2 text-gray-500">
         {" @" + username}
       </Text>
     </>
   )
   return linked ? (
     <Link href={`${window.location.origin}/${username}`}>
-      <a>{text}</a>
+      <a className="flex items-center">{text}</a>
     </Link>
   ) : (
     text

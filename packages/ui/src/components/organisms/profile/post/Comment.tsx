@@ -85,7 +85,6 @@ export const Comment: FC<CommentProps> = ({
                   username={commenterUsername}
                   linked={true}
                 />
-                {/* </a> */}
                 {!!isHidden && (
                   <Text fontSize={14} className="text-gray-500">
                     &nbsp;&nbsp; hidden
