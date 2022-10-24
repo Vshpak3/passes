@@ -426,6 +426,14 @@ export class MessagesService {
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
+    if (
+      createBatchMessageDto.text.length === 0 &&
+      createBatchMessageDto.contentIds.length === 0
+    ) {
+      throw new BadRequestException(
+        'Must provide either text or content in a batch message',
+      )
+    }
     if (createBatchMessageDto.scheduledAt) {
       const scheduledAt = createBatchMessageDto.scheduledAt
       checkScheduledAt(scheduledAt)
@@ -463,6 +471,11 @@ export class MessagesService {
     }
     if (tipAmount && price) {
       throw new MessageSendError('send message with tip and price')
+    }
+    if (text.length === 0 && contentIds.length === 0) {
+      throw new BadRequestException(
+        'Must provide either text or content in a message',
+      )
     }
     if (contentIds.length === 0 && price) {
       throw new MessageSendError('cant give price to messages with no content')
@@ -1314,6 +1327,11 @@ export class MessagesService {
   ) {
     const { text, contentIds, price, previewIndex } =
       createWelcomeMessageRequestDto
+    if (text.length === 0 && contentIds.length === 0) {
+      throw new BadRequestException(
+        'Must provide either text or content in a welcome message',
+      )
+    }
     await this.createPaidMessage(
       userId,
       text,

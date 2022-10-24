@@ -2404,8 +2404,13 @@ export class PaymentService {
           break
       }
       await this.creatorStatsService.handleChargebackSuccess(
+        payin.user_id,
         payin.creator_id,
-        payin.creator_amount,
+        {
+          [EarningCategoryEnum.NET]: payin.creator_amount,
+          [EarningCategoryEnum.GROSS]: payin.amount,
+          [EarningCategoryEnum.AGENCY]: 0,
+        },
       )
     }
   }

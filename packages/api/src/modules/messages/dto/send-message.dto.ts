@@ -5,7 +5,7 @@ import { PayinMethodDto } from '../../payment/dto/payin-method.dto'
 import { MESSAGE_LENGTH } from '../constants/schema'
 
 export class SendMessageRequestDto {
-  @Length(1, MESSAGE_LENGTH)
+  @Length(0, MESSAGE_LENGTH)
   @DtoProperty({ type: 'string' })
   text: string
 

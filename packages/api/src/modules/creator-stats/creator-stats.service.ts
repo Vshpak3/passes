@@ -158,6 +158,7 @@ export class CreatorStatsService {
   }
 
   async handleChargebackSuccess(
+    userId: string,
     creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
@@ -179,6 +180,12 @@ export class CreatorStatsService {
       amounts,
       NEGATE,
     )
+    await this.dbWriter<UserSpendingEntity>(UserSpendingEntity.table)
+      .where({
+        user_id: userId,
+        creator_id: creatorId,
+      })
+      .decrement('amount', amounts[EarningCategoryEnum.GROSS])
   }
 
   async handlePayout(
