@@ -1,4 +1,5 @@
 import { NextPage } from "next"
+import { IntercomProvider } from "react-use-intercom"
 import { Backers } from "src/components/organisms/home/Backers"
 import { ConnectWithFans } from "src/components/organisms/home/ConnectWithFans"
 import { CreatorCarousel } from "src/components/organisms/home/CreatorCarousel"
@@ -13,19 +14,24 @@ import { TrackStats } from "src/components/organisms/home/TrackStats"
 
 const HomePage: NextPage = () => {
   return (
-    <div className="mx-auto bg-black">
-      <Navbar />
-      <Hero />
-      <CreatorCarousel />
-      <MonthlyMemberships />
-      <ConnectWithFans />
-      <TrackStats />
-      <FanTips />
-      {/* <FAQ /> */}
-      <SupportingCreators />
-      <Backers />
-      <Footer />
-    </div>
+    <IntercomProvider
+      appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID ?? ""}
+      autoBoot
+    >
+      <div className="mx-auto bg-black">
+        <Navbar />
+        <Hero />
+        <CreatorCarousel />
+        <MonthlyMemberships />
+        <ConnectWithFans />
+        <TrackStats />
+        <FanTips />
+        {/* <FAQ /> */}
+        <SupportingCreators />
+        <Backers />
+        <Footer />
+      </div>
+    </IntercomProvider>
   )
 }
 

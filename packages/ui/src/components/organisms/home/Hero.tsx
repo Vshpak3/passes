@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, { MouseEventHandler, useState } from "react"
+import { isProd } from "src/helpers/env"
 
 export const Hero = () => {
   const [emailAddress, setEmailAddress] = useState("")
@@ -21,7 +22,9 @@ export const Hero = () => {
     setIsSubmittingEmail(true)
 
     try {
-      await axios.post("/api/email", { emailAddress })
+      if (isProd) {
+        await axios.post("/api/email", { emailAddress })
+      }
       setEmailFeedback("Thank you for subscribing!")
     } catch (error: any) {
       setEmailFeedback("An error occurred...")
