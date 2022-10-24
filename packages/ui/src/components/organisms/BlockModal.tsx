@@ -1,28 +1,33 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import Link from "next/link"
-import { FC, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
 
-import { Modal, ModalProps } from "./Modal"
+import { Modal } from "./Modal"
 
 const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
 
-interface BlockModalProps extends ModalProps {
+export interface BlockModalData {
   userId: string
   username: string
 }
 
+export interface BlockModalProps {
+  blockData: BlockModalData
+  setBlockData: Dispatch<SetStateAction<BlockModalData | null>>
+}
+
 export const BlockModal: FC<BlockModalProps> = ({
-  userId,
-  username,
-  isOpen = false,
-  setOpen
+  blockData,
+  setBlockData
 }) => {
   const [blockValue, setBlockValue] = useState()
+
+  const { userId, username } = blockData
 
   const onFanBlock = async () => {
     // TODO: this block value is not actually used
@@ -32,7 +37,7 @@ export const BlockModal: FC<BlockModalProps> = ({
     try {
       const api = new FollowApi()
       await api.blockFollower({ followerId: userId })
-      setOpen(false)
+      setBlockData(null)
 
       toast.success(
         <div>
@@ -48,7 +53,7 @@ export const BlockModal: FC<BlockModalProps> = ({
   }
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={true} setOpen={() => setBlockData(null)}>
       <h2 className="mb-5 font-semibold text-white">BLOCK {username}</h2>
       <RadioGroup
         value={blockValue}
@@ -89,7 +94,7 @@ export const BlockModal: FC<BlockModalProps> = ({
       </RadioGroup>
 
       <div className="mt-7 flex justify-end gap-4">
-        <Button onClick={() => setOpen(false)} variant="">
+        <Button onClick={() => setBlockData(null)} variant="">
           <Text className="text-white">Cancel</Text>
         </Button>
         <Button

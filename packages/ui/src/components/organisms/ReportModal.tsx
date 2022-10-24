@@ -1,25 +1,30 @@
 import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
-import { FC, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
 
-import { Modal, ModalProps } from "./Modal"
+import { Modal } from "./Modal"
 
-interface ReportModalProps extends ModalProps {
+export interface ReportModalData {
   userId: string
   username: string
 }
 
+export interface ReportModalProps {
+  reportData: ReportModalData
+  setReportData: Dispatch<SetStateAction<ReportModalData | null>>
+}
+
 export const ReportModal: FC<ReportModalProps> = ({
-  userId,
-  username,
-  isOpen = false,
-  setOpen
+  reportData,
+  setReportData
 }) => {
   const [reportValue, setReportValue] = useState()
+
+  const { userId, username } = reportData
 
   const onFanReport = async () => {
     if (!reportValue) {
@@ -31,14 +36,14 @@ export const ReportModal: FC<ReportModalProps> = ({
         reportUserDto: { reason: reportValue, userId }
       })
       toast.success("Reported this user")
-      setOpen(false)
+      setReportData(null)
     } catch (error: any) {
       errorMessage(error, true)
     }
   }
 
   return (
-    <Modal isOpen={isOpen} setOpen={setOpen}>
+    <Modal isOpen={true} setOpen={() => setReportData(null)}>
       <h2 className="mb-5 font-semibold text-white">REPORT ${username}</h2>
       <RadioGroup
         value={reportValue}
@@ -104,7 +109,7 @@ export const ReportModal: FC<ReportModalProps> = ({
         </RadioGroup.Option>
       </RadioGroup>
       <div className="flex justify-end gap-4">
-        <Button onClick={() => setOpen(false)} variant="">
+        <Button onClick={() => setReportData(null)} variant="">
           <Text className="text-white">Cancel</Text>
         </Button>
         <Button

@@ -17,6 +17,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   onDelete
 }) => {
   const modalContentRef = useRef(null)
+
   useOnClickOutside(modalContentRef, () => {
     setOpen(false)
   })
@@ -24,6 +25,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   useEffect(() => {
     ReactModal.setAppElement("body")
   }, [])
+
   return (
     <ReactModal
       isOpen={isOpen}

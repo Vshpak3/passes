@@ -1,5 +1,5 @@
-import { BlockModalData } from "src/contexts/BlockModal"
-import { ReportModalData } from "src/contexts/ReportModal"
+import { BlockModalData } from "src/components/organisms/BlockModal"
+import { ReportModalData } from "src/components/organisms/ReportModal"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { useBlockModal } from "src/hooks/profile/useBlockModal"
 import { useReportModal } from "src/hooks/profile/useReportModal"
@@ -18,11 +18,10 @@ export const DropDownReport = (
   showOption: boolean,
   data: ReportModalData
 ): DropdownOption[] => {
-  const { setIsReportModalOpen, setReportModalData } = useReportModal()
+  const { setReportData } = useReportModal()
 
   return DropDownGeneral("Report", showOption, () => {
-    setIsReportModalOpen(true)
-    setReportModalData(data)
+    setReportData(data)
   })
 }
 
@@ -30,11 +29,10 @@ export const DropDownBlock = (
   showOption: boolean,
   data: BlockModalData
 ): DropdownOption[] => {
-  const { setIsBlockModalOpen, setBlockModalData } = useBlockModal()
+  const { setBlockData } = useBlockModal()
 
   return DropDownGeneral("Block", showOption, () => {
-    setIsBlockModalOpen(true)
-    setBlockModalData(data)
+    setBlockData(data)
   })
 }
 

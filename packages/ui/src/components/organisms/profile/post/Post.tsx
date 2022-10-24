@@ -11,8 +11,8 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/profile/useFeed"
-import { usePost } from "src/hooks/profile/usePost"
 
+import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
@@ -37,8 +37,9 @@ const PostUnmemo: FC<PostProps> = ({
   isPinned = false,
   pinnedPostCount = 0
 }) => {
+  const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
+
   const router = useRouter()
-  const { removePost } = usePost()
   const { mutatePinnedPosts, pinPost, unpinPost } = useFeed(post.userId)
 
   const {
@@ -71,17 +72,20 @@ const PostUnmemo: FC<PostProps> = ({
     !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
   )
 
+  const onDelete = () => {
+    setIsRemoved(true)
+    if (postByUrl) {
+      router.push(`/${username}`)
+    }
+  }
+
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, {
       username: username,
       userId: userId
     }),
     ...DropDownGeneral("Delete", post.isOwner, async () => {
-      await removePost(postId)
-      setIsRemoved(true)
-      if (postByUrl) {
-        router.push(`/${username}`)
-      }
+      setDeletePostModelOpen(true)
     }),
     ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
       if (pinnedPostCount === MAX_PINNED_POST) {
@@ -149,6 +153,13 @@ const PostUnmemo: FC<PostProps> = ({
             <PostEngagement post={post} />
           </FormContainer>
         </div>
+      )}
+      {deletePostModelOpen && (
+        <DeletePostModal
+          post={post}
+          onDelete={onDelete}
+          setOpen={setDeletePostModelOpen}
+        />
       )}
     </>
   )

@@ -8,7 +8,6 @@ import {
 } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
-import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'

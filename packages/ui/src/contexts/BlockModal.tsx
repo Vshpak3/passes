@@ -1,13 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from "react"
-
-export interface BlockModalData {
-  username: string
-  userId: string
-}
+import { BlockModalData } from "src/components/organisms/BlockModal"
 
 interface BlockModalContextProps {
-  readonly setIsBlockModalOpen: Dispatch<SetStateAction<boolean>>
-  readonly setBlockModalData: Dispatch<SetStateAction<BlockModalData | null>>
+  readonly setBlockData: Dispatch<SetStateAction<BlockModalData | null>>
 }
 
 export const BlockModalContext = createContext<BlockModalContextProps>(

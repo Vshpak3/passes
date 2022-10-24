@@ -1,13 +1,8 @@
 import { createContext, Dispatch, SetStateAction } from "react"
-
-export interface ReportModalData {
-  username: string
-  userId: string
-}
+import { ReportModalData } from "src/components/organisms/ReportModal"
 
 interface ReportModalContextProps {
-  readonly setIsReportModalOpen: Dispatch<SetStateAction<boolean>>
-  readonly setReportModalData: Dispatch<SetStateAction<ReportModalData | null>>
+  readonly setReportData: Dispatch<SetStateAction<ReportModalData | null>>
 }
 
 export const ReportModalContext = createContext<ReportModalContextProps>(

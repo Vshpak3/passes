@@ -23,14 +23,16 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms/Head"
+import { BlockModalData } from "src/components/organisms/BlockModal"
+import { ReportModalData } from "src/components/organisms/ReportModal"
 import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
 import { AppProviders } from "src/contexts/AppProviders"
-import { BlockModalContext, BlockModalData } from "src/contexts/BlockModal"
+import { BlockModalContext } from "src/contexts/BlockModal"
 import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
-import { ReportModalContext, ReportModalData } from "src/contexts/ReportModal"
+import { ReportModalContext } from "src/contexts/ReportModal"
 import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
@@ -46,7 +48,7 @@ const BuyPassModal = dynamic(
   { ssr: false }
 )
 const BuyPostModal = dynamic(
-  () => import("src/components/organisms/payment/BuyPostModal"),
+  () => import("../components/organisms/payment/BuyPostModal"),
   { ssr: false }
 )
 const ViewPostModal = dynamic(
@@ -93,14 +95,8 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
   const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
-
-  const [isReportModalOpen, setIsReportModalOpen] = useState(false)
-  const [isBlockModalOpen, setIsBlockModalOpen] = useState(false)
-  const [reportModalData, setReportModalData] =
-    useState<ReportModalData | null>(null)
-  const [blockModalData, setBlockModalData] = useState<BlockModalData | null>(
-    null
-  )
+  const [reportData, setReportData] = useState<ReportModalData | null>(null)
+  const [blockData, setBlockData] = useState<BlockModalData | null>(null)
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
@@ -108,9 +104,9 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
       ViewPostModalContext.Provider,
       { setPost: setViewPost, viewPostActiveIndex }
     ],
-    [ReportModalContext.Provider, { setIsReportModalOpen, setReportModalData }],
-    [BlockModalContext.Provider, { setIsBlockModalOpen, setBlockModalData }],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
+    [BlockModalContext.Provider, { setBlockData }],
+    [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }]
   ]
 
@@ -120,21 +116,11 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
       {viewPost && <ViewPostModal post={viewPost} setPost={setViewPost} />}
       {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
       {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
-      {isReportModalOpen && (
-        <ReportModal
-          isOpen={isReportModalOpen}
-          setOpen={setIsReportModalOpen}
-          username={reportModalData?.username || ""}
-          userId={reportModalData?.userId || ""}
-        />
+      {reportData && (
+        <ReportModal reportData={reportData} setReportData={setReportData} />
       )}
-      {isBlockModalOpen && (
-        <BlockModal
-          isOpen={isBlockModalOpen}
-          setOpen={setIsBlockModalOpen}
-          username={blockModalData?.username || ""}
-          userId={blockModalData?.userId || ""}
-        />
+      {blockData && (
+        <BlockModal blockData={blockData} setBlockData={setBlockData} />
       )}
       <ToastContainer
         position="bottom-center"
