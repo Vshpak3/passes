@@ -71,7 +71,6 @@ import {
 } from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
-const CHECK_PROCESSED_UNTIL = ms('1 hour')
 const MAX_PINNED_POST = 3
 
 @Injectable()
