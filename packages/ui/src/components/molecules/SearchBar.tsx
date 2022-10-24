@@ -24,7 +24,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 }) => {
   return (
     <Combobox value={searchValue} onChange={onSelect}>
-      <div className="flex flex-col">
+      <div className="relative flex flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
@@ -42,12 +42,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         </Combobox.Button>
         <Combobox.Options
           className={classNames(
-            isDesktop ? "h-full w-full" : "max-h-[165px]",
-            {
-              "absolute top-16 w-full pr-2 xs:right-2 xs:w-auto xs:pr-0":
-                !isDesktop
-            },
-            "z-10 overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none xs:min-w-[320px] sm:min-w-[360px]"
+            "absolute top-14 z-10 w-full overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none",
+            { "max-h-[165px]": isDesktop }
           )}
         >
           {options.length ? options : <EmptyResult text={emptyText} />}
