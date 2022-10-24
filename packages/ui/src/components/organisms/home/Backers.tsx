@@ -9,32 +9,32 @@ interface Backer {
 const BACKERS: Backer[] = [
   {
     name: "Kyle Samani",
-    image: "/img/homepage/investors2/kyle.png",
+    image: "/img/homepage/investors/kyle.png",
     subtitle: "Multicoin Capital"
   },
   {
     name: "David Sacks",
-    image: "/img/homepage/investors2/david.png",
+    image: "/img/homepage/investors/david.png",
     subtitle: "Craft Ventures"
   },
   {
     name: "Wen-Wen Lam",
-    image: "/img/homepage/investors2/wenwen.png",
+    image: "/img/homepage/investors/wenwen.png",
     subtitle: "Gradient Ventures"
   },
   {
     name: "Jake Paul",
-    image: "/img/homepage/investors2/jake.png",
+    image: "/img/homepage/investors/jake.png",
     subtitle: "Antifund"
   },
   {
     name: "Ryan Wilson",
-    image: "/img/homepage/investors2/ryan.png",
+    image: "/img/homepage/investors/ryan.png",
     subtitle: "ThankYouX"
   },
   {
     name: "Paris Hilton",
-    image: "/img/homepage/investors2/paris.png",
+    image: "/img/homepage/investors/paris.png",
     subtitle: "Celebrity"
   }
 ]
