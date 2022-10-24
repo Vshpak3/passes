@@ -33,6 +33,12 @@ if [[ ${input} == 'full' ]] ; then
   fi
 fi
 
+# Create reader user
+MYSQL_PWD=root mysql -h 127.0.0.1 -P 3306 -u root -e "
+  CREATE USER IF NOT EXISTS 'reader'@'%' IDENTIFIED BY 'reader';
+  GRANT SELECT ON passes.* TO 'reader'@'%'
+"
+
 log 'Removing all ORM metadata'
 git clean -xfd packages/api/src/database/
 

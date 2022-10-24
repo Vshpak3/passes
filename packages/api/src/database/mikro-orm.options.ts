@@ -3,6 +3,7 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import { ConfigService } from '@nestjs/config'
 import path from 'path'
 
+import { isEnv } from '../util/env'
 import { ContextName, DB_WRITER } from './database.decorator'
 import { getDatabaseOptions } from './database.options'
 import { ColumnNamingStrategy } from './mikro-orm.naming'
@@ -13,7 +14,6 @@ export function getMikroOrmOptions(
 ): any {
   // Temporary until we upgrade to 5.4.0
   // ): Options<MySqlDriver> | Record<'registerRequestContext', boolean> {
-  const env = configService.get('infra.env')
   const dbOptions = getDatabaseOptions(configService, contextName)
   let migrations:
     | { path: string; emit?: 'ts' | 'js'; safe: boolean }
@@ -21,7 +21,7 @@ export function getMikroOrmOptions(
   if (contextName === DB_WRITER) {
     migrations = {
       path: path.join(__dirname, 'migrations'),
-      emit: env === 'dev' ? 'ts' : 'js',
+      emit: isEnv(configService, 'dev') ? 'ts' : 'js',
       safe: true, // prevents dropping tables and columns
     }
   }

@@ -13,29 +13,15 @@ System Requirements
 
 ### One-time Setup
 
-Run the following commands to setup the repository:
+Run the following command to setup the repository:
 ```bash
-# downloads all dependencies for backend and frontend
-yarn install
-
-# spins up docker containers for backend
-./bin/reset-local-database.sh full
-
-# creates s3 bucket for hosting content
-./bin/setup-local-s3-bucket.sh
+./bin/local-setup.sh
 ```
 
 ### On Rebase / Pulling New Code
 
-After rebasing, you may have to run these commands for the application to run
-properly:
-```bash
-# handles dependency changes
-yarn install
-
-# handles database schema changes
-./bin/reset-local-database.sh
-```
+After rebasing, you may have to run the above setup command again for the
+application to run properly.
 
 ### Running Locally
 
@@ -51,12 +37,12 @@ docs at `http://localhost:3001/api`.
 
 You can also use the OpenAPI server to send API requests to the backend for
 testing. For this to work, you first need to log in to the application at
-`http://localhost:3000/login`. Then copy your access token and click on
-the "Authorize" button in the OpenAPI server to add it in. You can get the
-access token by running:
+`http://localhost:3000/login`. Next go to the console and run:
 ```js
 JSON.parse(window.localStorage.getItem("access-token"))
 ```
+Finally, copy the output, navigate to `http://localhost:3001/api`, click on
+the "Authorize" button in the top right, and paste in the output.
 
 ### Unit Tests and Linting
 

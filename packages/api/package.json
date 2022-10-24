@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "batch": "NODE_ENV=dev yarn ts-node --project tsconfig.json ./src/batch/batch.entrypoint.ts",
-    "docker": "docker compose up --detach",
     "generate-openapi-spec": "NODE_ENV=dev yarn ts-node --project tsconfig.json ./src/openapi/generate-openapi-spec.ts",
     "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix .",

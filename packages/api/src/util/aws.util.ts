@@ -1,5 +1,7 @@
 import { ConfigService } from '@nestjs/config'
 
+import { isEnv } from './env'
+
 export function localMockedAwsDev(): boolean {
   return process.env.NODE_ENV === 'dev' && !process.env.AWS_ACCESS_KEY_ID
 }
@@ -8,7 +10,7 @@ export function getAwsConfig(
   configService: ConfigService,
 ): Record<string, any> {
   if (
-    configService.get('infra.env') === 'dev' &&
+    isEnv(configService, 'dev') &&
     process.env.AWS_ACCESS_KEY_ID &&
     process.env.AWS_SECRET_ACCESS_KEY &&
     process.env.AWS_SESSION_TOKEN

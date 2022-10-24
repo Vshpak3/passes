@@ -61,7 +61,7 @@ echo
 rm -rf "${out_path}/src/.openapi-generator*"
 
 
-### Output information about unathenticated endpoints
+### Output information about unauthenticated endpoints
 
 python3 <<EOT
 import collections
@@ -89,7 +89,7 @@ echo
 
 ### Finishing Touches
 
-# Transpile generated TypeScript sources to JavaScript
+# Compile generated TypeScript sources to JavaScript
 yarn workspace @passes/api-client build
 
 echo 'Done!'
