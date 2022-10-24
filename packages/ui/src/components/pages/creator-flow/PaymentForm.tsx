@@ -329,10 +329,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                         className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-600"
                       />
                       <span className="text-base">
-                        By checking this box I agree to Passes
+                        By checking this box I agree to Passes{" "}
                         <Link href="/terms" className="text-passes-pink-100">
-                          {" "}
-                          Terms and Conditions
+                          <a target="_blank">Terms and Conditions</a>
                         </Link>
                       </span>
                     </label>
