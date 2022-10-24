@@ -1174,12 +1174,6 @@ export class MessagesService {
 
     let query = this.dbReader<MessageEntity>(MessageEntity.table)
       .where({ channel_id: channelId, pending })
-      .andWhere(function () {
-        return this.where('sender_id', userId).orWhere(
-          'content_processed',
-          true,
-        )
-      })
       .select(`${MessageEntity.table}.*`)
       .limit(MAX_MESSAGES_PER_REQUEST)
 
