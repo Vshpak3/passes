@@ -66,7 +66,7 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
       post.setIsRemoved?.(true)
       setPost(null)
     }),
-    DropDownCopyLink(username, postId)
+    ...DropDownCopyLink(true, username, postId)
   ]
 
   return (

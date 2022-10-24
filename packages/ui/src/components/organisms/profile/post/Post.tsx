@@ -99,7 +99,7 @@ const PostUnmemo: FC<PostProps> = ({
       mutatePinnedPosts()
       setIsRemoved(true)
     }),
-    DropDownCopyLink(username, postId)
+    ...DropDownCopyLink(contentProcessed, username, postId)
   ]
 
   return (

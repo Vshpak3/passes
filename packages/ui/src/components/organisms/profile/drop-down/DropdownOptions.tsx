@@ -39,11 +39,11 @@ export const DropDownBlock = (
 }
 
 export const DropDownCopyLink = (
+  showOption: boolean,
   username: string,
   postId: string
-): DropdownOption => {
-  return {
-    text: "Copy link to post",
-    onClick: () => copyLinkToClipboard(username, postId)
-  }
+): DropdownOption[] => {
+  return DropDownGeneral("Copy link to post", showOption, () => {
+    copyLinkToClipboard(username, postId)
+  })
 }
