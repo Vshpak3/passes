@@ -38,3 +38,5 @@ export const VaultMediaModal: FC<VaultMediaModalProps> = ({
     </Modal>
   )
 }
+
+export default VaultMediaModal // eslint-disable-line import/no-default-export

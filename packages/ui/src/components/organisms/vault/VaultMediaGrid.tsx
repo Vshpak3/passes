@@ -5,14 +5,24 @@ import {
   GetVaultQueryRequestDtoOrderEnum,
   GetVaultQueryResponseDto
 } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import { FC, useState } from "react"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { VaultMediaItem } from "src/components/molecules/vault/VaultMedia"
-import { MediaModal } from "src/components/organisms/MediaModal"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+
+const VaultMediaItem = dynamic(
+  import("src/components/molecules/vault/VaultMedia"),
+  { ssr: false }
+)
+const MediaModal = dynamic(
+  () => import("src/components/organisms/MediaModal"),
+  {
+    ssr: false
+  }
+)
 
 interface VaultMediaGridProps {
   selectedItems: ContentDto[]

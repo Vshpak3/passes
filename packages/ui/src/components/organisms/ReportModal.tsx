@@ -119,3 +119,5 @@ export const ReportModal: FC<ReportModalProps> = ({
     </Modal>
   )
 }
+
+export default ReportModal // eslint-disable-line import/no-default-export

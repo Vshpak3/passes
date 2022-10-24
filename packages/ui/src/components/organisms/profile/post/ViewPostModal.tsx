@@ -188,3 +188,5 @@ export const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     </Dialog>
   )
 }
+
+export default ViewPostModal // eslint-disable-line import/no-default-export

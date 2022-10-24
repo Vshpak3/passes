@@ -6,6 +6,7 @@ import debounce from "lodash.debounce"
 import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
+import dynamic from "next/dynamic"
 import Router from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
@@ -22,11 +23,6 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
 import { DefaultHead } from "src/components/atoms/Head"
-import { BlockModal } from "src/components/organisms/BlockModal"
-import { BuyPassModal } from "src/components/organisms/payment/BuyPassModal"
-import { BuyPostModal } from "src/components/organisms/payment/BuyPostModal"
-import { ViewPostModal } from "src/components/organisms/profile/post/ViewPostModal"
-import { ReportModal } from "src/components/organisms/ReportModal"
 import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
 import { AppProviders } from "src/contexts/AppProviders"
@@ -40,6 +36,27 @@ import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 import { useUser } from "src/hooks/useUser"
 import { SWRConfig } from "swr"
+
+const BlockModal = dynamic(
+  () => import("src/components/organisms/BlockModal"),
+  { ssr: false }
+)
+const BuyPassModal = dynamic(
+  () => import("src/components/organisms/payment/BuyPassModal"),
+  { ssr: false }
+)
+const BuyPostModal = dynamic(
+  () => import("src/components/organisms/payment/BuyPostModal"),
+  { ssr: false }
+)
+const ViewPostModal = dynamic(
+  () => import("src/components/organisms/profile/post/ViewPostModal"),
+  { ssr: false }
+)
+const ReportModal = dynamic(
+  () => import("src/components/organisms/ReportModal"),
+  { ssr: false }
+)
 
 // Only show nprogress after this many milliseconds (slow loading)
 const LOADING_DEBOUNCE_TIME = 500

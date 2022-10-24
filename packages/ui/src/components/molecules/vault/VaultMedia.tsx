@@ -89,3 +89,5 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
     </div>
   )
 }
+
+export default VaultMediaItem // eslint-disable-line import/no-default-export

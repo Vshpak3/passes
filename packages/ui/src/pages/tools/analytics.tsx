@@ -1,12 +1,22 @@
 import { NextPage } from "next"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 import { TabButton } from "src/components/atoms/Button"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
-import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
-import { MessageStatistics } from "src/components/pages/tools/analytics/MessageStatistics"
-import { PostStatistics } from "src/components/pages/tools/analytics/PostStatistics"
 import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
+const EarningsGraph = dynamic(
+  () => import("src/components/pages/tools/analytics/EarningsGraph"),
+  { ssr: false }
+)
+const MessageStatistics = dynamic(
+  () => import("src/components/pages/tools/analytics/MessageStatistics"),
+  { ssr: false }
+)
+const PostStatistics = dynamic(
+  () => import("src/components/pages/tools/analytics/PostStatistics"),
+  { ssr: false }
+)
 
 const Analytics: NextPage = () => {
   let tab = window.location.hash.slice(1) as AnalyticsNavigationOptions

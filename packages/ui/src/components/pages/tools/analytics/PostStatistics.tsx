@@ -49,3 +49,5 @@ export const PostStatistics = () => {
     </div>
   )
 }
+
+export default PostStatistics // eslint-disable-line import/no-default-export

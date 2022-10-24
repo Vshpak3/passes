@@ -236,3 +236,5 @@ const EARNINGS_GRAPH_TABS = [
     value: CreatorEarningDtoTypeEnum.Chargebacks
   }
 ]
+
+export default EarningsGraph // eslint-disable-line import/no-default-export

@@ -4,6 +4,7 @@ import {
   GetFeedResponseDto,
   PostDto
 } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 import {
@@ -12,8 +13,11 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { Header } from "src/components/molecules/performance/Header"
-import { Post } from "src/components/organisms/profile/post/Post"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
+const Post = dynamic(
+  () => import("src/components/organisms/profile/post/Post"),
+  { ssr: false }
+)
 
 // TODO: fix formatting
 const ContentFeedEmpty = (

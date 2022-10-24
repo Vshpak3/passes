@@ -81,3 +81,5 @@ export const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
     </Modal>
   )
 }
+
+export default BuyPostModal // eslint-disable-line import/no-default-export

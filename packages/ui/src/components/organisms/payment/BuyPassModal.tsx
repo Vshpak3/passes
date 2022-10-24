@@ -57,3 +57,5 @@ export const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
     </Modal>
   )
 }
+
+export default BuyPassModal // eslint-disable-line import/no-default-export

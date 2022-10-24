@@ -60,3 +60,5 @@ export const MessageStatistics = () => {
     </div>
   )
 }
+
+export default MessageStatistics // eslint-disable-line import/no-default-export

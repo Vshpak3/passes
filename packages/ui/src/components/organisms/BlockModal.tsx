@@ -104,3 +104,5 @@ export const BlockModal: FC<BlockModalProps> = ({
     </Modal>
   )
 }
+
+export default BlockModal // eslint-disable-line import/no-default-export
