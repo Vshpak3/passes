@@ -81,9 +81,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                   {item.name}
                 </>
               </Link>
-              <ChevronDown
-                className={`ml-2 h-6 w-6 ${open ? "rotate-180" : ""}`}
-              />
+              <ChevronDown className={`ml-2 ${open ? "rotate-180" : ""}`} />
             </span>
           </Disclosure.Button>
           {open && (
