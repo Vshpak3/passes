@@ -13,7 +13,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { SelectPassFilter } from "src/components/atoms/passes/SelectPassFilter"
-import { ProfilePassCard } from "src/components/molecules/pass/ProfilePassCard"
+import { PassCard } from "src/components/molecules/pass/PassCard"
 import { Cross } from "src/icons/CrossIcon"
 
 interface PassesFeedProps {
@@ -78,7 +78,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         fetchProps={{ creatorId }}
         emptyElement={<span>No Pass to show</span>}
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
-          return <ProfilePassCard pass={arg} />
+          return <PassCard pass={arg} />
         }}
         classes="mt-[100px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
       />

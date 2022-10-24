@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css"
 
 import { PassDto } from "@passes/api-client"
 import { FC } from "react"
-import { ProfilePassCard } from "src/components/molecules/pass/ProfilePassCard"
+import { PassCard } from "src/components/molecules/pass/PassCard"
 
 interface PassesProps {} // eslint-disable-line @typescript-eslint/no-empty-interface
 
@@ -18,7 +18,7 @@ export const PassTypes: FC<PassesProps> = () => {
       <div className="overflow-x-none relative mx-0 mt-4 flex flex-col items-start">
         {/* eslint-disable-next-line sonarjs/no-empty-collection */}
         {creatorPasses?.map((pass, index) => (
-          <ProfilePassCard pass={pass} key={index} />
+          <PassCard pass={pass} key={index} />
         ))}
       </div>
     </div>
