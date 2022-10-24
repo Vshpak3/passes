@@ -223,6 +223,12 @@ export class PostService {
           dbReader.raw('?', [userId]),
         )
       })
+      .leftJoin(PostTipEntity.table, function () {
+        this.on(
+          `${PostTipEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(`${PostTipEntity.table}.user_id`, dbReader.raw('?', [userId]))
+      })
       .leftJoin(PostLikeEntity.table, function () {
         this.on(
           `${PostEntity.table}.id`,
@@ -235,6 +241,7 @@ export class PostService {
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.paid as paid`,
         `${PostUserAccessEntity.table}.paying as paying`,
+        `${PostTipEntity.table}.amount as your_tips`,
         `${PostLikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
@@ -494,30 +501,29 @@ export class PostService {
     }
   }
 
-  async createTip(
-    payinId: string,
-    userId: string,
-    postId: string,
-    amount: number,
-  ) {
-    await this.dbWriter<PostTipEntity>(PostTipEntity.table).insert({
-      payin_id: payinId,
-      user_id: userId,
-      post_id: postId,
-      amount,
-    })
+  async createTip(userId: string, postId: string, amount: number) {
+    await this.dbWriter<PostTipEntity>(PostTipEntity.table)
+      .insert({
+        user_id: userId,
+        post_id: postId,
+        amount,
+      })
+      .onConflict()
+      .merge({
+        amount: this.dbWriter.raw('amount + ?', [amount]),
+      })
     await this.dbWriter<PostEntity>(PostEntity.table)
       .increment('total_tip_amount', amount)
       .where({ id: postId })
   }
 
-  async deleteTip(payinId: string, postId: string, amount: number) {
+  async deleteTip(userId: string, postId: string, amount: number) {
     await this.dbWriter<PostEntity>(PostEntity.table)
       .increment('total_tip_amount', amount)
       .where({ id: postId })
     await this.dbWriter<PostTipEntity>(PostTipEntity.table)
-      .where({ payin_id: payinId })
-      .delete()
+      .where({ user_id: userId, post_id: postId })
+      .decrement('amount', amount)
   }
 
   async registerTipPost(

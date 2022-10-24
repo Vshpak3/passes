@@ -14,6 +14,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { createPaginatedQuery } from '../../util/page.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowService } from '../follow/follow.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -40,6 +41,7 @@ export const USER_LIST_LIMIT = 1000
 export const MAX_LISTS_PER_REQUEST = 10
 export const MAX_LIST_MEMBERS_PER_REQUEST = 20
 
+export const NUMBER_OF_TOP_SPENDERS = 50
 @Injectable()
 export class ListService {
   constructor(
@@ -192,7 +194,6 @@ export class ListService {
     return lists.map((list) => new ListDto(list))
   }
 
-  // TODO: put cursor pagination for names and created_at
   async getListMembers(
     userId: string,
     getListMembersRequestDto: GetListMembersRequestDto,
@@ -200,8 +201,6 @@ export class ListService {
     const { listId } = getListMembersRequestDto
     const type = await this.checkList(userId, listId, false)
     switch (type) {
-      case ListTypeEnum.NORMAL:
-        return await this.getNormalListMembers(userId, getListMembersRequestDto)
       case ListTypeEnum.FOLLOWERS:
         return await this.followService.searchFansByQuery(
           userId,
@@ -213,7 +212,7 @@ export class ListService {
           getListMembersRequestDto,
         )
       default:
-        return []
+        return await this.getNormalListMembers(userId, getListMembersRequestDto)
     }
   }
 
@@ -388,5 +387,51 @@ export class ListService {
       ).forEach((follow) => userIdsSet.add(follow.follower_id))
     }
     return userIdsSet
+  }
+
+  async updateAsyncLists() {
+    const lists = await this.dbReader<ListEntity>(ListEntity.table)
+      .whereIn('type', [ListTypeEnum.TOP_SPENDERS])
+      .select('*')
+    await Promise.all(
+      lists.map(async (list) => {
+        await this.updateAsyncList(list)
+      }),
+    )
+  }
+
+  async updateAsyncList(list: ListEntity) {
+    // eslint-disable-next-line sonarjs/no-small-switch
+    switch (list.type) {
+      case ListTypeEnum.TOP_SPENDERS:
+        // eslint-disable-next-line no-case-declarations
+        const topSpenders = (
+          await this.dbReader<UserSpendingEntity>(UserSpendingEntity.table)
+            .where({ creator_id: list.user_id })
+            .orderBy('amount', 'desc')
+            .limit(NUMBER_OF_TOP_SPENDERS)
+            .select('*')
+        ).map((spender) => {
+          return {
+            list_id: list.id,
+            user_id: spender.user_id,
+            meta_number: spender.amount,
+          }
+        })
+
+        await this.dbWriter.transaction(async (trx) => {
+          await trx<ListMemberEntity>(ListMemberEntity.table)
+            .where({ list_id: list.id })
+            .delete()
+          if (topSpenders.length) {
+            await trx<ListMemberEntity>(ListMemberEntity.table).insert(
+              topSpenders,
+            )
+          }
+        })
+        break
+      default:
+        break
+    }
   }
 }

@@ -22,7 +22,7 @@ export function getMikroOrmOptions(
     migrations = {
       path: path.join(__dirname, 'migrations'),
       emit: isEnv(configService, 'dev') ? 'ts' : 'js',
-      safe: true, // prevents dropping tables and columns
+      safe: false, // prevents dropping tables and columns
     }
   }
 

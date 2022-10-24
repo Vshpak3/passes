@@ -1753,6 +1753,7 @@ export class PaymentService {
         creatorShares.map(
           async (creatorShare) =>
             await this.creatorStatsService.handlePayinSuccess(
+              payin.user_id,
               creatorShare.creator_id,
               payin.callback,
               {
@@ -2396,7 +2397,7 @@ export class PaymentService {
           break
         case PayinCallbackEnum.TIP_POST:
           await this.postService.deleteTip(
-            payin.id,
+            payin.user_id,
             payinInput.postId,
             payinInput.amount,
           )

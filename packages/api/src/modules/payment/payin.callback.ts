@@ -280,7 +280,6 @@ async function tipPostSuccessfulCallback(
   db: DatabaseService['knex'],
 ): Promise<TipPostCallbackOutput> {
   await payService.postService.createTip(
-    payin.id,
     input.userId,
     input.postId,
     input.amount,

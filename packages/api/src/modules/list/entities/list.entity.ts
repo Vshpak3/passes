@@ -16,7 +16,7 @@ export class ListEntity extends BaseEntity {
   @Property({ length: LIST_NAME_LENGTH })
   name: string
 
-  @Enum({ type: () => ListTypeEnum, default: ListTypeEnum.NORMAL })
+  @Enum({ default: ListTypeEnum.NORMAL })
   type: ListTypeEnum
 
   @Property({ default: 0 })

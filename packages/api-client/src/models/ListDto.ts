@@ -64,7 +64,8 @@ export interface ListDto {
 export const ListDtoTypeEnum = {
     Normal: 'normal',
     Followers: 'followers',
-    Following: 'following'
+    Following: 'following',
+    TopSpenders: 'top spenders'
 } as const;
 export type ListDtoTypeEnum = typeof ListDtoTypeEnum[keyof typeof ListDtoTypeEnum];
 

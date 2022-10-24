@@ -9,6 +9,7 @@ import { RefreshPersonasVerificationsTask } from './tasks/refresh-persona-verifi
 import { RefreshSolNftTask } from './tasks/refresh-sol-nft.batch'
 import { RefreshStatsTask } from './tasks/refresh-stats.batch'
 import { ScheduledEventsTask } from './tasks/scheduled-events.batch'
+import { UpdateListsTask } from './tasks/update-lists-task.batch'
 import { UpdateSubscriptionsTask } from './tasks/update-subscriptions.batch'
 
 // Maps an identifier (to be specified in the job definition) to the batch task
@@ -26,4 +27,5 @@ export const TaskDirectory = {
   fail_stale_payins_task: FailStalePayinsTask,
   scheduled_events_task: ScheduledEventsTask,
   refresh_content_task: RefreshContentTask,
+  update_lists_task: UpdateListsTask,
 }

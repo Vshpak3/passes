@@ -18,6 +18,7 @@ import { CreatorStatDto } from './dto/creator-stat.dto'
 import { CreatorEarningEntity } from './entities/creator-earning.entity'
 import { CreatorEarningHistoryEntity } from './entities/creator-earning-history.entity'
 import { CreatorStatEntity } from './entities/creator-stat.entity'
+import { UserSpendingEntity } from './entities/user-spending.entity'
 import { EarningCategoryEnum } from './enum/earning.category.enum'
 import { EarningTypeEnum } from './enum/earning.type.enum'
 
@@ -89,7 +90,7 @@ export class CreatorStatsService {
     let query = this.dbReader<CreatorEarningHistoryEntity>(
       CreatorEarningHistoryEntity.table,
     )
-      .where({ user_id: userId })
+      .where({ user_id: userId, category: EarningCategoryEnum.GROSS })
       .andWhere('created_at', '>=', start)
       .andWhere('created_at', '<=', end)
       .select('*')
@@ -126,32 +127,54 @@ export class CreatorStatsService {
 
   async handlePayinSuccess(
     userId: string,
+    creatorId: string,
     payinCallbackEnum: PayinCallbackEnum,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts)
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amounts)
-    await this.updateEarning(userId, EarningTypeEnum.TOTAL, amounts)
+    await this.updateEarning(creatorId, EarningTypeEnum.BALANCE, amounts)
     await this.updateEarning(
-      userId,
+      creatorId,
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      amounts,
+    )
+    await this.updateEarning(creatorId, EarningTypeEnum.TOTAL, amounts)
+    await this.updateEarning(
+      creatorId,
       this.payinToEarnings(payinCallbackEnum),
       amounts,
     )
+    await this.dbWriter<UserSpendingEntity>(UserSpendingEntity.table)
+      .insert({
+        amount: amounts[EarningCategoryEnum.GROSS],
+        user_id: userId,
+        creator_id: creatorId,
+      })
+      .onConflict()
+      .merge({
+        amount: this.dbWriter.raw('amount + ?', [
+          amounts[EarningCategoryEnum.GROSS],
+        ]),
+      })
   }
 
   async handleChargebackSuccess(
-    userId: string,
+    creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
     await this.updateEarning(
-      userId,
+      creatorId,
       EarningTypeEnum.AVAILABLE_BALANCE,
       amounts,
       NEGATE,
     )
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts, NEGATE)
     await this.updateEarning(
-      userId,
+      creatorId,
+      EarningTypeEnum.BALANCE,
+      amounts,
+      NEGATE,
+    )
+    await this.updateEarning(
+      creatorId,
       EarningTypeEnum.CHARGEBACKS,
       amounts,
       NEGATE,
@@ -159,11 +182,11 @@ export class CreatorStatsService {
   }
 
   async handlePayout(
-    userId: string,
+    creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
     await this.updateEarning(
-      userId,
+      creatorId,
       EarningTypeEnum.AVAILABLE_BALANCE,
       amounts,
       NEGATE,
@@ -171,17 +194,26 @@ export class CreatorStatsService {
   }
 
   async handlePayoutSuccess(
-    userId: string,
+    creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(userId, EarningTypeEnum.BALANCE, amounts, NEGATE)
+    await this.updateEarning(
+      creatorId,
+      EarningTypeEnum.BALANCE,
+      amounts,
+      NEGATE,
+    )
   }
 
   async handlePayoutFail(
-    userId: string,
+    creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(userId, EarningTypeEnum.AVAILABLE_BALANCE, amounts)
+    await this.updateEarning(
+      creatorId,
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      amounts,
+    )
   }
 
   async createEarningHistory() {

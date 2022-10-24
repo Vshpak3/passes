@@ -24,6 +24,7 @@ import { CreatorSettingsEntity } from '../creator-settings/entities/creator-sett
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { ListEntity } from '../list/entities/list.entity'
 import { ListTypeEnum } from '../list/enum/list.type.enum'
+import { NUMBER_OF_TOP_SPENDERS } from '../list/list.service'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { PassService } from '../pass/pass.service'
 import { ProfileEntity } from '../profile/entities/profile.entity'
@@ -338,29 +339,25 @@ export class UserService {
         .onConflict('user_id')
         .ignore()
       await trx<ListEntity>(ListEntity.table)
-        .where({
-          user_id: userId,
-          type: ListTypeEnum.FOLLOWING,
-        })
-        .delete()
-      await trx<ListEntity>(ListEntity.table)
-        .where({
-          user_id: userId,
-          type: ListTypeEnum.FOLLOWERS,
-        })
-        .delete()
-      await trx<ListEntity>(ListEntity.table).insert([
-        {
-          user_id: userId,
-          name: 'Following',
-          type: ListTypeEnum.FOLLOWING,
-        },
-        {
-          user_id: userId,
-          name: 'Fans',
-          type: ListTypeEnum.FOLLOWERS,
-        },
-      ])
+        .insert([
+          {
+            user_id: userId,
+            name: 'Following',
+            type: ListTypeEnum.FOLLOWING,
+          },
+          {
+            user_id: userId,
+            name: 'Fans',
+            type: ListTypeEnum.FOLLOWERS,
+          },
+          {
+            user_id: userId,
+            name: `Top ${NUMBER_OF_TOP_SPENDERS} Spenders`,
+            type: ListTypeEnum.TOP_SPENDERS,
+          },
+        ])
+        .onConflict()
+        .ignore()
     })
   }
 }

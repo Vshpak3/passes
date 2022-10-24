@@ -103,14 +103,18 @@ export class PostDto extends PickType(UserDto, [
   @DtoProperty({ type: 'boolean' })
   contentProcessed: boolean
 
+  @DtoProperty({ type: 'number' })
+  yourTips: number
+
   constructor(
     post:
       | (PostEntity & {
-          is_liked: boolean
+          is_liked?: string
           username: string
           display_name: string
-          paid: boolean
-          paying: boolean
+          paid?: boolean
+          paying?: boolean
+          your_tips?: number
         })
       | undefined,
     isOwner,
@@ -124,7 +128,7 @@ export class PostDto extends PickType(UserDto, [
       this.text = post.text
       this.numLikes = post.num_likes
       this.numComments = post.num_comments
-      this.isLiked = post.is_liked
+      this.isLiked = !!post.is_liked
       this.updatedAt = post.updated_at
       this.expiresAt = post.expires_at
       this.postId = post.id
@@ -138,9 +142,10 @@ export class PostDto extends PickType(UserDto, [
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
       this.pinnedAt = post.pinned_at
-      this.paid = post.paid
-      this.paying = post.paying
+      this.paid = !!post.paid
+      this.paying = !!post.paying
       this.contentProcessed = post.content_processed
+      this.yourTips = post.your_tips ?? 0
       if (isOwner) {
         this.totalTipAmount = post.total_tip_amount
         this.earningsPurchases = post.earnings_purchases

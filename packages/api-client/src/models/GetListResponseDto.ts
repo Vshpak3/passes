@@ -64,7 +64,8 @@ export interface GetListResponseDto {
 export const GetListResponseDtoTypeEnum = {
     Normal: 'normal',
     Followers: 'followers',
-    Following: 'following'
+    Following: 'following',
+    TopSpenders: 'top spenders'
 } as const;
 export type GetListResponseDtoTypeEnum = typeof GetListResponseDtoTypeEnum[keyof typeof GetListResponseDtoTypeEnum];
 

@@ -9,6 +9,7 @@ import { FollowEntity } from '../follow/entities/follow.entity'
 import { PostLikeEntity } from '../likes/entities/like.entity'
 import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
+import { PostTipEntity } from '../post/entities/post-tip.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -52,6 +53,12 @@ export class FeedService {
           dbReader.raw('?', [userId]),
         )
       })
+      .leftJoin(PostTipEntity.table, function () {
+        this.on(
+          `${PostTipEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(`${PostTipEntity.table}.user_id`, dbReader.raw('?', [userId]))
+      })
       .leftJoin(PostLikeEntity.table, function () {
         this.on(
           `${PostEntity.table}.id`,
@@ -64,6 +71,7 @@ export class FeedService {
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.paid as paid`,
         `${PostUserAccessEntity.table}.paying as paying`,
+        `${PostTipEntity.table}.amount as your_tips`,
         `${PostLikeEntity.table}.id as is_liked`,
       ])
       .whereNull(`${PostEntity.table}.deleted_at`)
@@ -120,6 +128,12 @@ export class FeedService {
           dbReader.raw('?', [userId]),
         )
       })
+      .leftJoin(PostTipEntity.table, function () {
+        this.on(
+          `${PostTipEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(`${PostTipEntity.table}.user_id`, dbReader.raw('?', [userId]))
+      })
       .leftJoin(PostLikeEntity.table, function () {
         this.on(
           `${PostLikeEntity.table}.post_id`,
@@ -132,6 +146,7 @@ export class FeedService {
         `${UserEntity.table}.display_name`,
         `${PostUserAccessEntity.table}.paid as paid`,
         `${PostUserAccessEntity.table}.paying as paying`,
+        `${PostTipEntity.table}.amount as your_tips`,
         `${PostLikeEntity.table}.id as is_liked`,
       ])
       .where(`${PostEntity.table}.user_id`, creatorId)

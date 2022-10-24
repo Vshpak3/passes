@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, Unique } from '@mikro-orm/core'
+import { Entity, Index, ManyToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -15,4 +15,7 @@ export class ListMemberEntity extends BaseEntity {
 
   @ManyToOne({ entity: () => UserEntity })
   user_id: string
+
+  @Property()
+  meta_number: number | null
 }
