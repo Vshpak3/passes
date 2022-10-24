@@ -786,6 +786,8 @@ export class MessagesService {
     price?: number,
     paidMessageId?: string,
   ): Promise<string> {
+    // eslint-disable-next-line no-magic-numbers
+    const hasContent = contents.length > 8
     const data = {
       id: v4(),
       sender_id: userId,
@@ -798,8 +800,8 @@ export class MessagesService {
       contents,
       paid: false,
       preview_index: previewIndex,
-      // eslint-disable-next-line no-magic-numbers
-      has_content: contents.length > 8,
+      has_content: hasContent,
+      content_processed: !hasContent,
       sent_at: new Date(),
     } as MessageEntity
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
@@ -1390,9 +1392,7 @@ export class MessagesService {
       })
       .where(`${MessageEntity.table}.id`, messageId)
       .select(
-        'contents',
-        'content_processed',
-        'sender_id',
+        `${MessageEntity.table}.*`,
         `${ChannelMemberEntity.table}.user_id`,
       )
       .first()
@@ -1414,21 +1414,22 @@ export class MessagesService {
         .update({ content_processed: true, sent_at: sentAt })
       const contents = this.contentService.getContentDtosFromBare(
         contentsBare,
-        true,
+        false,
         message.sender_id,
         0,
-        true,
+        false,
       )
-      const notification: MessageNotificationDto = {
-        messageId,
-        contentProcessed: true,
-        notification: MessageNotificationEnum.PROCESSED,
-        recieverId: message.user_id,
-        senderId: message.sender_id,
-        contents,
-        sentAt,
-      }
-      await this.redisService.publish('message', JSON.stringify(notification))
+      await this.redisService.publish(
+        'message',
+        JSON.stringify(
+          new MessageNotificationDto(
+            message,
+            contents,
+            message.user_id,
+            MessageNotificationEnum.PROCESSED,
+          ),
+        ),
+      )
     }
   }
 }

@@ -64,6 +64,7 @@ export class MessageDto {
       this.paying = message.paying
       this.pending = message.pending
       this.previewIndex = message.preview_index
+      this.contentProcessed = message.content_processed
     }
     this.contents = contents
   }

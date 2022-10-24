@@ -49,6 +49,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const [socket, setSocket] = useState<Socket>()
 
   const [pendingMessages, setPendingMessages] = useState<MessageDto[]>([])
+  const [messageUpdates, setMessageUpdates] = useState<
+    Record<string, Partial<MessageDto>>
+  >({})
   const [attempts, setAttempts] = useState<number>(0)
   useEffect(() => {
     setSocket(
@@ -125,6 +128,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 })
               )
               break
+            case "processed":
+              setMessageUpdates((messageUpdates) => {
+                return { ...messageUpdates, [newMessage.messageId]: newMessage }
+              })
+              break
           }
         }
       })
@@ -132,7 +140,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         socket.off("message")
       }
     }
-  }, [channelId, socket])
+  }, [channelId, socket, setMessageUpdates])
   useEffect(() => {
     if (!channelId) {
       return
@@ -188,7 +196,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
                 return (
                   <ChannelMessage
-                    message={arg}
+                    message={{
+                      ...arg,
+                      ...(messageUpdates[arg.messageId] ?? {})
+                    }}
                     isOwnMessage={arg.senderId === user?.userId}
                     otherUserDisplayName={otherUserDisplayName}
                     otherUserUsername={otherUserUsername}
@@ -201,12 +212,15 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               style={{ display: "flex", flexDirection: "column-reverse" }}
               inverse={true}
             >
-              {pendingMessages.length > 0 &&
-                pendingMessages.map((m, i) => {
+              {messages.length > 0 &&
+                messages.map((m, i) => {
                   return (
                     <ChannelMessage
                       key={i}
-                      message={m}
+                      message={{
+                        ...m,
+                        ...(messageUpdates[m.messageId] ?? {})
+                      }}
                       isOwnMessage={m.senderId === user?.userId}
                       otherUserDisplayName={otherUserDisplayName}
                       otherUserUsername={otherUserUsername}
@@ -214,8 +228,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                     />
                   )
                 })}
-              {messages.length > 0 &&
-                messages.map((m, i) => {
+              {pendingMessages.length > 0 &&
+                pendingMessages.map((m, i) => {
                   return (
                     <ChannelMessage
                       key={i}
