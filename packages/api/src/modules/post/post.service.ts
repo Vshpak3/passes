@@ -71,6 +71,7 @@ import {
 } from './error/post.error'
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
+const CHECK_PROCESSED_UNTIL = ms('1 hour')
 const MAX_PINNED_POST = 3
 
 @Injectable()
@@ -763,11 +764,11 @@ export class PostService {
       )
   }
 
-  async checkRecentPostsContentProcessed() {
+  async checkRecentPostsContentProcessed(checkProcessedUntil: number) {
     const postIds = (
       await this.dbWriter<PostEntity>(PostEntity.table)
         .where({ content_processed: false })
-        .andWhere('created_at', '>', new Date(Date.now() - ms('1 hour')))
+        .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((post) => post.id)
     await Promise.all(
@@ -812,7 +813,5 @@ export class PostService {
       }
       await this.redisService.publish('post', JSON.stringify(notification))
     }
-
-    // return isProcessed
   }
 }

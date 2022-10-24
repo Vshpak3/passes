@@ -104,6 +104,12 @@ export interface MessageDto {
      * @memberof MessageDto
      */
     sentAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MessageDto
+     */
+    contentProcessed: boolean;
 }
 
 /**
@@ -123,6 +129,7 @@ export function instanceOfMessageDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "reverted" in value;
     isInstance = isInstance && "sentAt" in value;
+    isInstance = isInstance && "contentProcessed" in value;
 
     return isInstance;
 }
@@ -150,6 +157,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'price': json['price'],
         'reverted': json['reverted'],
         'sentAt': (new Date(json['sentAt'])),
+        'contentProcessed': json['contentProcessed'],
     };
 }
 
@@ -175,6 +183,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'price': value.price,
         'reverted': value.reverted,
         'sentAt': (value.sentAt.toISOString()),
+        'contentProcessed': value.contentProcessed,
     };
 }
 

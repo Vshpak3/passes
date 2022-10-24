@@ -5,13 +5,14 @@ import {
   GetVaultQueryRequestDtoTypeEnum
 } from "@passes/api-client"
 import { useRouter } from "next/router"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"
+import { MAX_FILE_COUNT } from "src/config/media_limits"
 import { ContentService } from "src/helpers/content"
 import { useMedia } from "src/hooks/useMedia"
 
@@ -22,20 +23,7 @@ interface VaultProps {
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
 export type VaultCategory = GetVaultQueryRequestDtoCategoryEnum | undefined
 
-const MAX_FILE_COUNT = 10
-
-const checkDifferentTypesSelected = (selectedItems: ContentDto[]) => {
-  const typesSelected: string[] = []
-
-  selectedItems.forEach((item) => {
-    if (!typesSelected.find((el) => el === item.contentType)) {
-      typesSelected.push(item.contentType)
-    }
-  })
-  return typesSelected.length > 1
-}
-
-export interface VaultForm {
+export interface VaultFormProps {
   "drag-drop": File[]
 }
 
@@ -46,7 +34,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
     formState: { errors },
     setValue,
     reset
-  } = useForm<VaultForm>()
+  } = useForm<VaultFormProps>()
   const [selectedItems, setSelectedItems] = useState<Array<ContentDto>>([])
   const [deletedItems, setDeletedItems] = useState<Array<ContentDto>>([])
   const [vaultType, setVaultType] = useState<VaultType>()
@@ -54,37 +42,9 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
   const [order, setOrder] = useState<GetVaultQueryRequestDtoOrderEnum>(
     GetVaultQueryRequestDtoOrderEnum.Desc
   )
-  const [isVideoSelected, setIsVideoSelected] = useState(false)
   const [isMaxFileCountSelected, setIsMaxFileCountSelected] = useState(false)
-  const [isDiffTypesSelected, setIsDiffTypesSelected] = useState(false)
   const { files, setFiles, addNewMedia, onRemove } = useMedia()
 
-  useEffect(() => {
-    if (!selectedItems.length) {
-      setIsVideoSelected(false)
-      setIsDiffTypesSelected(false)
-      setIsMaxFileCountSelected(false)
-      return
-    }
-
-    // check if video file is selected
-    setIsVideoSelected(
-      !!selectedItems.find((elem) => elem.contentType === "video")
-    )
-
-    // check different types
-    setIsDiffTypesSelected(checkDifferentTypesSelected(selectedItems))
-
-    // check max file count
-    setIsMaxFileCountSelected(selectedItems.length === MAX_FILE_COUNT)
-  }, [selectedItems])
-
-  const setItems = (items: ContentDto[]) => {
-    setSelectedItems(items)
-    if (passSelectedItems) {
-      passSelectedItems(items)
-    }
-  }
   const router = useRouter()
   const pushToMessages = () => {
     router.push(
@@ -103,6 +63,14 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
     )
   }
 
+  const setItems = (items: ContentDto[]) => {
+    setSelectedItems(items)
+    setIsMaxFileCountSelected(items.length === MAX_FILE_COUNT)
+    if (passSelectedItems) {
+      passSelectedItems(items)
+    }
+  }
+
   const onSubmit = async () => {
     await new ContentService()
       .uploadContent(files, undefined, {
@@ -115,6 +83,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
     reset()
     setFiles([])
   }
+
   return (
     <div className="mx-auto w-full px-2 md:px-5 sidebar-collapse:max-w-[1100px]">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -132,18 +101,6 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
           order={order}
           deletedItems={deletedItems}
           setDeletedItems={setDeletedItems}
-          isDiffTypesSelected={isDiffTypesSelected}
-        />
-
-        <VaultMediaGrid
-          selectedItems={selectedItems}
-          setSelectedItems={setItems}
-          deletedItems={deletedItems}
-          order={order}
-          category={vaultCategory}
-          type={vaultType}
-          isVideoSelected={isVideoSelected}
-          isMaxFileCountSelected={isMaxFileCountSelected}
         />
         {!!files?.length && (
           <>
@@ -165,6 +122,15 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
             </Button>
           </>
         )}
+        <VaultMediaGrid
+          selectedItems={selectedItems}
+          setSelectedItems={setItems}
+          deletedItems={deletedItems}
+          order={order}
+          category={vaultCategory}
+          type={vaultType}
+          isMaxFileCountSelected={isMaxFileCountSelected}
+        />
       </form>
     </div>
   )

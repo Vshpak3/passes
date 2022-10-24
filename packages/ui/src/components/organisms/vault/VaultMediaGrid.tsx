@@ -21,7 +21,6 @@ interface VaultMediaGridProps {
   category?: VaultCategory
   type?: VaultType
   deletedItems: ContentDto[]
-  isVideoSelected: boolean
   isMaxFileCountSelected: boolean
 }
 
@@ -32,7 +31,6 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   type,
   order,
   deletedItems,
-  isVideoSelected,
   isMaxFileCountSelected
 }) => {
   const [isViewMediaModal, setIsViewMediaModal] = useState(false)
@@ -50,8 +48,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
         isOpen={isViewMediaModal}
         setOpen={setIsViewMediaModal}
       />
-
-      <div className="">
+      <div>
         <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
           keyValue={`vault`}
           fetch={async (req: GetVaultQueryRequestDto) => {
@@ -76,16 +73,13 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
                     content={arg}
                     setSelectedItems={setSelectedItems}
                     selectedItems={selectedItems}
-                    isVideoSelected={isVideoSelected}
                     isMaxFileCountSelected={isMaxFileCountSelected}
                     handleClickOnItem={handleClickOnItem}
-                    // index={index}
                   />
                 )}
               </>
             )
           }}
-          //"sidebar-collapse:grid-cols-3"
           classes="mt-[25px] grid grid-cols-1-[365px_minmax(165px,_200px)_400px] sm:grid-cols-2 lg:grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20"
         />
       </div>

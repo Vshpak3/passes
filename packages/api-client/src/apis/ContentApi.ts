@@ -21,6 +21,7 @@ import type {
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
+  MarkProcessedRequestDto,
   PresignPassRequestDto,
 } from '../models';
 import {
@@ -36,13 +37,11 @@ import {
     GetVaultQueryRequestDtoToJSON,
     GetVaultQueryResponseDtoFromJSON,
     GetVaultQueryResponseDtoToJSON,
+    MarkProcessedRequestDtoFromJSON,
+    MarkProcessedRequestDtoToJSON,
     PresignPassRequestDtoFromJSON,
     PresignPassRequestDtoToJSON,
 } from '../models';
-
-export interface CreateContentRequest {
-    createContentRequestDto: CreateContentRequestDto;
-}
 
 export interface DeleteContentRequest {
     deleteContentRequestDto: DeleteContentRequestDto;
@@ -50,6 +49,10 @@ export interface DeleteContentRequest {
 
 export interface GetVaultContentRequest {
     getVaultQueryRequestDto: GetVaultQueryRequestDto;
+}
+
+export interface MarkProcessedRequest {
+    markProcessedRequestDto: MarkProcessedRequestDto;
 }
 
 export interface PreSignContentRequest {
@@ -64,43 +67,6 @@ export interface PreSignPassRequest {
  * 
  */
 export class ContentApi extends runtime.BaseAPI {
-
-    /**
-     * Create content
-     */
-    async createContentRaw(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
-            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling createContent.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/content`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-            body: CreateContentRequestDtoToJSON(requestParameters.createContentRequestDto),
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Create content
-     */
-    async createContent(requestParameters: CreateContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.createContentRaw(requestParameters, initOverrides);
-    }
 
     /**
      * Delete content
@@ -176,6 +142,44 @@ export class ContentApi extends runtime.BaseAPI {
     async getVaultContent(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetVaultQueryResponseDto> {
         const response = await this.getVaultContentRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Mark content has processed
+     */
+    async markProcessedRaw(requestParameters: MarkProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.markProcessedRequestDto === null || requestParameters.markProcessedRequestDto === undefined) {
+            throw new runtime.RequiredError('markProcessedRequestDto','Required parameter requestParameters.markProcessedRequestDto was null or undefined when calling markProcessed.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/content/processed`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MarkProcessedRequestDtoToJSON(requestParameters.markProcessedRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Mark content has processed
+     */
+    async markProcessed(requestParameters: MarkProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markProcessedRaw(requestParameters, initOverrides);
     }
 
     /**

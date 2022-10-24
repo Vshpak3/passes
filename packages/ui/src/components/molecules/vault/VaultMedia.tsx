@@ -9,7 +9,6 @@ interface VaultMediaItemProps {
   content: ContentDto
   selectedItems: ContentDto[]
   setSelectedItems: (items: ContentDto[]) => void
-  isVideoSelected: boolean
   isMaxFileCountSelected: boolean
   handleClickOnItem: (item: ContentDto) => void
 }
@@ -18,7 +17,6 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
   setSelectedItems,
-  isVideoSelected,
   isMaxFileCountSelected,
   handleClickOnItem
 }) => {
@@ -28,9 +26,6 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
 
   const handleSelectItem = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    if (content.contentType === "video" && isVideoSelected) {
-      return
-    }
 
     if (isMaxFileCountSelected) {
       return
@@ -38,23 +33,27 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
 
     setSelectedItems([...selectedItems, content])
   }
+
   const handleRemoveItem = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
     setSelectedItems(
       selectedItems.filter((c) => c.contentId !== content.contentId)
     )
   }
+
   const handleClick = () => {
     handleClickOnItem(content)
   }
+
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
-  const opacityStyle =
-    selectedItems.length > 0 && !isSelected ? "opacity-50" : "opacity-100"
+
   return (
     <div className={classNames("group mb-[20px]")}>
       <div
         className={classNames(
-          opacityStyle,
+          selectedItems.length > 0 && !isSelected
+            ? "opacity-50"
+            : "opacity-100",
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
@@ -62,12 +61,10 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         )}
         onClick={handleClick}
       >
-        {/* <div className="mx-[30px]"> */}
         <ImageWithDefault // All content types have an image thumbnail
           src={ContentService.userContentThumbnailPath(content)}
           defaultColor="black/50"
         />
-        {/* </div> */}
         <div className="flex justify-end p-[10px]">
           <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
             <div

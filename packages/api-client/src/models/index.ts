@@ -133,6 +133,7 @@ export * from './IsPasswordUserResponseDto';
 export * from './ListDto';
 export * from './ListMemberDto';
 export * from './LocalUserLoginRequestDto';
+export * from './MarkProcessedRequestDto';
 export * from './MessageDto';
 export * from './MetamaskCircleETHEntryRequestDto';
 export * from './MetamaskCircleETHEntryResponseDto';

@@ -148,26 +148,6 @@ export class ContentService {
     }
   }
 
-  private async preSignUrl(
-    type: "profile" | "banner" | "content" | "w9",
-    params?: any
-  ) {
-    switch (type) {
-      case "profile": {
-        return (await this.contentApi.preSignProfileImage()).url
-      }
-      case "banner": {
-        return (await this.contentApi.preSignProfileBanner()).url
-      }
-      case "content": {
-        return (await this.contentApi.preSignContent(params)).url
-      }
-      case "w9": {
-        return (await this.contentApi.preSignW9()).url
-      }
-    }
-  }
-
   private async uploadFile(url: string, file: File): Promise<string> {
     try {
       const response = await fetch(url, {
@@ -191,13 +171,17 @@ export class ContentService {
   }
 
   async uploadProfileImage(file: File) {
-    const url = await this.preSignUrl("profile")
-    return this.uploadFile(url, file)
+    return this.uploadFile(
+      (await this.contentApi.preSignProfileImage()).url,
+      file
+    )
   }
 
   async uploadProfileBanner(file: File) {
-    const url = await this.preSignUrl("banner")
-    return this.uploadFile(url, file)
+    return this.uploadFile(
+      (await this.contentApi.preSignProfileBanner()).url,
+      file
+    )
   }
 
   async uploadPassMedia(
@@ -212,8 +196,7 @@ export class ContentService {
   }
 
   async uploadW9(file: File) {
-    const url = await this.preSignUrl("w9")
-    return this.uploadFile(url, file)
+    return this.uploadFile((await this.contentApi.preSignW9()).url, file)
   }
 
   /**
@@ -240,11 +223,11 @@ export class ContentService {
         if (!_contentType) {
           throw new Error("invalid file type")
         }
-        const url = await this.preSignUrl("content", {
+        const { url } = await this.contentApi.preSignContent({
           createContentRequestDto: {
             contentType: _contentType,
-            inPost: requestConfig?.inPost,
-            inMessage: requestConfig?.inMessage
+            inPost: requestConfig?.inPost || false,
+            inMessage: requestConfig?.inMessage || false
           }
         })
         const result = await this.uploadFile(url, file.file)

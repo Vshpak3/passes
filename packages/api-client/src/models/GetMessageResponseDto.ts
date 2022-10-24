@@ -104,6 +104,12 @@ export interface GetMessageResponseDto {
      * @memberof GetMessageResponseDto
      */
     sentAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetMessageResponseDto
+     */
+    contentProcessed: boolean;
 }
 
 /**
@@ -123,6 +129,7 @@ export function instanceOfGetMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "reverted" in value;
     isInstance = isInstance && "sentAt" in value;
+    isInstance = isInstance && "contentProcessed" in value;
 
     return isInstance;
 }
@@ -150,6 +157,7 @@ export function GetMessageResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'price': json['price'],
         'reverted': json['reverted'],
         'sentAt': (new Date(json['sentAt'])),
+        'contentProcessed': json['contentProcessed'],
     };
 }
 
@@ -175,6 +183,7 @@ export function GetMessageResponseDtoToJSON(value?: GetMessageResponseDto | null
         'price': value.price,
         'reverted': value.reverted,
         'sentAt': (value.sentAt.toISOString()),
+        'contentProcessed': value.contentProcessed,
     };
 }
 

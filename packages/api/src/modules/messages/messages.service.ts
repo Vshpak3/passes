@@ -5,10 +5,8 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
-import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
@@ -88,12 +86,9 @@ const MAX_PENDING_MESSAGES = 10
 
 @Injectable()
 export class MessagesService {
-  private cloudfrontUrl: string
-
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
-    private readonly configService: ConfigService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -106,9 +101,7 @@ export class MessagesService {
     private readonly listService: ListService,
     private readonly contentService: ContentService,
     @InjectRedis('message_publisher') private readonly redisService: Redis,
-  ) {
-    this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
-  }
+  ) {}
 
   async createChannel(
     userId: string,
@@ -1352,11 +1345,11 @@ export class MessagesService {
     return !!updated
   }
 
-  async checkRecentMessagesContentProcessed() {
+  async checkRecentMessagesContentProcessed(checkProcessedUntil: number) {
     const messageIds = (
       await this.dbWriter<MessageEntity>(MessageEntity.table)
         .where({ content_processed: false })
-        .andWhere('created_at', '>', new Date(Date.now() - ms('1 hour')))
+        .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((message) => message.id)
     await Promise.all(

@@ -37,7 +37,6 @@ interface VaultNavigationProps {
   deletedItems: ContentDto[]
   setDeletedItems: (items: ContentDto[]) => void
   embedded?: boolean
-  isDiffTypesSelected: boolean
 }
 
 export const VaultNavigation: FC<VaultNavigationProps> = ({
@@ -53,8 +52,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   deletedItems,
   setDeletedItems,
   setFiles,
-  embedded = false,
-  isDiffTypesSelected = false
+  embedded = false
 }) => {
   const deselectAll = () => {
     setSelectedItems([])
@@ -79,19 +77,15 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           <div className="align-center items-align flex justify-center">
             {selectedItems && selectedItems?.length > 0 && (
               <>
-                {isDiffTypesSelected && (
-                  <div>20 media files can be posted at any given time</div>
-                )}
+                <div>20 media files can be posted at any given time</div>
                 <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
-                {!isDiffTypesSelected && (
-                  <VaultAddToDropdown
-                    // TODO: connect with API to get selected items and add to new message
-                    onAddToMessage={() => pushToMessages()}
-                    // TODO: connect with API to get selected items and add to new post
-                    // eslint-disable-next-line no-console
-                    onAddToPost={() => console.log("add to post")}
-                  />
-                )}
+                <VaultAddToDropdown
+                  // TODO: connect with API to get selected items and add to new message
+                  onAddToMessage={() => pushToMessages()}
+                  // TODO: connect with API to get selected items and add to new post
+                  // eslint-disable-next-line no-console
+                  onAddToPost={() => console.log("add to post")}
+                />
               </>
             )}
 

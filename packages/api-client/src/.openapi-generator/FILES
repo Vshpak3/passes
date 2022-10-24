@@ -160,6 +160,7 @@ models/IsPasswordUserResponseDto.ts
 models/ListDto.ts
 models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
+models/MarkProcessedRequestDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts

@@ -21,6 +21,7 @@ import {
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
 } from './dto/get-vault-query-dto'
+import { MarkProcessedRequestDto } from './dto/mark-processed'
 import { PresignPassRequestDto } from './dto/presign-pass.dto'
 
 @ApiTags('content')
@@ -29,21 +30,17 @@ export class ContentController {
   constructor(private readonly contentService: ContentService) {}
 
   @ApiEndpoint({
-    summary: 'Create content',
-    responseStatus: HttpStatus.CREATED,
+    summary: 'Mark content has processed',
+    responseStatus: HttpStatus.OK,
     responseType: undefined,
-    responseDesc: 'Content was created',
-    role: RoleEnum.CREATOR_ONLY,
+    responseDesc: 'Content was marked successfully',
+    role: RoleEnum.NO_AUTH, // Must be no auth for Lambdas
   })
-  @Post()
-  async createContent(
-    @Req() req: RequestWithUser,
-    @Body() createContentRequestDto: CreateContentRequestDto,
+  @Post('processed')
+  async markProcessed(
+    @Body() markProcessedRequestDto: MarkProcessedRequestDto,
   ): Promise<void> {
-    await this.contentService.createContent(
-      req.user.id,
-      createContentRequestDto,
-    )
+    await this.contentService.markProcessed(markProcessedRequestDto)
   }
 
   @ApiEndpoint({

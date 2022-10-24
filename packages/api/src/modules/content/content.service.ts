@@ -6,7 +6,9 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import ms from 'ms'
+import path from 'path'
 import * as uuid from 'uuid'
 
 import {
@@ -28,6 +30,7 @@ import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
+import { MarkProcessedRequestDto } from './dto/mark-processed'
 import { ContentEntity } from './entities/content.entity'
 import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
@@ -36,18 +39,24 @@ import { ContentDeleteError, NoContentError } from './error/content.error'
 import { getContentTypeFormat } from './helpers/content-type-format.helper'
 
 const MAX_VAULT_CONTENT_PER_REQUEST = 9 // should be a multiple of 3
+
 @Injectable()
 export class ContentService {
+  private env: string
+
   constructor(
+    private readonly configService: ConfigService,
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly s3contentService: S3ContentService,
     private readonly passService: PassService,
-  ) {}
+  ) {
+    this.env = this.configService.get('infra.env') as string
+  }
 
-  async createContent(
+  private async createContent(
     userId: string,
     createContentDto: CreateContentRequestDto,
   ): Promise<string> {
@@ -60,6 +69,7 @@ export class ContentService {
         content_type: contentType,
         in_post: inPost,
         in_message: inMessage,
+        processed: this.env === 'dev',
       }
       await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
       return id
@@ -87,28 +97,16 @@ export class ContentService {
     return true
   }
 
-  // TODO: Update this logic in PASS-959
-  // async markProcessed(userId: string, contentId: string): Promise<void> {
-  //   await this.dbWriter<ContentEntity>(ContentEntity.table)
-  //     .where({ id: contentId })
-  //     .andWhere({ user_id: userId })
-  //     .update({ processed: true })
-  // }
+  async markProcessed(
+    markProcessedRequestDto: MarkProcessedRequestDto,
+  ): Promise<void> {
+    await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .where({ id: markProcessedRequestDto.contentId })
+      .andWhere({ user_id: markProcessedRequestDto.userId })
+      .update({ processed: true })
+  }
 
-  // TODO: Update this logic in PASS-959
-  // async isAllProcessed(contentIds: string[]): Promise<boolean> {
   async isAllProcessed(contents: ContentBareDto[]): Promise<boolean> {
-    // return (
-    //   await Promise.all(
-    //     content.map(async (content) => {
-    //       return await this.s3contentService.doesObjectExist(
-    //         `media/${userId}/${content.contentId}.${getContentTypeFormat(
-    //           content.contentType,
-    //         )}`,
-    //       )
-    //     }),
-    //   )
-    // ).every((b) => b)
     const content = await this.dbReader<ContentEntity>(ContentEntity.table)
       .whereIn(
         'id',
@@ -118,19 +116,25 @@ export class ContentService {
     return content.every((c) => c.processed)
   }
 
+  private async allContentExistsInS3(contents: ContentEntity[]) {
+    return await Promise.all(
+      contents.map(async (content) => {
+        return await this.s3contentService.doesObjectExist(
+          path.join(
+            'media',
+            content.user_id,
+            `${content.id}.${getContentTypeFormat(content.content_type)}`,
+          ),
+        )
+      }),
+    )
+  }
+
   async checkProcessed(): Promise<void> {
     const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .where({ processed: false, failed: false })
       .select('*')
-    const checks = await Promise.all(
-      contents.map(async (content) => {
-        return await this.s3contentService.doesObjectExist(
-          `media/${content.user_id}/${content.id}.${getContentTypeFormat(
-            content.content_type,
-          )}`,
-        )
-      }),
-    )
+    const checks = this.allContentExistsInS3(contents)
     const now = Date.now()
     const successfulIds = contents
       .filter((_, ind) => checks[ind])

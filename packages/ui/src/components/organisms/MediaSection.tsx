@@ -44,7 +44,6 @@ interface MediaSectionProps {
   addNewMedia: (newFiles: File[]) => void
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
-  vaultRegister?: unknown
   setFiles?: Dispatch<SetStateAction<ContentFile[]>>
 }
 
@@ -170,7 +169,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
               </div>
             </Slider>
           </div>
-          {/* )} */}
         </div>
       )}
     </div>
