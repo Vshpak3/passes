@@ -28,7 +28,7 @@ export const Sidebar = () => {
     } else {
       setActive(activeTab)
     }
-  }, [router.asPath, user?.username])
+  }, [router.asPath, user])
 
   useEffect(() => {
     if (!user) {

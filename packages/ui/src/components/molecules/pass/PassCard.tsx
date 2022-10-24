@@ -76,7 +76,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         }}
         className="mt-3 w-full rounded-[50px] bg-passes-primary-color py-2.5 text-center"
       >
-        {isCreator ? "Pin Pass" : "Purchase Pass"}
+        {isCreator ? "Pin Pass" : "Purchase NFT"}
       </button>
 
       <p className="mt-[14px] text-sm font-medium leading-[16px]">

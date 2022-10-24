@@ -1166,6 +1166,12 @@ export class MessagesService {
 
     let query = this.dbReader<MessageEntity>(MessageEntity.table)
       .where({ channel_id: channelId, pending })
+      .andWhere(function () {
+        return this.where('sender_id', userId).orWhere(
+          'content_processed',
+          true,
+        )
+      })
       .select(`${MessageEntity.table}.*`)
       .limit(MAX_MESSAGES_PER_REQUEST)
 
@@ -1391,9 +1397,10 @@ export class MessagesService {
     const contentsBare = JSON.parse(message.contents) as ContentBareDto[]
     const isProcessed = await this.contentService.isAllProcessed(contentsBare)
     if (isProcessed) {
+      const sentAt = new Date()
       await this.dbWriter<MessageEntity>(MessageEntity.table)
         .where({ id: messageId })
-        .update({ content_processed: true })
+        .update({ content_processed: true, sent_at: sentAt })
       const contents = this.contentService.getContentDtosFromBare(
         contentsBare,
         true,
@@ -1408,6 +1415,7 @@ export class MessagesService {
         recieverId: message.user_id,
         senderId: message.sender_id,
         contents,
+        sentAt,
       }
       await this.redisService.publish('message', JSON.stringify(notification))
     }
