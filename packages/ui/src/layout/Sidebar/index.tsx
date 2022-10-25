@@ -10,7 +10,7 @@ import { navigation as _navigation } from "./sidebarData"
 
 export const Sidebar = () => {
   const router = useRouter()
-  const { user } = useUser()
+  const { user } = useUser("sidebar")
 
   const [navigation, setNavigation] = useState<SidebarNavigation[]>([])
   const [active, setActive] = useState(router.asPath.split("/").pop() ?? "home")

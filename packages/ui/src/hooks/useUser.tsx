@@ -18,14 +18,14 @@ export interface JWTUserClaims {
 
 const CACHE_KEY_USER = "/user"
 
-export const useUser = () => {
+export const useUser = (text?: string) => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
   const authApi = new AuthApi()
   const userApi = new UserApi()
   // eslint-disable-next-line no-console
-  console.log("access token", accessToken)
+  console.log("access token", accessToken, text)
   const {
     data: user,
     isValidating: loading,
@@ -39,10 +39,12 @@ export const useUser = () => {
       }
       const c = await authApi.getCurrentUser()
       // eslint-disable-next-line no-console
-      console.log("user", c)
+      console.log("user", c, text)
       return c
     }
   )
+  // eslint-disable-next-line no-console
+  console.log(user, text)
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>
