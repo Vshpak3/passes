@@ -22,6 +22,7 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
   active
 }) => {
   const { user } = useUser()
+
   // TODO: sidebar open will be used for mobile sidebar
   const [collapsedAdditionalSidebarOpen, setCollapsedAdditionalSidebarOpen] =
     useState(false)

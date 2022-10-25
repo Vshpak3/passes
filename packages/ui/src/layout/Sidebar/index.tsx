@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import { useEffect, useState } from "react"
+import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { SidebarDefault } from "src/components/organisms/sidebar/SideBarDefault"
 import { SidebarMobile } from "src/components/organisms/sidebar/SideBarMobile"
 import { useUser } from "src/hooks/useUser"
@@ -10,9 +11,9 @@ import { navigation as _navigation } from "./sidebarData"
 export const Sidebar = () => {
   const router = useRouter()
   const { user } = useUser()
-  const [hasMounted, setHasMounted] = useState(false)
-  const [navigation, setNavigation] = useState(_navigation)
-  const [active, setActive] = useState(router.asPath.split("/").pop() ?? "")
+
+  const [navigation, setNavigation] = useState<SidebarNavigation[]>([])
+  const [active, setActive] = useState(router.asPath.split("/").pop() ?? "home")
 
   useEffect(() => {
     const pathSegments = router.asPath.split("/").filter((seg) => !!seg)
@@ -31,31 +32,19 @@ export const Sidebar = () => {
   }, [router.asPath, user])
 
   useEffect(() => {
-    if (!user) {
-      setNavigation(_navigation)
-      return
-    }
-
-    setNavigation([
-      ..._navigation,
-      {
+    const extras = []
+    if (user) {
+      extras.push({
         id: "profile",
         name: "Profile",
         href: `/${user?.username}`,
         icon: ProfileIcon,
         creatorOnly: false
-      }
-    ])
+      })
+    }
+
+    setNavigation([..._navigation, ...extras])
   }, [user])
-
-  // TODO: replace with owns a profile endpoint
-  useEffect(() => {
-    setHasMounted(true)
-  }, [])
-
-  if (!hasMounted) {
-    return null
-  }
 
   return (
     <>
