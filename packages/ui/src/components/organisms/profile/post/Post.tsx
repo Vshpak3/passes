@@ -45,7 +45,9 @@ const PostUnmemo: FC<PostProps> = ({
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
   const router = useRouter()
-  const { mutatePinnedPosts, pinPost, unpinPost } = useFeed(post.userId)
+  const { mutatePinnedPosts, pinPost, unpinPost, pinnedPosts } = useFeed(
+    post.userId
+  )
 
   const {
     contents,
@@ -110,6 +112,16 @@ const PostUnmemo: FC<PostProps> = ({
     }),
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
+
+  useEffect(() => {
+    pinnedPosts.forEach(({ postId: pinPostId }) => {
+      if (pinPostId === postId && !pinnedAt && !postByUrl && !inHomeFeed) {
+        setIsRemoved(true)
+        mutatePinnedPosts()
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pinnedPosts])
 
   return (
     <>
