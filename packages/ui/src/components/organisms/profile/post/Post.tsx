@@ -1,4 +1,4 @@
-import { PostDto } from "@passes/api-client"
+import { GetCreatorStatsResponseDto, PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -11,6 +11,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/profile/useFeed"
+import { KeyedMutator } from "swr"
 
 import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
@@ -28,6 +29,7 @@ interface PostProps {
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
   pinnedPostCount?: number
+  mutateProfileStats?: KeyedMutator<GetCreatorStatsResponseDto>
 }
 
 const PostUnmemo: FC<PostProps> = ({
@@ -35,7 +37,8 @@ const PostUnmemo: FC<PostProps> = ({
   inHomeFeed = false,
   postByUrl = false,
   isPinned = false,
-  pinnedPostCount = 0
+  pinnedPostCount = 0,
+  mutateProfileStats
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
@@ -155,6 +158,7 @@ const PostUnmemo: FC<PostProps> = ({
           post={post}
           onDelete={onDelete}
           setOpen={setDeletePostModelOpen}
+          mutateProfileStats={mutateProfileStats}
         />
       )}
     </>

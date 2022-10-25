@@ -17,7 +17,7 @@ export const NewPosts: FC<NewPostsProps> = ({
   postUpdates
 }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
-  const { profileInfo, profileUsername } = useProfile()
+  const { profileInfo, profileUsername, mutateProfileStats } = useProfile()
   const { createPost } = usePost()
 
   const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
@@ -69,6 +69,9 @@ export const NewPosts: FC<NewPostsProps> = ({
       paid: false,
       yourTips: 0
     }
+    if (res.postId) {
+      await mutateProfileStats()
+    }
 
     setNewPosts([post, ...newPosts])
     if (!newPosts?.length) {
@@ -85,6 +88,7 @@ export const NewPosts: FC<NewPostsProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
+          mutateProfileStats={mutateProfileStats}
         />
       ))}
     </>

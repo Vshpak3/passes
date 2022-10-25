@@ -1,4 +1,8 @@
-import { GetProfileFeedResponseDto, PostDto } from "@passes/api-client"
+import {
+  GetCreatorStatsResponseDto,
+  GetProfileFeedResponseDto,
+  PostDto
+} from "@passes/api-client"
 import { FC, useState } from "react"
 import {
   ComponentArg,
@@ -9,6 +13,7 @@ import { NewPosts } from "src/components/organisms/profile/main-content/new-post
 import { Post } from "src/components/organisms/profile/post/Post"
 import { useFeed } from "src/hooks/profile/useFeed"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
+import { KeyedMutator } from "swr"
 
 const PostFeedLoader = (
   <div className="my-[40px] flex justify-center">
@@ -29,9 +34,14 @@ const PostFeedEnd = (
 interface PostFeedProps {
   profileUserId: string
   ownsProfile: boolean
+  mutateProfileStats?: KeyedMutator<GetCreatorStatsResponseDto>
 }
 
-export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
+export const PostFeed: FC<PostFeedProps> = ({
+  profileUserId,
+  ownsProfile,
+  mutateProfileStats
+}) => {
   const [isNewPostAdded, setIsNewPostAdded] = useState(false)
   const { getFeedForCreator, pinnedPosts } = useFeed(profileUserId)
   const { posts } = usePostWebhook()
@@ -47,6 +57,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
             <Post
               post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
               pinnedPostCount={pinnedPosts.length}
+              mutateProfileStats={mutateProfileStats}
             />
           )
         }}
@@ -63,6 +74,7 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
             key={post.postId}
             post={{ ...post, ...(posts[post.postId] ?? {}) }}
             isPinned={true}
+            mutateProfileStats={mutateProfileStats}
           />
         ))}
       </InfiniteScrollPagination>

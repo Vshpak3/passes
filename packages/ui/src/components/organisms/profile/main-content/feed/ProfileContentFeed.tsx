@@ -13,7 +13,8 @@ interface ProfileContentFeedProps {
 export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   activeTab
 }) => {
-  const { profileUserId, ownsProfile, loadingProfileInfo } = useProfile()
+  const { profileUserId, ownsProfile, loadingProfileInfo, mutateProfileStats } =
+    useProfile()
 
   if (loadingProfileInfo || !profileUserId) {
     return <></>
@@ -22,7 +23,11 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   switch (activeTab) {
     case ProfileNavigationOptions.POST:
       return (
-        <PostFeed profileUserId={profileUserId} ownsProfile={ownsProfile} />
+        <PostFeed
+          profileUserId={profileUserId}
+          ownsProfile={ownsProfile}
+          mutateProfileStats={mutateProfileStats}
+        />
       )
     case ProfileNavigationOptions.FANWALL:
       return (
