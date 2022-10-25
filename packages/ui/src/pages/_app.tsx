@@ -153,7 +153,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   ])
 
   const getLayout = Component.getLayout ?? ((page) => page)
-  return getLayout(
+  return (
     <NextThemeProvider attribute="class" disableTransitionOnChange>
       <DefaultHead />
       <Script
@@ -162,11 +162,13 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       />
       <SWRConfig value={GlobalSWRConfig}>
         <DndProvider backend={HTML5Backend}>
-          <SubApp Component={Component} pageProps={pageProps} />
+          {getLayout(
+            <SubApp Component={Component} pageProps={pageProps} />,
+            hasRefreshed
+          )}
         </DndProvider>
       </SWRConfig>
-    </NextThemeProvider>,
-    hasRefreshed
+    </NextThemeProvider>
   )
 }
 
