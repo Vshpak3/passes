@@ -15,7 +15,7 @@ import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 const sliderSettings = {
   infinite: false,
-  slidesToShow: 2,
+  slidesToShow: 3,
   slidesToScroll: 1,
   nextArrow: <NextImageArrow />,
   prevArrow: <PrevImageArrow />,
@@ -24,14 +24,14 @@ const sliderSettings = {
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 1,
+        slidesToShow: 3,
         slidesToScroll: 1
       }
     },
     {
       breakpoint: 640,
       settings: {
-        slidesToShow: 1,
+        slidesToShow: 2,
         slidesToScroll: 1
       }
     }
@@ -45,6 +45,7 @@ interface MediaSectionProps {
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   setFiles?: Dispatch<SetStateAction<ContentFile[]>>
+  isNewPost?: boolean
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
@@ -52,7 +53,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
   errors,
   addNewMedia,
   files,
-  onRemove
+  onRemove,
+  isNewPost
 }) => {
   const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
@@ -104,8 +106,19 @@ export const MediaSection: FC<MediaSectionProps> = ({
               childrenClassname="p-0"
             />
           )}
-          <div className="w-100 flex items-center justify-center">
-            <Slider className="max-w-[500px]" {...sliderSettings}>
+          <div
+            className={
+              isNewPost
+                ? "flex w-full items-center justify-start"
+                : "w-100 flex items-center justify-center"
+            }
+          >
+            <Slider
+              className={
+                isNewPost ? "flex w-full max-w-[500px]" : "max-w-[500px]"
+              }
+              {...sliderSettings}
+            >
               {files.map(({ file, content }, index) => (
                 <>
                   {content && (
@@ -117,6 +130,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
                         onRemove={(e: MouseEvent<HTMLDivElement>) =>
                           onRemove(index, e)
                         }
+                        contentHeight={200}
+                        contentWidth={150}
                         src={ContentService.userContentMediaPath(content)}
                         type={content.contentType}
                         iconClassName="bottom-[100px]"
@@ -135,13 +150,21 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   {file && (
                     <div
                       key={index}
-                      className="left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
+                      className={classNames(
+                        isNewPost
+                          ? "h-[200px] w-[150px]"
+                          : "left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
+                      )}
                     >
                       <MediaFile
                         onRemove={(e: MouseEvent<HTMLDivElement>) =>
                           onRemove(index, e)
                         }
-                        iconClassName="bottom-[100px]"
+                        iconClassName={
+                          isNewPost
+                            ? "bottom-[190px] left-[120px] z-[5]"
+                            : "bottom-[100px]"
+                        }
                         onSelect={() => onMediaFileSelect({ file, content })}
                         file={file}
                       />

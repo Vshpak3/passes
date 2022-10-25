@@ -241,6 +241,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               files={files}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
+              isNewPost={true}
             />
           )}
         </div>

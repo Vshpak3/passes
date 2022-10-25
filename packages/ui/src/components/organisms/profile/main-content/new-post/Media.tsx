@@ -87,11 +87,19 @@ export const Media: FC<MediaProp> = ({
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
       <>
-        <video className={className} onClick={onSelect} src={src} controls />
+        <video
+          style={{ width: contentWidth, height: contentHeight }}
+          className="video-js"
+          controls
+          src={src}
+        />
         {!preview && (
           <div
             onClick={onRemove}
-            className="relative z-[5] h-[24px] w-[24px] cursor-pointer"
+            className={classNames(
+              iconClassName,
+              "relative z-[5] h-[24px] w-[24px] cursor-pointer"
+            )}
           >
             <DeleteIcon className="h-full w-full" />
           </div>
@@ -103,10 +111,8 @@ export const Media: FC<MediaProp> = ({
         <img
           className={className}
           alt=""
-          width={`${contentWidth}px`}
-          height={`${contentHeight}px`}
           src={src}
-          style={{ objectFit }}
+          style={{ objectFit, height: contentHeight, width: contentWidth }}
         />
         {!preview && (
           <div
