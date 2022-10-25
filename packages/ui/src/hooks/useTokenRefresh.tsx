@@ -1,8 +1,8 @@
 import ms from "ms"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { refreshAccessToken } from "src/helpers/token"
 
+import { refreshAccessToken } from "src/helpers/token"
 import { useUser } from "./useUser"
 
 // Try to refresh the access token every this many minutes

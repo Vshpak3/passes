@@ -2,6 +2,7 @@ import { AuthApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
 import PassesLongLogo from "public/icons/passes-long-logo.svg"
 import { useEffect, useState } from "react"
+
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import {

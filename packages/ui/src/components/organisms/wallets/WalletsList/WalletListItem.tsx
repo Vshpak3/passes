@@ -10,6 +10,7 @@ import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import { FC } from "react"
+
 import { Button } from "src/components/atoms/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"

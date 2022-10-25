@@ -4,6 +4,7 @@ import {
   PassDtoTypeEnum
 } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
+
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { Modal } from "src/components/organisms/Modal"

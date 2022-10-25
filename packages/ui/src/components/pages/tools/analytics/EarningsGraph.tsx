@@ -1,6 +1,5 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import {
   CreatorEarningDto,
   CreatorEarningDtoTypeEnum,
@@ -22,6 +21,7 @@ import ms from "ms"
 import React, { FC, useRef, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
+
 import { TabButton } from "src/components/atoms/Button"
 import {
   formatCurrency,

@@ -6,12 +6,12 @@ import {
   PassHolderDto
 } from "@passes/api-client"
 import React, { FC, useState } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { SelectPassHolderTab } from "src/components/atoms/passes/SelectPassHolderTab"
-
 import { PassHoldingTile } from "./PassHoldingTile"
 
 export const PassHoldingsGrid: FC = () => {

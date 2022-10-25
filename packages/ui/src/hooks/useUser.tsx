@@ -1,8 +1,8 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
-import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import useSWR, { useSWRConfig } from "swr"
 
+import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
 export interface JWTUserClaims {

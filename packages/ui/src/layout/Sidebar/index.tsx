@@ -1,11 +1,11 @@
 import { useRouter } from "next/router"
 import ProfileIcon from "public/icons/profile-edit-icon.svg"
 import { useEffect, useState } from "react"
+
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { SidebarDefault } from "src/components/organisms/sidebar/SideBarDefault"
 import { SidebarMobile } from "src/components/organisms/sidebar/SideBarMobile"
 import { useUser } from "src/hooks/useUser"
-
 import { navigation as _navigation } from "./sidebarData"
 
 export const Sidebar = () => {

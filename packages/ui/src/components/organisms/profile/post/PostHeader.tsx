@@ -5,6 +5,7 @@ import PinIcon from "public/icons/pin.svg"
 import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
+
 import { PostStatisticsButtonProps } from "src/components/molecules/post/PostStatisticsButton"
 import {
   Dropdown,

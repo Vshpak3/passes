@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import ScheduledCalendarIcon from "public/icons/calendar-scheduled-purple-icon.svg"
 import { FC } from "react"
+
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 
 interface CalendarSelectorProps {

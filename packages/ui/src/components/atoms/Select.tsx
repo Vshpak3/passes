@@ -1,6 +1,7 @@
 import { Listbox, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import { FC, Fragment, useCallback, useEffect, useState } from "react"
+
 import {
   FormErrors,
   FormLabel,
@@ -12,7 +13,6 @@ import {
   FormSelectOptions
 } from "src/components/types/FormTypes"
 import { ChevronDown } from "src/icons/ChevronDown"
-
 import { Label } from "./Label"
 
 export type SelectProps = {

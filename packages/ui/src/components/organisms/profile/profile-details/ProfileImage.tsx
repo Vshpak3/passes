@@ -1,4 +1,5 @@
 import { FC } from "react"
+
 import { ContentService } from "src/helpers/content"
 
 export interface ProfileImageProps {

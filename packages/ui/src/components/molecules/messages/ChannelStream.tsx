@@ -8,6 +8,7 @@ import {
 import { FC, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
+
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -18,7 +19,6 @@ import {
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
-
 import { ChannelMessage } from "./ChannelMessage"
 
 interface ChannelStreamProps {

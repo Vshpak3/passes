@@ -1,5 +1,6 @@
 import { NextPage } from "next"
 import { IntercomProvider } from "react-use-intercom"
+
 import { Backers } from "src/components/organisms/home/Backers"
 import { ConnectWithFans } from "src/components/organisms/home/ConnectWithFans"
 import { CreatorCarousel } from "src/components/organisms/home/CreatorCarousel"

@@ -1,6 +1,7 @@
 import { PassApi } from "@passes/api-client"
-import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
+
+import { useUser } from "src/hooks/useUser"
 
 const CACHE_KEY_PASSES_EXTERNAL = "/pass/external"
 

@@ -1,8 +1,8 @@
 import { PassDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
+
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { formatText } from "src/helpers/formatters"
-
 import { Modal } from "./Modal"
 
 interface CreatorPassModalProps {

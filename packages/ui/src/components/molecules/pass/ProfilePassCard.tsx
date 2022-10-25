@@ -1,4 +1,5 @@
 import { PassDto } from "@passes/api-client"
+
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { LockIcon } from "src/icons/lockIcon"
 

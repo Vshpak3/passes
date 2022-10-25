@@ -6,6 +6,7 @@ import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
 import VerificationLoading from "public/img/profile/creator-verification-loading.svg"
 import { useCallback, useEffect, useState } from "react"
+
 import { BulletItem } from "src/components/atoms/BulletItem"
 import { CreatorSteps } from "src/components/molecules/creator-flow/CreatorSteps"
 import { WelcomeToPasses } from "src/components/organisms/creator-flow/WelcomePasses"

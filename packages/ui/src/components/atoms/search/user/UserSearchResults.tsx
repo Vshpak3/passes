@@ -2,6 +2,7 @@ import { Combobox } from "@headlessui/react"
 import { UserDisplayInfoDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, Fragment } from "react"
+
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatText } from "src/helpers/formatters"
 

@@ -1,5 +1,4 @@
 import "video.js/dist/video-js.css"
-
 import React, { FC, forwardRef, LegacyRef } from "react"
 
 type VideRefType = LegacyRef<HTMLVideoElement> | undefined

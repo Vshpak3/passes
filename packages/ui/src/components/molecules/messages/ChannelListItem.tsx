@@ -2,6 +2,7 @@ import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
+
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"

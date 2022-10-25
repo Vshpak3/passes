@@ -10,6 +10,7 @@ import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
+
 import { PassesPinkButton } from "src/components/atoms/Button"
 import {
   PayoutFrequencyEnum,

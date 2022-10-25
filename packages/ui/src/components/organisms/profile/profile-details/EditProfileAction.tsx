@@ -1,5 +1,6 @@
 import EditIcon from "public/icons/profile-edit-icon.svg"
 import { Dispatch, FC, SetStateAction } from "react"
+
 import { CoverButton } from "src/components/atoms/Button"
 
 interface EditProfileActionProps {

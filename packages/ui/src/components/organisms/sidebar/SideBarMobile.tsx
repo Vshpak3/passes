@@ -1,5 +1,6 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import { FC, useState } from "react"
+
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { MobileNavbar } from "src/components/molecules/Sidebar/SidebarLayout/MobileNavbar"
 import { SidebarMobileContainer } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileContainer"
@@ -11,7 +12,6 @@ import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayou
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
-
 import { SidebarDefaultProps } from "./Types"
 
 export const SidebarMobile: FC<SidebarDefaultProps> = ({

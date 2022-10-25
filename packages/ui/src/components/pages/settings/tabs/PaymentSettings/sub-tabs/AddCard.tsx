@@ -1,6 +1,5 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import { CircleEncryptionKeyResponseDto, PaymentApi } from "@passes/api-client"
 import cardValidator from "card-validator"
 import { SHA256 } from "crypto-js"
@@ -12,6 +11,8 @@ import InfoIcon from "public/icons/info-icon.svg"
 import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { v4 } from "uuid"
+
 import { Button } from "src/components/atoms/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { FormInput } from "src/components/atoms/FormInput"
@@ -26,7 +27,6 @@ import { errorMessage } from "src/helpers/error"
 import { encrypt } from "src/helpers/openpgp"
 import { sleep } from "src/helpers/sleep"
 import { useUser } from "src/hooks/useUser"
-import { v4 } from "uuid"
 
 interface AddCardProps {
   callback?: () => void

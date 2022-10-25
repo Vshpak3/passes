@@ -10,13 +10,13 @@ import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
 import ProfileYoutubeIcon from "public/icons/profile-youtube-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
 import { updateProfile } from "src/helpers/updateProfile"
 import { useUser } from "src/hooks/useUser"
-
 import { creatorFlowProfileSchema } from "./helper/CreatorFlowProfileSchema"
 
 interface CreatorFlowCustomizeFormProps {

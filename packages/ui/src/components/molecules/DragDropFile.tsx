@@ -1,5 +1,6 @@
 import UploadIcon from "public/icons/upload.svg"
 import { FC, useState } from "react"
+
 import { File } from "src/components/atoms/File"
 import {
   FileAccept,

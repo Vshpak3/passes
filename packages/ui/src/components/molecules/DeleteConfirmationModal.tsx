@@ -1,6 +1,7 @@
 import Image from "next/image"
 import React, { Dispatch, FC, SetStateAction, useEffect, useRef } from "react"
 import ReactModal from "react-modal"
+
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface DeleteConfirmationModalProps {

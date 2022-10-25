@@ -14,6 +14,7 @@ import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { FC, useCallback, useEffect, useState } from "react"
+
 import { Button } from "src/components/atoms/Button"
 import {
   ComponentArg,
@@ -24,7 +25,6 @@ import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNa
 import { errorMessage } from "src/helpers/error"
 import { AddIcon } from "src/icons/AddIcon"
 import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
-
 import { ListMember } from "./ListMember"
 import { SortDropdown, SortOption } from "./SortDropdown"
 

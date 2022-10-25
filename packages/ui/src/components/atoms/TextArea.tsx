@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import React, { FC, useEffect, useRef, useState } from "react"
+
 import {
   FormErrors,
   FormLabel,
@@ -7,7 +8,6 @@ import {
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-
 import { Label } from "./Label"
 
 type TextAreaProps = {

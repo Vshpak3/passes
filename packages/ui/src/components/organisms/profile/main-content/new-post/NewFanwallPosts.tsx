@@ -3,9 +3,9 @@ import {
   FanWallCommentDto
 } from "@passes/api-client"
 import { FC, useState } from "react"
+
 import { FanWallComment } from "src/components/organisms/profile/main-content/feed/FanWallComment"
 import { useUser } from "src/hooks/useUser"
-
 import { NewFanwallPost } from "./NewFanwallPost"
 
 interface NewFanwallPosts {

@@ -2,6 +2,7 @@ import CameraIcon from "public/icons/profile-camera-icon.svg"
 import { FC, memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"

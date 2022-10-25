@@ -1,6 +1,7 @@
 import { useRouter } from "next/router"
 import PlusSign from "public/icons/plus-sign.svg"
 import { FC } from "react"
+
 import { Button } from "src/components/atoms/Button"
 
 interface BecomeCreatorButtonProps {

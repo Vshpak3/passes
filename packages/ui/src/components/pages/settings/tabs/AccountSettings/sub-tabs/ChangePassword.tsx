@@ -4,12 +4,13 @@ import Link from "next/link"
 import { memo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, SchemaOf, string } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { passwordFormSchema } from "src/pages/signup"
-import { object, SchemaOf, string } from "yup"
 
 interface ChangePasswordFormProps {
   oldPassword: string

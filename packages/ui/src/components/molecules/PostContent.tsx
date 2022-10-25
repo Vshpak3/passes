@@ -1,9 +1,9 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
+
 import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
-
 import { PostVideo } from "./post/PostVideo"
 
 interface PostContentProps extends PostImageProps {

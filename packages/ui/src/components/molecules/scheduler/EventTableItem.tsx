@@ -5,9 +5,10 @@ import {
 import { format } from "date-fns"
 import TrashIcon from "public/icons/trash.svg"
 import { FC } from "react"
+import { KeyedMutator } from "swr"
+
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { KeyedMutator } from "swr"
 
 interface EventTableItemProps {
   scheduledEvent: ScheduledEventDto

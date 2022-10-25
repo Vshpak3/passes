@@ -1,5 +1,6 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import { FormRegister } from "src/components/types/FormTypes"
 

@@ -4,6 +4,7 @@ import {
 } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
+
 import { Button } from "src/components/atoms/Button"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"

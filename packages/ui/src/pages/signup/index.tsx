@@ -9,6 +9,8 @@ import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
+import { object, SchemaOf, string } from "yup"
+
 import {
   Button,
   ButtonTypeEnum,
@@ -23,7 +25,6 @@ import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { object, SchemaOf, string } from "yup"
 
 export const PASSWORD_MIN_LENGTH = 8
 export const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/

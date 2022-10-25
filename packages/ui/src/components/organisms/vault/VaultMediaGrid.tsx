@@ -7,6 +7,7 @@ import {
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { FC, useState } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination

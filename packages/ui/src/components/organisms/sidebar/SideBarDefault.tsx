@@ -1,5 +1,6 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import { FC, useState } from "react"
+
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
 import { CreatorToolsItem } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsItem"
@@ -14,7 +15,6 @@ import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayou
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
-
 import { SidebarDefaultProps } from "./Types"
 
 export const SidebarDefault: FC<SidebarDefaultProps> = ({

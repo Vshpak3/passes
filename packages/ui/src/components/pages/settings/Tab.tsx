@@ -1,5 +1,6 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
 import { FC, PropsWithChildren } from "react"
+
 import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { formatText } from "src/helpers/formatters"
 

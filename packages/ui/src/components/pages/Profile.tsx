@@ -1,4 +1,5 @@
 import { FC, memo } from "react"
+
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
 import { ProfileContent } from "src/components/organisms/profile/main-content/ProfileContent"

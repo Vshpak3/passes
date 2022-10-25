@@ -4,10 +4,10 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useEffect } from "react"
-import { errorMessage } from "src/helpers/error"
-import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
+import { errorMessage } from "src/helpers/error"
+import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const useUserDefaultMintingWallets = () => {

@@ -1,6 +1,7 @@
 import { PassDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useState } from "react"
+
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { CreatorPassModal } from "src/components/organisms/CreatorPassModal"
 

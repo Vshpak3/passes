@@ -3,7 +3,6 @@ import { ReportModalData } from "src/components/organisms/ReportModal"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { useBlockModal } from "src/hooks/profile/useBlockModal"
 import { useReportModal } from "src/hooks/profile/useReportModal"
-
 import { DropdownOption } from "./Dropdown"
 
 export const DropDownGeneral = (

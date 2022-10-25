@@ -7,8 +7,8 @@ import {
 } from "@passes/api-client"
 import path from "path"
 import { toast } from "react-toastify"
-import { ContentFile } from "src/hooks/useMedia"
 
+import { ContentFile } from "src/hooks/useMedia"
 import { isDev } from "./env"
 
 const getUrlPath = (...args: string[]) => {

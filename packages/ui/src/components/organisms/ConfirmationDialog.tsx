@@ -1,4 +1,5 @@
 import React, { FC } from "react"
+
 import { Dialog } from "src/components/organisms/Dialog"
 
 interface ConfirmationDialogProps {

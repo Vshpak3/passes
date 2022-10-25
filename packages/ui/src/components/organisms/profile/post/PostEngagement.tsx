@@ -2,11 +2,11 @@ import { PostDto } from "@passes/api-client"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
 import { FC, useCallback, useMemo, useState } from "react"
+
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
 import { compactNumberFormatter } from "src/helpers/formatters"
-
 import { CommentSection } from "./CommentSection"
 
 interface PostEngagementProps {

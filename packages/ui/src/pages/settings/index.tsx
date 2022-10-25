@@ -2,6 +2,7 @@ import cn from "classnames"
 import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { FC, useEffect } from "react"
+
 import { Header } from "src/components/molecules/performance/Header"
 import {
   pathToSubTab,

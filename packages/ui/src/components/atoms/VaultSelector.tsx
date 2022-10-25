@@ -2,6 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import VaultIcon from "public/icons/messages-vault-icon.svg"
 import { FC, useState } from "react"
+
 import { VaultDialog } from "src/components/molecules/vault/VaultDialog"
 
 interface VaultSelectorProps {

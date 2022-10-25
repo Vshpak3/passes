@@ -1,5 +1,6 @@
 import { ListMemberDto } from "@passes/api-client"
 import { FC, useState } from "react"
+
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { CheckVerified } from "src/icons/CheckVerified"
 

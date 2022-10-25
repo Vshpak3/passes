@@ -4,6 +4,7 @@ import {
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
+
 import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"

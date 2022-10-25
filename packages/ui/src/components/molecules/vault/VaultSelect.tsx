@@ -1,5 +1,6 @@
 import { ContentDto } from "@passes/api-client"
 import { FC } from "react"
+
 import {
   VaultDeselectButton,
   VaultSelectLabel

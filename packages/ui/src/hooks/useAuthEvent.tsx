@@ -1,9 +1,9 @@
 import { AccessTokensResponseDto } from "@passes/api-client"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
+
 import { authRouter } from "src/helpers/authRouter"
 import { useUser } from "src/hooks/useUser"
-
 import { useSafeRouter } from "./useSafeRouter"
 
 /**

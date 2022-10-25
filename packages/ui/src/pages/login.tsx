@@ -10,6 +10,8 @@ import TwitterLogo from "public/icons/twitter-logo.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, SchemaOf, string } from "yup"
+
 import {
   Button,
   ButtonTypeEnum,
@@ -22,8 +24,6 @@ import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { object, SchemaOf, string } from "yup"
-
 import { deleteAllCookies } from "./logout"
 import { PASSWORD_MIN_LENGTH } from "./signup"
 

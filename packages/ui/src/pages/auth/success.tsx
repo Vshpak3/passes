@@ -1,5 +1,6 @@
 import { useRouter } from "next/router"
 import { FC, useEffect } from "react"
+
 import { queryParam } from "src/helpers/query"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useUser } from "src/hooks/useUser"

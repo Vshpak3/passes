@@ -10,6 +10,7 @@ import Wallet from "public/icons/wallet-manage.svg"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Select } from "src/components/atoms/Select"
@@ -18,7 +19,6 @@ import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
-
 import { WalletListItem } from "./WalletsList/WalletListItem"
 
 export const Wallets = () => {

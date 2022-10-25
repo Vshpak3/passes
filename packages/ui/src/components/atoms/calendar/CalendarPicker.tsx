@@ -1,12 +1,12 @@
 import "rc-time-picker/assets/index.css"
 import "react-day-picker/dist/style.css"
-
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import { addMinutes, addMonths, format } from "date-fns"
 import { FC, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { toast } from "react-toastify"
+
 import { TimePicker } from "src/components/atoms/TimePicker"
 import {
   MAX_SCHEDULE_DURATION_IN_MONTHS,

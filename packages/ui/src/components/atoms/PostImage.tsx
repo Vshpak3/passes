@@ -2,10 +2,10 @@
 import "swiper/css/lazy"
 // eslint-disable-next-line import/no-unresolved
 import "swiper/css"
-
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, ForwardedRef, forwardRef, useState } from "react"
+
 import { ContentService } from "src/helpers/content"
 
 export interface PostImageProps {

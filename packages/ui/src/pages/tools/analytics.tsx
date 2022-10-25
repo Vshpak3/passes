@@ -1,6 +1,7 @@
 import { NextPage } from "next"
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
+
 import { TabButton } from "src/components/atoms/Button"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
 import { useCreatorBalance } from "src/hooks/useAnalytics"

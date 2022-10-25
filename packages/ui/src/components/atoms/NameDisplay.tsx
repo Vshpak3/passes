@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { FC } from "react"
+
 import { Text } from "src/components/atoms/Text"
 
 interface NameDisplayProps {

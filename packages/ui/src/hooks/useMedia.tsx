@@ -1,6 +1,7 @@
 import { ContentDto } from "@passes/api-client"
 import { MouseEvent, useState } from "react"
 import { toast } from "react-toastify"
+
 import {
   MAX_FILE_COUNT,
   MAX_IMAGE_SIZE,

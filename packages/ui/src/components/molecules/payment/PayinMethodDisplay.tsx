@@ -1,6 +1,7 @@
 import { CircleCardDto, PayinMethodDto } from "@passes/api-client"
 import Link from "next/link"
 import React, { FC } from "react"
+
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 
 interface PayinMethodDisplayProps {

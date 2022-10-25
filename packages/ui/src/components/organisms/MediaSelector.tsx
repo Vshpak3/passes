@@ -2,6 +2,7 @@ import classNames from "classnames"
 import Recorder from "public/icons/media-recorder.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { FC, PropsWithChildren } from "react"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import {
   FormErrors,

@@ -1,5 +1,6 @@
 import { PostDto } from "@passes/api-client"
 import { FC } from "react"
+
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 
 export interface MediaContentProps {

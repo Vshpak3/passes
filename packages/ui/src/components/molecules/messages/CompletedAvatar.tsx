@@ -1,5 +1,6 @@
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import React, { FC } from "react"
+
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 

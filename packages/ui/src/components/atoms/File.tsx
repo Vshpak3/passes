@@ -1,4 +1,5 @@
 import React, { FC, useRef } from "react"
+
 import {
   FileAccept,
   FormErrors,
@@ -8,7 +9,6 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/types/FormTypes"
-
 import { Label } from "./Label"
 
 type FileProps = {

@@ -2,6 +2,7 @@ import { RadioGroup } from "@headlessui/react"
 import HashtagIcon from "public/icons/hashtag-icon.svg"
 import { FC } from "react"
 import { FieldValues, UseFormRegister } from "react-hook-form"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import { PassesSectionTitle } from "src/components/atoms/passes/CreatePass"
 

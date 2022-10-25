@@ -1,6 +1,5 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import { Fade, Popper } from "@mui/material"
 import {
   GetPayinsRequestDto,
@@ -11,6 +10,7 @@ import {
 import { format } from "date-fns"
 import { useRouter } from "next/router"
 import { memo, useCallback, useEffect, useRef, useState } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination

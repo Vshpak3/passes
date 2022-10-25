@@ -2,8 +2,8 @@ import { PassDtoTypeEnum } from "@passes/api-client"
 import _ from "lodash"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { FC, useEffect, useRef, useState } from "react"
-import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { SelectPassFilterItem } from "./SelectPassFilterItem"
 
 const PASS_DROPDOWN_OPTIONS = [

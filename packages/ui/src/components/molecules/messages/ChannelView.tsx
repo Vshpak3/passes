@@ -5,8 +5,8 @@ import {
   GetUserResponseDto
 } from "@passes/api-client/models"
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
-import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 
+import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"
 import { InputMessage } from "./InputMessage"

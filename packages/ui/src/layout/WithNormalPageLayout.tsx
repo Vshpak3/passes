@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from "react"
+
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
-
 import { CreatorSearchBar } from "./CreatorSearchBar"
 import { Sidebar } from "./Sidebar"
 

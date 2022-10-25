@@ -1,5 +1,6 @@
 import { CreatePostRequestDto } from "@passes/api-client"
 import { FC } from "react"
+
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 import { usePost } from "src/hooks/profile/usePost"

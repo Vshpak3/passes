@@ -11,6 +11,7 @@ import { SHA256 } from "crypto-js"
 import ms from "ms"
 import { useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
 import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
@@ -22,7 +23,6 @@ import {
 } from "src/helpers/payment/wallet-setup"
 import { sleep } from "src/helpers/sleep"
 import { accessTokenKey } from "src/helpers/token"
-
 import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const usePay = (

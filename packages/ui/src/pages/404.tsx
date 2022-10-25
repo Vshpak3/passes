@@ -1,6 +1,7 @@
 import Link from "next/link"
 import LogoSmall from "public/icons/sidebar-logo-small.svg"
 import { FC } from "react"
+
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 export const NotFoundPage: FC = () => (

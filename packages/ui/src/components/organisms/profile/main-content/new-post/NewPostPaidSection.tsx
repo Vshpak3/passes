@@ -1,11 +1,11 @@
 import { PassDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tag } from "src/components/atoms/Tag"
 import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
 import { formatText } from "src/helpers/formatters"
-
 import { NewPostFormProps } from "./NewPostEditor"
 import { PassesSearchBar } from "./PassesSearchBar"
 

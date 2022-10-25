@@ -6,6 +6,7 @@ import Twitch from "public/icons/profile-twitch-icon.svg"
 import Twitter from "public/icons/profile-twitter-icon.svg"
 import Youtube from "public/icons/profile-youtube-icon.svg"
 import { FC } from "react"
+
 import { formatTextToString } from "src/helpers/formatters"
 
 const socialUsernameToUrl = {

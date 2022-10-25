@@ -3,6 +3,7 @@ import classNames from "classnames"
 import Image from "next/image"
 import EditIcon from "public/icons/edit-icon.svg"
 import React, { FC, useState } from "react"
+
 import { Button } from "src/components/atoms/Button"
 
 interface UpdateListNamePopperProps {

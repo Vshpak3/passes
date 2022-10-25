@@ -1,7 +1,8 @@
 import { FC, useEffect, useRef } from "react"
+import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
+
 import { Video } from "src/components/atoms/Video"
 import { useOnScreen } from "src/hooks/useOnScreen"
-import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
 interface PostVideoProps {
   videoUrl: string

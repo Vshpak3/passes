@@ -2,10 +2,10 @@ import { RadioGroup } from "@headlessui/react"
 import { FollowApi } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
+
 import { Button } from "src/components/atoms/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
-
 import { Modal } from "./Modal"
 
 export interface ReportModalData {

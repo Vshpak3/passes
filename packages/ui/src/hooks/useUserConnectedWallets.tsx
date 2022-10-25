@@ -1,8 +1,8 @@
 import { WalletApi } from "@passes/api-client"
 import { useEffect } from "react"
-import { accessTokenKey } from "src/helpers/token"
 import useSWR from "swr"
 
+import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const useUserConnectedWallets = () => {

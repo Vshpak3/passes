@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { object, SchemaOf, string } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
@@ -12,7 +14,6 @@ import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { object, SchemaOf, string } from "yup"
 
 export interface SignupEmailPageSchema {
   email: string

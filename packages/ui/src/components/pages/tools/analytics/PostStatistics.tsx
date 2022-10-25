@@ -1,4 +1,5 @@
 import { GetPostsResponseDto, PostDto } from "@passes/api-client"
+
 import {
   ComponentArg,
   InfiniteScrollPagination

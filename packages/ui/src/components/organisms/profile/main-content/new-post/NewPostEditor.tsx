@@ -5,6 +5,8 @@ import dynamic from "next/dynamic"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { array, bool, date, number, object, string } from "yup"
+
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
@@ -12,8 +14,6 @@ import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
 import { ContentService } from "src/helpers/content"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
-import { array, bool, date, number, object, string } from "yup"
-
 import { NewPostPaidSection } from "./NewPostPaidSection"
 
 const CustomMentionEditor = dynamic(

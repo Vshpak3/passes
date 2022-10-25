@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { object, SchemaOf } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
@@ -13,8 +15,6 @@ import { sleep } from "src/helpers/sleep"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { object, SchemaOf } from "yup"
-
 import { passwordFormSchema } from "./signup"
 
 export interface ResetPasswordFormProps {

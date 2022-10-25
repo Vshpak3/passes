@@ -1,4 +1,5 @@
 import { FC } from "react"
+
 import { compactNumberFormatter } from "src/helpers/formatters"
 
 interface ProfileStatItemMobileProps {

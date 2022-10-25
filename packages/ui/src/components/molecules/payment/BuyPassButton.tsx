@@ -5,6 +5,7 @@ import {
 } from "@passes/api-client"
 import classNames from "classnames"
 import React, { FC, useEffect } from "react"
+
 import { usePay } from "src/hooks/usePay"
 
 interface BuyPassButtonProps {

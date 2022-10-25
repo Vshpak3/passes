@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC, useCallback, useMemo } from "react"
+
 import { SearchResultOption } from "src/components/atoms/search/user/UserSearchResults"
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"

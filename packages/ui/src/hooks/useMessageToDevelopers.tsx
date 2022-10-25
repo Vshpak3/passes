@@ -1,6 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable no-console */
 import { useEffect } from "react"
+
 import { isDev, isStage } from "src/helpers/env"
 
 export const useMessageToDevelopers = (messages: string[]) => {

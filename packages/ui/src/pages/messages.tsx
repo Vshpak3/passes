@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import MessagesBackIcon from "public/icons/messages-back-icon.svg"
 import MessagesPlusIcon from "public/icons/messages-plus-icon.svg"
 import { memo, Suspense, useState } from "react"
+
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"

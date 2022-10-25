@@ -1,4 +1,5 @@
 import { FC } from "react"
+
 import { VaultFilterOption } from "src/components/atoms/vault"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 

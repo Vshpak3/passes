@@ -6,12 +6,12 @@ import {
   PostDto
 } from "@passes/api-client"
 import React, { FC, memo } from "react"
+
 import {
   InfiniteLoad,
   LoadMsgPositionEnum
 } from "src/components/atoms/InfiniteLoad"
 import { ComponentArg } from "src/components/atoms/InfiniteScroll"
-
 import { Comment } from "./Comment"
 
 interface CommentFeedProps {

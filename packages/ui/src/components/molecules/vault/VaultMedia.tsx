@@ -2,6 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { format } from "date-fns"
 import { FC, MouseEvent } from "react"
+
 import { ImageWithDefault } from "src/components/atoms/ImageWithDefault"
 import { ContentService } from "src/helpers/content"
 

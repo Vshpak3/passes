@@ -1,7 +1,8 @@
 import { PassApi } from "@passes/api-client"
 import { useEffect } from "react"
-import { useUser } from "src/hooks/useUser"
 import useSWR from "swr"
+
+import { useUser } from "src/hooks/useUser"
 
 const CACHE_KEY_CREATOR_PASSES = "/pass/creator-passes"
 

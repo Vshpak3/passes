@@ -2,6 +2,7 @@ import { PostDto } from "@passes/api-client"
 import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
+
 import { Button } from "src/components/atoms/Button"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
 import { formatText } from "src/helpers/formatters"

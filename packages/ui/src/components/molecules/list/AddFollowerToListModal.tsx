@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
+
 import { Button } from "src/components/atoms/Button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"

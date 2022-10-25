@@ -4,9 +4,9 @@ import { isAfter, subDays } from "date-fns"
 import Locked from "public/icons/lock-locked.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
+
 import { Media } from "src/components/organisms/profile/post/Media"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
 import { Content } from "./message/Content"

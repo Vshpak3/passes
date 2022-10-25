@@ -2,6 +2,7 @@ import { Combobox } from "@headlessui/react"
 import { PassDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useCallback, useMemo } from "react"
+
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { usePassesSearch } from "src/hooks/search/usePassesSearch"

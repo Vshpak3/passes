@@ -1,6 +1,7 @@
 import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
+
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { Text } from "src/components/atoms/Text"

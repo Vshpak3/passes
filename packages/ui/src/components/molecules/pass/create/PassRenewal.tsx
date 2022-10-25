@@ -1,4 +1,5 @@
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
+
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 
 export const PassRenewal = () => (

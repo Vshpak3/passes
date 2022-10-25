@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+
 import { breakpoints } from "src/styles/breakpoints"
 
 // Define general type for useWindowSize hook, which includes width and height

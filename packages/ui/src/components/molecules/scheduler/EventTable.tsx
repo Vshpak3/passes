@@ -3,10 +3,10 @@ import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
 import { FC, useCallback, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
-
 import { DeleteEventModal } from "./DeleteEventModal"
 
 export const EventTable: FC = () => {

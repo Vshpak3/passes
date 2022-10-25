@@ -2,6 +2,7 @@ import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import PlusQuareIcon from "public/icons/plus-square.svg"
 import { FC, useContext, useRef, useState } from "react"
+
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import {
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
@@ -9,7 +10,6 @@ import {
 } from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { SchedulerContext } from "src/pages/tools/scheduler"
-
 import { DateTimeSelected } from "./DateTimeSelector"
 import { MonthYearPicker } from "./MonthYearPicker"
 import { NewPostPopup } from "./NewPostPopup"

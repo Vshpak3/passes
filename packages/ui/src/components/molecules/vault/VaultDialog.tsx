@@ -1,5 +1,6 @@
 import { ContentDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
+
 import { Dialog } from "src/components/organisms/Dialog"
 import { Vault } from "src/components/pages/tools/Vault"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"

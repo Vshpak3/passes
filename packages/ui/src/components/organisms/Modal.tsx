@@ -9,6 +9,7 @@ import React, {
   useRef
 } from "react"
 import ReactModal from "react-modal"
+
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 export interface ModalProps {

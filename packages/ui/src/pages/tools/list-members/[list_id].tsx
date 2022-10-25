@@ -2,6 +2,7 @@ import { NextPage } from "next"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
+
 import { queryParam } from "src/helpers/query"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

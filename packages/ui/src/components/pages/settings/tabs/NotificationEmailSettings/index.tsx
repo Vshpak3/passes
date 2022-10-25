@@ -1,6 +1,7 @@
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import NotificationIcon from "public/icons/notification.svg"
 import React, { memo } from "react"
+
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/settings"

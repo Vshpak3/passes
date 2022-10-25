@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
-import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
+import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 import { SettingsWrapper } from "./index"
 
 const SettingPageWithParam = () => {

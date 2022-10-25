@@ -1,6 +1,5 @@
 import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
-
 import { PassDto, PostDto } from "@passes/api-client"
 import debounce from "lodash.debounce"
 import ms from "ms"
@@ -22,6 +21,8 @@ import {
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
+import { SWRConfig } from "swr"
+
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModalData } from "src/components/organisms/BlockModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
@@ -37,7 +38,6 @@ import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 import { useUser } from "src/hooks/useUser"
-import { SWRConfig } from "swr"
 
 const BlockModal = dynamic(
   () => import("src/components/organisms/BlockModal"),

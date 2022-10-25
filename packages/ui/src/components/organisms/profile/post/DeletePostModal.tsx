@@ -1,6 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction } from "react"
 import { toast } from "react-toastify"
+
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { usePost } from "src/hooks/profile/usePost"
 import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"

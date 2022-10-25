@@ -8,6 +8,7 @@ import {
 } from "@passes/api-client/models"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -17,7 +18,6 @@ import {
   SortOption
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { useUser } from "src/hooks/useUser"
-
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 

@@ -4,6 +4,8 @@ import CheckCircleFilled from "public/icons/check-circle-green.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { v4 } from "uuid"
+
 import {
   Button,
   ButtonTypeEnum,
@@ -13,7 +15,6 @@ import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { FormInput } from "src/components/atoms/FormInput"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
-import { v4 } from "uuid"
 
 type PaymentFormProps = {
   onFinishPaymentForm: (isSubmittedBankDetails?: boolean) => void

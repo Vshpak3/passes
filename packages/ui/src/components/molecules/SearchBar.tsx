@@ -2,6 +2,7 @@ import { Combobox } from "@headlessui/react"
 import classNames from "classnames"
 import SearchIcon from "public/icons/messages-search-icon.svg"
 import { FC } from "react"
+
 import { EmptyResult } from "src/components/atoms/search/user/UserSearchResults"
 
 interface SearchBarProps {

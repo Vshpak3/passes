@@ -1,6 +1,6 @@
 import { FC } from "react"
-import { ContentService } from "src/helpers/content"
 
+import { ContentService } from "src/helpers/content"
 import { ProfileImageProps } from "./ProfileImage"
 
 type ProfileThumbnailProps = ProfileImageProps

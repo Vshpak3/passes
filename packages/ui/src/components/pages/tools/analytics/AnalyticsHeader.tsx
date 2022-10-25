@@ -1,4 +1,5 @@
 import { FC } from "react"
+
 import { formatCurrency } from "src/helpers/formatters"
 
 interface AnalyticsHeaderProps {

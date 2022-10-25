@@ -4,6 +4,8 @@ import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { object, SchemaOf } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
@@ -11,8 +13,6 @@ import { Wordmark } from "src/components/atoms/Wordmark"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { sleep } from "src/helpers/sleep"
-import { object, SchemaOf } from "yup"
-
 import { emailFormSchema } from "./signup"
 
 export interface ForgotPasswordFormProps {

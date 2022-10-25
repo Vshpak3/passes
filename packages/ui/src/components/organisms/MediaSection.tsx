@@ -5,12 +5,12 @@ import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react"
 import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import Slider from "react-slick"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
-
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 const sliderSettings = {

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router"
 import { useEffect } from "react"
+
 import { Loader } from "src/components/atoms/Loader"
 import { PostByUrl } from "src/components/organisms/profile/post/PostByUrl"
 import { queryParam } from "src/helpers/query"

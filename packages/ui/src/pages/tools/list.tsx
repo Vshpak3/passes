@@ -10,6 +10,7 @@ import { debounce } from "lodash"
 import { NextPage } from "next"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { useCallback, useState } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination

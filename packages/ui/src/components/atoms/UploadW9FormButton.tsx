@@ -1,11 +1,11 @@
 import EditIcon from "public/icons/edit.svg"
 import React, { FC } from "react"
 import { useForm } from "react-hook-form"
+
 import { Button } from "src/components/atoms/Button"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { formatText } from "src/helpers/formatters"
-
 import { FormInput } from "./FormInput"
 
 interface UploadW9FormProps {

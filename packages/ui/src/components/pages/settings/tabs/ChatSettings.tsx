@@ -3,12 +3,13 @@ import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { boolean, mixed, number, object, string } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
-import { boolean, mixed, number, object, string } from "yup"
 
 const defaultValues = {
   isWithoutTip: true,

@@ -1,8 +1,8 @@
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
-
 import { PassDto } from "@passes/api-client"
 import { FC } from "react"
+
 import { PassCard } from "src/components/molecules/pass/PassCard"
 
 interface PassesProps {} // eslint-disable-line @typescript-eslint/no-empty-interface

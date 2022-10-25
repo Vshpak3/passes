@@ -7,8 +7,9 @@ import {
 } from "@passes/api-client"
 import { useEffect } from "react"
 import { toast } from "react-toastify"
-import { errorMessage } from "src/helpers/error"
 import useSWR, { useSWRConfig } from "swr"
+
+import { errorMessage } from "src/helpers/error"
 
 type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto

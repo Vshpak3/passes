@@ -1,5 +1,6 @@
 import { XCircle } from "lucide-react"
 import { FC } from "react"
+
 import { formatCurrency } from "src/helpers/formatters"
 
 interface MessagePriceAlertProps {

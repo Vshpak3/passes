@@ -1,6 +1,7 @@
 import { GetPostResponseDto } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { FC } from "react"
+
 import { Header } from "src/components/molecules/performance/Header"
 
 const Post = dynamic(

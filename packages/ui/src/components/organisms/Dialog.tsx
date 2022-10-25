@@ -1,6 +1,7 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import { FC, Fragment, PropsWithChildren, useEffect, useState } from "react"
+
 import { formatText } from "src/helpers/formatters"
 
 type DialogProps = {

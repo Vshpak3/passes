@@ -1,6 +1,5 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import {
   PayinMethodDto,
   PayinMethodDtoChainEnum,
@@ -14,6 +13,7 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC, memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+
 import { Button } from "src/components/atoms/Button"
 import { Select } from "src/components/atoms/Select"
 import { Modal } from "src/components/organisms/Modal"
@@ -23,7 +23,6 @@ import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { useUser } from "src/hooks/useUser"
-
 import AddCard from "./sub-tabs/AddCard"
 
 const payinMethodDisplayNames = {

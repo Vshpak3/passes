@@ -5,6 +5,7 @@ import {
   GetFanWallResponseDto
 } from "@passes/api-client"
 import { FC } from "react"
+
 import {
   ComponentArg,
   InfiniteScrollPagination
@@ -12,7 +13,6 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { useUser } from "src/hooks/useUser"
-
 import { FanWallComment } from "./FanWallComment"
 
 const FallWallFeedLoader = (

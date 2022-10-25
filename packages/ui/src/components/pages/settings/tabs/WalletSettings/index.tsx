@@ -1,4 +1,5 @@
 import { memo } from "react"
+
 import { Wallets } from "src/components/organisms/wallets/Wallets"
 import { Tab } from "src/components/pages/settings/Tab"
 

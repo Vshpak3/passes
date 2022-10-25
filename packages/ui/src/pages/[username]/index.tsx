@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { memo, Suspense } from "react"
+
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

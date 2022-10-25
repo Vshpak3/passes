@@ -1,5 +1,6 @@
 import ChatIcon from "public/icons/mail-icon.svg"
 import { FC } from "react"
+
 import {
   ButtonTypeEnum,
   PassesPinkButton,
@@ -8,7 +9,6 @@ import {
 import { compactNumberFormatter, formatText } from "src/helpers/formatters"
 import { useFollow } from "src/hooks/profile/useFollow"
 import { useProfile } from "src/hooks/profile/useProfile"
-
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 import { ProfileStatsMobile } from "./ProfileStats"
 

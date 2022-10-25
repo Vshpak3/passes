@@ -2,6 +2,7 @@ import { PostDto } from "@passes/api-client"
 import { useRouter } from "next/router"
 import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
@@ -12,7 +13,6 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useFeed } from "src/hooks/profile/useFeed"
 import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
-
 import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
 import { Media } from "./Media"

@@ -5,6 +5,8 @@ import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
 import { memo, useState } from "react"
 import { useForm } from "react-hook-form"
+import { v4 } from "uuid"
+
 import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
@@ -13,7 +15,6 @@ import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
-import { v4 } from "uuid"
 
 enum BankTypeEnum {
   US = "us",

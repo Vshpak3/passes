@@ -1,12 +1,12 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import Clipboard from "public/icons/clipboard.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import { memo, useEffect } from "react"
+
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"

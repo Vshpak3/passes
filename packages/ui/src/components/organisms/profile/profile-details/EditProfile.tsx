@@ -12,6 +12,8 @@ import Youtube from "public/icons/profile-youtube-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, string } from "yup"
+
 import { PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
@@ -22,7 +24,6 @@ import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { useProfile } from "src/hooks/profile/useProfile"
-import { object, string } from "yup"
 
 const editProfileSchema = object({
   displayName: string()

@@ -1,8 +1,8 @@
 import { CommentDto, PostDto } from "@passes/api-client"
 import { FC, memo, useCallback, useState } from "react"
+
 import { Comment } from "src/components/organisms/profile/post/Comment"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
-
 import { NewCommentEditor } from "./NewCommentEditor"
 
 interface CommentSectionProps {

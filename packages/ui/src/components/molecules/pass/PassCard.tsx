@@ -6,6 +6,7 @@ import {
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import React, { FC } from "react"
+
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/useBuyPassModal"

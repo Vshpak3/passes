@@ -1,6 +1,5 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
 import { differenceInYears, format, subYears } from "date-fns"
@@ -13,6 +12,8 @@ import { FC, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, SchemaOf, string } from "yup"
+
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
@@ -24,7 +25,6 @@ import { checkUsername } from "src/helpers/username"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { object, SchemaOf, string } from "yup"
 
 const BIRTHDAY_DATE_FORMAT = "yyyy-MM-dd"
 

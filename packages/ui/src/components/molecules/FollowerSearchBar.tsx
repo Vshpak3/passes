@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react"
+
 import { SearchResultOption } from "src/components/atoms/search/user/UserSearchResults"
 import { useFollowSearch } from "src/hooks/search/useFollowSearch"
-
 import { SearchBar } from "./SearchBar"
 
 interface FollowerSearchBarProps {

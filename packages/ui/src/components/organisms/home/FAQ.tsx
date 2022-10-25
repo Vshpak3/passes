@@ -1,6 +1,7 @@
 import { Disclosure, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import React from "react"
+
 import { ChevronDown } from "src/icons/ChevronDown"
 
 interface FAQ {
