@@ -41,6 +41,7 @@ export const usePay = (
   const [waiting, setWaiting] = useState<Date>()
   const [count, setCount] = useState(0)
   const [payinId, setPayinId] = useState<string>()
+
   useEffect(() => {
     const fetch = async () => {
       const paymentApi = new PaymentApi()
@@ -83,6 +84,21 @@ export const usePay = (
     fetch()
   }, [count, payinId, waiting])
 
+  const checkProvider = async (
+    provider: any,
+    cancelPayinCallback: () => Promise<void>
+  ) => {
+    if (provider === undefined) {
+      //display message to user
+      cancelPayinCallback()
+      throw new Error("no provider exists")
+    }
+  }
+
+  const toastPleaseWait = () => {
+    toast.info("Please wait as we confirm the transaction.")
+  }
+
   const handleCircleCard = async (
     registerResponse: RegisterPayinResponseDto,
     paymentApi: PaymentApi,
@@ -116,11 +132,7 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = getPhantomProvider()
-    if (provider === undefined) {
-      //display message to user
-      cancelPayinCallback()
-      throw new Error("no provider exists")
-    }
+    await checkProvider(provider, cancelPayinCallback)
     try {
       await executePhantomUSDCProvider(
         provider,
@@ -137,7 +149,7 @@ export const usePay = (
       provider.off("accountChanged")
       provider.off("disconnect")
     }
-    toast.info("Please wait as we confirm the transaction.")
+    toastPleaseWait()
   }
 
   const handleMetamaskCircleUSDC = async (
@@ -145,11 +157,7 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = (await detectEthereumProvider()) as EthereumProvider
-    if (provider === undefined) {
-      //display message to user
-      cancelPayinCallback()
-      throw new Error("no provider exists")
-    }
+    await checkProvider(provider, cancelPayinCallback)
     const account = await connectMetamask(provider)
     await executeMetamaskUSDCProvider(
       account,
@@ -159,7 +167,7 @@ export const usePay = (
       registerResponse.amount * 10 ** 6,
       cancelPayinCallback
     )
-    toast.info("Please wait as we confirm the transaction.")
+    toastPleaseWait()
   }
 
   const handleMetamaskCircleEth = async (
@@ -167,11 +175,7 @@ export const usePay = (
     cancelPayinCallback: () => Promise<void>
   ) => {
     const provider = (await detectEthereumProvider()) as EthereumProvider
-    if (provider === undefined) {
-      //display message to user
-      cancelPayinCallback()
-      throw new Error("no provider exists")
-    }
+    await checkProvider(provider, cancelPayinCallback)
     if (registerResponse.amountEth === undefined) {
       //display message to user
       cancelPayinCallback()
@@ -186,7 +190,7 @@ export const usePay = (
       registerResponse.amountEth,
       cancelPayinCallback
     )
-    toast.info("Please wait as we confirm the transaction.")
+    toastPleaseWait()
   }
 
   const submit = async () => {

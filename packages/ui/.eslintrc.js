@@ -25,7 +25,8 @@ module.exports = {
     // Not needed for Next.js
     "react/react-in-jsx-scope": "off",
 
-    "sonarjs/cognitive-complexity": "off"
+    // Unnecessary for frontend
+    "sonarjs/cognitive-complexity": "off",
     "sonarjs/no-duplicate-string": "off"
   },
   overrides: [

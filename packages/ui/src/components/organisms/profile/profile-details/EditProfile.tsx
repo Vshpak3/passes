@@ -37,56 +37,48 @@ const editProfileSchema = object({
 const bioForm = {
   description: {
     type: "text-area",
-    label: "Description",
-    colSpan: "col-span-6"
+    label: "Description"
   }
 }
 
 const profileInformationForm = {
-  displayName: { type: "text", label: "Display Name", colSpan: "col-span-6" }
+  displayName: { type: "text", label: "Display Name" }
 }
 
 const socialMediaForm = {
   discordUsername: {
     type: "text",
     label: "Discord",
-    colSpan: "col-span-6",
     icon: Discord
   },
   facebookUsername: {
     type: "text",
     label: "Facebook",
-    colSpan: "col-span-6",
     icon: Facebook
   },
   instagramUsername: {
     type: "text",
     label: "Instagram",
-    colSpan: "col-span-6",
     icon: Instagram
   },
   tiktokUsername: {
     type: "text",
     label: "TikTok",
-    colSpan: "col-span-6",
     icon: TikTok
   },
   twitchUsername: {
     type: "text",
     label: "Twitch",
-    colSpan: "col-span-6",
     icon: Twitch
   },
   twitterUsername: {
     type: "text",
     label: "Twitter",
-    colSpan: "col-span-6",
     icon: Twitter
   },
   youtubeUsername: {
     type: "text",
     label: "Youtube",
-    colSpan: "col-span-6",
     icon: Youtube
   }
 }
@@ -140,7 +132,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   const profileBannerImage: File[] = watch("profileBannerImage")
 
   const renderInput = ([key, input]: any) => (
-    <div className={input.colSpan} key={key}>
+    <div className="col-span-6" key={key}>
       <FormInput
         register={register}
         name={key}
@@ -297,7 +289,7 @@ export const EditProfile: FC<EditProfileProps> = ({
             <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2">
               {Object.entries(socialMediaForm).map(([key, input]) => {
                 return (
-                  <div className={input.colSpan} key={key}>
+                  <div className="col-span-6" key={key}>
                     <div>
                       <div className="flex w-full items-center justify-between">
                         <FormInput
