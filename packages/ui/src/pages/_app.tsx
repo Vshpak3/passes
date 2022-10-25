@@ -141,11 +141,11 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const { hasRefreshed } = useTokenRefresh()
-  const { mutate, accessToken } = useUser()
+  const { mutate } = useUser()
 
   useEffect(() => {
     mutate()
-  }, [accessToken, mutate])
+  }, [mutate])
 
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
