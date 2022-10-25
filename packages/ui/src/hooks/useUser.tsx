@@ -1,5 +1,6 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
+import { useCallback } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
@@ -18,12 +19,19 @@ export interface JWTUserClaims {
 
 const CACHE_KEY_USER = "/user"
 
+const authApi = new AuthApi()
+const userApi = new UserApi()
 export const useUser = (text?: string) => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
-  const authApi = new AuthApi()
-  const userApi = new UserApi()
+  const fetch = useCallback(async () => {
+    // When this flag is false there is not yet a user to retrieve
+    if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+      return
+    }
+    return await authApi.getCurrentUser()
+  }, [accessToken])
 
   const {
     data: user,
@@ -31,19 +39,10 @@ export const useUser = (text?: string) => {
     mutate
   } = useSWR<GetUserResponseDto | undefined>(
     CACHE_KEY_USER, //accessToken ? CACHE_KEY_USER : null,
-    async () => {
-      // When this flag is false there is not yet a user to retrieve
-      if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
-        return
-      }
-      const c = await authApi.getCurrentUser()
-      // eslint-disable-next-line no-console
-      console.trace("user", c, text)
-      return c
-    }
+    fetch
   )
   // eslint-disable-next-line no-console
-  // console.trace(user, text)
+  console.log(user, text)
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>
