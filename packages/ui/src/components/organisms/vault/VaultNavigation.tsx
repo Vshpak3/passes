@@ -5,8 +5,8 @@ import {
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
-import { VaultDeleteModal } from "src/components/molecules/vault/VaultDelete"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
 import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
 import {
@@ -108,12 +108,11 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         setVaultType={setVaultType}
         setVaultCategory={setVaultCategory}
       />
-      <VaultDeleteModal
-        toggleDeleteModal={toggleDeleteModal}
-        deleteModalActive={deleteModalActive}
+      <DeleteConfirmationModal
+        isOpen={deleteModalActive}
         // TODO: connect with API to get selected items and delete items
         // eslint-disable-next-line no-console
-        onDeleteVaultItems={async () => {
+        onDelete={async () => {
           const api = new ContentApi()
           await api.deleteContent({
             deleteContentRequestDto: {
@@ -122,7 +121,8 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           })
           setDeletedItems([...deletedItems, ...selectedItems])
         }}
-        setDeleteModalActive={setDeleteModalActive}
+        setOpen={setDeleteModalActive}
+        onCancel={toggleDeleteModal}
       />
     </div>
   )
