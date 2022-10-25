@@ -19,27 +19,30 @@ interface CarouselProps {
 export const Carousel: FC<CarouselProps> = ({ contents, isAutoPlay }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   return (
-    <Swiper
-      pagination={{
-        type: "fraction"
-      }}
-      navigation={true}
-      modules={[Lazy, Pagination, Navigation]}
-      className="mySwiper"
-      lazy={true}
-    >
-      {contents.map((c: ContentDto, index: number) => {
-        return (
-          <SwiperSlide key={index}>
-            <PostContent
-              key={index}
-              content={c}
-              ref={imgRef}
-              isAutoPlay={isAutoPlay}
-            />
-          </SwiperSlide>
-        )
-      })}
-    </Swiper>
+    <>
+      <style>{`.swiper-button-prev, .swiper-button-next { color: white; }`}</style>
+      <Swiper
+        pagination={{
+          type: "fraction"
+        }}
+        navigation={true}
+        modules={[Lazy, Pagination, Navigation]}
+        className="mySwiper"
+        lazy={true}
+      >
+        {contents.map((c: ContentDto, index: number) => {
+          return (
+            <SwiperSlide key={index}>
+              <PostContent
+                key={index}
+                content={c}
+                ref={imgRef}
+                isAutoPlay={isAutoPlay}
+              />
+            </SwiperSlide>
+          )
+        })}
+      </Swiper>
+    </>
   )
 }
