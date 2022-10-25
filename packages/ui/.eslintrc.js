@@ -22,11 +22,10 @@ module.exports = {
       { allowSameFolder: true }
     ],
 
-    // Breaking for some reason after upgrades
-    "react/no-unknown-property": "off",
-    "react/prop-types": "off",
+    // Not needed for Next.js
     "react/react-in-jsx-scope": "off",
-    "sonarjs/cognitive-complexity": "off",
+
+    "sonarjs/cognitive-complexity": "off"
     "sonarjs/no-duplicate-string": "off"
   },
   overrides: [

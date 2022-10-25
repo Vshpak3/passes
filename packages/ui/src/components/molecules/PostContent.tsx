@@ -12,7 +12,10 @@ interface PostContentProps extends PostImageProps {
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
-  ({ content, autoplayVideo }, ref: ForwardedRef<HTMLImageElement>) => {
+  (
+    { content, autoplayVideo }: PostContentProps,
+    ref: ForwardedRef<HTMLImageElement>
+  ) => {
     const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {

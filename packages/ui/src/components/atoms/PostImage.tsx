@@ -14,7 +14,7 @@ export interface PostImageProps {
 }
 
 export const PostImage: FC<PostImageProps> = forwardRef(
-  ({ content }, ref: ForwardedRef<HTMLImageElement>) => {
+  ({ content }: PostImageProps, ref: ForwardedRef<HTMLImageElement>) => {
     const [loaded, setLoaded] = useState(false)
     const image = ContentService.userContentMediaPath(content)
     return (

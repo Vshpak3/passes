@@ -1,7 +1,15 @@
 import classNames from "classnames"
 import NextLink from "next/link"
+import { FC } from "react"
 
-export const Wordmark = ({
+interface WordmarkProps {
+  className?: string
+  height: number
+  width: number
+  whiteOnly?: boolean
+}
+
+export const Wordmark: FC<WordmarkProps> = ({
   className = "",
   height = 24,
   width = 124,
