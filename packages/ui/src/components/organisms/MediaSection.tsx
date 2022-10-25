@@ -7,7 +7,7 @@ import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import Slider from "react-slick"
 import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
-import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media_limits"
+import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 

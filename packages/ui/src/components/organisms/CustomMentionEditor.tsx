@@ -27,6 +27,8 @@ import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 
+import { NewPostFormProps } from "./profile/main-content/new-post/NewPostEditor"
+
 const MENTION_LIMIT = 5
 
 const TRIGGER = "@"
@@ -50,7 +52,7 @@ const Entry: FC<EntryComponentProps> = ({
 
 interface CustomMentionProps {
   placeholder?: string
-  onInputChange: (params: object) => any
+  onInputChange: (params: Pick<NewPostFormProps, "text" | "tags">) => any
   isReset?: boolean
   setIsReset?: (value: boolean) => void
   defaultText?: string

@@ -8,12 +8,13 @@ import { PostVideo } from "./post/PostVideo"
 
 export interface PostContentProps extends PostImageProps {
   ref: ForwardedRef<HTMLImageElement>
-  isAutoPlay?: boolean
+  autoplayVideo?: boolean
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
-  ({ content, isAutoPlay }, ref: ForwardedRef<HTMLImageElement>) => {
+  ({ content, autoplayVideo }, ref: ForwardedRef<HTMLImageElement>) => {
     const [openModal, setOpenModal] = useState(false)
+
     useEffect(() => {
       if (openModal) {
         document.body.style.overflow = "hidden"
@@ -24,6 +25,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
         document.body.style.overflow = ""
       }
     }, [openModal])
+
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
         return (
@@ -47,7 +49,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
           <PostVideo
             key={content.contentId}
             videoUrl={ContentService.userContentMediaPath(content)}
-            isAutoPlay={isAutoPlay}
+            autoplayVideo={autoplayVideo}
           />
         )
     }

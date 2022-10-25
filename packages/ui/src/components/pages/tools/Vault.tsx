@@ -12,7 +12,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"
-import { MAX_FILE_COUNT } from "src/config/media_limits"
+import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { useMedia } from "src/hooks/useMedia"
 

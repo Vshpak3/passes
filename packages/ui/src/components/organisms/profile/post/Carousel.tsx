@@ -13,10 +13,10 @@ import { Swiper, SwiperSlide } from "swiper/react"
 interface CarouselProps {
   contents: ContentDto[]
   activeIndex?: number
-  isAutoPlay?: boolean
+  autoplayVideo?: boolean
 }
 
-export const Carousel: FC<CarouselProps> = ({ contents, isAutoPlay }) => {
+export const Carousel: FC<CarouselProps> = ({ contents, autoplayVideo }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   return (
     <>
@@ -37,7 +37,7 @@ export const Carousel: FC<CarouselProps> = ({ contents, isAutoPlay }) => {
                 key={index}
                 content={c}
                 ref={imgRef}
-                isAutoPlay={isAutoPlay}
+                autoplayVideo={autoplayVideo}
               />
             </SwiperSlide>
           )

@@ -5,12 +5,12 @@ import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
 interface PostVideoProps {
   videoUrl: string
-  isAutoPlay?: boolean
+  autoplayVideo?: boolean
 }
 
 export const PostVideo: FC<PostVideoProps> = ({
   videoUrl,
-  isAutoPlay = false
+  autoplayVideo = false
 }) => {
   const videoJsOptions: VideoJsPlayerOptions = {
     controls: true,
@@ -57,13 +57,13 @@ export const PostVideo: FC<PostVideoProps> = ({
     } else {
       const player = playerRef.current
 
-      if (isAutoPlay) {
+      if (autoplayVideo) {
         player?.autoplay(visible)
       }
       videoJsOptions?.sources && player?.src(videoJsOptions?.sources[0].src)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoRef, visible, ref, isAutoPlay])
+  }, [videoRef, visible, ref, autoplayVideo])
 
   useEffect(() => {
     const player = playerRef.current

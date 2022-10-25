@@ -133,6 +133,38 @@ export class UserApi extends runtime.BaseAPI {
     }
 
     /**
+     * Get featured creators
+     */
+    async featuredCreatorsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<SearchCreatorResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/user/creator/featured`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => SearchCreatorResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get featured creators
+     */
+    async featuredCreators(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<SearchCreatorResponseDto> {
+        const response = await this.featuredCreatorsRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Get user id from username
      */
     async getUserIdRaw(requestParameters: GetUserIdRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<string>> {

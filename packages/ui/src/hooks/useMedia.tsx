@@ -7,7 +7,7 @@ import {
   MAX_IMAGE_SIZE_NAME,
   MAX_VIDEO_SIZE,
   MAX_VIDEO_SIZE_NAME
-} from "src/config/media_limits"
+} from "src/config/media-limits"
 
 export class ContentFile {
   file?: File

@@ -30,7 +30,6 @@ interface PostProps {
   isPinned?: boolean
   pinnedPostCount?: number
   updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
-  isAutoPlay?: boolean
 }
 
 const PostUnmemo: FC<PostProps> = ({
@@ -39,15 +38,12 @@ const PostUnmemo: FC<PostProps> = ({
   postByUrl = false,
   isPinned = false,
   pinnedPostCount = 0,
-  updateProfileStats,
-  isAutoPlay
+  updateProfileStats
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
   const router = useRouter()
-  const { mutatePinnedPosts, pinPost, unpinPost, pinnedPosts } = useFeed(
-    post.userId
-  )
+  const { pinPost, unpinPost } = useFeed(post.userId)
 
   const {
     contents,
@@ -101,27 +97,15 @@ const PostUnmemo: FC<PostProps> = ({
       }
       await pinPost(post)
       toast.success("The post has been pinned")
-      mutatePinnedPosts()
       setIsRemoved(true)
     }),
     ...DropDownGeneral("Unpin", post.isOwner && isPinned, async () => {
       await unpinPost(post)
       toast.success("The post has been unpinned")
-      mutatePinnedPosts()
       setIsRemoved(true)
     }),
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
-
-  useEffect(() => {
-    pinnedPosts.forEach(({ postId: pinPostId }) => {
-      if (pinPostId === postId && !pinnedAt && !postByUrl && !inHomeFeed) {
-        setIsRemoved(true)
-        mutatePinnedPosts()
-      }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pinnedPosts])
 
   return (
     <>
@@ -157,11 +141,7 @@ const PostUnmemo: FC<PostProps> = ({
             {!!contents?.length && (
               <>
                 {!purchasable ? (
-                  <Media
-                    contents={contents}
-                    isProcessing={!contentProcessed}
-                    isAutoPlay={isAutoPlay}
-                  />
+                  <Media contents={contents} isProcessing={!contentProcessed} />
                 ) : (
                   <LockedMedia post={post} />
                 )}

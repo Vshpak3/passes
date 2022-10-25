@@ -1,15 +1,18 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CreatePostRequestDto, PassDto, TagDto } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { MediaSection } from "src/components/organisms/MediaSection"
-import { NewPostEditorFooter as NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
+import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
+import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
 import { ContentService } from "src/helpers/content"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
-import { useMedia } from "src/hooks/useMedia"
+import { ContentFile, useMedia } from "src/hooks/useMedia"
+import { array, bool, date, number, object, string } from "yup"
 
 import { NewPostPaidSection } from "./NewPostPaidSection"
 
@@ -19,14 +22,63 @@ const CustomMentionEditor = dynamic(
 )
 
 export interface NewPostFormProps {
-  expiresAt: Date | null
-  isPaid: boolean
-  tags: TagDto[]
-  passes: PassDto[]
-  price: string
-  scheduledAt: Date | null
   text: string
+  tags: TagDto[]
+  files: ContentFile[]
+  isPaid: boolean
+  price: number
+  passes: PassDto[]
+  expiresAt: Date | null
+  scheduledAt: Date | null
 }
+
+const newPostFormDefaults: NewPostFormProps = {
+  text: "",
+  tags: [],
+  files: [],
+  isPaid: false,
+  price: 0,
+  passes: [],
+  expiresAt: null,
+  scheduledAt: null
+}
+
+const newPostFormSchema = object({
+  text: string()
+    .optional()
+    .transform((defaultText) => defaultText.trim())
+    .when("files", {
+      is: (f: File[]) => f.length === 0,
+      then: string().required("Must add either text or content")
+    }),
+  tags: array<TagDto>().optional(),
+  files: array<File>().when("isPaid", {
+    is: true,
+    then: array().min(1, "You cannot create a paid post without media content")
+  }),
+  isPaid: bool().optional(),
+  price: number()
+    .optional()
+    .integer()
+    .when("isPaid", {
+      is: true,
+      then: number()
+        .required("A price must be set for a paid post")
+        .min(
+          MIN_PAID_POST_PRICE,
+          `The minimum price of a post is $${MIN_PAID_POST_PRICE}`
+        )
+        .max(
+          MAX_PAID_POST_PRICE,
+          `The maxinum price of a post is $${MAX_PAID_POST_PRICE}`
+        )
+    }),
+  passes: array<PassDto>()
+    .optional()
+    .transform((p: PassDto) => p.passId),
+  expiresAt: date().nullable(),
+  scheduledAt: date().nullable()
+})
 
 interface NewPostEditorProps {
   handleSavePost: (arg: CreatePostRequestDto) => void | Promise<void>
@@ -57,11 +109,24 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     watch,
     reset
   } = useForm<NewPostFormProps>({
-    defaultValues: { ...initialData }
+    defaultValues: { ...newPostFormDefaults, ...initialData },
+    resolver: yupResolver(newPostFormSchema)
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const isPaid = watch("isPaid")
+
+  useEffect(() => {
+    setValue("files", files, { shouldValidate: true })
+  }, [files, setValue])
+
+  useEffect(() => {
+    setValue("passes", selectedPasses, { shouldValidate: true })
+  }, [selectedPasses, setValue])
+
+  const setScheduledTime = (date: Date | null) => {
+    setValue("scheduledAt", date, { shouldValidate: true })
+  }
 
   const closeEditor = () => {
     setExtended(false)
@@ -73,30 +138,26 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const resetEditor = () => {
     reset()
     setFiles([])
+    setSelectedPasses([])
     setIsReset(true)
   }
 
-  const setScheduledTime = (date: Date | null) => {
-    setValue("scheduledAt", date, { shouldValidate: true })
-  }
+  useEffect(() => {
+    // Any time we receive an error, just show the first one
+    const errorMessages = Object.entries(errors).map((e) => e[1].message)
+    if (errorMessages.length) {
+      toast.error(errorMessages[0])
+    }
+  }, [errors])
 
   const onSubmit = async () => {
     const values = getValues()
 
-    if (values.text.length === 0 && files.length === 0) {
-      toast.error("Must add either text or content")
-      return
-    }
-    if (files.length === 0 && isPaid) {
-      toast.error("You cannot create a paid post without media content")
-      return
-    }
-
-    if (files.length > 0) {
+    if (values.files.length > 0) {
       toast.info("Please wait a moment as your content is uploaded")
     }
     const contentIds = await new ContentService().uploadContent(
-      files,
+      values.files,
       undefined,
       {
         inPost: true,
@@ -106,14 +167,15 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
     closeEditor()
 
+    // Ensure to check isPaid so if the drop down is closed we clear the values
     const post: CreatePostRequestDto = {
       text: values.text,
       tags: values.tags,
-      passIds: selectedPasses.map((pass) => pass.passId),
-      expiresAt: values.expiresAt,
-      price: values.isPaid ? parseInt(values.price) : 0,
+      passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
+      price: values.isPaid ? parseInt(values.price as unknown as string) : 0,
       contentIds,
       previewIndex: 0, // TODO: add previewing FE
+      expiresAt: values.expiresAt,
       scheduledAt: values.scheduledAt ?? undefined
     }
 
@@ -139,9 +201,9 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
           <>
             <NewPostEditorHeader
               title="New post"
+              formName="isPaid"
               onClose={closeEditor}
               register={register}
-              errors={errors}
             />
           </>
         )}
@@ -164,7 +226,9 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               defaultText={initialData.text}
               isReset={isReset}
               setIsReset={setIsReset}
-              onInputChange={(params: any) => {
+              onInputChange={(
+                params: Pick<NewPostFormProps, "text" | "tags">
+              ) => {
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}

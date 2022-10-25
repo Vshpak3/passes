@@ -4,7 +4,7 @@ import { FC } from "react"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 
 interface MobileNavbarProps {
-  openSidebar: any
+  openSidebar: () => void
 }
 
 export const MobileNavbar: FC<MobileNavbarProps> = ({ openSidebar }) => {

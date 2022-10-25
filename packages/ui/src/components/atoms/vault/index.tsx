@@ -5,7 +5,7 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { MdAdd, MdDelete } from "react-icons/md"
 import { FormInput } from "src/components/atoms/FormInput"
-import { ACCEPTED_MEDIA_TYPES } from "src/config/media_limits"
+import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
 import { ContentFile } from "src/hooks/useMedia"
 
 const filterStyles = {

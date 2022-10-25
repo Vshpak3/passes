@@ -1,28 +1,20 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
 import { FormInput } from "src/components/atoms/FormInput"
-import {
-  FormErrors,
-  FormOptions,
-  FormRegister
-} from "src/components/types/FormTypes"
+import { FormRegister } from "src/components/types/FormTypes"
 
 interface NewPostEditorHeaderProps {
-  title?: string
+  title: string
+  formName: string
   onClose: () => void
-  messages?: boolean
   register: FormRegister
-  errors?: FormErrors
-  options?: FormOptions
 }
 
 export const NewPostEditorHeader: FC<NewPostEditorHeaderProps> = ({
   title,
+  formName,
   onClose,
-  messages,
-  register,
-  errors,
-  options = {}
+  register
 }) => {
   return (
     <div className="relative flex h-full w-full items-center justify-between border-b border-[#2B282D] pb-4 text-[16px] font-normal">
@@ -30,20 +22,16 @@ export const NewPostEditorHeader: FC<NewPostEditorHeaderProps> = ({
         <button onClick={onClose} type="button">
           <CloseIcon />
         </button>
-        <h4 className="text-xl font-bold leading-4">{title || "New Post"}</h4>
+        <h4 className="text-xl font-bold leading-4">{title}</h4>
       </div>
 
-      {!messages && (
-        <FormInput
-          label="Paid"
-          type="toggle"
-          register={register}
-          errors={errors}
-          options={options}
-          name="isPaid"
-          className="group"
-        />
-      )}
+      <FormInput
+        label="Paid"
+        type="toggle"
+        register={register}
+        name={formName}
+        className="group"
+      />
     </div>
   )
 }

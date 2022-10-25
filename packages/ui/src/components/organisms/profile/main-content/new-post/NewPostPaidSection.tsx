@@ -3,6 +3,7 @@ import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tag } from "src/components/atoms/Tag"
+import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
 import { formatText } from "src/helpers/formatters"
 
 import { NewPostFormProps } from "./NewPostEditor"
@@ -67,8 +68,8 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
               type="number"
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               //@ts-ignore
-              min="1"
-              max="5000"
+              min={MIN_PAID_POST_PRICE}
+              max={MAX_PAID_POST_PRICE}
               name="price"
               className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
             />

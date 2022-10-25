@@ -39,6 +39,7 @@ export const useFeed = (creatorId: string) => {
 
   const pinPost = async (post: PostDto) => {
     await postApi.pinPost({ postId: post.postId })
+    post.pinnedAt = new Date()
     pinnedPosts.push(post)
     pinnedPosts.sort(
       (a, b) => (a.pinnedAt?.getTime() || 0) - (b.pinnedAt?.getTime() || 0)
@@ -48,6 +49,7 @@ export const useFeed = (creatorId: string) => {
 
   const unpinPost = async (post: PostDto) => {
     await postApi.unpinPost({ postId: post.postId })
+    post.pinnedAt = null
     mutateManual(pinnedPosts.filter((p) => p.postId !== post.postId))
   }
 
