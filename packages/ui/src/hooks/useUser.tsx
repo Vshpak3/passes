@@ -30,15 +30,17 @@ export const useUser = () => {
     data: user,
     isValidating: loading,
     mutate
-  } = useSWR<GetUserResponseDto | undefined, any>(
+  } = useSWR<GetUserResponseDto | undefined>(
     accessToken ? CACHE_KEY_USER : null,
     async () => {
       // When this flag is false there is not yet a user to retrieve
       if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
         return
       }
-
-      return await authApi.getCurrentUser()
+      const c = await authApi.getCurrentUser()
+      // eslint-disable-next-line no-console
+      console.log("user", c)
+      return c
     }
   )
 
