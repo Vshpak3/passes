@@ -63,6 +63,12 @@ export interface GetListMembersRequestDto {
     displayName?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof GetListMembersRequestDto
+     */
+    metadataNumber?: number;
+    /**
+     * 
      * @type {string}
      * @memberof GetListMembersRequestDto
      */
@@ -85,7 +91,8 @@ export type GetListMembersRequestDtoOrderEnum = typeof GetListMembersRequestDtoO
 export const GetListMembersRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type GetListMembersRequestDtoOrderTypeEnum = typeof GetListMembersRequestDtoOrderTypeEnum[keyof typeof GetListMembersRequestDtoOrderTypeEnum];
 
@@ -119,6 +126,7 @@ export function GetListMembersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
         'orderType': json['orderType'],
     };
 }
@@ -139,6 +147,7 @@ export function GetListMembersRequestDtoToJSON(value?: GetListMembersRequestDto 
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
+        'metadataNumber': value.metadataNumber,
         'orderType': value.orderType,
     };
 }

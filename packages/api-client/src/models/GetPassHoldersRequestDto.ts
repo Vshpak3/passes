@@ -97,7 +97,8 @@ export type GetPassHoldersRequestDtoOrderEnum = typeof GetPassHoldersRequestDtoO
 export const GetPassHoldersRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type GetPassHoldersRequestDtoOrderTypeEnum = typeof GetPassHoldersRequestDtoOrderTypeEnum[keyof typeof GetPassHoldersRequestDtoOrderTypeEnum];
 

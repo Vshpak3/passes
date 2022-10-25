@@ -110,7 +110,8 @@ export type GetPassHoldersResponseDtoOrderEnum = typeof GetPassHoldersResponseDt
 export const GetPassHoldersResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type GetPassHoldersResponseDtoOrderTypeEnum = typeof GetPassHoldersResponseDtoOrderTypeEnum[keyof typeof GetPassHoldersResponseDtoOrderTypeEnum];
 

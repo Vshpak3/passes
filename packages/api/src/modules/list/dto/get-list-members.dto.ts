@@ -27,6 +27,9 @@ export class GetListMembersRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'string', optional: true, nullable: true })
   displayName?: string | null
 
+  @DtoProperty({ type: 'number', optional: true })
+  metadataNumber?: number
+
   @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
 }

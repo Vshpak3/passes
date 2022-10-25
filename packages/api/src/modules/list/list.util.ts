@@ -11,8 +11,16 @@ export function createGetMemberQuery(
   getListMembersRequestDto: GetListMembersRequestDto | SearchFollowRequestDto,
   memberTable: string,
 ): Knex.QueryBuilder {
-  const { username, displayName, orderType, createdAt, order, search, lastId } =
-    getListMembersRequestDto
+  const {
+    username,
+    displayName,
+    orderType,
+    createdAt,
+    order,
+    search,
+    lastId,
+    metadataNumber,
+  } = getListMembersRequestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
       query = createPaginatedQuery(
@@ -44,6 +52,17 @@ export function createGetMemberQuery(
         'display_name',
         order,
         displayName,
+        lastId,
+      )
+      break
+    case ListMemberOrderTypeEnum.METADATA:
+      query = createPaginatedQuery(
+        query,
+        memberTable,
+        memberTable,
+        'meta_number',
+        order,
+        metadataNumber,
         lastId,
       )
       break

@@ -57,6 +57,12 @@ export interface SearchFollowRequestDto {
     displayName?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof SearchFollowRequestDto
+     */
+    metadataNumber?: number;
+    /**
+     * 
      * @type {string}
      * @memberof SearchFollowRequestDto
      */
@@ -79,7 +85,8 @@ export type SearchFollowRequestDtoOrderEnum = typeof SearchFollowRequestDtoOrder
 export const SearchFollowRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type SearchFollowRequestDtoOrderTypeEnum = typeof SearchFollowRequestDtoOrderTypeEnum[keyof typeof SearchFollowRequestDtoOrderTypeEnum];
 
@@ -111,6 +118,7 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'order': json['order'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
         'orderType': json['orderType'],
     };
 }
@@ -130,6 +138,7 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'order': value.order,
         'username': value.username,
         'displayName': value.displayName,
+        'metadataNumber': value.metadataNumber,
         'orderType': value.orderType,
     };
 }

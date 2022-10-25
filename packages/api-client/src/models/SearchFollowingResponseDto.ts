@@ -70,6 +70,12 @@ export interface SearchFollowingResponseDto {
     displayName?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof SearchFollowingResponseDto
+     */
+    metadataNumber?: number;
+    /**
+     * 
      * @type {string}
      * @memberof SearchFollowingResponseDto
      */
@@ -98,7 +104,8 @@ export type SearchFollowingResponseDtoOrderEnum = typeof SearchFollowingResponse
 export const SearchFollowingResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type SearchFollowingResponseDtoOrderTypeEnum = typeof SearchFollowingResponseDtoOrderTypeEnum[keyof typeof SearchFollowingResponseDtoOrderTypeEnum];
 
@@ -133,6 +140,7 @@ export function SearchFollowingResponseDtoFromJSONTyped(json: any, ignoreDiscrim
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
         'orderType': json['orderType'],
         'data': ((json['data'] as Array<any>).map(ListMemberDtoFromJSON)),
     };
@@ -154,6 +162,7 @@ export function SearchFollowingResponseDtoToJSON(value?: SearchFollowingResponse
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
+        'metadataNumber': value.metadataNumber,
         'orderType': value.orderType,
         'data': ((value.data as Array<any>).map(ListMemberDtoToJSON)),
     };

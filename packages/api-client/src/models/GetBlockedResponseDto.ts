@@ -70,6 +70,12 @@ export interface GetBlockedResponseDto {
     displayName?: string | null;
     /**
      * 
+     * @type {number}
+     * @memberof GetBlockedResponseDto
+     */
+    metadataNumber?: number;
+    /**
+     * 
      * @type {string}
      * @memberof GetBlockedResponseDto
      */
@@ -98,7 +104,8 @@ export type GetBlockedResponseDtoOrderEnum = typeof GetBlockedResponseDtoOrderEn
 export const GetBlockedResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
-    CreatedAt: 'created at'
+    CreatedAt: 'created at',
+    Metadata: 'metadata'
 } as const;
 export type GetBlockedResponseDtoOrderTypeEnum = typeof GetBlockedResponseDtoOrderTypeEnum[keyof typeof GetBlockedResponseDtoOrderTypeEnum];
 
@@ -133,6 +140,7 @@ export function GetBlockedResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
+        'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
         'orderType': json['orderType'],
         'data': ((json['data'] as Array<any>).map(ListMemberDtoFromJSON)),
     };
@@ -154,6 +162,7 @@ export function GetBlockedResponseDtoToJSON(value?: GetBlockedResponseDto | null
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,
+        'metadataNumber': value.metadataNumber,
         'orderType': value.orderType,
         'data': ((value.data as Array<any>).map(ListMemberDtoToJSON)),
     };

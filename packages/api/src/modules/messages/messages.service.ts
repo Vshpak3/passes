@@ -1413,6 +1413,7 @@ export class MessagesService {
         0,
         false,
       )
+      message.content_processed = true
       await this.redisService.publish(
         'message',
         JSON.stringify(

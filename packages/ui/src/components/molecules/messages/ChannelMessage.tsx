@@ -71,9 +71,6 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   </div>
                 ) : null}
               </div>
-              <div>
-                <span>{message?.text}</span>
-              </div>
               <div className="max-w-[403px] pt-2">
                 {message.price > 0 && !message.paid ? (
                   <Content

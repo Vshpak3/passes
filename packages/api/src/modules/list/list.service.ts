@@ -1,7 +1,7 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable sonarjs/no-duplicate-string */
 
-import { Inject, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -30,6 +30,7 @@ import { ListEntity } from './entities/list.entity'
 import { ListMemberEntity } from './entities/list-member.entity'
 import { ListOrderTypeEnum } from './enum/list.order.enum'
 import { ListTypeEnum } from './enum/list.type.enum'
+import { ListMemberOrderTypeEnum } from './enum/list-member.order.enum'
 import {
   IncorrectListTypeError,
   ListLimitReachedError,
@@ -200,6 +201,12 @@ export class ListService {
   ) {
     const { listId } = getListMembersRequestDto
     const type = await this.checkList(userId, listId, false)
+    if (
+      getListMembersRequestDto.orderType === ListMemberOrderTypeEnum.METADATA &&
+      !(type === ListTypeEnum.TOP_SPENDERS)
+    ) {
+      throw new BadRequestException('invalid order type for list')
+    }
     switch (type) {
       case ListTypeEnum.FOLLOWERS:
         return await this.followService.searchFansByQuery(
@@ -428,6 +435,9 @@ export class ListService {
               topSpenders,
             )
           }
+          await trx<ListEntity>(ListEntity.table)
+            .where({ id: list.id })
+            .update({ count: topSpenders.length })
         })
         break
       default:

@@ -6,18 +6,21 @@ import { PostService } from '../../modules/post/post.service'
 import { BatchTask } from '../batch.interface'
 
 const CHECK_PROCESSED_UNTIL = ms('1 hour')
+const REFRESH_RETRIES = 3
 
 export class RefreshContentTask extends BatchTask {
   async run(): Promise<void> {
-    await this.app.get(ContentService).checkProcessed()
+    for (let i = 0; i < REFRESH_RETRIES; ++i) {
+      await this.app.get(ContentService).checkProcessed()
 
-    const postService = this.app.get(PostService)
-    await postService.checkRecentPostsContentProcessed(CHECK_PROCESSED_UNTIL)
-    // await postService.checkRecentPaidMessagesContentProcessed()
+      const postService = this.app.get(PostService)
+      await postService.checkRecentPostsContentProcessed(CHECK_PROCESSED_UNTIL)
+      // await postService.checkRecentPaidMessagesContentProcessed()
 
-    const messagesService = this.app.get(MessagesService)
-    await messagesService.checkRecentMessagesContentProcessed(
-      CHECK_PROCESSED_UNTIL,
-    )
+      const messagesService = this.app.get(MessagesService)
+      await messagesService.checkRecentMessagesContentProcessed(
+        CHECK_PROCESSED_UNTIL,
+      )
+    }
   }
 }
