@@ -105,7 +105,8 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                   />
                   <p className="mt-[17px] text-base font-medium">
                     <span>
-                      UNLOCK {video ? "1 video" : plural("photo", images)}!
+                      UNLOCK {video ? `${plural("video", video)},` : ""}{" "}
+                      {plural("photo", images)}!
                     </span>
                   </p>
                 </>

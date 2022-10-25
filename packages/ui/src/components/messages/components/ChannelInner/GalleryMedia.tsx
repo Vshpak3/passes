@@ -8,6 +8,7 @@ import { PostVideo } from "src/components/molecules/post/PostVideo"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
+import { plural } from "src/helpers/plural"
 
 interface GalleryMediaProps {
   contents: ContentDto[]
@@ -136,7 +137,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
                   <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
                     <span>
-                      Unlock {video} videos, {images} photos
+                      Unlock {plural("video", video)}, {plural("photo", images)}
                     </span>
                   </div>
                 </div>

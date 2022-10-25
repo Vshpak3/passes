@@ -5,6 +5,7 @@ import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModa
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
+import { plural } from "src/helpers/plural"
 
 interface ContentProps {
   paid: boolean
@@ -48,7 +49,7 @@ export const Content: FC<ContentProps> = ({
           />
           <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
             <span>
-              Unlock {video} videos, {images} photos
+              Unlock {plural("video", video)}, {plural("image", images)} photos
             </span>
           </div>
         </div>

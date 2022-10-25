@@ -40,7 +40,10 @@ export const LockedMedia: FC<LockedMediaProps> = ({ post }) => {
           className="w-auto !px-[30px] !py-2.5"
         />
         <p className="mt-[17px] text-base font-medium">
-          <span>Unlock {video ? "1 video" : plural("photo", images)}!</span>
+          <span>
+            Unlock {video ? `${plural("video", video)},` : ""}{" "}
+            {plural("photo", images)}!
+          </span>
         </p>
       </div>
     </div>
