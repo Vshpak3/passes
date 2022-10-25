@@ -1,6 +1,6 @@
 import { PassDtoTypeEnum } from "@passes/api-client"
 import _ from "lodash"
-import ArrowDown from "public/icons/chevron-down.svg"
+import ChevronDown from "public/icons/chevron-down.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
@@ -40,21 +40,17 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
     const temp = _.clone(selectedValues)
     if (!temp.includes(passType)) {
       temp.push(passType)
-      setSelectedValues(temp)
     } else {
       _.remove(temp, (value) => value === passType)
-      setSelectedValues(temp)
     }
+
+    setSelectedValues(temp)
   }
 
   useOnClickOutside(menuEl, () => setShowOptions(false))
 
   useEffect(() => {
-    if (showOptions) {
-      setSelectedValues(passTypes)
-    } else {
-      setSelectedValues([])
-    }
+    setSelectedValues(passTypes)
   }, [showOptions, passTypes])
 
   const handleConfirm = () => {
@@ -67,11 +63,13 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
     <div className="text-label relative inline-block" ref={menuEl}>
       <div
         role="button"
-        onClick={() => setShowOptions(true)}
+        onClick={() => setShowOptions(!showOptions)}
         className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
       >
         <span>All Pass Types</span>
-        <ArrowDown />
+        <span className={showOptions ? "scale-y-[-1]" : ""}>
+          <ChevronDown />
+        </span>
       </div>
       {showOptions && (
         <ul className="absolute z-10 w-[338px] translate-y-1.5 rounded-[15px] border border-passes-dark-200 bg-[#1B141D] p-[26px]">

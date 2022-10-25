@@ -36,7 +36,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   endElement?: JSX.Element
   KeyedComponent: ({ arg, index }: ComponentArg<A>) => JSX.Element
   resets?: number // increment to manually reset list
-  classes?: string
+  className?: string
   options?: SWRInfiniteConfiguration
   style?: CSSProperties
   scrollableTarget?: string
@@ -59,7 +59,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   endElement,
   hasInitialElement = false,
   resets = 0,
-  classes,
+  className,
   style = {},
   scrollableTarget,
   inverse = false,
@@ -110,7 +110,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   return (
     <InfiniteScroll
       dataLength={flattenedData.length}
-      className={"w-full " + classes ?? ""}
+      className={"w-full " + className ?? ""}
       style={{ width: "100%", ...style }}
       next={() => triggerFetch(size + 1)}
       hasMore={!data || !!data[data.length - 1].lastId}

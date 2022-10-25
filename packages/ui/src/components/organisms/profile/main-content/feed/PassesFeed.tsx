@@ -49,23 +49,31 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
 
   return (
     <>
-      <div className="absolute flex flex-row items-center gap-[12px]">
-        <SelectPassFilter
-          onPassTypeSelect={handlePassSelect}
-          passTypes={selectedPassTypes}
-        />
-        {PASS_DROPDOWN_OPTIONS.map((passType) => (
-          <div
-            key={passType.value}
-            className={classNames(
-              "hidden flex-row items-center gap-[10px] space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5",
-              { "!flex": selectedPassTypes.includes(passType.value) }
-            )}
-          >
-            {passType.label}{" "}
-            <Cross onClick={() => handleDeleteFilterItem(passType.value)} />
-          </div>
-        ))}
+      <SelectPassFilter
+        onPassTypeSelect={handlePassSelect}
+        passTypes={selectedPassTypes}
+      />
+      <div className="flex flex-row items-center gap-2">
+        {PASS_DROPDOWN_OPTIONS.map((passType) => {
+          if (selectedPassTypes.includes(passType.value)) {
+            return (
+              <div
+                key={passType.value}
+                className={classNames(
+                  "flex flex-row items-center gap-[10px] space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5"
+                )}
+              >
+                {passType.label}
+                <Cross
+                  className="cursor-pointer"
+                  onClick={() => handleDeleteFilterItem(passType.value)}
+                />
+              </div>
+            )
+          }
+
+          return null
+        })}
       </div>
       <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
         keyValue={`pass/creator-passes/${creatorId}`}
@@ -80,7 +88,8 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
           return <PassCard pass={arg} />
         }}
-        classes="mt-[100px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
+        className="grid grid-cols-2 gap-[25px] overflow-visible pb-20 sidebar-collapse:grid-cols-3"
+        style={{ overflow: "visible" }}
       />
     </>
   )

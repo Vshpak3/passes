@@ -38,7 +38,7 @@ const BlockedRestrictedAccounts = () => {
           KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
             return <BlockedUser blockedUser={arg} />
           }}
-          classes="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
+          className="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 sidebar-collapse:grid-cols-3"
         />
       </div>
     </Tab>

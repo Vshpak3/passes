@@ -2,7 +2,7 @@ import {
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
 } from "@passes/api-client"
-import { FC } from "react"
+import { FC, useState } from "react"
 import { ContentService } from "src/helpers/content"
 
 interface PassMediaProps {
@@ -18,6 +18,18 @@ export const PassMedia: FC<PassMediaProps> = ({
   imageType,
   animationType
 }) => {
+  const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(false)
+
+  const handleErrorLoadingAsset = () => {
+    setShouldUsePlaceholder(true)
+  }
+
+  if (shouldUsePlaceholder) {
+    return (
+      <div className="h-[140px] w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]" />
+    )
+  }
+
   if (passHolderId) {
     return animationType ? (
       <video autoPlay loop muted>
@@ -27,6 +39,7 @@ export const PassMedia: FC<PassMediaProps> = ({
             passHolderId,
             animationType
           )}
+          onError={handleErrorLoadingAsset}
           type="video/mp4"
         />
       </video>
@@ -45,12 +58,14 @@ export const PassMedia: FC<PassMediaProps> = ({
       <video autoPlay loop muted>
         <source
           src={ContentService.passAnimationPath(passId, animationType)}
+          onError={handleErrorLoadingAsset}
           type="video/mp4"
         />
       </video>
     ) : (
       <img
         src={ContentService.passImagePath(passId, imageType)}
+        onError={handleErrorLoadingAsset}
         alt="no media exists"
       />
     )

@@ -74,9 +74,11 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             </div>
           </div>
         )}
-        <p className="mt-2 border-b border-t border-b-[#2C282D] border-t-[#2C282D] py-3 text-xs font-medium leading-[18px] text-white/70">
-          {formatText(pass.description)}
-        </p>
+        <div className="mt-2 w-full border-b border-t border-b-[#2C282D] border-t-[#2C282D]">
+          <p className="py-3 text-xs font-medium leading-[18px] text-white/70">
+            {formatText(pass.description)}
+          </p>
+        </div>
         <span className="py-2">
           ${pass.price} / {getPassType(pass.type)}
         </span>

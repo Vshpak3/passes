@@ -90,7 +90,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               </>
             )
           }}
-          classes="mt-[25px] grid grid-cols-1-[365px_minmax(165px,_200px)_400px] sm:grid-cols-2 lg:grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20"
+          className="grid-cols-1-[365px_minmax(165px,_200px)_400px] mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
         />
       </div>
     </div>

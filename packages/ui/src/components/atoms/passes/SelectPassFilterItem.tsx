@@ -31,7 +31,7 @@ export const SelectPassFilterItem = ({
       {label}
       <input
         type="checkbox"
-        className="border-[ #D0D5DD] rounded-[6px] border bg-[#100C11] text-[#C943A8] outline-none checked:bg-[#C943A8]"
+        className="border-[ #D0D5DD] rounded border bg-[#100C11] text-[#C943A8] outline-none checked:bg-[#C943A8]"
         checked={selected}
         onChange={handleOnClick}
       />
