@@ -136,7 +136,7 @@ export const configConfiguration = async function (): Promise<
     },
     jwt: {
       authSecret: getConfigValue('JWT_AUTH_SECRET'),
-      authExpiresIn: '12 hours',
+      authExpiresIn: '1 minute',
       refreshSecret: getConfigValue('JWT_REFRESH_SECRET'),
       refreshExpiresIn: '14 days',
     },
