@@ -22,6 +22,16 @@ module.exports = {
       { allowSameFolder: true }
     ],
     "react/react-in-jsx-scope": "off", // Not needed for Next.js
+    "simple-import-sort/imports": [
+      "error",
+      // The default grouping, but treats src/ as first-party
+      {
+        groups: [
+          ["^\\u0000", "^node:", "^@?\\w", "^"],
+          ["^\\.", "^src/"]
+        ]
+      }
+    ],
     "sonarjs/cognitive-complexity": "off"
   },
   overrides: [
