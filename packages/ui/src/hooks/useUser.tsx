@@ -1,6 +1,5 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
-import { GlobalSWRConfig } from "src/config/app/swr"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -39,8 +38,7 @@ export const useUser = () => {
       }
 
       return await authApi.getCurrentUser()
-    },
-    GlobalSWRConfig
+    }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
