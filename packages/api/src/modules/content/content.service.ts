@@ -134,7 +134,7 @@ export class ContentService {
     const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .where({ processed: false, failed: false })
       .select('*')
-    const checks = this.allContentExistsInS3(contents)
+    const checks = await this.allContentExistsInS3(contents)
     const now = Date.now()
     const successfulIds = contents
       .filter((_, ind) => checks[ind])
