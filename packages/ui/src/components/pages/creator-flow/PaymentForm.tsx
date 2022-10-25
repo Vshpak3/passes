@@ -25,6 +25,11 @@ enum BankTypeEnum {
   NON_IBAN
 }
 
+interface PaymentFormFields {
+  bankAddress: { country: string }
+  bankAccountType: BankTypeEnum
+}
+
 export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
@@ -33,8 +38,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
     register,
     handleSubmit,
     getValues,
+    setValue,
     formState: { errors, isSubmitSuccessful }
-  } = useForm()
+  } = useForm<PaymentFormFields>()
 
   const onSubmit = async () => {
     try {
@@ -153,6 +159,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   required: true
                 }}
                 selectOptions={[{ label: "US", value: "US" }]}
+                onChange={(newValue: BankTypeEnum) =>
+                  setValue("bankAccountType", newValue)
+                }
               />
             </div>
             <div className="flex flex-col gap-[6px]">
@@ -168,6 +177,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   required: true
                 }}
                 selectOptions={[{ label: "USA", value: "US" }]}
+                onChange={(newValue: string) =>
+                  setValue("bankAddress", { country: newValue })
+                }
               />
             </div>
             <div className="flex flex-col gap-[6px]">

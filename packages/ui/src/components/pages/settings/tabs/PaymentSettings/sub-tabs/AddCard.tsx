@@ -9,7 +9,7 @@ import { SHA256 } from "crypto-js"
 import iso3311a2 from "iso-3166-1-alpha-2"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
-import { FC, memo, useEffect, useState } from "react"
+import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
@@ -31,6 +31,13 @@ interface AddCardProps {
   callback?: () => void
 }
 
+interface CardForm {
+  country: string
+  "card-number": string
+  "exp-month": string
+  "exp-year": string
+}
+
 const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
@@ -42,9 +49,9 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
     watch,
     getValues,
     handleSubmit,
-
+    setValue,
     formState: { errors }
-  } = useForm<{ country: string; "card-number": string }>({
+  } = useForm<CardForm>({
     defaultValues: {}
   })
 
@@ -130,6 +137,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
     fetchData()
   }, [router, user, loading])
 
+  const years = useMemo(getExpirationYears, [])
+
   return (
     <>
       <Tab withBack title="Add Card" />
@@ -169,7 +178,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <Select
             register={register}
-            placeholder=" "
             selectOptions={[
               "1",
               "2",
@@ -190,20 +198,24 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             name="exp-month"
             className="mt-2 w-[100px]"
+            value={getValues("exp-month") || undefined}
+            onChange={(month: string) => setValue("exp-month", month)}
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
           <Select
             register={register}
-            selectOptions={getExpirationYears()}
+            selectOptions={years}
             placeholder=" "
             options={{
               required: { message: "Year is required", value: true }
             }}
             errors={errors}
             name="exp-year"
+            value={getValues("exp-year")}
             className="mt-2 w-[100px]"
+            onChange={(year: string) => setValue("exp-year", year)}
           />
         </div>
         <div className="mb-4 flex flex-col">
@@ -252,6 +264,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         name="country"
         errors={errors}
         className="mt-3"
+        defaultValue="United States"
+        onChange={(newValue: string) => setValue("country", newValue)}
       />
       <FormInput
         register={register}
@@ -276,6 +290,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             }}
             name="district"
             className="mt-3 w-[120px]"
+            showOnTop
           />
         ) : (
           <FormInput

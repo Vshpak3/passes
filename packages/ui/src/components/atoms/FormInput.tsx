@@ -2,7 +2,7 @@ import React, { FC } from "react"
 import { Checkbox } from "src/components/atoms/Checkbox"
 import { File } from "src/components/atoms/File"
 import { EIcon, Input } from "src/components/atoms/Input"
-import { Select } from "src/components/atoms/Select"
+import { Select, SelectProps } from "src/components/atoms/Select"
 import { TextArea } from "src/components/atoms/TextArea"
 import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { TagsInput } from "src/components/molecules/TagsInput"
@@ -14,7 +14,6 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister,
-  FormSelectOptions,
   FormType
 } from "src/components/types/FormTypes"
 
@@ -26,7 +25,10 @@ type FormInputProps = {
   options?: FormOptions
   register?: FormRegister
   errors?: FormErrors
-  selectOptions?: FormSelectOptions
+  selectOptions?: SelectProps["selectOptions"]
+  defaultValue?: SelectProps["defaultValue"]
+  onChange?: SelectProps["onChange"]
+  showOnTop?: SelectProps["showOnTop"]
   trigger?: JSX.Element
   multiple?: boolean
   accept?: FileAccept
@@ -194,7 +196,7 @@ export const FormInput: FC<FormInputProps> = ({
         placeholder={placeholder}
         register={register}
         options={options}
-        selectOptions={selectOptions as FormSelectOptions}
+        selectOptions={selectOptions}
         errors={errors}
         className={className}
         {...rest}

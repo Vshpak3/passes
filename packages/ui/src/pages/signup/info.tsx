@@ -284,6 +284,10 @@ const SignupInfoPage: FC = () => {
                     message: "Country is required"
                   }
                 }}
+                onChange={(newValue: string) =>
+                  setValue("countryCode", newValue)
+                }
+                showOnTop
               />
             </div>
 

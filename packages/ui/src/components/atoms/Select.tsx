@@ -1,5 +1,6 @@
+import { Listbox, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import React, { FC } from "react"
+import { FC, Fragment, useCallback, useEffect, useState } from "react"
 import {
   FormErrors,
   FormLabel,
@@ -7,23 +8,27 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister,
+  FormSelectOption,
   FormSelectOptions
 } from "src/components/types/FormTypes"
+import { ChevronDown } from "src/icons/ChevronDown"
 
 import { Label } from "./Label"
 
-type SelectProps = {
+export type SelectProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
   register: FormRegister
   errors?: FormErrors
-  defaultValue?: string | { value: string; label: string }
+  value?: string
+  defaultValue?: FormSelectOption
   placeholder?: FormPlaceholder
-  selectOptions: FormSelectOptions
+  selectOptions?: FormSelectOptions
   className?: string
-  onChange?: (e: Event) => void
+  onChange?: (value: any) => void
   placeholderClass?: string
+  showOnTop?: boolean
 }
 
 export const Select: FC<SelectProps> = ({
@@ -33,47 +38,87 @@ export const Select: FC<SelectProps> = ({
   errors = {},
   options,
   selectOptions,
-  placeholder,
+  placeholder = "",
   className = "",
   defaultValue = "",
   onChange,
+  showOnTop = false,
   ...rest
 }) => {
-  const customChange = () => (onChange ? { onChange } : {})
+  const [displayedValue, setDisplayedValue] = useState("")
+
+  const onCustomChange = useCallback(
+    (option: FormSelectOption) => {
+      const isString = typeof option === "string"
+
+      setDisplayedValue(isString ? option : option.label)
+      onChange?.(isString ? option : (option.value as string))
+    },
+    [setDisplayedValue, onChange]
+  )
+
+  useEffect(() => {
+    if (defaultValue) {
+      onCustomChange(defaultValue)
+    }
+  }, [defaultValue, onCustomChange])
+
   return (
-    <div className="w-full">
+    <div className="relative">
       {label && (
         <Label name={name} label={label} errors={errors} options={options} />
       )}
-
-      <select
+      <Listbox
         {...register(name, options)}
-        {...customChange()}
-        className={classNames(
-          errors[name] !== undefined ? "border-red-500" : "",
-          "my-1 block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent px-4 py-3 text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
-          className
-        )}
+        as="div"
         defaultValue={defaultValue}
+        onChange={onCustomChange}
         {...rest}
       >
-        {placeholder && (
-          <option key={placeholder} value="" disabled>
-            {placeholder}
-          </option>
-        )}
-        {selectOptions.map((option) => {
-          const key = typeof option === "string" ? option : option.value
-          const value = typeof option === "string" ? option : option.value
-          const label = typeof option === "string" ? option : option.label
-          return (
-            <option key={key} value={value}>
-              {label}
-            </option>
-          )
-        })}
-      </select>
-      {errors && errors[name] && (
+        <Listbox.Button
+          className={classNames(
+            "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border bg-transparent px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
+            className,
+            errors?.[name] ? "border-red-500" : "border-passes-dark-100",
+            { "text-gray-500": !displayedValue && placeholder }
+          )}
+        >
+          <span>{displayedValue || placeholder}</span>
+          <ChevronDown className="h-3 w-3 text-passes-gray-200" />
+        </Listbox.Button>
+        <Transition
+          as={Fragment}
+          leave="transition ease-in duration-100"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Listbox.Options
+            className={classNames(
+              "absolute z-10 max-h-[200px] w-full overflow-y-auto rounded-md border border-passes-dark-100 bg-[#000]",
+              { "bottom-full": showOnTop }
+            )}
+          >
+            {selectOptions?.map((option) => {
+              const isString = typeof option === "string"
+
+              return (
+                <Listbox.Option
+                  key={isString ? option : option.value}
+                  value={option}
+                  className={({ active }) =>
+                    classNames("p1-2 block cursor-pointer py-1 px-4", {
+                      "bg-[#1b141d]/90 text-passes-primary-color": active
+                    })
+                  }
+                >
+                  <span>{isString ? option : option.label}</span>
+                </Listbox.Option>
+              )
+            })}
+          </Listbox.Options>
+        </Transition>
+      </Listbox>
+      {errors?.[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
     </div>

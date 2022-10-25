@@ -33,7 +33,7 @@ const AddBank = () => {
     setValue,
     watch,
     formState: { errors }
-  } = useForm<{ "bank-country": string; country: string }>({
+  } = useForm<{ "bank-country": string; country: string; district: string }>({
     defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
   })
   const countrySelected = watch("country")
@@ -93,9 +93,9 @@ const AddBank = () => {
               value: BankTypeEnum.NON_IBAN
             }
           ]}
-          onChange={(event: any) => {
-            setBankType(event.target.value as BankTypeEnum)
-            setValue("bank-country", event.target.value)
+          onChange={(newValue: BankTypeEnum) => {
+            setBankType(newValue)
+            setValue("bank-country", newValue)
           }}
           name="bank-country"
           errors={errors}
@@ -176,6 +176,7 @@ const AddBank = () => {
         options={{
           required: { message: "Country is required", value: true }
         }}
+        onChange={(newValue: string) => setValue("bank-country", newValue)}
       />
 
       <div className="mt-4">
@@ -220,6 +221,7 @@ const AddBank = () => {
           options={{
             required: { message: "Country is required", value: true }
           }}
+          onChange={(newValue: string) => setValue("country", newValue)}
         />
         <FormInput
           register={register}
@@ -244,6 +246,8 @@ const AddBank = () => {
               }}
               name="district"
               className="mt-4"
+              onChange={(newValue: string) => setValue("district", newValue)}
+              showOnTop
             />
           ) : (
             <FormInput

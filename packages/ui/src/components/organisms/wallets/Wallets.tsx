@@ -240,6 +240,8 @@ export const Wallets = () => {
                   options={{
                     required: { message: "Chain is required", value: true }
                   }}
+                  onChange={(newValue: string) => setValue("chain", newValue)}
+                  defaultValue="SOL"
                 />
               </div>
             </div>

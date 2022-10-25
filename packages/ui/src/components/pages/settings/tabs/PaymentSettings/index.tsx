@@ -250,11 +250,16 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                       }
                     ]
               }
-              onChange={async (event: any) => {
-                setValue("metamask", event.target.value)
-              }}
+              onChange={(newValue: string) => setValue("metamask", newValue)}
               name="metamask"
               className="my-4 w-[130px]"
+              defaultValue={{
+                label: "USDC (ETH)",
+                value:
+                  PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
+                  "." +
+                  PayinMethodDtoChainEnum.Eth
+              }}
             />
           </div>
           {watch("metamask") ===
@@ -302,9 +307,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 selectOptions={[
                   { label: "USDC (SOL)", value: PayinMethodDtoChainEnum.Sol }
                 ]}
-                onChange={async (event: any) => {
-                  setValue("phantom", event.target.value)
-                }}
+                onChange={(newValue: "sol") => setValue("phantom", newValue)}
                 name="phantom"
                 className="my-4 w-[130px]"
               />
