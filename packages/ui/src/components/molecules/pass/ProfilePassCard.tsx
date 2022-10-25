@@ -6,7 +6,9 @@ interface ProfilePassCardProps {
   pass: PassDto
 }
 
-export const ProfilePassCard = ({ pass }: ProfilePassCardProps) => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const ProfilePassCard = ({ pass }: ProfilePassCardProps) => {
   return (
     <div className="flex w-[218px] flex-col rounded-[15px] border border-[#2C282D] py-[17px] px-[22px]">
       <div className="aspect-[4/3] w-full rounded-[15px]">

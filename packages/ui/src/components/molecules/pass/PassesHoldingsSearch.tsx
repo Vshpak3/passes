@@ -6,7 +6,9 @@ interface MyPassSearchBarProps {
   passSearchTerm: any
 }
 
-export const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
   onChange,
   passSearchTerm
 }) => (
@@ -33,7 +35,9 @@ interface MyPassSearchHeaderProps {
   headerTitle?: string
 }
 
-export const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
   onSearchPass,
   passSearchTerm,
   headerTitle = "My Passes"

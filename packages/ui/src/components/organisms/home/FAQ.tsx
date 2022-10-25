@@ -3,7 +3,7 @@ import classNames from "classnames"
 import React from "react"
 import { ChevronDown } from "src/icons/ChevronDown"
 
-export interface FAQ {
+interface FAQ {
   question: string
   answer: string
 }
@@ -26,7 +26,9 @@ const faqs: FAQ[] = [
   }
 ]
 
-export const FAQ = () => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const FAQ = () => {
   return (
     <div className="mx-auto max-w-7xl py-8 px-4">
       <h3 className="text-center text-4xl font-bold">

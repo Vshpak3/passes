@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Custom linting for the ui package.
+# Custom linting for the ui package. Does not require yarn.
 #
 
 # cd to packages/ui
@@ -69,11 +69,11 @@ report_problem_file "${files_with_lowercase}" \
   "To fix, please convert to PascalCase."
 
 # Detect assets that are no longer being used.
-extra_assets=($(
+extra_assets=$(
   find public -type f | while read file ; do
     echo ${file} | cut -d/ -f2- | xargs -I{} grep -r -q {} src/ || echo ${file}
   done
-))
+)
 report_problem_file "${extra_assets}" \
   "The following files in public/ are not being referenced anywhere:" \
   "To fix, please remove them."

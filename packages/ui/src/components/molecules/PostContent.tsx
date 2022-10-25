@@ -6,7 +6,7 @@ import { ContentService } from "src/helpers/content"
 
 import { PostVideo } from "./post/PostVideo"
 
-export interface PostContentProps extends PostImageProps {
+interface PostContentProps extends PostImageProps {
   ref: ForwardedRef<HTMLImageElement>
   autoplayVideo?: boolean
 }

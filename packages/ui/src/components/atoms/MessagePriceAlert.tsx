@@ -7,7 +7,9 @@ interface MessagePriceAlertProps {
   onRemovePrice: () => void
 }
 
-export const MessagePriceAlert: FC<MessagePriceAlertProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MessagePriceAlert: FC<MessagePriceAlertProps> = ({
   price,
   onRemovePrice
 }) => {

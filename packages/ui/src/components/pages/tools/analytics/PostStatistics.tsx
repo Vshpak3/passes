@@ -6,7 +6,7 @@ import {
 import { PostStatistic } from "src/components/organisms/analytics/PostStatistic"
 import { usePost } from "src/hooks/profile/usePost"
 
-export const PostStatistics = () => {
+const PostStatistics = () => {
   const { getPosts } = usePost()
 
   return (

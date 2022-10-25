@@ -14,7 +14,9 @@ interface RenewPassModalProps {
   isOpen: boolean
 }
 
-export const RenewPassModal: FC<RenewPassModalProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const RenewPassModal: FC<RenewPassModalProps> = ({
   passHolder,
   setOpen,
   isOpen

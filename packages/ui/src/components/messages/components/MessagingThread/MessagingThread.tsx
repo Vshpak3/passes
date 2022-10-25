@@ -6,7 +6,9 @@ interface MessagingThreadHeaderProps {
   thread: any
 }
 
-export const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MessagingThreadHeader: FC<MessagingThreadHeaderProps> = ({
   closeThread,
   thread
 }) => {

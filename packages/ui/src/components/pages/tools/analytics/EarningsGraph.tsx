@@ -47,7 +47,7 @@ interface EarningsGraphProps {
   userBalance?: number
 }
 
-export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
+const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const datepickerRef = useRef(null)
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false)
   useOnClickOutside(datepickerRef, () => setIsDatePickerOpen(false))

@@ -8,9 +8,9 @@ import {
 
 export type PostStatisticsButtonProps = Omit<PostStatisticsMenuProps, "onClose">
 
-export const PostStatisticsButton: FC<PostStatisticsButtonProps> = (
-  menuProps
-) => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const PostStatisticsButton: FC<PostStatisticsButtonProps> = (menuProps) => {
   const [showPostStatisticsMenu, setShowPostStatisticsMenu] = useState(false)
 
   const stopPropagation = (e: React.MouseEvent) => e.stopPropagation()

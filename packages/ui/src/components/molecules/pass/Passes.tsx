@@ -7,7 +7,9 @@ interface PassesProps {
   title: any
 }
 
-export const Passes: FC<PassesProps> = ({ passes, title }) => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Passes: FC<PassesProps> = ({ passes, title }) => {
   const renderPassesGrid = passes?.map((pass: any, index: any) => (
     <PassTile key={index} pass={pass} />
   ))

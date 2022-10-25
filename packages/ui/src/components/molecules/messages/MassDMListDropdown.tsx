@@ -25,7 +25,9 @@ interface ListsDropdownProps {
   setListDropdownVisible: Dispatch<SetStateAction<any>>
 }
 
-export const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
   selectedLists,
   lists,
   onSaveLists,

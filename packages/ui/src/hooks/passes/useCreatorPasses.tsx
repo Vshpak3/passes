@@ -5,7 +5,9 @@ import useSWR from "swr"
 
 const CACHE_KEY_CREATOR_PASSES = "/pass/creator-passes"
 
-export const useCreatorPasses = () => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const useCreatorPasses = () => {
   const { user } = useUser()
 
   const api = new PassApi()

@@ -23,8 +23,9 @@ jobs:
         with:
           node-version: 16
           cache: yarn
-      - run: ./packages/ui/bin/lint.sh
+      - run: ./packages/ui/bin/lint_light.sh
       - run: yarn install --frozen-lockfile
+      - run: ./packages/ui/bin/lint_heavy.sh
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
 

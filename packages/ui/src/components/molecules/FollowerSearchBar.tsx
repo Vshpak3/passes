@@ -8,7 +8,9 @@ interface FollowerSearchBarProps {
   onSelect: (userId: string) => Promise<void>
 }
 
-export const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
   const { results, searchValue, onChangeInput } = useFollowSearch()
 
   // TODO: Implement correct options
