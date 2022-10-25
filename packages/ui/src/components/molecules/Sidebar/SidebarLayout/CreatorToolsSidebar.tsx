@@ -47,7 +47,7 @@ export const CreatorToolsSidebar: FC<CreatorToolsSidebarProps> = ({
             >
               <Dialog.Panel className="relative mt-[10px] ml-[10px] flex max-h-[82vh] w-full max-w-[180px] flex-1 flex-col rounded-lg bg-[#120C14] drop-shadow-sidebar-shadow">
                 <div className="mt-5 h-0 flex-1 overflow-y-auto">
-                  <nav className="flex flex-col items-start gap-3 p-3 ">
+                  <nav className="flex flex-col items-start gap-3 p-3">
                     {creatorToolsItems.map((item: any) => {
                       return (
                         <Fragment key={`sidebar-${item.id}`}>

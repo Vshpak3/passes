@@ -172,7 +172,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
             cropWidth={400}
             cropHeight={400}
             inputUI={
-              <div className="relative -mt-20 ml-[26px] flex h-28 w-28 items-center justify-center rounded-full sm:-mt-24 sm:h-[138px] sm:w-[138px]  ">
+              <div className="relative -mt-20 ml-[26px] flex h-28 w-28 items-center justify-center rounded-full sm:-mt-24 sm:h-[138px] sm:w-[138px]">
                 <img
                   alt=""
                   className={classNames(

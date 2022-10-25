@@ -41,7 +41,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             selectedChannel={selectedChannel}
           />
         ) : (
-          <div className="flex items-center ">
+          <div className="flex items-center">
             {isMobile && (
               <div className="mr-2" onClick={onBack}>
                 <BackIcon />
@@ -52,7 +52,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             >
               <ProfileThumbnail userId={selectedChannel.otherUserId} />
             </a>
-            <div className=" text-brand-600 flex flex-col items-start pl-2">
+            <div className="text-brand-600 flex flex-col items-start pl-2">
               <NameDisplay
                 displayName={selectedChannel.otherUserDisplayName}
                 username={selectedChannel.otherUserUsername}
@@ -78,7 +78,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               <span className="flex h-[36px] w-fit items-center justify-center rounded-l-[40px] bg-[#9C4DC1] px-2 text-[16px] font-medium leading-[16px] text-[#ffff]">
                 Total Tip Amount
               </span>
-              <span className="flex h-[36px] w-fit items-center justify-center rounded-r-[40px] bg-[#C943A8] px-2 text-[16px] font-medium leading-[16px] text-[#ffff] ">
+              <span className="flex h-[36px] w-fit items-center justify-center rounded-r-[40px] bg-[#C943A8] px-2 text-[16px] font-medium leading-[16px] text-[#ffff]">
                 {selectedChannel.tipRecieved > 0
                   ? formatCurrency(selectedChannel.tipRecieved)
                   : "$0.00"}

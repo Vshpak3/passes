@@ -34,7 +34,7 @@ const MessagesPage = () => {
                 <MessagesBackIcon onClick={() => setMassMessage(false)} />
               </div>
             ) : null}
-            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px] ">
+            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
               {massMessage ? "Mass Messaging" : "Messages"}
             </span>
             {massMessage ? null : (
@@ -45,7 +45,7 @@ const MessagesPage = () => {
           </div>
         ) : (
           <div className="space-between mt-8 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center gap-4">
-            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px] ">
+            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
               Messages
             </span>
           </div>

@@ -80,7 +80,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         <td className="pl-5 pb-1">{typeStr}</td>
         <td className="px-3 pb-1">{media}</td>
         <td className="px-3 pb-1">{formatCurrency(price ?? 0)}</td>
-        <td className=" my-[6px] max-w-[350px] truncate px-3 pb-1">
+        <td className="my-[6px] max-w-[350px] truncate px-3 pb-1">
           {formatText(text)}
         </td>
         <td className="min-w-[150px] pb-1 text-center">

@@ -122,10 +122,10 @@ const PaymentHistory = () => {
         </div>
         <div className="flex flex-col">
           <div className="flex flex-row justify-between border-b border-passes-dark-200">
-            <div className=" mb-4 flex flex-1 justify-center">
+            <div className="mb-4 flex flex-1 justify-center">
               <span className="text-[12px] font-[500]">Transaction</span>
             </div>
-            <div className=" mb-4 flex flex-1 justify-center">
+            <div className="mb-4 flex flex-1 justify-center">
               <span className="text-[12px] font-[500]">Source</span>
             </div>
             <div className="mb-4 flex flex-1 items-center justify-center gap-2">
@@ -146,7 +146,7 @@ const PaymentHistory = () => {
             <div className="flex flex-1 justify-center">
               <span className="mb-4 text-[12px] font-[500]">Reason</span>
             </div>
-            <div className=" mb-4 flex flex-1 justify-center">
+            <div className="mb-4 flex flex-1 justify-center">
               <span className="text-[12px] font-[500]">Cancel</span>
             </div>
           </div>

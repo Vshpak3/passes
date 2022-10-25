@@ -49,7 +49,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
     <div className="flex w-full flex-col items-start gap-3 rounded-[15px] border border-[#ffff]/20 bg-[#1b141d]/50 p-4 sm:max-w-[265px]">
       <div className="flex w-full items-center justify-between">
         <div className="flex cursor-pointer items-center justify-start gap-[6px]">
-          <span className="text-[12px] font-medium leading-[22px] text-white ">
+          <span className="text-[12px] font-medium leading-[22px] text-white">
             {purchased ? "Purchased" : "Pending"}
           </span>
           <div className="flex items-center gap-1">
@@ -119,7 +119,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
         </div>
       ) : (
         <>
-          <div className="relative w-full bg-transparent ">
+          <div className="relative w-full bg-transparent">
             <div
               className={classNames(
                 purchased ? "" : "bg-[#1B141D]/50 backdrop-blur-[50px]",
@@ -127,7 +127,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
               )}
             >
               {!purchased && (
-                <div className="flex-center h-45 flex w-[245px] flex-col items-center ">
+                <div className="flex-center h-45 flex w-[245px] flex-col items-center">
                   <PostUnlockButton
                     onClick={() => setOpenBuyPostModal(true)}
                     value={purchased.toString()}

@@ -254,18 +254,7 @@ export const Wallets = () => {
         )}
       </div>
       <div className="overflow-x-scroll md:overflow-x-auto">
-        <div
-          className="
-          mt-6
-          flex
-          w-[600px]
-          gap-0
-          pt-1
-          text-center
-          text-[#ffffffeb]
-          md:w-full md:gap-[40px]
-          md:pl-8"
-        >
+        <div className="mt-6 flex w-[600px] gap-0 pt-1 text-center text-[#ffffffeb] md:w-full md:gap-[40px] md:pl-8">
           <span className="flex basis-1/4 justify-center">Wallet Type</span>
           <span className="flex basis-1/4 justify-center">Address</span>
           <span className="flex basis-1/4 justify-center">Default For</span>
@@ -274,14 +263,7 @@ export const Wallets = () => {
         {loading || !wallets ? (
           <span className="mt-4">Loading...</span>
         ) : (
-          <div
-            className="
-            mt-1
-            place-items-center
-            justify-center
-            text-center
-            text-[#ffffffeb]"
-          >
+          <div className="mt-1 place-items-center justify-center text-center text-[#ffffffeb]">
             {wallets.map((wallet) => {
               return (
                 <WalletListItem

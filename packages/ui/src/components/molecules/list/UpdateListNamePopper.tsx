@@ -55,7 +55,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
             "!bg-[#1B141D] p-[24px] border border-[#ffffff26] w-[273px] flex flex-col text-white !rounded-[25px] "
         }}
       >
-        <div className="flex flex-row items-center justify-between ">
+        <div className="flex flex-row items-center justify-between">
           <span className="font-bold text-white">Edit List Name</span>
           <div className="relative text-right">
             <button

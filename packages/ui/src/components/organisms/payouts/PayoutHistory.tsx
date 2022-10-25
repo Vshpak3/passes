@@ -71,7 +71,7 @@ export const PayoutHistory = () => {
   return (
     <div className="mb-5 flex w-full flex-col gap-4">
       <div className="flex flex-row items-center justify-between rounded-[15px]  p-4">
-        <span className=" items-center text-[20px] font-[700] ">
+        <span className="items-center text-[20px] font-[700]">
           Payout History
         </span>
         <div className="flex flex-col justify-between gap-2 md:flex-row">
@@ -122,10 +122,10 @@ export const PayoutHistory = () => {
       </div>
       <div className="flex flex-col">
         <div className="flex flex-row justify-between border-b border-passes-dark-200">
-          <div className=" mb-4 flex flex-1 justify-center">
+          <div className="mb-4 flex flex-1 justify-center">
             <span className="text-[12px] font-[500]">Transaction</span>
           </div>
-          <div className=" mb-4 flex flex-1 justify-center">
+          <div className="mb-4 flex flex-1 justify-center">
             <span className="text-[12px] font-[500]">Destination</span>
           </div>
           <div className="mb-4 flex flex-1 items-center justify-center gap-2">

@@ -62,7 +62,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className=" flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
+    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
         whiteOnly={true}
         height={28}

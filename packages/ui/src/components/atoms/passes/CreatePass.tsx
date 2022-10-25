@@ -28,7 +28,7 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
   name,
   register
 }) => (
-  <div className="my-3 flex items-center ">
+  <div className="my-3 flex items-center">
     <FormInput
       register={register}
       type="checkbox"

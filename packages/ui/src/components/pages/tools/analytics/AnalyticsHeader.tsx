@@ -6,7 +6,7 @@ interface AnalyticsHeaderProps {
 }
 export const AnalyticsHeader: FC<AnalyticsHeaderProps> = ({ balance }) => {
   return (
-    <div className="flex flex-col bg-black md:flex-row ">
+    <div className="flex flex-col bg-black md:flex-row">
       <div className="flex flex-1 flex-col justify-between pt-2">
         <h2 className="text-2xl font-bold">Analytics</h2>
       </div>

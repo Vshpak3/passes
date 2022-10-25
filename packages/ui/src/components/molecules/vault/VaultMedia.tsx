@@ -66,7 +66,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           defaultColor="black/50"
         />
         <div className="flex justify-end p-[10px]">
-          <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
+          <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div
               onMouseDown={(e) => e.preventDefault()}
               onCopy={(e) => e.preventDefault()}

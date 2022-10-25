@@ -15,10 +15,10 @@ const MessageStatistics = () => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between border-b border-passes-dark-200">
-        <div className=" mb-4 flex flex-1 justify-center">
+        <div className="mb-4 flex flex-1 justify-center">
           <span className="text-[12px] font-[500]">Date & Time</span>
         </div>
-        <div className=" mb-4 flex flex-1 justify-center">
+        <div className="mb-4 flex flex-1 justify-center">
           <span className="text-[12px] font-[500]">Text</span>
         </div>
         <div className="mb-4 flex flex-1 items-center justify-center gap-2">
@@ -39,7 +39,7 @@ const MessageStatistics = () => {
         <div className="flex flex-1 justify-center">
           <span className="mb-4 text-[12px] font-[500]">Create List</span>
         </div>
-        <div className=" mb-4 flex flex-1 justify-center">
+        <div className="mb-4 flex flex-1 justify-center">
           <span className="text-[12px] font-[500]">Unsend</span>
         </div>
       </div>

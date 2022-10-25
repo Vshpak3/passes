@@ -274,7 +274,7 @@ export const InputMessage: FC<Props> = ({
         </div>
       </div>
       <div className="order-1 col-span-3 h-full border-l border-gray-800 sm:order-2 sm:col-span-1">
-        <div className=" flex h-full flex-col justify-between sm:items-center sm:justify-center">
+        <div className="flex h-full flex-col justify-between sm:items-center sm:justify-center">
           <div className="flex h-full flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4">
             <input
               type="number"

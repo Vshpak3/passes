@@ -40,12 +40,12 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
 
   return (
     <>
-      <div className="flex w-full flex-col items-start gap-[17px] border-b border-passes-dark-200 p-0 pt-[53px] pb-[56px] ">
+      <div className="flex w-full flex-col items-start gap-[17px] border-b border-passes-dark-200 p-0 pt-[53px] pb-[56px]">
         <span className="text-base font-normal text-passes-secondary-color">
           Who is this content for?
         </span>
         <div className="flex flex-col items-start gap-[15px]">
-          <span className="text-small leading-[22px] text-[#FFFFFF] ">
+          <span className="text-small leading-[22px] text-[#FFFFFF]">
             These pass holders will be able to view your content for free
           </span>
           <PassesSearchBar

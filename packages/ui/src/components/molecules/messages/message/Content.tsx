@@ -40,7 +40,7 @@ export const Content: FC<ContentProps> = ({
   return (
     <div className="relative flex h-full w-full items-center justify-center">
       {!isOwnMessage && price > 0 && !paid && contents && (
-        <div className="absolute z-10 flex w-max flex-col justify-center ">
+        <div className="absolute z-10 flex w-max flex-col justify-center">
           <PostUnlockButton
             onClick={() => setOpenBuyMessageModal(true)}
             value="test"

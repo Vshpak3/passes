@@ -20,7 +20,7 @@ export const PassHoldingsGrid: FC = () => {
   )
   const [expired, setExpired] = useState<boolean | undefined>(false)
   return (
-    <div className="w-full px-2 ">
+    <div className="w-full px-2">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
         <div className="w-fit">
           <SelectPassHolderTab

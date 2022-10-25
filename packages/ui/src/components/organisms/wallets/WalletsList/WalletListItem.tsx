@@ -71,18 +71,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
   return (
     <>
       <div
-        className="
-          flex
-          w-[600px]
-          items-center
-          justify-between
-          gap-0
-          border-t
-          border-[#2C282D]
-          py-3
-          md:w-full
-          md:gap-[40px]
-          md:pl-8"
+        className="flex w-[600px] items-center justify-between gap-0 border-t border-[#2C282D] py-3 md:w-full md:gap-[40px] md:pl-8"
         key={wallet.walletId}
       >
         <div className="relative flex basis-1/4 items-center justify-center">

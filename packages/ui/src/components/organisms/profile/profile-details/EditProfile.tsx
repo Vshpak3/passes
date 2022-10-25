@@ -207,7 +207,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       title={
         <div className="flex w-full flex-row justify-end py-[8px] px-[8px] xs:px-[16px] md:hidden">
           <button
-            className=" h-[30px] w-[30px]"
+            className="h-[30px] w-[30px]"
             onClick={() => setEditProfileModalOpen(false)}
           >
             <ExitIcon />
@@ -255,7 +255,7 @@ export const EditProfile: FC<EditProfileProps> = ({
           cropWidth={400}
           cropHeight={400}
           inputUI={
-            <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black  ">
+            <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black">
               <CameraIcon className="absolute z-30 cursor-pointer" />
               <img
                 alt=""
@@ -294,12 +294,12 @@ export const EditProfile: FC<EditProfileProps> = ({
             <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
               Social Media Usernames
             </span>
-            <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2 ">
+            <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2">
               {Object.entries(socialMediaForm).map(([key, input]) => {
                 return (
                   <div className={input.colSpan} key={key}>
                     <div>
-                      <div className=" flex w-full items-center justify-between">
+                      <div className="flex w-full items-center justify-between">
                         <FormInput
                           register={register}
                           name={key}

@@ -143,14 +143,7 @@ const PayoutSettings = () => {
             .map((wallet) => {
               return (
                 <div
-                  className="
-                mb-3
-                flex
-                items-center
-                justify-between
-                border-t
-                border-[#2C282D]
-                py-4"
+                  className="mb-3 flex items-center justify-between border-t border-[#2C282D] py-4"
                   key={wallet.walletId}
                 >
                   <span className="basis-1/4 text-center">{wallet.chain}</span>

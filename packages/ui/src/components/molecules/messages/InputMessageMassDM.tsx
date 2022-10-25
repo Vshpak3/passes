@@ -206,7 +206,7 @@ export const InputMessageMassDM: FC<Props> = ({
             />
           )}
 
-          <div className="flex w-full items-center justify-between pt-6 ">
+          <div className="flex w-full items-center justify-between pt-6">
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
               // setActiveMediaHeader={setActiveMediaHeader}

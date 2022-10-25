@@ -17,7 +17,7 @@ export const NotFoundPage: FC = () => (
         typed the address, double-check the spelling.
       </span>
       <Link href="/home">
-        <span className="cursor-pointer text-base font-medium leading-6 text-passes-primary-color ">
+        <span className="cursor-pointer text-base font-medium leading-6 text-passes-primary-color">
           Back to Passes home
         </span>
       </Link>
