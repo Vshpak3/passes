@@ -25,7 +25,7 @@ export const useUser = (text?: string) => {
   const authApi = new AuthApi()
   const userApi = new UserApi()
   // eslint-disable-next-line no-console
-  console.log("access token", accessToken, text)
+  console.trace("access token", accessToken, text)
   const {
     data: user,
     isValidating: loading,
@@ -39,12 +39,12 @@ export const useUser = (text?: string) => {
       }
       const c = await authApi.getCurrentUser()
       // eslint-disable-next-line no-console
-      console.log("user", c, text)
+      console.trace("user", c, text)
       return c
     }
   )
   // eslint-disable-next-line no-console
-  console.log(user, text)
+  console.trace(user, text)
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>
