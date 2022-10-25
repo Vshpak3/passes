@@ -134,6 +134,18 @@ export class UserController {
   }
 
   @ApiEndpoint({
+    summary: 'Get featured creators',
+    responseStatus: HttpStatus.OK,
+    responseType: SearchCreatorResponseDto,
+    responseDesc: 'Featured creators returned',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Get('creator/featured')
+  async featuredCreators(): Promise<SearchCreatorResponseDto> {
+    return await this.userService.featuredCreators()
+  }
+
+  @ApiEndpoint({
     summary: 'Check if user is a creator',
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,

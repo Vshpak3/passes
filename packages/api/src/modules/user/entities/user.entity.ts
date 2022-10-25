@@ -66,4 +66,7 @@ export class UserEntity extends BaseEntity {
 
   @Property({ default: 0 })
   chargeback_count: number
+
+  @Property({ default: false })
+  featured: boolean
 }

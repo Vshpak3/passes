@@ -6,7 +6,7 @@ import { refreshAccessToken } from "src/helpers/token"
 import { useUser } from "./useUser"
 
 // Try to refresh the access token every this many minutes
-const CHECK_FOR_AUTH_REFRESH = ms("1 minute")
+const CHECK_FOR_AUTH_REFRESH = ms("5 minute")
 
 export const useTokenRefresh = () => {
   const [refresh, setRefresh] = useState(0)

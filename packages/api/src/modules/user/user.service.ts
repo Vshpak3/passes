@@ -308,7 +308,20 @@ export class UserService {
       })
       .limit(CREATOR_SEARCH_LIMIT)
 
-    return new SearchCreatorResponseDto(creators as UserEntity[])
+    return new SearchCreatorResponseDto(creators)
+  }
+
+  async featuredCreators(): Promise<SearchCreatorResponseDto> {
+    const creators = await this.dbReader<UserEntity>(UserEntity.table)
+      .select('id', 'username', 'display_name')
+      .where({ featured: true })
+      .andWhere({
+        is_creator: true,
+        is_active: true,
+      })
+      .limit(CREATOR_SEARCH_LIMIT)
+
+    return new SearchCreatorResponseDto(creators)
   }
 
   async makeAdult(userId: string): Promise<void> {

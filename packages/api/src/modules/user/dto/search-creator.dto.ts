@@ -11,7 +11,9 @@ export class SearchCreatorResponseDto {
   @DtoProperty({ custom_type: [UserDisplayInfoDto] })
   creators: UserDisplayInfoDto[]
 
-  constructor(creators: UserEntity[]) {
+  constructor(
+    creators: Pick<UserEntity, 'id' | 'username' | 'display_name'>[],
+  ) {
     this.creators = creators.map((c) => ({
       userId: c.id,
       username: c.username,
