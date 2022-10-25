@@ -48,6 +48,7 @@ export const Sidebar = () => {
 
   return (
     <>
+      {user?.userId}
       <SidebarDefault navigation={navigation} active={active} />
       <SidebarMobile navigation={navigation} active={active} />
     </>
