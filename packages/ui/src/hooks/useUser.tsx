@@ -1,6 +1,5 @@
 import { AuthApi, GetUserResponseDto, UserApi } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
-import { useEffect } from "react"
 import { GlobalSWRConfig } from "src/config/app/swr"
 import { accessTokenKey, refreshTokenKey } from "src/helpers/token"
 import useSWR, { useSWRConfig } from "swr"
@@ -20,7 +19,7 @@ export interface JWTUserClaims {
 
 const CACHE_KEY_USER = "/user"
 
-export const useUser = (mutateOnTokenChange = false) => {
+export const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
@@ -43,13 +42,6 @@ export const useUser = (mutateOnTokenChange = false) => {
     },
     GlobalSWRConfig
   )
-
-  useEffect(() => {
-    if (mutateOnTokenChange) {
-      mutate()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken])
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>

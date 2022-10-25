@@ -1,4 +1,5 @@
 import { AccessTokensResponseDto } from "@passes/api-client"
+import { useEffect } from "react"
 import { toast } from "react-toastify"
 import { authRouter } from "src/helpers/authRouter"
 import { useUser } from "src/hooks/useUser"
@@ -9,8 +10,15 @@ import { useSafeRouter } from "./useSafeRouter"
  * Structures any event that modifies access tokens.
  */
 export function useAuthEvent(mutateOnTokenChange = true) {
-  const { setAccessToken, setRefreshToken } = useUser(mutateOnTokenChange)
+  const { accessToken, setAccessToken, setRefreshToken, mutate } = useUser()
   const { safePush } = useSafeRouter()
+
+  useEffect(() => {
+    if (mutateOnTokenChange) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken])
 
   const auth = async (
     apiCall: () => Promise<AccessTokensResponseDto>,
