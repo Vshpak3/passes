@@ -12,10 +12,7 @@ export interface PostContentProps extends PostImageProps {
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
-  (
-    { content, onMediaLoad, isAutoPlay },
-    ref: ForwardedRef<HTMLImageElement>
-  ) => {
+  ({ content, isAutoPlay }, ref: ForwardedRef<HTMLImageElement>) => {
     const [openModal, setOpenModal] = useState(false)
     useEffect(() => {
       if (openModal) {
@@ -32,11 +29,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
         return (
           <>
             <button className="w-full" onClick={() => setOpenModal(true)}>
-              <PostImage
-                content={content}
-                ref={ref}
-                onMediaLoad={onMediaLoad}
-              />
+              <PostImage content={content} ref={ref} />
             </button>
             {openModal && (
               <MediaModal

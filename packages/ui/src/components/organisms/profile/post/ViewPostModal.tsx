@@ -84,7 +84,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 post.contents &&
                 post.contents.length === 1 &&
                 imageToShow && <img src={imageToShow} alt="post" />}
-              <div className="relative mt-3 flex h-[500px] w-full w-[600px] flex-row items-center justify-center bg-transparent">
+              <div className="relative mt-3 flex h-[500px]  w-full w-[600px] flex-row items-center justify-center bg-transparent">
                 {postUnlocked && post.contents && post.contents.length > 1 && (
                   <Carousel
                     contents={post.contents}

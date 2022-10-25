@@ -12,13 +12,12 @@ import { Swiper, SwiperSlide } from "swiper/react"
 
 interface CarouselProps {
   contents: ContentDto[]
-  onMediaLoad?: () => () => void
   activeIndex?: number
+  isAutoPlay?: boolean
 }
 
-export const Carousel: FC<CarouselProps> = ({ contents, onMediaLoad }) => {
+export const Carousel: FC<CarouselProps> = ({ contents, isAutoPlay }) => {
   const imgRef = useRef<HTMLImageElement>(null)
-
   return (
     <Swiper
       pagination={{
@@ -36,7 +35,7 @@ export const Carousel: FC<CarouselProps> = ({ contents, onMediaLoad }) => {
               key={index}
               content={c}
               ref={imgRef}
-              onMediaLoad={onMediaLoad}
+              isAutoPlay={isAutoPlay}
             />
           </SwiperSlide>
         )
