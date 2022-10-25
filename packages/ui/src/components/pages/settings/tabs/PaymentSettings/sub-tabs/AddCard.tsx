@@ -12,6 +12,7 @@ import InfoIcon from "public/icons/info-icon.svg"
 import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { Button } from "src/components/atoms/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
@@ -325,15 +326,14 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           className="mt-3"
         />
       </div>
-      <button
-        className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
+      <Button
+        className="mt-4 mb-8 w-full text-[16px] font-[500]"
         onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
+        variant="pink"
       >
-        <span className="text-[16px] font-[500]">
-          {isSubmitting ? "Submitting ..." : "Confirm and Continue"}
-        </span>
-      </button>
+        {isSubmitting ? "Submitting ..." : "Confirm and Continue"}
+      </Button>
     </>
   )
 }

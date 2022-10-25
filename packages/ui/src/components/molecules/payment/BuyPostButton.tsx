@@ -51,7 +51,7 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
       type="submit"
       disabled={!!blocked || submitting || isDisabled}
     >
-      {loading ? "Loading" : "Buy post"}
+      {loading ? "Processing..." : "Buy post"}
     </button>
   )
 }

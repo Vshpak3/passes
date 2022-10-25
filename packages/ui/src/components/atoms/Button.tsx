@@ -71,19 +71,19 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       break
     case "inner-gradient":
       variantClassName =
-        "bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-full group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
+        "bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purpleDark-purple-9 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-lg group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
       variantInnerClassName =
-        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-full group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
+        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-lg group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
       break
     case "inner-gradient-2":
       variantClassName =
         "bg-[linear-gradient(to_right_bottom,#F2BD6C_100%,#BD499B_100%,#A359D5_100%)]"
       variantInnerClassName =
-        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-full group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
+        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-lg group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
       break
     case "pink":
       variantClassName =
-        "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
+        "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       break
     case "purple":
       variantClassName =
@@ -126,7 +126,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       href={href}
       style={style}
       className={
-        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-full px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
+        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
         (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
         (className && ` ${className} `) +
@@ -182,8 +182,8 @@ export const PassesPinkButton: FC<GenericButtonProps> = ({
       disabled={isDisabled}
       className={classNames(
         isDisabled
-          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
-          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
+          ? "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
+          : "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
         className
       )}
       onClick={onClick}
@@ -202,7 +202,7 @@ export const CoverButton: FC<GenericButtonProps> = ({
   <button
     className={classNames(
       className,
-      "flex w-full items-center justify-center rounded-full border border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
+      "flex w-full items-center justify-center rounded-lg border border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
     )}
     onClick={onClick}
   >
@@ -239,7 +239,7 @@ export const RoundedIconButton: FC<PropsWithChildren<ButtonProps>> = ({
 }) => (
   <button
     className={classNames(
-      "flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-full bg-white p-4",
+      "flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-lg bg-white p-4",
       className
     )}
     onClick={onClick}
