@@ -88,15 +88,22 @@ type AppPropsWithLayout = AppProps & {
 type SubAppProps = {
   Component: NextPageWithLayout
   pageProps: any
+  getLayout: any
 }
 
-const SubApp = ({ Component, pageProps }: SubAppProps) => {
+const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
+  const { hasRefreshed } = useTokenRefresh()
+  const { mutate } = useUser()
+
+  useEffect(() => {
+    mutate()
+  }, [mutate])
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
@@ -110,7 +117,7 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
     [BuyPassModalContext.Provider, { setPass: setBuyPass }]
   ]
 
-  return (
+  return getLayout(
     <AppProviders providers={providers}>
       <Component {...pageProps} />
       {viewPost && <ViewPostModal post={viewPost} setPost={setViewPost} />}
@@ -135,18 +142,12 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
         limit={3}
         theme="colored"
       />
-    </AppProviders>
+    </AppProviders>,
+    hasRefreshed
   )
 }
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
-  const { hasRefreshed } = useTokenRefresh()
-  const { mutate } = useUser()
-
-  useEffect(() => {
-    mutate()
-  }, [mutate])
-
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",
     "Have an awesome day :-)"
@@ -162,10 +163,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       />
       <SWRConfig value={GlobalSWRConfig}>
         <DndProvider backend={HTML5Backend}>
-          {getLayout(
-            <SubApp Component={Component} pageProps={pageProps} />,
-            hasRefreshed
-          )}
+          <SubApp
+            Component={Component}
+            pageProps={pageProps}
+            getLayout={getLayout}
+          />
+          ,
         </DndProvider>
       </SWRConfig>
     </NextThemeProvider>
