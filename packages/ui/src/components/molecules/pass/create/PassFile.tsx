@@ -35,6 +35,7 @@ const composeMediaGridLayout = (length: number, index: number) => {
     case 1:
       return "col-span-12"
     case 2:
+      // eslint-disable-next-line sonarjs/no-duplicate-string
       return "md:col-span-6"
     case 4:
       return "md:col-span-6"

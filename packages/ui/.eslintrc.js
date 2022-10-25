@@ -21,13 +21,8 @@ module.exports = {
       "error",
       { allowSameFolder: true }
     ],
-
-    // Not needed for Next.js
-    "react/react-in-jsx-scope": "off",
-
-    // Unnecessary for frontend
-    "sonarjs/cognitive-complexity": "off",
-    "sonarjs/no-duplicate-string": "off"
+    "react/react-in-jsx-scope": "off", // Not needed for Next.js
+    "sonarjs/cognitive-complexity": "off"
   },
   overrides: [
     {

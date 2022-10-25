@@ -9,9 +9,11 @@ import {
 import { useEventCallback } from "./useEventCallback"
 import { useEventListener } from "./useEventListener"
 
+const LS = "local-storage"
+
 declare global {
   interface WindowEventMap {
-    "local-storage": CustomEvent
+    [LS]: CustomEvent
   }
 }
 
@@ -54,7 +56,7 @@ export function useLocalStorage<T>(
         setStoredValue(newValue)
       }
 
-      window.dispatchEvent(new Event("local-storage"))
+      window.dispatchEvent(new Event(LS))
     } catch (error) {
       console.error(`Error setting localStorage key "${key}":`, error)
     }
@@ -76,7 +78,7 @@ export function useLocalStorage<T>(
   )
 
   useEventListener("storage", handleStorageChange)
-  useEventListener("local-storage", handleStorageChange)
+  useEventListener(LS, handleStorageChange)
 
   return [storedValue, setValue]
 }

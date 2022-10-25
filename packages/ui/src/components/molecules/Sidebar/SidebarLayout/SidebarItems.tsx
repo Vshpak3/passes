@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable sonarjs/no-duplicate-string */
 import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import Link from "next/link"

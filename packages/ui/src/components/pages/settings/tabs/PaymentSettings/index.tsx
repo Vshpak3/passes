@@ -26,6 +26,13 @@ import { useUser } from "src/hooks/useUser"
 
 import AddCard from "./sub-tabs/AddCard"
 
+const payinMethodDisplayNames = {
+  [PayinMethodDtoChainEnum.Avax]: "USDC (AVAX)",
+  [PayinMethodDtoChainEnum.Eth]: "USDC (ETH)",
+  [PayinMethodDtoChainEnum.Matic]: "USDC (MATIC)",
+  [PayinMethodDtoChainEnum.Sol]: "USDC (SOL)"
+}
+
 interface PaymentSettingsProps {
   addCardHandler?: null | (() => void)
   isEmbedded?: boolean
@@ -115,12 +122,15 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
   )
   const defaultPaymentPhantom = () => {
     const payInMethodChain = defaultPayinMethod?.chain
-    const coin = payInMethodChain ? `(${payInMethodChain})` : ""
     return (
       <div className="mt-3 flex flex-row items-center">
         <PhantomIcon width="40px" />
         <span className="mx-3 font-[700]">Phantom Wallet</span>
-        <span>{`USDC ${coin}`}</span>
+        <span>
+          {payInMethodChain
+            ? payinMethodDisplayNames[payInMethodChain]
+            : "USDC"}
+        </span>
       </div>
     )
   }
@@ -151,6 +161,10 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
   }
 
   const [open, setOpen] = useState<boolean>(false)
+
+  const buttonName = (_isEmbedded?: boolean) => {
+    return _isEmbedded ? "Use" : "Set Default"
+  }
 
   return (
     <>
@@ -212,7 +226,8 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 isEmbedded
                   ? [
                       {
-                        label: "USDC (ETH)",
+                        label:
+                          payinMethodDisplayNames[PayinMethodDtoChainEnum.Eth],
                         value:
                           PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
                           "." +
@@ -228,21 +243,26 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                     ]
                   : [
                       {
-                        label: "USDC (ETH)",
+                        label:
+                          payinMethodDisplayNames[PayinMethodDtoChainEnum.Eth],
                         value:
                           PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
                           "." +
                           PayinMethodDtoChainEnum.Eth
                       },
                       {
-                        label: "USDC (AVAX)",
+                        label:
+                          payinMethodDisplayNames[PayinMethodDtoChainEnum.Avax],
                         value:
                           PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
                           "." +
                           PayinMethodDtoChainEnum.Avax
                       },
                       {
-                        label: "USDC (MATIC)",
+                        label:
+                          payinMethodDisplayNames[
+                            PayinMethodDtoChainEnum.Matic
+                          ],
                         value:
                           PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
                           "." +
@@ -254,7 +274,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
               name="metamask"
               className="my-4 w-[130px]"
               defaultValue={{
-                label: "USDC (ETH)",
+                label: payinMethodDisplayNames[PayinMethodDtoChainEnum.Eth],
                 value:
                   PayinMethodDtoMethodEnum.MetamaskCircleUsdc +
                   "." +
@@ -285,9 +305,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
               variant="purple-light"
               className="w-auto px-1 py-2 md:px-4"
             >
-              <span className="font-[700]">
-                {isEmbedded ? "Use" : "Set Default"}
-              </span>
+              <span className="font-[700]">{buttonName(isEmbedded)}</span>
             </Button>
           )}
         </div>
@@ -301,11 +319,14 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
               <Select
                 register={register}
                 defaultValue={{
-                  label: "USDC (SOL)",
+                  label: payinMethodDisplayNames[PayinMethodDtoChainEnum.Sol],
                   value: PayinMethodDtoChainEnum.Sol
                 }}
                 selectOptions={[
-                  { label: "USDC (SOL)", value: PayinMethodDtoChainEnum.Sol }
+                  {
+                    label: payinMethodDisplayNames[PayinMethodDtoChainEnum.Sol],
+                    value: PayinMethodDtoChainEnum.Sol
+                  }
                 ]}
                 onChange={(newValue: "sol") => setValue("phantom", newValue)}
                 name="phantom"
@@ -331,9 +352,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                 variant="purple-light"
                 className="w-auto px-1 py-2 md:px-4"
               >
-                <span className="font-[700]">
-                  {isEmbedded ? "Use" : "Set Default"}
-                </span>
+                <span className="font-[700]">{buttonName(isEmbedded)}</span>
               </Button>
             )}
           </div>
@@ -409,7 +428,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
                       variant="purple-light"
                     >
                       <span className="font-[700]">
-                        {isEmbedded ? "Use" : "Set Default"}
+                        {buttonName(isEmbedded)}
                       </span>
                     </Button>
                   )}

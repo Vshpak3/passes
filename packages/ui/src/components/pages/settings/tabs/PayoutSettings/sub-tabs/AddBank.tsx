@@ -33,6 +33,7 @@ const AddBank = () => {
     setValue,
     watch,
     formState: { errors }
+    // eslint-disable-next-line sonarjs/no-duplicate-string
   } = useForm<{ "bank-country": string; country: string; district: string }>({
     defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
   })

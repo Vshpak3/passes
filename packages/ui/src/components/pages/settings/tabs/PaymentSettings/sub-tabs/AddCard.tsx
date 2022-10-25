@@ -33,6 +33,7 @@ interface AddCardProps {
 
 interface CardForm {
   country: string
+  // eslint-disable-next-line sonarjs/no-duplicate-string
   "card-number": string
   "exp-month": string
   "exp-year": string
