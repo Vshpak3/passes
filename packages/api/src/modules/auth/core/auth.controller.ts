@@ -117,9 +117,9 @@ export class AuthController {
   async getCurrentUser(
     @Req() req: RequestWithUser,
   ): Promise<GetUserResponseDto> {
-    return (await this.userService.findOne({
+    return await this.userService.findOne({
       id: req.user.id,
-    })) as GetUserResponseDto
+    })
   }
 
   /**

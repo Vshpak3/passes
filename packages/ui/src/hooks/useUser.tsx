@@ -24,7 +24,7 @@ export const useUser = () => {
 
   const authApi = new AuthApi()
   const userApi = new UserApi()
-
+  console.log("access token", accessToken)
   const {
     data: user,
     isValidating: loading,
@@ -34,8 +34,6 @@ export const useUser = () => {
     async () => {
       // When this flag is false there is not yet a user to retrieve
       if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
-        // eslint-disable-next-line no-console
-        console.log("unverified")
         return
       }
 
