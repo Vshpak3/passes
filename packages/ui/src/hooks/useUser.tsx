@@ -24,6 +24,7 @@ export const useUser = () => {
 
   const authApi = new AuthApi()
   const userApi = new UserApi()
+  // eslint-disable-next-line no-console
   console.log("access token", accessToken)
   const {
     data: user,
