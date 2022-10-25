@@ -21,10 +21,11 @@ const Logout = () => {
     logout()
 
     deleteAllCookies()
+
     safePush("/login")
   }, [safePush, logout])
 
-  return null
+  return <div className="h-screen w-screen bg-black"></div>
 }
 
 export default Logout // no WithNormalPageLayout

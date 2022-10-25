@@ -13,7 +13,7 @@ export const useTokenRefresh = () => {
   const [hasRefreshed, setHasRefreshed] = useState(false)
 
   const router = useRouter()
-  const { setAccessToken } = useUser()
+  const { setAccessToken, mutate } = useUser()
 
   // Refresh once on page load then repeatedly
   useEffect(() => {
@@ -22,6 +22,7 @@ export const useTokenRefresh = () => {
         .then((r) => {
           if (r) {
             setAccessToken(r)
+            mutate()
           }
           return r
         })
@@ -37,7 +38,7 @@ export const useTokenRefresh = () => {
     }, CHECK_FOR_AUTH_REFRESH)
 
     return () => clearInterval(interval)
-  }, [refresh, router, setAccessToken])
+  }, [mutate, refresh, router, setAccessToken])
 
   return { hasRefreshed }
 }

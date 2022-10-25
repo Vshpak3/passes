@@ -7,9 +7,9 @@ import { differenceInYears, format, subYears } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
-import { useRouter } from "next/router"
+import jwtDecode from "jwt-decode"
 import EnterIcon from "public/icons/enter-icon.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -18,12 +18,11 @@ import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
-import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
-import { setTokens } from "src/helpers/setTokens"
 import { checkUsername } from "src/helpers/username"
-import { useUser } from "src/hooks/useUser"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
+import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
@@ -61,8 +60,8 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
 })
 
 const SignupInfoPage: FC = () => {
-  const router = useRouter()
-  const { mutate, setAccessToken, setRefreshToken, user } = useUser()
+  const { mutateManual } = useUser()
+  const { auth } = useAuthEvent(false)
 
   const {
     register,
@@ -86,8 +85,6 @@ const SignupInfoPage: FC = () => {
     displayName: string
   ) => {
     try {
-      const api = new AuthApi()
-
       const validUsername = await checkUsername(username)
         .then(() => true)
         .catch((err: Error) => {
@@ -102,43 +99,37 @@ const SignupInfoPage: FC = () => {
 
       toast.info("Please wait a moment while we create your account")
 
-      const res = await api.createUser({
-        createUserRequestDto: {
-          legalFullName: name,
-          username: username,
-          countryCode: countryCode,
-          birthday: birthday,
-          displayName: displayName
-        }
-      })
-
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
+      const newUserPayload = {
+        legalFullName: name,
+        username: username,
+        countryCode: countryCode,
+        birthday: birthday,
+        displayName: displayName
       }
+
+      await auth(
+        async () => {
+          const api = new AuthApi()
+          return await api.createUser({
+            createUserRequestDto: newUserPayload
+          })
+        },
+        async (token) => {
+          // If we mutate immedately there might not be a user entry in the db reader
+          // so instead reader so we instead maually construct mutate the user.
+          mutateManual({
+            userId: jwtDecode<JWTUserClaims>(token).sub,
+            email: "", // TODO: return this from the api or get elsewhere
+            ...newUserPayload
+          })
+        }
+      )
     } catch (err: any) {
       toast.dismiss()
       errorMessage(err, true)
       setIsSubmitting(false)
     }
   }
-
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    if (isSubmitting) {
-      const timer = setTimeout(() => {
-        mutate()
-        setCount(count + 1)
-      }, 1e3)
-      return () => clearTimeout(timer)
-    }
-  }, [count, isSubmitting, mutate])
-
-  useEffect(() => {
-    if (user) {
-      router.push(authStateToRoute(AuthStates.AUTHED))
-    }
-  }, [router, user])
 
   const onSubmit = (data: SignupInfoPageSchema) => {
     setIsSubmitting(true)

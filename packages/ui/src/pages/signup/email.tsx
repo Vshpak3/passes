@@ -8,11 +8,9 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
-import { AuthStates, authStateToRoute } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
-import { setTokens } from "src/helpers/setTokens"
-import { useUser } from "src/hooks/useUser"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
@@ -28,7 +26,7 @@ const signupPageEmailSchema: SchemaOf<SignupEmailPageSchema> = object({
 
 const SignupEmailPage: FC = () => {
   const router = useRouter()
-  const { setAccessToken, setRefreshToken } = useUser()
+  const { auth } = useAuthEvent()
 
   const {
     register,
@@ -42,6 +40,9 @@ const SignupEmailPage: FC = () => {
   const [hasSentEmail, setHasSentEmail] = useState(false)
 
   useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
     setHasSentEmail(router.query.hasEmail === "true")
   }, [router])
 
@@ -49,20 +50,15 @@ const SignupEmailPage: FC = () => {
     const api = new AuthApi()
     await api.setUserEmail({ setEmailRequestDto: { email } })
 
-    // In local development (dev) we auto-verify the email
+    // In local development we auto-verify the email
     if (isDev) {
-      const res = await api.verifyUserEmail({
-        verifyEmailDto: {
-          verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-        }
+      await auth(async () => {
+        return await api.verifyUserEmail({
+          verifyEmailDto: {
+            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          }
+        })
       })
-
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
-      }
-
-      router.push(authStateToRoute(AuthStates.VERIFY))
     }
 
     router.query.hasEmail = "true"

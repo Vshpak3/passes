@@ -10,19 +10,24 @@ import {
   AuthStates
 } from "src/helpers/authRouter"
 import { queryParam } from "src/helpers/query"
-import { setTokens } from "src/helpers/setTokens"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | undefined>(undefined)
-  const { safePush } = useSafeRouter()
 
   const router = useRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+  const { safePush } = useSafeRouter()
+  const { userClaims } = useUser()
+  const { auth } = useAuthEvent()
 
   useEffect(() => {
+    if (!router.isReady) {
+      return
+    }
+
     if (userClaims && authStateMachine(userClaims) !== AuthStates.EMAIL) {
       authRouter(safePush, userClaims)
     }
@@ -44,16 +49,12 @@ const VerifyEmailPage = () => {
         return
       }
 
-      const verificationToken = id
-
-      const api = new AuthApi()
-      const res = await api.verifyUserEmail({
-        verifyEmailDto: { verificationToken }
+      await auth(async () => {
+        const api = new AuthApi()
+        return await api.verifyUserEmail({
+          verifyEmailDto: { verificationToken: id }
+        })
       })
-      const setRes = setTokens(res, setAccessToken, setRefreshToken)
-      if (!setRes) {
-        return
-      }
     } catch (err: any) {
       console.error(err)
       setError(

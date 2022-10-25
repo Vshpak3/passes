@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
-import jwtDecode from "jwt-decode"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
@@ -8,7 +7,7 @@ import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
-import { FC, useEffect, useState } from "react"
+import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import {
@@ -19,11 +18,9 @@ import {
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
-import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
-import { setTokens } from "src/helpers/setTokens"
-import { useSafeRouter } from "src/hooks/useSafeRouter"
-import { JWTUserClaims, useUser } from "src/hooks/useUser"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
+import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
@@ -46,9 +43,8 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 
 const LoginPage: FC = () => {
   const router = useRouter()
-  const { safePush } = useSafeRouter()
-  const { mutate, setAccessToken, setRefreshToken, accessToken, user } =
-    useUser()
+  const { mutate } = useUser()
+  const { auth } = useAuthEvent()
 
   const {
     register,
@@ -58,39 +54,24 @@ const LoginPage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const loginUser = async (email: string, password: string) => {
-    const api = new AuthLocalApi()
-    const res = await api.loginWithEmailPassword({
-      localUserLoginRequestDto: { email, password }
-    })
-    const setRes = setTokens(res, setAccessToken, setRefreshToken)
-    if (!setRes) {
-      return
-    }
-  }
-
-  const [count, setCount] = useState(0)
-  useEffect(() => {
-    if (isSubmitting) {
-      const timer = setTimeout(() => {
+    await auth(
+      async () => {
+        const api = new AuthLocalApi()
+        return await api.loginWithEmailPassword({
+          localUserLoginRequestDto: { email, password }
+        })
+      },
+      async () => {
         mutate()
-        setCount(count + 1)
-      }, 1e3)
-      return () => clearTimeout(timer)
-    }
-  }, [count, isSubmitting, mutate])
-
-  useEffect(() => {
-    if (user) {
-      authRouter(safePush, jwtDecode<JWTUserClaims>(accessToken))
-    }
-  }, [router, user, accessToken, safePush])
+      }
+    )
+  }
 
   const onSubmit = async (data: LoginPageSchema) => {
     try {
       setIsSubmitting(true)
       deleteAllCookies()
       await loginUser(data.email, data.password)
-      toast.success("Please wait as we redirect you")
     } catch (error: any) {
       toast.error("Invalid credentials")
       console.error(await errorMessage(error))

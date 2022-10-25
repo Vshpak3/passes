@@ -141,11 +141,12 @@ const SubApp = ({ Component, pageProps }: SubAppProps) => {
 
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const { hasRefreshed } = useTokenRefresh()
-  const { accessToken, mutate } = useUser()
+  const { mutate } = useUser()
+
   useEffect(() => {
     mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken])
+  }, [])
 
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",

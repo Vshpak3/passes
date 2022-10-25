@@ -2,7 +2,7 @@ import {
   GetPayinMethodResponseDtoMethodEnum,
   PassHolderDto
 } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { RenewPassButton } from "src/components/molecules/payment/RenewPassButton"
 import { Modal } from "src/components/organisms/Modal"

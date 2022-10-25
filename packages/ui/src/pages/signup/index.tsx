@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, AuthLocalApi } from "@passes/api-client"
-import jwtDecode from "jwt-decode"
 import NextLink from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
@@ -21,9 +20,8 @@ import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
-import { setTokens } from "src/helpers/setTokens"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
-import { JWTUserClaims, useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf, string } from "yup"
 
@@ -72,7 +70,7 @@ const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
 const SignupInitialPage: FC = () => {
   const router = useRouter()
   const { safePush } = useSafeRouter()
-  const { setAccessToken, setRefreshToken } = useUser()
+  const { auth } = useAuthEvent()
 
   const {
     register,
@@ -84,33 +82,32 @@ const SignupInitialPage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const initiateSignup = async (email: string, password: string) => {
-    const api = new AuthLocalApi()
-    const res = await api.createEmailPasswordUser({
-      createLocalUserRequestDto: { email, password }
-    })
-
-    const setRes = setTokens(res, setAccessToken, setRefreshToken)
-    if (!setRes) {
-      return
-    }
+    await auth(
+      async () => {
+        const api = new AuthLocalApi()
+        return await api.createEmailPasswordUser({
+          createLocalUserRequestDto: { email, password }
+        })
+      },
+      async (token) => {
+        if (!isDev) {
+          authRouter(safePush, token, false, [["hasEmail", "true"]])
+        }
+      },
+      false
+    )
 
     // In local development we auto-verify the email
     if (isDev) {
-      const authApi = new AuthApi()
-      const res = await authApi.verifyUserEmail({
-        verifyEmailDto: {
-          verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-        }
+      await auth(async () => {
+        const authApi = new AuthApi()
+        return await authApi.verifyUserEmail({
+          verifyEmailDto: {
+            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          }
+        })
       })
-      setTokens(res, setAccessToken, setRefreshToken)
     }
-
-    authRouter(
-      safePush,
-      jwtDecode<JWTUserClaims>(res.accessToken),
-      false,
-      new URLSearchParams([["hasEmail", "true"]])
-    )
   }
 
   const onSubmit = async (data: SignupInitialPageSchema) => {

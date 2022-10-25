@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import React, { FC, PropsWithChildren, useEffect, useState } from "react"
 import { authRouter } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
@@ -14,14 +15,17 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
 }) => {
   const [ready, setReady] = useState(false)
   const { userClaims } = useUser()
+  const router = useRouter()
   const { safePush } = useSafeRouter()
 
   useEffect(() => {
-    const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
-    setReady(!redirected)
+    if (router.isReady) {
+      const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
+      setReady(!redirected)
+    }
     // This is intended to only run on page load to ensure direction from page
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [router])
 
   return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
 }

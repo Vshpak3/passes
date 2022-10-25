@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
-import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { useEffect, useState } from "react"
@@ -9,12 +8,11 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
-import { authRouter } from "src/helpers/authRouter"
 import { errorMessage } from "src/helpers/error"
-import { setTokens } from "src/helpers/setTokens"
 import { sleep } from "src/helpers/sleep"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
-import { JWTUserClaims, useUser } from "src/hooks/useUser"
+import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { object, SchemaOf } from "yup"
 
 import { passwordFormSchema } from "./signup"
@@ -28,10 +26,10 @@ const resetPasswordFormSchema: SchemaOf<ResetPasswordFormProps> = object({
   ...passwordFormSchema
 })
 
-const NewPassword = () => {
+const ResetPassword = () => {
   const router = useRouter()
   const { safePush } = useSafeRouter()
-  const { userClaims, setAccessToken, setRefreshToken } = useUser()
+  const { auth } = useAuthEvent()
 
   const {
     register,
@@ -45,9 +43,7 @@ const NewPassword = () => {
   const [passwordReset, setPasswordReset] = useState(false)
 
   useEffect(() => {
-    const authRedirect = authRouter(safePush, userClaims, true)
-
-    if (!authRedirect && !router.query.token) {
+    if (router.isReady && !router.query.token) {
       safePush("/login")
     }
 
@@ -59,22 +55,19 @@ const NewPassword = () => {
   const resetPassword = async (password: string) => {
     const verificationToken = router.query.token as string
 
-    const api = new AuthLocalApi()
-    const res = await api.confirmPasswordReset({
-      confirmResetPasswordRequestDto: { password, verificationToken }
-    })
-
-    const setRes = setTokens(res, setAccessToken, setRefreshToken)
-    if (!setRes) {
-      return
-    }
-
-    setPasswordReset(true)
-
-    // sleep for 2 seconds so the confirmation screen is visible before we redirect
-    await sleep("2 seconds")
-
-    authRouter(safePush, jwtDecode<JWTUserClaims>(res.accessToken))
+    await auth(
+      async () => {
+        const api = new AuthLocalApi()
+        return await api.confirmPasswordReset({
+          confirmResetPasswordRequestDto: { password, verificationToken }
+        })
+      },
+      async () => {
+        setPasswordReset(true)
+        // sleep for 2 seconds so the confirmation screen is visible before we redirect
+        await sleep("2 seconds")
+      }
+    )
   }
 
   const onSubmit = async (data: ResetPasswordFormProps) => {
@@ -181,4 +174,4 @@ const NewPassword = () => {
   )
 }
 
-export default NewPassword // no WithNormalPageLayout
+export default WithLoginPageLayout(ResetPassword, { routeOnlyIfAuth: true })

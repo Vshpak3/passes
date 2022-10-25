@@ -1,3 +1,4 @@
+import jwtDecode from "jwt-decode"
 import { JWTUserClaims } from "src/hooks/useUser"
 
 import { isProd } from "./env"
@@ -41,10 +42,14 @@ export function authStateToRoute(state: AuthStates) {
 
 export function authRouter(
   route: (path: string) => boolean,
-  jwt?: JWTUserClaims | null,
+  jwt?: JWTUserClaims | string | null,
   routeOnlyIfAuth = false,
-  searchParams: URLSearchParams | null = null
+  searchParams: string[][] | null = null
 ): boolean {
+  if (typeof jwt === "string") {
+    jwt = jwtDecode<JWTUserClaims>(jwt)
+  }
+
   const state = authStateMachine(jwt)
 
   if (routeOnlyIfAuth && state === AuthStates.LOGIN) {
@@ -54,7 +59,7 @@ export function authRouter(
   let url = authStateToRoute(state)
 
   if (searchParams) {
-    url += "?" + searchParams.toString()
+    url += "?" + new URLSearchParams(searchParams).toString()
   }
 
   return route(url)

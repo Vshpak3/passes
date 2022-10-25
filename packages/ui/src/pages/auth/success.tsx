@@ -1,45 +1,34 @@
-import jwtDecode from "jwt-decode"
 import { useRouter } from "next/router"
 import { FC, useEffect } from "react"
-import {
-  authRouter,
-  AuthStates,
-  authStateToRoute
-} from "src/helpers/authRouter"
 import { queryParam } from "src/helpers/query"
-import { setTokens } from "src/helpers/setTokens"
-import { useSafeRouter } from "src/hooks/useSafeRouter"
-import { JWTUserClaims, useUser } from "src/hooks/useUser"
+import { useAuthEvent } from "src/hooks/useAuthEvent"
+import { useUser } from "src/hooks/useUser"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
-  const { safePush } = useSafeRouter()
-  const { mutate, setAccessToken, setRefreshToken } = useUser()
+  const { mutate } = useUser()
+  const { auth } = useAuthEvent()
 
   useEffect(() => {
     if (!router.isReady) {
       return
     }
 
-    const accessToken = queryParam(router.query.accessToken) as string
-    const refreshToken = queryParam(router.query.refreshToken) as string
-
-    const setRes = setTokens(
-      { accessToken, refreshToken },
-      setAccessToken,
-      setRefreshToken
+    auth(
+      async () => {
+        return {
+          accessToken: queryParam(router.query.accessToken) as string,
+          refreshToken: queryParam(router.query.refreshToken) as string
+        }
+      },
+      async () => {
+        mutate()
+      }
     )
-    if (!setRes) {
-      safePush(authStateToRoute(AuthStates.LOGIN))
-      return
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router])
 
-    mutate()
-
-    authRouter(safePush, jwtDecode<JWTUserClaims>(accessToken))
-  }, [router, mutate, setAccessToken, setRefreshToken, safePush])
-
-  return null
+  return <div className="h-screen w-screen bg-black"></div>
 }
 
 export default AuthSuccess // no WithNormalPageLayout
