@@ -1,5 +1,5 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
-import { FC, ForwardedRef, forwardRef, useState } from "react"
+import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
 import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
@@ -13,7 +13,16 @@ export interface PostContentProps extends PostImageProps {
 export const PostContent: FC<PostContentProps> = forwardRef(
   ({ content, onMediaLoad }, ref: ForwardedRef<HTMLImageElement>) => {
     const [openModal, setOpenModal] = useState(false)
-
+    useEffect(() => {
+      if (openModal) {
+        document.body.style.overflow = "hidden"
+      } else {
+        document.body.style.overflow = ""
+      }
+      return () => {
+        document.body.style.overflow = ""
+      }
+    }, [openModal])
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
         return (
