@@ -30,6 +30,7 @@ interface PostProps {
   isPinned?: boolean
   pinnedPostCount?: number
   updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
+  isAutoPlay?: boolean
 }
 
 const PostUnmemo: FC<PostProps> = ({
@@ -38,7 +39,8 @@ const PostUnmemo: FC<PostProps> = ({
   postByUrl = false,
   isPinned = false,
   pinnedPostCount = 0,
-  updateProfileStats
+  updateProfileStats,
+  isAutoPlay
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
@@ -143,7 +145,11 @@ const PostUnmemo: FC<PostProps> = ({
             {!!contents?.length && (
               <>
                 {!purchasable ? (
-                  <Media contents={contents} isProcessing={!contentProcessed} />
+                  <Media
+                    contents={contents}
+                    isProcessing={!contentProcessed}
+                    isAutoPlay={isAutoPlay}
+                  />
                 ) : (
                   <LockedMedia post={post} />
                 )}

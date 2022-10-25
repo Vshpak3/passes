@@ -68,6 +68,7 @@ export const HomeContentFeed: FC = () => {
                   <Post
                     post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
                     inHomeFeed={true}
+                    isAutoPlay={false}
                   />
                 )
               }}

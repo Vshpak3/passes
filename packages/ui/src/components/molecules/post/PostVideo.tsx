@@ -5,9 +5,13 @@ import videojs, { VideoJsPlayer, VideoJsPlayerOptions } from "video.js"
 
 interface PostVideoProps {
   videoUrl: string
+  isAutoPlay?: boolean
 }
 
-export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
+export const PostVideo: FC<PostVideoProps> = ({
+  videoUrl,
+  isAutoPlay = false
+}) => {
   const videoJsOptions: VideoJsPlayerOptions = {
     controls: true,
     aspectRatio: "16:9",
@@ -53,11 +57,13 @@ export const PostVideo: FC<PostVideoProps> = ({ videoUrl }) => {
     } else {
       const player = playerRef.current
 
-      player?.autoplay(visible)
+      if (isAutoPlay) {
+        player?.autoplay(visible)
+      }
       videoJsOptions?.sources && player?.src(videoJsOptions?.sources[0].src)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [videoRef, visible, ref])
+  }, [videoRef, visible, ref, isAutoPlay])
 
   useEffect(() => {
     const player = playerRef.current

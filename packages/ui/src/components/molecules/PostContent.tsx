@@ -8,10 +8,14 @@ import { PostVideo } from "./post/PostVideo"
 
 export interface PostContentProps extends PostImageProps {
   ref: ForwardedRef<HTMLImageElement>
+  isAutoPlay?: boolean
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
-  ({ content, onMediaLoad }, ref: ForwardedRef<HTMLImageElement>) => {
+  (
+    { content, onMediaLoad, isAutoPlay },
+    ref: ForwardedRef<HTMLImageElement>
+  ) => {
     const [openModal, setOpenModal] = useState(false)
     useEffect(() => {
       if (openModal) {
@@ -50,6 +54,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
           <PostVideo
             key={content.contentId}
             videoUrl={ContentService.userContentMediaPath(content)}
+            isAutoPlay={isAutoPlay}
           />
         )
     }

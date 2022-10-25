@@ -5,9 +5,13 @@ import { Carousel } from "src/components/organisms/profile/post/Carousel"
 
 export interface MediaContentProps {
   contents: PostDto["contents"]
+  isAutoPlay?: boolean
 }
 
-export const MediaContent: FC<MediaContentProps> = ({ contents = [] }) => {
+export const MediaContent: FC<MediaContentProps> = ({
+  contents = [],
+  isAutoPlay
+}) => {
   const imgRef = useRef<HTMLImageElement>(null)
 
   // For now we don't have any logic when the content has loaded
@@ -21,6 +25,7 @@ export const MediaContent: FC<MediaContentProps> = ({ contents = [] }) => {
           content={contents[0]}
           onMediaLoad={onMediaLoad}
           ref={imgRef}
+          isAutoPlay={isAutoPlay}
         />
       ) : (
         contents.length > 1 && (
