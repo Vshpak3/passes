@@ -17,7 +17,8 @@ export const NewPosts: FC<NewPostsProps> = ({
   postUpdates
 }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
-  const { profileInfo, profileUsername, mutateProfileStats } = useProfile()
+  const { profileInfo, profileUsername, mutateManualProfileStats } =
+    useProfile()
   const { createPost } = usePost()
 
   const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
@@ -70,7 +71,7 @@ export const NewPosts: FC<NewPostsProps> = ({
       yourTips: 0
     }
     if (res.postId) {
-      await mutateProfileStats()
+      await mutateManualProfileStats({ field: "numPosts", event: "increment" })
     }
 
     setNewPosts([post, ...newPosts])
@@ -88,7 +89,7 @@ export const NewPosts: FC<NewPostsProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
-          mutateProfileStats={mutateProfileStats}
+          updateProfileStats={mutateManualProfileStats}
         />
       ))}
     </>

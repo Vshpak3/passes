@@ -100,7 +100,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   setEditProfileModalOpen,
   setProfileImageOverride
 }) => {
-  const { mutateManual, profileInfo, profileUserId } = useProfile()
+  const { mutateManualProfileInfo, profileInfo, profileUserId } = useProfile()
 
   const {
     handleSubmit,
@@ -157,7 +157,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     await updateProfile(values)
 
     // TODO: this ends up adding on some extra properties like profile image
-    mutateManual(values)
+    mutateManualProfileInfo(values)
 
     toast.success("Successfully updated your profile")
 

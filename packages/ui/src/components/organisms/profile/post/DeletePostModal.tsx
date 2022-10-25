@@ -1,22 +1,22 @@
-import { GetCreatorStatsResponseDto, PostDto } from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction } from "react"
 import { toast } from "react-toastify"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { usePost } from "src/hooks/profile/usePost"
-import { KeyedMutator } from "swr"
+import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 
 interface DeletePostModalProps {
   post: PostDto | null
   onDelete: () => void
   setOpen: Dispatch<SetStateAction<boolean>>
-  mutateProfileStats?: KeyedMutator<GetCreatorStatsResponseDto>
+  updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
 }
 
 export const DeletePostModal: FC<DeletePostModalProps> = ({
   post,
   onDelete,
   setOpen,
-  mutateProfileStats
+  updateProfileStats
 }) => {
   const { removePost } = usePost()
 
@@ -26,8 +26,8 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
     }
     try {
       await removePost(post.postId)
-      if (mutateProfileStats) {
-        await mutateProfileStats()
+      if (updateProfileStats) {
+        await updateProfileStats({ field: "numPosts", event: "decrement" })
       }
     } catch (error: any) {
       toast.error("Failed to delete. Please contact support.")
