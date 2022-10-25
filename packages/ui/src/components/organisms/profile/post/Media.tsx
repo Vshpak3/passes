@@ -1,18 +1,14 @@
 import { FC } from "react"
 import {
-  PostMediaContent,
-  PostMediaContentProps
-} from "src/components/molecule/profile/post/PostMediaContent"
+  MediaContent,
+  MediaContentProps
+} from "src/components/molecule/profile/post/MediaContent"
 
-interface PostMediaProps extends PostMediaContentProps {
+interface MediaProps extends MediaContentProps {
   isProcessing: boolean
 }
 
-export const PostMedia: FC<PostMediaProps> = ({
-  postId,
-  contents = [],
-  isProcessing
-}) => {
+export const Media: FC<MediaProps> = ({ contents = [], isProcessing }) => {
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
       {isProcessing ? (
@@ -20,7 +16,7 @@ export const PostMedia: FC<PostMediaProps> = ({
           Your content is being processed.
         </div>
       ) : (
-        <PostMediaContent postId={postId} contents={contents} />
+        <MediaContent contents={contents} />
       )}
     </div>
   )

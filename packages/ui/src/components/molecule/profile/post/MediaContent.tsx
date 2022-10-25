@@ -3,14 +3,11 @@ import { FC, useRef } from "react"
 import { PostContent } from "src/components/molecules/PostContent"
 import { Carousel } from "src/components/organisms/profile/post/Carousel"
 
-export interface PostMediaContentProps {
-  postId: string
+export interface MediaContentProps {
   contents: PostDto["contents"]
 }
 
-export const PostMediaContent: FC<PostMediaContentProps> = ({
-  contents = []
-}) => {
+export const MediaContent: FC<MediaContentProps> = ({ contents = [] }) => {
   const imgRef = useRef<HTMLImageElement>(null)
 
   // For now we don't have any logic when the content has loaded

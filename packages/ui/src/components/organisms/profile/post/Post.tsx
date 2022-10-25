@@ -14,9 +14,9 @@ import { useFeed } from "src/hooks/profile/useFeed"
 
 import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
+import { Media } from "./Media"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
-import { PostMedia } from "./PostMedia"
 
 const MAX_PINNED_POST = 3
 
@@ -140,11 +140,7 @@ const PostUnmemo: FC<PostProps> = ({
             {!!contents?.length && (
               <>
                 {!purchasable ? (
-                  <PostMedia
-                    postId={postId}
-                    contents={contents}
-                    isProcessing={!contentProcessed}
-                  />
+                  <Media contents={contents} isProcessing={!contentProcessed} />
                 ) : (
                   <LockedMedia post={post} />
                 )}
