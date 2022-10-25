@@ -21,7 +21,6 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
               className="mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-white stroke-2 "
               aria-hidden="true"
             />
-            Passes
           </div>
         </span>
       </Disclosure.Button>
