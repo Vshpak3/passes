@@ -19,6 +19,7 @@ interface ChannelViewProps {
   user: GetUserResponseDto
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<any>>
+  onBack?(): void
 }
 
 export const ChannelView: FC<ChannelViewProps> = ({
@@ -28,7 +29,8 @@ export const ChannelView: FC<ChannelViewProps> = ({
   isCreator,
   user,
   vaultContent,
-  setVaultContent
+  setVaultContent,
+  onBack
 }) => {
   const [paid, setPaid] = useState<boolean | undefined>()
   const [freeMessages, setFreeMessages] = useState<number | null | undefined>(
@@ -60,7 +62,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChannel])
   return (
-    <div className="flex max-h-[90vh] flex-1 flex-col">
+    <div className="absolute z-50 flex h-[90vh] flex-col bg-[#120C14] md:relative md:max-h-[90vh] md:flex-1">
       {selectedChannel && (
         <>
           <ChannelHeader
@@ -70,6 +72,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
             paid={paid}
             setPaid={setPaid}
             isCreator={isCreator}
+            onBack={onBack}
           />
           {gallery ? (
             <ChannelGalleryView

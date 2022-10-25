@@ -176,7 +176,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <FreeMessagesLeftContainer freeMessages={freeMessages} />
         </div>
       )}
-      {isConnected && (
+      {isConnected ? (
         <>
           <div
             id="scrollableDiv"
@@ -247,6 +247,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             <div ref={bottomOfChatRef} />
           </div>
         </>
+      ) : (
+        <div className="flex-1" />
       )}
     </>
   )

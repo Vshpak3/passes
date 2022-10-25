@@ -1,10 +1,12 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
+import BackIcon from "public/icons/back-icon.svg"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 import { NameDisplay } from "src/components/atoms/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface ChannelHeaderProps {
   selectedChannel: ChannelMemberDto
@@ -13,6 +15,7 @@ interface ChannelHeaderProps {
   paid?: boolean
   setPaid: Dispatch<SetStateAction<boolean | undefined>>
   isCreator: boolean
+  onBack?(): void
 }
 
 export const ChannelHeader: FC<ChannelHeaderProps> = ({
@@ -21,8 +24,11 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   paid,
   setPaid,
   selectedChannel,
-  isCreator
+  isCreator,
+  onBack
 }) => {
+  const { isMobile } = useWindowSize()
+
   return (
     <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
       <div className="flex w-full flex-row items-center justify-between px-5 py-4 pr-10">
@@ -36,6 +42,11 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           />
         ) : (
           <div className="flex items-center ">
+            {isMobile && (
+              <div className="mr-2" onClick={onBack}>
+                <BackIcon />
+              </div>
+            )}
             <a
               href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
             >

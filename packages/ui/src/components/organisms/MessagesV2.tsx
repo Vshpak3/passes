@@ -13,6 +13,7 @@ import { ChannelMassDM } from "src/components/molecules/messages/ChannelMassDM"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { ChannelViewMassDM } from "src/components/molecules/messages/ChannelViewMassDM"
 import { useUser } from "src/hooks/useUser"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface MessagesV2Props {
   defaultUserId?: string
@@ -34,11 +35,18 @@ const MessagesV2 = ({
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
   const [selectedLists, setSelectedLists] = useState<ListDto[]>([])
   const [excludedLists, setExcludedLists] = useState<ListDto[]>([])
+  const [openChannelView, setOpenChannelView] = useState<boolean>(true)
 
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
+
+  const { isMobile } = useWindowSize()
+
+  const handleOpenChannelView = () => setOpenChannelView(false)
+
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
     setSelectedChannel(channel)
+    setOpenChannelView(true)
   }
 
   useEffect(() => {
@@ -73,6 +81,10 @@ const MessagesV2 = ({
     }
   }, [defaultUserId])
 
+  useEffect(() => {
+    setOpenChannelView(!isMobile)
+  }, [isMobile])
+
   const onUserSelect = async (user: ListMemberDto) => {
     const api = new MessagesApi()
     const channel = await api.getChannel({
@@ -101,15 +113,18 @@ const MessagesV2 = ({
         />
       )}
       {user && user.userId && !massMessage ? (
-        <ChannelView
-          selectedChannel={selectedChannel}
-          gallery={gallery}
-          setGallery={setGallery}
-          isCreator={!!user?.isCreator}
-          user={user}
-          vaultContent={vaultContent}
-          setVaultContent={setVaultContent}
-        />
+        openChannelView && (
+          <ChannelView
+            selectedChannel={selectedChannel}
+            gallery={gallery}
+            setGallery={setGallery}
+            isCreator={!!user?.isCreator}
+            user={user}
+            vaultContent={vaultContent}
+            setVaultContent={setVaultContent}
+            onBack={handleOpenChannelView}
+          />
+        )
       ) : (
         <ChannelViewMassDM
           vaultContent={vaultContent}
