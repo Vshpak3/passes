@@ -21,7 +21,7 @@ const CACHE_KEY_USER = "/user"
 
 const authApi = new AuthApi()
 const userApi = new UserApi()
-export const useUser = (text?: string) => {
+export const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
 
@@ -41,8 +41,6 @@ export const useUser = (text?: string) => {
     CACHE_KEY_USER, //accessToken ? CACHE_KEY_USER : null,
     fetch
   )
-  // eslint-disable-next-line no-console
-  console.log(user, text)
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>

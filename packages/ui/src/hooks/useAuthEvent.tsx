@@ -10,8 +10,7 @@ import { useSafeRouter } from "./useSafeRouter"
  * Structures any event that modifies access tokens.
  */
 export function useAuthEvent(mutateOnTokenChange = true) {
-  const { accessToken, setAccessToken, setRefreshToken, mutate } =
-    useUser("auth event")
+  const { accessToken, setAccessToken, setRefreshToken, mutate } = useUser()
   const { safePush } = useSafeRouter()
 
   useEffect(() => {

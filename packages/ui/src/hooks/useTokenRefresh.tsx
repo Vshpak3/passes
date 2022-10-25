@@ -13,7 +13,7 @@ export const useTokenRefresh = () => {
   const [hasRefreshed, setHasRefreshed] = useState(false)
 
   const router = useRouter()
-  const { setAccessToken, mutate } = useUser("token refresh")
+  const { setAccessToken, mutate } = useUser()
 
   // Refresh once on page load then repeatedly
   useEffect(() => {

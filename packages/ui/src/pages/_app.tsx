@@ -99,7 +99,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed } = useTokenRefresh()
-  const { mutate, accessToken } = useUser("app")
+  const { mutate, accessToken } = useUser()
 
   useEffect(() => {
     mutate()
