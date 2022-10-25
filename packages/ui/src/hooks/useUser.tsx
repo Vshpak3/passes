@@ -34,6 +34,8 @@ export const useUser = () => {
     async () => {
       // When this flag is false there is not yet a user to retrieve
       if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+        // eslint-disable-next-line no-console
+        console.log("unverified")
         return
       }
 
