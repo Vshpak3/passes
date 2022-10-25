@@ -9,7 +9,7 @@ import { navigation as _navigation } from "./sidebarData"
 
 export const Sidebar = () => {
   const router = useRouter()
-  const { user, accessToken } = useUser()
+  const { user } = useUser()
   const [hasMounted, setHasMounted] = useState(false)
   const [navigation, setNavigation] = useState(_navigation)
   const [active, setActive] = useState(router.asPath.split("/").pop() ?? "")
@@ -46,7 +46,7 @@ export const Sidebar = () => {
         creatorOnly: false
       }
     ])
-  }, [user, accessToken])
+  }, [user])
 
   // TODO: replace with owns a profile endpoint
   useEffect(() => {
