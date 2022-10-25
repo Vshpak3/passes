@@ -15,7 +15,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   routeOnlyIfAuth
 }) => {
   const [ready, setReady] = useState(false)
-  const { userClaims } = useUser()
+  const { userClaims } = useUser("login wrapper")
   const router = useRouter()
   const { safePush } = useSafeRouter()
 

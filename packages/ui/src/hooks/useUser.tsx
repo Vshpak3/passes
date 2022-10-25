@@ -24,10 +24,7 @@ export const useUser = (text?: string) => {
 
   const authApi = new AuthApi()
   const userApi = new UserApi()
-  // eslint-disable-next-line no-console
-  // console.trace("access token", accessToken, text)
 
-  // console.trace(text)
   const {
     data: user,
     isValidating: loading,

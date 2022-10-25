@@ -10,15 +10,15 @@ import { useSafeRouter } from "./useSafeRouter"
  * Structures any event that modifies access tokens.
  */
 export function useAuthEvent(mutateOnTokenChange = true) {
-  const { accessToken, setAccessToken, setRefreshToken, mutate } = useUser()
+  const { accessToken, setAccessToken, setRefreshToken, mutate } =
+    useUser("auth event")
   const { safePush } = useSafeRouter()
 
   useEffect(() => {
     if (mutateOnTokenChange) {
       mutate()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken])
+  }, [accessToken, mutate, mutateOnTokenChange])
 
   const auth = async (
     apiCall: () => Promise<AccessTokensResponseDto>,
