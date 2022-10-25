@@ -31,7 +31,7 @@ export const useUser = (text?: string) => {
     isValidating: loading,
     mutate
   } = useSWR<GetUserResponseDto | undefined>(
-    accessToken ? CACHE_KEY_USER : null,
+    CACHE_KEY_USER, //accessToken ? CACHE_KEY_USER : null,
     async () => {
       // When this flag is false there is not yet a user to retrieve
       if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
