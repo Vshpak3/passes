@@ -19,7 +19,7 @@ export const SidebarMobile: FC<SidebarDefaultProps> = ({
   navigation
 }) => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const { user } = useUser()
+  const { user } = useUser("sidebar mobile")
   const toggleSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen)
   }

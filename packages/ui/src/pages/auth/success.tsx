@@ -3,11 +3,9 @@ import { FC, useEffect } from "react"
 
 import { queryParam } from "src/helpers/query"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
-import { useUser } from "src/hooks/useUser"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
-  const { mutate } = useUser()
   const { auth } = useAuthEvent()
 
   useEffect(() => {
@@ -15,17 +13,12 @@ const AuthSuccess: FC = () => {
       return
     }
 
-    auth(
-      async () => {
-        return {
-          accessToken: queryParam(router.query.accessToken) as string,
-          refreshToken: queryParam(router.query.refreshToken) as string
-        }
-      },
-      async () => {
-        mutate()
+    auth(async () => {
+      return {
+        accessToken: queryParam(router.query.accessToken) as string,
+        refreshToken: queryParam(router.query.refreshToken) as string
       }
-    )
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
