@@ -26,7 +26,7 @@ export const PassMedia: FC<PassMediaProps> = ({
 
   if (shouldUsePlaceholder) {
     return (
-      <div className="h-[140px] w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]" />
+      <div className="h-[200px] w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]" />
     )
   }
 

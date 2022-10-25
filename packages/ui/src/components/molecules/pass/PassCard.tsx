@@ -30,7 +30,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
   return (
-    <div className="rounded-[15px] border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
+    <div className="flex flex-col rounded-xl border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
       <PassMedia
         passId={pass.passId}
         imageType={pass.imageType}
@@ -74,7 +74,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             </div>
           </div>
         )}
-        <div className="mt-2 w-full border-b border-t border-b-[#2C282D] border-t-[#2C282D]">
+        <div className="mt-2 mb-auto w-full border-b border-t border-b-[#2C282D] border-t-[#2C282D]">
           <p className="py-3 text-xs font-medium leading-[18px] text-white/70">
             {formatText(pass.description)}
           </p>
@@ -86,7 +86,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
           onClick={() => {
             isCreator ? null : setPass(pass) // TODO: add pass pinning
           }}
-          className="w-full rounded-[50px] bg-passes-primary-color py-2 text-center"
+          className="w-full rounded-full bg-passes-primary-color py-2 text-center"
         >
           {isCreator ? "Pin Pass" : "Mint NFT"}
         </button>
