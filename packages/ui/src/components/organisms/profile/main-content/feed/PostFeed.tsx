@@ -53,7 +53,6 @@ export const PostFeed: FC<PostFeedProps> = ({
           return (
             <Post
               post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-              pinnedPostCount={pinnedPosts.length}
               updateProfileStats={updateProfileStats}
             />
           )

@@ -28,7 +28,6 @@ interface PostProps {
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
-  pinnedPostCount?: number
   updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
 }
 
@@ -37,13 +36,12 @@ const PostUnmemo: FC<PostProps> = ({
   inHomeFeed = false,
   postByUrl = false,
   isPinned = false,
-  pinnedPostCount = 0,
   updateProfileStats
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
   const router = useRouter()
-  const { pinPost, unpinPost } = useFeed(post.userId)
+  const { pinPost, unpinPost, pinnedPosts } = useFeed(post.userId)
 
   const {
     contents,
@@ -91,7 +89,7 @@ const PostUnmemo: FC<PostProps> = ({
       setDeletePostModelOpen(true)
     }),
     ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
-      if (pinnedPostCount === MAX_PINNED_POST) {
+      if (pinnedPosts.length === MAX_PINNED_POST) {
         toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
         return
       }
