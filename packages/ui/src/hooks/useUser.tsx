@@ -27,7 +27,7 @@ export const useUser = () => {
 
   const fetch = useCallback(async () => {
     // When this flag is false there is not yet a user to retrieve
-    if (!jwtDecode<JWTUserClaims>(accessToken).isVerified) {
+    if (!accessToken || !jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }
     return await authApi.getCurrentUser()
@@ -37,10 +37,7 @@ export const useUser = () => {
     data: user,
     isValidating: loading,
     mutate
-  } = useSWR<GetUserResponseDto | undefined>(
-    CACHE_KEY_USER, //accessToken ? CACHE_KEY_USER : null,
-    fetch
-  )
+  } = useSWR<GetUserResponseDto | undefined>(CACHE_KEY_USER, fetch)
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<GetUserResponseDto>) =>
