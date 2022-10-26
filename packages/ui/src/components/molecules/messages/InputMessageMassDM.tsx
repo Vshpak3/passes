@@ -19,6 +19,7 @@ import {
   VideoSelector
 } from "src/components/organisms/MediaSelector"
 import { ContentService } from "src/helpers/content"
+import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
 interface Props {
@@ -89,26 +90,29 @@ export const InputMessageMassDM: FC<Props> = ({
         inMessage: true
       }
     )
-
-    await messagesApi.massSend({
-      createBatchMessageRequestDto: {
-        includeListIds: listIds,
-        excludeListIds: excludedIds,
-        passIds: passIds,
-        text: message,
-        contentIds: contentIds,
-        price: Number(messagePrice),
-        previewIndex: 0 // TODO: add previewing FE
-      }
-    })
-    setFiles([])
-    setMessagePrice(0)
-    setVaultContent([])
-    setSelectedLists([])
-    setSelectedPasses([])
-    setExcludedLists([])
-    setMassMessage(false)
-    reset()
+    try {
+      await messagesApi.massSend({
+        createBatchMessageRequestDto: {
+          includeListIds: listIds,
+          excludeListIds: excludedIds,
+          passIds: passIds,
+          text: message,
+          contentIds: contentIds,
+          price: Number(messagePrice),
+          previewIndex: 0 // TODO: add previewing FE
+        }
+      })
+      setFiles([])
+      setMessagePrice(0)
+      setVaultContent([])
+      setSelectedLists([])
+      setSelectedPasses([])
+      setExcludedLists([])
+      setMassMessage(false)
+      reset()
+    } catch (err) {
+      errorMessage(err, true)
+    }
   }
 
   const submitMessage = async () => {

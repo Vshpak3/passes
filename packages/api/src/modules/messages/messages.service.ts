@@ -425,6 +425,13 @@ export class MessagesService {
     createBatchMessageDto: CreateBatchMessageRequestDto,
   ): Promise<void> {
     if (
+      createBatchMessageDto.includeListIds.length +
+        createBatchMessageDto.passIds.length ===
+      0
+    ) {
+      throw new BadRequestException('Must select a list or pass')
+    }
+    if (
       createBatchMessageDto.text.length === 0 &&
       createBatchMessageDto.contentIds.length === 0
     ) {
@@ -581,10 +588,7 @@ export class MessagesService {
     }
     const method = await this.payService.getDefaultPayinMethod(userId)
     if (method.method === PayinMethodEnum.NONE) {
-      return {
-        blocked: BlockedReasonEnum.NO_PAYIN_METHOD,
-        amount: sendMessageDto.tipAmount,
-      }
+      blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
     return { blocked, amount: sendMessageDto.tipAmount }
   }

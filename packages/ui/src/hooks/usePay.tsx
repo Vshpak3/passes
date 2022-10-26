@@ -199,6 +199,7 @@ export const usePay = (
     }
     setSubmitting(true)
     setLoading(true)
+    let checkFunding = false
     try {
       const registerResponse = await registerPaymentFunc()
       setPayinId(registerResponse.payinId)
@@ -218,12 +219,15 @@ export const usePay = (
           break
         case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
           await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
+          checkFunding = true
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
           await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
+          checkFunding = true
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
           await handleMetamaskCircleEth(registerResponse, uncreatePayin)
+          checkFunding = true
           break
         default:
           break
@@ -232,10 +236,13 @@ export const usePay = (
         callback()
       }
     } catch (error: any) {
-      errorMessage(
-        error + "\n please check that you have sufficient funding.",
-        true
-      )
+      errorMessage(error, true)
+      if (checkFunding) {
+        errorMessage(
+          "If paying with crypto, please check for sufficient funding",
+          true
+        )
+      }
     } finally {
       setSubmitting(false)
       setLoading(false)
