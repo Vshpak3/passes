@@ -47,18 +47,17 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         lazy={true}
       >
         {contents.map((c: ContentDto, index: number) => {
-          return (
-            hasAccess ||
-            index < previewIndex || (
-              <SwiperSlide key={index}>
-                <PostContent
-                  key={index}
-                  content={c}
-                  ref={imgRef}
-                  autoplayVideo={autoplayVideo}
-                />
-              </SwiperSlide>
-            )
+          return hasAccess || index < previewIndex ? (
+            <SwiperSlide key={index}>
+              <PostContent
+                key={index}
+                content={c}
+                ref={imgRef}
+                autoplayVideo={autoplayVideo}
+              />
+            </SwiperSlide>
+          ) : (
+            <></>
           )
         })}
         {!hasAccess && (
