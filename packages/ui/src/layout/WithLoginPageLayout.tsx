@@ -15,7 +15,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   routeOnlyIfAuth
 }) => {
   const [ready, setReady] = useState(false)
-  const { userClaims, user, mutate } = useUser()
+  const { userClaims, user } = useUser()
   const router = useRouter()
   const { safePush } = useSafeRouter()
 
@@ -27,10 +27,6 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
     // This is intended to only run on page load to ensure direction from page
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
-
-  useEffect(() => {
-    mutate()
-  }, [mutate])
 
   return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
 }

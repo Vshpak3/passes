@@ -94,7 +94,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
               {selectedChannel.channelId && (
                 <InputMessage
                   channelId={selectedChannel.channelId}
-                  minimumTip={minimumTip}
+                  minimumTip={freeMessages === null ? 0 : minimumTip}
                   isCreator={isCreator}
                   vaultContent={vaultContent}
                   setVaultContent={setVaultContent}
