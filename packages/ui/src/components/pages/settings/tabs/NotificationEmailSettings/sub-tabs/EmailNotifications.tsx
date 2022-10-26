@@ -97,7 +97,7 @@ const EmailNotifications = () => {
           />
         </label>
         <p className="mt-2.5 text-white/50">
-          Get emails to find out what’s going on when you’re not on Twitter. You
+          Get emails to find out what’s going on when you’re not on Passes. You
           can turn them off anytime.
         </p>
       </div>

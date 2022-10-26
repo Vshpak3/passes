@@ -206,7 +206,7 @@ const EARNINGS_GRAPH_TABS = [
     value: CreatorEarningDtoTypeEnum.Total
   },
   {
-    label: "Subscription Passes",
+    label: "Subscriptions",
     id: uniqueId(),
     value: CreatorEarningDtoTypeEnum.Subscription
   },
@@ -226,7 +226,7 @@ const EARNINGS_GRAPH_TABS = [
     value: CreatorEarningDtoTypeEnum.Messages
   },
   {
-    label: "Lifetime Passes",
+    label: "Super Memberships",
     id: uniqueId(),
     value: CreatorEarningDtoTypeEnum.Lifetime
   },

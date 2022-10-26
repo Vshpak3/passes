@@ -35,7 +35,7 @@ const ProfileSettings = () => {
     <Tab
       withBack
       title="Profile"
-      description="Manage what information you and your fans see and share on Twitter."
+      description="Manage what information you and your fans see and share on Passes."
     >
       {!isLoading && (
         <form

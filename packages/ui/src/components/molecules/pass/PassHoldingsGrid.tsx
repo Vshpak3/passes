@@ -32,11 +32,11 @@ export const PassHoldingsGrid: FC = () => {
           <span className="mt-[24px] block min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
             {passType === PassDtoTypeEnum.Subscription &&
               !expired &&
-              "Active subscriptions"}
+              "<Active NFTs>"}
             {passType === PassDtoTypeEnum.Subscription &&
               expired &&
-              "Expired subscriptions"}
-            {passType === PassDtoTypeEnum.Lifetime && "Lifetime"}
+              "<Expired NFTs>"}
+            {passType === PassDtoTypeEnum.Lifetime && "<Super NFTs>"}
           </span>
         </div>
         <hr className="md:display my-auto hidden grow border-passes-dark-200" />

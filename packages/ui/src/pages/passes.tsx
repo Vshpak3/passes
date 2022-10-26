@@ -5,7 +5,7 @@ const Passes = () => {
   return (
     <div className="mx-auto mb-[70px] grid w-full bg-black px-2 md:px-5">
       <div className="absolute top-[160px]">
-        <h1 className="text-2xl font-[700]">My Passes</h1>
+        <h1 className="text-2xl font-[700]">My Memberships</h1>
       </div>
       <PassHoldingsGrid />
     </div>

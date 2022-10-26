@@ -16,7 +16,7 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
 }) => {
   const router = useRouter()
 
-  const createPassTitle = `Create a Pass${
+  const createPassTitle = `Create a Membership${
     initialCreation ? " to get started" : ""
   }`
 
@@ -30,7 +30,7 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
         colStyle="lg:col-[3_/_span_3]"
         icon={<SubscriptionImg />}
         title="Subscription"
-        subtitle="Subscription Passes are unlimited in quantity and must be paid for
+        subtitle="Subscriptions are unlimited in quantity and must be paid for
             by fans on a recurring basis before they expire."
         onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Subscription)}
       />
@@ -38,9 +38,9 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
         colStyle="lg:col-[6_/_span_3]"
         icon={<LimitedEditionImg />}
         title="Lifetime"
-        subtitle="Lifetime Passes are limited in quantity. This means once they
+        subtitle="Super Memberships are limited in quantity. This means once they
             sell out they can only be bought on a secondary market. Fans make a
-            one-time payment to buy these passes."
+            one-time payment to buy these memberships."
         onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Lifetime)}
       />
     </div>
