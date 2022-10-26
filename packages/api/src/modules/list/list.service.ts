@@ -372,6 +372,9 @@ export class ListService {
 
   async getAllListMembers(userId: string, listIds: string[]) {
     await this.validateListIds(userId, listIds)
+    const followers = await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({ creator_id: userId })
+      .select('follower_id')
     const userIdsSet = new Set(
       (
         await this.dbReader<ListMemberEntity>(ListMemberEntity.table)
@@ -387,13 +390,20 @@ export class ListService {
       ).map((list) => list.type),
     )
     if (listTypes.has(ListTypeEnum.FOLLOWERS)) {
+      followers.forEach((follow) => userIdsSet.add(follow.follower_id))
+    }
+    if (listTypes.has(ListTypeEnum.FOLLOWING)) {
       ;(
         await this.dbReader<FollowEntity>(FollowEntity.table)
-          .where({ creator_id: userId })
-          .select('follower_id')
-      ).forEach((follow) => userIdsSet.add(follow.follower_id))
+          .where({ follower_id: userId })
+          .select('creator_id')
+      ).forEach((follow) => userIdsSet.add(follow.creator_id))
     }
-    return userIdsSet
+    return new Set(
+      followers
+        .map((follower) => follower.follower_id)
+        .filter((userId) => userIdsSet.has(userId)),
+    )
   }
 
   async updateAsyncLists() {
