@@ -8,7 +8,7 @@ import { useMemo } from "react"
 
 import { useSearch } from "./useSearch"
 
-export const useFollowerSearch = () => {
+export const useFollowerSearch = (listId?: string) => {
   const api = useMemo(() => new FollowApi(), [])
 
   return useSearch<ListMemberDto>(async (searchValue: string) => {
@@ -17,7 +17,8 @@ export const useFollowerSearch = () => {
         searchFollowRequestDto: {
           search: searchValue,
           order: SearchFollowRequestDtoOrderEnum.Asc,
-          orderType: SearchFollowRequestDtoOrderTypeEnum.Username
+          orderType: SearchFollowRequestDtoOrderTypeEnum.Username,
+          excludeListId: listId
         }
       })
     ).data

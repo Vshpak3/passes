@@ -252,6 +252,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         onSubmit={(userId) => handleAddFan(userId)}
         isOpen={addFollowerOpen}
         setOpen={setAddFollowerOpen}
+        listId={listId}
       />
     </div>
   )

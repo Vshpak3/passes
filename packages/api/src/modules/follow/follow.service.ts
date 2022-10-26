@@ -20,6 +20,7 @@ import { CreatorSettingsEntity } from '../creator-settings/entities/creator-sett
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { FanWallCommentEntity } from '../fan-wall/entities/fan-wall-comment.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
+import { ListMemberEntity } from '../list/entities/list-member.entity'
 import { createGetMemberQuery } from '../list/list.util'
 import { PaidMessageEntity } from '../messages/entities/paid-message.entity'
 import { MessagesService } from '../messages/messages.service'
@@ -186,6 +187,14 @@ export class FollowService {
         `${FollowEntity.table}.created_at`,
       )
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
+    if (searchFanDto.excludeListId) {
+      query = query.whereNotIn(
+        `${FollowEntity.table}.follower_id`,
+        this.dbWriter<ListMemberEntity>(ListMemberEntity.table)
+          .where('list_id', searchFanDto.excludeListId)
+          .select('user_id'),
+      )
+    }
 
     query = createGetMemberQuery(query, searchFanDto, FollowEntity.table).limit(
       MAX_FOLLOWERS_PER_REQUEST,

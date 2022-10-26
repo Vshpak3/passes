@@ -45,6 +45,7 @@ export const useSearch = <T,>(
 
   return {
     results,
+    setResults,
     searchValue,
     setSearchValue,
     loading,

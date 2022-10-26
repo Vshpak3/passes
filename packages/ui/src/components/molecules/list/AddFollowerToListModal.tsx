@@ -8,15 +8,18 @@ import { ProfileThumbnail } from "src/components/organisms/profile/profile-detai
 import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"
 
 interface AddFollowerToListModalProps extends ModalProps {
-  onSubmit(listName: string): void
+  onSubmit(userId: string): void
+  listId: string
 }
 
 const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
   onSubmit,
   setOpen,
+  listId,
   ...rest
 }) => {
-  const { results, searchValue, onChangeInput, searchRef } = useFollowerSearch()
+  const { results, searchValue, onChangeInput, searchRef, setResults } =
+    useFollowerSearch(listId)
 
   return (
     <Modal setOpen={setOpen} {...rest} childrenClassname="w-[692px]">
@@ -52,7 +55,12 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
             </div>
             <span
               className="duration-400 hover:text-passes-red-100 ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
-              onClick={() => onSubmit(user.userId)}
+              onClick={() => {
+                onSubmit(user.userId)
+                setResults((results) =>
+                  results.filter((result) => result.userId !== user.userId)
+                )
+              }}
             >
               add
             </span>

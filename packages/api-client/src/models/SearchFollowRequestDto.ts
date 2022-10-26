@@ -67,6 +67,12 @@ export interface SearchFollowRequestDto {
      * @memberof SearchFollowRequestDto
      */
     orderType: SearchFollowRequestDtoOrderTypeEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchFollowRequestDto
+     */
+    excludeListId?: string;
 }
 
 
@@ -120,6 +126,7 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
         'orderType': json['orderType'],
+        'excludeListId': !exists(json, 'excludeListId') ? undefined : json['excludeListId'],
     };
 }
 
@@ -140,6 +147,7 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'displayName': value.displayName,
         'metadataNumber': value.metadataNumber,
         'orderType': value.orderType,
+        'excludeListId': value.excludeListId,
     };
 }
 
