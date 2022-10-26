@@ -173,7 +173,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
             pageProps={pageProps}
             getLayout={getLayout}
           />
-          ,
         </DndProvider>
       </SWRConfig>
     </NextThemeProvider>
