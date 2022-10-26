@@ -49,7 +49,12 @@ EOT
 printf '{"ImageURI":"%s"}' ${docker_registry}:${image_tag} > imageDetail.json
 
 aws ecs describe-task-definition --task-definition ${task_family_name} \
-  | jq '.taskDefinition | .containerDefinitions[].image = "<IMAGE1_NAME>"' \
+  | jq '.taskDefinition |
+        .containerDefinitions[].image = "<IMAGE1_NAME>" |
+        .runtimePlatform={
+          "operatingSystemFamily": "LINUX",
+          "cpuArchitecture": "ARM64"
+        }' \
   > taskdef.json
 
 function cat_file() {
