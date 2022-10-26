@@ -15,12 +15,12 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   routeOnlyIfAuth
 }) => {
   const [ready, setReady] = useState(false)
-  const { userClaims, user } = useUser()
+  const { userClaims } = useUser()
   const router = useRouter()
   const { safePush } = useSafeRouter()
 
   useEffect(() => {
-    if (router.isReady && user) {
+    if (router.isReady) {
       const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
       setReady(!redirected)
     }
