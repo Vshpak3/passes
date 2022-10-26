@@ -16,6 +16,7 @@ import {
   Title,
   Tooltip
 } from "chart.js"
+import { eachDayOfInterval } from "date-fns"
 import { uniqueId } from "lodash"
 import ms from "ms"
 import React, { FC, useRef, useState } from "react"
@@ -91,16 +92,6 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     // Round to nearest whole number to deal with DST.
     // add One to include endDate
     return Math.round((second - first) / ONE_DAY) + 1
-  }
-
-  const getDateArray = (start: Date, end: Date): Date[] => {
-    const arrOfDays = []
-    const mutableDateObject = new Date(start)
-    while (mutableDateObject <= end) {
-      arrOfDays.push(new Date(mutableDateObject))
-      mutableDateObject.setDate(mutableDateObject.getDate() + 1)
-    }
-    return arrOfDays
   }
 
   return (
@@ -189,9 +180,10 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
             }
           }}
           data={{
-            labels: getDateArray(startDate, endDate).map((item) =>
-              item.toLocaleDateString()
-            ),
+            labels: eachDayOfInterval({
+              start: startDate,
+              end: endDate
+            }).map((item) => item.toLocaleDateString()),
             datasets: [
               {
                 showLine: true,
