@@ -1193,7 +1193,7 @@ export class MessagesService {
   getContents(message: MessageEntity): ContentDto[] {
     return this.contentService.getContentDtosFromBare(
       JSON.parse(message.contents),
-      message.paid || !!message.price,
+      message.paid || !message.price,
       message.sender_id,
       message.preview_index,
     )
