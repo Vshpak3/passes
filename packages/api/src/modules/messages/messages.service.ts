@@ -770,7 +770,7 @@ export class MessagesService {
       price: price ?? 0,
       paid_message_id: paidMessageId ?? null,
       contents,
-      paid: false,
+      paid_at: null,
       preview_index: previewIndex,
       has_content: hasContent,
       content_processed: !hasContent,
@@ -955,9 +955,10 @@ export class MessagesService {
     if (!message) {
       throw new MessageNotFoundException(`message ${messageId} not found`)
     }
+    const date = new Date()
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
-        .update({ paid: true })
+        .update({ paid_at: date })
         .where({ id: messageId })
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
@@ -979,7 +980,7 @@ export class MessagesService {
       )
     })
 
-    message.paid = true
+    message.paid_at = date
     await this.redisService.publish(
       'message',
       JSON.stringify(
@@ -1050,7 +1051,7 @@ export class MessagesService {
   ) {
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
-        .update({ paid: false })
+        .update({ paid_at: null })
         .where({ id: messageId })
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
@@ -1107,7 +1108,7 @@ export class MessagesService {
 
     const message = await this.dbReader<MessageEntity>(MessageEntity.table)
       .where({ id: messageId })
-      .select(['paid', 'price'])
+      .select('paid_at', 'price')
       .first()
     if (!message || !message.price) {
       throw new MessageNotFoundException(`message ${messageId} not found`)
@@ -1119,7 +1120,7 @@ export class MessagesService {
       blocked = BlockedReasonEnum.NO_PRICE
     } else if (await this.payService.checkPayinTargetBlocked(target)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
-    } else if (message.paid) {
+    } else if (message.paid_at) {
       blocked = BlockedReasonEnum.ALREADY_HAS_ACCESS
     }
 
@@ -1197,7 +1198,7 @@ export class MessagesService {
   getContents(message: MessageEntity): ContentDto[] {
     return this.contentService.getContentDtosFromBare(
       JSON.parse(message.contents),
-      message.paid || !message.price,
+      !!message.paid_at || !message.price,
       message.sender_id,
       message.preview_index,
     )
@@ -1322,7 +1323,7 @@ export class MessagesService {
         await trx<MessageEntity>(MessageEntity.table)
           .where({
             paid_message_id: paidMessageId,
-            paid: false,
+            paid_at: null,
             paying: false,
           })
           .delete()

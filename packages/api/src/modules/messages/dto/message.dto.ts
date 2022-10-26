@@ -29,8 +29,8 @@ export class MessageDto {
   @DtoProperty({ type: 'currency', optional: true })
   tipAmount?: number
 
-  @DtoProperty({ type: 'boolean' })
-  paid: boolean
+  @DtoProperty({ type: 'date', nullable: true, optional: true })
+  paidAt?: Date | null
 
   @DtoProperty({ type: 'boolean' })
   paying: boolean
@@ -60,7 +60,7 @@ export class MessageDto {
       this.sentAt = message.sent_at
       this.messageId = message.id
       this.reverted = message.reverted
-      this.paid = message.paid
+      this.paidAt = message.paid_at
       this.paying = message.paying
       this.pending = message.pending
       this.previewIndex = message.preview_index

@@ -172,10 +172,10 @@ export interface PostDto {
     isOwner: boolean;
     /**
      * 
-     * @type {boolean}
+     * @type {Date}
      * @memberof PostDto
      */
-    paid: boolean;
+    paidAt?: Date | null;
     /**
      * 
      * @type {boolean}
@@ -217,7 +217,6 @@ export function instanceOfPostDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
     isInstance = isInstance && "isOwner" in value;
-    isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "paying" in value;
     isInstance = isInstance && "contentProcessed" in value;
     isInstance = isInstance && "yourTips" in value;
@@ -258,7 +257,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
         'isOwner': json['isOwner'],
-        'paid': json['paid'],
+        'paidAt': !exists(json, 'paidAt') ? undefined : (json['paidAt'] === null ? null : new Date(json['paidAt'])),
         'paying': json['paying'],
         'contentProcessed': json['contentProcessed'],
         'yourTips': json['yourTips'],
@@ -297,7 +296,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,
         'isOwner': value.isOwner,
-        'paid': value.paid,
+        'paidAt': value.paidAt === undefined ? undefined : (value.paidAt === null ? null : value.paidAt.toISOString()),
         'paying': value.paying,
         'contentProcessed': value.contentProcessed,
         'yourTips': value.yourTips,

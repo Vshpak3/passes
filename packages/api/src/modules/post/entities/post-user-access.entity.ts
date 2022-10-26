@@ -20,8 +20,8 @@ export class PostUserAccessEntity extends BaseEntity {
   @OneToOne({ entity: () => PayinEntity })
   payin_id: string | null
 
-  @Property({ default: false })
-  paid: boolean
+  @Property()
+  paid_at: Date | null
 
   @Property({ default: false })
   paying: boolean

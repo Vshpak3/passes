@@ -863,7 +863,7 @@ export class PassService {
               PostUserAccessEntity.table,
             )
               .where({ id: access.id })
-              .update({ paid: false, pass_holder_ids: JSON.stringify(ids) })
+              .update({ paid_at: null, pass_holder_ids: JSON.stringify(ids) })
           } else {
             await this.dbWriter<PostUserAccessEntity>(
               PostUserAccessEntity.table,

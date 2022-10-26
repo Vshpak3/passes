@@ -62,7 +62,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   otherUserUsername={otherUserUsername}
                   user={user}
                 />
-                {message.paid ? (
+                {message.paidAt ? (
                   <div className="flex flex-shrink-0 items-center gap-[6px]">
                     <Locked />
                     <span className="text-[14px] font-medium leading-[0px] text-[#767676]">
@@ -72,10 +72,10 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 ) : null}
               </div>
               <div className="max-w-[403px] pt-2">
-                {message.price > 0 && !message.paid ? (
+                {message.price > 0 && !message.paidAt ? (
                   <Content
                     contents={messageContent}
-                    paid={message.paid}
+                    paid={!!message.paidAt}
                     price={message?.price}
                     message={message}
                     isOwnMessage={isOwnMessage}

@@ -70,10 +70,10 @@ export interface MessageDto {
     tipAmount?: number;
     /**
      * 
-     * @type {boolean}
+     * @type {Date}
      * @memberof MessageDto
      */
-    paid: boolean;
+    paidAt?: Date | null;
     /**
      * 
      * @type {boolean}
@@ -123,7 +123,6 @@ export function instanceOfMessageDto(value: object): boolean {
     isInstance = isInstance && "contents" in value;
     isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "channelId" in value;
-    isInstance = isInstance && "paid" in value;
     isInstance = isInstance && "paying" in value;
     isInstance = isInstance && "pending" in value;
     isInstance = isInstance && "price" in value;
@@ -151,7 +150,7 @@ export function MessageDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'previewIndex': json['previewIndex'],
         'channelId': json['channelId'],
         'tipAmount': !exists(json, 'tipAmount') ? undefined : json['tipAmount'],
-        'paid': json['paid'],
+        'paidAt': !exists(json, 'paidAt') ? undefined : (json['paidAt'] === null ? null : new Date(json['paidAt'])),
         'paying': json['paying'],
         'pending': json['pending'],
         'price': json['price'],
@@ -177,7 +176,7 @@ export function MessageDtoToJSON(value?: MessageDto | null): any {
         'previewIndex': value.previewIndex,
         'channelId': value.channelId,
         'tipAmount': value.tipAmount,
-        'paid': value.paid,
+        'paidAt': value.paidAt === undefined ? undefined : (value.paidAt === null ? null : value.paidAt.toISOString()),
         'paying': value.paying,
         'pending': value.pending,
         'price': value.price,

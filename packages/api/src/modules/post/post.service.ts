@@ -318,7 +318,7 @@ export class PostService {
           post.user_id === userId,
           this.contentService.getContentDtosFromBare(
             JSON.parse(post.contents),
-            post.paid || // single post purchase
+            post.paid_at || // single post purchase
               postsFromPass.has(post.id) || // owns pass that gives access
               post.user_id === userId || // user made post
               !post.price || // no price on post
@@ -453,7 +453,7 @@ export class PostService {
     const notification: PostNotificationDto = {
       postId,
       paying: false,
-      paid: true,
+      paidAt: new Date(),
       notification: PostNotificationEnum.PAID,
       recieverId: userId,
       contents: this.contentService.getContentDtosFromBare(
@@ -488,7 +488,7 @@ export class PostService {
       if (!JSON.parse(access.pass_holder_ids).length) {
         await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
           .where({ id: access.id })
-          .update({ paid: false })
+          .update({ paid_at: new Date() })
       }
       await this.dbWriter.transaction(async (trx) => {
         await trx<PostEntity>(PostEntity.table)
@@ -616,10 +616,10 @@ export class PostService {
     const checkAccess = await this.dbReader<PostUserAccessEntity>(
       PostUserAccessEntity.table,
     )
+      .whereNotNull('paid_at')
       .where({
         post_id: postId,
         user_id: userId,
-        paid: true,
       })
       .select('id')
       .first()

@@ -67,7 +67,7 @@ export const NewPosts: FC<NewPostsProps> = ({
       totalTipAmount: 0,
       isOwner: true,
       paying: false,
-      paid: false,
+      paidAt: null,
       yourTips: 0
     }
     if (res.postId) {

@@ -37,8 +37,8 @@ export class MessageEntity extends BaseEntity {
   @Property()
   pending: boolean
 
-  @Property({ default: false })
-  paid: boolean
+  @Property()
+  paid_at: Date | null
 
   @Property({ default: false })
   paying: boolean

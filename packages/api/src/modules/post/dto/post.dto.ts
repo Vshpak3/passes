@@ -94,8 +94,8 @@ export class PostDto extends PickType(UserDto, [
   @DtoProperty({ type: 'boolean' })
   isOwner: boolean
 
-  @DtoProperty({ type: 'boolean' })
-  paid: boolean
+  @DtoProperty({ type: 'date', nullable: true, optional: true })
+  paidAt?: Date | null
 
   @DtoProperty({ type: 'boolean' })
   paying: boolean
@@ -112,7 +112,7 @@ export class PostDto extends PickType(UserDto, [
           is_liked?: string
           username: string
           display_name: string
-          paid?: boolean
+          paid_at?: Date | null
           paying?: boolean
           your_tips?: number
         })
@@ -142,7 +142,7 @@ export class PostDto extends PickType(UserDto, [
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
       this.pinnedAt = post.pinned_at
-      this.paid = !!post.paid
+      this.paidAt = post.paid_at
       this.paying = !!post.paying
       this.contentProcessed = post.content_processed
       this.yourTips = post.your_tips ?? 0
@@ -154,7 +154,7 @@ export class PostDto extends PickType(UserDto, [
       this.isOwner = isOwner
       this.purchasable =
         !isOwner &&
-        !this.paid &&
+        !this.paidAt &&
         !this.paying &&
         !!contents &&
         !!contents.length &&

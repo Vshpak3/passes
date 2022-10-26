@@ -48,7 +48,7 @@ export const ChannelGalleryView: FC<Props> = ({
               price={arg.price}
               createdAt={arg.sentAt}
               isCreator={isCreator}
-              purchased={arg.paid}
+              purchased={!!arg.paidAt}
             />
           )
         }}
