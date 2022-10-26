@@ -17,7 +17,7 @@ export const useFeed = (creatorId: string) => {
     return await feedApi.getFeedForCreator({ getProfileFeedRequestDto: req })
   }
 
-  const { data: pinnedPosts = [], mutate: mutatePinnedPosts } = useSWR(
+  const { data: pinnedPosts, mutate: mutatePinnedPosts } = useSWR(
     [CACHE_KEY_FEED_PINNED, creatorId],
     async () => {
       return (
@@ -40,27 +40,32 @@ export const useFeed = (creatorId: string) => {
   const pinPost = async (post: PostDto) => {
     await postApi.pinPost({ postId: post.postId })
     post.pinnedAt = new Date()
-    pinnedPosts.push(post)
-    pinnedPosts.sort(
+    const _pinnedPosts = pinnedPosts || []
+    _pinnedPosts.push(post)
+    _pinnedPosts.sort(
       (a, b) => (a.pinnedAt?.getTime() || 0) - (b.pinnedAt?.getTime() || 0)
     )
-    mutateManual(pinnedPosts)
+    mutateManual(_pinnedPosts)
   }
 
   const unpinPost = async (post: PostDto) => {
     await postApi.unpinPost({ postId: post.postId })
     post.pinnedAt = null
-    mutateManual(pinnedPosts.filter((p) => p.postId !== post.postId))
+    if (pinnedPosts) {
+      mutateManual(pinnedPosts.filter((p) => p.postId !== post.postId))
+    }
   }
 
   useEffect(() => {
-    mutatePinnedPosts()
+    if (!pinnedPosts) {
+      mutatePinnedPosts()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
     getFeedForCreator,
-    pinnedPosts,
+    pinnedPosts: pinnedPosts || [],
     mutatePinnedPosts,
     pinPost,
     unpinPost
