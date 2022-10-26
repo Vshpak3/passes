@@ -99,14 +99,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed } = useTokenRefresh()
-  const { mutate, accessToken, setAccessToken, setRefreshToken, user } =
+  const { mutate, accessToken, setAccessToken, setRefreshToken, user, fetch } =
     useUser()
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(accessToken, setAccessToken, setRefreshToken)
+    // console.log(accessToken, setAccessToken, setRefreshToken, fetch)
     mutate()
-  }, [mutate, accessToken, setAccessToken, setRefreshToken])
+  }, [mutate])
 
   useEffect(() => {
     // eslint-disable-next-line no-console

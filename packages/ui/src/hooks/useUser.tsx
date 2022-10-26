@@ -30,7 +30,7 @@ export const useUser = () => {
     // When this flag is false there is not yet a user to retrieve
 
     // eslint-disable-next-line no-console
-    console.log(accessToken)
+    console.log(accessToken, "in use user")
     if (!accessToken || !jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }
@@ -79,6 +79,7 @@ export const useUser = () => {
     loading,
     mutate,
     mutateManual,
+    fetch,
     userClaims: accessToken ? jwtDecode<JWTUserClaims>(accessToken) : null,
     accessToken,
     setAccessToken,

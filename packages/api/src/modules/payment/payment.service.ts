@@ -141,7 +141,7 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MIN_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 3 days
+const MIN_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 5 days
 const MAX_PAYINS_PER_REQUEST = 20
 const MAX_PAYOUTS_PER_REQUEST = 20
 
@@ -151,7 +151,7 @@ const ONE_WEEK_MS = ms('1 week')
 
 const MAX_TIME_STALE_PAYMENT = ms('8 hours')
 
-const MIN_PAYOUT_AMOUNT = 25.0
+const MIN_PAYOUT_AMOUNT = 50.0
 
 const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300

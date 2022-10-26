@@ -72,8 +72,8 @@ export const RequestPayouts = () => {
         </div>
         <div className="flex-1">
           <div className="mb-[15px] text-[16px] font-[500] opacity-[0.5]">
-            Your earnings balance must be at least $25.00 to request a payout.
-            Payouts are at most once every 3 days.
+            Your earnings balance must be at least $50.00 to request a payout.
+            Payouts are at most once every 5 days.
           </div>
           <div className="rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5">
             <div className="mb-5 text-[16px] font-[700] opacity-[0.8]">
