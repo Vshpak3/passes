@@ -4,7 +4,6 @@ import { SUPPORT } from '../components/support'
 export const PURCHASE_CARD_PAYMENT_SUCCESS_EMAIL_SUBJECT =
   'Your Special Access Card purchase was successful!'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PurchaseCardPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string

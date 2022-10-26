@@ -4,7 +4,6 @@ import { SUPPORT } from '../components/support'
 export const PURCHASE_CONTENT_PAYMENT_SUCCESS_EMAIL_SUBJECT =
   'Your content purchase was successful!'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PurchaseContentPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string

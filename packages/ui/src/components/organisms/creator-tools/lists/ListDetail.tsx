@@ -96,7 +96,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleAddFan = useCallback(
     async (user_id: string) => {
       try {

@@ -25,7 +25,7 @@ const faqs: FAQ[] = [
 ]
 
 // Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const FAQ = () => {
   return (
     <div className="mx-auto max-w-7xl py-8 px-4">

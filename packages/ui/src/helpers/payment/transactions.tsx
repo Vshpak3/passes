@@ -56,7 +56,7 @@ export const sendAndGenerateSolanaTokenTransactionMessage = async (
   )
   await provider.signAndSendTransaction(transaction)
   // TODO:
-  // eslint-disable-next-line no-console
+
   // console.log(await connection.getSignatureStatus(signature))
 }
 

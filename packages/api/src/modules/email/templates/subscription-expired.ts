@@ -3,7 +3,6 @@ import { SUPPORT } from '../components/support'
 
 export const SUBSCRIPTION_EXPIRED_EMAIL_SUBJECT = 'Your Subscription expired'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SubscriptionExpiredTemplateVariables {
   creatorName: string
   amount: string

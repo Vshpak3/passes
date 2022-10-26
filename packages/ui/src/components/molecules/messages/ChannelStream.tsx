@@ -119,7 +119,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               break
             case "failed_payment":
               toast.error("Payment for post failed")
-            // eslint-disable-next-line no-fallthrough
+
             case "paying":
             case "paid":
               setMessages((messages) =>

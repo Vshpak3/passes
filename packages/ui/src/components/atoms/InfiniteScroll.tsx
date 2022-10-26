@@ -105,7 +105,6 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         })
         .flat() ?? []
     )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
   return (
     <InfiniteScroll

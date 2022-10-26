@@ -112,7 +112,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
       <DeleteConfirmationModal
         isOpen={deleteModalActive}
         // TODO: connect with API to get selected items and delete items
-        // eslint-disable-next-line no-console
+
         onDelete={async () => {
           const api = new ContentApi()
           await api.deleteContent({

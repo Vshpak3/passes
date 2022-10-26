@@ -7,7 +7,7 @@ interface MyPassSearchBarProps {
 }
 
 // Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
   onChange,
   passSearchTerm

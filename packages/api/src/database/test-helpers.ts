@@ -5,7 +5,6 @@ import { getDatabaseProviderToken } from './database.provider'
 import { DatabaseService } from './database.service'
 
 export type MockType<T> = {
-  // eslint-disable-next-line @typescript-eslint/ban-types
   [P in keyof T]?: jest.Mock<() => void>
 }
 

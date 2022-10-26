@@ -3,7 +3,6 @@ import { SUPPORT } from '../components/support'
 
 export const PAYMENT_FAILURE_EMAIL_SUBJECT = 'Oops! Your payment failed'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PaymentFailureTemplateVariables {
   amount: string
   paymentMethod: string

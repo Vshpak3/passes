@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-duplicate-string */
 import {
   BadRequestException,
   Inject,
@@ -36,7 +34,6 @@ import { contractSpec } from './contracts/ERC721Passes'
 import { EthNonceEntity } from './entities/eth.nonce.entity'
 import { InternalSigner } from './signer'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ETH_MASTER_WALLET_LAMBDA_KEY_ID = 'eth-master-wallet'
 
 const MAX_TIME_WALLET_REFRESH = ms('30 minutes')

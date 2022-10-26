@@ -4,7 +4,6 @@ import { SUPPORT } from '../components/support'
 export const PURCHASE_CARD_SUBSCRIPTION_PAYMENT_SUCCESS_EMAIL_SUBJECT =
   'Your Subscription has started!'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PurchaseCardSubscriptionPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string

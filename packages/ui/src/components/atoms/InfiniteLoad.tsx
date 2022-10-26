@@ -93,7 +93,6 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
       )
       setHasMore(!data || !!data[data.length - 1].lastId)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   useEffect(() => {

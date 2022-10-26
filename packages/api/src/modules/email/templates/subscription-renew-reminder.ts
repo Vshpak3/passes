@@ -4,7 +4,6 @@ import { SUPPORT } from '../components/support'
 export const SUBSCRIPTION_RENEW_REMINDER_EMAIL_SUBJECT =
   'Your Subscription is about to expire'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SubscriptionRenewReminderTemplateVariables {
   creatorName: string
   amount: string

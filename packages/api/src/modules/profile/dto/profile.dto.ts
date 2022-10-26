@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-duplicate-string */
 import { Length } from 'class-validator'
 
 import { DtoProperty } from '../../../web/dto.web'

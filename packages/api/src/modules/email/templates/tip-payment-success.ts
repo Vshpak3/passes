@@ -4,7 +4,6 @@ import { SUPPORT } from '../components/support'
 export const TIP_PAYMENT_SUCCESS_EMAIL_SUBJECT =
   'Your tip was processed successfully!'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TipPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string

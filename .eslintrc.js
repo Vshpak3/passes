@@ -27,6 +27,7 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     curly: 'error',
     eqeqeq: 'error',
+    'eslint-comments/no-unused-disable': 'error',
     'import/no-default-export': 'error',
     'import/newline-after-import': 'error',
     'no-trailing-spaces': 'error',

@@ -4,7 +4,6 @@ import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { PassesSearchBar } from "src/components/organisms/profile/main-content/new-post/PassesSearchBar"
 import { ListsSearchBar } from "./ListsSearchBar"
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface ChannelListsProps {
   selectedPasses: PassDto[]
   setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
