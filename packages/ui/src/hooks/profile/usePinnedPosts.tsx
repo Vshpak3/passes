@@ -1,21 +1,12 @@
-import {
-  FeedApi,
-  GetProfileFeedRequestDto,
-  PostApi,
-  PostDto
-} from "@passes/api-client"
+import { FeedApi, PostApi, PostDto } from "@passes/api-client"
 import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_FEED_PINNED = "/profile/feed/pinned"
 
-export const useFeed = (creatorId: string) => {
+export const usePinnedPosts = (creatorId: string) => {
   const feedApi = new FeedApi()
   const postApi = new PostApi()
-
-  const getFeedForCreator = async (req: GetProfileFeedRequestDto) => {
-    return await feedApi.getFeedForCreator({ getProfileFeedRequestDto: req })
-  }
 
   const { data: pinnedPosts, mutate: mutatePinnedPosts } = useSWR(
     [CACHE_KEY_FEED_PINNED, creatorId],
@@ -64,7 +55,6 @@ export const useFeed = (creatorId: string) => {
   }, [])
 
   return {
-    getFeedForCreator,
     pinnedPosts: pinnedPosts || [],
     mutatePinnedPosts,
     pinPost,

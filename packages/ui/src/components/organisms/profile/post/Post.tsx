@@ -12,7 +12,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { MAX_PINNED_POST } from "src/config/post"
-import { useFeed } from "src/hooks/profile/useFeed"
+import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
 import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
@@ -40,7 +40,7 @@ const PostUnmemo: FC<PostProps> = ({
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
 
   const router = useRouter()
-  const { pinPost, unpinPost, pinnedPosts } = useFeed(post.userId)
+  const { pinPost, unpinPost, pinnedPosts } = usePinnedPosts(post.userId)
 
   const {
     contents,

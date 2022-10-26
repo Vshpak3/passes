@@ -1,4 +1,9 @@
-import { GetProfileFeedResponseDto, PostDto } from "@passes/api-client"
+import {
+  FeedApi,
+  GetProfileFeedRequestDto,
+  GetProfileFeedResponseDto,
+  PostDto
+} from "@passes/api-client"
 import { FC, useState } from "react"
 
 import {
@@ -8,7 +13,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { useFeed } from "src/hooks/profile/useFeed"
+import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
 import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
@@ -39,15 +44,21 @@ export const PostFeed: FC<PostFeedProps> = ({
   ownsProfile,
   updateProfileStats
 }) => {
+  const api = new FeedApi()
+
   const [isNewPostAdded, setIsNewPostAdded] = useState(false)
-  const { getFeedForCreator, pinnedPosts } = useFeed(profileUserId)
+  const { pinnedPosts } = usePinnedPosts(profileUserId)
   const { posts } = usePostWebhook()
 
   return (
     <>
       <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
         keyValue={`/feed/creator/${profileUserId}`}
-        fetch={getFeedForCreator}
+        fetch={async (req: GetProfileFeedRequestDto) => {
+          return await api.getFeedForCreator({
+            getProfileFeedRequestDto: req
+          })
+        }}
         fetchProps={{ creatorId: profileUserId, pinned: false }}
         KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
           return (
