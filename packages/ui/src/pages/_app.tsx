@@ -102,6 +102,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const { mutate, accessToken, setAccessToken, setRefreshToken } = useUser()
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
     console.log(accessToken, setAccessToken, setRefreshToken)
     mutate()
   }, [mutate, accessToken, setAccessToken, setRefreshToken])
