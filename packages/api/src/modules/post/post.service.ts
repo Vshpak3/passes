@@ -239,7 +239,7 @@ export class PostService {
         `${PostEntity.table}.*`,
         `${UserEntity.table}.username`,
         `${UserEntity.table}.display_name`,
-        `${PostUserAccessEntity.table}.paid as paid`,
+        `${PostUserAccessEntity.table}.paid_at as paid_at`,
         `${PostUserAccessEntity.table}.paying as paying`,
         `${PostTipEntity.table}.amount as your_tips`,
         `${PostLikeEntity.table}.id as is_liked`,
