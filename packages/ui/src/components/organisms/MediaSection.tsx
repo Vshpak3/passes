@@ -15,6 +15,7 @@ import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
+import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile } from "src/hooks/useMedia"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
@@ -207,6 +208,16 @@ export const MediaSection: FC<MediaSectionProps> = ({
           </Swiper>
         </div>
       )}
+      <FormInput
+        register={register}
+        name="previewIndex"
+        type="number"
+        min={0}
+        step={1}
+        placeholder="preview index"
+        autoComplete="off"
+        onKeyPress={preventNegative}
+      />
     </div>
   )
 }

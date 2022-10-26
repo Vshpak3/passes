@@ -30,6 +30,7 @@ export interface NewPostFormProps {
   passes: PassDto[]
   expiresAt: Date | null
   scheduledAt: Date | null
+  previewIndex: string
 }
 
 const newPostFormDefaults: NewPostFormProps = {
@@ -40,7 +41,8 @@ const newPostFormDefaults: NewPostFormProps = {
   price: 0,
   passes: [],
   expiresAt: null,
-  scheduledAt: null
+  scheduledAt: null,
+  previewIndex: "0"
 }
 
 const newPostFormSchema = object({
@@ -73,6 +75,7 @@ const newPostFormSchema = object({
           `The maxinum price of a post is $${MAX_PAID_POST_PRICE}`
         )
     }),
+  previewIndex: number().optional().integer(),
   passes: array<PassDto>()
     .optional()
     .transform((p: PassDto) => p.passId),
@@ -172,9 +175,9 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       text: values.text,
       tags: values.tags,
       passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
-      price: values.isPaid ? parseInt(values.price as unknown as string) : 0,
+      price: values.isPaid ? parseFloat(values.price as unknown as string) : 0,
       contentIds,
-      previewIndex: 0, // TODO: add previewing FE
+      previewIndex: parseInt(values.previewIndex),
       expiresAt: values.expiresAt,
       scheduledAt: values.scheduledAt ?? undefined
     }

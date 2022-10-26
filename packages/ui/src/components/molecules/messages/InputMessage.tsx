@@ -22,6 +22,7 @@ import {
   VideoSelector
 } from "src/components/organisms/MediaSelector"
 import { ContentService } from "src/helpers/content"
+import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
@@ -164,12 +165,6 @@ export const InputMessage: FC<Props> = ({
     [setTip]
   )
 
-  const prevent = (e: any) => {
-    if (e.code === "Minus") {
-      e.preventDefault()
-    }
-  }
-
   useEffect(() => {
     if (channelId && !isNaN(tip)) {
       const fetch = async () => {
@@ -214,7 +209,7 @@ export const InputMessage: FC<Props> = ({
                   id="postPrice"
                   placeholder="$"
                   aria-placeholder="$"
-                  onKeyPress={prevent}
+                  onKeyPress={preventNegative}
                   min="0"
                   max="9999"
                   onChange={(event) => handleChange(event)}
@@ -283,7 +278,7 @@ export const InputMessage: FC<Props> = ({
               autoComplete="off"
               min="0"
               step=".01"
-              onKeyPress={prevent}
+              onKeyPress={preventNegative}
             />
 
             <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">

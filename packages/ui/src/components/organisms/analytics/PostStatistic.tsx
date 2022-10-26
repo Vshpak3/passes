@@ -82,7 +82,9 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
         </div>
 
         <div className="flex h-[72px] flex-1 items-center justify-start">
-          {!deleted && !post.deletedAt ? (
+          {!deleted &&
+          !post.deletedAt &&
+          (!post.expiresAt || post.expiresAt > new Date()) ? (
             <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-passes-pink-100">
               <Button onClick={handleConfirmDelete}>Delete</Button>
             </span>

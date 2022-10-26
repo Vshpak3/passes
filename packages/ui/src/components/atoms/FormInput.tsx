@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { CSSProperties, FC } from "react"
 
 import { Checkbox } from "src/components/atoms/Checkbox"
 import { File } from "src/components/atoms/File"
@@ -48,6 +48,12 @@ type FormInputProps = {
   checked?: boolean
   iconMargin?: string
   helperText?: string
+  min?: number
+  max?: number
+  step?: number
+  autoComplete?: string
+  onKeyPress?: (e: any) => void
+  style?: CSSProperties
 }
 
 export const FormInput: FC<FormInputProps> = ({
