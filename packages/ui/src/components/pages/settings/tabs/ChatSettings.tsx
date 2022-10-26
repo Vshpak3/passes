@@ -12,9 +12,9 @@ import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
-  isWithoutTip: true,
+  isWithoutTip: false,
   showWelcomeMessageInput: false,
-  minimumTipAmount: "" as number | string,
+  minimumTipAmount: "",
   welcomeMessage: ""
 }
 
@@ -24,6 +24,7 @@ const chatSettingsSchema = object({
   minimumTipAmount: mixed().when("isWithoutTip", {
     is: false,
     then: number()
+      .typeError("Please enter tip amount")
       .min(5, "minimum tip amount is $5")
       .required("Please enter tip amount")
   }),
@@ -81,7 +82,7 @@ const ChatSettings = () => {
       setValue("isWithoutTip", false)
     }
 
-    setValue("minimumTipAmount", creatorSettings?.minimumTipAmount || "")
+    setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`)
     setValue("welcomeMessage", "")
   }, [creatorSettings, setValue])
 
