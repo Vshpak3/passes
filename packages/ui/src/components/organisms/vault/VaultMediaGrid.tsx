@@ -53,7 +53,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="max-h-[65vh] min-w-fit justify-center">
+    <div className="mt-10 max-h-[65vh] min-w-fit justify-center md:mt-20">
       <MediaModal
         file={{ content }}
         isOpen={isViewMediaModal}

@@ -89,13 +89,18 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
                 />
               </>
             )}
-
-            <VaultAddButton onClick={setFiles} />
-            <SortDropdown
-              selection={{ orderType: order === "desc" ? "recent" : "oldest" }}
-              options={sortOptions}
-              onSelect={onSortSelect}
-            />
+            <div className="mr-3">
+              <VaultAddButton onClick={setFiles} />
+            </div>
+            <div>
+              <SortDropdown
+                selection={{
+                  orderType: order === "desc" ? "recent" : "oldest"
+                }}
+                options={sortOptions}
+                onSelect={onSortSelect}
+              />
+            </div>
           </div>
         )}
       </div>
