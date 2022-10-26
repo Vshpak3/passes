@@ -99,11 +99,12 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed } = useTokenRefresh()
-  const { mutate } = useUser()
+  const { mutate, accessToken, setAccessToken, setRefreshToken } = useUser()
 
   useEffect(() => {
+    console.log(accessToken, setAccessToken, setRefreshToken)
     mutate()
-  }, [mutate])
+  }, [mutate, accessToken, setAccessToken, setRefreshToken])
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],

@@ -28,6 +28,9 @@ export const useUser = () => {
 
   const fetch = useCallback(async () => {
     // When this flag is false there is not yet a user to retrieve
+
+    // eslint-disable-next-line no-console
+    console.log(accessToken)
     if (!accessToken || !jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }
