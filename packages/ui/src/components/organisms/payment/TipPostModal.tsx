@@ -75,6 +75,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
+            closeModal={() => setOpen(false)}
           />
         )}
       </div>

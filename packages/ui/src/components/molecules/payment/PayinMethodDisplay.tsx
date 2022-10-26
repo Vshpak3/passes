@@ -7,11 +7,13 @@ import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 interface PayinMethodDisplayProps {
   payinMethod: PayinMethodDto
   card?: CircleCardDto
+  closeModal: () => void
 }
 
 export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
   payinMethod,
-  card
+  card,
+  closeModal
 }) => {
   return (
     <>
@@ -21,7 +23,9 @@ export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
         <span className="mr-1 text-[#ffff]/90">
           Want to update your default payment method or add a new one?
         </span>
-        <Link href="/settings/payment">Set payment methods</Link>
+        <Link href="/settings/payment" onClick={closeModal}>
+          Set payment methods
+        </Link>
       </div>
     </>
   )

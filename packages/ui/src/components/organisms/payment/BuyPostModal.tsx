@@ -54,6 +54,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           <PayinMethodDisplay
             payinMethod={defaultPayinMethod}
             card={defaultCard}
+            closeModal={() => setPost(null)}
           />
         )}
         {!!whitePasessList?.length && (
