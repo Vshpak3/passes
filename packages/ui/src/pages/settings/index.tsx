@@ -138,7 +138,6 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     setShowSettingsTab
   } = useSettings() as SettingsContextProps
   const { isMobile } = useWindowSize()
-  // console.log(settingsPath)
 
   useEffect(() => {
     if (!settingsPath) {
