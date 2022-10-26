@@ -376,7 +376,7 @@ export class PostService {
         paying: true,
       })
       .onConflict(['post_id', 'user_id'])
-      .merge(['payin_id', 'paying'])
+      .merge()
     const notification: PostNotificationDto = {
       postId,
       paying: true,
@@ -434,7 +434,7 @@ export class PostService {
           paying: false,
         })
         .onConflict(['post_id', 'user_id'])
-        .merge(['payin_id', 'paid_at', 'paying'])
+        .merge()
       await trx<PostEntity>(PostEntity.table)
         .where({ id: postId })
         .increment('num_purchases', 1)

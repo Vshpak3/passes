@@ -23,8 +23,8 @@ export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
         <span className="mr-1 text-[#ffff]/90">
           Want to update your default payment method or add a new one?
         </span>
-        <Link href="/settings/payment" onClick={closeModal}>
-          Set payment methods
+        <Link href="/settings/payment">
+          <a onClick={closeModal}>Set payment methods</a>
         </Link>
       </div>
     </>
