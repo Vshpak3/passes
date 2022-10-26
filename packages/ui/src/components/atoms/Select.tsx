@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import { FC, Fragment, useCallback, useEffect, useState } from "react"
+import { FC, Fragment, useCallback, useState } from "react"
 
 import {
   FormErrors,
