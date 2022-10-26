@@ -39,6 +39,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   otherUserUsername,
   user
 }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [time, _setTime] = useState(Date.now())
   const api = new MessagesApi()
 
   const bottomOfChatRef = useRef<HTMLDivElement>(null)
@@ -188,7 +190,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             }}
           >
             <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-              keyValue="messages"
+              keyValue={`messages/${time}`}
               fetch={async (req: GetMessagesRequestDto) => {
                 return await api.getMessages({ getMessagesRequestDto: req })
               }}
