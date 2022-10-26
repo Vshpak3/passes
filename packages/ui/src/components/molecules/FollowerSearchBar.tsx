@@ -11,7 +11,7 @@ interface FollowerSearchBarProps {
 // Might be used in the future
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
-  const { results, searchValue, onChangeInput } = useFollowSearch()
+  const { results, searchValue, loading, onChangeInput } = useFollowSearch()
 
   // TODO: Implement correct options
   const searchOptions = useMemo(
@@ -25,6 +25,7 @@ const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
   return (
     <SearchBar
       searchValue={searchValue}
+      loading={loading}
       options={searchOptions}
       onSelect={onSelect}
       onInputChange={onChangeInput}

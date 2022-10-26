@@ -11,6 +11,7 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
+import { MAX_PINNED_POST } from "src/config/post"
 import { useFeed } from "src/hooks/profile/useFeed"
 import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 import { DeletePostModal } from "./DeletePostModal"
@@ -18,8 +19,6 @@ import { LockedMedia } from "./LockedMedia"
 import { Media } from "./Media"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
-
-const MAX_PINNED_POST = 3
 
 interface PostProps {
   post: PostDto

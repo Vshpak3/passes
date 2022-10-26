@@ -3,10 +3,11 @@ import classNames from "classnames"
 import SearchIcon from "public/icons/messages-search-icon.svg"
 import { FC } from "react"
 
-import { EmptyResult } from "src/components/atoms/search/user/UserSearchResults"
+import { CustomResult } from "src/components/atoms/search/user/UserSearchResults"
 
 interface SearchBarProps {
   searchValue: string
+  loading: boolean
   options: JSX.Element[]
   onInputChange: (e: any) => void
   placeholder: string
@@ -17,6 +18,7 @@ interface SearchBarProps {
 
 export const SearchBar: FC<SearchBarProps> = ({
   searchValue,
+  loading,
   options,
   onInputChange,
   placeholder,
@@ -48,7 +50,15 @@ export const SearchBar: FC<SearchBarProps> = ({
             { "max-h-[165px]": isDesktop }
           )}
         >
-          {options.length ? options : <EmptyResult text={emptyText} />}
+          {options.length ? (
+            options
+          ) : searchValue && loading ? (
+            <CustomResult text="Loading..." />
+          ) : searchValue && !loading ? (
+            <CustomResult text={`Found no ${emptyText}`} />
+          ) : (
+            <CustomResult text={`Search for ${emptyText}`} />
+          )}
         </Combobox.Options>
       </div>
     </Combobox>

@@ -6,14 +6,14 @@ import { FC, Fragment } from "react"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatText } from "src/helpers/formatters"
 
-interface EmptyResultProps {
+interface CustomResultProps {
   text: string
 }
 
-export const EmptyResult: FC<EmptyResultProps> = ({ text }) => (
+export const CustomResult: FC<CustomResultProps> = ({ text }) => (
   <Combobox.Option value="placeholder" disabled>
     <li className="my-4 pl-6 text-[#ffffff]/30">
-      <div>Search for {formatText(text)}</div>
+      <div>{formatText(text)}</div>
     </li>
   </Combobox.Option>
 )

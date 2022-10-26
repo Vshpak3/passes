@@ -20,7 +20,7 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
 }) => {
   const { profileUserId } = useProfile()
 
-  const { results, setSearchValue, searchValue } = usePassesSearch(
+  const { results, setSearchValue, searchValue, loading } = usePassesSearch(
     userId ? userId : profileUserId
   )
 
@@ -56,6 +56,7 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
   return (
     <SearchBar
       options={searchOptions}
+      loading={loading}
       searchValue={searchValue}
       emptyText="passes"
       placeholder="Find passes"

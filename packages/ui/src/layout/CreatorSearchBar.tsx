@@ -15,7 +15,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
   isDesktop = true
 }) => {
   const { push } = useRouter()
-  const { results, searchValue, onChangeInput, setSearchValue } =
+  const { results, loading, searchValue, onChangeInput, setSearchValue } =
     useCreatorSearch()
 
   const goToProfile = useCallback(
@@ -49,6 +49,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
       >
         <SearchBar
           options={searchOptions}
+          loading={loading}
           searchValue={searchValue}
           onInputChange={onChangeInput}
           placeholder="Find creator"

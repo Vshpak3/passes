@@ -16,8 +16,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
   setOpen,
   ...rest
 }) => {
-  const { results, searchValue, onChangeInput, onSearchFocus, searchRef } =
-    useFollowerSearch()
+  const { results, searchValue, onChangeInput, searchRef } = useFollowerSearch()
 
   return (
     <Modal setOpen={setOpen} {...rest} childrenClassname="w-[692px]">
@@ -31,7 +30,6 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
             name="search"
             id="search"
             onChange={onChangeInput}
-            onFocus={onSearchFocus}
             value={searchValue}
             ref={searchRef}
             autoComplete="off"
@@ -46,14 +44,6 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
           >
             <div className="flex items-center">
               <div className="relative">
-                {/* <div className="absolute right-[-5px] bottom-[0px] z-20 h-[18px] w-[18px] overflow-hidden rounded-full">
-                  <CheckVerified height={18} width={18} />
-                </div> */}
-                {/* <Avatar
-                  alt="Name"
-                  className="h-[50px] w-[50px] rounded-full"
-                  src="https://cdn1.vectorstock.com/i/1000x1000/32/10/young-man-avatar-character-vector-14213210.jpg"
-                /> */}
                 <ProfileThumbnail userId={user.userId} />
               </div>
               <span className="ml-3 text-base font-medium leading-6 text-white">

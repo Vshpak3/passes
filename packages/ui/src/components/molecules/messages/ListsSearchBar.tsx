@@ -17,7 +17,8 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
   onSelect,
   userId
 }) => {
-  const { results, setSearchValue, searchValue } = useListsSearch(userId)
+  const { results, setSearchValue, loading, searchValue } =
+    useListsSearch(userId)
 
   const searchOptions = useMemo(
     () =>
@@ -51,6 +52,7 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
   return (
     <SearchBar
       options={searchOptions}
+      loading={loading}
       searchValue={searchValue}
       emptyText="lists"
       placeholder="Find lists"

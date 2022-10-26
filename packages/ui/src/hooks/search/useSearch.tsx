@@ -13,22 +13,23 @@ export const useSearch = <T,>(
   const [searchValue, setSearchValue] = useState("")
   const [results, setResults] = useState<T[]>([])
   const [resultsVisible, setResultsVisible] = useState(false)
+  const [loading, setLoading] = useState(false)
   const searchRef = useRef(null)
 
   useOnClickOutside(searchRef, () => setResultsVisible(false))
 
   const onChangeInput = (e: any) => {
+    setLoading(true)
     setResultsVisible(true)
     setSearchValue(e.target.value)
   }
-
-  const onSearchFocus = () => setResultsVisible(true)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const search = useCallback(
     debounce(async (searchValue: string) => {
       const data = await fetcher(searchValue)
       setResults(data)
+      setLoading(false)
     }, debounceDelay),
     [debounceDelay, ...dependencies]
   )
@@ -46,9 +47,9 @@ export const useSearch = <T,>(
     results,
     searchValue,
     setSearchValue,
+    loading,
     resultsVisible,
     onChangeInput,
-    onSearchFocus,
     searchRef
   }
 }
