@@ -431,9 +431,10 @@ export class PostService {
           post_id: postId,
           payin_id: payinId,
           paid_at: paidAt,
+          paying: false,
         })
         .onConflict(['post_id', 'user_id'])
-        .merge(['payin_id'])
+        .merge(['payin_id', 'paid_at', 'paying'])
       await trx<PostEntity>(PostEntity.table)
         .where({ id: postId })
         .increment('num_purchases', 1)
