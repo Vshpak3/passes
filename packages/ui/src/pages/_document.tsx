@@ -10,7 +10,7 @@ class Document extends NextDocument {
             rel="stylesheet"
           />
         </Head>
-        <body>
+        <body style={{ overscrollBehaviorY: "none" }}>
           <Main />
           <NextScript />
         </body>

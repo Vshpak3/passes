@@ -61,6 +61,7 @@ export const InputMessage: FC<Props> = ({
   // const [scheduled, setScheduled] = useState<any>()
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
+  const previewIndex = watch("previewIndex")
   // const setScheduledTime = (date: Date | null) => {
   //   setValue("scheduledAt", date, { shouldValidate: true })
   // }
@@ -93,8 +94,8 @@ export const InputMessage: FC<Props> = ({
         contentIds: contentIds,
         channelId,
         tipAmount: tip,
-        price: Number(messagePrice),
-        previewIndex: 0
+        price: isPaid ? Number(messagePrice) : 0,
+        previewIndex: previewIndex
       }
     })
     setFiles([])
