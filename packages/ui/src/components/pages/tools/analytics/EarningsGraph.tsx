@@ -60,6 +60,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     key: "selection"
   })
   const [graphData, setGraphData] = React.useState<Array<CreatorEarningDto>>([])
+  const { startDate, endDate } = dateRange
 
   const datePickerModalToggle = () =>
     setIsDatePickerOpen((prevState) => !prevState)
@@ -72,8 +73,8 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const fetchEarnings = React.useCallback(async () => {
     const data = await api.getEarningsHistory({
       getCreatorEarningsHistoryRequestDto: {
-        start: dateRange.startDate,
-        end: dateRange.endDate,
+        start: startDate,
+        end: endDate,
         type: activeTab as GetCreatorEarningsHistoryRequestDtoTypeEnum
       }
     })
@@ -92,19 +93,28 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     return Math.round((second - first) / ONE_DAY) + 1
   }
 
+  const getDateArray = (start: Date, end: Date): Date[] => {
+    const arrOfDays = []
+    const mutableDateObject = new Date(start)
+    while (mutableDateObject <= end) {
+      arrOfDays.push(new Date(mutableDateObject))
+      mutableDateObject.setDate(mutableDateObject.getDate() + 1)
+    }
+    return arrOfDays
+  }
+
   return (
     <div className="flex flex-col gap-[32px]">
       <div className="relative flex flex-col gap-[8px]">
         <h3 className="text-2xl font-bold">
-          {dateDiff(dateRange.startDate, dateRange.endDate)} Days
+          {dateDiff(startDate, endDate)} Days
         </h3>
         <label
           htmlFor="calender-modal"
           className="modal-button flex cursor-pointer flex-row items-end gap-[24px] text-base font-bold"
           onChange={datePickerModalToggle}
         >
-          {getFormattedDate(dateRange.startDate)} -{" "}
-          {getFormattedDate(dateRange.endDate)}
+          {getFormattedDate(startDate)} - {getFormattedDate(endDate)}
           <Caret height={15} width={15} />
           <input
             type="checkbox"
@@ -133,14 +143,14 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
         </label>
       </div>
       <div className="flex flex-row gap-[16px]">
-        {EARNINGS_GRAPH_TABS.map((tab) => (
+        {EARNINGS_GRAPH_TABS.map(({ id, value, label }) => (
           <TabButton
             variant="tab"
-            key={tab.id}
-            onClick={() => handleOnTabClick(tab.value)}
-            active={activeTab === tab.value}
+            key={id}
+            onClick={() => handleOnTabClick(value)}
+            active={activeTab === value}
           >
-            {tab.label}
+            {label}
           </TabButton>
         ))}
       </div>
@@ -179,8 +189,8 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
             }
           }}
           data={{
-            labels: graphData.map((item) =>
-              item.createdAt.toLocaleDateString()
+            labels: getDateArray(startDate, endDate).map((item) =>
+              item.toLocaleDateString()
             ),
             datasets: [
               {
@@ -188,7 +198,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
                 fill: false,
                 borderColor: "#9C4DC1",
                 pointBackgroundColor: "#9C4DC1",
-                data: graphData.map((item) => item.amount)
+                data: graphData.map(({ amount }) => amount)
               }
             ]
           }}
