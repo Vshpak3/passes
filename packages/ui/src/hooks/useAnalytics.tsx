@@ -6,9 +6,13 @@ const CACHE_KEY_BALANCE = "/creator-stats/balance"
 export const useCreatorBalance = () => {
   const api = new CreatorStatsApi()
 
-  const { data: userBalance } = useSWR(CACHE_KEY_BALANCE, async () => {
-    return await api.getAvailableBalance()
-  })
+  const { data: userBalance } = useSWR(
+    CACHE_KEY_BALANCE,
+    async () => {
+      return await api.getAvailableBalance()
+    },
+    { revalidateOnMount: true }
+  )
 
   return { userBalance }
 }

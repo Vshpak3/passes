@@ -1,5 +1,4 @@
 import {
-  CreatorStatsApi,
   PaymentApi,
   PayoutMethodDtoMethodEnum,
   UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
@@ -16,6 +15,7 @@ import {
   PayoutFrequencyEnum,
   useCreatorSettings
 } from "src/hooks/settings/useCreatorSettings"
+import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 
@@ -42,13 +42,7 @@ type PayoutFrequencyOption = {
 export const RequestPayouts = () => {
   const { defaultPayoutMethod, defaultBank, defaultWallet } = usePayoutMethod()
   const { creatorSettings, updateCreatorSettings } = useCreatorSettings()
-  const [balance, setBalance] = useState(0)
-
-  const fetchCreatorBalance = useCallback(async () => {
-    const api = new CreatorStatsApi()
-    const data = await api.getAvailableBalance()
-    setBalance(data.amount ?? 0)
-  }, [])
+  const { userBalance } = useCreatorBalance()
 
   const onManualPayoutClick = useCallback(async () => {
     const api = new PaymentApi()
@@ -58,10 +52,6 @@ export const RequestPayouts = () => {
       toast.error(error)
     }
   }, [])
-
-  useEffect(() => {
-    fetchCreatorBalance()
-  }, [fetchCreatorBalance])
 
   const [showOptions, setShowOptions] = useState(false)
   const menuEl = useRef(null)
@@ -76,7 +66,9 @@ export const RequestPayouts = () => {
           <div className="mb-4 text-[16px] opacity-[50%]">
             Balance Available
           </div>
-          <div className="text-[28px] font-[700]">${balance.toFixed(2)}</div>
+          <div className="text-[28px] font-[700]">
+            ${userBalance?.amount.toFixed(2)}
+          </div>
         </div>
         <div className="flex-1">
           <div className="mb-[15px] text-[16px] font-[500] opacity-[0.5]">
