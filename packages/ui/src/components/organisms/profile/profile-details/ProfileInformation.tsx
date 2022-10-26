@@ -47,12 +47,14 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
                 </RoundedIconButton>
               </a>
             )}
-            <PassesPinkButton
-              name={isFollowing ? "Unfollow" : "Follow"}
-              type={ButtonTypeEnum.SUBMIT}
-              onClick={isFollowing ? unfollow : follow}
-              className="h-[36px] w-[115px]"
-            />
+            {!!profile?.isCreator && (
+              <PassesPinkButton
+                name={isFollowing ? "Unfollow" : "Follow"}
+                type={ButtonTypeEnum.SUBMIT}
+                onClick={isFollowing ? unfollow : follow}
+                className="h-[36px] w-[115px]"
+              />
+            )}
           </div>
         )}
       </div>
@@ -137,12 +139,15 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
               </RoundedIconButton>
             </a>
           )}
-          <PassesPinkButton
-            name={isFollowing ? "Unfollow" : "Follow"}
-            type={ButtonTypeEnum.SUBMIT}
-            onClick={isFollowing ? unfollow : follow}
-            className="h-[36px] w-[115px]"
-          />
+
+          {!!profile?.isCreator && (
+            <PassesPinkButton
+              name={isFollowing ? "Unfollow" : "Follow"}
+              type={ButtonTypeEnum.SUBMIT}
+              onClick={isFollowing ? unfollow : follow}
+              className="h-[36px] w-[115px]"
+            />
+          )}
         </div>
       )}
     </>
