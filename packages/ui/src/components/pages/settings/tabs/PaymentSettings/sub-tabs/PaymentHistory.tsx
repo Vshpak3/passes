@@ -30,13 +30,13 @@ const PaymentHistory = () => {
   const { user, loading } = useUser()
   const router = useRouter()
 
-  const endMonths = year * 12 + month + 1
+  const startMonths = year * 12 + month - 1
   const startDate = new Date()
-  startDate.setMonth(month)
-  startDate.setFullYear(year)
+  startDate.setMonth(startMonths % 12)
+  startDate.setFullYear(Math.floor(startMonths / 12))
   const endDate = new Date()
-  endDate.setMonth(endMonths % 12)
-  endDate.setFullYear(Math.floor(endMonths / 12))
+  endDate.setMonth(month)
+  endDate.setFullYear(year)
 
   useEffect(() => {
     if (!router.isReady || loading) {
