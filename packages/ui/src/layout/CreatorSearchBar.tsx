@@ -47,15 +47,17 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
           "items-center justify-end md:flex"
         )}
       >
-        <SearchBar
-          options={searchOptions}
-          loading={loading}
-          searchValue={searchValue}
-          onInputChange={onChangeInput}
-          placeholder="Find creator"
-          emptyText="creators"
-          isDesktop={isDesktop}
-        />
+        <div className="mr-[40px] box-border w-full xs:max-w-[360px]">
+          <SearchBar
+            options={searchOptions}
+            loading={loading}
+            searchValue={searchValue}
+            onInputChange={onChangeInput}
+            placeholder="Find creator"
+            emptyText="creators"
+            isDesktop={isDesktop}
+          />
+        </div>
       </div>
     </AuthWrapper>
   )
