@@ -32,8 +32,8 @@ new_task_info=$(aws ecs register-task-definition --family ${task_family} --cli-i
 new_revision=$(echo ${new_task_info} | jq -r '.taskDefinition.revision')
 
 run_result=$(
-  aws ecs run-task --cluster $cluster_name --task-definition ${task_family}:$new_revision
-    --launch-type FARGATE
+  aws ecs run-task --cluster $cluster_name --task-definition ${task_family}:${new_revision} \
+    --launch-type FARGATE \
     --network-configuration "awsvpcConfiguration={subnets=[${subnet_ids}],securityGroups=[${security_group}]}"
 )
 task_arn=$(echo ${run_result} | jq -r '.tasks[0].taskArn')
