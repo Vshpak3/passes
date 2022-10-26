@@ -958,7 +958,7 @@ export class MessagesService {
     const date = new Date()
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
-        .update({ paid_at: date })
+        .update({ paid_at: date, paying: false })
         .where({ id: messageId })
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
@@ -981,6 +981,7 @@ export class MessagesService {
     })
 
     message.paid_at = date
+    message.paying = false
     await this.redisService.publish(
       'message',
       JSON.stringify(

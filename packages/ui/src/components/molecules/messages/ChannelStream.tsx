@@ -122,14 +122,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             // falls through
             case "paying":
             case "paid":
-              setMessages((messages) =>
-                messages.map((message) => {
-                  return message.messageId === newMessage.messageId
-                    ? newMessage
-                    : message
-                })
-              )
-              break
             case "processed":
               setMessageUpdates((messageUpdates) => {
                 return { ...messageUpdates, [newMessage.messageId]: newMessage }
@@ -235,7 +227,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   return (
                     <ChannelMessage
                       key={i}
-                      message={m}
+                      message={{
+                        ...m,
+                        ...(messageUpdates[m.messageId] ?? {})
+                      }}
                       isOwnMessage={m.senderId === user?.userId}
                       otherUserDisplayName={otherUserDisplayName}
                       otherUserUsername={otherUserUsername}
