@@ -77,6 +77,7 @@ export class ScheduledService {
         .where('scheduled_at', '>=', startDate)
         .andWhere('scheduled_at', '<', endDate)
         .whereNull('deleted_at')
+        .andWhere('processed', false)
         .orderBy('scheduled_at', 'asc')
         .select('*')
     ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
