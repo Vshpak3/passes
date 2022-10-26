@@ -24,6 +24,7 @@ import { ContentDto } from '../content/dto/content.dto'
 import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { ListService } from '../list/list.service'
 import { PassEntity } from '../pass/entities/pass.entity'
@@ -70,10 +71,7 @@ import { PaidMessageHistoryEntity } from './entities/paid-message-history.entity
 import { UserMessageContentEntity } from './entities/user-message-content.entity'
 import { ChannelOrderTypeEnum } from './enum/channel.order.enum'
 import { MessageNotificationEnum } from './enum/message.notification.enum'
-import {
-  ChannelNotFoundException,
-  ForbiddenChannelError,
-} from './error/channel.error'
+import { ChannelNotFoundException } from './error/channel.error'
 import {
   MessageNotFoundException,
   MessageSendError,
@@ -541,7 +539,7 @@ export class MessagesService {
         price,
         paidMessageId,
       )
-      await this.removeFreeMessage(userId, sendMessageDto.channelId)
+      await this.checkFreeMessages(userId, sendMessageDto.channelId, true)
       return new RegisterPayinResponseDto()
     }
   }
@@ -551,13 +549,6 @@ export class MessagesService {
     sendMessageDto: SendMessageRequestDto,
     otherUserId?: string,
   ): Promise<PayinDataDto> {
-    const method = await this.payService.getDefaultPayinMethod(userId)
-    if (method.method === PayinMethodEnum.NONE) {
-      return {
-        blocked: BlockedReasonEnum.NO_PAYIN_METHOD,
-        amount: sendMessageDto.tipAmount,
-      }
-    }
     if (!otherUserId) {
       const channelMember = await this.dbReader<ChannelMemberEntity>(
         ChannelMemberEntity.table,
@@ -567,6 +558,7 @@ export class MessagesService {
         .first()
       otherUserId = channelMember ? channelMember.other_user_id : ''
     }
+
     let blocked = await this.checkMessageBlocked(
       userId,
       otherUserId as string,
@@ -587,6 +579,13 @@ export class MessagesService {
         blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
       }
     }
+    const method = await this.payService.getDefaultPayinMethod(userId)
+    if (method.method === PayinMethodEnum.NONE) {
+      return {
+        blocked: BlockedReasonEnum.NO_PAYIN_METHOD,
+        amount: sendMessageDto.tipAmount,
+      }
+    }
     return { blocked, amount: sendMessageDto.tipAmount }
   }
 
@@ -600,57 +599,6 @@ export class MessagesService {
     return creatorSettings?.minimum_tip_amount
   }
 
-  async removeFreeMessage(userId: string, channelId: string) {
-    const channelMember = await this.dbReader<ChannelMemberEntity>(
-      ChannelMemberEntity.table,
-    )
-      .where({ user_id: userId, channel_id: channelId })
-      .select(['unlimited_messages', 'other_user_id'])
-      .first()
-    if (!channelMember) {
-      throw new ForbiddenChannelError('not in channel')
-    }
-    const creatorId = channelMember.other_user_id
-    if (channelMember.unlimited_messages) {
-      return
-    }
-    if (!(await this.getMinimumTip(creatorId))) {
-      return
-    }
-    const passHoldings = await this.dbReader<PassHolderEntity>(
-      PassHolderEntity.table,
-    )
-      .innerJoin(
-        PassHolderEntity.table,
-        `${PassEntity.table}.id`,
-        `${PassHolderEntity.table}.pass_id`,
-      )
-      .where(`${PassEntity.table}.creator_id`, creatorId)
-      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
-      .andWhere(function () {
-        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
-          `${PassHolderEntity.table}.expires_at`,
-          '>',
-          Date.now(),
-        )
-      })
-      .select([
-        `${PassHolderEntity.table}.id`,
-        `${PassHolderEntity.table}.messages`,
-      ])
-      .orderBy('messages', 'desc')
-    if (
-      passHoldings.length === 0 ||
-      passHoldings[passHoldings.length - 1].messages === null
-    ) {
-      return
-    }
-    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
-      .where({ id: passHoldings[0].id })
-      .andWhere('messages', '>', 0)
-      .decrement('messages', 1)
-  }
-
   async getChannelMessageInfo(userId: string, channelId: string) {
     const channelMember = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,
@@ -662,34 +610,46 @@ export class MessagesService {
       throw new BadRequestException('channel not found')
     }
     return new GetChannelMesssageInfoResponseDto(
-      await this.checkFreeMessages(userId, channelId, channelMember),
+      await this.checkFreeMessages(userId, channelMember.other_user_id),
       await this.getMinimumTip(channelMember.other_user_id),
     )
   }
 
   async checkFreeMessages(
     userId: string,
-    channelId: string,
-    channelMember?: Pick<
-      ChannelMemberEntity,
-      'unlimited_messages' | 'other_user_id'
-    >,
+    creatorId: string,
+    // channelId: string,
+    // channelMember?: Pick<
+    //   ChannelMemberEntity,
+    //   'unlimited_messages' | 'other_user_id'
+    // >,
+    remove = false,
   ): Promise<number | null> {
-    if (!channelMember) {
-      channelMember = await this.dbReader<ChannelMemberEntity>(
-        ChannelMemberEntity.table,
-      )
-        .where({ user_id: userId, channel_id: channelId })
-        .select(['unlimited_messages', 'other_user_id'])
-        .first()
-      if (!channelMember) {
-        throw new ChannelNotFoundException(
-          `channel ${channelId} not found for user ${userId}`,
-        )
-      }
-    }
-    const creatorId = channelMember.other_user_id
-    if (channelMember.unlimited_messages) {
+    // TODO - per channel settings feature
+    // if (!channelMember) {
+    //   channelMember = await this.dbReader<ChannelMemberEntity>(
+    //     ChannelMemberEntity.table,
+    //   )
+    //     .where({ user_id: userId, channel_id: channelId })
+    //     .select(['unlimited_messages', 'other_user_id'])
+    //     .first()
+    //   if (!channelMember) {
+    //     throw new ChannelNotFoundException(
+    //       `channel ${channelId} not found for user ${userId}`,
+    //     )
+    //   }
+    // }
+    // const creatorId = channelMember.other_user_id
+    // if (channelMember.unlimited_messages) {
+    //   return null
+    // }
+    const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({
+        follower_id: creatorId,
+        creator_id: userId,
+      })
+      .select('follower_id', 'creator_id')
+    if (follow.length === 1) {
       return null
     }
 
@@ -718,6 +678,12 @@ export class MessagesService {
     if (passHoldings[passHoldings.length - 1].messages === null) {
       return null
     } else {
+      if (remove) {
+        await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
+          .where({ id: passHoldings[0].id })
+          .andWhere('messages', '>', 0)
+          .decrement('messages', 1)
+      }
       return passHoldings.reduce((sum, passHolding) => {
         if (passHolding.messages) {
           return sum + passHolding.messages
@@ -732,25 +698,27 @@ export class MessagesService {
     channelId: string,
     tipAmount: number,
   ): Promise<BlockedReasonEnum | undefined> {
-    // userId must be a creator or follow otherUserId
-    // const user = await this.dbReader<UserEntity>(UserEntity.table)
-    //   .where({ id: userId })
-    //   .select('is_creator')
-    //   .first()
-    // const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
-    //   .where({
-    //     follower_id: userId,
-    //     creator_id: otherUserId,
-    //   })
-    //   .select('id')
-    //   .first()
-    // if (!user || (!user.is_creator && !follow)) {
-    //   return BlockedReasonEnum.USER_BLOCKED
-    // }
+    const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
+      .where({
+        follower_id: userId,
+        creator_id: otherUserId,
+      })
+      .orWhere({
+        follower_id: otherUserId,
+        creator_id: userId,
+      })
+      .select('follower_id', 'creator_id')
+    if (follow.length === 0) {
+      return BlockedReasonEnum.DOES_NOT_FOLLOW
+    }
+    if (follow.length === 2 || follow[0].follower_id === otherUserId) {
+      return undefined
+    }
 
     const users = await this.dbReader<UserEntity>(UserEntity.table)
       .whereIn('id', [userId, otherUserId])
       .select('is_creator')
+
     const creators = users.filter((user) => user.is_creator)
     if (!creators.length) {
       return BlockedReasonEnum.USER_BLOCKED
