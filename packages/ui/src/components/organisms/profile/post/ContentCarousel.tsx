@@ -17,7 +17,7 @@ export interface ContentCarouselProps {
   activeIndex?: number
   autoplayVideo?: boolean
   paying: boolean
-  paidAt?: Date | null
+  paid: boolean
   previewIndex: number
   price: number
   openBuyModal: () => void
@@ -27,13 +27,13 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   contents,
   autoplayVideo,
   paying,
-  paidAt,
+  paid,
   previewIndex,
   price,
   openBuyModal
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
-  const hasAccess = !!paidAt || price === 0 || previewIndex >= content.length
+  const hasAccess = paid || price === 0 || previewIndex >= content.length
   return (
     <>
       <style>{`.swiper-button-prev, .swiper-button-next { color: white; }`}</style>

@@ -144,7 +144,7 @@ const PostUnmemo: FC<PostProps> = ({
                   contents={contents}
                   isProcessing={!contentProcessed}
                   paying={paying}
-                  paidAt={paidAt}
+                  paid={!!paidAt || isOwner}
                   previewIndex={previewIndex}
                   price={price ?? 0}
                   openBuyModal={() => setPost(post)}

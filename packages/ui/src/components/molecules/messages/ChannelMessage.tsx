@@ -78,7 +78,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   contents={messageContent}
                   isProcessing={!message.contentProcessed}
                   paying={message.paying}
-                  paidAt={message.paidAt}
+                  paid={!!message.paidAt || !!isOwnMessage}
                   previewIndex={message.previewIndex}
                   price={message.price}
                   openBuyModal={() => setOpenBuyMessageModal(true)}
