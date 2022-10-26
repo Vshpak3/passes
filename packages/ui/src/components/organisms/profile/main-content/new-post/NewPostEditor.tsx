@@ -26,7 +26,7 @@ export interface NewPostFormProps {
   tags: TagDto[]
   files: ContentFile[]
   isPaid: boolean
-  price: number
+  price: string
   passes: PassDto[]
   expiresAt: Date | null
   scheduledAt: Date | null
@@ -38,7 +38,7 @@ const newPostFormDefaults: NewPostFormProps = {
   tags: [],
   files: [],
   isPaid: false,
-  price: 0,
+  price: "0",
   passes: [],
   expiresAt: null,
   scheduledAt: null,
@@ -59,20 +59,30 @@ const newPostFormSchema = object({
     then: array().min(1, "You cannot create a paid post without media content")
   }),
   isPaid: bool().optional(),
-  price: number()
+  price: string()
     .optional()
-    .integer()
     .when("isPaid", {
       is: true,
-      then: number()
+      then: string()
         .required("A price must be set for a paid post")
-        .min(
-          MIN_PAID_POST_PRICE,
-          `The minimum price of a post is $${MIN_PAID_POST_PRICE}`
+        .test(
+          "is-currency",
+          "Please enter a valid currency amount",
+          (value) =>
+            !!(value || "").match(
+              // eslint-disable-next-line regexp/no-unused-capturing-group
+              /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/
+            )
         )
-        .max(
-          MAX_PAID_POST_PRICE,
-          `The maxinum price of a post is $${MAX_PAID_POST_PRICE}`
+        .test(
+          "min",
+          `The minimum price of a post is $${MIN_PAID_POST_PRICE}`,
+          (value) => parseFloat(value || "") >= MIN_PAID_POST_PRICE
+        )
+        .test(
+          "max",
+          `The minimum price of a post is $${MAX_PAID_POST_PRICE}`,
+          (value) => parseFloat(value || "") <= MAX_PAID_POST_PRICE
         )
     }),
   previewIndex: number().optional().integer(),
@@ -175,7 +185,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       text: values.text,
       tags: values.tags,
       passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
-      price: values.isPaid ? parseFloat(values.price as unknown as string) : 0,
+      price: values.isPaid ? parseFloat(values.price) : 0,
       contentIds,
       previewIndex: parseInt(values.previewIndex),
       expiresAt: values.expiresAt,
