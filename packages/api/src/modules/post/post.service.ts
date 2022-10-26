@@ -161,7 +161,7 @@ export class PostService {
                 post_id: postId,
                 user_id: userId,
                 pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
-                paid: true,
+                paid_at: new Date(),
               }
             }),
           )
@@ -423,12 +423,14 @@ export class PostService {
       )
     }
     const contents: ContentBareDto[] = JSON.parse(post.contents)
+    const paidAt = new Date()
     await this.dbWriter.transaction(async (trx) => {
       await trx<PostUserAccessEntity>(PostUserAccessEntity.table)
         .insert({
           user_id: userId,
           post_id: postId,
           payin_id: payinId,
+          paid_at: paidAt,
         })
         .onConflict(['post_id', 'user_id'])
         .merge(['payin_id'])
@@ -454,7 +456,7 @@ export class PostService {
     const notification: PostNotificationDto = {
       postId,
       paying: false,
-      paidAt: new Date(),
+      paidAt: paidAt,
       notification: PostNotificationEnum.PAID,
       recieverId: userId,
       contents: this.contentService.getContentDtosFromBare(
