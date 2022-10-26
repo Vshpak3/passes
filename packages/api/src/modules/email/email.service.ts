@@ -31,16 +31,21 @@ export class EmailService {
     }
   }
 
+  async renderEmail(template: string, data: Record<any, any>): Promise<string> {
+    const { html } = await Maizzle.render(template, {
+      tailwind: { config: tailwindConfig },
+      maizzle: { ...this.maizzleConfig, ...data },
+    })
+    return html
+  }
+
   async sendRenderedEmail(
     email: string,
     subject: string,
     template: string,
     data: Record<any, any>,
   ) {
-    const { html } = await Maizzle.render(template, {
-      tailwind: { config: tailwindConfig },
-      maizzle: { ...this.maizzleConfig, ...data },
-    })
+    const html = await this.renderEmail(template, data)
     await this.sendEmail(email, html, subject)
   }
 
