@@ -71,6 +71,7 @@ import {
 
 export const MINIMUM_POST_TIP_AMOUNT = 5.0
 const MAX_PINNED_POST = 3
+// const MAX_CATEGORIES_PER_USER = 25
 
 @Injectable()
 export class PostService {

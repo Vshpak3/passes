@@ -18,6 +18,7 @@ import {
 import { Payin } from "src/components/molecules/payment/Payin"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { Tab } from "src/components/pages/settings/Tab"
+import { getStartEnd } from "src/helpers/monthYear"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useUser } from "src/hooks/useUser"
 import { ChevronDown } from "src/icons/ChevronDown"
@@ -30,13 +31,7 @@ const PaymentHistory = () => {
   const { user, loading } = useUser()
   const router = useRouter()
 
-  const startMonths = year * 12 + month - 1
-  const startDate = new Date()
-  startDate.setMonth(startMonths % 12)
-  startDate.setFullYear(Math.floor(startMonths / 12))
-  const endDate = new Date()
-  endDate.setMonth(month)
-  endDate.setFullYear(year)
+  const [startDate, endDate] = getStartEnd(month, year)
 
   useEffect(() => {
     if (!router.isReady || loading) {
@@ -79,7 +74,7 @@ const PaymentHistory = () => {
         onClick={handleShowMonthYearPopper}
       >
         <span className="w-[100px] select-none">
-          {`${format(new Date(2000, month - 1, 1), "MMMM")} ${year}`}
+          {`${format(new Date(2000, month, 1), "MMMM")} ${year}`}
         </span>
       </button>
       <Popper

@@ -17,6 +17,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { Payout } from "src/components/molecules/payment/Payout"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
+import { getStartEnd } from "src/helpers/monthYear"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useUser } from "src/hooks/useUser"
 import { ChevronDown } from "src/icons/ChevronDown"
@@ -29,13 +30,7 @@ export const PayoutHistory = () => {
   const { user, loading } = useUser()
   const router = useRouter()
 
-  const endMonths = year * 12 + month + 1
-  const startDate = new Date()
-  startDate.setMonth(month)
-  startDate.setFullYear(year)
-  const endDate = new Date()
-  endDate.setMonth(endMonths % 12)
-  endDate.setFullYear(Math.floor(endMonths / 12))
+  const [startDate, endDate] = getStartEnd(month, year)
 
   useEffect(() => {
     if (!router.isReady || loading) {
@@ -81,7 +76,7 @@ export const PayoutHistory = () => {
             onClick={handleShowMonthYearPopper}
           >
             <span className="w-[100px] select-none">
-              {`${format(new Date(2000, month - 1, 1), "MMMM")} ${year}`}
+              {`${format(new Date(2000, month, 1), "MMMM")} ${year}`}
             </span>
           </button>
           <Popper
