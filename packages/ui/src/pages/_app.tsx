@@ -99,7 +99,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed } = useTokenRefresh()
-  const { mutate, accessToken, setAccessToken, setRefreshToken } = useUser()
+  const { mutate, accessToken, setAccessToken, setRefreshToken, user } =
+    useUser()
 
   useEffect(() => {
     // eslint-disable-next-line no-console
@@ -107,6 +108,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     mutate()
   }, [mutate, accessToken, setAccessToken, setRefreshToken])
 
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(user)
+  }, [user])
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
     [
