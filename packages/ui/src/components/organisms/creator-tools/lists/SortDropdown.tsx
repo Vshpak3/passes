@@ -11,7 +11,9 @@ const orderTypeDisplayNames: Record<any, string> = {
   "created at": "Creation Date",
   recent: "Most recent",
   oldest: "Oldest",
-  tip: "Highest tip amount"
+  tip: "Highest tip amount",
+  purchased: "Purchased",
+  notPurchased: "Not purchased"
 }
 
 const sortPopperId = "sort-popper"
@@ -25,12 +27,16 @@ interface SortListPopupProps<OrderType, Order> {
   selection: SortOption<OrderType, Order>
   options: SortOption<OrderType, Order>[]
   onSelect: (option: SortOption<OrderType, Order>) => void
+  isCheckbox?: boolean
+  dropdownTitle?: string
 }
 
 export const SortDropdown = <OrderType, Order = "desc">({
   selection,
   options,
-  onSelect
+  onSelect,
+  isCheckbox = true,
+  dropdownTitle = "Sort by"
 }: SortListPopupProps<OrderType, Order>) => {
   const [isPopperOpen, setIsPopperOpen] = useState(false)
   const ref = useRef(null)
@@ -82,7 +88,7 @@ export const SortDropdown = <OrderType, Order = "desc">({
                 onChange={onChange}
               >
                 <RadioGroup.Label className="mb-3 block">
-                  Sort by
+                  {dropdownTitle}
                 </RadioGroup.Label>
                 <div className="flex w-full flex-col gap-[12px]">
                   {options.map((option) => {
@@ -103,14 +109,23 @@ export const SortDropdown = <OrderType, Order = "desc">({
                         value={option}
                         className="flex w-full cursor-pointer items-center justify-between text-passes-gray-800"
                       >
-                        <span>{name}</span>
-                        {isSelected ? (
-                          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-passes-primary-color">
-                            <CheckIcon className="h-3 w-3" />
-                          </span>
-                        ) : (
-                          <span className="h-4 w-4 rounded-full border border-passes-gray-900 bg-passes-dark-700" />
-                        )}
+                        <span
+                          className={
+                            !isCheckbox && isSelected
+                              ? "font-bold text-white"
+                              : ""
+                          }
+                        >
+                          {name}
+                        </span>
+                        {isCheckbox &&
+                          (isSelected ? (
+                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-passes-primary-color">
+                              <CheckIcon className="h-3 w-3" />
+                            </span>
+                          ) : (
+                            <span className="h-4 w-4 rounded-full border border-passes-gray-900 bg-passes-dark-700" />
+                          ))}
                       </RadioGroup.Option>
                     )
                   })}

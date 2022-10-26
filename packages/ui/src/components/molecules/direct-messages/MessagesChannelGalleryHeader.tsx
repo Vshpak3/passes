@@ -1,19 +1,38 @@
 import { ChannelMemberDto } from "@passes/api-client"
 import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
-import React, { Dispatch, FC, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
+
+import {
+  SortDropdown,
+  SortOption
+} from "src/components/organisms/creator-tools/lists/SortDropdown"
+
+type OrderType = "purchased" | "notPurchased"
+
+const sortOptions: SortOption<OrderType>[] = [
+  { orderType: "purchased" },
+  { orderType: "notPurchased" }
+]
 
 interface MessagesChannelGalleryHeaderProps {
   gallery: boolean
   setGallery: Dispatch<SetStateAction<boolean>>
-  paid?: boolean
   setPaid: Dispatch<SetStateAction<boolean | undefined>>
   selectedChannel: ChannelMemberDto
+  paid?: boolean
 }
 
 export const MessagesChannelGalleryHeader: FC<
   MessagesChannelGalleryHeaderProps
 > = ({ gallery, setGallery, paid, setPaid, selectedChannel }) => {
+  const onSortSelect = useCallback(
+    (option: SortOption<OrderType>) => {
+      setPaid(option.orderType === "purchased")
+    },
+    [setPaid]
+  )
+
   return (
     <div className="flex w-full  items-center justify-between">
       <div className="flex w-full items-center justify-start pl-2">
@@ -44,28 +63,13 @@ export const MessagesChannelGalleryHeader: FC<
           </div>
         </div>
       </div>
-      <div className="flex w-full items-center pr-10 text-[12px]">
-        <div
-          onClick={() => setPaid(undefined)}
-          className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
-        >
-          All
-        </div>
-        <span className="px-3 text-passes-pink-100">|</span>
-        <div
-          onClick={() => setPaid(false)}
-          className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
-        >
-          Show Not Purchased
-        </div>
-        <span className="px-3 text-passes-pink-100">|</span>
-        <div
-          onClick={() => setPaid(true)}
-          className="flex cursor-pointer justify-end text-passes-pink-100 hover:underline "
-        >
-          Show Purchased
-        </div>
-      </div>
+      <SortDropdown
+        selection={{ orderType: paid ? "purchased" : "notPurchased" }}
+        options={sortOptions}
+        onSelect={onSortSelect}
+        dropdownTitle="Filter by"
+        isCheckbox={false}
+      />
     </div>
   )
 }
