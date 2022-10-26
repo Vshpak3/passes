@@ -27,6 +27,10 @@ export const useSearch = <T,>(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const search = useCallback(
     debounce(async (searchValue: string) => {
+      if (!searchValue) {
+        setResults([])
+        return
+      }
       const data = await fetcher(searchValue)
       setResults(data)
     }, debounceDelay),
