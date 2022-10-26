@@ -21,6 +21,7 @@ const CACHE_KEY_USER = "/user"
 
 const authApi = new AuthApi()
 const userApi = new UserApi()
+
 export const useUser = () => {
   const [accessToken, setAccessToken] = useLocalStorage(accessTokenKey, "")
   const [, setRefreshToken] = useLocalStorage(refreshTokenKey, "")
