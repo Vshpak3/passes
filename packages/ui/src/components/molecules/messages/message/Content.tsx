@@ -16,7 +16,9 @@ interface ContentProps {
   isOwnMessage: boolean
 }
 
-export const Content: FC<ContentProps> = ({
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const Content: FC<ContentProps> = ({
   contents,
   paid,
   price,

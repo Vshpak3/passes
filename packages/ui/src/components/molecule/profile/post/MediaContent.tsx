@@ -5,7 +5,7 @@ import {
   ContentCarouselProps
 } from "src/components/organisms/profile/post/ContentCarousel"
 
-export interface MediaContentProps extends ContentCarouselProps {
+interface MediaContentProps extends ContentCarouselProps {
   isProcessing: boolean
 }
 
