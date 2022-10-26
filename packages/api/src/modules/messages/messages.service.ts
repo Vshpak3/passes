@@ -1225,7 +1225,7 @@ export class MessagesService {
   getContents(message: MessageEntity): ContentDto[] {
     return this.contentService.getContentDtosFromBare(
       JSON.parse(message.contents),
-      message.paid && !!message.price,
+      message.paid || !!message.price,
       message.sender_id,
       message.preview_index,
     )
@@ -1406,13 +1406,7 @@ export class MessagesService {
       await this.dbWriter<MessageEntity>(MessageEntity.table)
         .where({ id: messageId })
         .update({ content_processed: true, sent_at: sentAt })
-      const contents = this.contentService.getContentDtosFromBare(
-        contentsBare,
-        false,
-        message.sender_id,
-        0,
-        false,
-      )
+      const contents = this.getContents(message)
       message.content_processed = true
       await this.redisService.publish(
         'message',
