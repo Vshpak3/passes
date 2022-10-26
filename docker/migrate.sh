@@ -5,7 +5,7 @@
 #
 # Usage
 #
-#   ./docker/migrate.sh <task family> <cluster name> <subnet ids> <security group>
+#   ./docker/migrate.sh <task family> <cluster name> <subnet ids> <security group> <image name>
 #
 set -o errexit
 set -o nounset
@@ -16,11 +16,11 @@ readonly task_family=${1}
 readonly cluster_name=${2}
 readonly subnet_ids=${3}
 readonly security_group=${4}
+readonly image_name=${5}
 
+# describe-task-definition returns additional fields that cause errors when
+# using register-task-definition so we delete those fields
 old_task_definition=$(aws ecs describe-task-definition --task-definition ${task_family})
-image_name=$(cat imageDetail.json | jq -r '.ImageURI')
-
-# describe-task-definition returns additional fields that cause errors when using register-task-definition so we delete those fields
 new_task_defintiion=$(
   echo ${old_task_definition} | jq -r --arg IMAGE ${image_name} \
     '.taskDefinition |
