@@ -13,8 +13,8 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
+import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
-import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
 const PostFeedLoader = (
@@ -36,7 +36,7 @@ const PostFeedEnd = (
 interface PostFeedProps {
   profileUserId: string
   ownsProfile: boolean
-  updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
+  updateProfileStats?: (update: CreatorStatsUpdate) => Promise<void>
 }
 
 export const PostFeed: FC<PostFeedProps> = ({

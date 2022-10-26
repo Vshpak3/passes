@@ -42,7 +42,7 @@ const bioForm = {
   }
 }
 
-const profileInformationForm = {
+const profilermationForm = {
   displayName: { type: "text", label: "Display Name" }
 }
 
@@ -93,7 +93,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   setEditProfileModalOpen,
   setProfileImageOverride
 }) => {
-  const { mutateManualProfileInfo, profileInfo, profileUserId } = useProfile()
+  const { profile, profileUserId, mutateManualProfile } = useProfile()
 
   const {
     handleSubmit,
@@ -116,18 +116,18 @@ export const EditProfile: FC<EditProfileProps> = ({
             "twitchUsername",
             "twitterUsername",
             "youtubeUsername"
-          ].map((k) => [k, profileInfo?.[k as keyof GetProfileResponseDto]])
+          ].map((k) => [k, profile?.[k as keyof GetProfileResponseDto]])
         ),
         profileImage: [],
         profileBannerImage: []
       }
-    }, [profileInfo]),
+    }, [profile]),
     resolver: yupResolver(editProfileSchema)
   })
 
   useEffect(() => {
-    reset(profileInfo)
-  }, [profileInfo, reset])
+    reset(profile)
+  }, [profile, reset])
 
   const profileImage: File[] = watch("profileImage")
   const profileBannerImage: File[] = watch("profileBannerImage")
@@ -150,7 +150,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     await updateProfile(values)
 
     // TODO: this ends up adding on some extra properties like profile image
-    mutateManualProfileInfo(values)
+    mutateManualProfile(values)
 
     toast.success("Successfully updated your profile")
 
@@ -280,7 +280,7 @@ export const EditProfile: FC<EditProfileProps> = ({
               Display Name
             </span>
             <div className="mt-3 grid w-full grid-cols-6 gap-3">
-              {Object.entries(profileInformationForm).map(renderInput)}
+              {Object.entries(profilermationForm).map(renderInput)}
             </div>
           </div>
           <div className="pt-3">

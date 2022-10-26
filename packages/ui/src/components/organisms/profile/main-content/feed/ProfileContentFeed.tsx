@@ -1,6 +1,7 @@
 import { FC } from "react"
 
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
+import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { FanWallFeed } from "./FanWallFeed"
 import { PassesFeed } from "./PassesFeed"
@@ -13,14 +14,10 @@ interface ProfileContentFeedProps {
 export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   activeTab
 }) => {
-  const {
-    profileUserId,
-    ownsProfile,
-    loadingProfileInfo,
-    mutateManualProfileStats
-  } = useProfile()
+  const { profileUserId, ownsProfile, loadingProfile } = useProfile()
+  const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
 
-  if (loadingProfileInfo || !profileUserId) {
+  if (loadingProfile || !profileUserId) {
     return <></>
   }
 
@@ -30,7 +27,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
         <PostFeed
           profileUserId={profileUserId}
           ownsProfile={ownsProfile}
-          updateProfileStats={mutateManualProfileStats}
+          updateProfileStats={mutateManualCreatorStats}
         />
       )
     case ProfileNavigationOptions.FANWALL:

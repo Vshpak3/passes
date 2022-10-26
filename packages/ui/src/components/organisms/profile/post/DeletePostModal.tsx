@@ -3,14 +3,14 @@ import { Dispatch, FC, SetStateAction } from "react"
 import { toast } from "react-toastify"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
+import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePost } from "src/hooks/profile/usePost"
-import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 
 interface DeletePostModalProps {
   post: PostDto | null
   onDelete: () => void
   setOpen: Dispatch<SetStateAction<boolean>>
-  updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
+  updateProfileStats?: (update: CreatorStatsUpdate) => Promise<void>
 }
 
 export const DeletePostModal: FC<DeletePostModalProps> = ({

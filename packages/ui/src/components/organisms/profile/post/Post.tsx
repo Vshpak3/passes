@@ -12,8 +12,8 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { MAX_PINNED_POST } from "src/config/post"
+import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
-import { ProfileStatsUpdate } from "src/hooks/profile/useProfile"
 import { DeletePostModal } from "./DeletePostModal"
 import { LockedMedia } from "./LockedMedia"
 import { Media } from "./Media"
@@ -27,7 +27,7 @@ interface PostProps {
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
-  updateProfileStats?: (update: ProfileStatsUpdate) => Promise<void>
+  updateProfileStats?: (update: CreatorStatsUpdate) => Promise<void>
 }
 
 const PostUnmemo: FC<PostProps> = ({

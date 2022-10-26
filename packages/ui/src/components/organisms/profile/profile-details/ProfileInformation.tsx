@@ -7,6 +7,7 @@ import {
   RoundedIconButton
 } from "src/components/atoms/Button"
 import { compactNumberFormatter, formatText } from "src/helpers/formatters"
+import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useFollow } from "src/hooks/profile/useFollow"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
@@ -19,13 +20,8 @@ interface ProfileInformationProps {
 export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
   chatLink
 }) => {
-  const {
-    profileStats,
-    ownsProfile,
-    profileInfo,
-    profileUsername,
-    profileUserId
-  } = useProfile()
+  const { profile, profileUsername, profileUserId, ownsProfile } = useProfile()
+  const { creatorStats } = useCreatorStats(profileUserId)
 
   const { follow, unfollow, isFollowing } = useFollow(profileUserId)
 
@@ -33,7 +29,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
     <div className="flex flex-col items-start gap-[6px]">
       <div className="items-center justify-around truncate md:w-[65%]">
         <span className="w-full truncate text-[32px] font-medium leading-9 text-passes-white-100">
-          {profileInfo?.displayName}
+          {profile?.displayName}
         </span>
       </div>
       <div className="flex w-full justify-between">
@@ -44,7 +40,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         </div>
         {!ownsProfile && (
           <div className="align-center flex items-center space-x-3">
-            {!!profileInfo?.isCreator && (
+            {!!profile?.isCreator && (
               <a href={chatLink}>
                 <RoundedIconButton className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
                   <ChatIcon />
@@ -61,13 +57,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         )}
       </div>
       <span className="text-md my-3 font-semibold leading-[22px] text-white">
-        {formatText(profileInfo?.description)}
+        {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <div className="flex items-center">
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {profileStats?.numPosts ?? "-"}
+              {creatorStats?.numPosts ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               POSTS
@@ -76,7 +72,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
           <div className="flex items-center justify-center">
             <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(profileStats?.numLikes || 0) ?? "-"}
+              {compactNumberFormatter(creatorStats?.numLikes || 0) ?? "-"}
             </span>
             <span className="text-sm font-normal text-passes-white-100/70">
               LIKES
@@ -85,13 +81,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         </div>
 
         <ProfileSocialMedia
-          discordUsername={profileInfo?.discordUsername}
-          facebookUsername={profileInfo?.facebookUsername}
-          instagramUsername={profileInfo?.instagramUsername}
-          tiktokUsername={profileInfo?.tiktokUsername}
-          twitchUsername={profileInfo?.twitchUsername}
-          twitterUsername={profileInfo?.twitterUsername}
-          youtubeUsername={profileInfo?.youtubeUsername}
+          discordUsername={profile?.discordUsername}
+          facebookUsername={profile?.facebookUsername}
+          instagramUsername={profile?.instagramUsername}
+          tiktokUsername={profile?.tiktokUsername}
+          twitchUsername={profile?.twitchUsername}
+          twitterUsername={profile?.twitterUsername}
+          youtubeUsername={profile?.youtubeUsername}
         />
       </div>
     </div>
@@ -101,15 +97,15 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
   chatLink
 }) => {
-  const { profileStats, ownsProfile, profileInfo, profileUsername } =
-    useProfile()
+  const { profile, profileUsername, profileUserId, ownsProfile } = useProfile()
+  const { creatorStats } = useCreatorStats(profileUserId)
 
-  const { follow, unfollow, isFollowing } = useFollow(profileInfo?.userId || "")
+  const { follow, unfollow, isFollowing } = useFollow(profile?.userId || "")
 
   return (
     <>
       <span className="w-full truncate text-center text-[18px] font-semibold text-passes-white-100">
-        {profileInfo?.displayName}
+        {profile?.displayName}
       </span>
       <div className="align-items flex items-center justify-center rounded-xl bg-passes-white-100/5 px-2 py-1">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
@@ -117,24 +113,24 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
         </span>
       </div>
       <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
-        {formatText(profileInfo?.description)}
+        {formatText(profile?.description)}
       </span>
       <ProfileSocialMedia
-        discordUsername={profileInfo?.discordUsername}
-        facebookUsername={profileInfo?.facebookUsername}
-        instagramUsername={profileInfo?.instagramUsername}
-        tiktokUsername={profileInfo?.tiktokUsername}
-        twitchUsername={profileInfo?.twitchUsername}
-        twitterUsername={profileInfo?.twitterUsername}
-        youtubeUsername={profileInfo?.youtubeUsername}
+        discordUsername={profile?.discordUsername}
+        facebookUsername={profile?.facebookUsername}
+        instagramUsername={profile?.instagramUsername}
+        tiktokUsername={profile?.tiktokUsername}
+        twitchUsername={profile?.twitchUsername}
+        twitterUsername={profile?.twitterUsername}
+        youtubeUsername={profile?.youtubeUsername}
       />
       <ProfileStatsMobile
-        numPosts={profileStats?.numPosts || 0}
-        likes={profileStats?.numLikes || 0}
+        numPosts={creatorStats?.numPosts || 0}
+        likes={creatorStats?.numLikes || 0}
       />
       {!ownsProfile && (
         <div className="flex space-x-3">
-          {!!profileInfo?.isCreator && (
+          {!!profile?.isCreator && (
             <a href={chatLink}>
               <RoundedIconButton className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
                 <ChatIcon />

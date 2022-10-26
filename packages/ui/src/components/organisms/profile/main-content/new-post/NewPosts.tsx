@@ -3,6 +3,7 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Post } from "src/components/organisms/profile/post/Post"
+import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { usePost } from "src/hooks/profile/usePost"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { NewPostEditor } from "./NewPostEditor"
@@ -17,12 +18,12 @@ export const NewPosts: FC<NewPostsProps> = ({
   postUpdates
 }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
-  const { profileInfo, profileUsername, mutateManualProfileStats } =
-    useProfile()
+  const { profile, profileUsername, profileUserId } = useProfile()
+  const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
   const { createPost } = usePost()
 
   const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
-    if (!profileInfo || !profileUsername) {
+    if (!profile || !profileUsername) {
       console.error("Unexpected error: mising profile data")
       return
     }
@@ -40,16 +41,16 @@ export const NewPosts: FC<NewPostsProps> = ({
     const post: PostDto = {
       postId: res.postId,
       purchasable: false,
-      userId: profileInfo.userId,
+      userId: profile.userId,
       username: profileUsername,
-      displayName: profileInfo.displayName ?? "",
+      displayName: profile.displayName ?? "",
       text: createPostDto.text,
       tags: createPostDto.tags,
       contents: createPostDto.contentIds.map(
         (c) =>
           ({
             contentId: c,
-            userId: profileInfo.userId
+            userId: profile.userId
           } as ContentDto)
       ),
       contentProcessed: !createPostDto.contentIds.length,
@@ -71,7 +72,7 @@ export const NewPosts: FC<NewPostsProps> = ({
       yourTips: 0
     }
     if (res.postId) {
-      await mutateManualProfileStats({ field: "numPosts", event: "increment" })
+      await mutateManualCreatorStats({ field: "numPosts", event: "increment" })
     }
 
     setNewPosts([post, ...newPosts])
@@ -89,7 +90,7 @@ export const NewPosts: FC<NewPostsProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
-          updateProfileStats={mutateManualProfileStats}
+          updateProfileStats={mutateManualCreatorStats}
         />
       ))}
     </>

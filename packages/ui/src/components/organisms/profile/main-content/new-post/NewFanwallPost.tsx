@@ -29,7 +29,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   createPost,
   creatorId
 }) => {
-  const { profileInfo } = useProfile()
+  const { profile } = useProfile()
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
 
@@ -88,9 +88,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
               isReset={isReset}
               setIsReset={setIsReset}
               placeholder={`Write something${
-                profileInfo?.displayName
-                  ? ` to ${profileInfo?.displayName}...`
-                  : "..."
+                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
               }`}
               onInputChange={(params: any) => {
                 setValue("text", params?.text)
