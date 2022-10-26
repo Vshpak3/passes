@@ -57,12 +57,6 @@ export const Select: FC<SelectProps> = ({
     [setDisplayedValue, onChange]
   )
 
-  useEffect(() => {
-    if (defaultValue) {
-      onCustomChange(defaultValue)
-    }
-  }, [defaultValue, onCustomChange])
-
   return (
     <div className="relative">
       {label && (

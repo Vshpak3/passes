@@ -34,6 +34,7 @@ interface AddCardProps {
 
 interface CardForm {
   country: string
+  district: string
   // eslint-disable-next-line sonarjs/no-duplicate-string
   "card-number": string
   "exp-month": string
@@ -54,7 +55,9 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
     setValue,
     formState: { errors }
   } = useForm<CardForm>({
-    defaultValues: {}
+    defaultValues: {
+      country: COUNTRIES[0]
+    }
   })
 
   const { user, loading, accessToken } = useUser()
@@ -266,7 +269,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         name="country"
         errors={errors}
         className="mt-3"
-        defaultValue="United States"
+        defaultValue={COUNTRIES[0]}
         onChange={(newValue: string) => setValue("country", newValue)}
       />
       <FormInput
@@ -284,13 +287,14 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         {countrySelected === COUNTRIES[0] ? (
           <Select
             register={register}
+            name="district"
             selectOptions={US_STATES}
             errors={errors}
             placeholder="State"
             options={{
               required: { message: "State is required", value: true }
             }}
-            name="district"
+            onChange={(newValue: string) => setValue("district", newValue)}
             className="mt-3 w-[120px]"
             showOnTop
           />
