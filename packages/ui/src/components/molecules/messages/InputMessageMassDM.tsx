@@ -208,6 +208,7 @@ export const InputMessageMassDM: FC<Props> = ({
               files={files}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
+              messages={true}
             />
           )}
 

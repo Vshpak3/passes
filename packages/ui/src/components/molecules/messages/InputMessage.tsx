@@ -225,12 +225,7 @@ export const InputMessage: FC<Props> = ({
           </div>
         )}
 
-        <div
-          className={classNames(
-            isCreator ? "py-1" : "py-4",
-            "flex h-fit w-full flex-col items-start justify-start px-3"
-          )}
-        >
+        <div className={classNames(isCreator ? "py-1" : "py-4", "px-3")}>
           <textarea
             placeholder="Send a message.."
             rows={isCreator ? 3 : 4}
@@ -255,6 +250,7 @@ export const InputMessage: FC<Props> = ({
               files={files}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
+              messages={true}
             />
           )}
 
@@ -262,7 +258,6 @@ export const InputMessage: FC<Props> = ({
             <div className="flex w-full items-center justify-between">
               <MediaSelector
                 activeMediaHeader={activeMediaHeader}
-                // setActiveMediaHeader={setActiveMediaHeader}
                 register={register}
                 errors={errors}
                 onChange={onMediaHeaderChange}

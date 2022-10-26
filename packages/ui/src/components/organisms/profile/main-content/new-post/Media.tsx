@@ -99,7 +99,7 @@ export const Media: FC<MediaProp> = ({
             onClick={onRemove}
             className={classNames(
               iconClassName,
-              "relative z-[5] h-[24px] w-[24px] cursor-pointer"
+              "z-[5] h-[24px] w-[24px] cursor-pointer "
             )}
           >
             <DeleteIcon className="h-full w-full" />
@@ -119,7 +119,7 @@ export const Media: FC<MediaProp> = ({
           <div
             onClick={onRemove}
             className={classNames(
-              "relative z-[5] h-[24px] w-[24px] cursor-pointer",
+              "z-[5] h-[24px] w-[24px] cursor-pointer",
               isPassUpload &&
                 "bottom-[180px] left-[100px] flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-passes-secondary-color p-2 text-white",
               iconClassName

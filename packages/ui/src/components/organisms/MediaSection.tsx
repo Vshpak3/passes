@@ -1,10 +1,15 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable import/no-unresolved */
+// Import Swiper styles
+import "swiper/css"
+import "swiper/css/pagination"
+import "swiper/css/navigation"
 import classNames from "classnames"
-import NextImageArrow from "public/icons/next-slider-arrow.svg"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import PrevImageArrow from "public/icons/prev-slider-arrow.svg"
 import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react"
 import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
-import Slider from "react-slick"
+import { Navigation } from "swiper"
+import { Swiper, SwiperSlide } from "swiper/react"
 
 import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
@@ -12,31 +17,6 @@ import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
-
-const sliderSettings = {
-  infinite: false,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  nextArrow: <NextImageArrow />,
-  prevArrow: <PrevImageArrow />,
-  adaptiveHeight: true,
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 3,
-        slidesToScroll: 1
-      }
-    },
-    {
-      breakpoint: 640,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1
-      }
-    }
-  ]
-}
 
 interface MediaSectionProps {
   register: UseFormRegister<any>
@@ -46,6 +26,7 @@ interface MediaSectionProps {
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   setFiles?: Dispatch<SetStateAction<ContentFile[]>>
   isNewPost?: boolean
+  messages?: boolean
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
@@ -54,7 +35,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
   addNewMedia,
   files,
   onRemove,
-  isNewPost
+  messages = false
 }) => {
   const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
@@ -77,7 +58,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
   }
 
   return (
-    <div className="h-full w-full items-center overflow-y-auto pt-5">
+    <div className="pt-5">
       {files.length === 0 ? (
         <FormInput
           className="h-[170px]"
@@ -91,12 +72,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
           helperText={`You may upload up to ${MAX_FILE_COUNT} pictures/videos per post`}
         />
       ) : (
-        <div
-          className={classNames({
-            "flex w-full flex-col items-start justify-start gap-6  rounded-lg border-[1px] border-solid border-transparent p-1 sm:border-passes-secondary-color md:h-fit md:p-9":
-              true
-          })}
-        >
+        <div className="">
           {!!selectedMedia?.file && (
             <MediaModal
               isOpen={isNewPostModalOpen}
@@ -106,73 +82,110 @@ export const MediaSection: FC<MediaSectionProps> = ({
               childrenClassname="p-0"
             />
           )}
-          <div
-            className={
-              isNewPost
-                ? "flex w-full items-center justify-start"
-                : "w-100 flex items-center justify-center"
-            }
-          >
-            <Slider
-              className={
-                isNewPost ? "flex w-full max-w-[500px]" : "max-w-[500px]"
+          {
+            <style>
+              {!messages
+                ? `.swiper-button-next{
+                margin-top: 0px;
+                position: fixed;
+                right: -9px;
+                width: 45px;
+                height: 45px;
+                color:white;
+                transform: scale(0.6, 0.9);
               }
-              {...sliderSettings}
-            >
-              {files.map(({ file, content }, index) => (
-                <>
-                  {content && (
-                    <div
-                      key={index}
-                      className="border-1 relative flex flex-shrink-0 items-center justify-center rounded-[6px] border border-[#9C4DC1] p-2 pt-3"
-                    >
-                      <Media
-                        onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                          onRemove(index, e)
-                        }
-                        contentHeight={200}
-                        contentWidth={150}
-                        src={ContentService.userContentMediaPath(content)}
-                        type={content.contentType}
-                        iconClassName="bottom-[100px]"
-                        className={classNames(
-                          content.contentType.startsWith("image/")
-                            ? "cursor-pointer rounded-[6px] object-contain"
-                            : content.contentType.startsWith("video/")
-                            ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                            : content.contentType.startsWith("aduio/")
-                            ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
-                            : null
-                        )}
-                      />
-                    </div>
-                  )}
-                  {file && (
-                    <div
-                      key={index}
+              .swiper-button-prev{
+                position: fixed;
+                top: 50%;
+                left: -9px;
+                width: 45px;
+                height: 45px;
+                color:white;
+                margin-top: 0px;
+                transform: scale(0.6, 0.9);
+          }`
+                : `.swiper-button-next{
+                  position: absolute;
+                  right: -9px;
+                  width: 45px;
+                  height: 45px;
+                  color:white;
+                  transform: scale(0.6, 0.9);
+                  mix-blend-mode: difference;
+                }
+                .swiper-button-prev{
+                  position: absolute;
+                  top: 50%;
+                  left: -9px;
+                  width: 45px;
+                  height: 45px;
+                  color:white;
+                  transform: scale(0.6, 0.9);
+                  mix-blend-mode: difference;
+            }`}
+            </style>
+          }
+
+          <Swiper
+            className="mySwiper"
+            slidesPerView={messages ? 3 : 4}
+            spaceBetween={10}
+            navigation={true}
+            modules={[Navigation]}
+          >
+            {files.map(({ file, content }, index) => (
+              <>
+                {content && (
+                  <SwiperSlide key={index}>
+                    <Media
+                      onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                        onRemove(index, e)
+                      }
+                      contentHeight={150}
+                      contentWidth={150}
+                      src={ContentService.userContentMediaPath(content)}
+                      type={content.contentType}
+                      iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
                       className={classNames(
-                        isNewPost
-                          ? "h-[200px] w-[150px]"
-                          : "left-0 flex flex-shrink-0 items-center justify-center rounded-[6px]  border border-[#9C4DC1] p-2 pt-3"
+                        content.contentType.startsWith("image/")
+                          ? "cursor-pointer rounded-[6px] object-contain"
+                          : content.contentType.startsWith("video/")
+                          ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : content.contentType.startsWith("aduio/")
+                          ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : null
                       )}
-                    >
-                      <MediaFile
-                        onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                          onRemove(index, e)
-                        }
-                        iconClassName={
-                          isNewPost
-                            ? "bottom-[190px] left-[120px] z-[5]"
-                            : "bottom-[100px]"
-                        }
-                        onSelect={() => onMediaFileSelect({ file, content })}
-                        file={file}
-                      />
-                    </div>
-                  )}
-                </>
-              ))}
-              <div className="absolute top-[50%] ml-[15px] translate-y-[-50%]">
+                    />
+                  </SwiperSlide>
+                )}
+                {file && (
+                  <SwiperSlide key={index}>
+                    <MediaFile
+                      className={classNames(
+                        file.type.startsWith("image/")
+                          ? "cursor-pointer rounded-[6px] object-contain"
+                          : file.type.startsWith("video/")
+                          ? "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : file.type.startsWith("aduio/")
+                          ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
+                          : null
+                      )}
+                      contentHeight={150}
+                      contentWidth={150}
+                      iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                      onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                        onRemove(index, e)
+                      }
+                      onSelect={() => onMediaFileSelect({ file, content })}
+                      file={file}
+                    />
+                    {/* </div> */}
+                  </SwiperSlide>
+                )}
+              </>
+            ))}
+            <SwiperSlide>
+              <div className="flex min-h-[150px] min-w-[50px] items-center">
                 {files.length !== MAX_FILE_COUNT && (
                   <FormInput
                     register={register}
@@ -190,8 +203,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   />
                 )}
               </div>
-            </Slider>
-          </div>
+            </SwiperSlide>
+          </Swiper>
         </div>
       )}
     </div>
