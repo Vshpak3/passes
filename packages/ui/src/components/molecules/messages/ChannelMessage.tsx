@@ -2,14 +2,14 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
 import Locked from "public/icons/lock-locked.svg"
-import { FC } from "react"
+import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { Media } from "src/components/organisms/profile/post/Media"
+import { MediaContent } from "src/components/molecule/profile/post/MediaContent"
+import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { Avatar } from "./Avatar"
 import { CompletedAvatar } from "./CompletedAvatar"
-import { Content } from "./message/Content"
 
 interface ChannelMessageProps {
   isOwnMessage?: boolean
@@ -27,6 +27,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
 }) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
+
+  const [openBuyMessageModal, setOpenBuyMessageModal] = useState(false)
   return (
     <div
       className={classNames(
@@ -72,21 +74,22 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 ) : null}
               </div>
               <div className="max-w-[403px] pt-2">
-                {message.price > 0 && !message.paidAt ? (
-                  <Content
-                    contents={messageContent}
-                    paid={!!message.paidAt}
-                    price={message?.price}
+                <MediaContent
+                  contents={messageContent}
+                  isProcessing={!message.contentProcessed}
+                  paying={message.paying}
+                  paidAt={message.paidAt}
+                  previewIndex={message.previewIndex}
+                  price={message.price}
+                  openBuyModal={() => setOpenBuyMessageModal(true)}
+                />
+                {openBuyMessageModal && (
+                  <BuyMessageModal
                     message={message}
-                    isOwnMessage={isOwnMessage}
-                  />
-                ) : (
-                  <Media
-                    contents={messageContent}
-                    isProcessing={!message.contentProcessed}
+                    isOpen={openBuyMessageModal}
+                    setOpen={setOpenBuyMessageModal}
                   />
                 )}
-                {/* TODO: this includes only free content carsuel */}
               </div>
             </div>
           )}

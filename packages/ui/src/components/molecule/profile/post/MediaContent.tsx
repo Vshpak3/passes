@@ -1,22 +1,31 @@
-import { PostDto } from "@passes/api-client"
 import { FC } from "react"
 
-import { Carousel } from "src/components/organisms/profile/post/Carousel"
+import {
+  ContentCarousel,
+  ContentCarouselProps
+} from "src/components/organisms/profile/post/ContentCarousel"
 
-export interface MediaContentProps {
-  contents: PostDto["contents"]
-  autoplayVideo?: boolean
+export interface MediaContentProps extends ContentCarouselProps {
+  isProcessing: boolean
 }
 
 export const MediaContent: FC<MediaContentProps> = ({
-  contents = [],
-  autoplayVideo
+  isProcessing,
+  ...res
 }) => {
   return (
     <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
-      <div className="relative w-[100%]">
-        <Carousel contents={contents} autoplayVideo={autoplayVideo} />
-      </div>
+      {isProcessing ? (
+        <div className="relative mb-[30px] rounded-md border border-passes-purple-100 px-[25px] py-[15px]">
+          Your content is being processed.
+        </div>
+      ) : (
+        <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
+          <div className="relative w-[100%]">
+            <ContentCarousel {...res} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

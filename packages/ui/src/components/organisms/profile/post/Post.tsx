@@ -4,6 +4,7 @@ import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
+import { MediaContent } from "src/components/molecule/profile/post/MediaContent"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
@@ -14,9 +15,8 @@ import {
 import { MAX_PINNED_POST } from "src/config/post"
 import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
+import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 import { DeletePostModal } from "./DeletePostModal"
-import { LockedMedia } from "./LockedMedia"
-import { Media } from "./Media"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
 
@@ -38,7 +38,7 @@ const PostUnmemo: FC<PostProps> = ({
   updateProfileStats
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
-
+  const { setPost } = useBuyPostModal()
   const router = useRouter()
   const { pinPost, unpinPost, pinnedPosts } = usePinnedPosts(post.userId)
 
@@ -53,13 +53,16 @@ const PostUnmemo: FC<PostProps> = ({
     numPurchases,
     pinnedAt,
     postId,
-    purchasable,
+    paying,
     tags,
     text,
     totalTipAmount,
     userId,
     username,
-    contentProcessed
+    contentProcessed,
+    paidAt,
+    previewIndex,
+    price
   } = post
 
   useEffect(() => {
@@ -137,11 +140,15 @@ const PostUnmemo: FC<PostProps> = ({
             </p>
             {!!contents?.length && (
               <>
-                {!purchasable ? (
-                  <Media contents={contents} isProcessing={!contentProcessed} />
-                ) : (
-                  <LockedMedia post={post} />
-                )}
+                <MediaContent
+                  contents={contents}
+                  isProcessing={!contentProcessed}
+                  paying={paying}
+                  paidAt={paidAt}
+                  previewIndex={previewIndex}
+                  price={price ?? 0}
+                  openBuyModal={() => setPost(post)}
+                />
               </>
             )}
             <PostEngagement post={post} />

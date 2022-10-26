@@ -100,6 +100,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     if (socket) {
       socket.on("message", (data) => {
         data.sentAt = new Date(data.sentAt)
+        if (data.paidAt) {
+          data.paidAt = new Date(data.paidAt)
+        }
         const newMessage = data as MessageDto & { notification: string }
         if (newMessage.channelId === channelId) {
           switch (newMessage.notification) {

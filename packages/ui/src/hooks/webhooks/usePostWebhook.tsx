@@ -62,6 +62,9 @@ export const usePostWebhook = () => {
     if (socket) {
       socket.on("post", async (data) => {
         const post = data as PostDto & { notification: string }
+        if (data.paidAt) {
+          data.paidAt = new Date(data.paidAt)
+        }
         // eslint-disable-next-line sonarjs/no-small-switch
         switch (post.notification) {
           case "failed_payment":

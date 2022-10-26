@@ -213,11 +213,12 @@ export const CoverButton: FC<GenericButtonProps> = ({
   </button>
 )
 
-export const PostUnlockButton: FC<GenericButtonProps> = ({
+export const ContentUnlockButton: FC<GenericButtonProps> = ({
   name,
   onClick,
   value,
-  className = ""
+  className = "",
+  isDisabled
 }) => (
   <button
     className={classNames(
@@ -226,6 +227,7 @@ export const PostUnlockButton: FC<GenericButtonProps> = ({
     )}
     value={value}
     onClick={onClick}
+    disabled={!!isDisabled}
   >
     <UnlockLockIcon className="flex h-6 w-6" />
     {name}

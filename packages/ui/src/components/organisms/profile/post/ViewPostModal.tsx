@@ -5,7 +5,7 @@ import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { PostUnlockButton } from "src/components/atoms/Button"
+import { ContentUnlockButton } from "src/components/atoms/Button"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { Dialog } from "src/components/organisms/Dialog"
@@ -18,8 +18,8 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
-import { Carousel } from "src/components/organisms/profile/post/Carousel"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
+// import { ContentCarousel } from "src/components/organisms/profile/post/ContentCarousel"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -30,7 +30,7 @@ import {
 } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
 import { usePost } from "src/hooks/profile/usePost"
-import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
+// import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 
 interface ViewPostModalProps {
@@ -41,7 +41,7 @@ interface ViewPostModalProps {
 const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
-  const { viewPostActiveIndex } = useViewPostModal()
+  // const { viewPostActiveIndex } = useViewPostModal()
   const { removePost } = usePost()
 
   const [imageToShow, setShowcaseImg] = useState<null | string>(null)
@@ -86,8 +86,8 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 post.contents.length === 1 &&
                 imageToShow && <img src={imageToShow} alt="post" />}
               <div className="relative mt-3 flex h-[500px]  w-full w-[600px] flex-row items-center justify-center bg-transparent">
-                {postUnlocked && post.contents && post.contents.length > 1 && (
-                  <Carousel
+                {/* {postUnlocked && post.contents && post.contents.length > 1 && (
+                  <ContentCarousel
                     contents={post.contents}
                     activeIndex={
                       (viewPostActiveIndex.current &&
@@ -95,11 +95,11 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                       0
                     }
                   />
-                )}
+                )} */}
               </div>
               {!postUnlocked && (
                 <>
-                  <PostUnlockButton
+                  <ContentUnlockButton
                     onClick={() => setBuyPost(post)}
                     name={`Unlock Post For ${formatCurrency(post.price ?? 0)}`}
                     className="w-auto !px-[30px] !py-2.5"

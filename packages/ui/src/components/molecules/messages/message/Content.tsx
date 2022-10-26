@@ -1,7 +1,7 @@
 import { ContentDto, MessageDto } from "@passes/api-client"
 import { FC, useState } from "react"
 
-import { PostUnlockButton } from "src/components/atoms/Button"
+import { ContentUnlockButton } from "src/components/atoms/Button"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -42,7 +42,7 @@ export const Content: FC<ContentProps> = ({
     <div className="relative flex h-full w-full items-center justify-center">
       {!isOwnMessage && price > 0 && !paid && contents && (
         <div className="absolute z-10 flex w-max flex-col justify-center">
-          <PostUnlockButton
+          <ContentUnlockButton
             onClick={() => setOpenBuyMessageModal(true)}
             value="test"
             name={`Unlock For ${formatCurrency(price ?? 100)}`}
