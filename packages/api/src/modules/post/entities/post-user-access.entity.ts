@@ -26,6 +26,6 @@ export class PostUserAccessEntity extends BaseEntity {
   @Property({ default: false })
   paying: boolean
 
-  @Property({ length: PASS_HOLDER_IDS_LENGTH })
+  @Property({ length: PASS_HOLDER_IDS_LENGTH, default: '[]' })
   pass_holder_ids: string
 }
