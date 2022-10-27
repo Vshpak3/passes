@@ -16,17 +16,15 @@ interface EventTableItemProps {
   onDeleteEvent: (id: string) => void | Promise<void>
   onChangeTime: (id: string, time: Date) => void | Promise<void>
   mutate: KeyedMutator<ScheduledEventDto[] | undefined>
-  isTable?: boolean
+  isTablet: boolean
 }
 
 export const EventTableItem: FC<EventTableItemProps> = ({
   scheduledEvent,
   onDeleteEvent,
   onChangeTime,
-  isTable = false
+  isTablet
 }) => {
-  const { isMobile } = useWindowSize()
-
   const {
     scheduledEventId,
     type,
@@ -35,30 +33,35 @@ export const EventTableItem: FC<EventTableItemProps> = ({
     batchMessage,
     sendMessage
   } = scheduledEvent
-  let text: string | undefined = undefined
-  let price: number | undefined = undefined
-  let media = 0
-  let typeStr = "Unknown"
+
+  let text: string
+  let price: number | string
+  let media: number
+  let typeStr: string
+
   switch (type) {
     case ScheduledEventDtoTypeEnum.CreatePost:
-      text = createPost?.text
-      price = createPost?.price
+      text = createPost?.text ?? ""
+      price = createPost?.price ?? 0
       media = createPost?.contentIds.length ?? 0
       typeStr = "Post"
       break
     case ScheduledEventDtoTypeEnum.BatchMessage:
-      text = batchMessage?.text
-      price = batchMessage?.price
+      text = batchMessage?.text ?? ""
+      price = batchMessage?.price ?? 0
       media = batchMessage?.contentIds.length ?? 0
       typeStr = "Message"
       break
     case ScheduledEventDtoTypeEnum.SendMessage:
-      text = sendMessage?.text
-      price = sendMessage?.price
+      text = sendMessage?.text ?? ""
+      price = sendMessage?.price ?? 0
       media = sendMessage?.contentIds.length ?? 0
       typeStr = "Message"
       break
+    default:
+      throw new Error("Unexpected issue")
   }
+
   const generateActionStatus = (
     <div className="flex items-center gap-[5px] xs:gap-[30px]">
       <TrashIcon
@@ -75,16 +78,16 @@ export const EventTableItem: FC<EventTableItemProps> = ({
           }
           await onChangeTime(scheduledEventId, date)
         }}
-        placement={isMobile ? "top" : "auto"}
+        placement={isTablet ? "top" : "auto"}
       />
     </div>
   )
 
-  return isTable ? (
+  return !isTablet ? (
     <tr className="px-5 odd:bg-passes-purple-200">
       <td className="pl-5 pb-1">{typeStr}</td>
       <td className="px-3 pb-1">{media}</td>
-      <td className="px-3 pb-1">{formatCurrency(price ?? 0)}</td>
+      <td className="px-3 pb-1">{price ? formatCurrency(price) : "Free"}</td>
       <td className="my-[6px] max-w-[350px] truncate px-3 pb-1">
         {formatText(text)}
       </td>
@@ -96,22 +99,21 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       </td>
     </tr>
   ) : (
-    <li className="mb-8 px-5">
+    <div className="mb-8 bg-passes-purple-200 px-5 py-5">
       <div className="mb-6 flex items-center justify-between">
         <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
         <span>{generateActionStatus}</span>
       </div>
-      <div className="flex items-center gap-2">
-        <div className="mr-3 h-[125px] w-[125px] min-w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
-        <div className="flex flex-col gap-2">
-          <div> {media}</div>
-          <div>{formatCurrency(price ?? 0)}</div>
-          <div className="flex break-all">
-            <span>{formatText(text)}</span>
-          </div>
-          {/* <span>{generateActionStatus}</span> */}
+      <div className="flex flex-col gap-2">
+        <div className="px-3">
+          <span className="px-5">{typeStr}</span>
+          <span className="px-5">{media}</span>
+          <span className="px-5">{price ? formatCurrency(price) : "Free"}</span>
+          <span className="my-[6px] max-w-[350px] truncate px-5">
+            {formatText(text)}
+          </span>
         </div>
       </div>
-    </li>
+    </div>
   )
 }

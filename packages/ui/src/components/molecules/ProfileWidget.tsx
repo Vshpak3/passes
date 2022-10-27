@@ -1,5 +1,5 @@
 import { ListMemberDto, UserDisplayInfoDto } from "@passes/api-client"
-import { Link } from "lucide-react"
+import Link from "next/link"
 import React, { FC } from "react"
 
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
