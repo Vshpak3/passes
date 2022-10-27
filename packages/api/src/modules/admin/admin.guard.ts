@@ -21,8 +21,8 @@ export class AdminGuard extends AuthGuard('jwt-admin') {
     private readonly userService: UserService,
   ) {
     super()
-    this.secret = this.configService.get('admin.secret') as string
     this.env = this.configService.get('infra.env') as string
+    this.secret = this.configService.get('admin.secret') as string
   }
 
   async adminCheck(id: string, secret: string): Promise<UserDto> {

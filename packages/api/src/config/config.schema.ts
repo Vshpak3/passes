@@ -60,6 +60,7 @@ export const configValidationSchema = Joi.object({
   CLOUDFRONT_BASE_URL: Joi.string().uri().required(),
   CLOUDFRONT_KEY_PAIR_ID: Joi.string().required(),
   CLOUDFRONT_PRIVATE_KEY: Joi.string().required(),
+  CLOUDFRONT_DISTRIBUTION: Joi.string().required(),
 
   // -----------------------------------------------------------
 
@@ -147,6 +148,7 @@ export const configConfiguration = async function (): Promise<
       baseUrl: getConfigValue('CLOUDFRONT_BASE_URL'),
       keyPairId: getConfigValue('CLOUDFRONT_KEY_PAIR_ID'),
       privateKey: getConfigValue('CLOUDFRONT_PRIVATE_KEY'),
+      distribution: getConfigValue('CLOUDFRONT_DISTRIBUTION'),
       signedUrlExpirationTime: ms('5 minutes'),
       signedCookieExpirationTime: ms('1 day'),
       cookieOptions: {

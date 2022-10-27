@@ -4,13 +4,10 @@ import {
 } from '@aws-sdk/client-cloudfront'
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import { Logger } from 'winston'
 
 import {
   Database,
@@ -30,20 +27,21 @@ import { ProfileEntity } from './entities/profile.entity'
 
 @Injectable()
 export class ProfileService {
+  private env: string
+  private distribution: string
   private client: CloudFrontClient
 
   constructor(
     private readonly configService: ConfigService,
-
-    @Inject(WINSTON_MODULE_PROVIDER)
-    private readonly logger: Logger,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {
-    this.client = new CloudFrontClient(getAwsConfig(this.configService))
+    this.env = configService.get('infra.env') as string
+    this.distribution = configService.get('cloudfront.distribution') as string
+    this.client = new CloudFrontClient(getAwsConfig(configService))
   }
 
   async createOrUpdateProfile(
@@ -153,11 +151,13 @@ export class ProfileService {
   }
 
   async updateProfileImage(userId: string): Promise<void> {
-    const distribution = 'EK5UPQORLYPQ2' // TODO: move to config
+    if (this.env === 'dev') {
+      return
+    }
 
     await this.client.send(
       new CreateInvalidationCommand({
-        DistributionId: distribution,
+        DistributionId: this.distribution,
         InvalidationBatch: {
           Paths: {
             Quantity: 1,
