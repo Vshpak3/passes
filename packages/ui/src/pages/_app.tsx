@@ -90,6 +90,7 @@ type SubAppProps = {
   getLayout: any
 }
 
+// SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [viewPost, setViewPost] = useState<PostDto | null>(null)
   const viewPostActiveIndex = useRef(null)
@@ -99,6 +100,9 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed, mutate, user } = useTokenRefresh()
   const router = useRouter()
+
+  // additional mutate on route change due to strange login issues
+  // where user change does not globablly propagate
   useEffect(() => {
     if (!user) {
       mutate()
