@@ -10,7 +10,6 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
-import path from 'path'
 import { Logger } from 'winston'
 
 import {

@@ -9,6 +9,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
+import { MIN_TIP_MESSAGE_PRICE } from "src/config/messaging"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
@@ -25,7 +26,10 @@ const chatSettingsSchema = object({
     is: false,
     then: number()
       .typeError("Please enter tip amount")
-      .min(5, "minimum tip amount is $5")
+      .min(
+        MIN_TIP_MESSAGE_PRICE,
+        `Minimum tip amount is $${MIN_TIP_MESSAGE_PRICE}`
+      )
       .required("Please enter tip amount")
   }),
   welcomeMessage: string().when("showWelcomeMessageInput", {
@@ -124,7 +128,7 @@ const ChatSettings = () => {
             {!values.isWithoutTip && (
               <div className="relative">
                 <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
-                  Minimum $5.00
+                  Minimum ${MIN_TIP_MESSAGE_PRICE}
                 </span>
                 <FormInput
                   placeholder="Enter Minimum Tip Amount"

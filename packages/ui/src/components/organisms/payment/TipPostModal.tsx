@@ -70,7 +70,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
           required: { message: "Tip amount is required", value: true },
           min: {
             value: MIN_TIP_POST_PRICE,
-            message: `Tip must be more than ${MIN_TIP_POST_PRICE}`
+            message: `Tip must be more than $${MIN_TIP_POST_PRICE}`
           }
         }}
       />
