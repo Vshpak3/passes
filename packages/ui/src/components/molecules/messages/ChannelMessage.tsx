@@ -4,7 +4,7 @@ import { isAfter, subDays } from "date-fns"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { MediaContent } from "src/components/molecule/profile/post/MediaContent"
+import { MediaContent } from "src/components/molecules/MediaContent"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency, formatText } from "src/helpers/formatters"
