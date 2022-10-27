@@ -20,7 +20,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
       {!removed && (
         <li className="duration-400 flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
           <Link href={`/tools/list-members/${list.listId}`}>
-            <a key={list.listId}>
+            <a key={list.listId} className="flex-1">
               <div className="flex flex-1 flex-col gap-[10px]">
                 <h1 className="text-xl font-bold">
                   {list.name || list.listId}
