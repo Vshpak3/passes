@@ -56,7 +56,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Tip Post (Minimum $5)
+          Tip Post (Minimum $3)
         </span>
       </div>
       <Input
@@ -67,7 +67,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
         type="number"
         options={{
           required: { message: "Tip amount is required", value: true },
-          min: { value: 5, message: "Tip must be more than $5" }
+          min: { value: 3, message: "Tip must be more than $5" }
         }}
       />
       <div className="my-8">

@@ -191,7 +191,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   <FormInput
                     register={register}
                     name="drag-drop"
-                    type="file"
+                    type="drag-drop-file"
                     multiple={true}
                     trigger={
                       <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border border-passes-secondary-color bg-transparent">

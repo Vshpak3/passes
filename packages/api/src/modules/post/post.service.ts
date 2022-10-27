@@ -69,8 +69,9 @@ import {
   PostNotFoundException,
 } from './error/post.error'
 
-export const MINIMUM_POST_TIP_AMOUNT = 5.0
+export const MINIMUM_POST_TIP_AMOUNT = 3.0
 const MAX_PINNED_POST = 3
+const MINIMUM_POST_PRICE = 3
 // const MAX_CATEGORIES_PER_USER = 25
 
 @Injectable()
@@ -96,20 +97,20 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostRequestDto,
   ) {
-    verifyTaggedText(createPostDto.text, createPostDto.tags)
-    if (
-      createPostDto.text.length === 0 &&
-      createPostDto.contentIds.length === 0
-    ) {
+    const { text, tags, price, contentIds, passIds } = createPostDto
+    if (!!price && price < MINIMUM_POST_PRICE && price > 0) {
+      throw new BadRequestException(
+        `Post price can not be less than ${MINIMUM_POST_PRICE}`,
+      )
+    }
+    verifyTaggedText(text, tags)
+    if (text.length === 0 && contentIds.length === 0) {
       throw new BadPostPropertiesException(
         'Must provide either text or content in a post',
       )
     }
-    await this.passService.validatePassIds(userId, createPostDto.passIds)
-    return await this.contentService.validateContentIds(
-      userId,
-      createPostDto.contentIds,
-    )
+    await this.passService.validatePassIds(userId, passIds)
+    return await this.contentService.validateContentIds(userId, contentIds)
   }
 
   async publishPost(userId: string, createPostDto: CreatePostRequestDto) {
