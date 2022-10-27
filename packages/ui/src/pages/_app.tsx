@@ -37,7 +37,6 @@ import { ReportModalContext } from "src/contexts/ReportModal"
 import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
-import { useUser } from "src/hooks/useUser"
 
 const BlockModal = dynamic(
   () => import("src/components/organisms/BlockModal"),
@@ -98,18 +97,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
-  const { hasRefreshed } = useTokenRefresh()
-  const { mutate, user } = useUser()
+  const { hasRefreshed, mutate } = useTokenRefresh()
 
   useEffect(() => {
     // console.log(accessToken, setAccessToken, setRefreshToken, fetch)
     mutate()
   }, [mutate])
 
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(user)
-  }, [user])
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
     [

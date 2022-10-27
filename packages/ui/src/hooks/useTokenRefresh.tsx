@@ -40,5 +40,5 @@ export const useTokenRefresh = () => {
     return () => clearInterval(interval)
   }, [mutate, refresh, router, setAccessToken])
 
-  return { hasRefreshed }
+  return { hasRefreshed, mutate }
 }
