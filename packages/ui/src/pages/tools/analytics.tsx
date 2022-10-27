@@ -29,7 +29,7 @@ const Analytics: NextPage = () => {
   const [analyticsTab, setAnalyticsTab] = useState(tab)
   const { userBalance } = useCreatorBalance()
   useEffect(() => {
-    window.location.hash = analyticsTab
+    history.replaceState(undefined, "", `#${analyticsTab}`)
   }, [analyticsTab])
 
   const handleAnalyticsTabClick = (value: AnalyticsNavigationOptions) => {

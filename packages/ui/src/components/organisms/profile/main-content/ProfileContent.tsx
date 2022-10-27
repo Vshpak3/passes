@@ -19,7 +19,7 @@ const UnMemoizedProfileContent: FC<ProfileContentProps> = ({
 
   const [activeTab, setActiveTab] = useState(tab)
   useEffect(() => {
-    window.location.hash = activeTab
+    history.replaceState(undefined, "", `#${activeTab}`)
   }, [activeTab])
   return (
     <>
