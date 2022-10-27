@@ -6,7 +6,7 @@ import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
-import Router from "next/router"
+import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
@@ -98,11 +98,11 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed, mutate } = useTokenRefresh()
-
+  const router = useRouter()
   useEffect(() => {
     // console.log(accessToken, setAccessToken, setRefreshToken, fetch)
     mutate()
-  }, [mutate])
+  }, [mutate, router.route])
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
