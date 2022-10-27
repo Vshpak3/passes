@@ -111,4 +111,16 @@ export class ProfileController {
       await this.profileService.isProfileActive(req.user.id),
     )
   }
+
+  @ApiEndpoint({
+    summary: 'Updates a profile image by invalidating the CDN',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Profile image was updated',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('profile-image')
+  async updateProfileImage(@Req() req: RequestWithUser): Promise<void> {
+    await this.profileService.updateProfileImage(req.user.id)
+  }
 }

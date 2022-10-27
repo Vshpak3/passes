@@ -1,9 +1,14 @@
 import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from '@aws-sdk/client-cloudfront'
+import {
   BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Logger } from 'winston'
 
@@ -13,6 +18,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { getAwsConfig } from '../../util/aws.util'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { PROFILE_NOT_EXIST } from './constants/errors'
@@ -23,7 +29,11 @@ import { ProfileEntity } from './entities/profile.entity'
 
 @Injectable()
 export class ProfileService {
+  private client: CloudFrontClient
+
   constructor(
+    private readonly configService: ConfigService,
+
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
 
@@ -31,7 +41,9 @@ export class ProfileService {
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
-  ) {}
+  ) {
+    this.client = new CloudFrontClient(getAwsConfig(this.configService))
+  }
 
   async createOrUpdateProfile(
     userId: string,
@@ -137,5 +149,22 @@ export class ProfileService {
       .select('is_active')
       .first()
     return !!status && status.is_active
+  }
+
+  async updateProfileImage(userId: string): Promise<void> {
+    const distribution = 'EK5UPQORLYPQ2' // TODO: move to config
+
+    await this.client.send(
+      new CreateInvalidationCommand({
+        DistributionId: distribution,
+        InvalidationBatch: {
+          Paths: {
+            Quantity: 1,
+            Items: [`/profile/${userId}/profile-thumbnail.jpeg`],
+          },
+          CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
+        },
+      }),
+    )
   }
 }
