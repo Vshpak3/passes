@@ -96,18 +96,15 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       <div className="mb-8 px-5 md:hidden">
         <div className="mb-6 flex items-center justify-between">
           <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
-          {/* <span>{generateActionStatus}</span> */}
         </div>
-        <div className="flex items-center gap-2">
-          <div className="mr-3 h-[125px] w-[125px] min-w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
-          <div className="flex flex-col gap-2">
-            <div> {media}</div>
-            <div>{formatCurrency(price ?? 0)}</div>
-            <div className="flex">
-              <span>{formatText(text)}</span>
-            </div>
-            <span>{generateActionStatus}</span>
+        <div className="flex flex-col gap-2">
+          <div>Type: {typeStr}</div>
+          <div>Media: {media}</div>
+          <div>Price: {formatCurrency(price ?? 0)}</div>
+          <div className="flex">
+            <span>Text: {formatText(text)}</span>
           </div>
+          <span>{generateActionStatus}</span>
         </div>
       </div>
     </>

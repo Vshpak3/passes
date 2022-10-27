@@ -96,49 +96,50 @@ const MessagesV2: FC<MessagesV2Props> = ({
 
   return (
     <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
-      {user && user.userId && massMessage ? (
-        <ChannelMassDM
-          selectedPasses={selectedPasses}
-          setSelectedPasses={setSelectedPasses}
-          selectedLists={selectedLists}
-          setSelectedLists={setSelectedLists}
-          excludedLists={excludedLists}
-          setExcludedLists={setExcludedLists}
-          userId={user?.userId}
-        />
-      ) : (
-        <ChannelList
-          onUserSelect={onUserSelect}
-          selectedChannel={selectedChannel}
-          onChannelClicked={handleChannelClicked}
-        />
-      )}
-      {user && user.userId && !massMessage ? (
-        openChannelView && (
-          <ChannelView
-            selectedChannel={selectedChannel}
-            gallery={gallery}
-            setGallery={setGallery}
-            isCreator={!!user?.isCreator}
-            user={user}
-            vaultContent={vaultContent}
-            setVaultContent={setVaultContent}
-            onBack={handleOpenChannelView}
-          />
-        )
-      ) : (
-        <ChannelViewMassDM
-          vaultContent={vaultContent}
-          setVaultContent={setVaultContent}
-          selectedPasses={selectedPasses}
-          setSelectedPasses={setSelectedPasses}
-          selectedLists={selectedLists}
-          setSelectedLists={setSelectedLists}
-          excludedLists={excludedLists}
-          setExcludedLists={setExcludedLists}
-          setMassMessage={setMassMessage}
-        />
-      )}
+      <>
+        {massMessage ? (
+          <>
+            <ChannelMassDM
+              selectedPasses={selectedPasses}
+              setSelectedPasses={setSelectedPasses}
+              selectedLists={selectedLists}
+              setSelectedLists={setSelectedLists}
+              excludedLists={excludedLists}
+              setExcludedLists={setExcludedLists}
+            />
+            <ChannelViewMassDM
+              vaultContent={vaultContent}
+              setVaultContent={setVaultContent}
+              selectedPasses={selectedPasses}
+              setSelectedPasses={setSelectedPasses}
+              selectedLists={selectedLists}
+              setSelectedLists={setSelectedLists}
+              excludedLists={excludedLists}
+              setExcludedLists={setExcludedLists}
+              setMassMessage={setMassMessage}
+            />
+          </>
+        ) : (
+          <>
+            <ChannelList
+              onUserSelect={onUserSelect}
+              selectedChannel={selectedChannel}
+              onChannelClicked={handleChannelClicked}
+            />
+            {openChannelView && (
+              <ChannelView
+                selectedChannel={selectedChannel}
+                gallery={gallery}
+                setGallery={setGallery}
+                isCreator={!!user?.isCreator}
+                vaultContent={vaultContent}
+                setVaultContent={setVaultContent}
+                onBack={handleOpenChannelView}
+              />
+            )}
+          </>
+        )}
+      </>
     </div>
   )
 }

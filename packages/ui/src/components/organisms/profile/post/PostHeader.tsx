@@ -1,6 +1,4 @@
 import { PostDto } from "@passes/api-client"
-import classNames from "classnames"
-import Link from "next/link"
 import PinIcon from "public/icons/pin.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
@@ -34,16 +32,9 @@ export const PostHeader: FC<PostHeaderProps> = ({
 
   return (
     <div className="flex w-full items-center justify-between">
-      <Link href={`${window.location.origin}/${username}`}>
-        <a
-          className={classNames({
-            "flex items-center space-x-4 overflow-x-clip": true,
-            "pointer-events-none": !displayName
-          })}
-        >
-          <ProfileWidget user={user} />
-        </a>
-      </Link>
+      <div className="flex items-center space-x-4 overflow-x-clip">
+        <ProfileWidget user={user} />
+      </div>
       <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo

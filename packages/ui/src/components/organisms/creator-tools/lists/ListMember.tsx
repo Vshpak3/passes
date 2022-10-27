@@ -1,5 +1,4 @@
 import { ListMemberDto } from "@passes/api-client"
-import Link from "next/link"
 import { FC, useState } from "react"
 
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
@@ -15,22 +14,18 @@ export const ListMember: FC<ListMemberProps> = ({
   onRemoveFan,
   removable
 }) => {
-  const { userId, username } = fanInfo
   const [removed, setRemoved] = useState<boolean>(false)
+
   return (
     <>
       {!removed && (
         <div className="flex items-center justify-between py-3">
-          <Link href={`/${username}`}>
-            <a>
-              <ProfileWidget user={fanInfo} />
-            </a>
-          </Link>
+          <ProfileWidget user={fanInfo} />
           {removable && (
             <span
               className="duration-400 hover:text-passes-red-100 ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={async () => {
-                await onRemoveFan(userId)
+                await onRemoveFan(fanInfo.userId)
                 setRemoved(true)
               }}
             >

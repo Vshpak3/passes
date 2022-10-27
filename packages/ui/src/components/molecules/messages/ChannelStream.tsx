@@ -1,7 +1,6 @@
 import {
   GetMessagesRequestDto,
   GetMessagesResponseDto,
-  GetUserResponseDto,
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
@@ -25,15 +24,15 @@ interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
   minimumTip?: number | null
-  user: GetUserResponseDto
 }
 
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
-  minimumTip,
-  user
+  minimumTip
 }) => {
+  const { user } = useUser()
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [time, _setTime] = useState(Date.now())
   const api = new MessagesApi()
@@ -50,6 +49,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     Record<string, Partial<MessageDto>>
   >({})
   const [attempts, setAttempts] = useState<number>(0)
+
   useEffect(() => {
     setSocket(
       accessToken && accessToken.length
@@ -64,6 +64,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         : undefined
     )
   }, [accessToken])
+
   useEffect(() => {
     if (socket) {
       socket.on("connect", () => {
@@ -82,6 +83,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       }
     }
   }, [socket])
+
   useEffect(() => {
     if (!isConnected && attempts < MAX_RECONNECT_ATTEMPTS) {
       const interval = setTimeout(async () => {
@@ -91,6 +93,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       return () => clearInterval(interval)
     }
   }, [isConnected, attempts, socket])
+
   useEffect(() => {
     if (socket) {
       socket.on("message", (data) => {
@@ -133,6 +136,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       }
     }
   }, [channelId, socket, setMessageUpdates])
+
   useEffect(() => {
     if (!channelId) {
       return

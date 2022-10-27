@@ -1,13 +1,13 @@
 import { PostDto } from "@passes/api-client"
 import classnames from "classnames"
 import MessageIcon from "public/icons/message-dots-square.svg"
-import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 
 import { ContentUnlockButton } from "src/components/atoms/Button"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
+import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { Dialog } from "src/components/organisms/Dialog"
 import {
   Dropdown,
@@ -19,8 +19,6 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
-// import { ContentCarousel } from "src/components/organisms/profile/post/ContentCarousel"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import {
@@ -30,7 +28,6 @@ import {
 } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
 import { usePost } from "src/hooks/profile/usePost"
-// import { useViewPostModal } from "src/hooks/profile/useViewPostModal"
 import { useBuyPostModal } from "src/hooks/useBuyPostModal"
 
 interface ViewPostModalProps {
@@ -55,7 +52,16 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   const postUnlocked = !post.purchasable
 
-  const { isLiked, numLikes, purchasable, postId, userId, username } = post
+  const {
+    isLiked,
+    numLikes,
+    purchasable,
+    postId,
+    userId,
+    username,
+    displayName
+  } = post
+  const user = { userId, username, displayName }
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!post.isOwner, {
@@ -149,26 +155,9 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
             </div>
             <Dropdown items={dropdownOptions} />
           </div>
-          <a
-            href={`${window.location.origin}/${username}`}
-            className="mt-[50px] flex space-x-4 overflow-x-clip"
-          >
-            <ProfileThumbnail userId={userId} />
-            <div>
-              <div className="flex items-center">
-                <h4 className="mr-1.5 text-base font-medium leading-[22px]">
-                  {post.displayName}
-                </h4>
-                <VerifiedIcon />
-                <span className="ml-0.5 text-xs font-medium text-white/50">
-                  Verified
-                </span>
-              </div>
-              <p className="text-start text-xs font-medium leading-[22px] text-white/50">
-                @{username}
-              </p>
-            </div>
-          </a>
+          <div className="mt-[50px] flex space-x-4 overflow-x-clip">
+            <ProfileWidget user={user} />
+          </div>
           <p className="mt-7 text-justify text-base font-medium">
             {formatText(post.text)}
           </p>

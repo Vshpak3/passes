@@ -1,5 +1,5 @@
 import { ListDto, PassDto } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
+import { Dispatch, FC, SetStateAction, useCallback } from "react"
 
 import { PassesSearchBar } from "src/components/organisms/profile/main-content/new-post/PassesSearchBar"
 import { ListsSearchBar } from "./ListsSearchBar"
@@ -11,7 +11,6 @@ interface ChannelListsProps {
   setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
   excludedLists: ListDto[]
   setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-  userId: string
 }
 
 export const ChannelMassDM: FC<ChannelListsProps> = ({
@@ -20,8 +19,7 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
   selectedLists,
   setSelectedLists,
   excludedLists,
-  setExcludedLists,
-  userId
+  setExcludedLists
 }) => {
   const onPassSelect = useCallback(
     (pass: PassDto) => {
@@ -55,7 +53,6 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
           <ListsSearchBar
             selectedListIds={selectedLists.map((list) => list.listId)}
             onSelect={onListSelect}
-            userId={userId}
           />
         </div>
         <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
@@ -65,9 +62,7 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
           <PassesSearchBar
             selectedPassIds={selectedPasses.map((pass) => pass.passId)}
             onSelect={onPassSelect}
-            userId={userId}
           />
-          {/* TODO: pass creator ID there is an issue on <PassesSearchBar and not necessary hook useProfile at least for messages */}
         </div>
         <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
           <span className="text-[16px] font-medium leading-[24px]">
@@ -76,7 +71,6 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
           <ListsSearchBar
             selectedListIds={excludedLists.map((list) => list.listId)}
             onSelect={onExcludeListSelect}
-            userId={userId}
           />
         </div>
       </div>

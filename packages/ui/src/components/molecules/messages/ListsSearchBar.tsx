@@ -5,20 +5,22 @@ import { FC, useCallback, useMemo } from "react"
 
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { useListsSearch } from "src/hooks/search/useListsSearch"
+import { useUser } from "src/hooks/useUser"
 
 interface ListsSearchBarProps {
   selectedListIds: string[]
   onSelect: (list: ListDto) => void
-  userId: string
 }
 
 export const ListsSearchBar: FC<ListsSearchBarProps> = ({
   selectedListIds,
-  onSelect,
-  userId
+  onSelect
 }) => {
-  const { results, setSearchValue, loading, searchValue } =
-    useListsSearch(userId)
+  const { user } = useUser()
+
+  const { results, setSearchValue, loading, searchValue } = useListsSearch(
+    user?.userId
+  )
 
   const searchOptions = useMemo(
     () =>

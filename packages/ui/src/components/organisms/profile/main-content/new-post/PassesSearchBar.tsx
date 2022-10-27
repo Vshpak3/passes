@@ -4,24 +4,22 @@ import classNames from "classnames"
 import { FC, useCallback, useMemo } from "react"
 
 import { SearchBar } from "src/components/molecules/SearchBar"
-import { useProfile } from "src/hooks/profile/useProfile"
 import { usePassesSearch } from "src/hooks/search/usePassesSearch"
+import { useUser } from "src/hooks/useUser"
 
 interface PassesSearchBarProps {
   selectedPassIds: string[]
   onSelect: (pass: PassDto) => void
-  userId?: string
 }
 
 export const PassesSearchBar: FC<PassesSearchBarProps> = ({
   selectedPassIds,
-  onSelect,
-  userId
+  onSelect
 }) => {
-  const { profileUserId } = useProfile()
+  const { user } = useUser()
 
   const { results, setSearchValue, searchValue, loading } = usePassesSearch(
-    userId ? userId : profileUserId
+    user?.userId
   )
 
   const searchOptions = useMemo(

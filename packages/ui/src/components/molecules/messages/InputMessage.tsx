@@ -26,6 +26,13 @@ import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
+interface InputMessageFormProps {
+  message: string
+  isPaid: boolean
+  previewIndex: number
+  submitError: any
+}
+
 interface InputMessageProps {
   channelId: string
   minimumTip?: number | null
@@ -52,7 +59,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     clearErrors,
     reset,
     watch
-  } = useForm()
+  } = useForm<InputMessageFormProps>()
   const [tip, setTip] = useState(0)
   const message = watch("message", "")
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
@@ -96,7 +103,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         channelId,
         tipAmount: tip,
         price: isPaid ? Number(messagePrice) : 0,
-        previewIndex: parseInt(previewIndex)
+        previewIndex: Number(previewIndex)
       }
     })
     setFiles([])
