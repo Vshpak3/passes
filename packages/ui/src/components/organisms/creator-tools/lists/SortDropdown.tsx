@@ -8,7 +8,7 @@ const orderTypeDisplayNames: Record<any, string> = {
   name: "Name",
   username: "Username",
   "updated at": "Updated At",
-  "created at": "Creation Date",
+  "created at": "Added at date",
   recent: "Most recent",
   oldest: "Oldest",
   tip: "Highest tip amount",
