@@ -33,7 +33,6 @@ new_task_defintiion=$(
 new_task_info=$(
   aws ecs register-task-definition \
     --family ${task_family} \
-    --runtime-platform 'operatingSystemFamily=LINUX,cpuArchitecture=ARM64' \
     --cli-input-json "${new_task_defintiion}"
 )
 new_revision=$(echo ${new_task_info} | jq -r '.taskDefinition.revision')

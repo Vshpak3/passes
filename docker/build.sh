@@ -22,7 +22,7 @@ function log() {
 log "Build started on $(date)"
 
 # Defaults
-readonly default_registry_uri=626392801904.dkr.ecr.us-east-1.amazonaws.com/passes-monolith
+readonly default_registry_uri=908484362543.dkr.ecr.us-east-1.amazonaws.com/passes-monolith
 readonly default_image_tag=$(git rev-parse --short HEAD 2> /dev/null || true)
 readonly default_dedup_build=false
 
