@@ -49,8 +49,11 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
               <div className="relative">
                 <ProfileThumbnail userId={user.userId} />
               </div>
-              <span className="ml-3 text-base font-medium leading-6 text-white">
-                {user.username}
+              <span className="ml-3 text-lg font-medium leading-6 text-white">
+                {user.displayName}
+              </span>
+              <span className="ml-3 flex items-end text-xs font-medium leading-6 text-gray-300">
+                @{user.username}
               </span>
             </div>
             <span
