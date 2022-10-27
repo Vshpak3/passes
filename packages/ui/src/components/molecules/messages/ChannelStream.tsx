@@ -24,10 +24,7 @@ import { ChannelMessage } from "./ChannelMessage"
 interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
-  isCreator?: boolean
   minimumTip?: number | null
-  otherUserDisplayName: string | undefined
-  otherUserUsername: string
   user: GetUserResponseDto
 }
 
@@ -35,8 +32,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
   minimumTip,
-  otherUserDisplayName,
-  otherUserUsername,
   user
 }) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -198,9 +193,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                       ...(messageUpdates[arg.messageId] ?? {})
                     }}
                     isOwnMessage={arg.senderId === user?.userId}
-                    otherUserDisplayName={otherUserDisplayName}
-                    otherUserUsername={otherUserUsername}
-                    user={user}
                   />
                 )
               }}
@@ -219,9 +211,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                         ...(messageUpdates[m.messageId] ?? {})
                       }}
                       isOwnMessage={m.senderId === user?.userId}
-                      otherUserDisplayName={otherUserDisplayName}
-                      otherUserUsername={otherUserUsername}
-                      user={user}
                     />
                   )
                 })}
@@ -235,9 +224,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                         ...(messageUpdates[m.messageId] ?? {})
                       }}
                       isOwnMessage={m.senderId === user?.userId}
-                      otherUserDisplayName={otherUserDisplayName}
-                      otherUserUsername={otherUserUsername}
-                      user={user}
                     />
                   )
                 })}

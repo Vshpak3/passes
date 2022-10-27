@@ -85,9 +85,6 @@ export const ChannelView: FC<ChannelViewProps> = ({
                 channelId={selectedChannel.channelId}
                 freeMessages={freeMessages}
                 minimumTip={minimumTip}
-                isCreator={isCreator}
-                otherUserDisplayName={selectedChannel.otherUserDisplayName}
-                otherUserUsername={selectedChannel.otherUserUsername}
                 user={user}
               />
               {selectedChannel.channelId && (

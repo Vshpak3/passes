@@ -1,29 +1,21 @@
 import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
-import Locked from "public/icons/lock-locked.svg"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
 import { MediaContent } from "src/components/molecule/profile/post/MediaContent"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { Avatar } from "./Avatar"
-import { CompletedAvatar } from "./CompletedAvatar"
 
 interface ChannelMessageProps {
   isOwnMessage?: boolean
   message: MessageDto
-  otherUserDisplayName: string | undefined
-  otherUserUsername: string
-  user: any
 }
 export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
-  isOwnMessage = false,
-  otherUserDisplayName,
-  otherUserUsername,
-  user
+  isOwnMessage = false
 }) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
@@ -38,7 +30,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     >
       {!isOwnMessage && (
         <div className="flex flex-shrink-0 items-end">
-          <Avatar imageSrc="https://www.w3schools.com/w3images/avatar1.png" />
+          <ProfileThumbnail userId={message.senderId} />
         </div>
       )}
 
@@ -56,42 +48,25 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           )}
 
           {!!messageContent.length && (
-            <div className="flex w-full flex-col">
-              <div className="flex flex-shrink-0 items-start justify-between">
-                <CompletedAvatar
-                  senderId={message.senderId}
-                  otherUserDisplayName={otherUserDisplayName}
-                  otherUserUsername={otherUserUsername}
-                  user={user}
+            <div className="max-w-[403px] pt-2">
+              <MediaContent
+                contents={messageContent}
+                isProcessing={!message.contentProcessed}
+                paying={message.paying}
+                paid={!!message.paidAt || !!isOwnMessage}
+                previewIndex={message.previewIndex}
+                price={message.price}
+                openBuyModal={() => setOpenBuyMessageModal(true)}
+              />
+              {openBuyMessageModal && (
+                <BuyMessageModal
+                  message={message}
+                  isOpen={openBuyMessageModal}
+                  setOpen={setOpenBuyMessageModal}
                 />
-                {message.paidAt ? (
-                  <div className="flex flex-shrink-0 items-center gap-[6px]">
-                    <Locked />
-                    <span className="text-[14px] font-medium leading-[0px] text-[#767676]">
-                      Purchased
-                    </span>
-                  </div>
-                ) : null}
-              </div>
-              <div className="max-w-[403px] pt-2">
-                <MediaContent
-                  contents={messageContent}
-                  isProcessing={!message.contentProcessed}
-                  paying={message.paying}
-                  paid={!!message.paidAt || !!isOwnMessage}
-                  previewIndex={message.previewIndex}
-                  price={message.price}
-                  openBuyModal={() => setOpenBuyMessageModal(true)}
-                />
-                {openBuyMessageModal && (
-                  <BuyMessageModal
-                    message={message}
-                    isOpen={openBuyMessageModal}
-                    setOpen={setOpenBuyMessageModal}
-                  />
-                )}
-              </div>
+              )}
             </div>
+            // </div>
           )}
           <span className="break-all">{formatText(message?.text)}</span>
 
