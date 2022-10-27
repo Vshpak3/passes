@@ -9,7 +9,6 @@ import { KeyedMutator } from "swr"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface EventTableItemProps {
   scheduledEvent: ScheduledEventDto

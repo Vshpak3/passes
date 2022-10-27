@@ -162,7 +162,11 @@ export function DtoProperty(options: DtoOptions) {
 
   // Check for lower case option
   if (options.forceLower) {
-    decorators.push(Transform((s) => s.value?.toLowerCase()))
+    decorators.push(
+      Transform((s) =>
+        typeof s.value === 'string' ? s.value?.toLowerCase() : s,
+      ),
+    )
   }
 
   return applyDecorators(...decorators)
