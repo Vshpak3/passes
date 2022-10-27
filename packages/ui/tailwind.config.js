@@ -13,7 +13,7 @@ module.exports = {
       sm: "640px",
       md: "768px",
       lg: "1024px",
-      "sidebar-collapse": "1240px",
+      "sidebar-collapse": "1024px",
       xl: "1280px",
       "2xl": "1536px"
     },
@@ -53,7 +53,8 @@ module.exports = {
           "white-100": "#ffffff",
           green: "#71CB6F",
           red: "#ED6B66",
-          yellow: "#C9BC43"
+          yellow: "#C9BC43",
+          black: "#12070E"
         }
       },
       fontFamily: {

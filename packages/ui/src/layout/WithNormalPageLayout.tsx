@@ -30,11 +30,11 @@ export const WithNormalPageLayout = (
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
-      <div className="relative flex min-h-screen w-full bg-black">
+      <div className="relative grid min-h-screen w-full grid-cols-12 bg-passes-black">
         {options.sidebar && <Sidebar />}
-        <main className="w-full bg-[#000]">
+        <main className="col-span-12 flex w-full flex-col md:col-span-9">
           {options.header && (
-            <div className="cover-image h-[300px] pr-10 pt-4">
+            <div className="cover-image h-[200px] pr-10 pt-4">
               <CreatorSearchBar />
             </div>
           )}

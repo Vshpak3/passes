@@ -11,7 +11,7 @@ export const PassTypes: FC<PassesProps> = () => {
   const creatorPasses: PassDto[] = []
 
   return (
-    <div className="hidden items-center rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[17px] py-[22px] pt-[19px] backdrop-blur-[100px] lg:m-0 lg:flex lg:flex-col lg:items-center">
+    <div className="hidden w-full items-center rounded-lg border border-[#ffffff]/10 bg-[#1b141d]/50 px-4 py-4 backdrop-blur-[100px] lg:m-0 lg:flex lg:flex-col lg:items-center">
       <span className="mb-5 text-base font-bold text-[#ffff]/90 lg:mb-0 lg:self-start">
         Pass Types
       </span>

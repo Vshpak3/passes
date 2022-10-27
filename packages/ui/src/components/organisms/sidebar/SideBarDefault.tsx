@@ -70,9 +70,9 @@ export const SidebarDefault: FC<SidebarDefaultProps> = ({
   return (
     <>
       <SidebarContainer>
-        <div className="">
+        <div>
           <SidebarHeader />
-          <nav className="flex flex-col items-start gap-3 pt-[35px] sidebar-collapse:items-start sidebar-collapse:gap-[0px]">
+          <nav className="flex flex-col items-center gap-3 pt-[35px] sidebar-collapse:items-start sidebar-collapse:gap-0">
             {renderSidebarItems}
             <AuthWrapper>
               {user?.isCreator ? (

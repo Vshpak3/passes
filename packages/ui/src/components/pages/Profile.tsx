@@ -13,12 +13,12 @@ const ProfileUnmemo: FC = () => {
   return (
     <>
       {!profile && loadingProfile ? (
-        <div className="pt-[100px]">
+        <div className="pt-28">
           <Loader />
         </div>
       ) : profile ? (
-        <div className="mx-auto grid w-full grid-cols-10 px-4 sm:w-[653px] md:w-[653px] md:gap-5 lg:w-[900px] lg:px-0 sidebar-collapse:w-[1000px]">
-          <div className="col-span-10 w-full md:space-y-6 lg:col-span-7 lg:max-w-[680px]">
+        <div className="mx-auto grid w-full grid-cols-9">
+          <div className="col-span-9 w-full px-4 pt-28 md:space-y-6 md:pt-0 lg:col-span-6">
             <ProfileDetails />
             {!!profile.isCreator && (
               <ProfileContent
@@ -26,7 +26,7 @@ const ProfileUnmemo: FC = () => {
               />
             )}
           </div>
-          <div className="col-span-10 w-full md:space-y-6 lg:col-span-3 lg:max-w-[280px] lg:pt-7">
+          <div className="col-span-2 hidden w-full md:flex md:space-y-6 lg:pt-7">
             {!!profile.isCreator && <PassTypes />}
           </div>
         </div>
