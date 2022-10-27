@@ -52,15 +52,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   const postUnlocked = !post.purchasable
 
-  const {
-    isLiked,
-    numLikes,
-    purchasable,
-    postId,
-    userId,
-    username,
-    displayName
-  } = post
+  const { isLiked, numLikes, postId, userId, username, displayName } = post
   const user = { userId, username, displayName }
 
   const dropdownOptions: DropdownOption[] = [
@@ -123,7 +115,6 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               <LikeButton
                 isLiked={isLiked}
                 numLikes={numLikes}
-                purchasable={purchasable}
                 postId={postId}
               />
               <TipButton postId={postId} />
