@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 
 import { getAwsConfig } from '../../util/aws.util'
+import { isEnv } from '../../util/env'
 import maizzleConfig from './config'
 import tailwindConfig from './tailwindConfig'
 
@@ -15,10 +16,7 @@ export class EmailService {
   private maizzleConfig: Record<string, any>
 
   constructor(private readonly configService: ConfigService) {
-    this.senderName =
-      this.configService.get('infra.env') === 'prod'
-        ? 'Passes'
-        : 'Passes Staging'
+    this.senderName = isEnv('prod') ? 'Passes' : 'Passes Staging'
 
     this.senderEmail = this.configService.get('ses.senderEmail') as string
     this.sesClient = new SESClient(getAwsConfig(configService))

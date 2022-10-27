@@ -15,7 +15,7 @@ export function getDatabaseOptions(
     password: configService.get('database.password'),
   }
   const devOverrides =
-    isEnv(configService, 'dev') && contextName === 'ReadOnly'
+    isEnv('dev') && contextName === 'ReadOnly'
       ? {
           user: 'reader',
           password: 'reader',

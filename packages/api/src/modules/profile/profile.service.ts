@@ -16,6 +16,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { getAwsConfig } from '../../util/aws.util'
+import { isEnv } from '../../util/env'
 import { profileImagePath } from '../content/helpers/content-paths'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
@@ -27,7 +28,6 @@ import { ProfileEntity } from './entities/profile.entity'
 
 @Injectable()
 export class ProfileService {
-  private env: string
   private distribution: string
   private client: CloudFrontClient
 
@@ -39,7 +39,6 @@ export class ProfileService {
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {
-    this.env = configService.get('infra.env') as string
     this.distribution = configService.get('cloudfront.distribution') as string
     this.client = new CloudFrontClient(getAwsConfig(configService))
   }
@@ -151,7 +150,7 @@ export class ProfileService {
   }
 
   async updateProfileImage(userId: string): Promise<void> {
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       return
     }
 

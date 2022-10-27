@@ -16,6 +16,7 @@ import {
 } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
 import { MetricsService } from '../../../monitoring/metrics/metric.service'
+import { isEnv } from '../../../util/env'
 import { EmailService } from '../../email/email.service'
 import { ResetPasswordRequestEntity } from '../../email/entities/reset-password-request.entity'
 import {
@@ -41,7 +42,6 @@ import { BCRYPT_SALT_ROUNDS } from './local.constants'
 
 @Injectable()
 export class LocalAuthService {
-  private env: string
   private clientUrl: string
 
   constructor(
@@ -54,7 +54,6 @@ export class LocalAuthService {
     private readonly authService: AuthService,
     private readonly emailService: EmailService,
   ) {
-    this.env = this.configService.get('infra.env') as string
     this.clientUrl = this.configService.get('clientUrl') as string
   }
 
@@ -140,7 +139,7 @@ export class LocalAuthService {
     })
 
     // Skip sending password reset emails in local development
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       return
     }
 
@@ -166,7 +165,7 @@ export class LocalAuthService {
     // In local development we don't send reset password emails and we cannot
     // easily retrive the reset id, so we just grab the last created
     // entry
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       _request = await this.dbReader<ResetPasswordRequestEntity>(
         ResetPasswordRequestEntity.table,
       )
@@ -222,7 +221,7 @@ export class LocalAuthService {
     })
 
     // Skip sending password confirmation emails in local development
-    if (this.env !== 'dev') {
+    if (!isEnv('dev')) {
       await this.emailService.sendRenderedEmail(
         email,
         CONFIRM_PASSWORD_RESET_EMAIL_SUBJECT,

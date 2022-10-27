@@ -20,9 +20,10 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { CookieOptions, Response } from 'express'
-import { sep } from 'path'
+import path, { sep } from 'path'
 
 import { getAwsConfig } from '../../util/aws.util'
+import { isEnv } from '../../util/env'
 
 const FOLDER_BUCKET_MAP = {
   profile: 'public',
@@ -42,7 +43,6 @@ export class S3ContentService {
   private readonly s3Client: S3Client
   private readonly s3Buckets: S3Bucket
 
-  private readonly env: string
   private readonly keyPairId: string
   private readonly privateKey: string
   private readonly cloudfrontUrl: string
@@ -50,10 +50,7 @@ export class S3ContentService {
   private readonly signedUrlExpirationTime: number
   private readonly signedCookieExpirationTime: number
 
-  private readonly folderPathRegexp: RegExp
-
   constructor(private readonly configService: ConfigService) {
-    this.env = configService.get('infra.env') as string
     this.keyPairId = configService.get('cloudfront.keyPairId') as string
     this.privateKey = configService.get('cloudfront.privateKey') as string
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string
@@ -69,45 +66,21 @@ export class S3ContentService {
 
     this.s3Buckets = configService.get('s3_bucket') as S3Bucket
     this.s3Client = new S3Client(getAwsConfig(configService))
-
-    this.folderPathRegexp = new RegExp(
-      `^(${Object.keys(FOLDER_BUCKET_MAP).join('|')})`,
-    )
   }
 
-  private getFolderFromPath(path: string) {
-    const folder = path.match(this.folderPathRegexp)?.at(1) as
-      | Folders
-      | undefined
-
-    if (!folder) {
-      throw new BadRequestException('invalid path')
-    }
-
-    return folder
+  private cloudFrontPath = (...args: string[]) => {
+    return `${this.cloudfrontUrl}/${path.join(...args)}`
   }
 
-  /**
-   * Generate the S3 key where the file will be uploaded to
-   * @param folder upstream directory (profile | pass | nft | upload)
-   * @param rest rest of the path
-   * @returns upload path
-   */
-  private generateS3Key(folder: Folders, rest: string) {
-    // upload files directly to the downstream directory in dev
-    if (this.env === 'dev') {
-      switch (folder) {
-        case 'upload':
-          return `media/${rest}`
-        case 'profile':
-          return `profile/${rest
-            .replace('upload/', '')
-            .replace('profile', 'profile-image')}`
-        default:
-          return `${folder}/${rest.replace('upload/', '')}`
-      }
+  private getBucketKeyFromPath(path: string): [string, string] {
+    const folder = path.split(sep)[0]
+
+    const bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
+    if (!bucket) {
+      throw new BadRequestException('Invalid path')
     }
-    return `${folder}/${rest}`
+
+    return [bucket, path]
   }
 
   /**
@@ -119,7 +92,7 @@ export class S3ContentService {
     res: Response,
     path = '',
   ): Promise<CloudfrontSignedCookiesOutput | undefined> {
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       return
     }
 
@@ -130,7 +103,7 @@ export class S3ContentService {
     const policy = JSON.stringify({
       Statement: [
         {
-          Resource: `${this.cloudfrontUrl}/${path}*`,
+          Resource: this.cloudFrontPath(`${path}*`),
           Condition: {
             DateLessThan: {
               'AWS:EpochTime': expirationTime,
@@ -161,9 +134,9 @@ export class S3ContentService {
    * @returns
    */
   signUrlForContentViewing(path: string): string {
-    const url = this.cloudfrontUrl + '/' + path
+    const url = this.cloudFrontPath(path)
 
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       return url
     }
 
@@ -171,56 +144,50 @@ export class S3ContentService {
       Date.now() + this.signedUrlExpirationTime,
     ).toISOString()
 
-    const signedUrl: string = getSignedUrl({
+    return getSignedUrl({
       url,
       dateLessThan: expirationTime,
       keyPairId: this.keyPairId,
       privateKey: this.privateKey,
     })
-
-    return signedUrl
   }
 
   /**
    * Returns S3 presigned url used to put object in bucket.
    *
    * Replaces bucket domain with CloudFront so requests go through the cdn first
-   * @param path path where file will be uploaded to. Starts with one of the upstream directories (profile | pass | nft | upload)
+   * @param _path path where file will be uploaded to. Starts with one of the upstream directories
    * @returns signed url used to upload files to
    */
-  async signUrlForContentUpload(path: string): Promise<string> {
-    const folder = this.getFolderFromPath(path)
-    const rest = path.split(folder + sep)[1]
-    const Bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
-    const Key = this.generateS3Key(folder, rest)
-    const command = new PutObjectCommand({ Bucket, Key })
+  async signUrlForContentUpload(_path: string): Promise<string> {
+    const [Bucket, Key] = this.getBucketKeyFromPath(_path)
 
-    // skip in dev, getPresignedUrl throws credentials errors
-    if (this.env === 'dev') {
-      return this.cloudfrontUrl + '/' + Key
+    // Upload files directly to the downstream directory in dev
+    if (isEnv('dev')) {
+      return this.cloudFrontPath(Key.replace('upload/', 'media/'))
     }
 
-    let url = await getPresignedUrl(this.s3Client, command, {
-      expiresIn: this.signedUrlExpirationTime / 1000, // convert to seconds
-    })
+    const url = await getPresignedUrl(
+      this.s3Client,
+      new PutObjectCommand({ Bucket, Key }),
+      {
+        expiresIn: this.signedUrlExpirationTime / 1000, // convert to seconds
+      },
+    )
+
     // Replaces bucket domain with CloudFront
-    url = this.cloudfrontUrl + '/' + Key + url.split(Key)?.[1]
-    return url
+    return this.cloudFrontPath(Key + url.split(Key)?.[1])
   }
 
   /**
    * Check if object exists at a specific path
-   * @param path object path
+   * @param _path object path
    * @returns true if object exists. false if status code is 404
    */
-  async doesObjectExist(path: string): Promise<boolean> {
-    if (this.env === 'dev') {
-      return true
-    }
-    const folder = this.getFolderFromPath(path)
-    const Bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
+  async doesObjectExist(_path: string): Promise<boolean> {
+    const [Bucket, Key] = this.getBucketKeyFromPath(_path)
     try {
-      await this.s3Client.send(new HeadObjectCommand({ Bucket, Key: path }))
+      await this.s3Client.send(new HeadObjectCommand({ Bucket, Key }))
       return true
     } catch (error) {
       if (error?.$metadata?.httpStatusCode === HttpStatus.NOT_FOUND) {

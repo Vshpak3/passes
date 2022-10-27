@@ -17,6 +17,7 @@ import passport from 'passport'
 
 import { AppModule } from '../app.module'
 import { loggingOptions } from '../monitoring/logging/logging.options'
+import { isEnv } from '../util/env'
 
 const APPLICATION_PORT = 3001
 
@@ -28,7 +29,7 @@ export class App {
     console.log('Starting application')
     console.log(`Node version ${process.version}`)
     await this.initApp()
-    if (process.env.NODE_ENV === 'dev') {
+    if (isEnv('dev')) {
       await this.initSwagger()
     }
     console.log('Successfully initialized application')

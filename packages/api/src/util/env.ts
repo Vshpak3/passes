@@ -1,7 +1,9 @@
-import { ConfigService } from '@nestjs/config'
+import { infra_config_node_env } from '../config/config.options'
 
 type Env = 'dev' | 'stage' | 'prod'
 
-export function isEnv(configService: ConfigService, env: Env): boolean {
-  return configService.get('infra.env') === env
+// Special function to avoid needing to use the config service
+// everywhere for environment checks.
+export function isEnv(env: Env): boolean {
+  return infra_config_node_env === env
 }

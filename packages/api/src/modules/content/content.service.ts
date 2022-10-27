@@ -4,7 +4,6 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 import ms from 'ms'
 import * as uuid from 'uuid'
 
@@ -14,6 +13,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassMediaEnum } from '../pass/enum/pass-media.enum'
@@ -44,19 +44,14 @@ const MAX_VAULT_CONTENT_PER_REQUEST = 9 // should be a multiple of 3
 
 @Injectable()
 export class ContentService {
-  private env: string
-
   constructor(
-    private readonly configService: ConfigService,
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly s3contentService: S3ContentService,
     private readonly passService: PassService,
-  ) {
-    this.env = this.configService.get('infra.env') as string
-  }
+  ) {}
 
   private async createContent(
     userId: string,
@@ -71,7 +66,7 @@ export class ContentService {
         content_type: contentType,
         in_post: inPost,
         in_message: inMessage,
-        processed: this.env === 'dev',
+        processed: isEnv('dev'),
       }
       await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
       return id

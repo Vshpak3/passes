@@ -43,6 +43,7 @@ import {
   sentryInterceptorOptions,
   sentryOptions,
 } from './monitoring/sentry/sentry.options'
+import { isEnv } from './util/env'
 
 @Module({
   imports: [
@@ -94,7 +95,7 @@ import {
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    if (process.env.NODE_ENV === 'dev') {
+    if (isEnv('dev')) {
       consumer.apply(RequestLogger).forRoutes('*')
     }
   }

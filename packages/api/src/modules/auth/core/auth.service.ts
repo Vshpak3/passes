@@ -12,6 +12,7 @@ import {
   DB_WRITER,
 } from '../../../database/database.decorator'
 import { DatabaseService } from '../../../database/database.service'
+import { isEnv } from '../../../util/env'
 import { OAuthProvider } from '../../auth/helpers/oauth-provider.type'
 import { EmailService } from '../../email/email.service'
 import { VerifyEmailRequestEntity } from '../../email/entities/verify-email-request.entity'
@@ -31,7 +32,6 @@ import { AuthRecord } from './auth-record'
 
 @Injectable()
 export class AuthService {
-  private env: string
   private clientUrl: string
 
   constructor(
@@ -43,7 +43,6 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly emailService: EmailService,
   ) {
-    this.env = this.configService.get('infra.env') as string
     this.clientUrl = this.configService.get('clientUrl') as string
   }
 
@@ -82,7 +81,7 @@ export class AuthService {
     })
 
     // Skip sending verifications emails in local development
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       return
     }
 
@@ -108,7 +107,7 @@ export class AuthService {
     // In local development we don't send verification emails and we cannot
     // easily retrive the verification id, so we just grab the last created
     // entry
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       _request = await this.dbReader<VerifyEmailRequestEntity>(
         VerifyEmailRequestEntity.table,
       )

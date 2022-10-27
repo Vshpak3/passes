@@ -19,6 +19,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
+import { isEnv } from '../../util/env'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassEntity } from '../pass/entities/pass.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -66,10 +67,7 @@ export class EthService {
   ) {
     const settings = {
       apiKey: this.configService.get('alchemy.eth.api_key') as string,
-      network:
-        configService.get('infra.env') === 'prod'
-          ? Network.ETH_MAINNET
-          : Network.ETH_GOERLI,
+      network: isEnv('prod') ? Network.ETH_MAINNET : Network.ETH_GOERLI,
     }
     this.alchemy = new Alchemy(settings)
     this.cloudfrontUrl = configService.get('cloudfront.baseUrl') as string

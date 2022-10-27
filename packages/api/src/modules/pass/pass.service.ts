@@ -21,6 +21,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
+import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { validateAddress } from '../../util/wallet.util'
 import { EthService } from '../eth/eth.service'
@@ -86,7 +87,6 @@ const MAX_PINNED_PASSES = 3
 const MAX_PASSES_PER_WEEK = 5
 @Injectable()
 export class PassService {
-  private env: string
   private nftS3Bucket: string
 
   constructor(
@@ -107,7 +107,6 @@ export class PassService {
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
   ) {
-    this.env = this.configService.get('infra.env') as string
     this.nftS3Bucket = configService.get('s3_bucket.nft') as string
   }
 
@@ -285,7 +284,7 @@ export class PassService {
       throw new NotFoundException('Pass can not be minted')
     }
     let collectionAddress: string | undefined = undefined
-    if (this.env === 'dev') {
+    if (isEnv('dev')) {
       collectionAddress = '123456789'
     } else {
       switch (pass.chain) {

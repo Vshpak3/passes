@@ -19,6 +19,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
+import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
@@ -127,7 +128,7 @@ export class PostService {
           expires_at: createPostDto.expiresAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
           contents: JSON.stringify(contents),
-          content_processed: !contents.length, // if no content set true
+          content_processed: !contents.length || isEnv('dev'),
         })
 
         await trx<ContentEntity>(ContentEntity.table)

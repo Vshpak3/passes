@@ -21,7 +21,7 @@ export function getMikroOrmOptions(
   if (contextName === DB_WRITER) {
     migrations = {
       path: path.join(__dirname, 'migrations'),
-      emit: isEnv(configService, 'dev') ? 'ts' : 'js',
+      emit: isEnv('dev') ? 'ts' : 'js',
       safe: true, // prevents dropping tables and columns
     }
   }
