@@ -100,7 +100,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const { hasRefreshed, mutate } = useTokenRefresh()
   const router = useRouter()
   useEffect(() => {
-    // console.log(accessToken, setAccessToken, setRefreshToken, fetch)
+    // eslint-disable-next-line no-console
+    console.log(router.route)
     mutate()
   }, [mutate, router.route])
 
