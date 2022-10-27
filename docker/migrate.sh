@@ -26,6 +26,10 @@ new_task_defintiion=$(
   echo ${old_task_definition} | jq -r --arg IMAGE ${image_name} \
     '.taskDefinition |
      .containerDefinitions[0].image = $IMAGE |
+     .runtimePlatform={
+       "cpuArchitecture": "ARM64",
+       "operatingSystemFamily": "LINUX"
+     } |
      del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)'
 )
 
