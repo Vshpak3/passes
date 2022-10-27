@@ -97,11 +97,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
-  const { hasRefreshed, mutate } = useTokenRefresh()
+  const { hasRefreshed, mutate, user } = useTokenRefresh()
   const router = useRouter()
   useEffect(() => {
-    mutate()
-  }, [mutate, router.route])
+    if (!user) {
+      mutate()
+    }
+  }, [mutate, router.route, user])
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
