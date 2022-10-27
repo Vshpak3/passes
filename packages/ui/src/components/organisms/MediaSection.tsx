@@ -208,16 +208,21 @@ export const MediaSection: FC<MediaSectionProps> = ({
           </Swiper>
         </div>
       )}
-      <FormInput
-        register={register}
-        name="previewIndex"
-        type="number"
-        min={0}
-        step={1}
-        placeholder="preview index"
-        autoComplete="off"
-        onKeyPress={preventNegative}
-      />
+      <div>
+        <div className="relative mt-6 flex max-w-[140px] justify-between rounded-md shadow-sm">
+          <FormInput
+            register={register}
+            name="previewIndex"
+            type="number"
+            min={0}
+            step={1}
+            placeholder="Preview index"
+            autoComplete="off"
+            onKeyPress={preventNegative}
+            className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
+          />
+        </div>
+      </div>
     </div>
   )
 }

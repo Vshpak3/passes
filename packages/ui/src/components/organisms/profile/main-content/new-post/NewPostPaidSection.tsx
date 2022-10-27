@@ -5,6 +5,7 @@ import { UseFormRegister } from "react-hook-form"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Tag } from "src/components/atoms/Tag"
 import { formatText } from "src/helpers/formatters"
+import { preventNegative } from "src/helpers/keyboard"
 import { NewPostFormProps } from "./NewPostEditor"
 import { PassesSearchBar } from "./PassesSearchBar"
 
@@ -66,6 +67,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
               register={register}
               type="number"
               name="price"
+              onKeyPress={preventNegative}
               className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
             />
           </div>

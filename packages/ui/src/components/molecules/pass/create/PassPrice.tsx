@@ -9,6 +9,7 @@ import {
 
 import { FormInput } from "src/components/atoms/FormInput"
 import { PassFormError } from "src/components/atoms/passes/CreatePass"
+import { preventNegative } from "src/helpers/keyboard"
 
 type FieldErrors<TFieldValues extends FieldValues = FieldValues> = DeepMap<
   TFieldValues,
@@ -30,8 +31,9 @@ export const PassPrice: FC<PassPriceProps> = ({ register, errors }) => {
         </span>
         <FormInput
           register={register}
-          type="text"
+          type="number"
           name="price"
+          onKeyPress={preventNegative}
           className="ml-2 max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
           placeholder="0.00"
           icon={<DollarIcon className="ml-[20px]" />}
