@@ -23,9 +23,9 @@ const HomePage: NextPage = () => {
       <div className="mx-auto bg-black">
         <Navbar />
         <Hero />
-        <CreatorCarousel />
         {!hidden && (
           <>
+            <CreatorCarousel />
             <MonthlyMemberships />
             <ConnectWithFans />
             <TrackStats />
