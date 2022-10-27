@@ -53,7 +53,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="mt-10 max-h-[65vh] min-w-fit justify-center md:mt-20">
+    <div className="vault-content-scrollbar max-h-[75vh] min-w-fit justify-center overflow-y-scroll">
       <MediaModal
         file={{ content }}
         isOpen={isViewMediaModal}

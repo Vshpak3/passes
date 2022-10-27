@@ -68,6 +68,18 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
     [setOrder]
   )
 
+  const handleVaultDeleteItems = async () => {
+    // TODO: connect with API to get selected items and delete items
+    const api = new ContentApi()
+    await api.deleteContent({
+      deleteContentRequestDto: {
+        contentIds: selectedItems.map((c) => c.contentId)
+      }
+    })
+    setDeletedItems([...deletedItems, ...selectedItems])
+    setSelectedItems([])
+  }
+
   return (
     <div className="-mt-[180px] mb-[28px] flex w-full flex-col justify-between">
       <div className="align-items flex items-center justify-between">
@@ -116,17 +128,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
       />
       <DeleteConfirmationModal
         isOpen={deleteModalActive}
-        // TODO: connect with API to get selected items and delete items
-
-        onDelete={async () => {
-          const api = new ContentApi()
-          await api.deleteContent({
-            deleteContentRequestDto: {
-              contentIds: selectedItems.map((c) => c.contentId)
-            }
-          })
-          setDeletedItems([...deletedItems, ...selectedItems])
-        }}
+        onDelete={handleVaultDeleteItems}
         setOpen={setDeleteModalActive}
         onCancel={toggleDeleteModal}
       />

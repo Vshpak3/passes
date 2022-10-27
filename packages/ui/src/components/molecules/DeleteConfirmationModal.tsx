@@ -19,6 +19,11 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
 }) => {
   const modalContentRef = useRef(null)
 
+  const handleDelete = async () => {
+    await onDelete()
+    setOpen(false)
+  }
+
   useOnClickOutside(modalContentRef, () => {
     setOpen(false)
   })
@@ -88,7 +93,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
             <div className="flex w-full flex-row justify-between">
               <button
                 className="text-4 text-4 rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
-                onClick={onDelete}
+                onClick={handleDelete}
               >
                 Delete
               </button>
