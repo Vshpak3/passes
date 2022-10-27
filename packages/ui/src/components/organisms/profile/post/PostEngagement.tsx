@@ -19,7 +19,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     isOwner,
     numComments: initialNumComments,
     numLikes,
-    purchasable,
     postId,
     username,
     price,
@@ -47,16 +46,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     <div className="flex w-full flex-col items-center justify-end">
       <div className="flex w-full items-center justify-between">
         <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
-          <LikeButton
-            isLiked={isLiked}
-            numLikes={numLikes}
-            purchasable={purchasable}
-            postId={postId}
-          />
+          <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
             type="button"
             aria-label="Toggle comments"
-            disabled={purchasable}
             onClick={() => setShowCommentSection((prev) => !prev)}
             className="flex cursor-pointer items-center gap-[5px] p-0"
           >
