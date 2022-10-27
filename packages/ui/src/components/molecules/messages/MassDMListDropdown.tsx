@@ -72,7 +72,7 @@ const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
         className="flex h-[548px] w-[338px] transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#1B141D] px-[24px] py-5 backdrop-blur-[25px] transition-all md:max-w-[544px] md:rounded-[20px]"
         open={listDropdownVisible}
         title={
-          <div className="mx-auto w-full pb-6 sidebar-collapse:max-w-[1100px]">
+          <div className="mx-auto w-full pb-6 lg:max-w-[1100px]">
             <div className="flex w-full justify-between">
               <Combobox.Label className="block pb-4 pl-2 text-[16px] font-medium leading-[22px] text-white">
                 Select Audience
@@ -101,7 +101,7 @@ const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
           </div>
         }
       >
-        <div className="mx-auto w-full sidebar-collapse:max-w-[1100px]">
+        <div className="mx-auto w-full lg:max-w-[1100px]">
           <div className="relative mt-1 w-full">
             {filteredLists.length > 0 && (
               <Combobox.Options

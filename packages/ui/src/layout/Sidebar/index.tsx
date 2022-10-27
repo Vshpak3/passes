@@ -3,8 +3,8 @@ import UserIcon from "public/icons/sidebar-profile-icon.svg"
 import { useEffect, useState } from "react"
 
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
-import { SidebarDefault } from "src/components/organisms/sidebar/SideBarDefault"
-import { SidebarMobile } from "src/components/organisms/sidebar/SideBarMobile"
+import { SidebarCore } from "src/components/organisms/sidebar/SidebarCore"
+import { SidebarMobileWrapper } from "src/components/organisms/sidebar/SidebarMobileWrapper"
 import { useUser } from "src/hooks/useUser"
 import { navigation as _navigation } from "./sidebarData"
 
@@ -47,9 +47,8 @@ export const Sidebar = () => {
   }, [user])
 
   return (
-    <>
-      <SidebarDefault navigation={navigation} active={active} />
-      <SidebarMobile navigation={navigation} active={active} />
-    </>
+    <SidebarMobileWrapper>
+      <SidebarCore navigation={navigation} active={active} />
+    </SidebarMobileWrapper>
   )
 }

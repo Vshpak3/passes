@@ -1,147 +1,19 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable sonarjs/no-duplicate-string */
-import { Disclosure } from "@headlessui/react"
 import classNames from "classnames"
 import Link from "next/link"
-import { useRouter } from "next/router"
-import ChevronDown from "public/icons/chevron-down.svg"
-import { FC, Fragment } from "react"
+import { FC } from "react"
 
 import { SidebarNavigation } from "./Types"
-
-interface SidebarChildItemProps {
-  subItem: SidebarNavigation
-  isActive: boolean
-}
-
-const SidebarChildItem: FC<SidebarChildItemProps> = ({ subItem, isActive }) => {
-  return (
-    <Link key={subItem.name} href={subItem.href} as={subItem.href}>
-      <a>
-        <span
-          className={classNames(
-            isActive
-              ? "group ml-[-25px] hidden cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 px-[25px]"
-              : "text-[#eeedef]/50 hover:text-white",
-            "group hidden cursor-pointer items-center py-[10px] text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
-          )}
-        >
-          {subItem.name}
-        </span>
-      </a>
-    </Link>
-  )
-}
-
-interface SidebarDropdownProps {
-  active: string
-  item: SidebarNavigation
-}
-
-export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
-  const router = useRouter()
-  const isItemActive = item.id === active
-
-  return (
-    <Disclosure
-      as={Fragment}
-      key={item.name}
-      defaultOpen={router?.asPath.startsWith(`/${item.id}/`)}
-    >
-      {({ open }) => (
-        <Fragment>
-          <Disclosure.Button className="hidden sidebar-collapse:block">
-            <span className="group hidden cursor-pointer items-center py-3 px-6 pr-0 hover:text-white sidebar-collapse:flex">
-              <Link
-                href={item.href}
-                as={item.href}
-                passHref
-                className={classNames(
-                  isItemActive
-                    ? "text-passes-primary-color"
-                    : "text-[#eeedef]/50 group-hover:text-white",
-                  "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
-                )}
-              >
-                <>
-                  <item.icon
-                    className={classNames(
-                      isItemActive
-                        ? "fill-transparent stroke-passes-primary-color stroke-2"
-                        : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-                      "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
-                    )}
-                    aria-hidden="true"
-                  />
-                  {item.name}
-                </>
-              </Link>
-              <ChevronDown className={`ml-2 ${open ? "rotate-180" : ""}`} />
-            </span>
-          </Disclosure.Button>
-          {open && (
-            <Disclosure.Panel
-              static
-              className="hidden sidebar-collapse:block sidebar-collapse:pl-[67px]"
-            >
-              {item.children &&
-                item.children.map((subItem) => {
-                  const isActive = subItem.id === active
-                  return (
-                    <SidebarChildItem
-                      key={subItem.id}
-                      subItem={subItem}
-                      isActive={isActive}
-                    />
-                  )
-                })}
-            </Disclosure.Panel>
-          )}
-        </Fragment>
-      )}
-    </Disclosure>
-  )
-}
 
 interface SidebarItemProps {
   isActive: boolean
   item: SidebarNavigation
 }
 
-const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
-  return (
-    <span
-      className={classNames(
-        isActive
-          ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10 text-passes-primary-color"
-          : "hover:bg-passes-secondary-color/10 hover:text-white",
-        "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
-      )}
-    >
-      <Link href={item.href} as={item.href} passHref className="group flex">
-        <a>
-          <span>
-            <item.icon
-              className={classNames(
-                isActive
-                  ? "fill-transparent stroke-2 text-passes-primary-color"
-                  : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-                "flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
-              )}
-              aria-hidden="true"
-            />
-          </span>
-        </a>
-      </Link>
-    </span>
-  )
-}
-
-const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
+export const SidebarItem: FC<SidebarItemProps> = ({ isActive, item }) => {
   return (
     <span
       key={item.id}
-      className="group-hover:stroke-[#ffffff]/8 group hidden cursor-pointer items-center py-3 px-6 group-hover:text-white sidebar-collapse:flex"
+      className="group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center py-3 px-6 group-hover:text-white"
     >
       <Link
         href={item.href}
@@ -150,7 +22,7 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
           isActive
             ? "text-passes-primary-color"
             : "text-[#eeedef]/50 group-hover:text-white",
-          "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
+          "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
         )}
       >
         <a>
@@ -163,7 +35,7 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
             <item.icon
               className={classNames(
                 isActive
-                  ? "fill-transparent stroke-passes-primary-color stroke-2"
+                  ? "text- fill-transparent stroke-passes-primary-color stroke-2"
                   : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                 "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
               )}
@@ -174,14 +46,5 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         </a>
       </Link>
     </span>
-  )
-}
-
-export const SidebarItem: FC<SidebarItemProps> = ({ isActive, item }) => {
-  return (
-    <Fragment>
-      <SidebarTabletItem isActive={isActive} item={item} />
-      <SidebarDesktopItem isActive={isActive} item={item} />
-    </Fragment>
   )
 }

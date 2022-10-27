@@ -43,7 +43,7 @@ const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
   headerTitle = "My Passes"
 }) => {
   return (
-    <div className="mx-auto mb-[70px] -mt-[180px] flex w-full items-center justify-center px-2 md:px-5 sidebar-collapse:-mt-[150px]">
+    <div className="mx-auto mb-[70px] -mt-[180px] flex w-full items-center justify-center px-2 md:px-5 lg:-mt-[150px]">
       <div className="text-[24px] font-bold text-white">{headerTitle}</div>
       <MyPassSearchBar
         onChange={onSearchPass}

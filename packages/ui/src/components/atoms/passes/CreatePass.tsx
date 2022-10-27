@@ -118,7 +118,7 @@ interface CreatePassHeaderProps {
 }
 
 export const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
-  <div className="col-span-12 sidebar-collapse:col-span-10">
+  <div className="col-span-12 lg:col-span-10">
     <div className="mb-4 grow justify-center text-center text-[20px] font-bold leading-[25px] md:text-[24px]">
       <span className="text-[#ffff]/90">{title}</span>
     </div>

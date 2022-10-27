@@ -21,7 +21,7 @@ const Passes: FC<PassesProps> = ({ passes, title }) => {
         <span className="text-[24px] font-bold text-[#ffff]/90">{title}</span>
         <hr className="my-auto grow border-passes-dark-200" />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 sidebar-collapse:grid-cols-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {renderPassesGrid}
       </div>
     </>

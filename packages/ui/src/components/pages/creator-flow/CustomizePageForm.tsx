@@ -125,7 +125,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
     <div className="flex justify-center pb-20 text-white">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 sidebar-collapse:px-40"
+        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 lg:px-40"
       >
         <div className="mb-6 flex flex-col items-center justify-center">
           <p className="mb-3 text-2xl">Tell us about your page</p>

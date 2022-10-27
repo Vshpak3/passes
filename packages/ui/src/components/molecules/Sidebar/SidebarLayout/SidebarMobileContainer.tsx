@@ -13,11 +13,7 @@ export const SidebarMobileContainer: FC<
 > = ({ children, mobileSidebarOpen, toggleSidebar }) => {
   return (
     <Transition.Root show={mobileSidebarOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-40 md:hidden"
-        onClose={toggleSidebar}
-      >
+      <Dialog as="div" className="relative z-40" onClose={toggleSidebar}>
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"

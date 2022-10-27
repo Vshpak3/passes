@@ -89,7 +89,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
           return <PassCard pass={arg} />
         }}
-        className="grid grid-cols-2 gap-3 pb-20 sidebar-collapse:grid-cols-3"
+        className="grid grid-cols-2 gap-3 pb-20 lg:grid-cols-3"
         style={{ overflow: "visible" }}
       />
     </>
