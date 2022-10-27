@@ -56,8 +56,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: "fit-content",
-          height: "fit-content",
+          width: "100%",
+          height: "100%",
           borderRadius: "20px",
           // Overrides
           padding: 0,

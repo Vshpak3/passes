@@ -1214,7 +1214,6 @@ export class MessagesService {
           'num_purchases',
           'earnings_purchases',
           'sent_to',
-          'paid',
         ]),
       )
       .insert(
@@ -1223,7 +1222,6 @@ export class MessagesService {
           'num_purchases',
           'earnings_purchases',
           'sent_to',
-          'paid',
         ]),
       )
   }

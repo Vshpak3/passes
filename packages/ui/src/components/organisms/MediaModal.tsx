@@ -52,6 +52,7 @@ export const MediaModal: FC<ModalProps> = ({
           contentWidth={width}
           contentHeight={height}
           className="m-0 rounded-[6px] p-0"
+          objectFit="contain"
         />
       )}
     </Modal>

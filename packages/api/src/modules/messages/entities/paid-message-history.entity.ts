@@ -20,7 +20,4 @@ export class PaidMessageHistoryEntity extends BaseEntity {
 
   @Property({ default: 0 })
   sent_to: number
-
-  @Property({ default: 0 })
-  paid: number
 }
