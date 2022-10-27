@@ -88,14 +88,10 @@ export const InputMessage: FC<InputMessageProps> = ({
   }
 
   const registerMessage = async () => {
-    const contentIds = await new ContentService().uploadContent(
+    const contentIds = await new ContentService().uploadUserContent({
       files,
-      undefined,
-      {
-        inPost: false,
-        inMessage: true
-      }
-    )
+      inMessage: true
+    })
     const result = await api.sendMessage({
       sendMessageRequestDto: {
         text: message,

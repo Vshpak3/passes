@@ -74,10 +74,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
 
   const onSubmit = async () => {
     await new ContentService()
-      .uploadContent(files, undefined, {
-        inPost: false,
-        inMessage: false
-      })
+      .uploadUserContent({ files })
       .then(() => toast.success("Files added successfully"))
       .catch((error) => toast.error(error))
     setValue("drag-drop", [])

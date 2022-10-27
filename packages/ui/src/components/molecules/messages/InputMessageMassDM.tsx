@@ -83,14 +83,10 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     const passIds = selectedPasses.map((s) => s.passId)
     const excludedIds = excludedLists.map((s) => s.listId)
 
-    const contentIds = await new ContentService().uploadContent(
+    const contentIds = await new ContentService().uploadUserContent({
       files,
-      undefined,
-      {
-        inPost: false,
-        inMessage: true
-      }
-    )
+      inMessage: true
+    })
     try {
       await messagesApi.massSend({
         createBatchMessageRequestDto: {
