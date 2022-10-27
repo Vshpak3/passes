@@ -28,7 +28,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   isCreator,
   onBack
 }) => {
-  const { isMobile } = useWindowSize()
+  const { isTab } = useWindowSize()
 
   return (
     <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
@@ -43,7 +43,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           />
         ) : (
           <div className="flex items-center">
-            {isMobile && (
+            {isTab && (
               <div className="mr-2" onClick={onBack}>
                 <BackIcon />
               </div>

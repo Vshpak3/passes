@@ -29,17 +29,17 @@ const MessagesPage = () => {
     <Suspense fallback={<CenterLoader />}>
       <div className="flex h-screen flex-col">
         {user?.isCreator ? (
-          <div className="space-between mt-8 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center gap-4">
+          <div className="space-between mt-8 ml-5 mb-3 flex min-h-[32px] items-center justify-between lg:w-[32.5%]">
             {massMessage ? (
               <div className="cursor-pointer">
                 <MessagesBackIcon onClick={() => setMassMessage(false)} />
               </div>
             ) : null}
-            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+            <span className="font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
               {massMessage ? "Mass Messaging" : "Messages"}
             </span>
             {massMessage ? null : (
-              <div className="cursor-pointer">
+              <div className="mr-6 cursor-pointer lg:mr-0">
                 <MessagesPlusIcon onClick={() => setMassMessage(true)} />
               </div>
             )}

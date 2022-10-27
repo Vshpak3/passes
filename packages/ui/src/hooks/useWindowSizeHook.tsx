@@ -18,6 +18,7 @@ export function useWindowSize() {
   const windowWidth =
     windowSize && windowSize.width ? windowSize.width : breakpoints.md
   const isMobile = windowWidth < breakpoints.md
+  const isTab = windowWidth < breakpoints.lg
 
   useEffect(() => {
     // Handler to call on window resize
@@ -37,6 +38,7 @@ export function useWindowSize() {
   }, []) // Empty array ensures that effect is only run on mount
 
   return {
-    isMobile
+    isMobile,
+    isTab
   }
 }

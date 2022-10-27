@@ -55,7 +55,7 @@ export const ChannelList: FC<ChannelListProps> = ({
   }, [])
 
   return (
-    <div className="min-w-[100%] overflow-y-auto border-r border-[#fff]/10 p-[30px] md:min-w-[35%]">
+    <div className="min-w-[100%] overflow-y-auto border-r border-[#fff]/10 p-[30px] lg:min-w-[35%]">
       <div className="border-b border-[#fff]/10 pb-6">
         <div className="flex justify-between pb-6">
           <span className="text-base font-medium">Find people</span>
