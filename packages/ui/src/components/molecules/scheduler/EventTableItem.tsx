@@ -55,7 +55,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       break
   }
   const generateActionStatus = (
-    <div className="flex items-center gap-[30px]">
+    <div className="flex items-center gap-[5px] xs:gap-[30px]">
       <TrashIcon
         className="mr-3 cursor-pointer"
         onClick={async () => await onDeleteEvent(scheduledEventId)}
@@ -84,10 +84,10 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         <td className="my-[6px] max-w-[350px] truncate px-3 pb-1">
           {formatText(text)}
         </td>
-        <td className="min-w-[150px] pb-1 text-center">
+        <td className="min-w-[75px] pb-1 text-center">
           {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
         </td>
-        <td className="my-[6px] min-w-[170px] whitespace-nowrap px-3">
+        <td className="my-[6px] min-w-[200px] whitespace-nowrap px-3">
           <div className="flex items-center">{generateActionStatus}</div>
         </td>
       </tr>
@@ -96,14 +96,16 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       <div className="mb-8 px-5 md:hidden">
         <div className="mb-6 flex items-center justify-between">
           <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
-          <span>{generateActionStatus}</span>
+          {/* <span>{generateActionStatus}</span> */}
         </div>
-        <div className="flex items-start gap-2">
-          <div className="mr-3 h-[125px] w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
+        <div className="flex items-center gap-2">
+          <div className="mr-3 h-[125px] w-[125px] min-w-[125px] rounded-[12px] bg-passes-gray-400 backdrop-blur-[28px]" />
           <div className="flex flex-col gap-2">
             <div> {media}</div>
             <div>{formatCurrency(price ?? 0)}</div>
-            <span>{formatText(text)}</span>
+            <div className="flex">
+              <span>{formatText(text)}</span>
+            </div>
             <span>{generateActionStatus}</span>
           </div>
         </div>

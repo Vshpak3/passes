@@ -116,7 +116,6 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
         disablePortal={false}
         style={{
           zIndex: 10000,
-          paddingBottom: "100px",
           margin: "0px"
         }}
         modifiers={[
@@ -132,7 +131,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
           <Fade {...TransitionProps} timeout={350}>
             <div
               ref={calenderRef}
-              className="rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
+              className="h-567px rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
             >
               <div className="calendar relative w-full">
                 <div className="absolute top-11 flex w-full items-center gap-3 bg-[rgba(27,20,29,0.5)]">
