@@ -38,7 +38,7 @@ export interface CalendarPickerProps {
   scheduledTime?: Date | null
   children: React.ReactNode
   placement: PopperPlacementType
-  setOpen: (open: boolean) => void
+  setOpen?: (open: boolean) => void
 }
 
 export const CalendarPicker: FC<CalendarPickerProps> = ({
@@ -102,7 +102,9 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   })
 
   useEffect(() => {
-    setOpen(!!anchorEl)
+    if (setOpen) {
+      setOpen(!!anchorEl)
+    }
   }, [anchorEl, setOpen])
 
   const open = Boolean(anchorEl)
