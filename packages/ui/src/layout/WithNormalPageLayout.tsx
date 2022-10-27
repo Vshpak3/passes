@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import React, { FC, ReactElement } from "react"
 
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
@@ -32,7 +33,12 @@ export const WithNormalPageLayout = (
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
       <div className="relative grid min-h-screen w-full grid-cols-12 bg-passes-black">
         {options.sidebar && <Sidebar />}
-        <main className="col-span-12 flex w-full flex-col md:col-span-9">
+        <main
+          className={classNames(
+            options.sidebar ? "md:col-span-9" : "md-col-span-12",
+            "col-span-12 flex w-full flex-col"
+          )}
+        >
           {options.header && (
             <div className="cover-image h-[200px] pr-10 pt-4">
               <CreatorSearchBar />

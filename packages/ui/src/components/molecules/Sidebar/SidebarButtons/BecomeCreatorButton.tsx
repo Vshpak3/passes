@@ -33,11 +33,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
           <PlusSign className="h-4 w-4 " />
         </Button>
       </div>
-      <div
-        className={`${
-          isMobile ? "" : "hidden"
-        } px-6 sidebar-collapse:flex sidebar-collapse:items-center sidebar-collapse:justify-center`}
-      >
+      <div className={`${isMobile ? "" : "hidden"} px-6 lg:flex`}>
         <Button
           onClick={onClick}
           className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
