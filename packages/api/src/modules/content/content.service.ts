@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import ms from 'ms'
-import path from 'path'
 import * as uuid from 'uuid'
 
 import {
@@ -30,11 +29,16 @@ import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 import { MarkProcessedRequestDto } from './dto/mark-processed'
 import { ContentEntity } from './entities/content.entity'
-import { ContentFormatEnum } from './enums/content-format.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { ContentDeleteError, NoContentError } from './error/content.error'
-import { getContentTypeFormat } from './helpers/content-type-format.helper'
+import {
+  mediaContentPath,
+  mediaContentThumbnailPath,
+  mediaContentUploadPath,
+  profileImageUploadPath,
+  w9UploadPath,
+} from './helpers/content-paths'
 
 const MAX_VAULT_CONTENT_PER_REQUEST = 9 // should be a multiple of 3
 
@@ -118,11 +122,7 @@ export class ContentService {
     return await Promise.all(
       contents.map(async (content) => {
         return await this.s3contentService.doesObjectExist(
-          path.join(
-            'media',
-            content.user_id,
-            `${content.id}.${getContentTypeFormat(content.content_type)}`,
-          ),
+          mediaContentPath(content.user_id, content.id, content.content_type),
         )
       }),
     )
@@ -215,13 +215,13 @@ export class ContentService {
     contentType: ContentTypeEnum,
   ) {
     return this.s3contentService.signUrlForContentViewing(
-      `media/${userId}/${contentId}.${getContentTypeFormat(contentType)}`,
+      mediaContentPath(userId, contentId, contentType),
     )
   }
 
   preSignMediaContentThumbnail(userId: string, contentId: string) {
     return this.s3contentService.signUrlForContentViewing(
-      `media/${userId}/${contentId}-thumbnail.jpeg`, // all thumbnails are jpeg
+      mediaContentThumbnailPath(userId, contentId),
     )
   }
 
@@ -231,15 +231,13 @@ export class ContentService {
   ) {
     const contentId = await this.createContent(userId, createContentDto)
     return this.s3contentService.signUrlForContentUpload(
-      `upload/${userId}/${contentId}.${getContentTypeFormat(
-        createContentDto.contentType,
-      )}`,
+      mediaContentUploadPath(userId, contentId, createContentDto.contentType),
     )
   }
 
-  preSignProfileImage(userId: string, type: 'profile' | 'banner') {
+  preSignProfileImage(userId: string, type: 'image' | 'banner') {
     return this.s3contentService.signUrlForContentUpload(
-      `profile/upload/${userId}/${type}.${ContentFormatEnum.IMAGE}`,
+      profileImageUploadPath(userId, type),
     )
   }
 
@@ -255,9 +253,7 @@ export class ContentService {
   }
 
   preSignW9(userId: string) {
-    return this.s3contentService.signUrlForContentUpload(
-      `w9/${userId}/upload.pdf`,
-    )
+    return this.s3contentService.signUrlForContentUpload(w9UploadPath(userId))
   }
 
   async validateContentIds(

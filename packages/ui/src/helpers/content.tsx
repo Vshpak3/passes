@@ -21,7 +21,7 @@ export class ContentService {
   // Profile
 
   static profileImagePath(userId: string): string {
-    return getUrlPath("profile", userId, "profile-image.jpeg")
+    return getUrlPath("profile", "media", userId, "profile-image.jpeg")
   }
 
   static profileThumbnailPath(userId: string): string {
@@ -29,11 +29,11 @@ export class ContentService {
     if (isDev) {
       return ContentService.profileImagePath(userId)
     }
-    return getUrlPath("profile", userId, "profile-thumbnail.jpeg")
+    return getUrlPath("profile", "media", userId, "profile-thumbnail.jpeg")
   }
 
   static profileBanner(userId: string): string {
-    return getUrlPath("profile", userId, "banner.jpeg")
+    return getUrlPath("profile", "media", userId, "banner.jpeg")
   }
 
   // Passes/NFTs

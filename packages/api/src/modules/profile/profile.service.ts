@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import path from 'path'
 import { Logger } from 'winston'
 
 import {
@@ -19,6 +20,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { getAwsConfig } from '../../util/aws.util'
+import { profileImagePath } from '../content/helpers/content-paths'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { PROFILE_NOT_EXIST } from './constants/errors'
@@ -160,7 +162,10 @@ export class ProfileService {
         InvalidationBatch: {
           Paths: {
             Quantity: 1,
-            Items: [`/profile/${userId}/profile-thumbnail.jpeg`],
+            Items: [
+              profileImagePath(userId, 'image'),
+              profileImagePath(userId, 'thumbnail'),
+            ],
           },
           CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
         },

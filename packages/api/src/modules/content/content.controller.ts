@@ -76,7 +76,7 @@ export class ContentController {
   ): Promise<GetSignedUrlResponseDto> {
     const url = await this.contentService.preSignProfileImage(
       req.user.id,
-      'profile',
+      'image',
     )
     return { url }
   }
