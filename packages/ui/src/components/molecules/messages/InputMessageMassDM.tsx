@@ -62,6 +62,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
+  const previewIndex = watch("previewIndex")
 
   const onMediaHeaderChange = (prop: any) => {
     setActiveMediaHeader("")
@@ -99,7 +100,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
           text: message,
           contentIds: contentIds,
           price: Number(messagePrice),
-          previewIndex: 0 // TODO: add previewing FE
+          previewIndex: Number(previewIndex) ?? 0
         }
       })
       setFiles([])
