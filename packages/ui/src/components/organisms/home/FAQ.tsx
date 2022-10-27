@@ -12,21 +12,19 @@ interface FAQ {
 const faqs: FAQ[] = [
   {
     question: "What does it do?",
-    answer: "YAY"
+    answer: "Answer"
   },
   {
     question: "Why build my community with Passes?",
-    answer: "OMG"
+    answer: "Answer"
   },
   {
     question: "What makes it different?",
-    answer: "WOW"
+    answer: "Answer"
   }
 ]
 
-// Might be used in the future
-
-const FAQ = () => {
+export const FAQ = () => {
   return (
     <div className="mx-auto max-w-7xl py-8 px-4">
       <h3 className="text-center text-4xl font-bold">
