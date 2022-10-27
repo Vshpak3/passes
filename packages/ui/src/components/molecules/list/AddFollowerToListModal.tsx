@@ -3,8 +3,8 @@ import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
+import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"
 
 interface AddFollowerToListModalProps extends ModalProps {
@@ -45,17 +45,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
             className="flex items-center justify-between py-3"
             key={user.userId}
           >
-            <div className="flex items-center">
-              <div className="relative">
-                <ProfileThumbnail userId={user.userId} />
-              </div>
-              <span className="ml-3 text-lg font-medium leading-6 text-white">
-                {user.displayName}
-              </span>
-              <span className="ml-3 flex items-end text-xs font-medium leading-6 text-gray-300">
-                @{user.username}
-              </span>
-            </div>
+            <ProfileWidget user={user} />
             <span
               className="duration-400 hover:text-passes-red-100 ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={() => {

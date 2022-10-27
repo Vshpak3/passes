@@ -2,16 +2,15 @@ import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import Link from "next/link"
 import PinIcon from "public/icons/pin.svg"
-import VerifiedSmall from "public/icons/post-verified-small-icon.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
 
 import { PostStatisticsButtonProps } from "src/components/molecules/post/PostStatisticsButton"
+import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import {
   Dropdown,
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
 interface PostHeaderProps
   extends Pick<
@@ -31,6 +30,8 @@ export const PostHeader: FC<PostHeaderProps> = ({
   isPinned,
   dropdownOptions
 }) => {
+  const user = { userId, username, displayName }
+
   return (
     <div className="flex w-full items-center justify-between">
       <Link href={`${window.location.origin}/${username}`}>
@@ -40,24 +41,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
             "pointer-events-none": !displayName
           })}
         >
-          <ProfileThumbnail userId={userId} />
-          <div className="space-y-1 font-medium dark:text-white">
-            <span>
-              <div className="flex items-center gap-[6px]">
-                <>
-                  <span className="whitespace-nowrap font-semibold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-                    {displayName}
-                  </span>
-                  <span className="flex items-center">
-                    <VerifiedSmall />
-                  </span>
-                </>
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                @{username}
-              </div>
-            </span>
-          </div>
+          <ProfileWidget user={user} />
         </a>
       </Link>
       <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
@@ -68,9 +52,6 @@ export const PostHeader: FC<PostHeaderProps> = ({
             minPeriod={30}
           />
         </div>
-        {/* {isOwner && statisticsButtonProps && (
-          <PostStatisticsButton {...statisticsButtonProps} />
-        )} */}
         {isPinned && (
           <div className="sm:px-2.5mb-0 relative mb-[5px] flex flex-shrink-0 items-center rounded-lg bg-white/10 py-[0px] px-2 md:mb-0 md:py-[4px]">
             <span className="flex-shrink-0">
