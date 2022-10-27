@@ -20,6 +20,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { CookieOptions, Response } from 'express'
+import { sep } from 'path'
 
 import { getAwsConfig } from '../../util/aws.util'
 
@@ -189,7 +190,7 @@ export class S3ContentService {
    */
   async signUrlForContentUpload(path: string): Promise<string> {
     const folder = this.getFolderFromPath(path)
-    const rest = path.split(folder + '/')[1]
+    const rest = path.split(folder + sep)[1]
     const Bucket = this.s3Buckets[FOLDER_BUCKET_MAP[folder]]
     const Key = this.generateS3Key(folder, rest)
     const command = new PutObjectCommand({ Bucket, Key })
