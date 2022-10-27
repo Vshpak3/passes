@@ -1,6 +1,5 @@
 import Editor from "@draft-js-plugins/editor"
 import createMentionPlugin, {
-  defaultSuggestionsFilter,
   MentionData,
   Popover
 } from "@draft-js-plugins/mention"
@@ -89,7 +88,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   const [numMentions, setNumMentions] = useState(0)
   const [suggestions, setSuggestions] = useState<MentionData[]>([])
 
-  const { results, searchValue, setSearchValue } = useCreatorSearch()
+  const { results, setSearchValue } = useCreatorSearch()
 
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
@@ -129,10 +128,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
       })
     )
 
-    setSuggestions(
-      defaultSuggestionsFilter(searchValue, newSuggestions, TRIGGER)
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setSuggestions(newSuggestions)
   }, [results])
 
   useEffect(() => {
