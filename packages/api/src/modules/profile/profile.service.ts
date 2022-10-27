@@ -161,8 +161,8 @@ export class ProfileService {
           Paths: {
             Quantity: 2,
             Items: [
-              profileImagePath(userId, 'image'),
-              profileImagePath(userId, 'thumbnail'),
+              '/' + profileImagePath(userId, 'image'),
+              '/' + profileImagePath(userId, 'thumbnail'),
             ],
           },
           CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
