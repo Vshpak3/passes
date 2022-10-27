@@ -191,7 +191,7 @@ export const Wallets = () => {
       <div className="mt-4 flex w-full flex-col items-start justify-start md:flex-row">
         <div>
           <Button
-            variant="purple-light"
+            variant="pink"
             tag="button"
             onClick={() => setIsModalOpen(true)}
             className="mt-1"
