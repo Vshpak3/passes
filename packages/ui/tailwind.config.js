@@ -28,8 +28,8 @@ module.exports = {
       colors: {
         ...radixColors,
         passes: {
-          "primary-color": "#9C4DC1",
-          "secondary-color": "#BF7AF0",
+          "primary-color": "#FF51A8",
+          "secondary-color": "#9C4DC1",
           "blue-100": "#598BF4",
           "blue-200": "#b3bee799",
           "purple-100": "#B53BEC",

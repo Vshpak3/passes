@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import ProfileIcon from "public/icons/profile-edit-icon.svg"
+import UserIcon from "public/icons/sidebar-profile-icon.svg"
 import { useEffect, useState } from "react"
 
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
@@ -38,7 +38,7 @@ export const Sidebar = () => {
         id: "profile",
         name: "Profile",
         href: `/${user?.username}`,
-        icon: ProfileIcon,
+        icon: UserIcon,
         creatorOnly: false
       })
     }

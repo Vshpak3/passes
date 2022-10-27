@@ -4,8 +4,8 @@ import React from "react"
 export const SidebarHeader = () => {
   return (
     <div className="justify-left items-left flex flex-shrink-0">
-      <div className="">
-        <PassesLogoWhite className="ml-8 mt-2 hidden h-[55x] w-[55px] fill-current sidebar-collapse:block" />
+      <div>
+        <PassesLogoWhite className="ml-8 mt-2 hidden h-[30x] w-[30px] fill-current sidebar-collapse:block" />
       </div>
     </div>
   )

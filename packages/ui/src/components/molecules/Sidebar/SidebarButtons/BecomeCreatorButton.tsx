@@ -36,7 +36,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
       <div
         className={`${
           isMobile ? "" : "hidden"
-        } sidebar-collapse:flex sidebar-collapse:items-center sidebar-collapse:justify-center sidebar-collapse:self-center`}
+        } px-6 sidebar-collapse:flex sidebar-collapse:items-center sidebar-collapse:justify-center`}
       >
         <Button
           onClick={onClick}

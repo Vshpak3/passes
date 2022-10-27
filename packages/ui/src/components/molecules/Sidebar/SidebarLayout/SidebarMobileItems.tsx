@@ -60,13 +60,19 @@ const SidebarMobileItemInner: FC<SidebarMobileItemBaseProps> = ({
         <item.icon
           className={classNames(
             item.id === active
-              ? "fill-transparent stroke-white stroke-2"
+              ? "fill-transparent stroke-passes-primary-color stroke-2"
               : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
             "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
           )}
           aria-hidden="true"
         />
-        <span>{item.name}</span>
+        <span
+          className={classNames(
+            item.id === active && "text-passes-primary-color"
+          )}
+        >
+          {item.name}
+        </span>
       </div>
     </a>
   </Link>
@@ -87,21 +93,14 @@ export const SidebarMobileDropdown: FC<SidebarMobileItemProps> = ({
       {({ open }) => (
         <Fragment>
           <Disclosure.Button>
-            <span
-              className={classNames(
-                item.id === active
-                  ? "rounded-[56px] bg-[#FFFEFF]/10"
-                  : "hover:text-white",
-                "group flex cursor-pointer items-center py-[15px] px-[20px] pr-0"
-              )}
-            >
+            <span className="group flex cursor-pointer items-center py-[15px] px-[20px] pr-0 hover:text-white">
               <div className="flex">
                 <item.icon
                   className={classNames(
                     item.id === active
                       ? "fill-transparent stroke-white stroke-2"
                       : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
+                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
                   )}
                   aria-hidden="true"
                 />
@@ -141,12 +140,7 @@ export const SidebarMobileItem: FC<SidebarMobileItemProps> = ({
     <span
       onClick={onClick}
       key={item.id}
-      className={classNames(
-        item.id === active
-          ? "rounded-[56px] bg-[#FFFEFF]/10"
-          : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        "group flex cursor-pointer items-center py-[10px] px-[20px]"
-      )}
+      className="group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center py-[10px] px-[20px] group-hover:text-white"
     >
       <SidebarMobileItemInner item={item} active={active} />
     </span>

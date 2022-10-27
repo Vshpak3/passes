@@ -51,21 +51,14 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
       {({ open }) => (
         <Fragment>
           <Disclosure.Button className="hidden sidebar-collapse:block">
-            <span
-              className={classNames(
-                isItemActive
-                  ? "rounded-[56px] bg-[#FFFEFF]/10"
-                  : "hover:text-white",
-                "group hidden cursor-pointer items-center py-[15px] px-[30px]  pr-0 sidebar-collapse:flex"
-              )}
-            >
+            <span className="group hidden cursor-pointer items-center py-3 px-6 pr-0 hover:text-white sidebar-collapse:flex">
               <Link
                 href={item.href}
                 as={item.href}
                 passHref
                 className={classNames(
                   isItemActive
-                    ? "text-white"
+                    ? "text-passes-primary-color"
                     : "text-[#eeedef]/50 group-hover:text-white",
                   "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
                 )}
@@ -74,7 +67,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                   <item.icon
                     className={classNames(
                       isItemActive
-                        ? "fill-transparent stroke-white stroke-2"
+                        ? "fill-transparent stroke-passes-primary-color stroke-2"
                         : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                       "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
                     )}
@@ -120,26 +113,18 @@ const SidebarTabletItem: FC<SidebarItemProps> = ({ isActive, item }) => {
     <span
       className={classNames(
         isActive
-          ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10"
+          ? "border border-solid border-passes-secondary-color bg-passes-secondary-color/10 text-passes-primary-color"
           : "hover:bg-passes-secondary-color/10 hover:text-white",
         "group flex h-[52px] w-[52px] cursor-pointer items-center justify-center rounded-full sidebar-collapse:hidden"
       )}
     >
-      <Link
-        href={item.href}
-        as={item.href}
-        passHref
-        className={classNames(
-          isActive ? "text-white" : "hover:text-white",
-          "group flex"
-        )}
-      >
+      <Link href={item.href} as={item.href} passHref className="group flex">
         <a>
           <span>
             <item.icon
               className={classNames(
                 isActive
-                  ? "fill-transparent stroke-white stroke-2"
+                  ? "fill-transparent stroke-2 text-passes-primary-color"
                   : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                 "flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2 "
               )}
@@ -156,27 +141,29 @@ const SidebarDesktopItem: FC<SidebarItemProps> = ({ isActive, item }) => {
   return (
     <span
       key={item.id}
-      className={classNames(
-        isActive
-          ? "rounded-[56px] bg-[#FFFEFF]/10"
-          : "group-hover:stroke-[#ffffff]/8 group-hover:text-white",
-        "group hidden cursor-pointer items-center py-[15px] px-[30px] sidebar-collapse:flex"
-      )}
+      className="group-hover:stroke-[#ffffff]/8 group hidden cursor-pointer items-center py-3 px-6 group-hover:text-white sidebar-collapse:flex"
     >
       <Link
         href={item.href}
         as={item.href}
         className={classNames(
-          isActive ? "text-white" : "text-[#eeedef]/50 group-hover:text-white",
+          isActive
+            ? "text-passes-primary-color"
+            : "text-[#eeedef]/50 group-hover:text-white",
           "group hidden cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white sidebar-collapse:flex"
         )}
       >
         <a>
-          <span className={classNames("flex flex-row")}>
+          <span
+            className={classNames(
+              isActive && "text-passes-primary-color",
+              "flex flex-row"
+            )}
+          >
             <item.icon
               className={classNames(
                 isActive
-                  ? "fill-transparent stroke-white stroke-2"
+                  ? "fill-transparent stroke-passes-primary-color stroke-2"
                   : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                 "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
               )}
