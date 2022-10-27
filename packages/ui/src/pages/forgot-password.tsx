@@ -55,7 +55,7 @@ const ForgotPassword = () => {
     try {
       setIsSubmitting(true)
       await resetPassword(data.email)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)
     }

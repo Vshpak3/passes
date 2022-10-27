@@ -5,9 +5,9 @@ module.exports = {
   },
   extends: ['plugin:jest/recommended'],
   rules: {
-    '@typescript-eslint/no-floating-promises': ['error', { 'ignoreIIFE': true }],
+    '@typescript-eslint/no-floating-promises': ['error', { ignoreIIFE: true }],
     'no-console': 'error',
-    'no-magic-numbers': ["error", { "ignore": [0, 1, 2, 100, 1000] }],
-    'quotes': ['error', 'single', { 'avoidEscape': true }],
-  }
+    'no-magic-numbers': ['error', { ignore: [0, 1, 2, 100, 1000] }],
+    quotes: ['error', 'single', { avoidEscape: true }],
+  },
 }

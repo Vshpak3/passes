@@ -75,7 +75,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       onFinishPaymentForm()
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

@@ -3,8 +3,8 @@ import { FC } from "react"
 import { compactNumberFormatter } from "src/helpers/formatters"
 
 interface ProfileStatItemMobileProps {
-  stat: any
-  label: any
+  stat: string | null
+  label: string
 }
 
 const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
@@ -16,7 +16,7 @@ const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
       {stat ?? "-"}
     </span>
     <span className="text-[12px] font-normal text-passes-white-100/60">
-      {label ?? "-"}
+      {label}
     </span>
   </div>
 )
@@ -31,7 +31,7 @@ export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
   likes
 }) => (
   <div className="align-center grid grid-cols-3 items-center text-center">
-    <ProfileStatItemMobile stat={numPosts} label="POSTS" />
+    <ProfileStatItemMobile stat={numPosts.toString()} label="POSTS" />
     <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
     <ProfileStatItemMobile stat={compactNumberFormatter(likes)} label="LIKES" />
   </div>

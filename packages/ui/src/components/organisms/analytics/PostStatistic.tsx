@@ -21,7 +21,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
     try {
       await removePost(post.postId)
       setDeleted(true)
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Failed to delete: please contact support")
     }
   }

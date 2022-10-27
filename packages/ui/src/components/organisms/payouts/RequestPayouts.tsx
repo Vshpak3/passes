@@ -8,9 +8,9 @@ import Link from "next/link"
 import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { useCallback, useRef, useState } from "react"
-import { toast } from "react-toastify"
 
 import { PassesPinkButton } from "src/components/atoms/Button"
+import { errorMessage } from "src/helpers/error"
 import {
   PayoutFrequencyEnum,
   useCreatorSettings
@@ -48,8 +48,8 @@ export const RequestPayouts = () => {
     const api = new PaymentApi()
     try {
       await api.payout()
-    } catch (error: any) {
-      toast.error(error)
+    } catch (error: unknown) {
+      errorMessage(error, true)
     }
   }, [])
 

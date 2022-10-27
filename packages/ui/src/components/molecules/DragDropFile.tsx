@@ -1,5 +1,5 @@
 import UploadIcon from "public/icons/upload.svg"
-import { FC, useState } from "react"
+import { DragEvent, FC, useState } from "react"
 
 import { File } from "src/components/atoms/File"
 import {
@@ -35,7 +35,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
   const { onChange, onBlur, name: registerName, ref } = register(name, options)
 
   // handle drag events
-  const handleDrag = function (event: any) {
+  const handleDrag = function (event: DragEvent<HTMLDivElement>) {
     event.preventDefault()
     event.stopPropagation()
     if (event.type === "dragenter" || event.type === "dragover") {
@@ -46,11 +46,13 @@ export const DragDropFile: FC<DragDropFileProps> = ({
   }
 
   // triggers when file is dropped
-  const handleDrop = function (event: any) {
+  const handleDrop = function (event: DragEvent<HTMLDivElement>) {
     event.preventDefault()
     event.stopPropagation()
     setDragActive(false)
     if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
       event.target.files = event.dataTransfer.files
       onChange(event)
       onBlur(event)

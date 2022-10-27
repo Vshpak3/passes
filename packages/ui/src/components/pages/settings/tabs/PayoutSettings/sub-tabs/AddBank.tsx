@@ -73,7 +73,7 @@ const AddBank = () => {
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
       addOrPopStackHandler(SubTabsEnum.PayoutSettings)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

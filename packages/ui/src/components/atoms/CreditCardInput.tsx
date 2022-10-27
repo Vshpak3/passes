@@ -1,18 +1,26 @@
 import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
-import React, { FC, useState } from "react"
+import React, { ChangeEvent, FC, useState } from "react"
 import { Controller, RegisterOptions } from "react-hook-form"
 
-interface Props {
+interface CreditCardInputProps {
   name: string
   control: any
   rules: RegisterOptions
 }
-export const CreditCardInput: FC<Props> = ({ control, name, rules }) => {
+
+export const CreditCardInput: FC<CreditCardInputProps> = ({
+  control,
+  name,
+  rules
+}) => {
   const [visibleValue, setVisibleValue] = useState("")
 
-  const handleChange = (event: any, onChange: any) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    onChange: (v: string) => void
+  ) => {
     const value = event.target.value
       .replace(/\D/g, "")
       .replace(/(.{4})/g, "$1 ")

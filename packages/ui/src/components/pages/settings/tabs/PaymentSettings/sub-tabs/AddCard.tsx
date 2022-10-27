@@ -120,7 +120,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
       } else {
         addOrPopStackHandler(SubTabsEnum.PaymentSettings)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     } finally {
       setIsSubmitting(false)

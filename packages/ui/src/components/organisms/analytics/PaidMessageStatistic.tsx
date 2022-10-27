@@ -19,7 +19,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
     try {
       await api.unsendPaidMessage({ paidMessageId: paidMessage.paidMessageId })
       setUnsent(true)
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Failed to unsend: please contact support")
     }
   }

@@ -22,7 +22,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
-interface Props {
+interface InputMessageMassDMProps {
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   selectedPasses: PassDto[]
@@ -31,10 +31,10 @@ interface Props {
   setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
   excludedLists: ListDto[]
   setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-  setMassMessage: Dispatch<SetStateAction<any>>
+  setMassMessage: Dispatch<SetStateAction<boolean>>
 }
 
-export const InputMessageMassDM: FC<Props> = ({
+export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   vaultContent,
   setVaultContent,
   selectedPasses,

@@ -27,7 +27,7 @@ export const Hero = () => {
         await axios.post("/api/email", { emailAddress })
       }
       setEmailFeedback("Thank you for subscribing!")
-    } catch (error: any) {
+    } catch (error: unknown) {
       setEmailFeedback("An error occurred...")
     } finally {
       setIsSubmittingEmail(false)

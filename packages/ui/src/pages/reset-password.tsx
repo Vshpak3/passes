@@ -74,7 +74,7 @@ const ResetPassword = () => {
     try {
       setIsSubmitting(true)
       await resetPassword(data.password)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)
     }

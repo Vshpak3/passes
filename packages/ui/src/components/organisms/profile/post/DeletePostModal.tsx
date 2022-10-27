@@ -30,7 +30,7 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
       if (updateProfileStats) {
         await updateProfileStats({ field: "numPosts", event: "decrement" })
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Failed to delete. Please contact support.")
     }
   }

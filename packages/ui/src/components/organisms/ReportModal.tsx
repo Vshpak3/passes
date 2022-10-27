@@ -34,7 +34,7 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
       })
       toast.success("Reported this user")
       setReportData(null)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

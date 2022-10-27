@@ -1,10 +1,6 @@
-import { FC } from "react"
+import { FC, PropsWithChildren } from "react"
 
-interface SidebarContainerProps {
-  children: any
-}
-
-export const SidebarContainer: FC<SidebarContainerProps> = ({ children }) => {
+export const SidebarContainer: FC<PropsWithChildren> = ({ children }) => {
   return (
     <header className="col-span-3 hidden h-screen w-full items-end border-r border-gray-600 md:sticky md:inset-y-0 md:flex md:flex-shrink-0 md:flex-col">
       <div className="flex w-full flex-1 flex-col bg-passes-black">

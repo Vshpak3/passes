@@ -52,7 +52,7 @@ export const useUserDefaultMintingWallets = () => {
       })
       setTimeout(() => undefined, 500)
       getDefaultWallet()
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

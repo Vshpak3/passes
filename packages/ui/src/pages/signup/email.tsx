@@ -70,7 +70,7 @@ const SignupEmailPage: FC = () => {
     try {
       setIsSubmitting(true)
       verifyEmail(data.email)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)
     }

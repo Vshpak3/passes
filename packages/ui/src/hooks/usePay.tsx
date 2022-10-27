@@ -70,7 +70,7 @@ export const usePay = (
                 "Payment failure: an error has occured - please contact support"
               )
             }
-          } catch (error: any) {
+          } catch (error: unknown) {
             setWaiting(undefined)
             errorMessage(error, true)
           }
@@ -121,7 +121,7 @@ export const usePay = (
           "We have recieved your card payment. Please wait as we process it!"
         )
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       await cancelPayinCallback()
       errorMessage(error, true)
     }
@@ -141,7 +141,7 @@ export const usePay = (
         registerResponse.amount * 10 ** 6,
         cancelPayinCallback
       )
-    } catch (error: any) {
+    } catch (error: unknown) {
       await cancelPayinCallback()
       throw error
     } finally {
@@ -235,7 +235,7 @@ export const usePay = (
       if (callback) {
         callback()
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
       if (checkFunding) {
         errorMessage(

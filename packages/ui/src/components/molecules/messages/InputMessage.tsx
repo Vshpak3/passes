@@ -26,7 +26,7 @@ import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
-interface Props {
+interface InputMessageProps {
   channelId: string
   minimumTip?: number | null
   isCreator: boolean
@@ -35,7 +35,8 @@ interface Props {
 }
 
 const api = new MessagesApi()
-export const InputMessage: FC<Props> = ({
+
+export const InputMessage: FC<InputMessageProps> = ({
   channelId,
   minimumTip,
   isCreator,

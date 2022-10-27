@@ -32,7 +32,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
       } else {
         await likeApi.likePost({ postId })
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
 
       // Revert optimistic update

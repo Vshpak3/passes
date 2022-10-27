@@ -24,6 +24,7 @@ import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { useProfile } from "src/hooks/profile/useProfile"
+import { socialUsernames } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
   displayName: string()
@@ -106,17 +107,10 @@ export const EditProfile: FC<EditProfileProps> = ({
     defaultValues: useMemo(() => {
       return {
         ...Object.fromEntries(
-          [
-            "displayName",
-            "description",
-            "discordUsername",
-            "facebookUsername",
-            "instagramUsername",
-            "tiktokUsername",
-            "twitchUsername",
-            "twitterUsername",
-            "youtubeUsername"
-          ].map((k) => [k, profile?.[k as keyof GetProfileResponseDto]])
+          ["displayName", "description", ...socialUsernames].map((k) => [
+            k,
+            profile?.[k as keyof GetProfileResponseDto]
+          ])
         ),
         profileImage: [],
         profileBannerImage: []
@@ -175,7 +169,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       if (changes) {
         await onSubmitEditProfile(changes)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       await errorMessage(error, true)
     } finally {
       setEditProfileModalOpen(false)

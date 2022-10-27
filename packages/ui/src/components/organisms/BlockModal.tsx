@@ -44,7 +44,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
           </Link>
         </div>
       )
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

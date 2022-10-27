@@ -85,7 +85,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
               className="hidden sidebar-collapse:block sidebar-collapse:pl-[67px]"
             >
               {item.children &&
-                item.children.map((subItem: any) => {
+                item.children.map((subItem) => {
                   const isActive = subItem.id === active
                   return (
                     <SidebarChildItem

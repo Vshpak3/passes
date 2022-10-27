@@ -161,9 +161,9 @@ export class ContentService {
         console.error(await response.text())
         throw new Error("There was an error uploading the file")
       }
-    } catch (err: any) {
+    } catch (error: unknown) {
       toast.error("There was an error uploading the file")
-      throw err
+      throw error
     }
 
     // remove signatures from uploaded file

@@ -62,7 +62,7 @@ export const useCreatorSettings = () => {
       } else {
         toast.error("Failed to update")
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

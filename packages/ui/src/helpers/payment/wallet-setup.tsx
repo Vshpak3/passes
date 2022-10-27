@@ -36,10 +36,12 @@ export interface PhantomProvider {
   off: (event: PhantomEvent) => void
   request: (method: PhantomRequestMethod, params: any) => Promise<unknown>
 }
+
 interface EthereumMethod {
   method: string
   params?: any
 }
+
 export interface EthereumProvider {
   isMetaMask?: boolean
   request: (action: EthereumMethod) => Promise<any>

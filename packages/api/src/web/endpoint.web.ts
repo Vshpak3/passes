@@ -1,5 +1,10 @@
 import { applyDecorators, HttpCode, UseGuards } from '@nestjs/common'
-import { ApiBearerAuth, ApiOperation, ApiResponse } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiResponseMetadata,
+} from '@nestjs/swagger'
 
 import { Role, RoleEnum } from '../modules/auth/core/auth.role'
 import { JwtCreatorOnlyGuard } from '../modules/auth/jwt/creator-only/jwt-creator-only.guard'
@@ -11,7 +16,7 @@ import { JwtUnverifiedGuard } from '../modules/auth/jwt/unverified/jwt-unverifie
 class ApiOptions {
   summary: string
   responseStatus: number
-  responseType: any
+  responseType: ApiResponseMetadata['type']
   responseDesc: string
   role: RoleEnum
 }

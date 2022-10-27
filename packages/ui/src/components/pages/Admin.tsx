@@ -46,7 +46,7 @@ const AdminPage = () => {
       refreshUser()
 
       router.push("/home")
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }
@@ -61,7 +61,7 @@ const AdminPage = () => {
       await api.flagAsAdult({
         adminDto: { userId, username, secret }
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }

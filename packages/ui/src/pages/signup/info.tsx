@@ -124,9 +124,9 @@ const SignupInfoPage: FC = () => {
           })
         }
       )
-    } catch (err: any) {
+    } catch (error: unknown) {
       toast.dismiss()
-      errorMessage(err, true)
+      errorMessage(error, true)
       setIsSubmitting(false)
     }
   }

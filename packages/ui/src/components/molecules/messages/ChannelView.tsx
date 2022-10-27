@@ -14,11 +14,11 @@ import { InputMessage } from "./InputMessage"
 interface ChannelViewProps {
   selectedChannel?: ChannelMemberDto
   gallery: boolean
-  setGallery: Dispatch<SetStateAction<any>>
+  setGallery: Dispatch<SetStateAction<boolean>>
   isCreator: boolean
   user: GetUserResponseDto
   vaultContent: ContentDto[]
-  setVaultContent: Dispatch<SetStateAction<any>>
+  setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   onBack?(): void
 }
 

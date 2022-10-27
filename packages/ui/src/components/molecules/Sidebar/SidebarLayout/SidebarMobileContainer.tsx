@@ -1,19 +1,16 @@
 import { Dialog, Transition } from "@headlessui/react"
-import { FC, Fragment } from "react"
+import { FC, Fragment, PropsWithChildren } from "react"
 
 import { SidebarMobileHeader } from "./SidebarMobileHeader"
 
 interface SidebarMobileContainerProps {
-  children: any
-  mobileSidebarOpen: any
-  toggleSidebar: any
+  mobileSidebarOpen: boolean
+  toggleSidebar: () => void
 }
 
-export const SidebarMobileContainer: FC<SidebarMobileContainerProps> = ({
-  children,
-  mobileSidebarOpen,
-  toggleSidebar
-}) => {
+export const SidebarMobileContainer: FC<
+  PropsWithChildren<SidebarMobileContainerProps>
+> = ({ children, mobileSidebarOpen, toggleSidebar }) => {
   return (
     <Transition.Root show={mobileSidebarOpen} as={Fragment}>
       <Dialog

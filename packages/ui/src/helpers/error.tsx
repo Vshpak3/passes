@@ -1,7 +1,7 @@
 import { ResponseError } from "@passes/api-client"
 import { toast } from "react-toastify"
 
-export async function errorMessage(err: any, withToast = false) {
+export async function errorMessage(err: unknown, withToast = false) {
   let errorMessage: string | string[] = "Something went wrong"
 
   if (err instanceof ResponseError) {

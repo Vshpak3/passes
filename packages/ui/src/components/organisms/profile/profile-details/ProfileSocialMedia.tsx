@@ -9,6 +9,16 @@ import { FC } from "react"
 
 import { formatTextToString } from "src/helpers/formatters"
 
+export const socialUsernames = [
+  "discordUsername",
+  "facebookUsername",
+  "instagramUsername",
+  "tiktokUsername",
+  "twitchUsername",
+  "twitterUsername",
+  "youtubeUsername"
+]
+
 const socialUsernameToUrl = {
   discordUsername: (u: string) => `https://www.discord.gg/${u}`,
   facebookUsername: (u: string) => `https://www.facebook.com/${u}`,
@@ -66,7 +76,7 @@ export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = (props) => (
     {Object.entries(props).map(([type, username]) => (
       <ProfileSocialMediaButton
         key={type}
-        type={type as any}
+        type={type as keyof ProfileSocialMediaProps}
         username={username}
       />
     ))}

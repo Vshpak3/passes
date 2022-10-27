@@ -3,7 +3,7 @@ import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
 
 interface SidebarMobileHeaderProps {
-  toggleSidebar: any
+  toggleSidebar: () => void
 }
 
 export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({

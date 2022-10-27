@@ -109,7 +109,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
     try {
       setIsSubmitting(true)
       await saveProfileHandler(data)
-    } catch (error: any) {
+    } catch (error: unknown) {
       await errorMessage(error, true)
       setIsSubmitting(false)
     }

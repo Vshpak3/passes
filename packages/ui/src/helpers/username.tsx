@@ -10,8 +10,8 @@ export async function checkUsername(username: string): Promise<void> {
     usernameTaken = await api.isUsernameTaken({
       updateUsernameRequestDto: { username }
     })
-  } catch (err: any) {
-    throw new Error(await errorMessage(err))
+  } catch (error: unknown) {
+    throw new Error(await errorMessage(error))
   }
 
   if (usernameTaken.value) {

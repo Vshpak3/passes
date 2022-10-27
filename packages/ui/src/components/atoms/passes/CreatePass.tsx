@@ -92,7 +92,7 @@ export const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
 )
 
 interface CreatePassButtonProps {
-  onCreateHandler: any
+  onCreateHandler: () => void
   isDisabled?: boolean
 }
 

@@ -7,7 +7,7 @@ import {
   PassDto
 } from "@passes/api-client/models"
 import { useRouter } from "next/router"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelMassDM } from "src/components/molecules/messages/ChannelMassDM"
@@ -19,18 +19,18 @@ import { useWindowSize } from "src/hooks/useWindowSizeHook"
 interface MessagesV2Props {
   defaultUserId?: string
   vaultContent: ContentDto[]
-  setVaultContent: Dispatch<SetStateAction<any>>
+  setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   massMessage: boolean
-  setMassMessage: Dispatch<SetStateAction<any>>
+  setMassMessage: Dispatch<SetStateAction<boolean>>
 }
 
-const MessagesV2 = ({
+const MessagesV2: FC<MessagesV2Props> = ({
   defaultUserId,
   vaultContent,
   setVaultContent,
   massMessage,
   setMassMessage
-}: MessagesV2Props) => {
+}) => {
   const router = useRouter()
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])

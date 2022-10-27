@@ -57,7 +57,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       }
 
       addComment(comment)
-    } catch (error: any) {
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }, [getValues, postId, addComment, user])

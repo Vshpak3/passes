@@ -1,4 +1,5 @@
 import {
+  ChannelMemberDto,
   GetMessagesRequestDto,
   GetMessagesResponseDto,
   MessageDto,
@@ -12,13 +13,13 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { GalleryMedia } from "src/components/messages/components/ChannelInner/GalleryMedia"
 
-interface Props {
+interface ChannelGalleryViewProps {
   paid?: boolean
-  selectedChannel: any
+  selectedChannel: ChannelMemberDto
   isCreator: boolean
 }
 
-export const ChannelGalleryView: FC<Props> = ({
+export const ChannelGalleryView: FC<ChannelGalleryViewProps> = ({
   paid,
   selectedChannel,
   isCreator

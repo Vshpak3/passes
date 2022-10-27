@@ -3,7 +3,7 @@ import SearchIcon from "public/icons/header-search-icon-2.svg"
 import { FC } from "react"
 
 interface SearchInputDropdownProps {
-  handleSearch: any
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void
   placeholder?: string
 }
 

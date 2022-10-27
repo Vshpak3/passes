@@ -6,14 +6,14 @@ import { InputMessageMassDM } from "./InputMessageMassDM"
 
 interface ChannelViewMassDMProps {
   vaultContent: ContentDto[]
-  setVaultContent: Dispatch<SetStateAction<any>>
+  setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   selectedPasses: PassDto[]
   setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
   selectedLists: ListDto[]
   setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
   excludedLists: ListDto[]
   setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-  setMassMessage: Dispatch<SetStateAction<any>>
+  setMassMessage: Dispatch<SetStateAction<boolean>>
 }
 
 export const ChannelViewMassDM: FC<ChannelViewMassDMProps> = ({

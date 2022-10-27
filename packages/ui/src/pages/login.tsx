@@ -72,7 +72,7 @@ const LoginPage: FC = () => {
       setIsSubmitting(true)
       deleteAllCookies()
       await loginUser(data.email, data.password)
-    } catch (error: any) {
+    } catch (error: unknown) {
       toast.error("Invalid credentials")
       console.error(await errorMessage(error))
       setIsSubmitting(false)

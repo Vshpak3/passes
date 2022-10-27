@@ -56,8 +56,8 @@ const VerifyEmailPage = () => {
           verifyEmailDto: { verificationToken: id }
         })
       })
-    } catch (err: any) {
-      console.error(err)
+    } catch (error: unknown) {
+      console.error(error)
       setError(
         "Error occurred verifying your email address. The link is wrong or has been expired."
       )

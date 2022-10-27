@@ -24,8 +24,8 @@ module.exports = {
     "react/react-in-jsx-scope": "off", // Not needed for Next.js
     "simple-import-sort/imports": [
       "error",
-      // Default grouping but treats src/ as first-party
       {
+        // Default grouping but treats src/ as first-party
         groups: [
           ["^\\u0000", "^node:", "^@?\\w", "^"],
           ["^src/", "^\\."]
