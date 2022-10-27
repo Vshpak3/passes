@@ -160,7 +160,7 @@ export class ProfileService {
         DistributionId: this.distribution,
         InvalidationBatch: {
           Paths: {
-            Quantity: 1,
+            Quantity: 2,
             Items: [
               profileImagePath(userId, 'image'),
               profileImagePath(userId, 'thumbnail'),
