@@ -19,7 +19,7 @@ export const MonthlyMemberships = () => {
           >
             Passes
           </span>
-          <h3 className="max-w-2xl text-5xl font-extrabold leading-[4rem]">
+          <h3 className="max-w-2xl text-4xl font-extrabold leading-[4rem] md:text-5xl">
             Monthly memberships for your biggest fans
           </h3>
           <p className="max-w-sm py-4">
