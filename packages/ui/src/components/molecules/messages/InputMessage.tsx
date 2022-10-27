@@ -29,7 +29,7 @@ import { usePay } from "src/hooks/usePay"
 interface InputMessageFormProps {
   message: string
   isPaid: boolean
-  previewIndex: number
+  previewIndex: string
   submitError: any
 }
 
@@ -98,8 +98,8 @@ export const InputMessage: FC<InputMessageProps> = ({
         contentIds: contentIds,
         channelId,
         tipAmount: tip,
-        price: isPaid ? Number(messagePrice) : 0,
-        previewIndex: Number(previewIndex) ?? 0
+        price: isPaid ? messagePrice : 0,
+        previewIndex: previewIndex ? parseInt(previewIndex) : 0
       }
     })
     setFiles([])
@@ -180,8 +180,7 @@ export const InputMessage: FC<InputMessageProps> = ({
   }, [channelId, message, submitData, tip])
 
   const handleChange = (event: any) => {
-    const limit = 5
-    setMessagePrice(event.target.value.slice(0, limit))
+    setMessagePrice(parseFloat(event.target.value))
   }
   const options = {}
   return (
@@ -216,7 +215,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                   aria-placeholder="$"
                   onKeyPress={preventNegative}
                   min="0"
-                  max="9999"
+                  max="5000"
+                  step="0.01"
                   onChange={(event) => handleChange(event)}
                   className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
                 />

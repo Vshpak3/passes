@@ -10,7 +10,9 @@ import React, {
 } from "react"
 import { useForm } from "react-hook-form"
 
+import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { FormInput } from "src/components/atoms/FormInput"
+import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import {
@@ -53,7 +55,9 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     setError,
     clearErrors,
     reset,
-    watch
+    watch,
+    getValues,
+    setValue
   } = useForm()
   const message = watch("message", "")
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
@@ -95,8 +99,9 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
           passIds: passIds,
           text: message,
           contentIds: contentIds,
-          price: Number(messagePrice),
-          previewIndex: Number(previewIndex) ?? 0
+          price: messagePrice,
+          previewIndex: previewIndex ? parseInt(previewIndex) : 0,
+          scheduledAt: getValues()?.scheduledAt ?? undefined
         }
       })
       setFiles([])
@@ -136,11 +141,15 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     }
   }
 
+  const setScheduledTime = (date: Date | null) => {
+    setValue("scheduledAt", date, { shouldValidate: true })
+  }
+
   const handleChange = (event: any) => {
-    const limit = 5
-    setMessagePrice(event.target.value.slice(0, limit))
+    setMessagePrice(parseFloat(event.target.value))
   }
   const options = {}
+  const scheduledTime = getValues()?.scheduledAt
   return (
     <form
       className="grid w-full grid-cols-3 border-t border-[#fff]/10"
@@ -172,7 +181,8 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
                 aria-placeholder="$"
                 onKeyPress={prevent}
                 min="0"
-                max="9999"
+                max="5000"
+                step="0.01"
                 onChange={(event) => handleChange(event)}
                 className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
               />
@@ -209,6 +219,12 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
             />
           )}
 
+          {scheduledTime && (
+            <ScheduleAlert
+              scheduledPostTime={scheduledTime}
+              onRemoveScheduledPostTime={() => setScheduledTime(null)}
+            />
+          )}
           <div className="flex w-full items-center justify-between pt-6">
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
@@ -219,6 +235,13 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               selectors={[PhotoSelector, VideoSelector]}
             >
               <VaultSelector selectVaultContent={addContent} />
+              <CalendarSelector
+                name="Schedule"
+                activeHeader=""
+                setScheduledTime={setScheduledTime}
+                scheduledTime={scheduledTime}
+                placement="bottom"
+              />
             </MediaSelector>
             <button
               type="submit"
