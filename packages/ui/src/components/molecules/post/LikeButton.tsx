@@ -49,7 +49,10 @@ export const LikeButton: FC<LikeButtonProps> = ({
       onClick={toggleLike}
       className="flex cursor-pointer items-center gap-[5px] p-0"
     >
-      <HeartIcon fill={isLiked ? "#A09FA6" : "none"} />
+      <HeartIcon
+        fill={isLiked ? "#FF60DC" : "none"}
+        strokeWidth={isLiked ? "0" : "2"} // TODO: fix
+      />
       <span className="text-[12px] leading-[15px] text-passes-gray-100">
         {formattedNumLikes}
       </span>
