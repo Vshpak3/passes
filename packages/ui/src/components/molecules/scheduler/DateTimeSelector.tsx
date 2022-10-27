@@ -42,27 +42,33 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
 
   return (
     <>
-      <ChevronLeft
-        size={32}
-        className={classNames({
-          "cursor-pointer": !disablePast,
-          "opacity-[0.5]": disablePast
-        })}
-        onClick={!disablePast ? previousMonth : () => undefined}
-      />
+      <button
+        type="button"
+        aria-label="Go to previous month"
+        disabled={disablePast}
+        onClick={previousMonth}
+      >
+        <ChevronLeft
+          size={32}
+          className={classNames({ "opacity-[0.5]": disablePast })}
+        />
+      </button>
       <button type="button" onClick={showDateYearModal}>
         <span className="w-[100px] select-none">
           {format(new Date(year, month, 1), "MMMM yyyy")}
         </span>
       </button>
-      <ChevronRight
-        size={32}
-        className={classNames({
-          "cursor-pointer": !disableFuture,
-          "opacity-[0.5]": disableFuture
-        })}
-        onClick={!disableFuture ? nextMonth : () => undefined}
-      />
+      <button
+        type="button"
+        aria-label="Go to previous month"
+        disabled={disableFuture}
+        onClick={nextMonth}
+      >
+        <ChevronRight
+          size={32}
+          className={classNames({ "opacity-[0.5]": disableFuture })}
+        />
+      </button>
     </>
   )
 }

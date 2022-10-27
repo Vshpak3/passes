@@ -1,7 +1,7 @@
 import "rc-time-picker/assets/index.css"
 import "react-day-picker/dist/style.css"
 import Fade from "@mui/material/Fade"
-import Popper from "@mui/material/Popper"
+import Popper, { PopperPlacementType } from "@mui/material/Popper"
 import { addMinutes, addMonths, format } from "date-fns"
 import { FC, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
@@ -13,7 +13,6 @@ import {
   SCHEDULE_MINUTE_LIMIT
 } from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const CALENDAR_POPUP_ID = "calendar-popper"
 
@@ -32,12 +31,13 @@ const dateToInternalTime = (date: Date) => {
   }
 }
 
-interface CalendarPickerProps {
+export interface CalendarPickerProps {
   onSave: (date: Date | null) => void
   minuteLimit?: number
   maxDate?: Date
   scheduledTime?: Date | null
   children: React.ReactNode
+  placement: PopperPlacementType
 }
 
 export const CalendarPicker: FC<CalendarPickerProps> = ({
@@ -45,7 +45,8 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   minuteLimit = SCHEDULE_MINUTE_LIMIT,
   maxDate = addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS),
   scheduledTime,
-  children
+  children,
+  placement
 }) => {
   const today = new Date()
 
@@ -53,7 +54,6 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   const [selectionDate, setSelectionDate] = useState<Date | undefined>(
     scheduledTime || today
   )
-  const { isMobile } = useWindowSize()
   const [time, setTime] = useState<Time>(
     scheduledTime
       ? dateToInternalTime(scheduledTime)
@@ -110,7 +110,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
       <Popper
         id={id}
         open={open}
-        placement={isMobile ? "bottom" : "right"}
+        placement={placement}
         anchorEl={anchorEl}
         transition
         disablePortal={false}

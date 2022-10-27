@@ -1,7 +1,7 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
-import PlusQuareIcon from "public/icons/plus-square.svg"
-import { FC, useContext, useRef, useState } from "react"
+import PlusSquareIcon from "public/icons/plus-square.svg"
+import { FC, useCallback, useContext, useRef, useState } from "react"
 
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import {
@@ -9,6 +9,7 @@ import {
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
 } from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 import { DateTimeSelected } from "./DateTimeSelector"
 import { MonthYearPicker } from "./MonthYearPicker"
@@ -16,6 +17,7 @@ import { NewPostPopup } from "./NewPostPopup"
 
 export const SchedulerHeader: FC = () => {
   const { month, year, setMonth, setYear } = useContext(SchedulerContext)
+  const { isMobile } = useWindowSize()
 
   const popperMonthYearPickerRef = useRef<HTMLDivElement | null>(null)
 
@@ -38,6 +40,11 @@ export const SchedulerHeader: FC = () => {
   useOnClickOutside(popperMonthYearPickerRef, () => {
     setMonthYearPopperOpen(false)
   })
+
+  const hideNewPostModal = useCallback(
+    () => () => setIsNewPostModalOpen(false),
+    []
+  )
 
   return (
     <>
@@ -78,7 +85,7 @@ export const SchedulerHeader: FC = () => {
       {/* Create new post */}
       <NewPostPopup
         isOpen={isNewPostModalOpen && !!selectionDate}
-        onCancel={() => setIsNewPostModalOpen(false)}
+        onCancel={hideNewPostModal}
         selectionDate={selectionDate as Date}
       />
 
@@ -101,9 +108,10 @@ export const SchedulerHeader: FC = () => {
             setSelectionDate(date)
             setIsNewPostModalOpen(true)
           }}
+          placement={isMobile ? "bottom" : "auto"}
         >
           <button className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]">
-            <PlusQuareIcon />
+            <PlusSquareIcon />
             <span className="hidden md:block">Schedule</span>
           </button>
         </CalendarPicker>

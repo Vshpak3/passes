@@ -38,6 +38,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
               activeHeader="Schedule"
               setScheduledTime={setScheduledTime}
               scheduledTime={scheduledTime}
+              placement="bottom"
             />
           </div>
         </div>

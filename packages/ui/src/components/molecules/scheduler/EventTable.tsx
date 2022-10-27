@@ -74,7 +74,7 @@ export const EventTable: FC = () => {
               onDelete={handleDeleteEvent}
             />
           )}
-          <table className="w-full">
+          <table className="hidden w-full md:table">
             <tr className="hidden pb-2 text-left text-base font-medium leading-6 text-white opacity-50 md:contents">
               <th className="pl-5 pb-1">Type</th>
               <th className="px-3 pb-1">Media</th>
@@ -91,10 +91,24 @@ export const EventTable: FC = () => {
                   onDeleteEvent={handleOnDeleteEvent}
                   mutate={mutate}
                   onChangeTime={handleOnUpdateEvent}
+                  isTable
                 />
               )
             })}
           </table>
+          <ul className="w-full md:hidden">
+            {data?.map((item: ScheduledEventDto) => {
+              return (
+                <EventTableItem
+                  key={item.scheduledEventId}
+                  scheduledEvent={item}
+                  onDeleteEvent={handleOnDeleteEvent}
+                  mutate={mutate}
+                  onChangeTime={handleOnUpdateEvent}
+                />
+              )
+            })}
+          </ul>
         </div>
       )}
     </div>

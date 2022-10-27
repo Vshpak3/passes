@@ -2,23 +2,32 @@ import classNames from "classnames"
 import ScheduledCalendarIcon from "public/icons/calendar-scheduled-purple-icon.svg"
 import { FC } from "react"
 
-import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
+import {
+  CalendarPicker,
+  CalendarPickerProps
+} from "src/components/atoms/calendar/CalendarPicker"
 
 interface CalendarSelectorProps {
   name: string
   activeHeader: string | undefined
   setScheduledTime: (date: Date | null) => void | Promise<void>
   scheduledTime?: Date | null
+  placement: CalendarPickerProps["placement"]
 }
 
 export const CalendarSelector: FC<CalendarSelectorProps> = ({
   name,
   activeHeader,
   setScheduledTime,
-  scheduledTime
+  scheduledTime,
+  placement
 }) => {
   return (
-    <CalendarPicker scheduledTime={scheduledTime} onSave={setScheduledTime}>
+    <CalendarPicker
+      scheduledTime={scheduledTime}
+      onSave={setScheduledTime}
+      placement={placement}
+    >
       <span
         className={classNames(
           activeHeader === name

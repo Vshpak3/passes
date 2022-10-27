@@ -16,12 +16,12 @@ export const SchedulerContext = React.createContext({
   setYear: (_: number) => {}
 })
 
-const SchedulerPage = () => {
+const SchedulerPage: React.FC = () => {
   const today = new Date()
   const defaultDate = { month: today.getMonth(), year: today.getFullYear() }
 
-  const [month, setMonth] = useState<number>(defaultDate.month)
-  const [year, setYear] = useState<number>(defaultDate.year)
+  const [month, setMonth] = useState(defaultDate.month)
+  const [year, setYear] = useState(defaultDate.year)
 
   const contextValue = { month, year, setMonth, setYear }
 
