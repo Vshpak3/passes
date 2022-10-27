@@ -11,6 +11,7 @@ import { Input } from "src/components/atoms/Input"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
+import { MIN_TIP_POST_PRICE } from "src/config/post"
 import { usePay } from "src/hooks/usePay"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
@@ -56,7 +57,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
     <Modal isOpen={isOpen} setOpen={setOpen}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Tip Post (Minimum $3)
+          Tip Post (Minimum ${MIN_TIP_POST_PRICE})
         </span>
       </div>
       <Input
@@ -67,7 +68,10 @@ const TipPostModal: FC<TipPostModalProps> = ({ isOpen, setOpen, postId }) => {
         type="number"
         options={{
           required: { message: "Tip amount is required", value: true },
-          min: { value: 3, message: "Tip must be more than $5" }
+          min: {
+            value: MIN_TIP_POST_PRICE,
+            message: `Tip must be more than ${MIN_TIP_POST_PRICE}`
+          }
         }}
       />
       <div className="my-8">
