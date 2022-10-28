@@ -105,6 +105,9 @@ export class MessagesService {
     userId: string,
     getChannelRequestDto: GetChannelRequestDto,
   ): Promise<ChannelMemberDto> {
+    if (userId === getChannelRequestDto.userId) {
+      throw new BadRequestException('cant send message to yourselft')
+    }
     const otherUser = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: getChannelRequestDto.userId })
       .select('id', 'is_creator')
@@ -1208,7 +1211,7 @@ export class MessagesService {
   async createMessageHistory() {
     await this.dbWriter
       .from(
-        this.dbWriter.raw('?? (??, ??, ??, ??, ??)', [
+        this.dbWriter.raw('?? (??, ??, ??, ??)', [
           PaidMessageHistoryEntity.table,
           'paid_message_id',
           'num_purchases',

@@ -29,7 +29,7 @@ export class FacebookComplianceService {
 
   async initiateDeletionRequest(signedRequest: string): Promise<string> {
     const [encodedSignature, payload] = signedRequest.split('.', 2)
-    if (encodedSignature === null || payload === null) {
+    if (!encodedSignature || !payload) {
       throw new BadRequestException('Signed request has invalid format')
     }
 

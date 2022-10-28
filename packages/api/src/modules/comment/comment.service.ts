@@ -196,6 +196,9 @@ export class CommentService {
       .where({ id: postId })
       .select(['user_id'])
       .first()
+    if (!post) {
+      throw new BadRequestException('post not found for deleting comment')
+    }
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<CommentEntity>(CommentEntity.table)
         .update({
@@ -213,7 +216,7 @@ export class CommentService {
         .andWhere(function () {
           return this.where('commenter_id', userId).orWhere(
             'commenter_id',
-            post?.user_id,
+            post.user_id,
           )
         })
       if (updated === 1) {
