@@ -33,7 +33,7 @@ export class ContentService {
   }
 
   static profileBanner(userId: string): string {
-    return getUrlPath("profile", "media", userId, "banner.jpeg")
+    return getUrlPath("profile", "media", userId, "profile-banner.jpeg")
   }
 
   // Passes/NFTs
@@ -208,7 +208,7 @@ export class ContentService {
    */
   async uploadUserContent({
     files,
-    contentType,
+    contentType: _contentType,
     inPost = false,
     inMessage = false
   }: {
@@ -225,16 +225,12 @@ export class ContentService {
         if (!file.file) {
           return file.content?.contentId ?? ""
         }
-        const _contentType = contentType ?? this.getFileContentType(file.file)
-        if (!_contentType) {
-          throw new Error("invalid file type")
+        const contentType = _contentType ?? this.getFileContentType(file.file)
+        if (!contentType) {
+          throw new Error("Invalid file type")
         }
         const { url } = await this.contentApi.preSignContent({
-          createContentRequestDto: {
-            contentType: _contentType,
-            inPost: inPost,
-            inMessage: inMessage
-          }
+          createContentRequestDto: { contentType, inPost, inMessage }
         })
         const result = await this.uploadFile(url, file.file)
         return this.parseContentUrl(result).id
