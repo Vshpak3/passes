@@ -98,7 +98,8 @@ export const Payin = ({ payin }: PayinProps) => {
       break
     default:
       status = "Pending"
-      cancellable = true
+      cancellable =
+        payin.payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard
       break
   }
   switch (payin.callback) {
@@ -169,9 +170,9 @@ export const Payin = ({ payin }: PayinProps) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[14px] font-[700] text-passes-pink-100">
-          {!cancelled &&
-            payin.payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard &&
-            cancellable && <Button onClick={cancel}>Cancel</Button>}
+          {!cancelled && cancellable && (
+            <Button onClick={cancel}>Cancel</Button>
+          )}
         </span>
       </div>
     </div>
