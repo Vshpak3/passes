@@ -52,7 +52,7 @@ type FormInputProps = {
   max?: number
   step?: number
   autoComplete?: string
-  onKeyPress?: (e: React.KeyboardEventHandler<HTMLInputElement>) => void
+  onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   style?: CSSProperties
 }
 

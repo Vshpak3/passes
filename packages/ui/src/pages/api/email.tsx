@@ -1,4 +1,4 @@
-import mailchimp from "@mailchimp/mailchimp_marketing"
+import mailchimp, { MemberErrorResponse } from "@mailchimp/mailchimp_marketing"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { toast } from "react-toastify"
 
@@ -9,6 +9,10 @@ mailchimp.setConfig({
 
 interface EmailRequest {
   emailAddress: string
+}
+
+interface EmailException {
+  response?: MemberErrorResponse
 }
 
 const F = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -26,8 +30,9 @@ const F = async (req: NextApiRequest, res: NextApiResponse) => {
     })
 
     res.status(201).send({ status: response.status })
-  } catch (e: any) {
-    const errMsg = JSON.parse(e?.response?.text)
+  } catch (e: unknown) {
+    const err = e as EmailException
+    const errMsg = JSON.parse(err?.response?.title || "")
     if (errMsg.title === "Member Exists") {
       res.status(200).send({})
       return

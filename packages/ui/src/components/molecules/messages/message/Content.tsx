@@ -11,7 +11,7 @@ import { plural } from "src/helpers/plural"
 interface ContentProps {
   paid: boolean
   contents: any
-  price: number | any
+  price: number
   message: MessageDto
   isOwnMessage: boolean
 }
@@ -58,7 +58,7 @@ const Content: FC<ContentProps> = ({
         </div>
       )}
       <div className={`grid ${gridCols} z-0 max-h-[300px] items-center  gap-2`}>
-        {contents.map((content: ContentDto, index: any) => (
+        {contents.map((content: ContentDto, index: number) => (
           <div key={index} className="col-span-1">
             <img
               src={ContentService.userContentMediaPath(content)}

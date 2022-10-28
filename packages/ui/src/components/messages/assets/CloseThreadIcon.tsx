@@ -1,7 +1,7 @@
-import { FC } from "react"
+import { FC, MouseEvent } from "react"
 
 interface CloseThreadIconProps {
-  closeThread: any
+  closeThread(e: MouseEvent<SVGSVGElement>): void
 }
 
 export const CloseThreadIcon: FC<CloseThreadIconProps> = ({ closeThread }) => (

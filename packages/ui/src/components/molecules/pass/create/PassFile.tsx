@@ -14,7 +14,7 @@ interface PassFilesProps {
 
 interface PassFileProps {
   file: File
-  onRemove: (e: MouseEvent<HTMLDivElement> | number) => void
+  onRemove: (e: MouseEvent<HTMLDivElement>) => void
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 

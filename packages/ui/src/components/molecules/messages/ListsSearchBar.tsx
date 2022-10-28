@@ -1,7 +1,7 @@
 import { Combobox } from "@headlessui/react"
 import { ListDto } from "@passes/api-client"
 import classNames from "classnames"
-import { FC, useCallback, useMemo } from "react"
+import { ChangeEvent, FC, useCallback, useMemo } from "react"
 
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { useListsSearch } from "src/hooks/search/useListsSearch"
@@ -46,7 +46,8 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
   )
 
   const onInputChange = useCallback(
-    (event: any) => setSearchValue(event.target.value),
+    (event: ChangeEvent<HTMLInputElement>) =>
+      setSearchValue(event.target.value),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )

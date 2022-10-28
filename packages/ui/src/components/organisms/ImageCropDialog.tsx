@@ -1,5 +1,5 @@
 import { FC, useCallback, useState } from "react"
-import Cropper from "react-easy-crop"
+import Cropper, { Area } from "react-easy-crop"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/Button"
@@ -86,7 +86,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
   })
 
   const onCropComplete = useCallback(
-    (_croppedArea: any, croppedAreaPixels: CroppedArea) => {
+    (_croppedArea: Area, croppedAreaPixels: CroppedArea) => {
       setCroppedArea(croppedAreaPixels)
     },
     []
@@ -96,9 +96,9 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
     try {
       const croppedImage = await getCroppedImg(src, croppedArea)
       onCrop(croppedImage)
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e)
-      toast.error(e)
+      toast.error(e as string)
     }
   }, [croppedArea, src, onCrop])
 

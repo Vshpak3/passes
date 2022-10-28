@@ -1,6 +1,8 @@
 import { parse } from "dom-parser-react"
 import { createElement, Fragment } from "react"
 
+import { FormatCurrencyOption } from "src/components/types/UtilTypes"
+
 const formatter = Intl.NumberFormat("en", { notation: "compact" })
 
 export function compactNumberFormatter(num: number) {
@@ -10,7 +12,10 @@ export function compactNumberFormatter(num: number) {
   return formatter.format(num)
 }
 
-export function formatCurrency(value: number, options: any = {}) {
+export function formatCurrency(
+  value: number,
+  options: FormatCurrencyOption = {}
+) {
   const defaultOptions = {
     currency: "USD",
     locale: "en-US"

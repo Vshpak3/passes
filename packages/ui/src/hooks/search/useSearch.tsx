@@ -1,5 +1,5 @@
 import debounce from "lodash.debounce"
-import { useCallback, useEffect, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
@@ -18,7 +18,7 @@ export const useSearch = <T,>(
 
   useOnClickOutside(searchRef, () => setResultsVisible(false))
 
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoading(true)
     setResultsVisible(true)
     setSearchValue(e.target.value)

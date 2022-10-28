@@ -73,7 +73,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           </div>
         </div>
         <div className="flex flex-wrap gap-[6px] transition-all">
-          {selectedPasses.map((pass: any) => (
+          {selectedPasses.map((pass: PassDto) => (
             <Tag
               key={pass.passId}
               title={formatText(pass.title) as string}
