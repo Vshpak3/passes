@@ -38,7 +38,8 @@ const SignupEmailPage: FC = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [hasSentEmail, setHasSentEmail] = useState(false)
+  const [hasSentEmail, setHasSentEmail] = useState(true)
+  const [hasResentEmail, setHasResentEmail] = useState(true)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -63,7 +64,20 @@ const SignupEmailPage: FC = () => {
     }
 
     router.query.hasEmail = "true"
+    router.query.email = email
     router.push(router)
+  }
+
+  const resendEmail = async () => {
+    setHasResentEmail(false)
+
+    const email = router.query.email as string
+    const api = new AuthApi()
+    await api.setUserEmail({
+      setEmailRequestDto: { email }
+    })
+
+    setHasResentEmail(true)
   }
 
   const onSubmit = (data: SignupEmailPageSchema) => {
@@ -100,6 +114,23 @@ const SignupEmailPage: FC = () => {
                 <br />
                 Please click in the link your email to continue.
               </Text>
+              <Button
+                onClick={resendEmail}
+                className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
+                disabled={isSubmitting}
+                disabledClass="opacity-[0.5]"
+              >
+                <Text fontSize={16} className="font-medium">
+                  Resend Verification Email
+                </Text>
+              </Button>
+              {hasResentEmail && (
+                <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                  We have resent an email to you to verify your email address.
+                </Text>
+              )}
             </>
           ) : (
             <>
