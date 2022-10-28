@@ -101,8 +101,8 @@ export const InputMessage: FC<InputMessageProps> = ({
         contentIds: contentIds,
         channelId,
         tipAmount: tip,
-        price: isPaid ? Number(messagePrice) : 0,
-        previewIndex: Number(previewIndex)
+        price: isPaid ? messagePrice : 0,
+        previewIndex: parseInt(previewIndex)
       }
     })
     setFiles([])

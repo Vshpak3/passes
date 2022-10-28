@@ -1,10 +1,9 @@
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
 import PassesLogoWhite from "public/icons/white-passes-logo.svg"
-import { FC, useState } from "react"
+import { FC } from "react"
 
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
-import { CreatorToolsSidebar } from "src/components/molecules/Sidebar/SidebarLayout/CreatorToolsSidebar"
 import { SidebarDropdown } from "src/components/molecules/Sidebar/SidebarLayout/SidebarDropdown"
 import { SidebarItem } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
@@ -20,17 +19,10 @@ interface SidebarProps {
 export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { user } = useUser()
 
-  const [collapsedAdditionalSidebarOpen, setCollapsedAdditionalSidebarOpen] =
-    useState(false)
-
-  const closeCollapsedAdditionalSidebar = () => {
-    setCollapsedAdditionalSidebarOpen(false)
-  }
-
   return (
     <>
       <header className="col-span-3 h-screen w-full items-end border-r border-gray-600 md:sticky md:inset-y-0 md:flex md:flex-shrink-0 md:flex-col">
-        <div className="flex w-full flex-1 flex-col bg-passes-black">
+        <div className="flex w-full flex-1 flex-col bg-passes-black px-6">
           <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
             <div>
               <div className="justify-left items-left flex flex-shrink-0">
@@ -50,6 +42,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
                         key={`sidebar-${item.id}`}
                         isActive={item.id === active}
                         item={item}
+                        isDropdown={false}
                       />
                     ) : (
                       <>
@@ -82,17 +75,13 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
                     href: "/logout"
                   }}
                   isActive={false}
+                  isDropdown={false}
                 />
               </div>
             </AuthWrapper>
           </div>
         </div>
       </header>
-      <CreatorToolsSidebar
-        active={active}
-        collapsedAdditionalSidebarOpen={collapsedAdditionalSidebarOpen}
-        closeCollapsedAdditionalSidebar={closeCollapsedAdditionalSidebar}
-      />
     </>
   )
 }

@@ -7,7 +7,7 @@ import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { isProd } from "src/helpers/env"
 
-export const creatorToolsItems: SidebarNavigation[] = [
+const creatorToolsItems: SidebarNavigation[] = [
   ...(!isProd
     ? [
         {

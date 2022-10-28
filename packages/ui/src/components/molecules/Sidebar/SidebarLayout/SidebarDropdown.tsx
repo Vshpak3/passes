@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { FC, Fragment } from "react"
 
-import { SidebarChildItem } from "./SidebarChildItem"
+import { SidebarItem } from "./SidebarItems"
 import { SidebarNavigation } from "./Types"
 
 interface SidebarDropdownProps {
@@ -26,7 +26,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
       {({ open }) => (
         <Fragment>
           <Disclosure.Button className="block">
-            <span className="group flex cursor-pointer items-center py-3 px-6 pr-0 hover:text-white">
+            <span className="group flex cursor-pointer items-center py-3 pr-0 hover:text-white">
               <Link
                 href={item.href}
                 as={item.href}
@@ -55,18 +55,15 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
             </span>
           </Disclosure.Button>
           {open && (
-            <Disclosure.Panel static className="block pl-[67px]">
-              {item.children &&
-                item.children.map((subItem) => {
-                  const isActive = subItem.id === active
-                  return (
-                    <SidebarChildItem
-                      key={subItem.id}
-                      subItem={subItem}
-                      isActive={isActive}
-                    />
-                  )
-                })}
+            <Disclosure.Panel static className="block pl-[40px]">
+              {item.children?.map((subItem) => (
+                <SidebarItem
+                  key={subItem.id}
+                  item={subItem}
+                  isActive={subItem.id === active}
+                  isDropdown={true}
+                />
+              ))}
             </Disclosure.Panel>
           )}
         </Fragment>
