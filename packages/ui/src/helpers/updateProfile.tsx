@@ -69,9 +69,4 @@ export async function updateProfile(
         })
       : undefined
   ])
-
-  if (profileImage?.length === 1) {
-    // Don't bother awaiting this
-    profileApi.updateProfileImage()
-  }
 }

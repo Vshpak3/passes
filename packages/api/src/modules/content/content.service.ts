@@ -1,9 +1,14 @@
 import {
+  CloudFrontClient,
+  CreateInvalidationCommand,
+} from '@aws-sdk/client-cloudfront'
+import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import ms from 'ms'
 import * as uuid from 'uuid'
 
@@ -13,6 +18,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { getAwsConfig } from '../../util/aws.util'
 import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
@@ -27,7 +33,10 @@ import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
-import { MarkProcessedRequestDto } from './dto/mark-processed'
+import {
+  MarkProcessedProfileImageRequestDto,
+  MarkProcessedUserContentRequestDto,
+} from './dto/mark-processed'
 import { ContentEntity } from './entities/content.entity'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
@@ -36,6 +45,7 @@ import {
   mediaContentPath,
   mediaContentThumbnailPath,
   mediaContentUploadPath,
+  profileImagePath,
   profileImageUploadPath,
   w9UploadPath,
 } from './helpers/content-paths'
@@ -44,14 +54,21 @@ const MAX_VAULT_CONTENT_PER_REQUEST = 9 // should be a multiple of 3
 
 @Injectable()
 export class ContentService {
+  private distribution: string
+  private client: CloudFrontClient
+
   constructor(
+    private readonly configService: ConfigService,
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
     private readonly s3contentService: S3ContentService,
     private readonly passService: PassService,
-  ) {}
+  ) {
+    this.distribution = configService.get('cloudfront.distribution') as string
+    this.client = new CloudFrontClient(getAwsConfig(configService))
+  }
 
   private async createContent(
     userId: string,
@@ -75,6 +92,36 @@ export class ContentService {
     }
   }
 
+  async markUserContentProcessed(
+    markProcessedDto: MarkProcessedUserContentRequestDto,
+  ): Promise<void> {
+    await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .where({ id: markProcessedDto.contentId })
+      .andWhere({ user_id: markProcessedDto.userId })
+      .update({ processed: true })
+  }
+
+  async markProfileImageProcessed(
+    markProcessedDto: MarkProcessedProfileImageRequestDto,
+  ): Promise<void> {
+    const userId = markProcessedDto.userId
+    await this.client.send(
+      new CreateInvalidationCommand({
+        DistributionId: this.distribution,
+        InvalidationBatch: {
+          Paths: {
+            Quantity: 2,
+            Items: [
+              '/' + profileImagePath(userId, 'image'),
+              '/' + profileImagePath(userId, 'thumbnail'),
+            ],
+          },
+          CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
+        },
+      }),
+    )
+  }
+
   async deleteContent(
     userId: string,
     deleteContentDto: DeleteContentRequestDto,
@@ -92,15 +139,6 @@ export class ContentService {
       }
     })
     return true
-  }
-
-  async markProcessed(
-    markProcessedRequestDto: MarkProcessedRequestDto,
-  ): Promise<void> {
-    await this.dbWriter<ContentEntity>(ContentEntity.table)
-      .where({ id: markProcessedRequestDto.contentId })
-      .andWhere({ user_id: markProcessedRequestDto.userId })
-      .update({ processed: true })
   }
 
   async isAllProcessed(contents: ContentBareDto[]): Promise<boolean> {

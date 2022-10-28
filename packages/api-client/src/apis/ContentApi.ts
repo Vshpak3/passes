@@ -21,7 +21,8 @@ import type {
   GetSignedUrlResponseDto,
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
-  MarkProcessedRequestDto,
+  MarkProcessedProfileImageRequestDto,
+  MarkProcessedUserContentRequestDto,
   PresignPassRequestDto,
 } from '../models';
 import {
@@ -37,8 +38,10 @@ import {
     GetVaultQueryRequestDtoToJSON,
     GetVaultQueryResponseDtoFromJSON,
     GetVaultQueryResponseDtoToJSON,
-    MarkProcessedRequestDtoFromJSON,
-    MarkProcessedRequestDtoToJSON,
+    MarkProcessedProfileImageRequestDtoFromJSON,
+    MarkProcessedProfileImageRequestDtoToJSON,
+    MarkProcessedUserContentRequestDtoFromJSON,
+    MarkProcessedUserContentRequestDtoToJSON,
     PresignPassRequestDtoFromJSON,
     PresignPassRequestDtoToJSON,
 } from '../models';
@@ -51,8 +54,12 @@ export interface GetVaultContentRequest {
     getVaultQueryRequestDto: GetVaultQueryRequestDto;
 }
 
-export interface MarkProcessedRequest {
-    markProcessedRequestDto: MarkProcessedRequestDto;
+export interface MarkProfileImageProcessedRequest {
+    markProcessedProfileImageRequestDto: MarkProcessedProfileImageRequestDto;
+}
+
+export interface MarkUserContentProcessedRequest {
+    markProcessedUserContentRequestDto: MarkProcessedUserContentRequestDto;
 }
 
 export interface PreSignContentRequest {
@@ -145,11 +152,11 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Mark content has processed
+     * Mark profile image as processed
      */
-    async markProcessedRaw(requestParameters: MarkProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.markProcessedRequestDto === null || requestParameters.markProcessedRequestDto === undefined) {
-            throw new runtime.RequiredError('markProcessedRequestDto','Required parameter requestParameters.markProcessedRequestDto was null or undefined when calling markProcessed.');
+    async markProfileImageProcessedRaw(requestParameters: MarkProfileImageProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.markProcessedProfileImageRequestDto === null || requestParameters.markProcessedProfileImageRequestDto === undefined) {
+            throw new runtime.RequiredError('markProcessedProfileImageRequestDto','Required parameter requestParameters.markProcessedProfileImageRequestDto was null or undefined when calling markProfileImageProcessed.');
         }
 
         const queryParameters: any = {};
@@ -165,21 +172,59 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/processed`,
+            path: `/api/content/processed/profile`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: MarkProcessedRequestDtoToJSON(requestParameters.markProcessedRequestDto),
+            body: MarkProcessedProfileImageRequestDtoToJSON(requestParameters.markProcessedProfileImageRequestDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);
     }
 
     /**
-     * Mark content has processed
+     * Mark profile image as processed
      */
-    async markProcessed(requestParameters: MarkProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.markProcessedRaw(requestParameters, initOverrides);
+    async markProfileImageProcessed(requestParameters: MarkProfileImageProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markProfileImageProcessedRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Mark user content as processed
+     */
+    async markUserContentProcessedRaw(requestParameters: MarkUserContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.markProcessedUserContentRequestDto === null || requestParameters.markProcessedUserContentRequestDto === undefined) {
+            throw new runtime.RequiredError('markProcessedUserContentRequestDto','Required parameter requestParameters.markProcessedUserContentRequestDto was null or undefined when calling markUserContentProcessed.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/content/processed/usercontent`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MarkProcessedUserContentRequestDtoToJSON(requestParameters.markProcessedUserContentRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Mark user content as processed
+     */
+    async markUserContentProcessed(requestParameters: MarkUserContentProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markUserContentProcessedRaw(requestParameters, initOverrides);
     }
 
     /**

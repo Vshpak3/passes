@@ -1,13 +1,8 @@
 import {
-  CloudFrontClient,
-  CreateInvalidationCommand,
-} from '@aws-sdk/client-cloudfront'
-import {
   BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
 
 import {
   Database,
@@ -15,9 +10,6 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
-import { getAwsConfig } from '../../util/aws.util'
-import { isEnv } from '../../util/env'
-import { profileImagePath } from '../content/helpers/content-paths'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { PROFILE_NOT_EXIST } from './constants/errors'
@@ -28,20 +20,12 @@ import { ProfileEntity } from './entities/profile.entity'
 
 @Injectable()
 export class ProfileService {
-  private distribution: string
-  private client: CloudFrontClient
-
   constructor(
-    private readonly configService: ConfigService,
-
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
-  ) {
-    this.distribution = configService.get('cloudfront.distribution') as string
-    this.client = new CloudFrontClient(getAwsConfig(configService))
-  }
+  ) {}
 
   async createOrUpdateProfile(
     userId: string,
@@ -147,27 +131,5 @@ export class ProfileService {
       .select('is_active')
       .first()
     return !!status && status.is_active
-  }
-
-  async updateProfileImage(userId: string): Promise<void> {
-    if (isEnv('dev')) {
-      return
-    }
-
-    await this.client.send(
-      new CreateInvalidationCommand({
-        DistributionId: this.distribution,
-        InvalidationBatch: {
-          Paths: {
-            Quantity: 2,
-            Items: [
-              '/' + profileImagePath(userId, 'image'),
-              '/' + profileImagePath(userId, 'thumbnail'),
-            ],
-          },
-          CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
-        },
-      }),
-    )
   }
 }

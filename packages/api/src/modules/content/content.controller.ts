@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,6 +8,7 @@ import {
   Post,
   Req,
 } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
@@ -21,26 +23,57 @@ import {
   GetVaultQueryRequestDto,
   GetVaultQueryResponseDto,
 } from './dto/get-vault-query-dto'
-import { MarkProcessedRequestDto } from './dto/mark-processed'
+import {
+  MarkProcessedProfileImageRequestDto,
+  MarkProcessedUserContentRequestDto,
+} from './dto/mark-processed'
 import { PresignPassRequestDto } from './dto/presign-pass.dto'
 
 @ApiTags('content')
 @Controller('content')
 export class ContentController {
-  constructor(private readonly contentService: ContentService) {}
+  private lambdaSecret: string
+
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly contentService: ContentService,
+  ) {
+    this.lambdaSecret = this.configService.get('lambda.secret') as string
+  }
 
   @ApiEndpoint({
-    summary: 'Mark content has processed',
+    summary: 'Mark user content as processed',
     responseStatus: HttpStatus.OK,
     responseType: undefined,
     responseDesc: 'Content was marked successfully',
     role: RoleEnum.NO_AUTH, // Must be no auth for Lambdas
   })
-  @Post('processed')
-  async markProcessed(
-    @Body() markProcessedRequestDto: MarkProcessedRequestDto,
+  @Post('processed/usercontent')
+  async markUserContentProcessed(
+    @Body() markProcessedDto: MarkProcessedUserContentRequestDto,
   ): Promise<void> {
-    await this.contentService.markProcessed(markProcessedRequestDto)
+    if (this.lambdaSecret !== markProcessedDto.secret) {
+      throw new BadRequestException()
+    }
+    await this.contentService.markUserContentProcessed(markProcessedDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Mark profile image as processed',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Content was marked successfully',
+    role: RoleEnum.NO_AUTH, // Must be no auth for Lambdas
+  })
+  @Post('processed/profile')
+  async markProfileImageProcessed(
+    @Body()
+    markProcessedDto: MarkProcessedProfileImageRequestDto,
+  ): Promise<void> {
+    if (this.lambdaSecret !== markProcessedDto.secret) {
+      throw new BadRequestException()
+    }
+    await this.contentService.markProfileImageProcessed(markProcessedDto)
   }
 
   @ApiEndpoint({

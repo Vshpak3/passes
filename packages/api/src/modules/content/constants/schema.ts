@@ -1,1 +1,2 @@
 export const CONTENTS_LENGTH = 5000
+export const LAMBDA_SECRET_LENGTH = 50

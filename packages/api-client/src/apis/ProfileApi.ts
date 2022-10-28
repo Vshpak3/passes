@@ -214,34 +214,4 @@ export class ProfileApi extends runtime.BaseAPI {
         return await response.value();
     }
 
-    /**
-     * Updates a profile image by invalidating the CDN
-     */
-    async updateProfileImageRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/profile/profile-image`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Updates a profile image by invalidating the CDN
-     */
-    async updateProfileImage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.updateProfileImageRaw(initOverrides);
-    }
-
 }

@@ -36,6 +36,8 @@ export const configValidationSchema = Joi.object({
 
   SES_SENDER_EMAIL: Joi.string().required(),
 
+  LAMBDA_SECRET: Joi.string().required(),
+
   // -----------------------------------------------------------
 
   OAUTH_GOOGLE_ID: Joi.string().required(),
@@ -119,6 +121,9 @@ export const configConfiguration = async function (): Promise<
     },
     ses: {
       senderEmail: getConfigValue('SES_SENDER_EMAIL'),
+    },
+    lambda: {
+      secret: getConfigValue('LAMBDA_SECRET'),
     },
     oauth: {
       google: {

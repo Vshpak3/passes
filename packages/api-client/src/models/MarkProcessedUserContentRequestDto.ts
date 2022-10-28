@@ -16,39 +16,46 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface MarkProcessedRequestDto
+ * @interface MarkProcessedUserContentRequestDto
  */
-export interface MarkProcessedRequestDto {
+export interface MarkProcessedUserContentRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof MarkProcessedRequestDto
+     * @memberof MarkProcessedUserContentRequestDto
      */
     contentId: string;
     /**
      * 
      * @type {string}
-     * @memberof MarkProcessedRequestDto
+     * @memberof MarkProcessedUserContentRequestDto
      */
     userId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MarkProcessedUserContentRequestDto
+     */
+    secret: string;
 }
 
 /**
- * Check if a given object implements the MarkProcessedRequestDto interface.
+ * Check if a given object implements the MarkProcessedUserContentRequestDto interface.
  */
-export function instanceOfMarkProcessedRequestDto(value: object): boolean {
+export function instanceOfMarkProcessedUserContentRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "contentId" in value;
     isInstance = isInstance && "userId" in value;
+    isInstance = isInstance && "secret" in value;
 
     return isInstance;
 }
 
-export function MarkProcessedRequestDtoFromJSON(json: any): MarkProcessedRequestDto {
-    return MarkProcessedRequestDtoFromJSONTyped(json, false);
+export function MarkProcessedUserContentRequestDtoFromJSON(json: any): MarkProcessedUserContentRequestDto {
+    return MarkProcessedUserContentRequestDtoFromJSONTyped(json, false);
 }
 
-export function MarkProcessedRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MarkProcessedRequestDto {
+export function MarkProcessedUserContentRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): MarkProcessedUserContentRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -56,10 +63,11 @@ export function MarkProcessedRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         
         'contentId': json['contentId'],
         'userId': json['userId'],
+        'secret': json['secret'],
     };
 }
 
-export function MarkProcessedRequestDtoToJSON(value?: MarkProcessedRequestDto | null): any {
+export function MarkProcessedUserContentRequestDtoToJSON(value?: MarkProcessedUserContentRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -70,6 +78,7 @@ export function MarkProcessedRequestDtoToJSON(value?: MarkProcessedRequestDto | 
         
         'contentId': value.contentId,
         'userId': value.userId,
+        'secret': value.secret,
     };
 }
 
