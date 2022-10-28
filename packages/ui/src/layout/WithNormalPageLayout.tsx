@@ -61,7 +61,7 @@ export const WithNormalPageLayout = (
           </div>
         </main>
         {options.sideContent && (
-          <div className="sticky col-span-3 flex flex-col border-l border-gray-600 bg-gradient-to-bl from-passes-purple-100 to-passes-black">
+          <div className="sticky col-span-3 flex flex-col border-l border-gray-600">
             <div className="mt-4">
               <CreatorSearchBar />
             </div>
