@@ -27,7 +27,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
 }) => {
   const api = new PassApi()
   const register = async () => {
-    return await api.registerBuyPass({
+    return await api.registerPurchasePass({
       createPassHolderRequestDto: {
         passId,
         walletAddress,
@@ -37,7 +37,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
   }
 
   const registerData = async () => {
-    return await api.registerBuyPassData({
+    return await api.registerPurchasePassData({
       createPassHolderRequestDto: {
         passId,
         walletAddress,

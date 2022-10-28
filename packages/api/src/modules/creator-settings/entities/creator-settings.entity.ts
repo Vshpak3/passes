@@ -26,7 +26,6 @@ export class CreatorSettingsEntity extends BaseEntity {
   allow_comments_on_posts: boolean
 
   @Enum({
-    type: () => PayoutFrequencyEnum,
     default: PayoutFrequencyEnum.MANUAL,
   })
   payout_frequency: PayoutFrequencyEnum

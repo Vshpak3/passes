@@ -76,6 +76,7 @@ export interface GetCreatorSettingsResponseDto {
 export const GetCreatorSettingsResponseDtoPayoutFrequencyEnum = {
     Manual: 'manual',
     TwoWeeks: 'two weeks',
+    FourWeeks: 'four weeks',
     OneWeek: 'one week'
 } as const;
 export type GetCreatorSettingsResponseDtoPayoutFrequencyEnum = typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum[keyof typeof GetCreatorSettingsResponseDtoPayoutFrequencyEnum];

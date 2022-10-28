@@ -152,6 +152,8 @@ const ONE_WEEK_MS = ms('1 week')
 const MAX_TIME_STALE_PAYMENT = ms('8 hours')
 
 const MIN_PAYOUT_AMOUNT = 50.0
+const MIN_PAYOUT_CHARGE_TIME = ms('2 weeks') - ms('1 hour')
+const PAYOUT_CHARGE_AMOUNT = 25.0
 
 const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
@@ -363,6 +365,8 @@ export class PaymentService {
         sessionId: sessionId,
       },
       verification: threeDS ? 'three_d_secure' : 'none',
+      verificationFailureUrl: failureUrl,
+      verificationSuccessUrl: successUrl,
     }
 
     if (successUrl) {
@@ -1939,6 +1943,7 @@ export class PaymentService {
     )
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async payoutCreator(
     userId: string,
     // only defined when payout is automatic from batch job
@@ -1955,12 +1960,35 @@ export class PaymentService {
       )
     }
 
+    const last = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+      .where({ user_id: userId })
+      .select('*')
+      .orderBy('created_at', 'desc')
+      .first()
+
+    let charge = 0
+    if (
+      last &&
+      last.created_at.valueOf() + MIN_PAYOUT_CHARGE_TIME > Date.now()
+    ) {
+      charge = PAYOUT_CHARGE_AMOUNT
+    }
+
     if (payoutFrequency) {
       switch (payoutFrequency) {
         case PayoutFrequencyEnum.ONE_WEEK:
-          break
+          throw new InternalServerErrorException(
+            'we currently dont support weekly payouts',
+          )
         case PayoutFrequencyEnum.TWO_WEEKS:
-          if (Date.now() % (ONE_WEEK_MS * 2) > ONE_WEEK_MS) {
+          if (Date.now() % (ONE_WEEK_MS * 2) < ONE_WEEK_MS) {
+            // job is run every week
+            // ensure that creators opting for biweekly don't get paid too often
+            return
+          }
+          break
+        case PayoutFrequencyEnum.FOUR_WEEKS:
+          if (Date.now() % (ONE_WEEK_MS * 4) < ONE_WEEK_MS) {
             // job is run every week
             // ensure that creators opting for biweekly don't get paid too often
             return
@@ -2004,7 +2032,7 @@ export class PaymentService {
         wallet_id: defaultPayoutMethod.walletId,
         payout_method: defaultPayoutMethod.method,
         payout_status: PayoutStatusEnum.CREATED,
-        amount: availableBalance,
+        amount: availableBalance - charge,
       }
       await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
       await this.submitPayout(data.id)
@@ -2023,7 +2051,7 @@ export class PaymentService {
    * @param payout_id
    */
   async submitPayout(payout_id: string): Promise<void> {
-    const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+    const payout = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
       .whereIn('payout_status', [
         PayoutStatusEnum.FAILED,
         PayoutStatusEnum.CREATED,

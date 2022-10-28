@@ -76,6 +76,7 @@ export interface UpdateCreatorSettingsRequestDto {
 export const UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = {
     Manual: 'manual',
     TwoWeeks: 'two weeks',
+    FourWeeks: 'four weeks',
     OneWeek: 'one week'
 } as const;
 export type UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum = typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum[keyof typeof UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum];

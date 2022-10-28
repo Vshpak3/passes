@@ -967,14 +967,14 @@ export class PassService {
     return { amount: pass.price, target, blocked }
   }
 
-  async registerBuyPass(
+  async registerPurchasePass(
     userId: string,
     passId: string,
     walletAddress?: string,
     payinMethod?: PayinMethodDto,
   ): Promise<RegisterPayinResponseDto> {
     const { amount, target, blocked, amountEth } =
-      await this.registerBuyPassData(userId, passId)
+      await this.registerPurchasePassData(userId, passId)
     if (blocked) {
       throw new InvalidPayinRequestError(blocked)
     }
@@ -1038,7 +1038,7 @@ export class PassService {
     })
   }
 
-  async registerBuyPassData(
+  async registerPurchasePassData(
     userId: string,
     passId: string,
   ): Promise<PayinDataDto> {

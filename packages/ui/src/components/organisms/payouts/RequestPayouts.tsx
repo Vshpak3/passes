@@ -21,11 +21,11 @@ import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 
 const PAYOUT_FREQUENCY_OPTIONS: PayoutFrequencyOption[] = [
   {
-    label: "Weekly",
-    value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.OneWeek
+    label: "4 weeks",
+    value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.FourWeeks
   },
   {
-    label: "Biweekly",
+    label: "2 weeks",
     value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
   },
   {

@@ -152,12 +152,12 @@ export class PassController {
     responseDesc: 'Create pass payin was registered',
     role: RoleEnum.GENERAL,
   })
-  @Post('buy/create')
-  async registerBuyPass(
+  @Post('purchase/create')
+  async registerPurchasePass(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<RegisterPayinResponseDto> {
-    return await this.passService.registerBuyPass(
+    return await this.passService.registerPurchasePass(
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.walletAddress,
@@ -172,12 +172,12 @@ export class PassController {
     responseDesc: 'Data for register create pass was retrieved',
     role: RoleEnum.GENERAL,
   })
-  @Post('buy/create/data')
-  async registerBuyPassData(
+  @Post('purchase/create/data')
+  async registerPurchasePassData(
     @Req() req: RequestWithUser,
     @Body() createPassHolderDto: CreatePassHolderRequestDto,
   ): Promise<PayinDataDto> {
-    return await this.passService.registerBuyPassData(
+    return await this.passService.registerPurchasePassData(
       req.user.id,
       createPassHolderDto.passId,
     )
@@ -190,7 +190,7 @@ export class PassController {
     responseDesc: 'Renew pass payin was registered',
     role: RoleEnum.GENERAL,
   })
-  @Post('buy/renew')
+  @Post('purchase/renew')
   async registerRenewPass(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,
@@ -209,7 +209,7 @@ export class PassController {
     responseDesc: 'Data for register renew pass was retrieved',
     role: RoleEnum.GENERAL,
   })
-  @Post('buy/renew/data')
+  @Post('purchase/renew/data')
   async registerRenewPassData(
     @Req() req: RequestWithUser,
     @Body() renewPassHolderDto: RenewPassHolderRequestDto,

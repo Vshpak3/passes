@@ -102,11 +102,11 @@ export interface PinPassRequest {
     passId: string;
 }
 
-export interface RegisterBuyPassRequest {
+export interface RegisterPurchasePassRequest {
     createPassHolderRequestDto: CreatePassHolderRequestDto;
 }
 
-export interface RegisterBuyPassDataRequest {
+export interface RegisterPurchasePassDataRequest {
     createPassHolderRequestDto: CreatePassHolderRequestDto;
 }
 
@@ -434,9 +434,9 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register create pass payin
      */
-    async registerBuyPassRaw(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
+    async registerPurchasePassRaw(requestParameters: RegisterPurchasePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
         if (requestParameters.createPassHolderRequestDto === null || requestParameters.createPassHolderRequestDto === undefined) {
-            throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerBuyPass.');
+            throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerPurchasePass.');
         }
 
         const queryParameters: any = {};
@@ -451,7 +451,7 @@ export class PassApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/pass/buy/create`,
+            path: `/api/pass/purchase/create`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -464,17 +464,17 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Register create pass payin
      */
-    async registerBuyPass(requestParameters: RegisterBuyPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
-        const response = await this.registerBuyPassRaw(requestParameters, initOverrides);
+    async registerPurchasePass(requestParameters: RegisterPurchasePassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
+        const response = await this.registerPurchasePassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      * Get register create pass data
      */
-    async registerBuyPassDataRaw(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
+    async registerPurchasePassDataRaw(requestParameters: RegisterPurchasePassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
         if (requestParameters.createPassHolderRequestDto === null || requestParameters.createPassHolderRequestDto === undefined) {
-            throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerBuyPassData.');
+            throw new runtime.RequiredError('createPassHolderRequestDto','Required parameter requestParameters.createPassHolderRequestDto was null or undefined when calling registerPurchasePassData.');
         }
 
         const queryParameters: any = {};
@@ -489,7 +489,7 @@ export class PassApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/pass/buy/create/data`,
+            path: `/api/pass/purchase/create/data`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -502,8 +502,8 @@ export class PassApi extends runtime.BaseAPI {
     /**
      * Get register create pass data
      */
-    async registerBuyPassData(requestParameters: RegisterBuyPassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
-        const response = await this.registerBuyPassDataRaw(requestParameters, initOverrides);
+    async registerPurchasePassData(requestParameters: RegisterPurchasePassDataRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
+        const response = await this.registerPurchasePassDataRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -527,7 +527,7 @@ export class PassApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/pass/buy/renew`,
+            path: `/api/pass/purchase/renew`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -565,7 +565,7 @@ export class PassApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/pass/buy/renew/data`,
+            path: `/api/pass/purchase/renew/data`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
