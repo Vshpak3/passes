@@ -213,6 +213,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               register={register}
               errors={errors}
               files={files}
+              setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
               messages={true}

@@ -6370,6 +6370,7 @@ __metadata:
     eslint-plugin-simple-import-sort: 8.0.0
     eslint-plugin-sonarjs: 0.15.0
     ethers: 5.6.9
+    immutability-helper: 3.1.1
     iso-3166-1-alpha-2: 1.0.0
     jwt-decode: 3.1.2
     lodash: 4.17.21
@@ -14195,6 +14196,13 @@ __metadata:
   version: 5.2.0
   resolution: "ignore@npm:5.2.0"
   checksum: 6b1f926792d614f64c6c83da3a1f9c83f6196c2839aa41e1e32dd7b8d174cef2e329d75caabb62cb61ce9dc432f75e67d07d122a037312db7caa73166a1bdb77
+  languageName: node
+  linkType: hard
+
+"immutability-helper@npm:3.1.1":
+  version: 3.1.1
+  resolution: "immutability-helper@npm:3.1.1"
+  checksum: 6fdbf6d2123efa567263e904bbaff07aca0e24560d270d34967b03aab8ec20bd3e4057f394d59e50eb6c4718c9415591a6281692bb0aafd522ad72cf4887133f
   languageName: node
   linkType: hard
 

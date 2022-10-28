@@ -248,6 +248,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               register={register}
               errors={errors}
               files={files}
+              setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
               isNewPost={true}
