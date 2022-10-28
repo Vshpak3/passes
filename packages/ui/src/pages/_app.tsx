@@ -10,14 +10,7 @@ import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
-import {
-  Provider,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { Provider, ReactElement, ReactNode, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { ToastContainer } from "react-toastify"
@@ -34,7 +27,6 @@ import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
-import { ViewPostModalContext } from "src/contexts/ViewPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 
@@ -48,10 +40,6 @@ const BuyPassModal = dynamic(
 )
 const BuyPostModal = dynamic(
   () => import("../components/organisms/payment/BuyPostModal"),
-  { ssr: false }
-)
-const ViewPostModal = dynamic(
-  () => import("src/components/organisms/profile/post/ViewPostModal"),
   { ssr: false }
 )
 const ReportModal = dynamic(
@@ -92,8 +80,6 @@ type SubAppProps = {
 
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
-  const [viewPost, setViewPost] = useState<PostDto | null>(null)
-  const viewPostActiveIndex = useRef(null)
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
@@ -111,10 +97,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
-    [
-      ViewPostModalContext.Provider,
-      { setPost: setViewPost, viewPostActiveIndex }
-    ],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
@@ -124,7 +106,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   return getLayout(
     <AppProviders providers={providers}>
       <Component {...pageProps} />
-      {viewPost && <ViewPostModal post={viewPost} setPost={setViewPost} />}
       {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
       {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
       {reportData && (

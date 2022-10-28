@@ -35,6 +35,8 @@ interface ViewPostModalProps {
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   const { images, video } = contentTypeCounter(post.contents)
   const { setPost: setBuyPost } = useBuyPostModal()
@@ -170,5 +172,3 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     </Dialog>
   )
 }
-
-export default ViewPostModal // eslint-disable-line import/no-default-export
