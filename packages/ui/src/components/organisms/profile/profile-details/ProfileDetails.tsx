@@ -26,7 +26,7 @@ export const ProfileDetails: FC = () => {
   }
 
   return (
-    <>
+    <div className="px-4">
       {isEditProfileModalOpen && (
         <EditProfile
           setEditProfileModalOpen={setIsEditProfileModalOpen}
@@ -67,6 +67,6 @@ export const ProfileDetails: FC = () => {
           <ProfileInformationMobile chatLink={chatLink} />
         </div>
       </div>
-    </>
+    </div>
   )
 }

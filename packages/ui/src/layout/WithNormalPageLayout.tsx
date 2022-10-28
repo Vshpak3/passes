@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { FC, ReactElement } from "react"
+import React, { FC, ReactElement, ReactNode } from "react"
 
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
@@ -11,6 +11,7 @@ class WithNormalPageLayoutOptions {
   creatorOnly?: boolean = false
   header?: boolean = true
   sidebar?: boolean = true
+  sideContent?: ReactNode
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -35,7 +36,11 @@ export const WithNormalPageLayout = (
         {options.sidebar && <Sidebar />}
         <main
           className={classNames(
-            options.sidebar ? "md:col-span-9" : "md-col-span-12",
+            options.sideContent
+              ? "md:col-span-6"
+              : options.sidebar
+              ? "md:col-span-9"
+              : "md:col-span-12",
             "col-span-12 flex w-full flex-col"
           )}
         >
@@ -55,6 +60,14 @@ export const WithNormalPageLayout = (
             </AuthWrapper>
           </div>
         </main>
+        {options.sideContent && (
+          <div className="sticky col-span-3 flex flex-col border-l border-gray-600 bg-gradient-to-bl from-passes-purple-100 to-passes-black">
+            <div className="mt-4">
+              <CreatorSearchBar />
+            </div>
+            {options.sideContent}
+          </div>
+        )}
       </div>
     ),
     ...component
