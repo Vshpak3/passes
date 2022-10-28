@@ -73,6 +73,8 @@ export const Payin = ({ payin }: PayinProps) => {
       break
   }
 
+  let cancellable = false
+
   switch (payin.payinStatus) {
     case PayinDtoPayinStatusEnum.SuccessfulReady:
     case PayinDtoPayinStatusEnum.Successful:
@@ -80,12 +82,15 @@ export const Payin = ({ payin }: PayinProps) => {
       break
     case PayinDtoPayinStatusEnum.ActionRequired:
       status = "Action Required"
+      cancellable = true
       break
     case PayinDtoPayinStatusEnum.Failed:
     case PayinDtoPayinStatusEnum.FailedReady:
     case PayinDtoPayinStatusEnum.FailCallbackFailed:
     case PayinDtoPayinStatusEnum.CreateCallbackFailed:
     case PayinDtoPayinStatusEnum.SuccessCallbackFailed:
+    case PayinDtoPayinStatusEnum.Uncreated:
+    case PayinDtoPayinStatusEnum.UncreatedReady:
       status = "Failed"
       break
     case PayinDtoPayinStatusEnum.Reverted:
@@ -93,6 +98,7 @@ export const Payin = ({ payin }: PayinProps) => {
       break
     default:
       status = "Pending"
+      cancellable = true
       break
   }
   switch (payin.callback) {
@@ -165,7 +171,7 @@ export const Payin = ({ payin }: PayinProps) => {
         <span className="text-[14px] font-[700] text-passes-pink-100">
           {!cancelled &&
             payin.payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard &&
-            status === "Pending" && <Button onClick={cancel}>Cancel</Button>}
+            cancellable && <Button onClick={cancel}>Cancel</Button>}
         </span>
       </div>
     </div>

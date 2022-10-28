@@ -1725,6 +1725,7 @@ export class PaymentService {
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
+        PayinStatusEnum.ACTION_REQUIRED,
       ])
       .update({
         payin_status: PayinStatusEnum.FAILED_READY,
