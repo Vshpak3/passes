@@ -30,6 +30,7 @@ export const SearchResultOption: FC<SearchResultOptionProps> = (props) => {
 
 interface SearchResultProps extends UserDisplayInfoDto {
   active: boolean
+  disabled?: boolean
   onSelect?: (value: string) => void
 }
 
@@ -38,6 +39,7 @@ export const UserSearchResult: FC<SearchResultProps> = ({
   displayName,
   username,
   active,
+  disabled,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onSelect = () => {}
 }) => {
@@ -46,10 +48,19 @@ export const UserSearchResult: FC<SearchResultProps> = ({
   return (
     <li
       className={classNames(
-        "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90 hover:bg-[#1b141d]/90",
-        { "bg-[#1b141d]/90": active }
+        "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90",
+        { "bg-[#1b141d]/90": active },
+        { " hover:bg-[#1b141d]/90": !disabled },
+        { "bg-[#1b141d]/100": disabled },
+        { "cursor-not-allowed": disabled }
       )}
-      onClick={() => onSelect(username)}
+      onClick={() => {
+        if (disabled) {
+          return
+        }
+
+        onSelect(username)
+      }}
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
         <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">

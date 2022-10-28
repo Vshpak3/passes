@@ -32,9 +32,10 @@ const MENTION_LIMIT = 5
 
 const TRIGGER = "@"
 
-const Entry: FC<EntryComponentProps> = ({
+const Entry: FC<EntryComponentProps & { disabled?: boolean }> = ({
   mention,
   isFocused,
+  disabled,
   ...parentProps
 }) => {
   return (
@@ -44,6 +45,7 @@ const Entry: FC<EntryComponentProps> = ({
         displayName={mention.displayName}
         username={mention.username}
         active={isFocused}
+        disabled={disabled}
       />
     </div>
   )
@@ -219,22 +221,22 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
         placeholder={placeholder}
         keyBindingFn={myKeyBindingFn}
       />
-      {numMentions <= MENTION_LIMIT && (
-        <MentionSuggestions
-          open={areSuggestionsOpen}
-          onOpenChange={onOpenChange}
-          suggestions={suggestions}
-          onSearchChange={onSearchChange}
-          entryComponent={Entry}
-          popoverContainer={({ children, ...props }) => (
-            <Popover {...props}>
-              <div className="z-50 rounded-md border border-passes-dark-100 bg-black">
-                {children}
-              </div>
-            </Popover>
-          )}
-        />
-      )}
+      <MentionSuggestions
+        open={areSuggestionsOpen}
+        onOpenChange={onOpenChange}
+        suggestions={suggestions}
+        onSearchChange={onSearchChange}
+        entryComponent={(props) => (
+          <Entry {...props} disabled={numMentions >= MENTION_LIMIT} />
+        )}
+        popoverContainer={({ children, ...props }) => (
+          <Popover {...props}>
+            <div className="z-50 rounded-md border border-passes-dark-100 bg-black">
+              {children}
+            </div>
+          </Popover>
+        )}
+      />
     </div>
   )
 }
