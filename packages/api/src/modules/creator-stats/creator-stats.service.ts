@@ -55,30 +55,35 @@ export class CreatorStatsService {
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
 
-  async getBalance(userId: string) {
-    return new CreatorEarningDto(
-      await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
-        .where({
-          user_id: userId,
-          type: EarningTypeEnum.BALANCE,
-          category: EarningCategoryEnum.NET,
-        })
-        .select('*')
-        .first(),
-    )
-  }
+  // async getBalance(userId: string) {
+  //   return new CreatorEarningDto(
+  //     await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
+  //       .where({
+  //         user_id: userId,
+  //         type: EarningTypeEnum.BALANCE,
+  //         category: EarningCategoryEnum.NET,
+  //       })
+  //       .select('*')
+  //       .first(),
+  //   )
+  // }
 
-  async getAvailableBalance(userId: string) {
-    return new CreatorEarningDto(
-      await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
-        .where({
-          user_id: userId,
-          type: EarningTypeEnum.AVAILABLE_BALANCE,
-          category: EarningCategoryEnum.NET,
-        })
-        .select('*')
-        .first(),
+  async getAvailableBalances(
+    userId: string,
+  ): Promise<Record<EarningCategoryEnum, CreatorEarningDto>> {
+    const earnings = await this.dbReader<CreatorEarningEntity>(
+      CreatorEarningEntity.table,
     )
+      .where({
+        user_id: userId,
+        type: EarningTypeEnum.AVAILABLE_BALANCE,
+      })
+      .select('*')
+    const ret = {} as Record<EarningCategoryEnum, CreatorEarningDto>
+    earnings.forEach(
+      (earning) => (ret[earning.category] = new CreatorEarningDto(earning)),
+    )
+    return ret
   }
 
   async getEarningsHistory(
@@ -131,7 +136,7 @@ export class CreatorStatsService {
     payinCallbackEnum: PayinCallbackEnum,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(creatorId, EarningTypeEnum.BALANCE, amounts)
+    // await this.updateEarning(creatorId, EarningTypeEnum.BALANCE, amounts)
     await this.updateEarning(
       creatorId,
       EarningTypeEnum.AVAILABLE_BALANCE,
@@ -168,12 +173,12 @@ export class CreatorStatsService {
       amounts,
       NEGATE,
     )
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.BALANCE,
-      amounts,
-      NEGATE,
-    )
+    // await this.updateEarning(
+    //   creatorId,
+    //   EarningTypeEnum.BALANCE,
+    //   amounts,
+    //   NEGATE,
+    // )
     await this.updateEarning(
       creatorId,
       EarningTypeEnum.CHARGEBACKS,
@@ -200,28 +205,28 @@ export class CreatorStatsService {
     )
   }
 
-  async handlePayoutSuccess(
-    creatorId: string,
-    amounts: Record<EarningCategoryEnum, number>,
-  ) {
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.BALANCE,
-      amounts,
-      NEGATE,
-    )
-  }
+  // async handlePayoutSuccess(
+  //   creatorId: string,
+  //   amounts: Record<EarningCategoryEnum, number>,
+  // ) {
+  //   await this.updateEarning(
+  //     creatorId,
+  //     EarningTypeEnum.BALANCE,
+  //     amounts,
+  //     NEGATE,
+  //   )
+  // }
 
-  async handlePayoutFail(
-    creatorId: string,
-    amounts: Record<EarningCategoryEnum, number>,
-  ) {
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.AVAILABLE_BALANCE,
-      amounts,
-    )
-  }
+  // async handlePayoutFail(
+  //   creatorId: string,
+  //   amounts: Record<EarningCategoryEnum, number>,
+  // ) {
+  //   await this.updateEarning(
+  //     creatorId,
+  //     EarningTypeEnum.AVAILABLE_BALANCE,
+  //     amounts,
+  //   )
+  // }
 
   async createEarningHistory() {
     await this.dbWriter

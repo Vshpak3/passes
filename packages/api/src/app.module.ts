@@ -9,6 +9,7 @@ import { configOptions } from './config/config.options'
 import { DatabaseModule } from './database/database.module'
 import { redisOptions } from './database/redis.options'
 import { AdminModule } from './modules/admin/admin.module'
+import { AgencyModule } from './modules/agency/agency.module'
 import { AuthModule } from './modules/auth/auth.module'
 import { CommentModule } from './modules/comment/comment.module'
 import { ContentModule } from './modules/content/content.module'
@@ -58,6 +59,7 @@ import { isEnv } from './util/env'
     SentryModule.forRootAsync(sentryOptions),
     WinstonModule.forRootAsync(loggingOptions),
     AdminModule,
+    AgencyModule,
     AuthModule,
     CommentModule,
     ContentModule,

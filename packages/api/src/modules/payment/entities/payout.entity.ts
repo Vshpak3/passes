@@ -1,6 +1,7 @@
 import { Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { AgencyEntity } from '../../agency/entities/agency.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import { WalletEntity } from '../../wallet/entities/wallet.entity'
 import { TRANSACTION_HASH_LENGTH, USD_AMOUNT_TYPE } from '../constants/schema'
@@ -13,7 +14,10 @@ export class PayoutEntity extends BaseEntity {
   static table = 'payout'
 
   @ManyToOne({ entity: () => UserEntity })
-  user_id: string
+  user_id: string | null
+
+  @ManyToOne({ entity: () => AgencyEntity })
+  agency_id: string | null
 
   // payin method
   @ManyToOne({ entity: () => CircleBankEntity })

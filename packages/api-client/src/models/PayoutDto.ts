@@ -34,12 +34,6 @@ export interface PayoutDto {
     payoutId: string;
     /**
      * 
-     * @type {string}
-     * @memberof PayoutDto
-     */
-    userId: string;
-    /**
-     * 
      * @type {PayoutMethodDto}
      * @memberof PayoutDto
      */
@@ -118,7 +112,6 @@ export type PayoutDtoChainEnum = typeof PayoutDtoChainEnum[keyof typeof PayoutDt
 export function instanceOfPayoutDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "payoutId" in value;
-    isInstance = isInstance && "userId" in value;
     isInstance = isInstance && "payoutMethod" in value;
     isInstance = isInstance && "payoutStatus" in value;
     isInstance = isInstance && "amount" in value;
@@ -138,7 +131,6 @@ export function PayoutDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean):
     return {
         
         'payoutId': json['payoutId'],
-        'userId': json['userId'],
         'payoutMethod': PayoutMethodDtoFromJSON(json['payoutMethod']),
         'payoutStatus': json['payoutStatus'],
         'amount': json['amount'],
@@ -160,7 +152,6 @@ export function PayoutDtoToJSON(value?: PayoutDto | null): any {
     return {
         
         'payoutId': value.payoutId,
-        'userId': value.userId,
         'payoutMethod': PayoutMethodDtoToJSON(value.payoutMethod),
         'payoutStatus': value.payoutStatus,
         'amount': value.amount,

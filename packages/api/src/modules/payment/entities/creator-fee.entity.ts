@@ -14,10 +14,10 @@ export class CreatorFeeEntity extends BaseEntity {
   @Property({ type: types.float })
   fiat_rate: number | null
 
-  @Property({ type: types.float })
+  @Property({ columnType: USD_AMOUNT_TYPE })
   fiat_flat: number | null
 
-  @Property({ columnType: USD_AMOUNT_TYPE })
+  @Property({ type: types.float })
   crypto_rate: number | null
 
   @Property({ columnType: USD_AMOUNT_TYPE })

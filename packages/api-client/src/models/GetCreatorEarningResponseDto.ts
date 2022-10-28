@@ -56,7 +56,6 @@ export interface GetCreatorEarningResponseDto {
  * @export
  */
 export const GetCreatorEarningResponseDtoTypeEnum = {
-    Balance: 'balance',
     AvailableBalance: 'available_balance',
     Total: 'total',
     Subscription: 'subscription',

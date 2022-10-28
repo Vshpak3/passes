@@ -76,37 +76,6 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get balance
-     */
-    async getBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/creator-stats/balance`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorEarningResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get balance
-     */
-    async getBalance(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningResponseDto> {
-        const response = await this.getBalanceRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
      * Get current stats
      */
     async getCreatorStatsRaw(requestParameters: GetCreatorStatsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorStatsResponseDto>> {

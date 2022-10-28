@@ -1,6 +1,14 @@
-import { Entity, Enum, ManyToOne, Property, Unique } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  ManyToOne,
+  OneToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { AgencyEntity } from '../../agency/entities/agency.entity'
 import { UserEntity } from '../../user/entities/user.entity'
 import {
   CIRCLE_BANK_TRACKING_REF_LENGTH,
@@ -17,7 +25,10 @@ export class CircleBankEntity extends BaseEntity {
   static table = 'circle_bank'
 
   @ManyToOne({ entity: () => UserEntity })
-  user_id: string
+  user_id: string | null
+
+  @OneToOne({ entity: () => AgencyEntity })
+  agency_id: string | null
 
   @Property({ length: CIRCLE_IDEMPOTENCY_KEY_LENGTH })
   @Unique()

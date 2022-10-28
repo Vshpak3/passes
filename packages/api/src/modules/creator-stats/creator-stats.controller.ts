@@ -19,25 +19,26 @@ import {
 } from './dto/get-creator-earnings.dto'
 import { GetCreatorEarningsHistoryRequestDto } from './dto/get-creator-earnings-history.dto'
 import { GetCreatorStatsResponseDto } from './dto/get-creator-stats.dto'
+import { EarningCategoryEnum } from './enum/earning.category.enum'
 
 @ApiTags('creator-stats')
 @Controller('creator-stats')
 export class CreatorStatsController {
   constructor(private readonly creatorStatsService: CreatorStatsService) {}
 
-  @ApiEndpoint({
-    summary: 'Get balance',
-    responseStatus: HttpStatus.OK,
-    responseType: GetCreatorEarningResponseDto,
-    responseDesc: 'Balance was retrieved',
-    role: RoleEnum.CREATOR_ONLY,
-  })
-  @Get('balance')
-  async getBalance(
-    @Req() req: RequestWithUser,
-  ): Promise<GetCreatorEarningResponseDto> {
-    return await this.creatorStatsService.getBalance(req.user.id)
-  }
+  // @ApiEndpoint({
+  //   summary: 'Get balance',
+  //   responseStatus: HttpStatus.OK,
+  //   responseType: GetCreatorEarningResponseDto,
+  //   responseDesc: 'Balance was retrieved',
+  //   role: RoleEnum.CREATOR_ONLY,
+  // })
+  // @Get('balance')
+  // async getBalance(
+  //   @Req() req: RequestWithUser,
+  // ): Promise<GetCreatorEarningResponseDto> {
+  //   return await this.creatorStatsService.getBalance(req.user.id)
+  // }
 
   @ApiEndpoint({
     summary: 'Get available balance',
@@ -50,7 +51,9 @@ export class CreatorStatsController {
   async getAvailableBalance(
     @Req() req: RequestWithUser,
   ): Promise<GetCreatorEarningResponseDto> {
-    return await this.creatorStatsService.getAvailableBalance(req.user.id)
+    return (await this.creatorStatsService.getAvailableBalances(req.user.id))[
+      EarningCategoryEnum.NET
+    ]
   }
 
   @ApiEndpoint({

@@ -21,6 +21,8 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
+import { AgencyEntity } from '../agency/entities/agency.entity'
+import { CreatorAgencyEntity } from '../agency/entities/creator-agency.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { PayoutFrequencyEnum } from '../creator-settings/enum/payout-frequency.enum'
 import { CreatorStatsService } from '../creator-stats/creator-stats.service'
@@ -153,7 +155,7 @@ const MAX_TIME_STALE_PAYMENT = ms('8 hours')
 
 const MIN_PAYOUT_AMOUNT = 50.0
 const MIN_PAYOUT_CHARGE_TIME = ms('2 weeks') - ms('1 hour')
-const PAYOUT_CHARGE_AMOUNT = 25.0
+const PAYOUT_CHARGE_AMOUNT = 0.0 // 25.0 - removed for whitegloved creators
 
 const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
@@ -509,7 +511,8 @@ export class PaymentService {
    * @returns
    */
   async makeCircleWirePayout(
-    userId: string,
+    userId: string | null,
+    agencyId: string | null,
     payout: PayoutDto,
   ): Promise<CircleStatusResponseDto> {
     if (!payout.payoutMethod.bankId) {
@@ -519,21 +522,37 @@ export class PaymentService {
       .where({
         id: payout.payoutMethod.bankId,
         user_id: userId,
+        agency_id: agencyId,
       })
       .select('id', 'circle_id')
       .first()
     if (!bank || !bank.circle_id) {
       throw new BadRequestException('bank not found')
     }
-
-    const user = await this.dbReader<UserEntity>(UserEntity.table)
-      .where({
-        id: userId,
-      })
-      .select('email')
-      .first()
-    if (!user) {
-      throw new BadRequestException('user not found')
+    let email = ''
+    if (userId) {
+      const user = await this.dbReader<UserEntity>(UserEntity.table)
+        .where({
+          id: userId,
+        })
+        .select('email')
+        .first()
+      if (!user) {
+        throw new BadRequestException('user not found')
+      }
+      email = user.email
+    }
+    if (agencyId) {
+      const user = await this.dbReader<AgencyEntity>(AgencyEntity.table)
+        .where({
+          id: agencyId,
+        })
+        .select('email')
+        .first()
+      if (!user) {
+        throw new BadRequestException('user not found')
+      }
+      email = user.email
     }
 
     const createPayoutDto: CircleCreatePayoutRequestDto = {
@@ -551,7 +570,7 @@ export class PaymentService {
         currency: 'USD',
       },
       metadata: {
-        beneficiaryEmail: user.email,
+        beneficiaryEmail: email,
       },
     }
 
@@ -905,10 +924,10 @@ export class PaymentService {
           .where({ id: payout.id })
         break
       case CircleAccountStatusEnum.COMPLETE:
-        await this.completePayout(payout.id, payout.user_id)
+        await this.completePayout(payout.id, payout.user_id, payout.agency_id)
         break
       case CircleAccountStatusEnum.FAILED:
-        await this.failPayout(payout.id, payout.user_id)
+        await this.failPayout(payout.id, payout.user_id, payout.agency_id)
         break
     }
   }
@@ -1096,10 +1115,10 @@ export class PaymentService {
           .where({ id: payout.id })
         break
       case CircleAccountStatusEnum.COMPLETE:
-        await this.completePayout(payout.id, payout.user_id)
+        await this.completePayout(payout.id, payout.user_id, payout.agency_id)
         break
       case CircleAccountStatusEnum.FAILED:
-        await this.failPayout(payout.id, payout.user_id)
+        await this.failPayout(payout.id, payout.user_id, payout.agency_id)
         break
     }
   }
@@ -1750,23 +1769,31 @@ export class PaymentService {
       const creatorShares = await this.dbReader<CreatorShareEntity>(
         CreatorShareEntity.table,
       )
+        .leftJoin(
+          CreatorAgencyEntity.table,
+          `${CreatorAgencyEntity.table}.creator_id`,
+          `${CreatorShareEntity.table}.creator_id`,
+        )
         .where({ payin_id: payin.id })
-        .select('*')
+        .select(
+          `${CreatorShareEntity.table}.creator_id`,
+          `${CreatorAgencyEntity.table}.rate`,
+        )
 
       await Promise.all(
-        creatorShares.map(
-          async (creatorShare) =>
-            await this.creatorStatsService.handlePayinSuccess(
-              payin.user_id,
-              creatorShare.creator_id,
-              payin.callback,
-              {
-                [EarningCategoryEnum.NET]: creatorShare.amount,
-                [EarningCategoryEnum.GROSS]: payin.amount,
-                [EarningCategoryEnum.AGENCY]: 0,
-              },
-            ),
-        ),
+        creatorShares.map(async (creatorShare) => {
+          const rate = creatorShare.rate ?? 0
+          await this.creatorStatsService.handlePayinSuccess(
+            payin.user_id,
+            creatorShare.creator_id,
+            payin.callback,
+            {
+              [EarningCategoryEnum.NET]: creatorShare.amount * (1 - rate),
+              [EarningCategoryEnum.GROSS]: payin.amount,
+              [EarningCategoryEnum.AGENCY]: creatorShare.amount * rate,
+            },
+          )
+        }),
       )
     }
   }
@@ -1871,36 +1898,46 @@ export class PaymentService {
   -------------------------------------------------------------------------------
   */
 
-  async failPayout(payoutId: string, userId: string): Promise<void> {
-    const rows = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
+  async failPayout(
+    payoutId: string,
+    userId: string | null,
+    agencyId: string | null,
+  ): Promise<void> {
+    await this.dbWriter<PayoutEntity>(PayoutEntity.table)
       .where({ id: payoutId })
-      .andWhere({ user_id: userId })
+      .andWhere({ user_id: userId, agency_id: agencyId })
       .andWhere('payout_status', 'in', [
         PayoutStatusEnum.CREATED,
         PayoutStatusEnum.PENDING,
       ])
       .update({ payout_status: PayoutStatusEnum.FAILED })
     // check for completed update
-    if (rows === 1) {
-      const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
-        .where({ id: payoutId })
-        .select('amount')
-        .first()
-      if (!payout) {
-        throw new InternalServerErrorException('no amount for payout found')
-      }
-      await this.creatorStatsService.handlePayoutFail(userId, {
-        [EarningCategoryEnum.NET]: payout.amount,
-        [EarningCategoryEnum.GROSS]: payout.amount,
-        [EarningCategoryEnum.AGENCY]: 0,
-      })
-    }
+
+    // TODO: consider adding back to balance on failure
+    // if (rows === 1) {
+    //   const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
+    //     .where({ id: payoutId })
+    //     .select('amount')
+    //     .first()
+    //   if (!payout) {
+    //     throw new InternalServerErrorException('no amount for payout found')
+    //   }
+    //   await this.creatorStatsService.handlePayoutFail(userId, {
+    //     [EarningCategoryEnum.NET]: payout.amount,
+    //     [EarningCategoryEnum.GROSS]: payout.amount,
+    //     [EarningCategoryEnum.AGENCY]: 0,
+    //   })
+    // }
   }
 
-  async completePayout(payoutId: string, userId: string): Promise<void> {
+  async completePayout(
+    payoutId: string,
+    userId: string | null,
+    agencyId: string | null,
+  ): Promise<void> {
     const rows = await this.dbWriter<PayoutEntity>(PayoutEntity.table)
       .where({ id: payoutId })
-      .andWhere({ user_id: userId })
+      .andWhere({ user_id: userId, agency_id: agencyId })
       .andWhere('payout_status', 'in', [
         PayoutStatusEnum.CREATED,
         PayoutStatusEnum.PENDING,
@@ -1914,11 +1951,11 @@ export class PaymentService {
       if (!payout) {
         throw new InternalServerErrorException('no amount for payout found')
       }
-      await this.creatorStatsService.handlePayoutSuccess(userId, {
-        [EarningCategoryEnum.NET]: payout.amount,
-        [EarningCategoryEnum.GROSS]: payout.amount,
-        [EarningCategoryEnum.AGENCY]: 0,
-      })
+      // await this.creatorStatsService.handlePayoutSuccess(userId, {
+      //   [EarningCategoryEnum.NET]: payout.amount,
+      //   [EarningCategoryEnum.GROSS]: payout.amount,
+      //   [EarningCategoryEnum.AGENCY]: 0,
+      // })
     }
   }
 
@@ -1977,9 +2014,12 @@ export class PaymentService {
     if (payoutFrequency) {
       switch (payoutFrequency) {
         case PayoutFrequencyEnum.ONE_WEEK:
-          throw new InternalServerErrorException(
-            'we currently dont support weekly payouts',
-          )
+          // supporting one week payouts for starting whitegloved users
+
+          // throw new InternalServerErrorException(
+          //   'we currently dont support weekly payouts',
+          // )
+          break
         case PayoutFrequencyEnum.TWO_WEEKS:
           if (Date.now() % (ONE_WEEK_MS * 2) < ONE_WEEK_MS) {
             // job is run every week
@@ -2006,23 +2046,22 @@ export class PaymentService {
     }
     const defaultPayoutMethod = await this.getDefaultPayoutMethod(userId)
 
-    const availableBalance = (
-      await this.creatorStatsService.getAvailableBalance(userId)
-    ).amount
-
-    if (!availableBalance || availableBalance <= 0) {
+    const availableBalances =
+      await this.creatorStatsService.getAvailableBalances(userId)
+    const creatorBalance = availableBalances[EarningCategoryEnum.NET].amount
+    if (!creatorBalance || creatorBalance <= 0) {
       throw new PayoutAmountException('No balance to payout')
     }
 
     try {
       await this.creatorStatsService.handlePayout(userId, {
-        [EarningCategoryEnum.NET]: availableBalance,
-        [EarningCategoryEnum.GROSS]: availableBalance,
-        [EarningCategoryEnum.AGENCY]: 0,
+        [EarningCategoryEnum.NET]: availableBalances.net.amount,
+        [EarningCategoryEnum.GROSS]: availableBalances.gross.amount,
+        [EarningCategoryEnum.AGENCY]: availableBalances.agency.amount,
       })
-      if (availableBalance < MIN_PAYOUT_AMOUNT) {
+      if (creatorBalance < MIN_PAYOUT_AMOUNT) {
         throw new PayoutAmountException(
-          `${availableBalance} is not enough to payout`,
+          `${creatorBalance} is not enough to payout`,
         )
       }
       const data = {
@@ -2032,17 +2071,45 @@ export class PaymentService {
         wallet_id: defaultPayoutMethod.walletId,
         payout_method: defaultPayoutMethod.method,
         payout_status: PayoutStatusEnum.CREATED,
-        amount: availableBalance - charge,
+        amount: creatorBalance - charge,
       }
       await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
       await this.submitPayout(data.id)
+
+      // TODO: discuss agency payments
+      // if (availableBalances.agency.amount) {
+      //   const agency = await this.dbReader<AgencyEntity>(AgencyEntity.table)
+      //     .leftJoin(
+      //       CreatorAgencyEntity.table,
+      //       `${AgencyEntity.table}.id`,
+      //       `${CreatorAgencyEntity.table}.agency_id`,
+      //     )
+      //     .where(`${CreatorAgencyEntity.table}.creator_id`, userId)
+      //     .select(`${AgencyEntity.table}.bank_id`, `${AgencyEntity.table}.id`)
+      //     .first()
+      //   if (!agency) {
+      //     throw new InternalServerErrorException(
+      //       'no linked agency while agency balance exists',
+      //     )
+      //   }
+      //   const data = {
+      //     id: v4(),
+      //     agency_id: agency.id,
+      //     bank_id: defaultPayoutMethod.bankId,
+      //     wallet_id: defaultPayoutMethod.walletId,
+      //     payout_method: defaultPayoutMethod.method,
+      //     payout_status: PayoutStatusEnum.CREATED,
+      //     amount: creatorBalance - charge,
+      //   }
+      //   await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
+      // }
     } catch (err) {
       await this.lockService.unlock(redisKey)
-      await this.creatorStatsService.handlePayoutFail(userId, {
-        [EarningCategoryEnum.NET]: availableBalance,
-        [EarningCategoryEnum.GROSS]: availableBalance,
-        [EarningCategoryEnum.AGENCY]: 0,
-      })
+      // await this.creatorStatsService.handlePayoutFail(userId, {
+      //   [EarningCategoryEnum.NET]: availableBalance,
+      //   [EarningCategoryEnum.GROSS]: availableBalance,
+      //   [EarningCategoryEnum.AGENCY]: 0,
+      // })
     }
   }
 
@@ -2064,13 +2131,22 @@ export class PaymentService {
     }
     switch (payout.payout_method) {
       case PayoutMethodEnum.CIRCLE_USDC:
+        if (!payout.user_id) {
+          throw new InternalServerErrorException(
+            'crypto payouts to agencies not supported',
+          )
+        }
         await this.makeCircleBlockchainTransfer(
           payout.user_id,
           new PayoutDto(payout),
         )
         break
       case PayoutMethodEnum.CIRCLE_WIRE:
-        await this.makeCircleWirePayout(payout.user_id, new PayoutDto(payout))
+        await this.makeCircleWirePayout(
+          payout.user_id,
+          payout.agency_id,
+          new PayoutDto(payout),
+        )
         break
     }
   }
@@ -2390,13 +2466,22 @@ export class PaymentService {
           `${PayinEntity.table}.id`,
           `${CreatorShareEntity.table}.payin_id`,
         )
+        .leftJoin(
+          CreatorAgencyEntity.table,
+          `${CreatorAgencyEntity.table}.creator_id`,
+          `${CreatorShareEntity.table}.creator_id`,
+        )
         .where(`${CircleChargebackEntity.table}.id`, chargebackId)
-        .select([
+        .select(
           `${PayinEntity.table}.*`,
           `${CreatorShareEntity.table}.amount as creator_amount`,
           `${CreatorShareEntity.table}.creator_id`,
-        ])
+          `${CreatorAgencyEntity.table}.rate`,
+        )
         .first()
+      if (!payin) {
+        throw new InternalServerErrorException('cant find payin to chargeback')
+      }
       const payinInput = JSON.parse(payin.callback_input_json)
       const payinOutput = JSON.parse(payin.callback_output_json)
       // TODO: revoke post access for subscriptions
@@ -2431,13 +2516,15 @@ export class PaymentService {
           )
           break
       }
+
+      const rate = payin.rate ?? 0
       await this.creatorStatsService.handleChargebackSuccess(
         payin.user_id,
         payin.creator_id,
         {
-          [EarningCategoryEnum.NET]: payin.creator_amount,
+          [EarningCategoryEnum.NET]: payin.creator_amount * (1 - rate),
           [EarningCategoryEnum.GROSS]: payin.amount,
-          [EarningCategoryEnum.AGENCY]: 0,
+          [EarningCategoryEnum.AGENCY]: payin.creator_amount * rate,
         },
       )
     }

@@ -44,7 +44,6 @@ export interface GetCreatorEarningsHistoryRequestDto {
  * @export
  */
 export const GetCreatorEarningsHistoryRequestDtoTypeEnum = {
-    Balance: 'balance',
     AvailableBalance: 'available_balance',
     Total: 'total',
     Subscription: 'subscription',

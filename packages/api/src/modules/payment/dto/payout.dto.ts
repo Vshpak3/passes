@@ -11,9 +11,6 @@ export class PayoutDto {
   @DtoProperty({ type: 'uuid' })
   payoutId: string
 
-  @DtoProperty({ type: 'uuid' })
-  userId: string
-
   @DtoProperty({ custom_type: PayoutMethodDto })
   payoutMethod: PayoutMethodDto
 
@@ -51,7 +48,6 @@ export class PayoutDto {
   ) {
     if (payout) {
       this.payoutId = payout.id
-      this.userId = payout.user_id
 
       this.payoutMethod = {
         method: payout.payout_method,
