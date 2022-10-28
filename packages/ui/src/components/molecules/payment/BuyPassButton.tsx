@@ -49,7 +49,8 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
   const { waiting, blocked, submitting, loading, submit, submitData } = usePay(
     register,
     registerData,
-    onSuccess
+    onSuccess,
+    "passPurchase"
   )
 
   useEffect(() => {

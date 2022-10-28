@@ -4,7 +4,6 @@ import {
   PassDtoTypeEnum
 } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
-import { toast } from "react-toastify"
 
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
@@ -56,7 +55,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
         }
         passId={pass?.passId ?? ""}
         onSuccess={() => {
-          toast.success("Please wait as we mint your membership card")
+          // toast.success("Please wait as we mint your membership card")
           setPass(null)
         }}
       />

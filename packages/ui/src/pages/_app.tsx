@@ -13,7 +13,7 @@ import nprogress from "nprogress"
 import { Provider, ReactElement, ReactNode, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import { ToastContainer } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
 import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
@@ -78,6 +78,17 @@ type SubAppProps = {
   getLayout: any
 }
 
+const LANDING_MESSAGES: Record<string, Record<string, string>> = {
+  success: {
+    passPurchase:
+      "Thank you for you purchase, your membership card is minting now"
+  },
+  failure: {
+    passPurchase:
+      "Thank you for you purchase, your membership card is minting now"
+  }
+}
+
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
@@ -94,6 +105,21 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       mutate()
     }
   }, [mutate, router.route, user])
+
+  useEffect(() => {
+    if (router.isReady) {
+      const query = router.query
+      const landingMessage = query.lm as string
+      const result = query.r as string
+      if (landingMessage && result) {
+        if (LANDING_MESSAGES[result][landingMessage]) {
+          toast.success(LANDING_MESSAGES[result][landingMessage])
+        }
+        // TODO: keep other query params and hashes
+        window.history.replaceState("", "", "?")
+      }
+    }
+  }, [router])
 
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],

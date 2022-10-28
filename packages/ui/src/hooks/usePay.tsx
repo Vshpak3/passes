@@ -29,7 +29,8 @@ export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
   registerPaymentDataFunc: (amount?: number) => Promise<PayinDataDto>,
-  callback?: (error?: Error) => void
+  callback?: (error?: Error) => void,
+  landingMessage = "none"
 ) => {
   const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -110,11 +111,20 @@ export const usePay = (
           payinId: registerResponse.payinId,
           ip: "",
           sessionId: SHA256(accessToken).toString().substr(0, 50),
-          successUrl: window.location.href,
-          failureUrl: window.location.href
+          successUrl:
+            window.location.origin +
+            window.location.pathname +
+            "?r=success&lm=" +
+            landingMessage,
+          failureUrl:
+            window.location.origin +
+            window.location.pathname +
+            "?r=failure&lm=" +
+            landingMessage
         }
       })
       if (response.actionRequired) {
+        toast.info("Please wait as we redirect you.")
         setWaiting(new Date())
       } else {
         toast.success(
