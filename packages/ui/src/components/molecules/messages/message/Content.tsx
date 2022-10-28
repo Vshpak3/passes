@@ -10,7 +10,7 @@ import { plural } from "src/helpers/plural"
 
 interface ContentProps {
   paid: boolean
-  contents: any
+  contents: ContentDto[]
   price: number
   message: MessageDto
   isOwnMessage: boolean

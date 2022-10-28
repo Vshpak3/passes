@@ -87,11 +87,11 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     fetchEarnings()
   }, [fetchEarnings])
 
-  const dateDiff = (first: any, second: any) => {
+  const dateDiff = (first: Date, second: Date) => {
     // Take the difference between the dates and divide by milliseconds per day.
     // Round to nearest whole number to deal with DST.
     // add One to include endDate
-    return Math.round((second - first) / ONE_DAY) + 1
+    return Math.round((second?.valueOf() - first?.valueOf()) / ONE_DAY) + 1
   }
 
   return (

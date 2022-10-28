@@ -7,7 +7,7 @@ const DEBOUNCE_DELAY = 350
 
 export const useSearch = <T,>(
   fetcher: (searchValue: string) => Promise<T[]>,
-  dependencies: any[] = [],
+  dependencies: React.DependencyList = [],
   debounceDelay = DEBOUNCE_DELAY
 ) => {
   const [searchValue, setSearchValue] = useState("")

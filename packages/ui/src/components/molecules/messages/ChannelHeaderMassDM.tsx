@@ -7,7 +7,7 @@ import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
 interface SelectedBadgeProps {
   type: string
   name: string
-  removeProp: any
+  removeProp: (id: string) => void
   id: string
 }
 

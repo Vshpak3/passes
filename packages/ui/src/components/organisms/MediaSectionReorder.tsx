@@ -111,7 +111,7 @@ const Content: FC<ContentProps> = ({ item, index, moveContent }) => {
     item: () => {
       return { index, item }
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging()
     })
   })

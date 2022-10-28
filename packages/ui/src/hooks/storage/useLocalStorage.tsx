@@ -39,28 +39,30 @@ export function useLocalStorage<T>(
 
   const [storedValue, setStoredValue] = useState<T>(readValue)
 
-  const setValue: SetValue<T> = useEventCallback((value: any) => {
-    if (typeof window === "undefined") {
-      console.error(
-        `Tried setting localStorage key “${key}” even though environment is not a client`
-      )
-    }
-
-    try {
-      const newValue = value instanceof Function ? value(storedValue) : value
-
-      if (newValue === undefined) {
-        window.localStorage.removeItem(key)
-      } else {
-        window.localStorage.setItem(key, JSON.stringify(newValue))
-        setStoredValue(newValue)
+  const setValue: SetValue<T> = useEventCallback(
+    (value: SetStateAction<T | undefined>) => {
+      if (typeof window === "undefined") {
+        console.error(
+          `Tried setting localStorage key “${key}” even though environment is not a client`
+        )
       }
 
-      window.dispatchEvent(new Event(LS))
-    } catch (error) {
-      console.error(`Error setting localStorage key "${key}":`, error)
+      try {
+        const newValue = value instanceof Function ? value(storedValue) : value
+
+        if (newValue === undefined) {
+          window.localStorage.removeItem(key)
+        } else {
+          window.localStorage.setItem(key, JSON.stringify(newValue))
+          setStoredValue(newValue)
+        }
+
+        window.dispatchEvent(new Event(LS))
+      } catch (error) {
+        console.error(`Error setting localStorage key "${key}":`, error)
+      }
     }
-  })
+  )
 
   useEffect(() => {
     setStoredValue(readValue())

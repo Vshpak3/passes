@@ -7,8 +7,8 @@ interface MonthYearPickerProps {
   selectedMonth: number
   maxPastMonths?: number
   maxFutureMonths?: number
-  onChangeYear: any
-  onChangeMonth: any
+  onChangeYear: (year: number) => void
+  onChangeMonth: (month: number) => void
 }
 
 const today = new Date()
