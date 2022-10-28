@@ -22,7 +22,7 @@ export const VaultDialog: FC<VaultDialogProps> = ({
   }
   return (
     <Dialog
-      className="flex h-full w-screen transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all  md:rounded-[15px]"
+      className="flex h-full transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all  md:rounded-[15px]"
       open={isOpen}
       onClose={closeVault}
       footer={
