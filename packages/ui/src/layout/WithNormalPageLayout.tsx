@@ -37,16 +37,18 @@ export const WithNormalPageLayout = (
         <main
           className={classNames(
             options.sideContent
-              ? "md:col-span-6"
+              ? "lg:col-span-6"
               : options.sidebar
-              ? "md:col-span-9"
-              : "md:col-span-12",
+              ? "lg:col-span-9"
+              : "lg:col-span-12",
             "col-span-12 flex w-full flex-col"
           )}
         >
           {options.header && (
             <div className="cover-image h-[200px] pr-10 pt-4">
-              <CreatorSearchBar />
+              <span className="hidden lg:block">
+                <CreatorSearchBar />
+              </span>
             </div>
           )}
           <div className="flex shrink-0 flex-col">
