@@ -40,7 +40,7 @@ interface InputMessageProps {
   isCreator: boolean
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
-  setResets: Dispatch<SetStateAction<number>>
+  removeFree: () => void
 }
 
 const api = new MessagesApi()
@@ -51,7 +51,7 @@ export const InputMessage: FC<InputMessageProps> = ({
   isCreator,
   vaultContent,
   setVaultContent,
-  setResets
+  removeFree
 }) => {
   const {
     register,
@@ -109,7 +109,9 @@ export const InputMessage: FC<InputMessageProps> = ({
     setMessagePrice(0)
     setVaultContent([])
     reset()
-    setResets((resets) => resets + 1)
+    if (!tip) {
+      removeFree()
+    }
     return result
   }
 

@@ -33,7 +33,11 @@ export const ChannelView: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
-  const [reset, setResets] = useState<number>(0)
+  const removeFree = () => {
+    setFreeMessages((freeMessages) =>
+      freeMessages ? freeMessages - 1 : freeMessages
+    )
+  }
   useEffect(() => {
     if (selectedChannel?.channelId) {
       const fetch = async () => {
@@ -54,7 +58,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
       }
       fetch()
     }
-  }, [selectedChannel, reset])
+  }, [selectedChannel])
   return (
     <div className="absolute z-50 flex h-[90vh] flex-col bg-[#120C14] lg:relative lg:max-h-[90vh] lg:flex-1">
       {selectedChannel && (
@@ -88,7 +92,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
                   isCreator={isCreator}
                   vaultContent={vaultContent}
                   setVaultContent={setVaultContent}
-                  setResets={setResets}
+                  removeFree={removeFree}
                 />
               )}
             </>
