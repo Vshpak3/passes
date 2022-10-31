@@ -874,7 +874,7 @@ export class MessagesService {
       await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
         .where({ channel_id: channelId })
         .andWhereNot({ user_id: userId })
-        .decrement('unread_tip', amount)
+        .increment('unread_tip', amount)
     }
     // TODO: add channel subscribe
   }
