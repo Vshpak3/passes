@@ -247,7 +247,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               type="submit"
               className="flex min-w-[151px] items-center justify-start  rounded-[50px] bg-[#C943A8] py-2 px-4 text-[16px] font-bold leading-[25px] text-white"
             >
-              {scheduledTime ? "Scheduled message" : "Send message"}
+              {scheduledTime ? "Schedule message" : "Send message"}
             </button>
           </div>
         </div>

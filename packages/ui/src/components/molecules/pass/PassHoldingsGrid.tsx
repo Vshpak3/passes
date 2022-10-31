@@ -31,7 +31,7 @@ export const PassHoldingsGrid: FC = () => {
             expired={expired}
           />
         </div>
-        <hr className="md:display my-au to hidden grow border-passes-dark-200" />
+        <hr className="md:display my-auto hidden grow border-passes-dark-200" />
       </div>
 
       <InfiniteScrollPagination<PassHolderDto, GetPassHoldingsResponseDto>
