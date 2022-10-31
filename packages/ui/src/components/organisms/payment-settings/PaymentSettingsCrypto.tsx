@@ -11,7 +11,17 @@ import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
 import { Select } from "src/components/atoms/Select"
-import { buttonName, payinMethodDisplayNames } from "./Helper"
+
+export const buttonName = (_isEmbedded?: boolean) => {
+  return _isEmbedded ? "Use" : "Set Default"
+}
+
+export const payinMethodDisplayNames = {
+  [PayinMethodDtoChainEnum.Avax]: "USDC (AVAX)",
+  [PayinMethodDtoChainEnum.Eth]: "USDC (ETH)",
+  [PayinMethodDtoChainEnum.Matic]: "USDC (MATIC)",
+  [PayinMethodDtoChainEnum.Sol]: "USDC (SOL)"
+}
 
 interface PaymentSettingsCryptoProps {
   isEmbedded: boolean

@@ -9,9 +9,11 @@ import { FC, memo, useEffect, useState } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { Modal } from "src/components/organisms/Modal"
-import { PaymenetSettingsCreditCard } from "src/components/organisms/payment-settings/CreditCardSection"
-import { PaymentSettingsCrypto } from "src/components/organisms/payment-settings/CryptoSection"
-import { payinMethodDisplayNames } from "src/components/organisms/payment-settings/Helper"
+import { PaymenetSettingsCreditCard } from "src/components/organisms/payment-settings/PaymenetSettingsCreditCard"
+import {
+  payinMethodDisplayNames,
+  PaymentSettingsCrypto
+} from "src/components/organisms/payment-settings/PaymentSettingsCrypto"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"

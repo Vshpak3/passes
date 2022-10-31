@@ -6,10 +6,10 @@ import DeleteIcon from "public/icons/delete-outline.svg"
 import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
-import { buttonName } from "src/components/organisms/payment-settings/Helper"
 import { SubTabsEnum } from "src/config/settings"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
+import { buttonName } from "./PaymentSettingsCrypto"
 
 interface PaymenetSettingsCreditCardProps {
   isEmbedded: boolean
