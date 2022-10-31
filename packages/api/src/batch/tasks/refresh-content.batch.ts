@@ -3,6 +3,7 @@ import ms from 'ms'
 import { ContentService } from '../../modules/content/content.service'
 import { MessagesService } from '../../modules/messages/messages.service'
 import { PostService } from '../../modules/post/post.service'
+import { sleep } from '../../util/sleep.util'
 import { BatchTask } from '../batch.interface'
 
 const CHECK_PROCESSED_UNTIL = ms('1 hour')
@@ -21,6 +22,7 @@ export class RefreshContentTask extends BatchTask {
       await messagesService.checkRecentMessagesContentProcessed(
         CHECK_PROCESSED_UNTIL,
       )
+      await sleep(ms('1 minute') / REFRESH_RETRIES)
     }
   }
 }
