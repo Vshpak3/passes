@@ -29,7 +29,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   onBack
 }) => {
   const { isTablet } = useWindowSize()
-
+  const galleryAvailable = false
   return (
     <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
       <div className="flex w-full flex-row items-center justify-between px-5 py-4 pr-10">
@@ -62,7 +62,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             </div>
           </div>
         )}
-        {!isCreator && !gallery && (
+        {!isCreator && !gallery && galleryAvailable && (
           <div
             onClick={() => setGallery(!gallery)}
             className="flex h-full cursor-pointer items-center gap-1 rounded-[56px] bg-[#BF7AF0]/10 px-3 opacity-80 hover:opacity-100 "
