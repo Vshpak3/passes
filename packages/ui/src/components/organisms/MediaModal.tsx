@@ -1,3 +1,4 @@
+import { ContentDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { Modal } from "src/components/organisms/Modal"
@@ -5,6 +6,7 @@ import {
   Media,
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/Media"
+import { ContentCarousel } from "src/components/organisms/profile/post/ContentCarousel"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 
@@ -14,6 +16,8 @@ interface ModalProps {
   file: ContentFile
   modalContainerClassname?: string
   childrenClassname?: string
+  carouselContent?: ContentDto[]
+  activeIndex?: number
 }
 
 export const MediaModal: FC<ModalProps> = ({
@@ -21,7 +25,9 @@ export const MediaModal: FC<ModalProps> = ({
   setOpen,
   file,
   modalContainerClassname,
-  childrenClassname
+  childrenClassname,
+  carouselContent,
+  activeIndex = 0
 }) => {
   return (
     <Modal
@@ -32,7 +38,15 @@ export const MediaModal: FC<ModalProps> = ({
       childrenClassname={childrenClassname}
       isCloseOutside
     >
-      {file.file && (
+      {carouselContent && (
+        <div className="max-w-[900px]">
+          <ContentCarousel
+            contents={carouselContent}
+            activeIndex={activeIndex}
+          />
+        </div>
+      )}
+      {file.file && !carouselContent && (
         <MediaFile
           preview
           file={file.file}
@@ -42,7 +56,7 @@ export const MediaModal: FC<ModalProps> = ({
           objectFit="contain"
         />
       )}
-      {file.content && (
+      {file.content && !carouselContent && (
         <Media
           src={ContentService.userContentMediaPath(file.content)}
           preview={true}

@@ -16,21 +16,22 @@ export interface ContentCarouselProps {
   contents: ContentDto[]
   activeIndex?: number
   autoplayVideo?: boolean
-  paying: boolean
-  paid: boolean
-  previewIndex: number
-  price: number
-  openBuyModal: () => void
+  paying?: boolean
+  paid?: boolean
+  previewIndex?: number
+  price?: number
+  openBuyModal?: () => void
 }
 
 export const ContentCarousel: FC<ContentCarouselProps> = ({
   contents,
-  autoplayVideo,
-  paying,
-  paid,
-  previewIndex,
-  price,
-  openBuyModal
+  autoplayVideo = false,
+  paying = false,
+  paid = false,
+  previewIndex = 0,
+  price = 0,
+  openBuyModal,
+  activeIndex = 0
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const hasAccess = paid || price === 0 || previewIndex >= content.length
@@ -41,26 +42,28 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         pagination={{
           type: "fraction"
         }}
+        initialSlide={activeIndex}
         navigation={true}
         modules={[Lazy, Pagination, Navigation]}
         className="mySwiper"
         lazy={true}
       >
-        {contents.map((c: ContentDto, index: number) => {
+        {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
           return hasAccess || index < previewIndex ? (
             <SwiperSlide key={index}>
               <PostContent
-                key={index}
+                index={index}
                 content={c}
                 ref={imgRef}
                 autoplayVideo={autoplayVideo}
+                carouselContent={array}
               />
             </SwiperSlide>
           ) : (
             <></>
           )
         })}
-        {!hasAccess && (
+        {!hasAccess && openBuyModal && (
           <SwiperSlide>
             <LockedMedia
               contents={contents}

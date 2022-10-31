@@ -1,4 +1,4 @@
-import { ContentDtoContentTypeEnum } from "@passes/api-client"
+import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
 
 import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
@@ -9,14 +9,17 @@ import { PostVideo } from "./post/PostVideo"
 interface PostContentProps extends PostImageProps {
   ref: ForwardedRef<HTMLImageElement>
   autoplayVideo?: boolean
+  carouselContent?: ContentDto[]
+  index?: number
 }
 
 export const PostContent: FC<PostContentProps> = forwardRef(
   (
-    { content, autoplayVideo }: PostContentProps,
+    { content, autoplayVideo, carouselContent, index = 0 }: PostContentProps,
     ref: ForwardedRef<HTMLImageElement>
   ) => {
     const [openModal, setOpenModal] = useState(false)
+    const [activeIndex, setActiveIndex] = useState(0)
 
     useEffect(() => {
       if (openModal) {
@@ -29,11 +32,16 @@ export const PostContent: FC<PostContentProps> = forwardRef(
       }
     }, [openModal])
 
+    const onImgClickHandler = () => {
+      setOpenModal(true)
+      setActiveIndex(index)
+    }
+
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
         return (
           <>
-            <button className="w-full" onClick={() => setOpenModal(true)}>
+            <button className="w-full" onClick={onImgClickHandler}>
               <PostImage content={content} ref={ref} />
             </button>
             {openModal && (
@@ -43,6 +51,8 @@ export const PostContent: FC<PostContentProps> = forwardRef(
                 file={{ content }}
                 modalContainerClassname="p-0"
                 childrenClassname="p-0"
+                carouselContent={carouselContent}
+                activeIndex={activeIndex}
               />
             )}
           </>
