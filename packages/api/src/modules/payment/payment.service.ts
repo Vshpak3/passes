@@ -1787,6 +1787,7 @@ export class PaymentService {
         .where({ payin_id: payin.id })
         .select(
           `${CreatorShareEntity.table}.creator_id`,
+          `${CreatorShareEntity.table}.amount`,
           `${CreatorAgencyEntity.table}.rate`,
         )
 
