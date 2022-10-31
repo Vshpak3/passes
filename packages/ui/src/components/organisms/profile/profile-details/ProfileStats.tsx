@@ -1,38 +1,40 @@
 import { FC } from "react"
 
 import { compactNumberFormatter } from "src/helpers/formatters"
+import {
+  ProfileStatItemDesktop,
+  ProfileStatItemMobile
+} from "./ProfileStatsItem"
 
-interface ProfileStatItemMobileProps {
-  stat: string | null
-  label: string
+interface ProfileStatsProps {
+  numPosts?: number
+  likes?: number
 }
 
-const ProfileStatItemMobile: FC<ProfileStatItemMobileProps> = ({
-  stat,
-  label
+export const ProfileStatsDesktop: FC<ProfileStatsProps> = ({
+  numPosts,
+  likes
 }) => (
-  <div className="grid grid-rows-2">
-    <span className="text-[14px] font-medium text-passes-white-100">
-      {stat ?? "-"}
-    </span>
-    <span className="text-[12px] font-normal text-passes-white-100/60">
-      {label}
-    </span>
+  <div className="flex items-center">
+    <ProfileStatItemDesktop stat={numPosts?.toString()} label="POSTS" />
+    <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
+    <ProfileStatItemDesktop
+      stat={compactNumberFormatter(likes || 0)}
+      label="LIKES"
+    />
   </div>
 )
 
-interface ProfileStatsMobileProps {
-  numPosts: number
-  likes: number
-}
-
-export const ProfileStatsMobile: FC<ProfileStatsMobileProps> = ({
+export const ProfileStatsMobile: FC<ProfileStatsProps> = ({
   numPosts,
   likes
 }) => (
   <div className="align-center grid grid-cols-3 items-center text-center">
-    <ProfileStatItemMobile stat={numPosts.toString()} label="POSTS" />
+    <ProfileStatItemMobile stat={numPosts?.toString()} label="POSTS" />
     <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
-    <ProfileStatItemMobile stat={compactNumberFormatter(likes)} label="LIKES" />
+    <ProfileStatItemMobile
+      stat={compactNumberFormatter(likes || 0)}
+      label="LIKES"
+    />
   </div>
 )

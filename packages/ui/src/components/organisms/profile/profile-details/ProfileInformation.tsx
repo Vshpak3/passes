@@ -11,7 +11,7 @@ import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useFollow } from "src/hooks/profile/useFollow"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
-import { ProfileStatsMobile } from "./ProfileStats"
+import { ProfileStatsDesktop, ProfileStatsMobile } from "./ProfileStats"
 
 interface ProfileInformationProps {
   chatLink: string
@@ -62,26 +62,10 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
-        <div className="flex items-center">
-          <div className="flex items-center justify-center">
-            <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {creatorStats?.numPosts ?? "-"}
-            </span>
-            <span className="text-sm font-normal text-passes-white-100/70">
-              POSTS
-            </span>
-          </div>
-          <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
-          <div className="flex items-center justify-center">
-            <span className="mr-[6px] text-base font-medium text-passes-white-100">
-              {compactNumberFormatter(creatorStats?.numLikes || 0) ?? "-"}
-            </span>
-            <span className="text-sm font-normal text-passes-white-100/70">
-              LIKES
-            </span>
-          </div>
-        </div>
-
+        <ProfileStatsDesktop
+          numPosts={creatorStats?.numPosts}
+          likes={creatorStats?.numLikes}
+        />
         <ProfileSocialMedia
           discordUsername={profile?.discordUsername}
           facebookUsername={profile?.facebookUsername}
@@ -127,8 +111,8 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
         youtubeUsername={profile?.youtubeUsername}
       />
       <ProfileStatsMobile
-        numPosts={creatorStats?.numPosts || 0}
-        likes={creatorStats?.numLikes || 0}
+        numPosts={creatorStats?.numPosts}
+        likes={creatorStats?.numLikes}
       />
       {!ownsProfile && (
         <div className="flex space-x-3">
