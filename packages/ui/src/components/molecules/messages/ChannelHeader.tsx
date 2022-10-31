@@ -62,7 +62,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             </div>
           </div>
         )}
-        {!isCreator && !gallery && galleryAvailable && (
+        {!gallery && galleryAvailable && (
           <div
             onClick={() => setGallery(!gallery)}
             className="flex h-full cursor-pointer items-center gap-1 rounded-[56px] bg-[#BF7AF0]/10 px-3 opacity-80 hover:opacity-100 "
@@ -86,7 +86,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               </span>
             </div>
           </div>
-          {!gallery && (
+          {!gallery && galleryAvailable && (
             <div
               onClick={() => setGallery(!gallery)}
               className="flex h-full cursor-pointer items-center gap-1 rounded-[56px] bg-[#BF7AF0]/10 px-3 opacity-80 hover:opacity-100 "

@@ -1,3 +1,4 @@
+import { MessagesApi } from "@passes/api-client"
 import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import { FC, memo } from "react"
@@ -18,9 +19,20 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   channel,
   isSelected
 }) => {
+  const api = new MessagesApi()
+  const read = async () => {
+    if (channel.channelId) {
+      await api.readMessages({
+        channelId: channel.channelId
+      })
+    }
+  }
   return (
     <div
-      onClick={onClick}
+      onClick={() => {
+        read()
+        onClick()
+      }}
       className={classNames(
         "mb-2 flex cursor-pointer  items-center rounded-md py-[7px] px-[10px] hover:bg-[#ffffff]/10",
         isSelected && "bg-[#ffffff]/10"
