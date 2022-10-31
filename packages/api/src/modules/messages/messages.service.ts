@@ -590,7 +590,10 @@ export class MessagesService {
       }
     }
     const method = await this.payService.getDefaultPayinMethod(userId)
-    if (method.method === PayinMethodEnum.NONE) {
+    if (
+      sendMessageDto.tipAmount !== 0 &&
+      method.method === PayinMethodEnum.NONE
+    ) {
       blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
     return { blocked, amount: sendMessageDto.tipAmount }
@@ -718,15 +721,6 @@ export class MessagesService {
     }
     if (follow.length === 2 || follow[0].follower_id === otherUserId) {
       return undefined
-    }
-
-    const users = await this.dbReader<UserEntity>(UserEntity.table)
-      .whereIn('id', [userId, otherUserId])
-      .select('is_creator')
-
-    const creators = users.filter((user) => user.is_creator)
-    if (!creators.length) {
-      return BlockedReasonEnum.USER_BLOCKED
     }
 
     // neither user can be blocked
