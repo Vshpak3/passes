@@ -1070,7 +1070,8 @@ export class PassService {
     } else if (await this.payService.checkPayinTargetBlocked(target)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkHolder) {
-      blocked = BlockedReasonEnum.ALREADY_OWNS_PASS
+      // Don't block someone from repurchasing
+      // blocked = BlockedReasonEnum.ALREADY_OWNS_PASS
     } else if (pass.remaining_supply === 0) {
       blocked = BlockedReasonEnum.INSUFFICIENT_SUPPLY
     }

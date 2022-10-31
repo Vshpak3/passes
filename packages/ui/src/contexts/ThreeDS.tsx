@@ -15,7 +15,7 @@ export const ThreeDSContext = createContext<ThreeDSContextProps>(
 )
 
 const THREE_DS_EXPIRATION_TIME = "10 minutes"
-const THREE_DS_WAITING_TIME = "2 seconds"
+const THREE_DS_WAITING_TIME = "1 second"
 
 export const useThreeDS = () => {
   const [waiting, setWaiting] = useState<Date>()
