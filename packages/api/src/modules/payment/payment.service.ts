@@ -2077,33 +2077,25 @@ export class PaymentService {
       await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
       await this.submitPayout(data.id)
 
-      // TODO: discuss agency payments
-      // if (availableBalances.agency.amount) {
-      //   const agency = await this.dbReader<AgencyEntity>(AgencyEntity.table)
-      //     .leftJoin(
-      //       CreatorAgencyEntity.table,
-      //       `${AgencyEntity.table}.id`,
-      //       `${CreatorAgencyEntity.table}.agency_id`,
-      //     )
-      //     .where(`${CreatorAgencyEntity.table}.creator_id`, userId)
-      //     .select(`${AgencyEntity.table}.bank_id`, `${AgencyEntity.table}.id`)
-      //     .first()
-      //   if (!agency) {
-      //     throw new InternalServerErrorException(
-      //       'no linked agency while agency balance exists',
-      //     )
-      //   }
-      //   const data = {
-      //     id: v4(),
-      //     agency_id: agency.id,
-      //     bank_id: defaultPayoutMethod.bankId,
-      //     wallet_id: defaultPayoutMethod.walletId,
-      //     payout_method: defaultPayoutMethod.method,
-      //     payout_status: PayoutStatusEnum.CREATED,
-      //     amount: creatorBalance - charge,
-      //   }
-      //   await this.dbWriter<PayoutEntity>(PayoutEntity.table).insert(data)
-      // }
+      if (availableBalances.agency.amount) {
+        const agency = await this.dbReader<AgencyEntity>(AgencyEntity.table)
+          .leftJoin(
+            CreatorAgencyEntity.table,
+            `${AgencyEntity.table}.id`,
+            `${CreatorAgencyEntity.table}.agency_id`,
+          )
+          .where(`${CreatorAgencyEntity.table}.creator_id`, userId)
+          .select(`${AgencyEntity.table}.id`)
+          .first()
+        if (!agency) {
+          throw new InternalServerErrorException(
+            'no linked agency while agency balance exists',
+          )
+        }
+        await this.dbWriter<AgencyEntity>(AgencyEntity.table)
+          .where({ id: agency.id })
+          .increment('available_balance', availableBalances.agency.amount)
+      }
     } catch (err) {
       await this.lockService.unlock(redisKey)
       // await this.creatorStatsService.handlePayoutFail(userId, {

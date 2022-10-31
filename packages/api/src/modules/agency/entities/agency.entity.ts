@@ -1,6 +1,7 @@
 import { Entity, OneToOne, Property, Unique } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
+import { USD_AMOUNT_TYPE } from '../../payment/constants/schema'
 import { CircleBankEntity } from '../../payment/entities/circle-bank.entity'
 import { USER_EMAIL_LENGTH } from '../../user/constants/schema'
 import { AGENCY_NAME_LENGTH } from '../constants/schema'
@@ -19,4 +20,7 @@ export class AgencyEntity extends BaseEntity {
 
   @OneToOne(() => CircleBankEntity)
   bank_id: string
+
+  @Property({ columnType: USD_AMOUNT_TYPE })
+  available_balance: number
 }
