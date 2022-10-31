@@ -1,6 +1,3 @@
-import "slick-carousel/slick/slick-theme.css"
-import "slick-carousel/slick/slick.css"
-
 import { Loader } from "src/components/atoms/Loader"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { CreatorPinnedPasses } from "./CreatedPinnedPasses"
