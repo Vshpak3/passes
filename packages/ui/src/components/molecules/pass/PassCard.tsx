@@ -5,10 +5,13 @@ import {
 } from "@passes/api-client"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
-import React, { FC } from "react"
+import { FC, useState } from "react"
+import { toast } from "react-toastify"
 
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+import { MAX_PINNED_PASSES } from "src/config/pass"
 import { formatText } from "src/helpers/formatters"
+import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
 import { useBuyPassModal } from "src/hooks/useBuyPassModal"
 import { useUser } from "src/hooks/useUser"
 
@@ -28,8 +31,24 @@ const getPassType = (passType: PassDtoTypeEnum) => {
 
 export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { setPass } = useBuyPassModal()
+
   const { user } = useUser()
   const isCreator = pass.creatorId === user?.userId
+
+  const { pinnedPasses, pinPass, unpinPass } = useCreatorPinnedPasses(
+    pass.creatorId || ""
+  )
+  const [isPinned, setIsPinned] = useState<boolean>(!!pass.pinnedAt)
+
+  const pinOrUnpinPass = async () => {
+    if (!isPinned && pinnedPasses.length === MAX_PINNED_PASSES) {
+      toast.error(`You can only pin at most ${MAX_PINNED_PASSES} passes`)
+      return
+    }
+    isPinned ? await unpinPass(pass) : await pinPass(pass)
+    setIsPinned(!isPinned)
+  }
+
   return (
     <div className="flex flex-col rounded-xl border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
       <PassMedia
@@ -87,11 +106,11 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         </span>
         <button
           onClick={() => {
-            isCreator ? null : setPass(pass) // TODO: add pass pinning
+            isCreator ? pinOrUnpinPass() : setPass(pass)
           }}
           className="w-full rounded-full bg-passes-primary-color py-2 text-center"
         >
-          {isCreator ? "Pin Pass" : "Mint NFT"}
+          {isCreator ? `${isPinned ? "Unpin" : "Pin"} Pass` : "Buy Pass"}
         </button>
         <p className="mt-2 text-sm font-medium leading-[16px]">
           <span className="text-xs font-normal leading-[23px] text-white/70">
