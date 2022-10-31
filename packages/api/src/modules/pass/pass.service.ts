@@ -264,6 +264,7 @@ export class PassService {
     }
 
     if (
+      !isEnv('dev') &&
       !(await this.s3ContentService.doesObjectExist(
         getCollectionMediaUri(null, pass.id, pass.image_type),
       ))

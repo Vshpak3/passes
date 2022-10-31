@@ -18,7 +18,8 @@ export const PassHoldingsGrid: FC = () => {
   const [passType, setPassType] = useState<PassDtoTypeEnum>(
     PassDtoTypeEnum.Subscription
   )
-  const [expired, setExpired] = useState<boolean | undefined>(false)
+  const [expired, setExpired] = useState<boolean>(false)
+
   return (
     <div className="w-full px-2">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
@@ -29,15 +30,6 @@ export const PassHoldingsGrid: FC = () => {
             setExpired={setExpired}
             expired={expired}
           />
-          <span className="mt-[24px] block min-w-[190px] text-[24px] font-bold text-[#ffff]/90 md:mr-4">
-            {passType === PassDtoTypeEnum.Subscription &&
-              !expired &&
-              "<Active NFTs>"}
-            {passType === PassDtoTypeEnum.Subscription &&
-              expired &&
-              "<Expired NFTs>"}
-            {passType === PassDtoTypeEnum.Lifetime && "<Super NFTs>"}
-          </span>
         </div>
         <hr className="md:display my-auto hidden grow border-passes-dark-200" />
       </div>

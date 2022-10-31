@@ -21,7 +21,7 @@ interface PassesFeedProps {
   creatorId: string
 }
 
-const PASS_DROPDOWN_OPTIONS = [
+export const PASS_DROPDOWN_OPTIONS = [
   {
     value: PassDtoTypeEnum.External,
     label: "Whitelisted Communities"

@@ -3,23 +3,9 @@ import _ from "lodash"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { FC, useEffect, useRef, useState } from "react"
 
+import { PASS_DROPDOWN_OPTIONS } from "src/components/organisms/profile/main-content/feed/PassesFeed"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { SelectPassFilterItem } from "./SelectPassFilterItem"
-
-const PASS_DROPDOWN_OPTIONS = [
-  {
-    value: PassDtoTypeEnum.External,
-    label: "Whitelisted Communities"
-  },
-  {
-    value: PassDtoTypeEnum.Lifetime,
-    label: "Lifetime Passes"
-  },
-  {
-    value: PassDtoTypeEnum.Subscription,
-    label: "Subscription Passes"
-  }
-]
 
 interface SelectPassFilterProps {
   onPassTypeSelect(value: Array<PassDtoTypeEnum>): void

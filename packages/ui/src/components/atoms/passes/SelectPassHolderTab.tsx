@@ -2,33 +2,34 @@ import { PassDtoTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { FC } from "react"
 
+interface PassHolderFilterOption {
+  passType: PassDtoTypeEnum
+  expired: boolean
+  label: string
+}
+
 const PASS_HOLDER_TAB_OPTIONS: PassHolderFilterOption[] = [
   {
     passType: PassDtoTypeEnum.Subscription,
     expired: false,
-    label: "Subscription Passes"
+    label: "Subscriptions"
   },
   {
     passType: PassDtoTypeEnum.Lifetime,
-    label: "Lifetime Passes"
+    expired: false,
+    label: "Lifetime Memberships"
   },
   {
     passType: PassDtoTypeEnum.Subscription,
     expired: true,
-    label: "Subscription Passes"
+    label: "Expired Subscriptions"
   }
 ]
-
-type PassHolderFilterOption = {
-  passType: PassDtoTypeEnum
-  expired?: boolean
-  label: string
-}
 
 interface SelectPassHolderTabProps {
   setPassType: React.Dispatch<React.SetStateAction<PassDtoTypeEnum>>
   passType?: PassDtoTypeEnum
-  setExpired: React.Dispatch<React.SetStateAction<boolean | undefined>>
+  setExpired: React.Dispatch<React.SetStateAction<boolean>>
   expired?: boolean
 }
 
