@@ -29,6 +29,7 @@ export const MediaModal: FC<ModalProps> = ({
   carouselContent,
   activeIndex = 0
 }) => {
+  carouselContent = undefined // deprecate content carousel for now
   return (
     <Modal
       isNewPost
