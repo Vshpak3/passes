@@ -1,5 +1,6 @@
 import { ContentDto, PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
+import { AnyObject } from "chart.js/types/basic"
 import classNames from "classnames"
 import { debounce } from "lodash"
 import React, {
@@ -30,7 +31,7 @@ interface InputMessageFormProps {
   message: string
   isPaid: boolean
   previewIndex: string
-  submitError: any
+  submitError: AnyObject
 }
 
 interface InputMessageProps {
@@ -39,6 +40,7 @@ interface InputMessageProps {
   isCreator: boolean
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
+  setResets: Dispatch<SetStateAction<number>>
 }
 
 const api = new MessagesApi()
@@ -48,7 +50,8 @@ export const InputMessage: FC<InputMessageProps> = ({
   minimumTip,
   isCreator,
   vaultContent,
-  setVaultContent
+  setVaultContent,
+  setResets
 }) => {
   const {
     register,
@@ -106,6 +109,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     setMessagePrice(0)
     setVaultContent([])
     reset()
+    setResets((resets) => resets + 1)
     return result
   }
 
