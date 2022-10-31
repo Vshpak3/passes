@@ -65,10 +65,12 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
                   <span>free message(s)</span>
                 </span>
               )}
-              <span className="flex flex-col text-sm text-gray-400 md:text-xs">
-                <span className="font-[700] text-white">Unlimited</span>
-                <span>free messages</span>
-              </span>
+              {pass.totalMessages === null && (
+                <span className="flex flex-col text-sm text-gray-400 md:text-xs">
+                  <span className="font-[700] text-white">Unlimited</span>
+                  <span>free messages</span>
+                </span>
+              )}
             </div>
             <div className="text-sm font-[500] text-gray-400 md:text-xs">
               {pass.freetrial ? "Free trial" : "No free trial"}

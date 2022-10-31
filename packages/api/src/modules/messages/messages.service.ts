@@ -679,7 +679,10 @@ export class MessagesService {
           Date.now(),
         )
       })
-      .select(`${PassHolderEntity.table}.messages`)
+      .select(
+        `${PassHolderEntity.table}.messages`,
+        `${PassHolderEntity.table}.id`,
+      )
       .orderBy('messages', 'desc')
     if (passHoldings.length === 0) {
       return 0
