@@ -1145,7 +1145,7 @@ export class MessagesService {
     }
 
     let query = this.dbReader<MessageEntity>(MessageEntity.table)
-      .where({ channel_id: channelId, pending })
+      .where({ channel_id: channelId, pending, deleted_at: null })
       .select(`${MessageEntity.table}.*`)
       .limit(MAX_MESSAGES_PER_REQUEST)
 
@@ -1323,10 +1323,35 @@ export class MessagesService {
             paid_at: null,
             paying: false,
           })
-          .delete()
+          .update('deleted_at', new Date())
       }
     })
+    const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .whereNotNull('deleted_at')
+      .andWhere({
+        paid_message_id: paidMessageId,
+      })
+      .select('channel_id')
+    await Promise.all(
+      channels.map(
+        async (channel) => await this.updateChannel(channel.channel_id),
+      ),
+    )
     return !!updated
+  }
+
+  async updateChannel(channelId: string) {
+    const message = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .where({ channel_id: channelId, pending: false })
+      .whereNotNull('deleted_at')
+      .select('sent_at', 'text')
+      .orderBy('sent_at', 'desc')
+      .first()
+
+    await this.dbWriter<ChannelEntity>(ChannelEntity.table).update({
+      preview_text: message?.text ?? null,
+      recent: message?.sent_at ?? null,
+    })
   }
 
   async checkRecentMessagesContentProcessed(checkProcessedUntil: number) {
