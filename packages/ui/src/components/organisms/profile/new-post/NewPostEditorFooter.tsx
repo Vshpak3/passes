@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material"
 import { ContentDto } from "@passes/api-client"
-import { FC } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
@@ -13,13 +13,19 @@ interface NewPostEditorFooterProps {
   setScheduledTime: (date: Date | null) => void
   scheduledTime: Date | null
   addContent: (content: ContentDto[]) => void
+  reorderButton?: boolean
+  reorderContent: boolean
+  setReorderContent: Dispatch<SetStateAction<boolean>>
 }
 
 export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
   disableForm,
   setScheduledTime,
   scheduledTime,
-  addContent
+  addContent,
+  reorderButton = false,
+  reorderContent,
+  setReorderContent
 }) => {
   return (
     <div className="w-full">
@@ -29,7 +35,18 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
           onRemoveScheduledPostTime={() => setScheduledTime(null)}
         />
       )}
+
       <div className="mt-4 flex justify-end gap-[10px]">
+        {reorderButton && (
+          <Button
+            className="flex items-center justify-center rounded-[5px] border  border-[#FF51A8] bg-transparent px-6 py-2 pr-10 text-base  font-bold sm:rounded-[5px] sm:py-2.5 sm:px-8"
+            onClick={() => setReorderContent(!reorderContent)}
+          >
+            <Text fontSize={16} className="font-bold text-[#FF51A8]">
+              Reorder
+            </Text>
+          </Button>
+        )}
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
             <VaultSelector selectVaultContent={addContent} expanded={true} />

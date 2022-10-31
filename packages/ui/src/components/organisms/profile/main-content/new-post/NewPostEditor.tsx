@@ -111,8 +111,9 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
+  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
-
+  const [reorderContent, setReorderContent] = useState(false)
   const {
     handleSubmit,
     register,
@@ -183,7 +184,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
       price: values.isPaid ? parseFloat(values.price) : 0,
       contentIds,
-      previewIndex: parseInt(values.previewIndex),
+      previewIndex: values.isPaid ? mediaPreviewIndex : 0,
       expiresAt: values.expiresAt,
       scheduledAt: values.scheduledAt ?? undefined
     }
@@ -205,7 +206,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
+      <div className="min-h-12 flex flex-col items-start justify-start rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5  md:px-7 md:py-5">
         {extended && (
           <NewPostEditorHeader
             title="New post"
@@ -250,6 +251,10 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               onRemove={onRemove}
               addNewMedia={addNewMedia}
               isNewPost={true}
+              isPaid={isPaid}
+              reorderContent={reorderContent}
+              mediaPreviewIndex={mediaPreviewIndex}
+              setMediaPreviewIndex={setMediaPreviewIndex}
             />
           )}
         </div>
@@ -267,6 +272,9 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               setScheduledTime={setScheduledTime}
               scheduledTime={getValues()?.scheduledAt}
               addContent={addContent}
+              reorderButton={files.length > 1}
+              reorderContent={reorderContent}
+              setReorderContent={setReorderContent}
             />
           </>
         )}

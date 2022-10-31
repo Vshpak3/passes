@@ -11,7 +11,6 @@ import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-import { Button } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
@@ -19,6 +18,7 @@ import { ContentService } from "src/helpers/content"
 import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile } from "src/hooks/useMedia"
 import { MediaSectionReorder } from "./MediaSectionReorder"
+// import { MediaSectionReorderPriced } from "./MediaSectionReorderPriced"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 interface MediaSectionProps {
@@ -30,6 +30,10 @@ interface MediaSectionProps {
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
   isNewPost?: boolean
   messages?: boolean
+  isPaid?: boolean
+  reorderContent?: boolean
+  mediaPreviewIndex?: number
+  setMediaPreviewIndex?: Dispatch<SetStateAction<number>>
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
@@ -39,11 +43,15 @@ export const MediaSection: FC<MediaSectionProps> = ({
   files,
   setFiles,
   onRemove,
-  messages = false
+  messages = false,
+  isPaid,
+  reorderContent,
+  mediaPreviewIndex,
+  setMediaPreviewIndex
 }) => {
   const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
-  const [reorder, setReorder] = useState(false)
+  // const [reorder, setReorder] = useState(false)
 
   const onMediaFileSelect = (file: ContentFile) => {
     setSelectedMedia(file)
@@ -62,20 +70,17 @@ export const MediaSection: FC<MediaSectionProps> = ({
     addNewMedia([...event.target.files])
     event.target.value = ""
   }
-
   return (
     <>
-      {reorder ? (
-        <div className="flex items-center">
-          <MediaSectionReorder files={files} setFiles={setFiles} />
-          <div>
-            <Button
-              className="bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-[#ffffff]"
-              onClick={() => setReorder(!reorder)}
-            >
-              Reorder
-            </Button>
-          </div>
+      {reorderContent ? (
+        <div className="flex w-full">
+          <MediaSectionReorder
+            files={files as any}
+            setFiles={setFiles}
+            mediaPreviewIndex={mediaPreviewIndex as number}
+            setMediaPreviewIndex={setMediaPreviewIndex as any}
+            isPaid={isPaid as boolean}
+          />
         </div>
       ) : (
         <div className="pt-5">
@@ -106,8 +111,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 <style>
                   {!messages
                     ? `.swiper-button-next{
-                margin-top: 0px;
-                position: fixed;
+                position: absolute;
                 right: -9px;
                 width: 45px;
                 height: 45px;
@@ -115,13 +119,12 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 transform: scale(0.6, 0.9);
               }
               .swiper-button-prev{
-                position: fixed;
+                position: absolute;
                 top: 50%;
                 left: -9px;
                 width: 45px;
                 height: 45px;
                 color:white;
-                margin-top: 0px;
                 transform: scale(0.6, 0.9);
           }`
                     : `.swiper-button-next{
@@ -204,13 +207,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   </>
                 ))}
                 <SwiperSlide>
-                  <Button
-                    className="bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-[#ffffff]"
-                    onClick={() => setReorder(!reorder)}
-                  >
-                    Reorder
-                  </Button>
-
                   <div className="flex min-h-[150px] min-w-[50px] items-center">
                     {files.length !== MAX_FILE_COUNT && (
                       <FormInput
