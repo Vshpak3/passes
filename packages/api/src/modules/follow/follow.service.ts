@@ -39,7 +39,7 @@ import { BlockTaskEntity } from './entities/block-task.entity'
 import { FollowEntity } from './entities/follow.entity'
 import { FollowBlockEntity } from './entities/follow-block.entity'
 import { ReportEntity } from './entities/follow-report.entity'
-import { WelcomeMessaged } from './entities/welcome-messaged.entity'
+import { WelcomeMessagedEntity } from './entities/welcome-messaged.entity'
 
 export const MAX_FOLLOWERS_PER_REQUEST = 20
 
@@ -133,15 +133,17 @@ export class FollowService {
     )
 
     try {
+      await this.dbWriter<WelcomeMessagedEntity>(
+        WelcomeMessagedEntity.table,
+      ).insert({
+        follower_id: userId,
+        creator_id: creatorId,
+      })
       if (creatorSettings?.welcome_message) {
         const welcomeMessage = await this.messagesService.getWelcomeMessage(
           creatorId,
         )
         if (welcomeMessage.paidMessageId) {
-          await this.dbWriter<WelcomeMessaged>(WelcomeMessaged.table).insert({
-            follower_id: userId,
-            creator_id: creatorId,
-          })
           const channel = await this.messagesService.createChannel(userId, {
             userId: creatorId,
           })
