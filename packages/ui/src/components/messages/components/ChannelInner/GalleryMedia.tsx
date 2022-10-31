@@ -119,82 +119,80 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
           ) : null}
         </div>
       ) : (
-        <>
-          <div className="relative w-full bg-transparent">
-            <div
-              className={classNames(
-                purchased ? "" : "bg-[#1B141D]/50 backdrop-blur-[50px]",
-                "absolute flex h-full w-full items-center justify-center rounded-[15px]"
-              )}
-            >
-              {!purchased && (
-                <div className="flex-center h-45 flex w-[245px] flex-col items-center">
-                  <ContentUnlockButton
-                    onClick={() => setOpenBuyPostModal(true)}
-                    value={purchased.toString()}
-                    name={`Unlock For ${formatCurrency(price ?? 100)}`}
-                    className="max-w-[200px] gap-1 py-2 text-[14px]"
-                  />
-                  {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
-                  <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
-                    <span>
-                      Unlock {plural("video", video)}, {plural("photo", images)}
-                    </span>
-                  </div>
+        <div className="relative w-full bg-transparent">
+          <div
+            className={classNames(
+              purchased ? "" : "bg-[#1B141D]/50 backdrop-blur-[50px]",
+              "absolute flex h-full w-full items-center justify-center rounded-[15px]"
+            )}
+          >
+            {!purchased && (
+              <div className="flex-center h-45 flex w-[245px] flex-col items-center">
+                <ContentUnlockButton
+                  onClick={() => setOpenBuyPostModal(true)}
+                  value={purchased.toString()}
+                  name={`Unlock For ${formatCurrency(price ?? 100)}`}
+                  className="max-w-[200px] gap-1 py-2 text-[14px]"
+                />
+                {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
+                <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
+                  <span>
+                    Unlock {plural("video", video)}, {plural("photo", images)}
+                  </span>
                 </div>
-              )}
-            </div>
-            <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
-              {contents.length === 1 ? (
-                isLoading ? (
-                  <span>Please wait! Your content is being uploaded</span>
-                ) : (
-                  contents.map((c: ContentDto) => {
-                    if (c.contentType === ContentDtoContentTypeEnum.Image) {
-                      return (
-                        <div
-                          key={c.contentId}
-                          className="relative flex h-full w-full  cursor-pointer items-center  justify-center"
-                        >
-                          <img
-                            ref={imgRef}
-                            onLoad={startLoadingHandler}
-                            key={c.contentId}
-                            src={ContentService.userContentMediaPath(c)}
-                            alt=""
-                            className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
-                          />
-                        </div>
-                      )
-                    } else if (
-                      c.contentType === ContentDtoContentTypeEnum.Video
-                    ) {
-                      return (
-                        <PostVideo
-                          key={c.contentId}
-                          videoUrl={ContentService.userContentMediaPath(c)}
-                        />
-                      )
-                    } else {
-                      console.error("Unsupported media type")
-                    }
-                  })
-                )
-              ) : contents.length > 1 ? (
-                <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
-                  <img
-                    ref={imgRef}
-                    onLoad={startLoadingHandler}
-                    key={contents[0].contentId}
-                    src={ContentService.userContentMediaPath(contents[0])}
-                    alt=""
-                    className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
-                  />
-                </div>
-              ) : null}
-            </div>
+              </div>
+            )}
           </div>
-        </>
+          <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
+            {contents.length === 1 ? (
+              isLoading ? (
+                <span>Please wait! Your content is being uploaded</span>
+              ) : (
+                contents.map((c: ContentDto) => {
+                  if (c.contentType === ContentDtoContentTypeEnum.Image) {
+                    return (
+                      <div
+                        key={c.contentId}
+                        className="relative flex h-full w-full  cursor-pointer items-center  justify-center"
+                      >
+                        <img
+                          ref={imgRef}
+                          onLoad={startLoadingHandler}
+                          key={c.contentId}
+                          src={ContentService.userContentMediaPath(c)}
+                          alt=""
+                          className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
+                        />
+                      </div>
+                    )
+                  } else if (
+                    c.contentType === ContentDtoContentTypeEnum.Video
+                  ) {
+                    return (
+                      <PostVideo
+                        key={c.contentId}
+                        videoUrl={ContentService.userContentMediaPath(c)}
+                      />
+                    )
+                  } else {
+                    console.error("Unsupported media type")
+                  }
+                })
+              )
+            ) : contents.length > 1 ? (
+              <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
+                <img
+                  ref={imgRef}
+                  onLoad={startLoadingHandler}
+                  key={contents[0].contentId}
+                  src={ContentService.userContentMediaPath(contents[0])}
+                  alt=""
+                  className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
       )}
     </div>
   )

@@ -97,9 +97,7 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
         <PassesSectionTitle title="Upload an image" />
       </div>
       {files.length ? (
-        <>
-          <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
-        </>
+        <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
       ) : (
         <FormInput
           className="h-[200px]"

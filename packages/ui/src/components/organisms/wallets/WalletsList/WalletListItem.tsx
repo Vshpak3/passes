@@ -70,90 +70,88 @@ export const WalletListItem: FC<WalletListItemProps> = ({
   }
 
   return (
-    <>
-      <div
-        className="flex w-[600px] items-center justify-between gap-0 border-t border-[#2C282D] py-3 md:w-full md:gap-[40px] md:pl-8"
-        key={wallet.walletId}
-      >
-        <div className="relative flex basis-1/4 items-center justify-center">
-          <div className="absolute left-3 md:-left-3">
-            {Boolean(wallet.custodial) && (
-              <IconTooltip
-                Icon={InfoIcon}
-                position="top"
-                tooltipText={CUSTODIAL_TOOLTIP_TEXT}
-                className=""
-              />
-            )}
-          </div>
-          <div className="absolute left-3 md:-left-3">
-            {!wallet.authenticated && (
-              <IconTooltip
-                Icon={TooltipStar}
-                position="top"
-                tooltipText={AUTH_TOOLTIP_TEXT}
-              />
-            )}
-          </div>
-          <div className="flex items-center justify-center">
-            <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
-            <span className="ml-[12px] hidden font-bold md:visible md:block">
-              {walletTypeName(wallet.chain, wallet.authenticated)}
-            </span>
-          </div>
+    <div
+      className="flex w-[600px] items-center justify-between gap-0 border-t border-[#2C282D] py-3 md:w-full md:gap-[40px] md:pl-8"
+      key={wallet.walletId}
+    >
+      <div className="relative flex basis-1/4 items-center justify-center">
+        <div className="absolute left-3 md:-left-3">
+          {Boolean(wallet.custodial) && (
+            <IconTooltip
+              Icon={InfoIcon}
+              position="top"
+              tooltipText={CUSTODIAL_TOOLTIP_TEXT}
+              className=""
+            />
+          )}
         </div>
-        <div
-          className='text-[#ffffffeb]" group flex basis-1/4 cursor-pointer flex-row justify-center'
-          onClick={() => copyWalletToClipboard(wallet.address)}
-        >
-          {formatWalletAddress(wallet.address, {
-            amountFirst: 6,
-            amountLast: 7
-          })}
-          <Clipboard
-            width="12px"
-            className="invisible ml-2 group-hover:visible md:block"
-          />
+        <div className="absolute left-3 md:-left-3">
+          {!wallet.authenticated && (
+            <IconTooltip
+              Icon={TooltipStar}
+              position="top"
+              tooltipText={AUTH_TOOLTIP_TEXT}
+            />
+          )}
         </div>
-        {wallet.authenticated && (
-          <div className="flex basis-1/4 justify-center">
-            {defaultEthMinting && (
-              <Button className="cursor-default" variant="gray">
-                ETH NFT Minting
-              </Button>
-            )}
-            {defaultSolMinting && (
-              <Button className="cursor-default" variant="gray">
-                SOL NFT Minting
-              </Button>
-            )}
-            {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
-              <Button
-                variant="purple-light"
-                tag="button"
-                onClick={async () =>
-                  await setDefaultMinting(wallet.walletId, wallet.chain)
-                }
-              >
-                Set {wallet.chain} default
-              </Button>
-            )}
-            {!defaultEthMinting &&
-              !defaultSolMinting &&
-              !wallet.authenticated && <div>Unauthenticated</div>}
-          </div>
-        )}
-        <div className="flex basis-1/4 justify-center">
-          <Button
-            disabled={wallet.custodial}
-            onClick={onDeleteHandler}
-            variant="link-purple"
-            tag="button"
-          >
-            Delete
-          </Button>
+        <div className="flex items-center justify-center">
+          <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
+          <span className="ml-[12px] hidden font-bold md:visible md:block">
+            {walletTypeName(wallet.chain, wallet.authenticated)}
+          </span>
         </div>
       </div>
-    </>
+      <div
+        className='text-[#ffffffeb]" group flex basis-1/4 cursor-pointer flex-row justify-center'
+        onClick={() => copyWalletToClipboard(wallet.address)}
+      >
+        {formatWalletAddress(wallet.address, {
+          amountFirst: 6,
+          amountLast: 7
+        })}
+        <Clipboard
+          width="12px"
+          className="invisible ml-2 group-hover:visible md:block"
+        />
+      </div>
+      {wallet.authenticated && (
+        <div className="flex basis-1/4 justify-center">
+          {defaultEthMinting && (
+            <Button className="cursor-default" variant="gray">
+              ETH NFT Minting
+            </Button>
+          )}
+          {defaultSolMinting && (
+            <Button className="cursor-default" variant="gray">
+              SOL NFT Minting
+            </Button>
+          )}
+          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
+            <Button
+              variant="purple-light"
+              tag="button"
+              onClick={async () =>
+                await setDefaultMinting(wallet.walletId, wallet.chain)
+              }
+            >
+              Set {wallet.chain} default
+            </Button>
+          )}
+          {!defaultEthMinting &&
+            !defaultSolMinting &&
+            !wallet.authenticated && <div>Unauthenticated</div>}
+        </div>
+      )}
+      <div className="flex basis-1/4 justify-center">
+        <Button
+          disabled={wallet.custodial}
+          onClick={onDeleteHandler}
+          variant="link-purple"
+          tag="button"
+        >
+          Delete
+        </Button>
+      </div>
+    </div>
   )
 }

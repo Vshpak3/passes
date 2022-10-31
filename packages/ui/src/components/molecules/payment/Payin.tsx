@@ -15,7 +15,7 @@ interface PayinProps {
 }
 
 export const Payin = ({ payin }: PayinProps) => {
-  let payinInfo: JSX.Element = <></>
+  let payinInfo: JSX.Element | null = null
   let method = ""
   let status = ""
   let reason = ""

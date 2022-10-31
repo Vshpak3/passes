@@ -11,7 +11,7 @@ interface PayoutProps {
 }
 
 export const Payout: FC<PayoutProps> = ({ payout }) => {
-  let payoutInfo: JSX.Element = <></>
+  let payoutInfo: JSX.Element | null = null
   let method = ""
   let status = ""
   switch (payout.payoutMethod.method) {

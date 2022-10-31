@@ -139,17 +139,15 @@ const PostUnmemo: FC<PostProps> = ({
               <FormattedText text={text} tags={tags} />
             </p>
             {!!contents?.length && (
-              <>
-                <MediaContent
-                  contents={contents}
-                  isProcessing={!contentProcessed}
-                  paying={paying}
-                  paid={!!paidAt || isOwner}
-                  previewIndex={previewIndex}
-                  price={price ?? 0}
-                  openBuyModal={() => setPost(post)}
-                />
-              </>
+              <MediaContent
+                contents={contents}
+                isProcessing={!contentProcessed}
+                paying={paying}
+                paid={!!paidAt || isOwner}
+                previewIndex={previewIndex}
+                price={price ?? 0}
+                openBuyModal={() => setPost(post)}
+              />
             )}
             <PostEngagement post={post} />
           </FormContainer>

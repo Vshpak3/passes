@@ -207,14 +207,12 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="min-h-12 flex flex-col items-start justify-start rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
-          <>
-            <NewPostEditorHeader
-              title="New post"
-              formName="isPaid"
-              onClose={closeEditor}
-              register={register}
-            />
-          </>
+          <NewPostEditorHeader
+            title="New post"
+            formName="isPaid"
+            onClose={closeEditor}
+            register={register}
+          />
         )}
 
         <div

@@ -22,7 +22,7 @@ export const ProfileDetails: FC = () => {
   const chatLink = `/messages?user=${profileUserId}`
 
   if (!profileUserId) {
-    return <></>
+    return null
   }
 
   return (

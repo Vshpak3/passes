@@ -61,5 +61,5 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
   }, [isPage, skipAuth, creatorOnly, userClaims, hasRefreshed, safePush])
 
-  return authed ? <>{children}</> : <></>
+  return authed ? <>{children}</> : null
 }

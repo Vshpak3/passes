@@ -66,7 +66,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
           />
         )
     }
-    return <></>
+    return null
   }
 )
 

@@ -18,7 +18,7 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
   const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
 
   if (loadingProfile || !profileUserId) {
-    return <></>
+    return null
   }
 
   switch (activeTab) {

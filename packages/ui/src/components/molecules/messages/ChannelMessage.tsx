@@ -53,9 +53,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               {formatCurrency(message.tipAmount)}
               <br />
             </>
-          ) : (
-            <></>
-          )}
+          ) : null}
 
           {!!messageContent.length && (
             <div className="max-w-[403px] pt-2">

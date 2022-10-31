@@ -173,70 +173,68 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         </div>
       )}
       {isConnected ? (
-        <>
-          <div
-            id="scrollableDiv"
-            className="flex h-full flex-1 flex-col overflow-y-scroll"
-            onFocus={onReadLastMessage}
-            style={{
-              display: "flex",
-              flexDirection: "column-reverse"
+        <div
+          id="scrollableDiv"
+          className="flex h-full flex-1 flex-col overflow-y-scroll"
+          onFocus={onReadLastMessage}
+          style={{
+            display: "flex",
+            flexDirection: "column-reverse"
+          }}
+        >
+          <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
+            keyValue={`messages/${time}`}
+            fetch={async (req: GetMessagesRequestDto) => {
+              return await api.getMessages({ getMessagesRequestDto: req })
             }}
+            fetchProps={{ channelId, pending: false, contentOnly: false }}
+            KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+              return (
+                <ChannelMessage
+                  message={{
+                    ...arg,
+                    ...(messageUpdates[arg.messageId] ?? {})
+                  }}
+                  isOwnMessage={arg.senderId === user?.userId}
+                />
+              )
+            }}
+            scrollableTarget="scrollableDiv"
+            loadingElement={<div>Loading older messages...</div>}
+            style={{ display: "flex", flexDirection: "column-reverse" }}
+            inverse={true}
           >
-            <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-              keyValue={`messages/${time}`}
-              fetch={async (req: GetMessagesRequestDto) => {
-                return await api.getMessages({ getMessagesRequestDto: req })
-              }}
-              fetchProps={{ channelId, pending: false, contentOnly: false }}
-              KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+            {messages.length > 0 &&
+              messages.map((m, i) => {
                 return (
                   <ChannelMessage
+                    key={i}
                     message={{
-                      ...arg,
-                      ...(messageUpdates[arg.messageId] ?? {})
+                      ...m,
+                      ...(messageUpdates[m.messageId] ?? {})
                     }}
-                    isOwnMessage={arg.senderId === user?.userId}
+                    isOwnMessage={m.senderId === user?.userId}
                   />
                 )
-              }}
-              scrollableTarget="scrollableDiv"
-              loadingElement={<div>Loading older messages...</div>}
-              style={{ display: "flex", flexDirection: "column-reverse" }}
-              inverse={true}
-            >
-              {messages.length > 0 &&
-                messages.map((m, i) => {
-                  return (
-                    <ChannelMessage
-                      key={i}
-                      message={{
-                        ...m,
-                        ...(messageUpdates[m.messageId] ?? {})
-                      }}
-                      isOwnMessage={m.senderId === user?.userId}
-                    />
-                  )
-                })}
-              {pendingMessages.length > 0 &&
-                pendingMessages.map((m, i) => {
-                  return (
-                    <ChannelMessage
-                      key={i}
-                      message={{
-                        ...m,
-                        ...(messageUpdates[m.messageId] ?? {})
-                      }}
-                      isOwnMessage={m.senderId === user?.userId}
-                    />
-                  )
-                })}
-            </InfiniteScrollPagination>
+              })}
+            {pendingMessages.length > 0 &&
+              pendingMessages.map((m, i) => {
+                return (
+                  <ChannelMessage
+                    key={i}
+                    message={{
+                      ...m,
+                      ...(messageUpdates[m.messageId] ?? {})
+                    }}
+                    isOwnMessage={m.senderId === user?.userId}
+                  />
+                )
+              })}
+          </InfiniteScrollPagination>
 
-            {/* Dummy ref to allow scrolling to bottom of chat */}
-            <div ref={bottomOfChatRef} />
-          </div>
-        </>
+          {/* Dummy ref to allow scrolling to bottom of chat */}
+          <div ref={bottomOfChatRef} />
+        </div>
       ) : (
         <div className="flex-1" />
       )}

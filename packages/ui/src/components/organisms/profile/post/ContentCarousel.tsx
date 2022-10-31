@@ -59,9 +59,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
                 carouselContent={array}
               />
             </SwiperSlide>
-          ) : (
-            <></>
-          )
+          ) : null
         })}
         {!hasAccess && openBuyModal && (
           <SwiperSlide>

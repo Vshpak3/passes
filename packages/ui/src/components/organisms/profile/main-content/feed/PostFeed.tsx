@@ -51,40 +51,38 @@ export const PostFeed: FC<PostFeedProps> = ({
   const { posts } = usePostWebhook()
 
   return (
-    <>
-      <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
-        keyValue={`/feed/creator/${profileUserId}`}
-        fetch={async (req: GetProfileFeedRequestDto) => {
-          return await api.getFeedForCreator({
-            getProfileFeedRequestDto: req
-          })
-        }}
-        fetchProps={{ creatorId: profileUserId, pinned: false }}
-        KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-          return (
-            <Post
-              post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-              updateProfileStats={updateProfileStats}
-            />
-          )
-        }}
-        emptyElement={PostFeedEnd}
-        loadingElement={PostFeedLoader}
-        endElement={PostFeedEnd}
-        hasInitialElement={isNewPostAdded}
-      >
-        {ownsProfile && (
-          <NewPosts setIsNewPostAdded={setIsNewPostAdded} postUpdates={posts} />
-        )}
-        {pinnedPosts.map((post) => (
+    <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+      keyValue={`/feed/creator/${profileUserId}`}
+      fetch={async (req: GetProfileFeedRequestDto) => {
+        return await api.getFeedForCreator({
+          getProfileFeedRequestDto: req
+        })
+      }}
+      fetchProps={{ creatorId: profileUserId, pinned: false }}
+      KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+        return (
           <Post
-            key={post.postId}
-            post={{ ...post, ...(posts[post.postId] ?? {}) }}
-            isPinned={true}
+            post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
             updateProfileStats={updateProfileStats}
           />
-        ))}
-      </InfiniteScrollPagination>
-    </>
+        )
+      }}
+      emptyElement={PostFeedEnd}
+      loadingElement={PostFeedLoader}
+      endElement={PostFeedEnd}
+      hasInitialElement={isNewPostAdded}
+    >
+      {ownsProfile && (
+        <NewPosts setIsNewPostAdded={setIsNewPostAdded} postUpdates={posts} />
+      )}
+      {pinnedPosts.map((post) => (
+        <Post
+          key={post.postId}
+          post={{ ...post, ...(posts[post.postId] ?? {}) }}
+          isPinned={true}
+          updateProfileStats={updateProfileStats}
+        />
+      ))}
+    </InfiniteScrollPagination>
   )
 }
