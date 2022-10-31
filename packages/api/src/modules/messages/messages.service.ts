@@ -1308,7 +1308,7 @@ export class MessagesService {
     return true
   }
 
-  async unsendMessage(userId: string, paidMessageId: string) {
+  async unsendPaidMessage(userId: string, paidMessageId: string) {
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)

@@ -396,7 +396,7 @@ export class MessagesController {
     @Param('paidMessageId') paidMessageId: string,
   ): Promise<BooleanResponseDto> {
     return new BooleanResponseDto(
-      await this.messagesService.unsendMessage(req.user.id, paidMessageId),
+      await this.messagesService.unsendPaidMessage(req.user.id, paidMessageId),
     )
   }
 }

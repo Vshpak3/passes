@@ -292,10 +292,11 @@ export const InputMessage: FC<InputMessageProps> = ({
               step=".01"
               onKeyPress={preventNegative}
             />
-
-            <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
-              minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"} tip
-            </span>
+            {blocked === PayinDataDtoBlockedEnum.InsufficientTip && (
+              <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
+                minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"} tip
+              </span>
+            )}
           </div>
           <div
             className="messaging-input__button w-full !p-0"
