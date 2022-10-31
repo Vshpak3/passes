@@ -76,7 +76,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
         <div className="flex min-h-[54px] w-full items-center justify-between gap-[18px] border-y border-[#fff]/10 pt-[8px] pb-[8px] pr-12">
           <div className="flex items-center justify-start gap-[10px] pl-5">
             <div className="m-0 flex cursor-pointer items-center p-0">
-              <span className="flex h-[36px] w-fit items-center justify-center rounded-l-[40px] bg-[#9C4DC1] px-2 text-[16px] font-medium leading-[16px] text-[#ffff]">
+              <span className="flex h-[36px] w-fit items-center justify-center rounded-l-[40px] bg-[#9C4DC1] px-2 text-sm font-normal leading-[16px] text-[#ffff] md:text-[16px] md:font-medium">
                 Total Tip Amount
               </span>
               <span className="flex h-[36px] w-fit items-center justify-center rounded-r-[40px] bg-[#C943A8] px-2 text-[16px] font-medium leading-[16px] text-[#ffff]">
