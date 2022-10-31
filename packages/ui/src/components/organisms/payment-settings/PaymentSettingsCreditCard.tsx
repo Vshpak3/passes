@@ -11,16 +11,14 @@ import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { buttonName } from "./PaymentSettingsCrypto"
 
-interface PaymenetSettingsCreditCardProps {
+interface PaymentSettingsCreditCardProps {
   isEmbedded: boolean
   setOpen: any
   addOrPopStackHandler: any
   handleSetDefaultPayInMethod: any
 }
 
-export const PaymenetSettingsCreditCard: FC<
-  PaymenetSettingsCreditCardProps
-> = ({
+export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
   isEmbedded,
   setOpen,
   addOrPopStackHandler,

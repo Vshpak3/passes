@@ -9,7 +9,7 @@ import { FC, memo, useEffect, useState } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { Modal } from "src/components/organisms/Modal"
-import { PaymenetSettingsCreditCard } from "src/components/organisms/payment-settings/PaymenetSettingsCreditCard"
+import { PaymentSettingsCreditCard } from "src/components/organisms/payment-settings/PaymentSettingsCreditCard"
 import {
   payinMethodDisplayNames,
   PaymentSettingsCrypto
@@ -173,7 +173,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
         defaultPayinMethod={defaultPayinMethod}
         handleSetDefaultPayInMethod={handleSetDefaultPayInMethod}
       />
-      <PaymenetSettingsCreditCard
+      <PaymentSettingsCreditCard
         isEmbedded={isEmbedded}
         setOpen={setOpen}
         addOrPopStackHandler={addOrPopStackHandler}
