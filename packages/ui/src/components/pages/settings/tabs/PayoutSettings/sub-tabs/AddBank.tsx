@@ -12,7 +12,7 @@ import { EIcon } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { SettingsContextProps, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 

@@ -15,7 +15,7 @@ import {
   SettingsContextProps,
   SettingsProvider,
   useSettings
-} from "src/contexts/settings"
+} from "src/contexts/Settings"
 import { useUser } from "src/hooks/useUser"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"

@@ -2,16 +2,15 @@ import detectEthereumProvider from "@metamask/detect-provider"
 import {
   PayinDataDto,
   PayinDataDtoBlockedEnum,
-  PayinDtoPayinStatusEnum,
   PayinMethodDtoMethodEnum,
   PaymentApi,
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import ms from "ms"
-import { useEffect, useState } from "react"
+import { useContext, useState } from "react"
 import { toast } from "react-toastify"
 
+import { ThreeDSContext } from "src/contexts/ThreeDS"
 import { errorMessage } from "src/helpers/error"
 import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
@@ -21,7 +20,6 @@ import {
   executeMetamaskUSDCProvider,
   executePhantomUSDCProvider
 } from "src/helpers/payment/wallet-setup"
-import { sleep } from "src/helpers/sleep"
 import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
@@ -39,51 +37,9 @@ export const usePay = (
   )
   const paymentApi = new PaymentApi()
   const [accessToken] = useLocalStorage(accessTokenKey, "")
-  const [waiting, setWaiting] = useState<Date>()
-  const [count, setCount] = useState(0)
-  const [payinId, setPayinId] = useState<string>()
 
-  useEffect(() => {
-    const fetch = async () => {
-      const paymentApi = new PaymentApi()
-      await sleep("3 seconds")
-      if (waiting && payinId) {
-        if (waiting.valueOf() + ms("10 minutes") < Date.now()) {
-          try {
-            const payin = await paymentApi.getPayin({
-              getPayinRequestDto: { payinId }
-            })
-            if (payin.redirectUrl) {
-              window.location.href = payin.redirectUrl
-            } else if (
-              payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
-              payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
-            ) {
-              setWaiting(undefined)
-              toast.success("Your card payment was successful!")
-            } else if (
-              payin.payinStatus !== PayinDtoPayinStatusEnum.Pending &&
-              payin.payinStatus !== PayinDtoPayinStatusEnum.Created &&
-              payin.payinStatus !== PayinDtoPayinStatusEnum.ActionRequired
-            ) {
-              setWaiting(undefined)
-              toast.error(
-                "Payment failure: an error has occured - please contact support"
-              )
-            }
-          } catch (error: unknown) {
-            setWaiting(undefined)
-            errorMessage(error, true)
-          }
-        } else {
-          setWaiting(undefined)
-          toast.error("Payment failure: no three d verification link")
-        }
-      }
-      setCount(count + 1)
-    }
-    fetch()
-  }, [count, payinId, waiting])
+  const [payinId, setPayinId] = useState<string>()
+  const { setPayin } = useContext(ThreeDSContext)
 
   const checkProvider = async (
     provider: any,
@@ -125,7 +81,7 @@ export const usePay = (
       })
       if (response.actionRequired) {
         toast.info("Please wait as we redirect you.")
-        setWaiting(new Date())
+        setPayin(payinId ?? null)
       } else {
         toast.success(
           "We have recieved your card payment. Please wait as we process it!"
@@ -268,7 +224,6 @@ export const usePay = (
     submitting,
     loading,
     submit,
-    submitData,
-    waiting
+    submitData
   }
 }

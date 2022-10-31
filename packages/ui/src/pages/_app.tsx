@@ -27,6 +27,7 @@ import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
+import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 
@@ -96,6 +97,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const { hasRefreshed, mutate, user } = useTokenRefresh()
+  const { setPayin } = useThreeDS()
   const router = useRouter()
 
   // additional mutate on route change due to strange login issues
@@ -126,7 +128,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
-    [BuyPassModalContext.Provider, { setPass: setBuyPass }]
+    [BuyPassModalContext.Provider, { setPass: setBuyPass }],
+    [ThreeDSContext.Provider, { setPayin }]
   ]
 
   return getLayout(

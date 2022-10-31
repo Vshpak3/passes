@@ -4,7 +4,7 @@ import React, { memo } from "react"
 
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { SettingsContextProps, useSettings } from "src/contexts/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 
 const subTabs = [
   {

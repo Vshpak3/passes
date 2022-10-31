@@ -41,7 +41,7 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
 
   return (
     <Modal isOpen={true} setOpen={() => setReportData(null)}>
-      <h2 className="mb-5 font-semibold text-white">REPORT ${username}</h2>
+      <h2 className="mb-5 font-semibold text-white">REPORT @{username}</h2>
       <RadioGroup
         value={reportValue}
         onChange={setReportValue}

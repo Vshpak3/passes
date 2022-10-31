@@ -11,4 +11,5 @@ export enum BlockedReasonEnum {
   INSUFFICIENT_TIP = 'insufficient tip',
   INSUFFICIENT_SUPPLY = 'insufficient supply',
   DOES_NOT_FOLLOW = 'does not follow',
+  WAITING_FOR_REDIRECT = 'waiting for redirect',
 }
