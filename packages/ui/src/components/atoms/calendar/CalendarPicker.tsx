@@ -93,6 +93,8 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
     setAnchorEl(null)
   }
 
+  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation()
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
@@ -103,7 +105,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
 
   useEffect(() => {
     if (setOpen) {
-      setOpen(!!anchorEl)
+      setOpen(!anchorEl)
     }
   }, [anchorEl, setOpen])
 
@@ -112,7 +114,11 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
 
   return (
     <>
-      <div aria-describedby={id} onClick={handleClick}>
+      <div
+        aria-describedby={id}
+        onClick={handleClick}
+        onMouseDown={stopPropagation}
+      >
         {children}
       </div>
       <Popper
