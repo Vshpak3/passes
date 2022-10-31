@@ -46,7 +46,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
     })
   }
 
-  const { blocked, submitting, loading, submit, submitData } = usePay(
+  const { blocked, submitting, loading, submit, submitData, waiting } = usePay(
     register,
     registerData,
     onSuccess,
@@ -73,9 +73,9 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
           : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       )}
       type="submit"
-      disabled={!!blocked || submitting || isDisabled}
+      disabled={waiting || !!blocked || submitting || isDisabled}
     >
-      {loading ? "Loading" : "Buy pass"}
+      {waiting ? "Processing..." : loading ? "Loading" : "Buy pass"}
     </button>
   )
 }

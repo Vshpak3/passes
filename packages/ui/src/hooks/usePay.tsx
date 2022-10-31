@@ -37,7 +37,7 @@ export const usePay = (
   )
   const paymentApi = new PaymentApi()
   const [accessToken] = useLocalStorage(accessTokenKey, "")
-
+  const [waiting, setWaiting] = useState<boolean>()
   const [payinId, setPayinId] = useState<string>()
   const { setPayin } = useContext(ThreeDSContext)
 
@@ -82,6 +82,7 @@ export const usePay = (
       if (response.actionRequired) {
         toast.info("Please wait as we redirect you.")
         setPayin(payinId ?? null)
+        return false
       } else {
         toast.success(
           "We have recieved your card payment. Please wait as we process it!"
@@ -91,6 +92,7 @@ export const usePay = (
       await cancelPayinCallback()
       errorMessage(error, true)
     }
+    return true
   }
 
   const handlePhantomCircleUSDC = async (
@@ -116,6 +118,7 @@ export const usePay = (
       provider.off("disconnect")
     }
     toastPleaseWait()
+    return true
   }
 
   const handleMetamaskCircleUSDC = async (
@@ -134,6 +137,7 @@ export const usePay = (
       cancelPayinCallback
     )
     toastPleaseWait()
+    return true
   }
 
   const handleMetamaskCircleEth = async (
@@ -157,6 +161,7 @@ export const usePay = (
       cancelPayinCallback
     )
     toastPleaseWait()
+    return true
   }
 
   const submit = async () => {
@@ -179,27 +184,36 @@ export const usePay = (
           payinId: registerResponse.payinId
         })
       }
+      let res = true
       switch (registerResponse.payinMethod?.method) {
         case PayinMethodDtoMethodEnum.CircleCard:
-          await handleCircleCard(registerResponse, paymentApi, cancelPayin)
+          res = await handleCircleCard(
+            registerResponse,
+            paymentApi,
+            cancelPayin
+          )
           break
         case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
-          await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
+          res = await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
           checkFunding = true
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
-          await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
+          res = await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
           checkFunding = true
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
-          await handleMetamaskCircleEth(registerResponse, uncreatePayin)
+          res = await handleMetamaskCircleEth(registerResponse, uncreatePayin)
           checkFunding = true
           break
         default:
           break
       }
-      if (callback) {
-        callback()
+      if (res) {
+        if (callback) {
+          callback()
+        }
+      } else {
+        setWaiting(true)
       }
     } catch (error: unknown) {
       errorMessage(error, true)
@@ -224,6 +238,7 @@ export const usePay = (
     submitting,
     loading,
     submit,
-    submitData
+    submitData,
+    waiting
   }
 }
