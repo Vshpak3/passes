@@ -18,7 +18,7 @@ export const PassHoldingsGrid: FC = () => {
   const [passType, setPassType] = useState<PassDtoTypeEnum>(
     PassDtoTypeEnum.Subscription
   )
-  const [expired, setExpired] = useState<boolean>(false)
+  const [expired, setExpired] = useState<boolean | undefined>(false)
 
   return (
     <div className="w-full px-2">

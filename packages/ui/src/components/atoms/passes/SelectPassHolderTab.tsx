@@ -4,7 +4,7 @@ import { FC } from "react"
 
 interface PassHolderFilterOption {
   passType: PassDtoTypeEnum
-  expired: boolean
+  expired: boolean | undefined
   label: string
 }
 
@@ -16,7 +16,7 @@ const PASS_HOLDER_TAB_OPTIONS: PassHolderFilterOption[] = [
   },
   {
     passType: PassDtoTypeEnum.Lifetime,
-    expired: false,
+    expired: undefined,
     label: "Lifetime Memberships"
   },
   {
@@ -29,7 +29,7 @@ const PASS_HOLDER_TAB_OPTIONS: PassHolderFilterOption[] = [
 interface SelectPassHolderTabProps {
   setPassType: React.Dispatch<React.SetStateAction<PassDtoTypeEnum>>
   passType?: PassDtoTypeEnum
-  setExpired: React.Dispatch<React.SetStateAction<boolean>>
+  setExpired: React.Dispatch<React.SetStateAction<boolean | undefined>>
   expired?: boolean
 }
 

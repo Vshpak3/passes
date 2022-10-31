@@ -67,7 +67,6 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
   const previewIndex = watch("previewIndex")
-
   const onMediaHeaderChange = (prop: any) => {
     setActiveMediaHeader("")
     if (prop?.target?.files.length > 0) {
@@ -248,7 +247,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               type="submit"
               className="flex min-w-[151px] items-center justify-start  rounded-[50px] bg-[#C943A8] py-2 px-4 text-[16px] font-bold leading-[25px] text-white"
             >
-              Send message
+              {scheduledTime ? "Scheduled message" : "Send message"}
             </button>
           </div>
         </div>
