@@ -692,9 +692,7 @@ export class MessagesService {
           .decrement('messages', 1)
       }
       return passHoldings.reduce((sum, passHolding) => {
-        if (passHolding.messages) {
-          return sum + passHolding.messages
-        }
+        return sum + passHolding.messages ?? 0
       }, 0)
     }
   }
