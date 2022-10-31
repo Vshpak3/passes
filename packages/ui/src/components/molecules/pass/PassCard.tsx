@@ -42,7 +42,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
 
   const pinOrUnpinPass = async () => {
     if (!isPinned && pinnedPasses.length === MAX_PINNED_PASSES) {
-      toast.error(`You can only pin at most ${MAX_PINNED_PASSES} passes`)
+      toast.error(`You can't pin more than ${MAX_PINNED_PASSES} passes`)
       return
     }
     isPinned ? await unpinPass(pass) : await pinPass(pass)
@@ -50,7 +50,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   }
 
   return (
-    <div className="flex flex-col rounded-xl border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
+    <div className="flex max-w-[500px] flex-col rounded-xl border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
       <PassMedia
         passId={pass.passId}
         imageType={pass.imageType}
