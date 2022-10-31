@@ -1,4 +1,10 @@
-import { CircleCardDto, PayinMethodDto, PaymentApi } from "@passes/api-client"
+import {
+  CircleCardDto,
+  CircleCardDtoStatusEnum,
+  CircleCreateCardAndExtraRequestDto,
+  PayinMethodDto,
+  PaymentApi
+} from "@passes/api-client"
 import { useEffect, useState } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -54,6 +60,23 @@ export const usePayinMethod = () => {
     mutateManualPayinMethod(dto)
   }
 
+  async function addCard(dto: CircleCreateCardAndExtraRequestDto) {
+    const res = await api.createCircleCard({
+      circleCreateCardAndExtraRequestDto: dto
+    })
+    const newCard: CircleCardDto = {
+      id: res.id,
+      circleId: res.circleId,
+      status: res.status as CircleCardDtoStatusEnum,
+      firstDigit: dto.cardNumber.slice(0, 1),
+      fourDigits: dto.cardNumber.slice(-4),
+      expMonth: dto.createCardDto.expMonth,
+      expYear: dto.createCardDto.expYear,
+      name: dto.createCardDto.billingDetails.name
+    }
+    mutateManualCards([...(cards || []), newCard])
+  }
+
   async function deleteCard(cardId: string) {
     await api.deleteCircleCard({
       circleCardId: cardId
@@ -82,6 +105,7 @@ export const usePayinMethod = () => {
     isLoadingCards,
     getDefaultPayinMethod: mutatePayinMethod,
     setDefaultPayinMethod,
+    addCard,
     deleteCard,
     getCards: mutateCards,
     defaultCard

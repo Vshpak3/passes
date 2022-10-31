@@ -26,6 +26,7 @@ import { getExpirationYears } from "src/helpers/dates"
 import { errorMessage } from "src/helpers/error"
 import { encrypt } from "src/helpers/openpgp"
 import { sleep } from "src/helpers/sleep"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { useUser } from "src/hooks/useUser"
 
 interface AddCardProps {
@@ -44,7 +45,6 @@ interface CardForm {
 const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [publicKey, setPublicKey] = useState<CircleEncryptionKeyResponseDto>()
-  const idempotencyKey = v4()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     register,
@@ -59,6 +59,10 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
       country: COUNTRIES[0]
     }
   })
+
+  const { addCard } = usePayinMethod()
+
+  const idempotencyKey = v4()
 
   const { user, loading, accessToken } = useUser()
   const router = useRouter()
@@ -109,10 +113,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
       payload.createCardDto.keyId = keyId
       payload.createCardDto.encryptedData = encryptedMessage
 
-      const paymentApi = new PaymentApi()
-      await paymentApi.createCircleCard({
-        circleCreateCardAndExtraRequestDto: payload
-      })
+      await addCard(payload)
       toast.success("Credit card added succesfully")
       await sleep("1 second")
       if (callback) {

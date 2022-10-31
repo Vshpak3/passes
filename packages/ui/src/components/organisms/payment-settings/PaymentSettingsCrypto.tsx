@@ -1,6 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import {
+  PayinMethodDto,
   PayinMethodDtoChainEnum,
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
@@ -11,6 +12,7 @@ import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
 import { Select } from "src/components/atoms/Select"
+import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 export const buttonName = (_isEmbedded?: boolean) => {
   return _isEmbedded ? "Use" : "Set Default"
@@ -25,15 +27,15 @@ export const payinMethodDisplayNames = {
 
 interface PaymentSettingsCryptoProps {
   isEmbedded: boolean
-  defaultPayinMethod: any
-  handleSetDefaultPayInMethod: any
+  handleSetDefaultPayInMethod: (value: PayinMethodDto) => Promise<void>
 }
 
 export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
   isEmbedded,
-  defaultPayinMethod,
   handleSetDefaultPayInMethod
 }) => {
+  const { defaultPayinMethod } = usePayinMethod()
+
   const { register, getValues, setValue, watch } = useForm({
     defaultValues: {
       metamask:

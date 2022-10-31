@@ -1,21 +1,21 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
-import { PayinMethodDtoMethodEnum } from "@passes/api-client"
+import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import { FC } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { SubTabsEnum } from "src/config/settings"
-import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
+import { CreditCardEntry } from "./CreditCardEntry"
 import { buttonName } from "./PaymentSettingsCrypto"
 
 interface PaymentSettingsCreditCardProps {
   isEmbedded: boolean
-  setOpen: any
-  addOrPopStackHandler: any
-  handleSetDefaultPayInMethod: any
+  setOpen: Dispatch<SetStateAction<boolean>>
+  addOrPopStackHandler: (tab: SubTabsEnum) => void
+  handleSetDefaultPayInMethod: (value: PayinMethodDto) => Promise<void>
 }
 
 export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
@@ -53,31 +53,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
             key={item.id}
             className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
           >
-            <div className="flex-1">
-              <span className="text-[15px] font-[700]">{item.name}</span>
-              <div className="mt-4 flex flex-row">
-                {displayCardIcon(item.firstDigit, 35)}
-                <span className="mx-6 text-[14px] font-[500]">
-                  **** **** **** {item.fourDigits}
-                </span>
-                <div className="mr-1 flex flex-row justify-between">
-                  <div className="flex items-center">
-                    <div className="flex flex-col">
-                      <span className="-mb-2 w-8 text-[10px] font-[500] opacity-70">
-                        VALID
-                      </span>
-                      <span className="w-8 text-[10px] font-[500] opacity-70">
-                        THRU
-                      </span>
-                    </div>
-                    <span className="ml-2 text-[14px] font-[500]">
-                      {item.expMonth}/{item.expYear.toString().slice(-2)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <CreditCardEntry card={item} showName={true} />
             <div className="flex flex-row gap-2 md:gap-4">
               <div>
                 {item.id === defaultPayinMethod?.cardId ? (
