@@ -1,24 +1,17 @@
 import { PassDtoTypeEnum } from "@passes/api-client"
-import classNames from "classnames"
-import _ from "lodash"
 import ChevronDown from "public/icons/chevron-down.svg"
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { Dispatch, FC, SetStateAction, useRef, useState } from "react"
 
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
+export type PassType = PassDtoTypeEnum | undefined
+
 interface SelectPassFilterProps {
-  selectedPassType?: PassDtoTypeEnum | undefined
-  onSelectedPassType: Dispatch<SetStateAction<PassDtoTypeEnum | undefined>>
+  selectedPassType?: PassType
+  onSelectedPassType: Dispatch<SetStateAction<PassType>>
 }
 
-const PASS_DROPDOWN_OPTIONS = [
+const PASS_DROPDOWN_OPTIONS: { value: PassType; label: string }[] = [
   {
     value: undefined,
     label: "All Passes"
@@ -40,14 +33,12 @@ const PASS_DROPDOWN_OPTIONS = [
 export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   onSelectedPassType
 }) => {
-  const [selectedPassType, setSelectedPassType] = useState<
-    PassDtoTypeEnum | undefined
-  >()
+  const [selectedPassType, setSelectedPassType] = useState<PassType>()
 
   const [showOptions, setShowOptions] = useState(false)
   const menuEl = useRef(null)
 
-  const handleOnChange = (_selectedPassType: PassDtoTypeEnum | undefined) => {
+  const handleOnChange = (_selectedPassType: PassType) => {
     setSelectedPassType(_selectedPassType)
     onSelectedPassType(_selectedPassType)
   }

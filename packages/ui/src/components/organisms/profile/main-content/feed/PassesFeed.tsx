@@ -2,8 +2,7 @@ import {
   GetPassesRequestDto,
   GetPassesResponseDto,
   PassApi,
-  PassDto,
-  PassDtoTypeEnum
+  PassDto
 } from "@passes/api-client"
 import { FC, useState } from "react"
 
@@ -11,7 +10,10 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { SelectPassFilter } from "src/components/atoms/passes/SelectPassFilter"
+import {
+  PassType,
+  SelectPassFilter
+} from "src/components/atoms/passes/SelectPassFilter"
 import { PassCard } from "src/components/molecules/pass/PassCard"
 
 interface PassesFeedProps {
@@ -19,9 +21,7 @@ interface PassesFeedProps {
 }
 
 export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
-  const [selectedPassType, setSelectedPassType] = useState<
-    PassDtoTypeEnum | undefined
-  >()
+  const [selectedPassType, setSelectedPassType] = useState<PassType>()
 
   return (
     <>
