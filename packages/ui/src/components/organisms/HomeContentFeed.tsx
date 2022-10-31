@@ -52,7 +52,7 @@ export const HomeContentFeed: FC = () => {
   return (
     <>
       <Header />
-      <div className="w-full bg-black">
+      <div className="w-full">
         <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] md:pt-20 lg:w-[900px] lg:w-[1000px] lg:px-0">
           <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
             <InfiniteScrollPagination<PostDto, GetFeedResponseDto>

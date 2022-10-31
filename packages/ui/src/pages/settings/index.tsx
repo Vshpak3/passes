@@ -173,7 +173,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
       <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
         <div
           className={cn(
-            "flex-1 flex-shrink-0 pl-[18px] pr-[25px] xs:px-8 sm:px-14 md:block md:min-w-[330px] md:pl-11 md:pr-0",
+            "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
             { hidden: showSettingsTab }
           )}
         >

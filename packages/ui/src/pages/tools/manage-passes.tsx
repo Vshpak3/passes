@@ -6,7 +6,7 @@ import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 const ManagePasses = () => {
   return (
     <div className="text-white">
-      <div className="absolute top-[160px] flex w-[-webkit-fill-available] items-center justify-between px-7">
+      <div className="flex w-[-webkit-fill-available] items-center justify-between px-7">
         <h1 className="text-xl font-bold">Manage Membership</h1>
         <div className="relative mr-10 flex items-center justify-end">
           <Link href={"/tools/manage-passes/create"}>

@@ -75,7 +75,7 @@ export const RequestPayouts = () => {
             Your earnings balance must be at least $50.00 to request a payout.
             Payouts are at most once every 5 days.
           </div>
-          <div className="rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5">
+          <div className="rounded-[15px] border border-passes-dark-200 bg-passes-black p-5">
             <div className="mb-5 text-[16px] font-[700] opacity-[0.8]">
               Request payout manually OR set a schedule for auto payouts.
             </div>
@@ -101,7 +101,7 @@ export const RequestPayouts = () => {
                   <ChevronDown />
                 </div>
                 {showOptions && (
-                  <ul className="absolute z-10 w-full translate-y-1.5 space-y-2.5 rounded-md border border-passes-dark-200 bg-passes-dark-700 py-2.5 px-3">
+                  <ul className="absolute z-10 w-full translate-y-1.5 space-y-2.5 rounded-md border border-passes-dark-200 bg-passes-black py-2.5 px-3">
                     {PAYOUT_FREQUENCY_OPTIONS.map(({ value, label }, i) => (
                       <li
                         key={value}

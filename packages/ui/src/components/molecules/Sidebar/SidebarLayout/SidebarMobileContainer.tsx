@@ -36,8 +36,8 @@ export const SidebarMobileContainer: FC<
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="relative flex max-h-[100vh] w-full max-w-[256px] flex-1 flex-col bg-[#120C14]">
-              <div className="h-0 flex-1 overflow-y-auto px-[15px] py-[20px]">
+            <Dialog.Panel className="relative flex max-h-[100vh] w-full max-w-[256px] flex-1 flex-col bg-passes-black">
+              <div className="h-0 flex-1 overflow-y-auto">
                 <SidebarMobileHeader toggleSidebar={toggleSidebar} />
                 <div className="">
                   <nav className="flex flex-col items-start gap-3">
