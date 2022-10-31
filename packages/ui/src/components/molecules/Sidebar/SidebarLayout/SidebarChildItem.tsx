@@ -19,9 +19,9 @@ export const SidebarChildItem: FC<SidebarChildItemProps> = ({
         <span
           className={classNames(
             isActive
-              ? "group ml-[-25px] cursor-pointer items-center rounded-[56px] bg-[#FFFEFF]/10 px-[25px] font-bold"
+              ? "group ml-[-25px] cursor-pointer items-center rounded-[56px] pl-[25px] font-bold text-passes-primary-color"
               : "text-bg-[#FFFEFF]/10 font-normal hover:text-white",
-            "group flex cursor-pointer items-center py-[10px] text-sm tracking-[0.003em] text-white md:text-base"
+            "group flex cursor-pointer items-center py-[10px] text-sm tracking-[0.003em] md:text-base"
           )}
         >
           {subItem.name}

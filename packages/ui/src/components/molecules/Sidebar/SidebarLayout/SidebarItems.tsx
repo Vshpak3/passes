@@ -28,7 +28,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({ isActive, item }) => {
         <a>
           <span
             className={classNames(
-              isActive && "text-passes-primary-color",
+              isActive && "font-bold text-passes-primary-color",
               "flex flex-row"
             )}
           >
