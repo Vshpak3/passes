@@ -6,7 +6,7 @@ import {
   PassesPinkButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { compactNumberFormatter, formatText } from "src/helpers/formatters"
+import { formatText } from "src/helpers/formatters"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useFollow } from "src/hooks/profile/useFollow"
 import { useProfile } from "src/hooks/profile/useProfile"
