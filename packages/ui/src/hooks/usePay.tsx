@@ -38,7 +38,6 @@ export const usePay = (
   const paymentApi = new PaymentApi()
   const [accessToken] = useLocalStorage(accessTokenKey, "")
   const [waiting, setWaiting] = useState<boolean>()
-  const [payinId, setPayinId] = useState<string>()
   const { setPayin } = useContext(ThreeDSContext)
 
   const checkProvider = async (
@@ -81,7 +80,7 @@ export const usePay = (
       })
       if (response.actionRequired) {
         toast.info("Please wait as we redirect you.")
-        setPayin(payinId ?? null)
+        setPayin(registerResponse.payinId ?? null)
         return false
       } else {
         toast.success(
@@ -173,7 +172,6 @@ export const usePay = (
     let checkFunding = false
     try {
       const registerResponse = await registerPaymentFunc()
-      setPayinId(registerResponse.payinId)
       const cancelPayin = async () => {
         await paymentApi.cancelPayin({
           payinId: registerResponse.payinId
