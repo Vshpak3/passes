@@ -9,6 +9,7 @@ import { useProfile } from "src/hooks/profile/useProfile"
 
 const ProfileUnmemo: FC = () => {
   const { profile, loadingProfile, hasInitialFetch } = useProfile()
+
   return (
     <>
       {!profile && loadingProfile ? (
@@ -24,9 +25,6 @@ const ProfileUnmemo: FC = () => {
               tab={window.location.hash.slice(1) as ProfileNavigationOptions}
             />
           )}
-          {/* <div className="col-span-2 hidden w-full md:flex md:space-y-6 lg:pt-7">
-          {!!profile.isCreator && <PassTypes />}
-        </div> */}
         </div>
       ) : (
         hasInitialFetch && <NoProfile />

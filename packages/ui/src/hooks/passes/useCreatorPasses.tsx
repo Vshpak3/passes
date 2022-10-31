@@ -1,39 +1,61 @@
-import { PassApi } from "@passes/api-client"
+import { PassApi, PassDto } from "@passes/api-client"
 import { useEffect } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
-import { useUser } from "src/hooks/useUser"
+const CACHE_KEY_CREATOR_PINNED_PASSES = "/pass/creator-passes/pinned"
 
-const CACHE_KEY_CREATOR_PASSES = "/pass/creator-passes"
-
-// Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useCreatorPasses = () => {
-  const { user } = useUser()
-
+export const useCreatorPinnedPasses = (creatorId: string) => {
   const api = new PassApi()
 
-  const {
-    data: passes = [],
-    isValidating: isLoadingPasses,
-    mutate
-  } = useSWR(user ? CACHE_KEY_CREATOR_PASSES : null, async () => {
-    return (
-      await api.getCreatorPasses({
-        getPassesRequestDto: { creatorId: user?.userId }
-      })
-    ).data
-  })
+  const { data: pinnedPasses, mutate: mutatePinnedPasses } = useSWR(
+    [CACHE_KEY_CREATOR_PINNED_PASSES, creatorId],
+    async () => {
+      return (
+        await api.getCreatorPasses({
+          getPassesRequestDto: { creatorId, pinned: true }
+        })
+      ).data
+    }
+  )
+
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: PassDto[]) =>
+    _mutateManual([CACHE_KEY_CREATOR_PINNED_PASSES, creatorId], update, {
+      populateCache: (update: PassDto[]) => {
+        return update
+      },
+      revalidate: false
+    })
+
+  const pinPass = async (pass: PassDto) => {
+    await api.pinPass({ passId: pass.passId })
+    pass.pinnedAt = new Date()
+    const _pinnedPasses = pinnedPasses || []
+    _pinnedPasses.push(pass)
+    _pinnedPasses.sort(
+      (a, b) => (a.pinnedAt?.getTime() || 0) - (b.pinnedAt?.getTime() || 0)
+    )
+    mutateManual(_pinnedPasses)
+  }
+
+  const unpinPass = async (pass: PassDto) => {
+    await api.unpinPass({ passId: pass.passId })
+    pass.pinnedAt = null
+    if (pinnedPasses) {
+      mutateManual(pinnedPasses.filter((p) => p.passId !== pass.passId))
+    }
+  }
 
   useEffect(() => {
-    if (user && passes.length === 0) {
-      mutate()
+    if (!pinnedPasses) {
+      mutatePinnedPasses()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.userId])
+  }, [])
 
   return {
-    passes,
-    isLoadingPasses
+    pinnedPasses: pinnedPasses || [],
+    pinPass,
+    unpinPass
   }
 }
