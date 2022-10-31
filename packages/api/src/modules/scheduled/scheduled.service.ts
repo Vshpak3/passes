@@ -3,9 +3,9 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common'
-import { uuid4 } from '@sentry/utils'
 import { subMinutes } from 'date-fns'
 import ms from 'ms'
+import { v4 } from 'uuid'
 
 import {
   Database,
@@ -132,7 +132,7 @@ export class ScheduledService {
       if (startTime + EXECUTION_TIME_BUFFER < Date.now()) {
         break
       }
-      const processor = uuid4()
+      const processor = v4()
       const updated = await this.dbWriter<ScheduledEventEntity>(
         ScheduledEventEntity.table,
       )

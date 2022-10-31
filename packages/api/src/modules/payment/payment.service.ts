@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ModuleRef } from '@nestjs/core'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -186,6 +187,7 @@ export class PaymentService {
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
     private readonly ethService: EthService,
+    @InjectSentry() private readonly sentry: SentryService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -778,6 +780,7 @@ export class PaymentService {
           processed: false,
         })
         .where({ id })
+      this.sentry.instance().captureException(err)
       this.logger.error(`Error processing notification ${id}`, err)
     }
   }
@@ -2205,7 +2208,7 @@ export class PaymentService {
 
   async subscribe(request: SubscribeRequestDto): Promise<SubscribeResponseDto> {
     // validating request information
-    if (request.amount <= 0 || (request.amount * 100) % 1 !== 0) {
+    if (request.amount <= 0) {
       throw new InvalidPayinRequestError(
         'invalid amount value ' + request.amount,
       )
