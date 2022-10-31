@@ -1,6 +1,7 @@
 import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
+import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
@@ -19,6 +20,15 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
 }) => {
   const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
+  const {
+    senderId,
+    contentProcessed,
+    paidAt,
+    paying,
+    price,
+    previewIndex,
+    sentAt
+  } = message
 
   const [openBuyMessageModal, setOpenBuyMessageModal] = useState(false)
   return (
@@ -30,7 +40,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     >
       {!isOwnMessage && (
         <div className="flex flex-shrink-0 items-end">
-          <ProfileThumbnail userId={message.senderId} />
+          <ProfileThumbnail userId={senderId} />
         </div>
       )}
 
@@ -51,11 +61,11 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             <div className="max-w-[403px] pt-2">
               <MediaContent
                 contents={messageContent}
-                isProcessing={!message.contentProcessed}
-                paying={message.paying}
-                paid={!!message.paidAt || !!isOwnMessage}
-                previewIndex={message.previewIndex}
-                price={message.price}
+                isProcessing={!contentProcessed}
+                paying={paying}
+                paid={!!paidAt || !!isOwnMessage}
+                previewIndex={previewIndex}
+                price={price}
                 openBuyModal={() => setOpenBuyMessageModal(true)}
               />
               {openBuyMessageModal && (
@@ -70,12 +80,12 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           )}
           <span className="break-all">{formatText(message?.text)}</span>
 
-          {!message?.pending && message.sentAt && (
-            <>
-              {isAfter(message.sentAt, subDays(new Date(), 1)) ? (
+          {!message?.pending && sentAt && (
+            <div className="flex items-center">
+              {isAfter(sentAt, subDays(new Date(), 1)) ? (
                 <TimeAgo
                   className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
-                  date={message?.sentAt ? message.sentAt : ""}
+                  date={message?.sentAt ? sentAt : ""}
                   minPeriod={30}
                 />
               ) : (
@@ -83,7 +93,18 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   {message?.sentAt?.toLocaleDateString()}
                 </span>
               )}
-            </>
+              {!!senderId && !!price && (
+                <div className="ml-[20px] flex items-center text-[11px]">
+                  <DollarIcon />
+                  <span className="ml-[5px] opacity-50">{price}</span>
+                  {price && !!paidAt ? (
+                    <span className="opacity-50">, paid</span>
+                  ) : (
+                    <span className="opacity-50">, not paid yet</span>
+                  )}
+                </div>
+              )}
+            </div>
           )}
         </div>
         {!!message?.pending && (
