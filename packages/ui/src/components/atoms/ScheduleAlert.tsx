@@ -1,6 +1,7 @@
 import { format } from "date-fns"
-import { XCircle } from "lucide-react"
 import { FC } from "react"
+
+import { Cross } from "src/icons/CrossIcon"
 
 interface ScheduleAlertProps {
   scheduledPostTime: Date | null
@@ -25,7 +26,7 @@ export const ScheduleAlert: FC<ScheduleAlertProps> = ({
       </div>
       <div style={{ cursor: "pointer" }}>
         <div onClick={onRemoveScheduledPostTime}>
-          <XCircle />
+          <Cross />
         </div>
       </div>
     </div>

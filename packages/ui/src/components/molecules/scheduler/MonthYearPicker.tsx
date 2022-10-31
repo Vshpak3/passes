@@ -1,6 +1,8 @@
 import classNames from "classnames"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import React, { FC, useMemo, useState } from "react"
+
+import { ChevronLeft } from "src/icons/ChevronLeft"
+import { ChevronRight } from "src/icons/ChevronRight"
 
 interface MonthYearPickerProps {
   selectedYear: number
@@ -80,7 +82,8 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
             onClick={handleOnClickLeftArrow}
           >
             <ChevronLeft
-              size={32}
+              width="24"
+              height="24"
               className={classNames({
                 "opacity-[0.3]": currentYear === minYear
               })}
@@ -91,7 +94,8 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
             onClick={handleOnClickRightArrow}
           >
             <ChevronRight
-              size={32}
+              width="24"
+              height="24"
               className={classNames({
                 "opacity-[0.3]": currentYear === maxYear
               })}

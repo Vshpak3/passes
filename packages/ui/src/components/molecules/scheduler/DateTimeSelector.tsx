@@ -1,12 +1,13 @@
 import classNames from "classnames"
 import { addMonths, format, startOfMonth } from "date-fns"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 import { FC, useContext } from "react"
 
 import {
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
 } from "src/config/scheduler"
+import { ChevronLeft } from "src/icons/ChevronLeft"
+import { ChevronRight } from "src/icons/ChevronRight"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
 interface DateTimeSelectedProps {
@@ -49,8 +50,9 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
         onClick={previousMonth}
       >
         <ChevronLeft
-          size={32}
           className={classNames({ "opacity-[0.5]": disablePast })}
+          width="24"
+          height="24"
         />
       </button>
       <button type="button" onClick={showDateYearModal}>
@@ -65,7 +67,8 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
         onClick={nextMonth}
       >
         <ChevronRight
-          size={32}
+          width="24"
+          height="24"
           className={classNames({ "opacity-[0.5]": disableFuture })}
         />
       </button>

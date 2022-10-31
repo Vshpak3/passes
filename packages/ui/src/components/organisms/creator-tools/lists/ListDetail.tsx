@@ -10,7 +10,6 @@ import {
   ListMemberDto
 } from "@passes/api-client"
 import { debounce } from "lodash"
-import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { FC, useCallback, useEffect, useState } from "react"
@@ -24,6 +23,7 @@ import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowe
 import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
 import { errorMessage } from "src/helpers/error"
 import { AddIcon } from "src/icons/AddIcon"
+import { ArrowLeft } from "src/icons/ArrowLeft"
 import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
 import { ListMember } from "./ListMember"
 import { SortDropdown, SortOption } from "./SortDropdown"
@@ -145,7 +145,9 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   return (
     <div className="text-white">
       <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
-        <ArrowLeft className="cursor-pointer" onClick={() => router.back()} />
+        <div onClick={() => router.back()}>
+          <ArrowLeft className="cursor-pointer" width={"16"} height={"16"} />
+        </div>
         <h1 className="text-xl font-bold">{listName}</h1>
       </div>
       <ul className="px-7">

@@ -1,7 +1,7 @@
-import { XCircle } from "lucide-react"
 import { FC } from "react"
 
 import { formatCurrency } from "src/helpers/formatters"
+import { Cross } from "src/icons/CrossIcon"
 
 interface MessagePriceAlertProps {
   price: number
@@ -24,7 +24,7 @@ const MessagePriceAlert: FC<MessagePriceAlertProps> = ({
       <div>Message Price {formatCurrency(price)}</div>
       <div style={{ cursor: "pointer" }}>
         <div onClick={onRemovePrice}>
-          <XCircle />
+          <Cross />
         </div>
       </div>
     </div>
