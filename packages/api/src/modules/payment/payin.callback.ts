@@ -171,6 +171,8 @@ async function createNftPassSuccessCallback(
       target: CryptoJS.SHA256(`nft-pass-holder-${newPassHolder.id}`).toString(
         CryptoJS.enc.Hex,
       ),
+      ipAddress: payin.ip_address,
+      sessionId: payin.session_id,
     })
   }
   return {

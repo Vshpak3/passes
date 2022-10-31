@@ -342,6 +342,12 @@ export class PaymentService {
           session_id: sessionId,
         })
     }
+    await this.dbWriter<PayinEntity>(PayinEntity.table)
+      .where({ id: payin.payinId })
+      .update({
+        ip_address: ipAddress,
+        session_id: sessionId,
+      })
     const user = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: payin.userId })
       .select('email')
@@ -2246,6 +2252,8 @@ export class PaymentService {
         amount: request.amount,
         pass_holder_id: request.passHolderId,
         target: request.target,
+        session_id: request.sessionId,
+        ip_address: request.ipAddress,
       } as SubscriptionEntity
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table).insert(
         data,
@@ -2260,8 +2268,14 @@ export class PaymentService {
         payinMethod,
       )
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
-        .where({ id: subscription.id })
-        .update({ amount: request.amount })
+        .where({
+          id: subscription.id,
+        })
+        .update({
+          amount: request.amount,
+          session_id: request.sessionId,
+          ip_address: request.ipAddress,
+        })
       return { subscriptionId: subscription.id as string, payinMethod }
     } else {
       throw new InvalidSubscriptionError('subscription already exists')

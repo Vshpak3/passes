@@ -23,6 +23,7 @@ import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
+import { MINIMUM_MESSAGE_TIP_AMOUNT } from '../creator-settings/creator-settings.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
@@ -559,11 +560,12 @@ export class MessagesService {
     sendMessageDto: SendMessageRequestDto,
     otherUserId?: string,
   ): Promise<PayinDataDto> {
+    const { channelId, tipAmount } = sendMessageDto
     if (!otherUserId) {
       const channelMember = await this.dbReader<ChannelMemberEntity>(
         ChannelMemberEntity.table,
       )
-        .where({ user_id: userId, channel_id: sendMessageDto.channelId })
+        .where({ user_id: userId, channel_id: channelId })
         .select(['unlimited_messages', 'other_user_id'])
         .first()
       otherUserId = channelMember ? channelMember.other_user_id : ''
@@ -572,16 +574,16 @@ export class MessagesService {
     let blocked = await this.checkMessageBlocked(
       userId,
       otherUserId as string,
-      sendMessageDto.tipAmount,
+      tipAmount,
     )
     const count = await this.dbReader<MessageEntity>(MessageEntity.table)
       .where({
         sender_id: userId,
-        channel_id: sendMessageDto.channelId,
+        channel_id: channelId,
         pending: true,
       })
       .count()
-    if (sendMessageDto.tipAmount > 0) {
+    if (tipAmount > 0) {
       if (count[0]['count(*)'] >= MAX_PENDING_MESSAGES) {
         blocked = BlockedReasonEnum.TOO_MANY
       } else if (await this.payService.checkPayinBlocked(userId)) {
@@ -589,11 +591,11 @@ export class MessagesService {
       }
     }
     const method = await this.payService.getDefaultPayinMethod(userId)
-    if (
-      sendMessageDto.tipAmount !== 0 &&
-      method.method === PayinMethodEnum.NONE
-    ) {
+    if (tipAmount !== 0 && method.method === PayinMethodEnum.NONE) {
       blocked = BlockedReasonEnum.NO_PAYIN_METHOD
+    }
+    if (tipAmount > 0 && tipAmount < MINIMUM_MESSAGE_TIP_AMOUNT) {
+      blocked = BlockedReasonEnum.INSUFFICIENT_TIP
     }
     return { blocked, amount: sendMessageDto.tipAmount }
   }
@@ -605,7 +607,7 @@ export class MessagesService {
       .where({ user_id: creatorId })
       .select('minimum_tip_amount')
       .first()
-    return creatorSettings?.minimum_tip_amount
+    return creatorSettings?.minimum_tip_amount ?? MINIMUM_MESSAGE_TIP_AMOUNT
   }
 
   async getChannelMessageInfo(userId: string, channelId: string) {

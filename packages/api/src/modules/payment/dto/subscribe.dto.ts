@@ -22,6 +22,12 @@ export class SubscribeRequestDto {
   @DtoProperty({ custom_type: PayinMethodDto, optional: true })
   payinMethod?: PayinMethodDto
 
+  @DtoProperty({ type: 'string', optional: true, nullable: true })
+  ipAddress?: string | null
+
+  @DtoProperty({ type: 'string', optional: true, nullable: true })
+  sessionId?: string | null
+
   @DtoProperty({ type: 'uuid' })
   passHolderId: string
 

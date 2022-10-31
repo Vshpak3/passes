@@ -16,6 +16,7 @@ import {
 import { PayinCallbackInput, PayinCallbackOutput } from '../callback.types'
 import {
   ETH_AMOUNT_TYPE,
+  IP_ADDRESS_LENGTH,
   SHA256_LENGTH,
   TRANSACTION_HASH_LENGTH,
   USD_AMOUNT_TYPE,
@@ -71,6 +72,12 @@ export class PayinEntity extends BaseEntity {
 
   @Property({ length: EXTERNAL_URL_LENGTH })
   redirect_url: string | null
+
+  @Property({ length: IP_ADDRESS_LENGTH })
+  ip_address: string | null
+
+  @Property({ length: SHA256_LENGTH })
+  session_id: string | null
 
   // payin target
 
