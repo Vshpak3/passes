@@ -57,6 +57,7 @@ const MessageStatistics = () => {
         KeyedComponent={({ arg }: ComponentArg<PaidMessageDto>) => {
           return <PaidMessageStatistic paidMessage={arg} />
         }}
+        options={{ revalidateOnMount: true }}
       />
     </div>
   )

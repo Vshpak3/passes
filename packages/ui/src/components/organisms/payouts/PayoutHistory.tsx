@@ -149,6 +149,7 @@ export const PayoutHistory = () => {
           KeyedComponent={({ arg }: ComponentArg<PayoutDto>) => {
             return <Payout payout={arg} />
           }}
+          options={{ revalidateOnMount: true }}
         />
       </div>
     </div>

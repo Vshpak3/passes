@@ -44,6 +44,14 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   hasInitialElement?: boolean
 }
 
+const defaultOptions: SWRInfiniteConfiguration = {
+  revalidateOnMount: true,
+  revalidateAll: false,
+  revalidateFirstPage: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false
+}
+
 // Note: there is no use of mutate as this could mess with the pagination
 // Updates to subcomponents can be done within subcompoennts
 // Deletes will hide the component
@@ -63,15 +71,10 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   style = {},
   scrollableTarget,
   inverse = false,
-  options = {
-    revalidateOnMount: true,
-    revalidateAll: false,
-    revalidateFirstPage: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  },
+  options = defaultOptions,
   children
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
+  options = { ...defaultOptions, ...options }
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }

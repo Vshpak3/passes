@@ -40,6 +40,7 @@ const BlockedRestrictedAccounts = () => {
             return <BlockedUser blockedUser={arg} />
           }}
           className="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 lg:grid-cols-3"
+          options={{ revalidateOnMount: true }}
         />
       </div>
     </Tab>

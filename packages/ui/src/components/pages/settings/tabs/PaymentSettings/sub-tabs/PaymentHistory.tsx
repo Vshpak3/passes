@@ -157,6 +157,7 @@ const PaymentHistory = () => {
             KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
               return <Payin payin={arg} />
             }}
+            options={{ revalidateOnMount: true }}
           />
         </div>
       </div>

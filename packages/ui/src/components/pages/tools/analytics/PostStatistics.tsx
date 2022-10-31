@@ -46,6 +46,7 @@ const PostStatistics = () => {
         KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
           return <PostStatistic post={arg} />
         }}
+        options={{ revalidateOnMount: true }}
       />
     </div>
   )

@@ -48,6 +48,7 @@ export const PassHoldingsGrid: FC = () => {
         KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
           return <PassHoldingTile passHolder={arg} />
         }}
+        options={{ revalidateOnMount: true }}
       />
     </div>
   )
