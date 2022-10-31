@@ -549,7 +549,7 @@ export class MessagesService {
         price,
         paidMessageId,
       )
-      await this.checkFreeMessages(userId, sendMessageDto.channelId, true)
+      await this.checkFreeMessages(userId, channelMember.other_user_id, true)
       return new RegisterPayinResponseDto()
     }
   }
@@ -572,7 +572,6 @@ export class MessagesService {
     let blocked = await this.checkMessageBlocked(
       userId,
       otherUserId as string,
-      sendMessageDto.channelId,
       sendMessageDto.tipAmount,
     )
     const count = await this.dbReader<MessageEntity>(MessageEntity.table)
@@ -703,7 +702,6 @@ export class MessagesService {
   async checkMessageBlocked(
     userId: string,
     otherUserId: string,
-    channelId: string,
     tipAmount: number,
   ): Promise<BlockedReasonEnum | undefined> {
     const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
@@ -729,7 +727,7 @@ export class MessagesService {
     }
 
     const minimum = await this.getMinimumTip(otherUserId)
-    const freeMessages = await this.checkFreeMessages(userId, channelId)
+    const freeMessages = await this.checkFreeMessages(userId, otherUserId)
     if (
       !minimum ||
       tipAmount >= minimum ||
