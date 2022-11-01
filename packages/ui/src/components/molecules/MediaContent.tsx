@@ -14,9 +14,9 @@ export const MediaContent: FC<MediaContentProps> = ({
   ...res
 }) => {
   return (
-    <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
+    <div className="relative flex w-full items-center justify-center bg-transparent">
       {isProcessing ? (
-        <div className="relative mb-[30px] rounded-md border border-passes-purple-100 px-[25px] py-[15px]">
+        <div className="relative rounded-md border border-passes-purple-100 px-[25px] py-[15px]">
           This content is being processed.
         </div>
       ) : (
