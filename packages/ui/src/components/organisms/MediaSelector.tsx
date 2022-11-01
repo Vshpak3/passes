@@ -63,9 +63,9 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                       type="button"
                       className={classNames(
                         activeMediaHeader === name
-                          ? " bg-[rgba(191,122,240,0.1)] "
-                          : "hover:bg-[rgba(191,122,240,0.1)]",
-                        "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                          ? " bg-[#FF51A8]/10 "
+                          : "hover:bg-[#FF51A8]/10",
+                        "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
                       )}
                       // onClick={() => setActiveMediaHeader(name)}
                     >
@@ -96,9 +96,9 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                   multiple={multiple}
                   className={classNames(
                     activeMediaHeader === name
-                      ? " bg-[rgba(191,122,240,0.1)] "
-                      : "hover:bg-[rgba(191,122,240,0.1)]",
-                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-passes-secondary-color"
+                      ? " bg-[#FF51A8]/10 "
+                      : "hover:bg-[#FF51A8]/10",
+                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
                   )}
                 />
               )

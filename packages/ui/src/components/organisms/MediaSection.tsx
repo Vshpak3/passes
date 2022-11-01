@@ -22,7 +22,7 @@ import { FormInput } from "src/components/atoms/FormInput"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
-import { preventNegative } from "src/helpers/keyboard"
+// import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile } from "src/hooks/useMedia"
 import { MediaSectionReorder } from "./MediaSectionReorder"
 // import { MediaSectionReorderPriced } from "./MediaSectionReorderPriced"
@@ -236,7 +236,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
               </Swiper>
             </div>
           )}
-          <div>
+          {/* <div>
             <div className="relative mt-6 flex max-w-[140px] justify-between rounded-md shadow-sm">
               <FormInput
                 register={register}
@@ -250,7 +250,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
               />
             </div>
-          </div>
+          </div> */}
+          {/* TODO: this wont be needed after logic of drag and drop is included in messages and mass messages which is next pr   */}
         </div>
       )}
     </>

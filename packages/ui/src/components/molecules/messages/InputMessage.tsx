@@ -192,12 +192,12 @@ export const InputMessage: FC<InputMessageProps> = ({
   const options = {}
   return (
     <form
-      className="grid w-full grid-cols-3 border-t border-[#fff]/10"
+      className="flex w-full border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-2">
+      <div className="flex w-full flex-col px-[30px]">
         {isCreator && (
-          <div className="flex min-h-[45px] items-center justify-start gap-4 px-3 pt-2">
+          <div className="flex min-h-[45px] items-center justify-start gap-4 pt-2">
             <FormInput
               label="Pay to View"
               type="toggle"
@@ -232,10 +232,10 @@ export const InputMessage: FC<InputMessageProps> = ({
           </div>
         )}
 
-        <div className={classNames(isCreator ? "py-1" : "py-4", "px-3")}>
+        <div className="pt-3">
           <textarea
             placeholder="Send a message.."
-            rows={isCreator ? 3 : 4}
+            rows={4}
             cols={40}
             {...register("message", { required: true })}
             className={classNames(
@@ -250,7 +250,9 @@ export const InputMessage: FC<InputMessageProps> = ({
               clearErrors()
             }}
           />
-          {files.length > 0 && (
+        </div>
+        {files.length > 0 && (
+          <div className="relative  max-w-[390px] sm:max-w-[590px]">
             <MediaSection
               register={register}
               errors={errors}
@@ -258,79 +260,85 @@ export const InputMessage: FC<InputMessageProps> = ({
               setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
-              messages={true}
+              // messages={true}
             />
-          )}
+          </div>
+        )}
 
+        <div className="-ml-4 flex w-full items-center justify-between py-3">
           {isCreator && (
-            <div className="flex w-full items-center justify-between">
-              <MediaSelector
-                activeMediaHeader={activeMediaHeader}
-                register={register}
-                errors={errors}
-                onChange={onMediaHeaderChange}
-                selectors={[PhotoSelector, VideoSelector]}
-              >
-                <VaultSelector selectVaultContent={addContent} />
-              </MediaSelector>
-            </div>
+            <MediaSelector
+              activeMediaHeader={activeMediaHeader}
+              register={register}
+              errors={errors}
+              onChange={onMediaHeaderChange}
+              selectors={[PhotoSelector, VideoSelector]}
+            >
+              <VaultSelector selectVaultContent={addContent} />
+            </MediaSelector>
           )}
-        </div>
-      </div>
-      <div className="order-1 col-span-3 h-full border-l border-gray-800 sm:order-2 sm:col-span-1">
-        <div className="flex h-full flex-col justify-between sm:items-center sm:justify-center">
-          <div className="flex h-full flex-row items-start justify-between sm:flex-col sm:items-center sm:justify-center sm:py-4">
-            <input
-              type="number"
-              placeholder="0.00"
-              onChange={handleChangeTip}
+          <div className="flex w-full justify-end gap-[10px]">
+            {/* TODO: Patrick add here condition if otherUserId is not creator line 281-310 */}
+            <div
               className={classNames(
                 errors.message && "border-b-red",
-                "sm:w-ful w-full items-center justify-center border-none bg-transparent p-0 text-center text-[42px] font-bold leading-[53px] text-passes-secondary-color placeholder-purple-300 outline-0 ring-0 focus:outline-0 focus:ring-0"
+                "flex h-[45px] w-full min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
               )}
-              autoComplete="off"
-              min="0"
-              step=".01"
-              onKeyPress={preventNegative}
-            />
-            {blocked === PayinDataDtoBlockedEnum.InsufficientTip && (
-              <span className="flex h-full w-full items-center justify-center text-[14px] leading-[24px] text-[#ffff]/50">
-                minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"} tip
-              </span>
-            )}
-          </div>
-          <div
-            className="messaging-input__button w-full !p-0"
-            role="button"
-            aria-roledescription="button"
-          >
-            <button
-              type="button"
-              disabled={!isNaN(tip) && !!blocked}
-              className={classNames(
-                blocked ? " cursor-not-allowed opacity-50" : "",
-                "w-full cursor-pointer items-center justify-center bg-passes-secondary-color py-4 text-center text-[16px] leading-[25px] text-white"
-              )}
-              onClick={submit}
             >
-              {submitting
-                ? "Sending..."
-                : blocked === PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
-                ? "Waiting on Payment"
-                : blocked === PayinDataDtoBlockedEnum.DoesNotFollow
-                ? "Not following"
-                : blocked === PayinDataDtoBlockedEnum.InsufficientTip
-                ? "Insufficient tip"
-                : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
-                ? "No Payment Method (go to settings)"
-                : ` Send Message`}
-            </button>
-            {submitError?.message && (
-              <span className="text-red-500">
-                {String(submitError.message)}
-              </span>
-            )}
-            {/* {blocked && <span className="text-red-500">{String(blocked)}</span>} */}
+              <div className="flex w-3/5 flex-col items-start">
+                <span className="text-[14px] font-medium leading-[14px] text-[#B52A6F]">
+                  Tip:
+                </span>
+                {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
+                  <span className="whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                    minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
+                  </span>
+                ) : null}
+              </div>
+              <input
+                type="number"
+                placeholder="0.00"
+                onChange={handleChangeTip}
+                className=" w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
+                autoComplete="off"
+                min="0"
+                step=".01"
+                onKeyPress={preventNegative}
+              />
+            </div>
+            <div
+              className="messaging-input__button h-[45px]  !p-0"
+              role="button"
+              aria-roledescription="button"
+            >
+              <button
+                type="button"
+                disabled={!isNaN(tip) && !!blocked}
+                className={classNames(
+                  blocked ? " cursor-not-allowed opacity-50" : "",
+                  " min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
+                )}
+                onClick={submit}
+              >
+                {submitting
+                  ? "Sending..."
+                  : blocked ===
+                    PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
+                  ? "Waiting on Payment"
+                  : blocked === PayinDataDtoBlockedEnum.DoesNotFollow
+                  ? "Not following"
+                  : blocked === PayinDataDtoBlockedEnum.InsufficientTip
+                  ? "Insufficient tip"
+                  : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
+                  ? "No Payment Method (go to settings)"
+                  : ` Send Message`}
+              </button>
+              {submitError?.message && (
+                <span className="text-red-500">
+                  {String(submitError.message)}
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
