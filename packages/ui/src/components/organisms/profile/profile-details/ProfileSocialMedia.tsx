@@ -29,14 +29,14 @@ const socialUsernameToUrl = {
   youtubeUsername: (u: string) => `https://www.youtube.com/c/${u}`
 }
 
-const socialUsernameToComponents = {
-  discordUsername: () => <Discord className="h-[22px] w-[22px]" />,
-  facebookUsername: () => <Facebook className="h-[22px] w-[22px]" />,
-  instagramUsername: () => <Instagram className="h-[22px] w-[22px]" />,
-  tiktokUsername: () => <TikTok className="h-[22px] w-[22px]" />,
-  twitchUsername: () => <Twitch className="h-[22px] w-[22px]" />,
-  twitterUsername: () => <Twitter className="h-[22px] w-[22px]" />,
-  youtubeUsername: () => <Youtube className="h-[22px] w-[22px]" />
+export const socialUsernameToIcon = {
+  discordUsername: Discord,
+  facebookUsername: Facebook,
+  instagramUsername: Instagram,
+  tiktokUsername: TikTok,
+  twitchUsername: Twitch,
+  twitterUsername: Twitter,
+  youtubeUsername: Youtube
 }
 
 interface ProfileSocialMediaButtonProps {
@@ -47,19 +47,22 @@ interface ProfileSocialMediaButtonProps {
 const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   type,
   username
-}) => (
-  <>
-    {username && (
-      <a
-        href={formatTextToString(socialUsernameToUrl[type](username))}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {socialUsernameToComponents[type]()}
-      </a>
-    )}
-  </>
-)
+}) => {
+  const Icon = socialUsernameToIcon[type]
+  return (
+    <>
+      {username && (
+        <a
+          href={formatTextToString(socialUsernameToUrl[type](username))}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon className="h-[22px] w-[22px]" />
+        </a>
+      )}
+    </>
+  )
+}
 
 interface ProfileSocialMediaProps {
   discordUsername: string | undefined | null

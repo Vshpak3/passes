@@ -18,18 +18,13 @@ import { PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
-import {
-  FileAccept,
-  FormLabel,
-  FormPlaceholder,
-  FormType
-} from "src/components/types/FormTypes"
+import { FormLabel, FormType } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { useProfile } from "src/hooks/profile/useProfile"
-import { socialUsernames } from "./ProfileSocialMedia"
+import { socialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
   displayName: string()
@@ -41,65 +36,38 @@ const editProfileSchema = object({
   ...socialMediaUsernameSchema
 })
 
-const bioForm = {
+interface RenderInputProps {
+  type: FormType
+  label: FormLabel
+  icon?: any
+}
+
+const bioForm: Record<string, RenderInputProps> = {
   description: {
-    type: "text-area" as FormType,
+    type: "text-area",
     label: "Description"
   }
 }
 
-const profilermationForm = {
-  displayName: { type: "text" as FormType, label: "Display Name" }
+const profilermationForm: Record<string, RenderInputProps> = {
+  displayName: { type: "text", label: "Display Name" }
 }
 
-const socialMediaForm = {
-  discordUsername: {
-    type: "text",
-    label: "Discord",
-    icon: Discord
-  },
-  facebookUsername: {
-    type: "text",
-    label: "Facebook",
-    icon: Facebook
-  },
-  instagramUsername: {
-    type: "text",
-    label: "Instagram",
-    icon: Instagram
-  },
-  tiktokUsername: {
-    type: "text",
-    label: "TikTok",
-    icon: TikTok
-  },
-  twitchUsername: {
-    type: "text",
-    label: "Twitch",
-    icon: Twitch
-  },
-  twitterUsername: {
-    type: "text",
-    label: "Twitter",
-    icon: Twitter
-  },
-  youtubeUsername: {
-    type: "text",
-    label: "Youtube",
-    icon: Youtube
-  }
-}
+const socialMediaForm: Record<string, RenderInputProps> = Object.fromEntries(
+  Object.entries(socialUsernameToIcon).map(([type, icon]) => [
+    type,
+    {
+      type: "text",
+      label:
+        type.charAt(0).toUpperCase() + type.slice(1).replace("Username", ""),
+      icon
+    }
+  ])
+)
 
 interface EditProfileProps {
   setEditProfileModalOpen: Dispatch<SetStateAction<boolean>>
   setProfileImageOverride: Dispatch<SetStateAction<string | undefined>>
-}
-
-interface RenderInputProps {
-  type: FormType
-  placeholder?: FormPlaceholder
-  accept?: FileAccept
-  label?: FormLabel
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
@@ -139,14 +107,16 @@ export const EditProfile: FC<EditProfileProps> = ({
   const profileBannerImage: File[] = watch("profileBannerImage")
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
-    <div className="col-span-6" key={key}>
+    <div className="col-span-6 flex" key={key}>
+      {!!input?.icon && (
+        <input.icon className="mr-2 h-[22px] w-[22px] align-middle" />
+      )}
       <FormInput
         register={register}
         name={key}
         className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
         type={input.type}
         placeholder={input.label}
-        accept={input?.accept}
         errors={errors}
       />
     </div>
@@ -294,24 +264,7 @@ export const EditProfile: FC<EditProfileProps> = ({
               Social Media Usernames
             </span>
             <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2">
-              {Object.entries(socialMediaForm).map(([key, input]) => {
-                return (
-                  <div className="col-span-6" key={key}>
-                    <div>
-                      <div className="flex w-full items-center justify-between">
-                        <FormInput
-                          register={register}
-                          name={key}
-                          className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
-                          type={input.type as FormType}
-                          placeholder={input.label}
-                          errors={errors}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
+              {Object.entries(socialMediaForm).map(renderInput)}
             </div>
           </div>
         </div>
