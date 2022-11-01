@@ -269,6 +269,7 @@ export class MessagesController {
     return await this.messagesService.registerPurchaseMessageData(
       req.user.id,
       purchaseMessageRequestDto.messageId,
+      purchaseMessageRequestDto.payinMethod,
     )
   }
 

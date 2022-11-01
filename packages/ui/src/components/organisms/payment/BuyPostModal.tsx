@@ -1,19 +1,14 @@
-import {
-  GetPayinMethodResponseDtoMethodEnum,
-  PostDto
-} from "@passes/api-client"
+import { PostDto } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
-import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
 import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
-import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface BuyPostModalProps {
   post: PostDto | null
@@ -21,7 +16,6 @@ interface BuyPostModalProps {
 }
 
 const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
-  const { defaultPayinMethod, defaultCard } = usePayinMethod()
   const { externalPasses } = useExternalPasses()
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
   const { images, video } = contentTypeCounter(post?.contents)
@@ -50,13 +44,6 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
             purchase.
           </span>
         </div>
-        {defaultPayinMethod && (
-          <PayinMethodDisplay
-            payinMethod={defaultPayinMethod}
-            card={defaultCard}
-            closeModal={() => setPost(null)}
-          />
-        )}
         {!!whitePasessList?.length && (
           <div>
             <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
@@ -72,14 +59,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           </div>
         )}
       </div>
-      <BuyPostButton
-        isDisabled={
-          !defaultPayinMethod ||
-          defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
-        }
-        postId={post?.postId || ""}
-        onSuccess={onSuccessHandler}
-      />
+      <BuyPostButton postId={post?.postId || ""} onSuccess={onSuccessHandler} />
     </Modal>
   )
 }

@@ -6,9 +6,9 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
 
+import { PayinMethodDisplayNames } from "src/helpers/payment/serialize"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
-import { payinMethodDisplayNames } from "./PaymentSettingsCrypto"
 
 interface PaymentSettingsDefaultProps {
   isEmbedded: boolean
@@ -40,7 +40,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
         <span className="mx-3 font-[700]">Phantom Wallet</span>
         <span>
           {payInMethodChain
-            ? payinMethodDisplayNames[payInMethodChain]
+            ? PayinMethodDisplayNames[payInMethodChain]
             : "USDC"}
         </span>
       </div>

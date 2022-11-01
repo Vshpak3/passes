@@ -930,6 +930,7 @@ export class PassService {
   async registerRenewPassData(
     userId: string,
     passHolderId: string,
+    payinMethod?: PayinMethodDto,
   ): Promise<PayinDataDto> {
     const target = CryptoJS.SHA256(`nft-pass-holder-${passHolderId}`).toString(
       CryptoJS.enc.Hex,
@@ -966,6 +967,10 @@ export class PassService {
     if (!pass) {
       throw new PassNotFoundException(`passholder ${passHolderId} not found`)
     }
+    if (!this.payService.validatePayinData(userId, payinMethod)) {
+      blocked = BlockedReasonEnum.NO_PAYIN_METHOD
+    }
+
     return { amount: pass.price, target, blocked }
   }
 
@@ -1043,6 +1048,7 @@ export class PassService {
   async registerPurchasePassData(
     userId: string,
     passId: string,
+    payinMethod?: PayinMethodDto,
   ): Promise<PayinDataDto> {
     const target = CryptoJS.SHA256(`nft-pass-${userId}-${passId}`).toString(
       CryptoJS.enc.Hex,
@@ -1076,6 +1082,10 @@ export class PassService {
       // blocked = BlockedReasonEnum.ALREADY_OWNS_PASS
     } else if (pass.remaining_supply === 0) {
       blocked = BlockedReasonEnum.INSUFFICIENT_SUPPLY
+    }
+
+    if (!this.payService.validatePayinData(userId, payinMethod)) {
+      blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
 
     return {

@@ -5,7 +5,7 @@ import React, { FC } from "react"
 import { paymentMethodConfig } from "src/helpers/payment/paymentMethod"
 
 interface PayinMethodDisplayProps {
-  payinMethod: PayinMethodDto
+  payinMethod?: PayinMethodDto
   card?: CircleCardDto
   closeModal: () => void
 }

@@ -40,7 +40,6 @@ import { PayinMethodDto } from '../payment/dto/payin-method.dto'
 import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
-import { PayinMethodEnum } from '../payment/enum/payin-method.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
 import { PaymentService } from '../payment/payment.service'
 import { ScheduledEventEntity } from '../scheduled/entities/scheduled-event.entity'
@@ -560,7 +559,7 @@ export class MessagesService {
     sendMessageDto: SendMessageRequestDto,
     otherUserId?: string,
   ): Promise<PayinDataDto> {
-    const { channelId, tipAmount } = sendMessageDto
+    const { channelId, tipAmount, payinMethod } = sendMessageDto
     if (!otherUserId) {
       const channelMember = await this.dbReader<ChannelMemberEntity>(
         ChannelMemberEntity.table,
@@ -590,8 +589,10 @@ export class MessagesService {
         blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
       }
     }
-    const method = await this.payService.getDefaultPayinMethod(userId)
-    if (tipAmount !== 0 && method.method === PayinMethodEnum.NONE) {
+    if (
+      tipAmount !== 0 &&
+      !this.payService.validatePayinData(userId, payinMethod)
+    ) {
       blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
     if (tipAmount > 0 && tipAmount < MINIMUM_MESSAGE_TIP_AMOUNT) {
@@ -1100,6 +1101,7 @@ export class MessagesService {
   async registerPurchaseMessageData(
     userId: string,
     messageId: string,
+    payinMethod?: PayinMethodDto,
   ): Promise<PayinDataDto> {
     const target = CryptoJS.SHA256(`message-${userId}-${messageId}`).toString(
       CryptoJS.enc.Hex,
@@ -1121,6 +1123,10 @@ export class MessagesService {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (message.paid_at) {
       blocked = BlockedReasonEnum.ALREADY_HAS_ACCESS
+    }
+
+    if (!this.payService.validatePayinData(userId, payinMethod)) {
+      blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
 
     return { amount: message.price, target, blocked }

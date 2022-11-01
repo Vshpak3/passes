@@ -70,7 +70,7 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
       <PaymentSettingsDefault isEmbedded={isEmbedded} />
       <PaymentSettingsCrypto
         isEmbedded={isEmbedded}
-        handleSetDefaultPayInMethod={handleSetDefaultPayInMethod}
+        handleSetDefaultPayinMethod={handleSetDefaultPayInMethod}
       />
       <PaymentSettingsCreditCard
         isEmbedded={isEmbedded}

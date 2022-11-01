@@ -162,6 +162,7 @@ const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
 
 const MINT_TO_PAYMENT = true
+const MIN_THREE_DS_LIMIT = 500
 @Injectable()
 export class PaymentService {
   private circleConnector: CircleConnector
@@ -1201,9 +1202,9 @@ export class PaymentService {
     payin: PayinDto,
     entryDto: CircleCardPayinEntryRequestDto,
   ): Promise<CircleCardPayinEntryResponseDto> {
-    const threeDS =
-      payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS ||
-      payin.callback === PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS
+    const threeDS = payin.amount > MIN_THREE_DS_LIMIT
+    // payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS ||
+    // payin.callback === PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS
     const status = await this.makeCircleCardPayment(
       entryDto.ip,
       entryDto.sessionId,
@@ -1419,6 +1420,16 @@ export class PaymentService {
       default:
         return false
     }
+  }
+
+  async validatePayinData(
+    userId: string,
+    payinMethodDto?: PayinMethodDto,
+  ): Promise<boolean> {
+    return payinMethodDto
+      ? this.validatePayinMethod(userId, payinMethodDto)
+      : (await this.getDefaultPayinMethod(userId)).method !==
+          PayinMethodEnum.NONE
   }
 
   /**

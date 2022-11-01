@@ -18,6 +18,7 @@ import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModalData } from "src/components/organisms/BlockModal"
+import TipPostModal from "src/components/organisms/payment/TipPostModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
 import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
@@ -28,6 +29,7 @@ import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
+import { TipPostModalContext } from "src/contexts/TipPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 
@@ -94,6 +96,7 @@ const LANDING_MESSAGES: Record<string, Record<string, string>> = {
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+  const [tipPost, setTipPost] = useState<PostDto | null>(null)
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
@@ -131,6 +134,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
+    [TipPostModalContext.Provider, { setPost: setTipPost }],
     [ThreeDSContext.Provider, { setPayin }]
   ]
 
@@ -145,6 +149,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       {blockData && (
         <BlockModal blockData={blockData} setBlockData={setBlockData} />
       )}
+      {tipPost && <TipPostModal post={tipPost} setPost={setTipPost} />}
       <ToastContainer
         position="bottom-center"
         autoClose={ms("4 seconds")}

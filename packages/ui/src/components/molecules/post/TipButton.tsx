@@ -1,34 +1,19 @@
 import { PostDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
-import React, { FC, useCallback, useState } from "react"
+import React, { FC } from "react"
 
-const TipPostModal = dynamic(
-  () => import("src/components/organisms/payment/TipPostModal"),
-  { ssr: false }
-)
+import { useTipPostModal } from "src/hooks/useTipPostModal"
 
 interface TipButtonProps {
-  postId: PostDto["postId"]
+  post: PostDto
 }
 
-export const TipButton: FC<TipButtonProps> = ({ postId }) => {
-  const [isTipModalOpen, setIsTipModalOpen] = useState(false)
-
-  const openModal = useCallback(() => setIsTipModalOpen(true), [])
+export const TipButton: FC<TipButtonProps> = ({ post }) => {
+  const { setPost } = useTipPostModal()
 
   return (
-    <>
-      <button aria-label="Tip post" onClick={openModal}>
-        <DollarIcon />
-      </button>
-      {isTipModalOpen && (
-        <TipPostModal
-          isOpen={isTipModalOpen}
-          setOpen={setIsTipModalOpen}
-          postId={postId}
-        />
-      )}
-    </>
+    <button aria-label="Tip post" onClick={() => setPost(post)}>
+      <DollarIcon />
+    </button>
   )
 }

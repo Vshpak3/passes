@@ -119,7 +119,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 numLikes={numLikes}
                 postId={postId}
               />
-              <TipButton postId={postId} />
+              <TipButton post={post} />
             </div>
           </div>
         </div>

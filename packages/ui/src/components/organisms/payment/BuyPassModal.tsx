@@ -6,7 +6,7 @@ import {
 import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
-import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
+import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
@@ -33,21 +33,13 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           {pass?.duration ? "/30 days" : ""}
         </span>
       </div>
-      <div>
-        {defaultPayinMethod && (
-          <PayinMethodDisplay
-            payinMethod={defaultPayinMethod}
-            card={defaultCard}
-            closeModal={() => setPass(null)}
-          />
-        )}
-      </div>
-      {defaultPayinMethod?.cardId && (
-        <div>
-          Buying an nft with a credit card requires 3DS authentication. You may
-          be redirected shortly after paying to confirm the transaction.
-        </div>
-      )}
+      <PaymentModalBody
+        price={pass?.price ?? 0}
+        closeModal={() => setPass(null)}
+        payinMethod={defaultPayinMethod}
+        card={defaultCard}
+      />
+
       <BuyPassButton
         isDisabled={
           !defaultPayinMethod ||

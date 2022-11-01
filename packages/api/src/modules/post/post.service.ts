@@ -606,6 +606,7 @@ export class PostService {
   async registerPurchasePostData(
     userId: string,
     postId: string,
+    payinMethod?: PayinMethodDto,
   ): Promise<PayinDataDto> {
     const target = CryptoJS.SHA256(`post-${userId}-${postId}`).toString(
       CryptoJS.enc.Hex,
@@ -639,6 +640,10 @@ export class PostService {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkAccess !== undefined) {
       blocked = BlockedReasonEnum.ALREADY_HAS_ACCESS
+    }
+
+    if (!this.payService.validatePayinData(userId, payinMethod)) {
+      blocked = BlockedReasonEnum.NO_PAYIN_METHOD
     }
 
     return { amount: post.price, target, blocked }

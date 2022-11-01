@@ -79,7 +79,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
               : "Free"}
           </div>
         ) : (
-          <TipButton postId={postId} />
+          <TipButton post={post} />
         )}
       </div>
       {showCommentSection && (

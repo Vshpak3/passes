@@ -3,6 +3,7 @@ import {
   CircleCardDtoStatusEnum,
   CircleCreateCardAndExtraRequestDto,
   PayinMethodDto,
+  PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
@@ -23,7 +24,10 @@ export const usePayinMethod = () => {
     async () => {
       return await api.getDefaultPayinMethod()
     },
-    { revalidateOnFocus: true }
+    {
+      revalidateOnFocus: true,
+      fallbackData: { method: PayinMethodDtoMethodEnum.None }
+    }
   )
 
   const {

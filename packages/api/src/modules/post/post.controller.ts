@@ -134,6 +134,7 @@ export class PostController {
     return await this.postService.registerPurchasePostData(
       req.user.id,
       purchasePostRequestDto.postId,
+      purchasePostRequestDto.payinMethod,
     )
   }
 

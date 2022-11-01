@@ -180,6 +180,7 @@ export class PassController {
     return await this.passService.registerPurchasePassData(
       req.user.id,
       createPassHolderDto.passId,
+      createPassHolderDto.payinMethod,
     )
   }
 
@@ -217,6 +218,7 @@ export class PassController {
     return await this.passService.registerRenewPassData(
       req.user.id,
       renewPassHolderDto.passHolderId,
+      renewPassHolderDto.payinMethod,
     )
   }
 
