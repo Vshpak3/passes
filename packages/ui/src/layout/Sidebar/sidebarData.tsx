@@ -68,9 +68,9 @@ export const navigation: SidebarNavigation[] = [
     creatorOnly: false
   },
   {
-    id: "passes",
+    id: "memberships",
     name: "Memberships",
-    href: "/passes",
+    href: "/memberships",
     icon: MyPassesIcon,
     creatorOnly: false
   },

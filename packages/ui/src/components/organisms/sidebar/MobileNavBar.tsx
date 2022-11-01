@@ -17,9 +17,9 @@ const mobileLinks = [
     showWithoutAuth: true
   },
   {
-    id: "passes",
+    id: "memberships",
     name: "Memberships",
-    href: "/passes",
+    href: "/memberships",
     icon: MyPassesIcon,
     creatorOnly: false
   },

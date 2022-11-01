@@ -6,7 +6,7 @@ import { FC } from "react"
 
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 
-interface PassHoldingTileProps {
+interface PassHoldingCardProps {
   passHolder: PassHolderDto
 }
 
@@ -23,7 +23,7 @@ interface PassHoldingTileProps {
 //   </button>
 // )
 
-export const PassHoldingTile: FC<PassHoldingTileProps> = ({ passHolder }) => {
+export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
   // const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
   // const now = Date.now()
 

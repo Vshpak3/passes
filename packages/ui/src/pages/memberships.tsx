@@ -1,13 +1,13 @@
-import { PassHoldingsGrid } from "src/components/molecules/pass/PassHoldingsGrid"
+import { PassHoldings } from "src/components/molecules/pass/PassHoldings"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Passes = () => {
   return (
-    <div className="mx-auto mb-[70px] grid w-full px-2 md:px-5">
+    <div className="mx-auto mb-[70px] w-full px-2 md:px-5">
       <div className="absolute top-[160px]">
         <h1 className="text-2xl font-[700]">Memberships</h1>
       </div>
-      <PassHoldingsGrid />
+      <PassHoldings />
     </div>
   )
 }

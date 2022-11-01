@@ -5,23 +5,23 @@ import {
   PassDtoTypeEnum,
   PassHolderDto
 } from "@passes/api-client"
-import React, { FC, useState } from "react"
+import { FC, useState } from "react"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { SelectPassHolderTab } from "src/components/atoms/passes/SelectPassHolderTab"
-import { PassHoldingTile } from "./PassHoldingTile"
+import { PassHoldingCard } from "./PassHoldingCard"
 
-export const PassHoldingsGrid: FC = () => {
+export const PassHoldings: FC = () => {
   const [passType, setPassType] = useState<PassDtoTypeEnum>(
     PassDtoTypeEnum.Subscription
   )
   const [expired, setExpired] = useState<boolean | undefined>(false)
 
   return (
-    <div className="w-full px-2">
+    <div className="w-9/12 px-2">
       <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
         <div className="w-fit">
           <SelectPassHolderTab
@@ -46,8 +46,9 @@ export const PassHoldingsGrid: FC = () => {
           order: "desc"
         }}
         KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
-          return <PassHoldingTile passHolder={arg} />
+          return <PassHoldingCard passHolder={arg} />
         }}
+        className="gap-3 md:flex md:flex-wrap"
         options={{ revalidateOnMount: true }}
       />
     </div>
