@@ -121,7 +121,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
           action(LANDING_MESSAGES[result][landingMessage])
         }
         // TODO: keep other query params and hashes
-        window.history.replaceState(null, "", "?")
+        window.history.replaceState(window.history.state, "", "?")
       }
     }
   }, [router])

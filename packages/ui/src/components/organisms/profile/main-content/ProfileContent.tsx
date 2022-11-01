@@ -19,7 +19,7 @@ const UnMemoizedProfileContent: FC<ProfileContentProps> = ({
 
   const [activeTab, setActiveTab] = useState(tab)
   useEffect(() => {
-    history.replaceState(null, "", `#${activeTab}`)
+    history.replaceState(window.history.state, "", `#${activeTab}`)
   }, [activeTab])
   return (
     <div className="px-4">
