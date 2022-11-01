@@ -1,5 +1,6 @@
 import { FC, useState } from "react"
 
+import { useGlobalCache } from "src/contexts/GlobalCache"
 import { ContentService } from "src/helpers/content"
 import { ProfileImageProps } from "./ProfileImage"
 
@@ -9,7 +10,8 @@ type ProfileThumbnailProps = {
 } & ProfileImageProps
 
 export const ProfileThumbnail: FC<ProfileThumbnailProps> = ({ userId }) => {
-  const [loaded, setLoaded] = useState<boolean>(false)
+  const { profileImages } = useGlobalCache()
+  const [loaded, setLoaded] = useState<boolean>(profileImages.has(userId))
   return (
     <div
       className={`h-[42px] w-[42px] flex-shrink-0 select-none overflow-hidden rounded-full bg-gray-900`}
@@ -24,7 +26,10 @@ export const ProfileThumbnail: FC<ProfileThumbnailProps> = ({ userId }) => {
         className="h-full w-full object-cover object-center"
         src={ContentService.profileThumbnailPath(userId)}
         alt="user profile thumbnail"
-        onLoad={() => setLoaded(true)}
+        onLoad={() => {
+          profileImages.add(userId)
+          setLoaded(true)
+        }}
       />
     </div>
   )

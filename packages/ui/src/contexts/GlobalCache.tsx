@@ -1,7 +1,8 @@
 import { createContext, useContext } from "react"
 
 export const GlobalCacheContext = createContext({
-  usernames: {} as Record<string, string>
+  usernames: {} as Record<string, string>,
+  profileImages: new Set<string>()
 })
 
 // a hook to use whenever we need to consume data from `GlobalStateProvider`.
