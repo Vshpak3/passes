@@ -87,18 +87,18 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               dropdownOptions={dropdownItems}
             />
             <div className="flex flex-col items-start">
-              <p className="break-normal break-all text-start text-base font-medium text-white/90">
+              <div className="break-normal break-all text-start text-base font-medium text-white/90">
                 {!isHidden || showHidden ? (
                   <FormattedText text={text} tags={tags} />
                 ) : (
-                  <div
+                  <p
                     className="text-gray-500"
                     onClick={() => setShowHidden(true)}
                   >
                     Click to reveal hidden comment
-                  </div>
+                  </p>
                 )}
-              </p>
+              </div>
             </div>
           </FormContainer>
         </div>

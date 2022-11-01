@@ -12,9 +12,9 @@ interface CustomResultProps {
 
 export const CustomResult: FC<CustomResultProps> = ({ text }) => (
   <Combobox.Option value="placeholder" disabled>
-    <li className="my-4 pl-6 text-[#ffffff]/30">
+    <div className="my-4 pl-6 text-[#ffffff]/30">
       <div>{formatText(text)}</div>
-    </li>
+    </div>
   </Combobox.Option>
 )
 
@@ -43,14 +43,12 @@ export const UserSearchResult: FC<SearchResultProps> = ({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onSelect = () => {}
 }) => {
-  const formattedUsername = `@${username}`
-
   return (
-    <li
+    <div
       className={classNames(
         "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90",
         { "bg-[#1b141d]/90": active },
-        { " hover:bg-[#1b141d]/90": !disabled },
+        { "hover:bg-[#1b141d]/90": !disabled },
         { "bg-[#1b141d]/100": disabled },
         { "cursor-not-allowed": disabled }
       )}
@@ -71,8 +69,8 @@ export const UserSearchResult: FC<SearchResultProps> = ({
         {displayName && (
           <div className="text-[16px] font-medium">{displayName}</div>
         )}
-        <div className="text-[12px] text-[#ffffff]/60">{formattedUsername}</div>
+        <div className="text-[12px] text-[#ffffff]/60">@{username}</div>
       </div>
-    </li>
+    </div>
   )
 }

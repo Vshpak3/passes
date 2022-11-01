@@ -2,10 +2,12 @@ import { ScheduledEventDto } from "@passes/api-client"
 import classNames from "classnames"
 import { enUS } from "date-fns/locale"
 import { flatten } from "lodash"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, Fragment, useContext, useEffect, useState } from "react"
 
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
+
+const DAYS_IN_WEEK = 7
 
 type CalendarDate = {
   date: Date
@@ -18,10 +20,10 @@ function getCalendarMatrix(month: number, year: number) {
   const matrix: CalendarDate[][] = []
 
   // Go backwards to pad out the calendar
-  if (date.getDay() % 7 !== 0) {
+  if (date.getDay() % DAYS_IN_WEEK !== 0) {
     matrix[0] = []
     const backwardDate = new Date(date)
-    while (backwardDate.getDay() % 7 !== 0) {
+    while (backwardDate.getDay() % DAYS_IN_WEEK !== 0) {
       backwardDate.setDate(backwardDate.getDate() - 1)
       matrix[0].push({ date: new Date(backwardDate), inMonth: false })
     }
@@ -30,7 +32,7 @@ function getCalendarMatrix(month: number, year: number) {
 
   // Go forward to fill up the month
   while (date.getMonth() === month) {
-    if (date.getDay() % 7 === 0) {
+    if (date.getDay() % DAYS_IN_WEEK === 0) {
       matrix.push([])
     }
     matrix[matrix.length - 1].push({ date: new Date(date), inMonth: true })
@@ -38,7 +40,7 @@ function getCalendarMatrix(month: number, year: number) {
   }
 
   // Go forward to pad out the calendar
-  while (matrix[matrix.length - 1].length !== 7) {
+  while (matrix[matrix.length - 1].length !== DAYS_IN_WEEK) {
     matrix[matrix.length - 1].push({ date: new Date(date), inMonth: false })
     date.setDate(date.getDate() + 1)
   }
@@ -72,23 +74,17 @@ export const Calendar: FC = () => {
   return (
     <div className="mb-[52px] select-none px-[15px] md:px-[30px]">
       <div className="mb-[15px] flex items-center justify-evenly">
-        {Array(7)
+        {Array(DAYS_IN_WEEK)
           .fill(0)
           .map((_, i) => (
-            <>
-              <div
-                key={`${enUS.localize?.day(i)}-${i}`}
-                className="hidden w-[14.2%] pr-[12px] text-end md:grid"
-              >
+            <Fragment key={i}>
+              <div className="hidden w-[14.2%] pr-[12px] text-end md:grid">
                 {enUS.localize?.day(i)}
               </div>
-              <div
-                key={`mobile-${i}`}
-                className="w-[14.2%] pr-[12px] text-end md:hidden"
-              >
+              <div className="w-[14.2%] pr-[12px] text-end md:hidden">
                 {enUS.localize?.day(i, { width: "abbreviated" })}
               </div>
-            </>
+            </Fragment>
           ))}
       </div>
       <div className="flex flex-wrap">

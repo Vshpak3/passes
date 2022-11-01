@@ -6,7 +6,14 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import classNames from "classnames"
 import PlusIcon from "public/icons/post-plus-icon.svg"
-import { Dispatch, FC, MouseEvent, SetStateAction, useState } from "react"
+import {
+  Dispatch,
+  FC,
+  Fragment,
+  MouseEvent,
+  SetStateAction,
+  useState
+} from "react"
 import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -157,7 +164,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 modules={[Navigation]}
               >
                 {files.map(({ file, content }, index) => (
-                  <>
+                  <Fragment key={index}>
                     {content && (
                       <SwiperSlide key={index}>
                         <Media
@@ -204,7 +211,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                         />
                       </SwiperSlide>
                     )}
-                  </>
+                  </Fragment>
                 ))}
                 <SwiperSlide>
                   <div className="flex min-h-[150px] min-w-[50px] items-center">

@@ -89,15 +89,17 @@ export const EventTable: FC = () => {
           )}
           {!isTablet ? (
             <table className="table w-full">
-              <tr className="contents pb-2 text-left text-base font-medium leading-6 text-white opacity-50">
-                <th className="pl-5 pb-1">Type</th>
-                <th className="px-3 pb-1">Media</th>
-                <th className="px-3 pb-1">Price</th>
-                <th className="px-3 pb-1">Text</th>
-                <th className="pb-1 text-center">Date</th>
-                <th className="pb-1">Action</th>
-              </tr>
-              {tableItems}
+              <thead>
+                <tr className="contents pb-2 text-left text-base font-medium leading-6 text-white opacity-50">
+                  <th className="pl-5 pb-1">Type</th>
+                  <th className="px-3 pb-1">Media</th>
+                  <th className="px-3 pb-1">Price</th>
+                  <th className="px-3 pb-1">Text</th>
+                  <th className="pb-1 text-center">Date</th>
+                  <th className="pb-1">Action</th>
+                </tr>
+              </thead>
+              <tbody>{tableItems}</tbody>
             </table>
           ) : (
             <div className="w-full">{tableItems}</div>
