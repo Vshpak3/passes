@@ -179,7 +179,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
                 min="0"
                 max="5000"
                 step="0.01"
-                onChange={(event) => handleChange(event)}
+                onChange={handleChange}
                 className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
               />
             </div>

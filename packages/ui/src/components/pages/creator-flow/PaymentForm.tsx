@@ -376,7 +376,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   width: "100%",
                   color: "#737893"
                 }}
-                onClick={() => onFinishPaymentForm()}
+                onClick={onFinishPaymentForm}
               >
                 Skip for now
               </Button>

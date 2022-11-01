@@ -183,7 +183,7 @@ export const useCreatePass = (passType: string) => {
       .catch(({ message }) => toast(message))
   }
 
-  const onCreatePass = handleSubmit((data) => submitPassCreation(data))
+  const onCreatePass = handleSubmit(submitPassCreation)
 
   const onRemoveFileUpload = (index: number) => {
     setFiles(files.filter((_: File, i: number) => i !== index))

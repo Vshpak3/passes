@@ -165,7 +165,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             </div>
             {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
               <UpdateListNamePopper
-                onSubmit={(value) => handleEditListName(value)}
+                onSubmit={handleEditListName}
                 value={listName}
               />
             )}
@@ -251,7 +251,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         />
       </ul>
       <AddFollowerToListModal
-        onSubmit={(userId) => handleAddFan(userId)}
+        onSubmit={handleAddFan}
         isOpen={addFollowerOpen}
         setOpen={setAddFollowerOpen}
         listId={listId}

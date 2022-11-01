@@ -129,7 +129,7 @@ export const RequestPayouts = () => {
               <PassesPinkButton
                 className="ml-2 flex w-[215px] "
                 name="Request Payment"
-                onClick={() => onManualPayoutClick()}
+                onClick={onManualPayoutClick}
               />
             </div>
           </div>

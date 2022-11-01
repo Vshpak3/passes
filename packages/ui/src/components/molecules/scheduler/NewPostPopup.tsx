@@ -32,7 +32,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
       onClose={onCancel}
       triggerClassName="flex items-center justify-center self-center lg:pt-8"
       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
-      onTriggerClick={() => onCancel()}
+      onTriggerClick={onCancel}
     >
       <NewPostEditor
         initialData={{ scheduledAt: selectionDate }}

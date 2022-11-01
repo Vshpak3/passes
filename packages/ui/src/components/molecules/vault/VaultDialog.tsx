@@ -39,7 +39,7 @@ export const VaultDialog: FC<VaultDialogProps> = ({
               <button
                 className="rounded-full bg-passes-secondary-color py-2 px-6"
                 type="button"
-                onClick={() => pushToMessages()}
+                onClick={pushToMessages}
               >
                 Use selected media
               </button>

@@ -17,8 +17,8 @@ describe('App e2e', () => {
 
   const overrides = [
     // Mock database
-    ...contextNames.map((n) => getMikroORMToken(n)),
-    ...contextNames.map((n) => getDatabaseProviderToken(n)),
+    ...contextNames.map(getMikroORMToken),
+    ...contextNames.map(getDatabaseProviderToken),
     // Mock redis
     getRedisConnectionToken('subscriber'),
     getRedisConnectionToken('publisher'),

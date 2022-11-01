@@ -37,7 +37,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
                 const api = new ListApi()
                 await api
                   .deleteList({ listId: list.listId })
-                  .catch((error) => toast(error))
+                  .catch((error) => toast.error(error))
                 if (removable) {
                   setRemoved(true)
                 }

@@ -111,7 +111,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
               <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
               <VaultAddToDropdown
                 // TODO: connect with API to get selected items and add to new message
-                onAddToMessage={() => pushToMessages()}
+                onAddToMessage={pushToMessages}
                 // TODO: connect with API to get selected items and add to new post
                 // eslint-disable-next-line no-console
                 onAddToPost={() => console.log("add to post")}
