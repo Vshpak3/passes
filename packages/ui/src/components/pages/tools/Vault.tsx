@@ -109,6 +109,9 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
               setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
+              mediaPreviewIndex={0}
+              setMediaPreviewIndex={() => null}
+              isPaid={false}
             />
             <Button
               variant="pink"

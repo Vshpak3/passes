@@ -39,9 +39,9 @@ interface MediaSectionProps {
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
   isNewPost?: boolean
   messages?: boolean
-  isPaid?: boolean
+  isPaid: boolean
   reorderContent?: boolean
-  mediaPreviewIndex?: number
+  mediaPreviewIndex: number
   setMediaPreviewIndex?: Dispatch<SetStateAction<number>>
 }
 
@@ -77,13 +77,11 @@ export const MediaSection: FC<MediaSectionProps> = ({
       {reorderContent ? (
         <div className="flex w-full">
           <MediaSectionReorder
-            // TODO: fix this
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            files={files as any}
+            files={files}
             setFiles={setFiles}
-            mediaPreviewIndex={mediaPreviewIndex as number}
+            mediaPreviewIndex={mediaPreviewIndex}
             setMediaPreviewIndex={setMediaPreviewIndex}
-            isPaid={isPaid as boolean}
+            isPaid={isPaid}
           />
         </div>
       ) : (

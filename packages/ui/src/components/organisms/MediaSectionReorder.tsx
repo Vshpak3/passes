@@ -117,7 +117,7 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
 }
 
 interface MediaSectionReorderPops {
-  files: Array<ContentFile & { _id: string }>
+  files: ContentFile[]
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
   mediaPreviewIndex: number
   setMediaPreviewIndex: Dispatch<SetStateAction<number>> | undefined
@@ -127,14 +127,17 @@ interface MediaSectionReorderPops {
 export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   files,
   setFiles,
-  mediaPreviewIndex,
+  mediaPreviewIndex = 0,
   setMediaPreviewIndex,
   isPaid
 }) => {
   const [filesMap, setFilesMap] = useState<Contents>({ Free: [], Paid: [] })
 
   useEffect(() => {
-    setFiles([...filesMap["Free"], ...filesMap["Paid"]])
+    if (filesMap["Free"].length || filesMap["Paid"].length) {
+      setFiles([...filesMap["Free"], ...filesMap["Paid"]])
+    }
+
     if (isPaid && setMediaPreviewIndex) {
       setMediaPreviewIndex(filesMap["Free"].length)
     }
@@ -145,25 +148,22 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaid])
 
+  const setId = (file: ContentFile) => {
+    const _file = file as ContentFileWithId
+    _file["_id"] = _file["_id"] ?? uniqueId()
+    return _file
+  }
+
   const getContent = () => {
     setFilesMap(
       !isPaid
         ? {
-            Free: files.map((file) => {
-              file["_id"] = file["_id"] ?? uniqueId()
-              return file
-            }),
+            Free: files.map(setId),
             Paid: []
           }
         : {
-            Free: files.slice(0, mediaPreviewIndex).map((file) => {
-              file["_id"] = file["_id"] ?? uniqueId()
-              return file
-            }),
-            Paid: files.slice(mediaPreviewIndex).map((file) => {
-              file["_id"] = file["_id"] ?? uniqueId()
-              return file
-            })
+            Free: files.slice(0, mediaPreviewIndex).map(setId),
+            Paid: files.slice(mediaPreviewIndex).map(setId)
           }
     )
   }

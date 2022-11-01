@@ -66,8 +66,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
-  const previewIndex = watch("previewIndex")
-
+  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
     addNewMedia(event.target.files)
@@ -93,7 +92,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
           text: message,
           contentIds: contentIds,
           price: messagePrice,
-          previewIndex: previewIndex ? parseInt(previewIndex) : 0,
+          previewIndex: isPaid ? mediaPreviewIndex : 0,
           scheduledAt: getValues()?.scheduledAt ?? undefined
         }
       })
@@ -203,15 +202,20 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
             }}
           />
           {files.length > 0 && (
-            <MediaSection
-              register={register}
-              errors={errors}
-              files={files}
-              setFiles={setFiles}
-              onRemove={onRemove}
-              addNewMedia={addNewMedia}
-              messages={true}
-            />
+            <div className="relative  max-w-[390px] sm:max-w-[590px]">
+              <MediaSection
+                register={register}
+                errors={errors}
+                files={files}
+                setFiles={setFiles}
+                onRemove={onRemove}
+                addNewMedia={addNewMedia}
+                mediaPreviewIndex={mediaPreviewIndex}
+                setMediaPreviewIndex={setMediaPreviewIndex}
+                isPaid={isPaid}
+                // messages={true}
+              />
+            </div>
           )}
 
           {scheduledTime && (

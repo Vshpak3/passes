@@ -15,7 +15,9 @@ import React, {
 } from "react"
 import { useForm } from "react-hook-form"
 
+import { Button } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import {
@@ -69,10 +71,11 @@ export const InputMessage: FC<InputMessageProps> = ({
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
+  const [reorderContent, setReorderContent] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
-  const previewIndex = watch("previewIndex")
+  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
 
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
@@ -92,7 +95,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         channelId,
         tipAmount: tip,
         price: isPaid ? messagePrice : 0,
-        previewIndex: previewIndex ? parseInt(previewIndex) : 0
+        previewIndex: isPaid ? mediaPreviewIndex : 0
       }
     })
     setFiles([])
@@ -187,38 +190,50 @@ export const InputMessage: FC<InputMessageProps> = ({
     >
       <div className="flex w-full flex-col px-[30px]">
         {isCreator && (
-          <div className="flex min-h-[45px] items-center justify-start gap-4 pt-2">
-            <FormInput
-              label="Pay to View"
-              type="toggle"
-              register={register}
-              errors={errors}
-              options={options}
-              name="isPaid"
-              className="group"
-            />
-            {isPaid ? (
-              <div className="relative flex items-center rounded-md shadow-sm">
-                <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
-                  Price
+          <div className="flex w-full items-center justify-between pt-2">
+            <div className="flex min-h-[45px] items-center justify-start gap-4 ">
+              <FormInput
+                label="Pay to View"
+                type="toggle"
+                register={register}
+                errors={errors}
+                options={options}
+                name="isPaid"
+                className="group"
+              />
+              {isPaid ? (
+                <div className="relative flex items-center rounded-md shadow-sm">
+                  <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
+                    Price
+                  </div>
+                  <input
+                    type="number"
+                    value={messagePrice}
+                    name="postPrice"
+                    autoFocus
+                    id="postPrice"
+                    placeholder="$"
+                    aria-placeholder="$"
+                    onKeyPress={preventNegative}
+                    min="0"
+                    max="5000"
+                    step="0.01"
+                    onChange={handleChange}
+                    className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
+                  />
                 </div>
-                <input
-                  type="number"
-                  value={messagePrice}
-                  name="postPrice"
-                  autoFocus
-                  id="postPrice"
-                  placeholder="$"
-                  aria-placeholder="$"
-                  onKeyPress={preventNegative}
-                  min="0"
-                  max="5000"
-                  step="0.01"
-                  onChange={handleChange}
-                  className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
-                />
-              </div>
-            ) : null}
+              ) : null}
+            </div>
+            {files.length > 1 && (
+              <Button
+                className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px] "
+                onClick={() => setReorderContent(!reorderContent)}
+              >
+                <Text fontSize={16} className="font-bold text-[#FF51A8]">
+                  {reorderContent ? "Reorder Done" : "Reorder"}
+                </Text>
+              </Button>
+            )}
           </div>
         )}
 
@@ -250,6 +265,10 @@ export const InputMessage: FC<InputMessageProps> = ({
               setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
+              mediaPreviewIndex={mediaPreviewIndex}
+              setMediaPreviewIndex={setMediaPreviewIndex}
+              isPaid={isPaid}
+              reorderContent={reorderContent}
               // messages={true}
             />
           </div>

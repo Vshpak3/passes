@@ -43,7 +43,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
             onClick={() => setReorderContent(!reorderContent)}
           >
             <Text fontSize={16} className="font-bold text-[#FF51A8]">
-              Reorder
+              {reorderContent ? "Reorder Done" : "Reorder"}
             </Text>
           </Button>
         )}
