@@ -104,11 +104,13 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         <span>{generateActionStatus}</span>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="px-3">
-          <span className="px-5">{typeStr}</span>
-          <span className="px-5">{media}</span>
-          <span className="px-5">{price ? formatCurrency(price) : "Free"}</span>
-          <span className="my-[6px] max-w-[350px] truncate px-5">
+        <div className="flex items-center justify-start px-3">
+          <span className="block px-5">{typeStr}</span>
+          <span className="block px-5">{media}</span>
+          <span className="block px-5">
+            {price ? formatCurrency(price) : "Free"}
+          </span>
+          <span className="my-[6px] block max-w-[350px] truncate px-5">
             {formatText(text)}
           </span>
         </div>
