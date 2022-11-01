@@ -38,6 +38,7 @@ interface InputMessageProps {
   channelId: string
   minimumTip?: number | null
   isCreator: boolean
+  otherUserIsCreator?: boolean
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   removeFree: () => void

@@ -3,6 +3,7 @@ import { ChannelMemberDto, ContentDto } from "@passes/api-client/models"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
+import { useIsCreator } from "src/hooks/useIsCreator"
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"
 import { InputMessage } from "./InputMessage"
@@ -59,6 +60,10 @@ export const ChannelView: FC<ChannelViewProps> = ({
       fetch()
     }
   }, [selectedChannel])
+
+  const { isCreator: otherUserIsCreator } = useIsCreator(
+    selectedChannel?.otherUserId ?? ""
+  )
   return (
     <div className="absolute z-50 flex h-[90vh] flex-col bg-[#120C14] lg:relative lg:max-h-[90vh] lg:flex-1">
       {selectedChannel && (
@@ -91,6 +96,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
                   minimumTip={minimumTip}
                   isCreator={isCreator}
                   vaultContent={vaultContent}
+                  otherUserIsCreator={otherUserIsCreator}
                   setVaultContent={setVaultContent}
                   removeFree={removeFree}
                 />
