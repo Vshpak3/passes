@@ -1,6 +1,6 @@
 import { FC, useMemo } from "react"
 
-import { SearchResultOption } from "src/components/atoms/search/user/UserSearchResults"
+import { UserSearchResultOption } from "src/components/atoms/search/user/UserSearchResultOption"
 import { useFollowSearch } from "src/hooks/search/useFollowSearch"
 import { SearchBar } from "./SearchBar"
 
@@ -17,7 +17,7 @@ const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
   const searchOptions = useMemo(
     () =>
       results.map((result) => (
-        <SearchResultOption key={result.userId} {...result} />
+        <UserSearchResultOption key={result.userId} {...result} />
       )),
     [results]
   )

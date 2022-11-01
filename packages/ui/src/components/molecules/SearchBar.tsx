@@ -2,7 +2,7 @@ import { Combobox } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
 import { ChangeEvent, FC } from "react"
 
-import { CustomResult } from "src/components/atoms/search/user/UserSearchResults"
+import { CustomResult } from "src/components/atoms/search/CustomResult"
 
 interface SearchBarProps {
   searchValue: string

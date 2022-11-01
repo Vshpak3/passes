@@ -2,7 +2,7 @@ import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC, useCallback, useMemo } from "react"
 
-import { SearchResultOption } from "src/components/atoms/search/user/UserSearchResults"
+import { UserSearchResultOption } from "src/components/atoms/search/user/UserSearchResultOption"
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
@@ -30,7 +30,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
   const searchOptions = useMemo(
     () =>
       results.map((result) => (
-        <SearchResultOption
+        <UserSearchResultOption
           key={result.userId}
           {...result}
           onSelect={() => goToProfile(result.username)}
