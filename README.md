@@ -8,12 +8,15 @@ System Requirements
 - macOS or Linux
 - Node: `brew install node`
 - Yarn: `npm install -g yarn@berry`
+- MySQL: `brew install mysql`
+- Docker: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## General
 
 ### One-time Setup
 
 Run the following command to setup the repository:
+
 ```bash
 ./bin/local-setup.sh
 ```
@@ -27,6 +30,7 @@ application to run properly.
 
 You can spin up the backend and frontend servers by running the following
 commands:
+
 ```bash
 yarn workspace @passes/api dev
 yarn workspace @passes/ui dev
@@ -38,15 +42,18 @@ docs at `http://localhost:3001/api`.
 You can also use the OpenAPI server to send API requests to the backend for
 testing. For this to work, you first need to log in to the application at
 `http://localhost:3000/login`. Next go to the console and run:
+
 ```js
-JSON.parse(window.localStorage.getItem("access-token"))
+JSON.parse(window.localStorage.getItem('access-token'))
 ```
+
 Finally, copy the output, navigate to `http://localhost:3001/api`, click on
 the "Authorize" button in the top right, and paste in the output.
 
 ### Unit Tests and Linting
 
 To run linting checks for the frontend and backend, run the following commands:
+
 ```bash
 # runs prettier lint fixes and checks
 yarn workspace @passes/api prettier:fix
@@ -58,6 +65,7 @@ yarn workspace @passes/ui lint:fix
 ```
 
 The following commands run tests for only the backend:
+
 ```bash
 # runs backend tests
 yarn workspace @passes/api test
@@ -137,6 +145,7 @@ merging/deploying; otherwise the deploy will fail.
 ### OpenAPI
 
 This must be run whenever you update a controller:
+
 ```bash
 # regenerates openapi client
 ./bin/generate-api-client.sh
