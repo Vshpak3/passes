@@ -3,7 +3,7 @@ import BackIcon from "public/icons/back-icon.svg"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
-import { NameDisplay } from "src/components/atoms/NameDisplay"
+import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
@@ -57,7 +57,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             </div>
             <div className="flex flex-col">
               <div className="text-brand-600 flex flex-col items-start gap-2 pl-3">
-                <NameDisplay
+                <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
                   username={selectedChannel.otherUserUsername}
                   linked={true}

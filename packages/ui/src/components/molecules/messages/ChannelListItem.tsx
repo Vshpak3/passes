@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 
-import { NameDisplay } from "src/components/atoms/NameDisplay"
+import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
 
@@ -44,7 +44,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
       <div className="flex w-full justify-between">
         <div className="flex flex-col items-start justify-center">
           <span className="text-[16px] font-medium leading-[24px] text-white">
-            <NameDisplay
+            <MessagesNameDisplay
               displayName={channel.otherUserDisplayName}
               username={channel.otherUserUsername}
             />

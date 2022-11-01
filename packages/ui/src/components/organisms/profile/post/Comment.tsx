@@ -3,7 +3,7 @@ import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
-import { NameDisplay } from "src/components/atoms/NameDisplay"
+import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
 import { Text } from "src/components/atoms/Text"
 import {
   Dropdown,
@@ -81,7 +81,7 @@ export const Comment: FC<CommentProps> = ({
           <div className="flex grow flex-col">
             <div className="flex justify-between">
               <div className="flex gap-x-2">
-                <NameDisplay
+                <MessagesNameDisplay
                   displayName={commenterDisplayName}
                   username={commenterUsername}
                   linked={true}

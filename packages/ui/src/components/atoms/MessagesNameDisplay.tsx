@@ -3,13 +3,13 @@ import { FC } from "react"
 
 import { Text } from "src/components/atoms/Text"
 
-interface NameDisplayProps {
+interface MessagesNameDisplayProps {
   username: string
   displayName: string
   linked?: boolean
 }
 
-export const NameDisplay: FC<NameDisplayProps> = ({
+export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   username,
   displayName,
   linked = false

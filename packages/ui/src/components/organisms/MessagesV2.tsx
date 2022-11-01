@@ -10,9 +10,9 @@ import { useRouter } from "next/router"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
-import { ChannelMassDM } from "src/components/molecules/messages/ChannelMassDM"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
-import { ChannelViewMassDM } from "src/components/molecules/messages/ChannelViewMassDM"
+import { ChannelMassDM } from "src/components/molecules/messages/mass-dm/ChannelMassDM"
+import { ChannelViewMassDM } from "src/components/molecules/messages/mass-dm/ChannelViewMassDM"
 import { useUser } from "src/hooks/useUser"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
