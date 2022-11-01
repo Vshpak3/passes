@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { array, bool, date, number, object, string } from "yup"
+import { array, bool, date, object, string } from "yup"
 
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
@@ -30,7 +30,6 @@ export interface NewPostFormProps {
   passes: PassDto[]
   expiresAt: Date | null
   scheduledAt: Date | null
-  previewIndex: string
 }
 
 const newPostFormDefaults: NewPostFormProps = {
@@ -41,8 +40,7 @@ const newPostFormDefaults: NewPostFormProps = {
   price: "0",
   passes: [],
   expiresAt: null,
-  scheduledAt: null,
-  previewIndex: "0"
+  scheduledAt: null
 }
 
 const newPostFormSchema = object({
@@ -85,7 +83,6 @@ const newPostFormSchema = object({
           (value) => parseFloat(value || "") <= MAX_PAID_POST_PRICE
         )
     }),
-  previewIndex: number().optional().integer(),
   passes: array<PassDto>()
     .optional()
     .transform((p: PassDto) => p.passId),

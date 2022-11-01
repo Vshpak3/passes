@@ -133,8 +133,7 @@ export const MediaSectionReorder = ({
     if (isPaid) {
       setMediaPreviewIndex(filesMap["Free"].length)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filesMap, setFiles, setMediaPreviewIndex])
+  }, [filesMap, isPaid, setFiles, setMediaPreviewIndex])
 
   useEffect(() => {
     getContent()
