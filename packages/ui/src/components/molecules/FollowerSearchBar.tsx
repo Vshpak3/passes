@@ -5,7 +5,7 @@ import { useFollowSearch } from "src/hooks/search/useFollowSearch"
 import { SearchBar } from "./SearchBar"
 
 interface FollowerSearchBarProps {
-  onSelect: (userId: string) => Promise<void>
+  onSelect: (userId: string) => void
 }
 
 // Might be used in the future

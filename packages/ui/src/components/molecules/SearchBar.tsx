@@ -1,28 +1,28 @@
 import { Combobox } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import { ChangeEvent, FC } from "react"
+import { ChangeEvent, PropsWithChildren } from "react"
 
 import { CustomResult } from "src/components/atoms/search/CustomResult"
 
-interface SearchBarProps {
+interface SearchBarProps<T> {
   searchValue: string
   loading: boolean
   options: JSX.Element[]
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onSelect?: (value: any) => void
+  onSelect?: (value: T) => void
   contentName: string
 }
 
-export const SearchBar: FC<SearchBarProps> = ({
+export const SearchBar = <T,>({
   searchValue,
   loading,
   options,
   onInputChange,
   onSelect,
   contentName
-}) => {
+}: PropsWithChildren<SearchBarProps<T>>) => {
   return (
-    <Combobox value={searchValue} onChange={onSelect}>
+    <Combobox<T> onChange={onSelect}>
       <div className="relative flex flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">
