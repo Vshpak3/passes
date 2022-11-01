@@ -7,6 +7,7 @@ import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { useUser } from "src/hooks/useUser"
+import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
@@ -29,26 +30,34 @@ const MessagesPage = () => {
     <Suspense fallback={<CenterLoader />}>
       <div className="flex h-screen flex-col">
         {user?.isCreator ? (
-          <div className="space-between mt-8 ml-5 mb-3 flex min-h-[32px] items-center justify-between lg:w-[32.5%]">
+          <div className="space-between mt-4 ml-5 mb-3 flex min-h-[32px] items-center justify-between lg:w-[95%]">
             {massMessage ? (
               <div className="cursor-pointer">
                 <MessagesBackIcon onClick={() => setMassMessage(false)} />
               </div>
             ) : null}
-            <span className="font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-              {massMessage ? "Mass Messaging" : "Messages"}
-            </span>
-            {massMessage ? null : (
-              <div className="mr-6 cursor-pointer lg:mr-0">
-                <MessagesPlusIcon onClick={() => setMassMessage(true)} />
-              </div>
-            )}
+            <div className="flex w-[34.5%] flex-row items-center justify-between">
+              <span className="font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+                {massMessage ? "Mass Messaging" : "Messages"}
+              </span>
+              {massMessage ? null : (
+                <div className="mr-6 cursor-pointer lg:mr-0">
+                  <MessagesPlusIcon onClick={() => setMassMessage(true)} />
+                </div>
+              )}
+            </div>
+            <div className="z-[1000]">
+              <CreatorSearchBar />
+            </div>
           </div>
         ) : (
-          <div className="space-between mt-8 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center gap-4">
+          <div className="mt-4 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center justify-between gap-4 lg:w-[95%]">
             <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
               Messages
             </span>
+            <div className="z-[1000]">
+              <CreatorSearchBar />
+            </div>
           </div>
         )}
         <Messages

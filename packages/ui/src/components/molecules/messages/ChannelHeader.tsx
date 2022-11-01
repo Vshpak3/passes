@@ -32,7 +32,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   const galleryAvailable = false
   return (
     <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
-      <div className="flex w-full flex-row items-center justify-between px-5 py-4 pr-10">
+      <div className="flex w-full flex-row items-center justify-between px-5 py-4">
         {gallery ? (
           <MessagesChannelGalleryHeader
             gallery={gallery}
@@ -48,60 +48,50 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 <BackIcon />
               </div>
             )}
-            <a
-              href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
-            >
-              <ProfileThumbnail
-                userId={selectedChannel.otherUserId}
-                key={selectedChannel.otherUserId}
-              />
-            </a>
-            <div className="text-brand-600 flex flex-col items-start pl-2">
-              <NameDisplay
-                displayName={selectedChannel.otherUserDisplayName}
-                username={selectedChannel.otherUserUsername}
-                linked={true}
-              />
+            <div className="">
+              <a
+                href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
+              >
+                <ProfileThumbnail userId={selectedChannel.otherUserId} />
+              </a>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-brand-600 flex flex-col items-start gap-2 pl-3">
+                <NameDisplay
+                  displayName={selectedChannel.otherUserDisplayName}
+                  username={selectedChannel.otherUserUsername}
+                  linked={true}
+                />
+                {isCreator && (
+                  <div className="flex w-full items-center justify-between">
+                    <div className="flex items-center justify-start gap-[10px]">
+                      <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
+                        <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-1 px-3 text-sm font-normal text-[#ffff]">
+                          Total Tip Amount
+                        </span>
+                        <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                          {selectedChannel.tipRecieved > 0
+                            ? formatCurrency(selectedChannel.tipRecieved)
+                            : "$0.00"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
         {!gallery && galleryAvailable && (
           <div
             onClick={() => setGallery(!gallery)}
-            className="flex h-full cursor-pointer items-center gap-1 rounded-[56px] bg-[#BF7AF0]/10 px-3 opacity-80 hover:opacity-100 "
+            className="mr-24 flex cursor-pointer items-center gap-1 rounded-md bg-[#B52A6F40]/10 py-1 px-3 opacity-80 hover:opacity-100 "
           >
             <PhotosIcon className="flex flex-shrink-0" />
-            <span className="text-sm text-passes-secondary-color">Gallery</span>
+            <span className="text-sm text-[#B52A6F]">Gallery</span>
           </div>
         )}
       </div>
-      {isCreator && (
-        <div className="flex min-h-[54px] w-full items-center justify-between gap-[18px] border-y border-[#fff]/10 pt-[8px] pb-[8px] pr-12">
-          <div className="flex items-center justify-start gap-[10px] pl-5">
-            <div className="m-0 flex cursor-pointer items-center p-0">
-              <span className="flex h-[36px] w-fit items-center justify-center rounded-l-[40px] bg-[#9C4DC1] px-2 text-sm font-normal leading-[16px] text-[#ffff] md:text-[16px] md:font-medium">
-                Total Tip Amount
-              </span>
-              <span className="flex h-[36px] w-fit items-center justify-center rounded-r-[40px] bg-[#C943A8] px-2 text-[16px] font-medium leading-[16px] text-[#ffff]">
-                {selectedChannel.tipRecieved > 0
-                  ? formatCurrency(selectedChannel.tipRecieved)
-                  : "$0.00"}
-              </span>
-            </div>
-          </div>
-          {!gallery && galleryAvailable && (
-            <div
-              onClick={() => setGallery(!gallery)}
-              className="flex h-full cursor-pointer items-center gap-1 rounded-[56px] bg-[#BF7AF0]/10 px-3 opacity-80 hover:opacity-100 "
-            >
-              <PhotosIcon className="flex flex-shrink-0" />
-              <span className="text-sm text-passes-secondary-color">
-                Gallery
-              </span>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   )
 }

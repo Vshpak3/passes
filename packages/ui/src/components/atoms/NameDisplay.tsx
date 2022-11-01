@@ -24,7 +24,7 @@ export const NameDisplay: FC<NameDisplayProps> = ({
   )
   return linked ? (
     <Link href={`${window.location.origin}/${username}`}>
-      <a className="flex items-center">{text}</a>
+      <a className="flex items-center text-xl">{text}</a>
     </Link>
   ) : (
     text
