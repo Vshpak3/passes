@@ -521,6 +521,19 @@ export class PostService {
     await this.dbWriter<PostEntity>(PostEntity.table)
       .increment('total_tip_amount', amount)
       .where({ id: postId })
+    const yourTips = await this.dbWriter<PostTipEntity>(PostTipEntity.table)
+      .where({ user_id: userId, post_id: postId })
+      .select('amount')
+      .first()
+    if (yourTips) {
+      const notification: PostNotificationDto = {
+        postId,
+        notification: PostNotificationEnum.TIP,
+        recieverId: userId,
+        yourTips: yourTips.amount,
+      }
+      await this.redisService.publish('post', JSON.stringify(notification))
+    }
   }
 
   async deleteTip(userId: string, postId: string, amount: number) {

@@ -2,6 +2,7 @@ import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
 import React, { FC } from "react"
 
+import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
 interface BuyMessageButtonProps {
@@ -38,7 +39,8 @@ export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
   const { blocked, submitting, loading, submit } = usePay(
     register,
     registerData,
-    onSuccess
+    onSuccess,
+    LandingMessageEnum.PURCHASE
   )
 
   return (

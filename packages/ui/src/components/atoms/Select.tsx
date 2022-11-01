@@ -46,7 +46,10 @@ export const Select: FC<SelectProps> = ({
   showOnTop = false,
   ...rest
 }) => {
-  const [displayedValue, setDisplayedValue] = useState("")
+  const isString = typeof defaultValue === "string"
+  const [displayedValue, setDisplayedValue] = useState(
+    isString ? defaultValue : defaultValue.label
+  )
 
   const onCustomChange = useCallback(
     (option: FormSelectOption) => {

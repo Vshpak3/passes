@@ -66,8 +66,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             defaultValue={MetaMaskSelectOptions[0]}
           />
         </div>
-        {watch("metamask") ===
-        defaultPayinMethod?.method + "." + defaultPayinMethod?.chain ? (
+        {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
           <Button tag="button" variant="gray">
             <span className="text-[14px] font-[700]">
               {isEmbedded ? "Selected" : "Default"}
@@ -103,8 +102,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             defaultValue={PhantomSelectOptions[0]}
           />
         </div>
-        {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
-        defaultPayinMethod?.method ? (
+        {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
           <Button tag="button" variant="gray">
             <span className="text-[14px] font-[700]">
               {isEmbedded ? "Selected" : "Default"}

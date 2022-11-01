@@ -4,7 +4,10 @@ import {
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
 
-export const serializePayinMethod = (payinMethod: PayinMethodDto) => {
+export const serializePayinMethod = (payinMethod?: PayinMethodDto) => {
+  if (!payinMethod) {
+    payinMethod = { method: PayinMethodDtoMethodEnum.None }
+  }
   return `${payinMethod.method}.${payinMethod.cardId ?? ""}.${
     payinMethod.chain ?? ""
   }`

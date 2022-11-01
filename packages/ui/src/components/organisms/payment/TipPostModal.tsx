@@ -12,6 +12,7 @@ import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethod
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
 import { MIN_TIP_POST_PRICE } from "src/config/post"
+import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
@@ -48,7 +49,12 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     } as PayinDataDto
   }
 
-  const { loading, submit } = usePay(registerTip, registerData)
+  const { loading, submit } = usePay(
+    registerTip,
+    registerData,
+    undefined,
+    LandingMessageEnum.TIP
+  )
 
   return (
     <Modal isOpen={true} setOpen={() => setPost(null)}>

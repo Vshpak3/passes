@@ -30,6 +30,11 @@ import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
+import {
+  LANDING_MESSAGES,
+  LandingMessageEnum,
+  LandingStatusEnum
+} from "src/helpers/landing-messages"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 
@@ -82,17 +87,6 @@ type SubAppProps = {
   getLayout: GetLayout
 }
 
-const LANDING_MESSAGES: Record<string, Record<string, string>> = {
-  success: {
-    passPurchase:
-      "Thank you for you purchase, your membership card is minting now"
-  },
-  failure: {
-    passPurchase:
-      "Thank you for you purchase, your membership card is minting now"
-  }
-}
-
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
@@ -115,11 +109,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   useEffect(() => {
     if (router.isReady) {
       const query = router.query
-      const landingMessage = query.lm as string
-      const result = query.r as string
+      const landingMessage = query.lm as LandingMessageEnum
+      const result = query.r as LandingStatusEnum
       if (landingMessage && result) {
+        const action =
+          result === LandingStatusEnum.SUCCESS ? toast.success : toast.error
         if (LANDING_MESSAGES[result][landingMessage]) {
-          toast.success(LANDING_MESSAGES[result][landingMessage])
+          action(LANDING_MESSAGES[result][landingMessage])
         }
         // TODO: keep other query params and hashes
         window.history.replaceState("", "", "?")

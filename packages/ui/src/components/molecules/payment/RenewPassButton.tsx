@@ -2,6 +2,7 @@ import { PassApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
 import React, { FC } from "react"
 
+import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
 interface RenewPassButtonProps {
@@ -39,7 +40,8 @@ export const RenewPassButton: FC<RenewPassButtonProps> = ({
   const { blocked, submitting, loading, submit } = usePay(
     register,
     registerData,
-    onSuccess
+    onSuccess,
+    LandingMessageEnum.PURCHASE
   )
 
   return (

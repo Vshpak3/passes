@@ -6,6 +6,7 @@ import {
 import classNames from "classnames"
 import React, { FC, useEffect } from "react"
 
+import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
 interface BuyPassButtonProps {
@@ -50,7 +51,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
     register,
     registerData,
     onSuccess,
-    "passPurchase"
+    LandingMessageEnum.PASS_PURCHASE
   )
 
   useEffect(() => {
