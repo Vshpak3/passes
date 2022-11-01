@@ -51,7 +51,10 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             <a
               href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
             >
-              <ProfileThumbnail userId={selectedChannel.otherUserId} />
+              <ProfileThumbnail
+                userId={selectedChannel.otherUserId}
+                key={selectedChannel.otherUserId}
+              />
             </a>
             <div className="text-brand-600 flex flex-col items-start pl-2">
               <NameDisplay
