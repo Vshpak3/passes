@@ -18,7 +18,6 @@ import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModalData } from "src/components/organisms/BlockModal"
-import TipPostModal from "src/components/organisms/payment/TipPostModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
 import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
@@ -48,6 +47,10 @@ const BuyPassModal = dynamic(
 )
 const BuyPostModal = dynamic(
   () => import("../components/organisms/payment/BuyPostModal"),
+  { ssr: false }
+)
+const TipPostModal = dynamic(
+  () => import("../components/organisms/payment/TipPostModal"),
   { ssr: false }
 )
 const ReportModal = dynamic(
@@ -118,7 +121,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
           action(LANDING_MESSAGES[result][landingMessage])
         }
         // TODO: keep other query params and hashes
-        window.history.replaceState("", "", "?")
+        window.history.replaceState(null, "", "?")
       }
     }
   }, [router])
