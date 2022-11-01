@@ -27,7 +27,7 @@ const ProfileUnmemo: FC = () => {
               />
             )}
           </div>
-          <div className="sticky col-span-3 flex flex-col border-l border-gray-600">
+          <div className="sticky col-span-3 flex flex-col border-l-[0.5px] border-gray-600">
             <PassesSidebar />
           </div>
         </div>
