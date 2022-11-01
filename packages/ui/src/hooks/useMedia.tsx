@@ -28,7 +28,12 @@ export const useMedia = (initFiles?: ContentFile[]) => {
     e.stopPropagation()
     setFiles(newFiles)
   }
-  const addNewMedia = (newFiles: File[]) => {
+  const addNewMedia = (_newFiles: FileList | null) => {
+    if (!_newFiles) {
+      return
+    }
+    const newFiles = Array.from(_newFiles)
+
     // Validate properties of each file
     for (const file of newFiles) {
       const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)

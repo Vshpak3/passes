@@ -70,10 +70,8 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
 
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
-    if (event?.target?.files && event.target.files.length > 0) {
-      addNewMedia(Array.from(event.target.files))
-      event.target.value = ""
-    }
+    addNewMedia(event.target.files)
+    event.target.value = ""
   }
 
   const onSubmit = async () => {

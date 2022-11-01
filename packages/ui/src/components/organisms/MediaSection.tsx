@@ -33,7 +33,7 @@ interface MediaSectionProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
   errors: FieldErrorsImpl
-  addNewMedia: (newFiles: File[]) => void
+  addNewMedia: (newFiles: FileList | null) => void
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
@@ -68,9 +68,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
   }
 
   const onFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event?.target?.files) {
-      addNewMedia(Array.from(event.target.files))
-    }
+    addNewMedia(event.target.files)
     event.target.value = ""
   }
 

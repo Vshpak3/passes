@@ -59,7 +59,6 @@ export const InputMessage: FC<InputMessageProps> = ({
     register,
     formState: { errors },
     handleSubmit,
-    // setValue,
     setError,
     clearErrors,
     reset,
@@ -71,20 +70,14 @@ export const InputMessage: FC<InputMessageProps> = ({
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  // const [scheduled, setScheduled] = useState<any>()
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
   const previewIndex = watch("previewIndex")
-  // const setScheduledTime = (date: Date | null) => {
-  //   setValue("scheduledAt", date, { shouldValidate: true })
-  // }
 
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
-    if (event?.target?.files && event.target.files.length > 0) {
-      addNewMedia(Array.from(event.target.files))
-      event.target.value = ""
-    }
+    addNewMedia(event.target.files)
+    event.target.value = ""
   }
 
   const registerMessage = async () => {
