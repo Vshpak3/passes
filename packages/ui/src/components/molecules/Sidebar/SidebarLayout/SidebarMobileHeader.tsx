@@ -11,19 +11,21 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
 }) => {
   return (
     <Disclosure>
-      <Disclosure.Button>
-        <span
-          onClick={toggleSidebar}
-          className="group mb-[30px] flex cursor-pointer items-center px-[10px]"
-        >
-          <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
-            <CloseIcon
-              className="mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-white stroke-2 "
-              aria-hidden="true"
-            />
-          </div>
-        </span>
-      </Disclosure.Button>
+      <div className="border-r-[0.5px] border-gray-600">
+        <Disclosure.Button>
+          <span
+            onClick={toggleSidebar}
+            className="group my-4 mx-3 flex cursor-pointer items-center"
+          >
+            <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
+              <CloseIcon
+                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2"
+                aria-hidden="true"
+              />
+            </div>
+          </span>
+        </Disclosure.Button>
+      </div>
     </Disclosure>
   )
 }

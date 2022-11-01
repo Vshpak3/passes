@@ -8,7 +8,7 @@ interface MobileNavbarProps {
   openSidebar: () => void
 }
 
-export const MobileNavbar: FC<MobileNavbarProps> = ({ openSidebar }) => {
+export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
   return (
     <div className="fixed top-0 left-0 z-30 flex h-16 w-full flex-1 items-center justify-between bg-[#252525]/50 backdrop-blur-lg">
       <Disclosure>
@@ -19,7 +19,7 @@ export const MobileNavbar: FC<MobileNavbarProps> = ({ openSidebar }) => {
           >
             <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
               <MenuIcon
-                className="mx-4 flex-shrink-0 cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2 "
+                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2 "
                 aria-hidden="true"
               />
             </div>

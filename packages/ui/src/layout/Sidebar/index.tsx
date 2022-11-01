@@ -47,7 +47,7 @@ export const Sidebar = () => {
   }, [user])
 
   return (
-    <SidebarMobileWrapper>
+    <SidebarMobileWrapper activeRoute={active}>
       <SidebarCore navigation={navigation} active={active} />
     </SidebarMobileWrapper>
   )

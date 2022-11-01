@@ -35,7 +35,7 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
             </Button>
             <div className={`${isMobile ? "" : "hidden"} lg:flex`}>
               <Button
-                className="mt-4 !px-8 !py-5"
+                className="mt-4 !px-4 !py-5"
                 variant="pink"
                 onClick={() => setIsNewPostModalOpen(true)}
               >
