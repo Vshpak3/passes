@@ -70,6 +70,12 @@ export interface FanWallCommentDto {
     commenterDisplayName: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof FanWallCommentDto
+     */
+    commenterIsCreator: boolean;
+    /**
+     * 
      * @type {Date}
      * @memberof FanWallCommentDto
      */
@@ -100,6 +106,7 @@ export function instanceOfFanWallCommentDto(value: object): boolean {
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "commenterUsername" in value;
     isInstance = isInstance && "commenterDisplayName" in value;
+    isInstance = isInstance && "commenterIsCreator" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isOwner" in value;
     isInstance = isInstance && "isHidden" in value;
@@ -124,6 +131,7 @@ export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
+        'commenterIsCreator': json['commenterIsCreator'],
         'createdAt': (new Date(json['createdAt'])),
         'isOwner': json['isOwner'],
         'isHidden': json['isHidden'],
@@ -146,6 +154,7 @@ export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
+        'commenterIsCreator': value.commenterIsCreator,
         'createdAt': (value.createdAt.toISOString()),
         'isOwner': value.isOwner,
         'isHidden': value.isHidden,

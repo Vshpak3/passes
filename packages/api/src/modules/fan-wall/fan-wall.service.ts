@@ -83,6 +83,7 @@ export class FanWallService {
         `${FanWallCommentEntity.table}.*`,
         `${UserEntity.table}.username as commenter_username`,
         `${UserEntity.table}.display_name as commenter_display_name`,
+        `${UserEntity.table}.is_creator as commenter_is_creator`,
       )
 
     if (userId !== getFanWallRequestDto.creatorId) {

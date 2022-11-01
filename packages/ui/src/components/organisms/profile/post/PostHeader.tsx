@@ -11,10 +11,8 @@ import {
 } from "src/components/organisms/profile/drop-down/Dropdown"
 
 interface PostHeaderProps
-  extends Pick<
-    PostDto,
-    "createdAt" | "displayName" | "isOwner" | "userId" | "username"
-  > {
+  extends Pick<PostDto, "createdAt" | "userId" | "username" | "displayName"> {
+  isCreator: boolean
   isPinned?: boolean
   dropdownOptions: DropdownOption[]
   statisticsButtonProps?: PostStatisticsButtonProps
@@ -22,9 +20,10 @@ interface PostHeaderProps
 
 export const PostHeader: FC<PostHeaderProps> = ({
   createdAt,
-  displayName,
   userId,
   username,
+  displayName,
+  isCreator,
   isPinned,
   dropdownOptions
 }) => {
@@ -33,7 +32,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center space-x-4 overflow-x-clip">
-        <ProfileWidget user={user} />
+        <ProfileWidget user={user} isCreator={isCreator} />
       </div>
       <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">

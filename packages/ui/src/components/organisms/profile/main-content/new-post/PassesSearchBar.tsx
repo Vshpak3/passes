@@ -57,8 +57,7 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
       options={searchOptions}
       loading={loading}
       searchValue={searchValue}
-      emptyText="passes"
-      placeholder="Find passes"
+      contentName="passes"
       onInputChange={onInputChange}
       onSelect={onSelect}
     />

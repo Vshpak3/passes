@@ -119,10 +119,10 @@ const PostUnmemo: FC<PostProps> = ({
           >
             <PostHeader
               createdAt={createdAt}
-              displayName={displayName}
-              isOwner={isOwner}
               userId={userId}
               username={username}
+              displayName={displayName}
+              isCreator={true}
               isPinned={isPinned}
               dropdownOptions={dropdownOptions}
               statisticsButtonProps={{

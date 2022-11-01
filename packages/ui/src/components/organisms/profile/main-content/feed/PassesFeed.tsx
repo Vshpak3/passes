@@ -38,7 +38,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
           })
         }}
         fetchProps={{ creatorId, type: selectedPassType }}
-        emptyElement={<span>No Pass to show</span>}
+        emptyElement={<span>No passes available</span>}
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
           return <PassCard pass={arg} />
         }}

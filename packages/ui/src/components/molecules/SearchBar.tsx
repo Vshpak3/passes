@@ -1,5 +1,4 @@
 import { Combobox } from "@headlessui/react"
-import classNames from "classnames"
 import SearchIcon from "public/icons/messages-search-icon.svg"
 import { FC } from "react"
 
@@ -10,10 +9,8 @@ interface SearchBarProps {
   loading: boolean
   options: JSX.Element[]
   onInputChange: (e: any) => void
-  placeholder: string
-  emptyText: string
-  isDesktop?: boolean
   onSelect?: (value: any) => void
+  contentName: string
 }
 
 export const SearchBar: FC<SearchBarProps> = ({
@@ -21,10 +18,8 @@ export const SearchBar: FC<SearchBarProps> = ({
   loading,
   options,
   onInputChange,
-  placeholder,
-  emptyText,
   onSelect,
-  isDesktop = true
+  contentName
 }) => {
   return (
     <Combobox value={searchValue} onChange={onSelect}>
@@ -36,7 +31,7 @@ export const SearchBar: FC<SearchBarProps> = ({
               id="search"
               type="search"
               name="search"
-              placeholder={placeholder}
+              placeholder={`Find ${contentName}`}
               value={searchValue}
               autoComplete="off"
               onChange={onInputChange}
@@ -44,20 +39,15 @@ export const SearchBar: FC<SearchBarProps> = ({
             />
           </div>
         </Combobox.Button>
-        <Combobox.Options
-          className={classNames(
-            "absolute top-14 z-10 w-full overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none",
-            { "max-h-[165px]": isDesktop }
-          )}
-        >
+        <Combobox.Options className="absolute top-14 z-10 w-full overflow-y-auto rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none">
           {options.length ? (
             options
           ) : searchValue && loading ? (
             <CustomResult text="Loading..." />
           ) : searchValue && !loading ? (
-            <CustomResult text={`Found no ${emptyText}`} />
+            <CustomResult text={`Found no ${contentName}`} />
           ) : (
-            <CustomResult text={`Search for ${emptyText}`} />
+            <CustomResult text={`Search for ${contentName}`} />
           )}
         </Combobox.Options>
       </div>

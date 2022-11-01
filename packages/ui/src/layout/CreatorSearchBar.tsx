@@ -53,9 +53,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
             loading={loading}
             searchValue={searchValue}
             onInputChange={onChangeInput}
-            placeholder="Find creators"
-            emptyText="creators"
-            isDesktop={isDesktop}
+            contentName="creators"
           />
         </div>
       </div>

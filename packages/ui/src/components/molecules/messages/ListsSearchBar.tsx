@@ -57,8 +57,7 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
       options={searchOptions}
       loading={loading}
       searchValue={searchValue}
-      emptyText="lists"
-      placeholder="Find lists"
+      contentName="lists"
       onInputChange={onInputChange}
       onSelect={onSelect}
     />

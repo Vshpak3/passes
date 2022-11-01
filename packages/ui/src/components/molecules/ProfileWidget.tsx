@@ -7,9 +7,13 @@ import { CheckVerified } from "src/icons/CheckVerified"
 
 type ProfileWidgetProps = {
   user: UserDisplayInfoDto | ListMemberDto
+  isCreator?: boolean
 }
 
-export const ProfileWidget: FC<ProfileWidgetProps> = ({ user }) => {
+export const ProfileWidget: FC<ProfileWidgetProps> = ({
+  user,
+  isCreator = true
+}) => {
   return (
     <Link href={`/${user.username}`}>
       <a>
@@ -20,9 +24,11 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({ user }) => {
           <div className="flex flex-col">
             <span className="ml-3 flex flex-row items-center text-lg font-medium leading-6 text-white">
               {user.displayName}
-              <span className="ml-2">
-                <CheckVerified height={18} width={18} />
-              </span>
+              {isCreator && (
+                <span className="ml-2">
+                  <CheckVerified height={18} width={18} />
+                </span>
+              )}
             </span>
             <span className="ml-3 text-xs font-medium leading-6 text-gray-400">
               @{user.username}

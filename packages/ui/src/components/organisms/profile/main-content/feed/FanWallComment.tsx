@@ -28,9 +28,10 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
 
   const {
     fanWallCommentId,
-    commenterDisplayName,
     commenterId,
     commenterUsername,
+    commenterDisplayName,
+    commenterIsCreator,
     createdAt,
     isOwner,
     isHidden: _isHidden,
@@ -79,10 +80,10 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
           <FormContainer className="!min-h-[10px] rounded-[15px] border border-white/10 px-5 pt-5">
             <PostHeader
               createdAt={createdAt}
-              displayName={commenterDisplayName}
-              isOwner={isOwner}
               userId={commenterId}
               username={commenterUsername}
+              displayName={commenterDisplayName}
+              isCreator={commenterIsCreator}
               dropdownOptions={dropdownItems}
             />
             <div className="flex flex-col items-start">
