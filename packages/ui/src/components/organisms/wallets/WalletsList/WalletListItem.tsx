@@ -76,7 +76,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
     >
       <div className="relative flex basis-1/4 items-center justify-center">
         <div className="absolute left-3 md:-left-3">
-          {Boolean(wallet.custodial) && (
+          {!!wallet.custodial && (
             <IconTooltip
               Icon={InfoIcon}
               position="top"
@@ -114,7 +114,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           className="invisible ml-2 group-hover:visible md:block"
         />
       </div>
-      {wallet.authenticated && (
+      {!!wallet.authenticated && (
         <div className="flex basis-1/4 justify-center">
           {defaultEthMinting && (
             <Button className="cursor-default" variant="gray">
