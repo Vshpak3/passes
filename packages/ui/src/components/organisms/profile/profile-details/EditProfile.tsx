@@ -2,13 +2,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { GetProfileResponseDto } from "@passes/api-client"
 import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
-import Discord from "public/icons/profile-discord-icon.svg"
-import Facebook from "public/icons/profile-facebook-icon.svg"
-import Instagram from "public/icons/profile-instagram-icon.svg"
-import TikTok from "public/icons/profile-tiktok-icon.svg"
-import Twitch from "public/icons/profile-twitch-icon.svg"
-import Twitter from "public/icons/profile-twitter-icon.svg"
-import Youtube from "public/icons/profile-youtube-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -108,9 +101,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex" key={key}>
-      {!!input?.icon && (
-        <input.icon className="mr-2 h-[22px] w-[22px] align-middle" />
-      )}
+      {!!input?.icon && <input.icon className="mr-3 mt-3 h-[22px] w-[22px]" />}
       <FormInput
         register={register}
         name={key}

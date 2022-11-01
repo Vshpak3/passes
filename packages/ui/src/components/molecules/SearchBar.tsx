@@ -9,7 +9,7 @@ interface SearchBarProps {
   loading: boolean
   options: JSX.Element[]
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onSelect?: <T>(value: T | null) => void
+  onSelect?: (value: any) => void
   contentName: string
 }
 

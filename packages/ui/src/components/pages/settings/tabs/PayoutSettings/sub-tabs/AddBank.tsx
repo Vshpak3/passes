@@ -22,16 +22,18 @@ enum BankTypeEnum {
   NON_IBAN = "non iban"
 }
 
+// TODO: update with actual values
 interface BankForm {
   [key: string]: string
 }
 
 const AddBank = () => {
+  const BANK_COUNTRY_FIELD = "bank-country"
+
   const idempotencyKey = v4()
 
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
-  const BANK_COUNTRY_FIELD = "bank-country"
   const {
     handleSubmit,
     register,
