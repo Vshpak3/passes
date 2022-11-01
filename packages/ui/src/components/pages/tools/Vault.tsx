@@ -83,7 +83,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
   }
 
   return (
-    <div className="mx-auto w-full px-2 md:px-5 lg:max-w-[1100px]">
+    <div className="ml-4 w-full px-2 md:px-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VaultNavigation
           setFiles={setFiles}

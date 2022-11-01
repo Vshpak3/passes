@@ -86,35 +86,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
         </div>
-        {!embedded && (
-          <div className="align-center items-align flex justify-center">
-            {selectedItems && selectedItems?.length > 0 && (
-              <>
-                <div>20 media files can be posted at any given time</div>
-                <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
-                <VaultAddToDropdown
-                  // TODO: connect with API to get selected items and add to new message
-                  onAddToMessage={() => pushToMessages()}
-                  // TODO: connect with API to get selected items and add to new post
-                  // eslint-disable-next-line no-console
-                  onAddToPost={() => console.log("add to post")}
-                />
-              </>
-            )}
-            <div className="mr-3">
-              <VaultAddButton onClick={setFiles} />
-            </div>
-            <div>
-              <SortDropdown
-                selection={{
-                  orderType: order === "desc" ? "recent" : "oldest"
-                }}
-                options={sortOptions}
-                onSelect={onSortSelect}
-              />
-            </div>
-          </div>
-        )}
       </div>
       <VaultSelectContainer
         selectedItems={selectedItems}
@@ -132,6 +103,35 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         setOpen={setDeleteModalActive}
         onCancel={toggleDeleteModal}
       />
+      {!embedded && (
+        <div className="align-center items-align flex justify-center">
+          {selectedItems && selectedItems?.length > 0 && (
+            <>
+              <div>20 media files can be posted at any given time</div>
+              <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
+              <VaultAddToDropdown
+                // TODO: connect with API to get selected items and add to new message
+                onAddToMessage={() => pushToMessages()}
+                // TODO: connect with API to get selected items and add to new post
+                // eslint-disable-next-line no-console
+                onAddToPost={() => console.log("add to post")}
+              />
+            </>
+          )}
+          <div className="mr-3">
+            <VaultAddButton onClick={setFiles} />
+          </div>
+          <div>
+            <SortDropdown
+              selection={{
+                orderType: order === "desc" ? "recent" : "oldest"
+              }}
+              options={sortOptions}
+              onSelect={onSortSelect}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
