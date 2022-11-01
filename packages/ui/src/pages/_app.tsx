@@ -128,7 +128,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Array<[Provider<any>, Record<string, any>]> = [
-    [GlobalCacheContext.Provider, { usernames: {} }],
+    [
+      GlobalCacheContext.Provider,
+      { usernames: {}, profileImages: new Set<string>() }
+    ],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
