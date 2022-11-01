@@ -22,7 +22,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
   }
   return (
     <>
-      <div className="flex items-center justify-center lg:hidden">
+      <div className="my-4 flex items-center justify-center lg:hidden">
         <Button
           className={`flex h-12 w-12 items-center justify-center rounded-[50%] ${
             isMobile ? "hidden" : "lg:hidden"
