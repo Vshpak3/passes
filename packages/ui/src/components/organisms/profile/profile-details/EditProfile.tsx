@@ -18,7 +18,12 @@ import { PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
-import { FormType } from "src/components/types/FormTypes"
+import {
+  FileAccept,
+  FormLabel,
+  FormPlaceholder,
+  FormType
+} from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
@@ -38,13 +43,13 @@ const editProfileSchema = object({
 
 const bioForm = {
   description: {
-    type: "text-area",
+    type: "text-area" as FormType,
     label: "Description"
   }
 }
 
 const profilermationForm = {
-  displayName: { type: "text", label: "Display Name" }
+  displayName: { type: "text" as FormType, label: "Display Name" }
 }
 
 const socialMediaForm = {
@@ -90,6 +95,13 @@ interface EditProfileProps {
   setProfileImageOverride: Dispatch<SetStateAction<string | undefined>>
 }
 
+interface RenderInputProps {
+  type: FormType
+  placeholder?: FormPlaceholder
+  accept?: FileAccept
+  label?: FormLabel
+}
+
 export const EditProfile: FC<EditProfileProps> = ({
   setEditProfileModalOpen,
   setProfileImageOverride
@@ -126,7 +138,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   const profileImage: File[] = watch("profileImage")
   const profileBannerImage: File[] = watch("profileBannerImage")
 
-  const renderInput = ([key, input]: any) => (
+  const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6" key={key}>
       <FormInput
         register={register}

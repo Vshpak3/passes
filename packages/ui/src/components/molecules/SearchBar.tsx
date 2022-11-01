@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import { FC } from "react"
+import { ChangeEvent, FC } from "react"
 
 import { CustomResult } from "src/components/atoms/search/user/UserSearchResults"
 
@@ -8,8 +8,8 @@ interface SearchBarProps {
   searchValue: string
   loading: boolean
   options: JSX.Element[]
-  onInputChange: (e: any) => void
-  onSelect?: (value: any) => void
+  onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
+  onSelect?: <T>(value: T | null) => void
   contentName: string
 }
 

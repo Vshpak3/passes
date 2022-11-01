@@ -2,11 +2,16 @@ import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
 import React, { ChangeEvent, FC, useState } from "react"
-import { Controller, RegisterOptions } from "react-hook-form"
+import {
+  Control,
+  Controller,
+  FieldValues,
+  RegisterOptions
+} from "react-hook-form"
 
 interface CreditCardInputProps {
   name: string
-  control: any
+  control: Control<FieldValues>
   rules: RegisterOptions
 }
 

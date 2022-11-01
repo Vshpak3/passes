@@ -3,6 +3,7 @@ import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { FormErrors, FormRegister } from "src/components/types/FormTypes"
 
 interface PassFormErrorProps {
   message: string
@@ -19,9 +20,9 @@ export const PassFormError: FC<PassFormErrorProps> = ({
 )
 
 interface PassFormCheckboxProps {
-  label: any
-  name: any
-  register: any
+  label: string
+  name: string
+  register: FormRegister
 }
 
 export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
@@ -41,12 +42,12 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
 )
 
 interface PassNumberInputProps {
-  register: any
+  register: FormRegister
   title: string
-  name: any
-  placeholder: any
-  suffix?: any
-  className: any
+  name: string
+  placeholder: string
+  suffix?: string | number
+  className: string
 }
 
 export const PassNumberInput: FC<PassNumberInputProps> = ({
@@ -84,7 +85,7 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
 )
 
 interface PassesSectionTitleProps {
-  title: any
+  title: string
 }
 
 export const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
@@ -114,7 +115,7 @@ export const CreatePassButton: FC<CreatePassButtonProps> = ({
 )
 
 interface CreatePassHeaderProps {
-  title: any
+  title: string
 }
 
 export const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
@@ -126,8 +127,8 @@ export const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
 )
 
 interface PassDescriptionInputProps {
-  register: any
-  errors: any
+  register: FormRegister
+  errors: FormErrors
 }
 
 export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
@@ -150,8 +151,8 @@ export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
 )
 
 interface PassNameInputProps {
-  register: any
-  errors: any
+  register: FormRegister
+  errors: FormErrors
 }
 
 export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (

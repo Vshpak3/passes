@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import { toLower } from "lodash"
-import React, { FC } from "react"
+import React, { FC, HTMLProps } from "react"
 import ReactInputMask from "react-input-mask"
 
 import {
@@ -89,7 +89,9 @@ export const Input: FC<InputProps> = ({
               errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
             )}
           >
-            {(inputProps: any) => <input {...inputProps} />}
+            {(inputProps: HTMLProps<HTMLInputElement>) => (
+              <input {...inputProps} />
+            )}
           </ReactInputMask>
         ) : (
           <input

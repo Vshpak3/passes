@@ -22,11 +22,16 @@ enum BankTypeEnum {
   NON_IBAN = "non iban"
 }
 
+interface BankForm {
+  [key: string]: string
+}
+
 const AddBank = () => {
   const idempotencyKey = v4()
 
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
+  const BANK_COUNTRY_FIELD = "bank-country"
   const {
     handleSubmit,
     register,
@@ -34,15 +39,14 @@ const AddBank = () => {
     setValue,
     watch,
     formState: { errors }
-    // eslint-disable-next-line sonarjs/no-duplicate-string
-  } = useForm<{ "bank-country": string; country: string; district: string }>({
-    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
+  } = useForm<BankForm>({
+    defaultValues: { country: COUNTRIES[0], BANK_COUNTRY_FIELD: COUNTRIES[0] }
   })
   const countrySelected = watch("country")
 
   const onSubmit = async () => {
     try {
-      const values: any = getValues()
+      const values = getValues()
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
@@ -66,7 +70,7 @@ const AddBank = () => {
         bankAddress: {
           bankName: values["bank-name"],
           city: values["bank-city"],
-          country: iso3311a2.getCode(values["bank-country"])
+          country: iso3311a2.getCode(values[BANK_COUNTRY_FIELD])
         }
       }
 
@@ -97,7 +101,7 @@ const AddBank = () => {
           ]}
           onChange={(newValue: BankTypeEnum) => {
             setBankType(newValue)
-            setValue("bank-country", newValue)
+            setValue(BANK_COUNTRY_FIELD, newValue)
           }}
           name="bank-country"
           errors={errors}

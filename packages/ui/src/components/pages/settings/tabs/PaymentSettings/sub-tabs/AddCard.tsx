@@ -33,12 +33,7 @@ interface AddCardProps {
 }
 
 interface CardForm {
-  country: string
-  district: string
-  // eslint-disable-next-line sonarjs/no-duplicate-string
-  "card-number": string
-  "exp-month": string
-  "exp-year": string
+  [key: string]: string
 }
 
 const AddCard: FC<AddCardProps> = ({ callback }) => {
@@ -69,7 +64,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   const onSubmit = async () => {
     try {
       setIsSubmitting(true)
-      const values: any = getValues()
+      const values = getValues()
 
       const cardDetails = {
         number: values["card-number"]
@@ -149,7 +144,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         rules={{
           required: { message: "Card number is required", value: true },
           validate: {
-            value: (value: any) => {
+            value: (value) => {
               const numberValidation = cardValidator.number(value)
 
               return numberValidation.isValid

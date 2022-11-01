@@ -5,13 +5,13 @@ import { PassTile } from "src/components/molecules/pass/PassTile"
 
 interface PassesProps {
   passes: PassDto[]
-  title: any
+  title: string
 }
 
 // Might be used in the future
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const Passes: FC<PassesProps> = ({ passes, title }) => {
-  const renderPassesGrid = passes?.map((pass: any, index: any) => (
+  const renderPassesGrid = passes?.map((pass: PassDto, index: number) => (
     <PassTile key={index} pass={pass} />
   ))
 

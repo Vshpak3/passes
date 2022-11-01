@@ -29,6 +29,16 @@ enum BankTypeEnum {
 interface PaymentFormFields {
   bankAddress: { country: string }
   bankAccountType: BankTypeEnum
+  accountNumber: string
+  routingNumber: string
+  iban: string
+  firstName: string
+  lastName: string
+  city: string
+  billingAddress: string
+  alternativeAddress: string
+  district: string
+  postalCode: string
 }
 
 export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
@@ -45,7 +55,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
 
   const onSubmit = async () => {
     try {
-      const values: any = getValues()
+      const values = getValues()
 
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
