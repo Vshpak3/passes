@@ -170,7 +170,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   return (
     <>
       <Header />
-      <div className="mx-auto flex h-full min-h-screen w-full max-w-[1235px] flex-1">
+      <div className="flex h-full min-h-screen w-full max-w-[1235px] flex-1">
         <div
           className={cn(
             "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
