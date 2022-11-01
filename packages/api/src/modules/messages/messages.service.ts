@@ -474,7 +474,7 @@ export class MessagesService {
     } = sendMessageDto
     if (scheduledAt) {
       throw new MessageSendError(
-        'We currently dont support scheduled normal direct messages',
+        "We currently don't support scheduled normal direct messages",
       )
     }
     if (tipAmount && price) {

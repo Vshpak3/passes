@@ -27,6 +27,11 @@ import { ContentService } from '../content/content.service'
 import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { EmailService } from '../email/email.service'
+import {
+  POST_NEW_MENTION,
+  POST_NEW_MENTION_EMAIL_SUBJECT,
+} from '../email/templates/post-new-mention'
 import { PostLikeEntity } from '../likes/entities/like.entity'
 import { UserMessageContentEntity } from '../messages/entities/user-message-content.entity'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -90,6 +95,7 @@ export class PostService {
     private readonly payService: PaymentService,
     private readonly passService: PassService,
     private readonly contentService: ContentService,
+    private readonly emailService: EmailService,
 
     @InjectRedis('post_subscriber') private readonly redisService: Redis,
   ) {}
@@ -183,6 +189,32 @@ export class PostService {
         this.logger.error(err)
         throw err
       })
+
+    try {
+      const taggedUserEmails = await this.dbReader<UserEntity>(UserEntity.table)
+        .whereIn(
+          'id',
+          createPostDto.tags.map((u) => u.userId),
+        )
+        .select('email')
+
+      // Incase users are mentioned multiple times in a single post
+      const uniqueEmails = new Set<string>(taggedUserEmails.map((e) => e.email))
+
+      for (const email of uniqueEmails) {
+        await this.emailService.sendRenderedEmail(
+          email,
+          POST_NEW_MENTION_EMAIL_SUBJECT,
+          POST_NEW_MENTION,
+          {},
+        )
+      }
+    } catch (err) {
+      this.logger.error(
+        'Failed to send email notifications to users mentioned in post',
+      )
+    }
+
     return postId
   }
 

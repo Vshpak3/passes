@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { RedisModule } from '@nestjs-modules/ioredis'
 
 import { ContentModule } from '../content/content.module'
+import { EmailModule } from '../email/email.module'
 import { PassModule } from '../pass/pass.module'
 import { PaymentModule } from '../payment/payment.module'
 import { S3ContentModule } from '../s3content/s3content.module'
@@ -16,6 +17,7 @@ import { PostService } from './post.service'
     PassModule,
     ContentModule,
     RedisModule,
+    EmailModule,
   ],
   controllers: [PostController],
   providers: [PostService, PostGateway],
