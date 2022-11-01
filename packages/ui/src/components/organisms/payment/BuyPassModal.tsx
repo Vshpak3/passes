@@ -1,14 +1,9 @@
-import {
-  GetPayinMethodResponseDtoMethodEnum,
-  PassDto,
-  PassDtoTypeEnum
-} from "@passes/api-client"
+import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
-import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface BuyPassModalProps {
   pass: PassDto | null
@@ -16,8 +11,6 @@ interface BuyPassModalProps {
 }
 
 const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
-  const { defaultPayinMethod, defaultCard } = usePayinMethod()
-
   return (
     <Modal isOpen={true} setOpen={() => setPass(null)}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
@@ -36,15 +29,9 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
       <PaymentModalBody
         price={pass?.price ?? 0}
         closeModal={() => setPass(null)}
-        payinMethod={defaultPayinMethod}
-        card={defaultCard}
       />
 
       <BuyPassButton
-        isDisabled={
-          !defaultPayinMethod ||
-          defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
-        }
         passId={pass?.passId ?? ""}
         onSuccess={() => {
           // toast.success("Please wait as we mint your membership card")

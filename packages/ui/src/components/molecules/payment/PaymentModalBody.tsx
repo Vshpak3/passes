@@ -1,4 +1,4 @@
-import { CircleCardDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
+import { PayinMethodDtoMethodEnum } from "@passes/api-client"
 import { useForm } from "react-hook-form"
 
 import { Select } from "src/components/atoms/Select"
@@ -14,7 +14,6 @@ import { ThreeDSInfo } from "./ThreeDSInfo"
 
 interface PaymentModalBodyProps {
   price: number
-  card?: CircleCardDto
   closeModal: () => void
 }
 interface PaymentModalBodyFromProps {
@@ -23,10 +22,9 @@ interface PaymentModalBodyFromProps {
 
 export const PaymentModalBody = ({
   price,
-  card,
   closeModal
 }: PaymentModalBodyProps) => {
-  const { defaultPayinMethod } = usePayinMethod()
+  const { defaultPayinMethod, cards } = usePayinMethod()
   const { register, setValue, watch } = useForm<PaymentModalBodyFromProps>({
     defaultValues: {
       method: serializePayinMethod(
@@ -36,7 +34,7 @@ export const PaymentModalBody = ({
   })
   const methodSeralized = watch("method")
   const payinMethod = deserializePayinMethod(methodSeralized)
-
+  const card = cards?.find((card) => card.id === payinMethod?.cardId)
   return (
     <>
       <PayinMethodDisplay

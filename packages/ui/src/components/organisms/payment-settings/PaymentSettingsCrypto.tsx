@@ -63,6 +63,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             onChange={(newValue: string) => setValue("metamask", newValue)}
             name="metamask"
             className="my-4 w-[130px]"
+            defaultValue={MetaMaskSelectOptions[0]}
           />
         </div>
         {watch("metamask") ===
@@ -99,6 +100,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             onChange={(newValue: "sol") => setValue("phantom", newValue)}
             name="phantom"
             className="my-4 w-[130px]"
+            defaultValue={PhantomSelectOptions[0]}
           />
         </div>
         {PayinMethodDtoMethodEnum.PhantomCircleUsdc ===
