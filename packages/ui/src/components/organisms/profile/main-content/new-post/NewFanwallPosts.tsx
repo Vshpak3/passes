@@ -33,6 +33,7 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
       commenterId: user.userId,
       commenterDisplayName: user.displayName,
       commenterUsername: user.username,
+      commenterIsCreator: user.isCreator || false,
       text: createPost.text,
       tags: createPost.tags,
       createdAt: new Date(),

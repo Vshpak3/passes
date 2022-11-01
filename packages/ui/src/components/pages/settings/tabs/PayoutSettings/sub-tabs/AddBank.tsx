@@ -219,6 +219,7 @@ const AddBank = () => {
           selectOptions={COUNTRIES}
           name="country"
           errors={errors}
+          placeholder="Country"
           className="mt-4"
           options={{
             required: { message: "Country is required", value: true }

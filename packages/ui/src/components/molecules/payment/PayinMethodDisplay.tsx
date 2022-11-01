@@ -19,12 +19,11 @@ export const PayinMethodDisplay: FC<PayinMethodDisplayProps> = ({
     <>
       {payinMethod &&
         paymentMethodConfig(payinMethod.method, payinMethod.chain, card)}
-      <div className="my-4">
-        <span className="mr-1 text-[#ffff]/90">
-          Want to update your default payment method or add a new one?
-        </span>
+      <div className="my-4 mr-1 text-[#ffff]/90 underline">
         <Link href="/settings/payment">
-          <a onClick={closeModal}>Set payment methods</a>
+          <a onClick={closeModal}>
+            Click here to update your default payment method or add a new one.
+          </a>
         </Link>
       </div>
     </>

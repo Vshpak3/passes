@@ -230,7 +230,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             register={register}
             type="number"
             name="cvv"
-            placeholder="080"
+            placeholder=""
+            maxLength="4"
             errors={errors}
             options={{
               required: {
@@ -269,6 +270,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         selectOptions={COUNTRIES}
         name="country"
         errors={errors}
+        placeholder="Country"
         className="mt-3"
         defaultValue={COUNTRIES[0]}
         onChange={(newValue: string) => setValue("country", newValue)}

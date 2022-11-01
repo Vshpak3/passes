@@ -51,6 +51,7 @@ type FormInputProps = {
   min?: number
   max?: number
   step?: number
+  maxLength?: string
   autoComplete?: string
   onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
   style?: CSSProperties

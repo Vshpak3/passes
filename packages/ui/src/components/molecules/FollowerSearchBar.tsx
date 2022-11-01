@@ -29,8 +29,7 @@ const FollowerSearchBar: FC<FollowerSearchBarProps> = ({ onSelect }) => {
       options={searchOptions}
       onSelect={onSelect}
       onInputChange={onChangeInput}
-      placeholder="Add followers"
-      emptyText="followers"
+      contentName="followers"
     />
   )
 }
