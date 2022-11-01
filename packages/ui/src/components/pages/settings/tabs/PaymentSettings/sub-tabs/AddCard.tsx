@@ -6,7 +6,6 @@ import { SHA256 } from "crypto-js"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
-import { useRouter } from "next/router"
 import InfoIcon from "public/icons/info-icon.svg"
 import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -64,8 +63,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
 
   const idempotencyKey = v4()
 
-  const { user, loading, accessToken } = useUser()
-  const router = useRouter()
+  const { accessToken } = useUser()
   const countrySelected = watch("country")
 
   const onSubmit = async () => {
@@ -97,7 +95,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           expMonth: parseInt(values["exp-month"]),
           expYear: parseInt(values["exp-year"]),
           metadata: {
-            sessionId: SHA256(accessToken).toString().substr(0, 50),
+            sessionId: SHA256(accessToken).toString().substring(0, 50),
             ipAddress: "",
             phoneNumber: values["phone-number"]
           }
@@ -129,19 +127,12 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   }
 
   useEffect(() => {
-    if (!router.isReady || loading) {
-      return
-    }
-
-    if (!user) {
-      router.push("/login")
-    }
     const fetchData = async () => {
       const paymentApi = new PaymentApi()
       setPublicKey(await paymentApi.getCircleEncryptionKey())
     }
     fetchData()
-  }, [router, user, loading])
+  }, [])
 
   const years = useMemo(getExpirationYears, [])
 
@@ -184,20 +175,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <Select
             register={register}
-            selectOptions={[
-              "1",
-              "2",
-              "3",
-              "4",
-              "5",
-              "6",
-              "7",
-              "8",
-              "9",
-              "10",
-              "11",
-              "12"
-            ]}
+            selectOptions={Array.from(Array(12).keys()).map(String)}
             options={{
               required: { message: "Month is required", value: true }
             }}

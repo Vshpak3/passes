@@ -8,8 +8,7 @@ import {
   PayoutDto
 } from "@passes/api-client"
 import { format } from "date-fns"
-import { useRouter } from "next/router"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import {
   ComponentArg,
@@ -19,27 +18,13 @@ import { Payout } from "src/components/molecules/payment/Payout"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { getStartEnd } from "src/helpers/monthYear"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
-import { useUser } from "src/hooks/useUser"
 import { ChevronDown } from "src/icons/ChevronDown"
-
-const api = new PaymentApi()
 
 export const PayoutHistory = () => {
   const [month, setMonth] = useState<number>(new Date().getMonth())
   const [year, setYear] = useState<number>(new Date().getFullYear())
-  const { user, loading } = useUser()
-  const router = useRouter()
 
   const [startDate, endDate] = getStartEnd(month, year)
-
-  useEffect(() => {
-    if (!router.isReady || loading) {
-      return
-    }
-    if (!user) {
-      router.push("/login")
-    }
-  }, [router, user, loading])
 
   const handleChangeTime = useCallback((type: string, value: number) => {
     if (type === "month") {
@@ -49,6 +34,7 @@ export const PayoutHistory = () => {
       setYear(value)
     }
   }, [])
+
   const [monthYearPopperOpen, setMonthYearPopperOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const canBeMonthYearPopperOpen = monthYearPopperOpen && Boolean(anchorEl)
@@ -63,6 +49,9 @@ export const PayoutHistory = () => {
   const monthYearPopperId = canBeMonthYearPopperOpen
     ? "transition-popper"
     : undefined
+
+  const api = new PaymentApi()
+
   return (
     <div className="mb-5 flex w-full flex-col gap-4">
       <div className="flex flex-row items-center justify-between rounded-[15px]  p-4">

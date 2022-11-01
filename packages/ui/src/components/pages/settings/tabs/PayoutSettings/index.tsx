@@ -2,10 +2,9 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import classNames from "classnames"
-import { useRouter } from "next/router"
 import Clipboard from "public/icons/clipboard.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import { memo, useEffect } from "react"
+import { memo } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -13,7 +12,6 @@ import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
-import { useUser } from "src/hooks/useUser"
 import { BankIcon } from "src/icons/BankIcon"
 import { WalletIcon } from "src/icons/WalletIcon"
 
@@ -28,18 +26,6 @@ const PayoutSettings = () => {
     defaultWallet,
     wallets
   } = usePayoutMethod()
-
-  const { user, loading } = useUser()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!router.isReady || loading) {
-      return
-    }
-    if (!user) {
-      router.push("/login")
-    }
-  }, [router, user, loading])
 
   const renderDefaultBank = () => (
     <div className="flex basis-3/4 flex-col justify-between">
@@ -67,6 +53,7 @@ const PayoutSettings = () => {
       </div>
     </div>
   )
+
   const renderDefaultPayoutMethod = () => {
     return (
       <div>
@@ -83,6 +70,7 @@ const PayoutSettings = () => {
       </div>
     )
   }
+
   return (
     <>
       <Tab
