@@ -1,10 +1,11 @@
 import classNames from "classnames"
 import Recorder from "public/icons/media-recorder.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
-import { FC, PropsWithChildren } from "react"
+import { ChangeEvent, FC, PropsWithChildren } from "react"
 
 import { FormInput } from "src/components/atoms/FormInput"
 import {
+  FileAccept,
   FormErrors,
   FormOptions,
   FormRegister
@@ -13,20 +14,21 @@ import {
 export const PhotoSelector = {
   name: "Photo",
   Icon: Photos,
-  accept: [".png", ".jpg", ".jpeg"],
+  accept: [".png", ".jpg", ".jpeg"] as FileAccept,
   multiple: true
 }
 export const VideoSelector = {
   name: "Video",
   Icon: Recorder,
-  accept: [".mp4", ".mov", ".qt"],
+  accept: [".mp4", ".mov", ".qt"] as FileAccept,
   multiple: true
 }
 
 interface FileSelectorProps {
   name: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Icon: any
-  accept: string[]
+  accept: FileAccept
   multiple: boolean
 }
 
@@ -36,7 +38,7 @@ type MediaSelectorProps = {
   // setActiveMediaHeader?: (mediaHeader: string) => void
   errors: FormErrors
   options?: FormOptions
-  onChange: (event: any) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
   selectors: FileSelectorProps[]
 }
 
@@ -92,7 +94,7 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                   options={{ ...options, onChange }}
                   key={`media-header-${name}`}
                   name={`media-header-${name}`}
-                  accept={accept as any}
+                  accept={accept}
                   multiple={multiple}
                   className={classNames(
                     activeMediaHeader === name

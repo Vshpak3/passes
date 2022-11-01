@@ -2,6 +2,7 @@ import { ContentDto, ListDto, PassDto } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import React, {
+  ChangeEvent,
   Dispatch,
   FC,
   KeyboardEvent,
@@ -51,7 +52,6 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     register,
     formState: { errors },
     handleSubmit,
-    // setValue,
     setError,
     clearErrors,
     reset,
@@ -67,17 +67,13 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
   const previewIndex = watch("previewIndex")
-  const onMediaHeaderChange = (prop: any) => {
-    setActiveMediaHeader("")
-    if (prop?.target?.files.length > 0) {
-      return onFileInputChange(prop)
-    }
-  }
 
-  const onFileInputChange = (event: any) => {
-    const files = [...event.target.files] as File[]
-    addNewMedia(files)
-    event.target.value = ""
+  const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setActiveMediaHeader("")
+    if (event?.target?.files && event.target.files.length > 0) {
+      addNewMedia(Array.from(event.target.files))
+      event.target.value = ""
+    }
   }
 
   const onSubmit = async () => {
@@ -134,7 +130,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     }
   }
 
-  const prevent = (e: any) => {
+  const prevent = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.code === "Minus") {
       e.preventDefault()
     }
@@ -144,9 +140,10 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
     setValue("scheduledAt", date, { shouldValidate: true })
   }
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setMessagePrice(parseFloat(event.target.value))
   }
+
   const options = {}
   const scheduledTime = getValues()?.scheduledAt
   return (
@@ -231,7 +228,7 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               // setActiveMediaHeader={setActiveMediaHeader}
               register={register}
               errors={errors}
-              onChange={onMediaHeaderChange}
+              onChange={onMediaChange}
               selectors={[PhotoSelector, VideoSelector]}
             >
               <VaultSelector selectVaultContent={addContent} />

@@ -26,7 +26,7 @@ import { UserSearchResult } from "src/components/atoms/search/user/UserSearchRes
 import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
-import { NewPostFormProps } from "./profile/main-content/new-post/NewPostEditor"
+import { NewPostTextFormProps } from "./profile/main-content/new-post/NewPostEditor"
 
 const MENTION_LIMIT = 5
 
@@ -53,7 +53,7 @@ const Entry: FC<EntryComponentProps & { disabled?: boolean }> = ({
 
 interface CustomMentionProps {
   placeholder?: string
-  onInputChange: (params: Pick<NewPostFormProps, "text" | "tags">) => any
+  onInputChange: (params: NewPostTextFormProps) => void
   isReset?: boolean
   setIsReset?: (value: boolean) => void
   defaultText?: string

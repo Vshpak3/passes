@@ -6,6 +6,7 @@ export interface SidebarNavigation {
   // This should be any toto avoid conflicts with
   // `@svgr/webpack` plugin or
   // `babel-plugin-inline-react-svg` plugin
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: any
   current?: boolean
   creatorOnly?: boolean

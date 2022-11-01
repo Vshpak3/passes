@@ -12,7 +12,7 @@ export const useFollow = (creatorId?: string) => {
   const { user } = useUser()
   const router = useRouter()
 
-  const { data: isFollowing, mutate } = useSWR<boolean | undefined, any>(
+  const { data: isFollowing, mutate } = useSWR<boolean | undefined>(
     creatorId ? [CACHE_KEY_FOLLOW, creatorId] : null,
     async () => {
       if (user?.userId === creatorId) {

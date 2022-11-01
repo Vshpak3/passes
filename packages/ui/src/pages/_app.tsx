@@ -10,7 +10,7 @@ import Router, { useRouter } from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
-import { Provider, ReactElement, ReactNode, useEffect, useState } from "react"
+import { Provider, ReactElement, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { toast, ToastContainer } from "react-toastify"
@@ -62,12 +62,12 @@ Router.events.on("routeChangeError", () => {
   nprogress.done()
 })
 
+type GetLayout = (page: ReactElement, hasRefreshed: boolean) => JSX.Element
+
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
   IP
-> & {
-  getLayout?: (page: ReactElement, hasRefreshed: boolean) => ReactNode
-}
+> & { getLayout?: GetLayout }
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout
@@ -75,8 +75,9 @@ type AppPropsWithLayout = AppProps & {
 
 type SubAppProps = {
   Component: NextPageWithLayout
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pageProps: any
-  getLayout: any
+  getLayout: GetLayout
 }
 
 const LANDING_MESSAGES: Record<string, Record<string, string>> = {
@@ -123,6 +124,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     }
   }, [router])
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [GlobalCacheContext.Provider, { usernames: {} }],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],

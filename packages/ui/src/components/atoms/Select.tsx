@@ -26,6 +26,7 @@ export type SelectProps = {
   placeholder?: FormPlaceholder
   selectOptions?: FormSelectOptions
   className?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?: (value: any) => void
   placeholderClass?: string
   showOnTop?: boolean

@@ -32,6 +32,7 @@ const editProfileSchema = object({
 interface RenderInputProps {
   type: FormType
   label: FormLabel
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: any
 }
 

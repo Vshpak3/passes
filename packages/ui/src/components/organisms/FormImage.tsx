@@ -5,9 +5,11 @@ import { FormInput } from "src/components/atoms/FormInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 
 interface FormImageProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
   name: string
   imgData: File[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setValue: UseFormSetValue<any>
   inputUI: JSX.Element
   cropWidth: number

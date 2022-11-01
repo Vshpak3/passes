@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
-import { NewPostFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
+import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 
@@ -97,7 +97,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
           isReset={isReset}
           setIsReset={setIsReset}
           placeholder="Type a comment..."
-          onInputChange={(params: Pick<NewPostFormProps, "text" | "tags">) => {
+          onInputChange={(params: NewPostTextFormProps) => {
             setIsButtonDisabled(!params?.text)
             setValue("comment", params?.text)
             setValue("mentions", params?.tags)

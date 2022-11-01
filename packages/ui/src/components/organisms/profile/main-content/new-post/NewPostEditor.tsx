@@ -21,9 +21,12 @@ const CustomMentionEditor = dynamic(
   { ssr: false }
 )
 
-export interface NewPostFormProps {
+export interface NewPostTextFormProps {
   text: string
   tags: TagDto[]
+}
+
+export interface NewPostFormProps extends NewPostTextFormProps {
   files: ContentFile[]
   isPaid: boolean
   price: string
@@ -92,7 +95,7 @@ const newPostFormSchema = object({
 
 interface NewPostEditorProps {
   handleSavePost: (arg: CreatePostRequestDto) => void | Promise<void>
-  initialData: Record<string, any>
+  initialData: Partial<NewPostFormProps>
   onlyText?: boolean
   isExtended?: boolean
   onClose?: () => void
@@ -231,9 +234,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               defaultText={initialData.text}
               isReset={isReset}
               setIsReset={setIsReset}
-              onInputChange={(
-                params: Pick<NewPostFormProps, "text" | "tags">
-              ) => {
+              onInputChange={(params: NewPostTextFormProps) => {
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}

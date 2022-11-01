@@ -2,11 +2,12 @@
 /* eslint-disable import/no-unresolved */
 // Import Swiper styles
 import "swiper/css"
-import "swiper/css/pagination"
 import "swiper/css/navigation"
+import "swiper/css/pagination"
 import classNames from "classnames"
 import PlusIcon from "public/icons/post-plus-icon.svg"
 import {
+  ChangeEvent,
   Dispatch,
   FC,
   Fragment,
@@ -29,6 +30,7 @@ import { MediaSectionReorder } from "./MediaSectionReorder"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 interface MediaSectionProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
   errors: FieldErrorsImpl
   addNewMedia: (newFiles: File[]) => void
@@ -65,27 +67,24 @@ export const MediaSection: FC<MediaSectionProps> = ({
     setIsNewPostModalOpen(true)
   }
 
-  const onFileInputChange = (event: any) => {
-    addNewMedia([...event.target.files])
+  const onFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event?.target?.files) {
+      addNewMedia(Array.from(event.target.files))
+    }
     event.target.value = ""
   }
 
-  const onDragDropChange = (event: any) => {
-    if (event?.target?.files) {
-      return onFileInputChange(event)
-    }
-    addNewMedia([...event.target.files])
-    event.target.value = ""
-  }
   return (
     <>
       {reorderContent ? (
         <div className="flex w-full">
           <MediaSectionReorder
+            // TODO: fix this
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             files={files as any}
             setFiles={setFiles}
             mediaPreviewIndex={mediaPreviewIndex as number}
-            setMediaPreviewIndex={setMediaPreviewIndex as any}
+            setMediaPreviewIndex={setMediaPreviewIndex}
             isPaid={isPaid as boolean}
           />
         </div>
@@ -99,7 +98,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
               type="drag-drop-file"
               multiple={true}
               accept={ACCEPTED_MEDIA_TYPES}
-              options={{ onChange: onDragDropChange }}
+              options={{ onChange: onFileInputChange }}
               errors={errors}
               helperText={`You may upload up to ${MAX_FILE_COUNT} pictures/videos per post`}
             />

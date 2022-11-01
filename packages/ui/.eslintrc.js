@@ -16,6 +16,7 @@ module.exports = {
   ],
   rules: {
     "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-explicit-any": "error",
     "no-console": ["error", { allow: ["error"] }],
     "no-relative-import-paths/no-relative-import-paths": [
       "error",

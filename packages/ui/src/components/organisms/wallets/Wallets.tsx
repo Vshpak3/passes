@@ -43,6 +43,7 @@ export const Wallets = () => {
         return
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       await (window.ethereum as any).send("eth_requestAccounts")
 
       const provider = new ethers.providers.Web3Provider(window.ethereum)

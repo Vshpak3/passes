@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
+import { NewPostTextFormProps } from "./NewPostEditor"
 
 const CustomMentionEditor = dynamic(
   () => import("src/components/organisms/CustomMentionEditor"),
@@ -19,10 +20,6 @@ interface NewFanwallPostProps {
     fanWallCommentId: string
   ) => void | Promise<void>
   creatorId: string
-}
-interface NewFanwallPostFormProps {
-  mentions: any[] // TODO
-  text: string
 }
 
 export const NewFanwallPost: FC<NewFanwallPostProps> = ({
@@ -39,7 +36,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
     getValues,
     setValue,
     reset
-  } = useForm<NewFanwallPostFormProps>({
+  } = useForm<NewPostTextFormProps>({
     defaultValues: {}
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
@@ -50,8 +47,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
 
     const post: CreateFanWallCommentRequestDto = {
       creatorId,
-      text: values.text,
-      tags: [] // TODO: add in values.mentions (must update to be TagDto)
+      ...values
     }
     const api = new FanWallApi()
     const fanWallCommentId = (
@@ -90,9 +86,9 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
               placeholder={`Write something${
                 profile?.displayName ? ` to ${profile?.displayName}...` : "..."
               }`}
-              onInputChange={(params: any) => {
+              onInputChange={(params: NewPostTextFormProps) => {
                 setValue("text", params?.text)
-                setValue("mentions", params?.mentions)
+                setValue("tags", params?.tags)
               }}
             />
           </div>

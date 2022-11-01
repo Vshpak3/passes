@@ -13,15 +13,17 @@ import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
-interface Props {
-  items: Array<ContentFile & { _id: string }>
+type ContentFileWithId = ContentFile & { _id: string }
+
+interface ContentsProps {
+  items: ContentFileWithId[]
   listId: string
   internalScroll?: boolean
   isCombineEnabled?: boolean
 }
 
 type Contents = {
-  [key: string]: Array<ContentFile & { _id: string }>
+  [key: string]: ContentFileWithId[]
 }
 
 const getMediaClassname = (contentType: string) => {
@@ -36,7 +38,8 @@ const getMediaClassname = (contentType: string) => {
       return ""
   }
 }
-const Contents: FC<Props> = ({ listId, items }) => {
+
+const Contents: FC<ContentsProps> = ({ listId, items }) => {
   return (
     <Droppable
       droppableId={listId}
@@ -113,24 +116,26 @@ const Contents: FC<Props> = ({ listId, items }) => {
   )
 }
 
-export const MediaSectionReorder = ({
+interface MediaSectionReorderPops {
+  files: Array<ContentFile & { _id: string }>
+  setFiles: Dispatch<SetStateAction<ContentFile[]>>
+  mediaPreviewIndex: number
+  setMediaPreviewIndex: Dispatch<SetStateAction<number>> | undefined
+  isPaid: boolean
+}
+
+export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   files,
   setFiles,
   mediaPreviewIndex,
   setMediaPreviewIndex,
   isPaid
-}: {
-  files: Array<ContentFile & { _id: string }>
-  setFiles: any
-  mediaPreviewIndex: number
-  setMediaPreviewIndex: Dispatch<SetStateAction<number>>
-  isPaid: boolean
 }) => {
   const [filesMap, setFilesMap] = useState<Contents>({ Free: [], Paid: [] })
 
   useEffect(() => {
     setFiles([...filesMap["Free"], ...filesMap["Paid"]])
-    if (isPaid) {
+    if (isPaid && setMediaPreviewIndex) {
       setMediaPreviewIndex(filesMap["Free"].length)
     }
   }, [filesMap, isPaid, setFiles, setMediaPreviewIndex])
@@ -218,7 +223,11 @@ export const MediaSectionReorder = ({
   )
 }
 // a little function to help us with reordering the result
-const reorder = (list: any[], startIndex: number, endIndex: number): any[] => {
+const reorder = (
+  list: ContentFileWithId[],
+  startIndex: number,
+  endIndex: number
+): ContentFileWithId[] => {
   const result = Array.from(list)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)

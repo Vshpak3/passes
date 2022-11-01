@@ -35,10 +35,10 @@ export const TextArea: FC<TextAreaProps> = ({
   ...rest
 }) => {
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
-  const [keyDownEvent, setKeyDownEvent] = useState<any>(null)
+  const [keyDownEvent, setKeyDownEvent] = useState<unknown>(null)
   const { ref, ...reg } = register(name, {
     ...options,
-    onChange: (event: any) => {
+    onChange: (event: unknown) => {
       if (options.onChange) {
         options.onChange(event, keyDownEvent)
       }
@@ -46,7 +46,7 @@ export const TextArea: FC<TextAreaProps> = ({
   })
   useEffect(() => {
     if (textAreaRef.current) {
-      const keyDownEvent = function (event: any) {
+      const keyDownEvent = function (event: unknown) {
         setKeyDownEvent(event)
       }
 

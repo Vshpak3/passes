@@ -23,7 +23,7 @@ interface ListsDropdownProps {
   lists: List[]
   onSaveLists: (lists: List[]) => void
   listDropdownVisible: boolean
-  setListDropdownVisible: Dispatch<SetStateAction<any>>
+  setListDropdownVisible: Dispatch<SetStateAction<boolean>>
 }
 
 // Might be used in the future
@@ -57,7 +57,7 @@ const MessagesListsDropdownDialog: FC<ListsDropdownProps> = ({
           return list?.name.toLowerCase().includes(query?.toLowerCase())
         })
   const groupedLists = filteredLists.reduce(
-    (acc: { [key: string]: any[] }, list) => {
+    (acc: { [key: string]: List[] }, list) => {
       if (!acc[list.type]) {
         acc[list.type] = []
       }

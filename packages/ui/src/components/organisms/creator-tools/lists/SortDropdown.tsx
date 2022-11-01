@@ -4,7 +4,7 @@ import CheckIcon from "public/icons/check.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import { useCallback, useRef, useState } from "react"
 
-const orderTypeDisplayNames: Record<any, string> = {
+const orderTypeDisplayNames: Record<string, string> = {
   name: "Name",
   username: "Username",
   "updated at": "Updated At",
@@ -31,7 +31,7 @@ interface SortListPopupProps<OrderType, Order> {
   dropdownTitle?: string
 }
 
-export const SortDropdown = <OrderType, Order = "desc">({
+export const SortDropdown = <OrderType extends string, Order = "desc">({
   selection,
   options,
   onSelect,
@@ -94,7 +94,7 @@ export const SortDropdown = <OrderType, Order = "desc">({
                   {options.map((option) => {
                     const { orderType, order } = option
 
-                    let name = orderTypeDisplayNames[orderType] as string
+                    let name = orderTypeDisplayNames[orderType]
                     if (option.order) {
                       name += ` (${order})`
                     }

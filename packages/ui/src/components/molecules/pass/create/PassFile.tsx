@@ -1,3 +1,6 @@
+// TODO: fix any types in this file
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FC, MouseEvent } from "react"
 
 import { FormInput } from "src/components/atoms/FormInput"

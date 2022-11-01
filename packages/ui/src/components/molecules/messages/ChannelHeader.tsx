@@ -12,7 +12,7 @@ import { useWindowSize } from "src/hooks/useWindowSizeHook"
 interface ChannelHeaderProps {
   selectedChannel: ChannelMemberDto
   gallery: boolean
-  setGallery: Dispatch<SetStateAction<any>>
+  setGallery: Dispatch<SetStateAction<boolean>>
   paid?: boolean
   setPaid: Dispatch<SetStateAction<boolean | undefined>>
   isCreator: boolean

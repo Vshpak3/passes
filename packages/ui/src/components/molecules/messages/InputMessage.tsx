@@ -4,6 +4,7 @@ import { AnyObject } from "chart.js/types/basic"
 import classNames from "classnames"
 import { debounce } from "lodash"
 import React, {
+  ChangeEvent,
   Dispatch,
   FC,
   KeyboardEvent,
@@ -78,17 +79,12 @@ export const InputMessage: FC<InputMessageProps> = ({
   //   setValue("scheduledAt", date, { shouldValidate: true })
   // }
 
-  const onMediaHeaderChange = (prop: any) => {
+  const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
-    if (prop?.target?.files.length > 0) {
-      return onFileInputChange(prop)
+    if (event?.target?.files && event.target.files.length > 0) {
+      addNewMedia(Array.from(event.target.files))
+      event.target.value = ""
     }
-  }
-
-  const onFileInputChange = (event: any) => {
-    const files = [...event.target.files] as File[]
-    addNewMedia(files)
-    event.target.value = ""
   }
 
   const registerMessage = async () => {
@@ -146,7 +142,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }
 
-  const onCallback = (error: any) => {
+  const onCallback = (error: unknown) => {
     if (error) {
       setError("submitError", {
         type: "custom",
@@ -186,9 +182,10 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }, [channelId, message, submitData, tip])
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMessagePrice(parseFloat(event.target.value))
   }
+
   const options = {}
   return (
     <form
@@ -224,7 +221,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                   min="0"
                   max="5000"
                   step="0.01"
-                  onChange={(event) => handleChange(event)}
+                  onChange={handleChange}
                   className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
                 />
               </div>
@@ -264,14 +261,13 @@ export const InputMessage: FC<InputMessageProps> = ({
             />
           </div>
         )}
-
         <div className="-ml-4 flex w-full items-center justify-between py-3">
           {isCreator && (
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
               register={register}
               errors={errors}
-              onChange={onMediaHeaderChange}
+              onChange={onMediaChange}
               selectors={[PhotoSelector, VideoSelector]}
             >
               <VaultSelector selectVaultContent={addContent} />

@@ -32,6 +32,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
 }
 
 export const WithLoginPageLayout = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Page: any,
   options: LoginWrapperProps = {}
 ) => {

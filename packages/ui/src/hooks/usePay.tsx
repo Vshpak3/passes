@@ -18,7 +18,8 @@ import {
   EthereumProvider,
   executeMetamaskEthProvider,
   executeMetamaskUSDCProvider,
-  executePhantomUSDCProvider
+  executePhantomUSDCProvider,
+  PhantomProvider
 } from "src/helpers/payment/wallet-setup"
 import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
@@ -41,7 +42,7 @@ export const usePay = (
   const { setPayin } = useContext(ThreeDSContext)
 
   const checkProvider = async (
-    provider: any,
+    provider: PhantomProvider | EthereumProvider | undefined,
     cancelPayinCallback: () => Promise<void>
   ) => {
     if (provider === undefined) {
@@ -98,7 +99,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    const provider = getPhantomProvider()
+    const provider = getPhantomProvider() as PhantomProvider
     await checkProvider(provider, cancelPayinCallback)
     try {
       await executePhantomUSDCProvider(

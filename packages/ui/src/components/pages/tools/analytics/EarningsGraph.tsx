@@ -125,6 +125,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
                   maxDate={new Date()}
                   minDate={getNYearsAgoDate(2)}
                   onChange={(newRange) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setDateRange(newRange.selection as any)
                   }}
                 />

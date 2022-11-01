@@ -18,6 +18,7 @@ class WithNormalPageLayoutOptions {
 }
 
 export const WithNormalPageLayout = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Page: any,
   options: WithNormalPageLayoutOptions = {}
 ) => {

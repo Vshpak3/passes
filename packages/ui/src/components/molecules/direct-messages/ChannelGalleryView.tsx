@@ -11,7 +11,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { GalleryMedia } from "src/components/messages/components/ChannelInner/GalleryMedia"
+import { GalleryMedia } from "src/components/molecules/messages/GalleryMedia"
 
 interface ChannelGalleryViewProps {
   paid?: boolean
