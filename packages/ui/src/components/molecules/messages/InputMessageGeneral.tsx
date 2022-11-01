@@ -1,14 +1,6 @@
-import { ContentDto, ListDto, PassDto } from "@passes/api-client"
-import { MessagesApi } from "@passes/api-client/apis"
+import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, {
-  ChangeEvent,
-  Dispatch,
-  FC,
-  KeyboardEvent,
-  SetStateAction,
-  useState
-} from "react"
+import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
@@ -25,28 +17,24 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
-interface InputMessageMassDMProps {
+interface InputMessageGeneralProps {
   vaultContent: ContentDto[]
-  setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
-  selectedPasses: PassDto[]
-  setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
-  selectedLists: ListDto[]
-  setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
-  excludedLists: ListDto[]
-  setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-  setMassMessage: Dispatch<SetStateAction<boolean>>
+  clear: () => void
+  save: (
+    text: string,
+    contentIds: string[],
+    price: number,
+    previewIndex: number,
+    scheduledAt?: Date
+  ) => Promise<void>
+  schedulable: boolean
 }
 
-export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
+export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
   vaultContent,
-  setVaultContent,
-  selectedPasses,
-  setSelectedPasses,
-  selectedLists,
-  setSelectedLists,
-  excludedLists,
-  setExcludedLists,
-  setMassMessage
+  clear,
+  save,
+  schedulable = true
 }) => {
   const {
     register,
@@ -74,35 +62,20 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   }
 
   const onSubmit = async () => {
-    const messagesApi = new MessagesApi()
-    const listIds = selectedLists.map((s) => s.listId)
-    const passIds = selectedPasses.map((s) => s.passId)
-    const excludedIds = excludedLists.map((s) => s.listId)
-
     const contentIds = await new ContentService().uploadUserContent({
       files,
       inMessage: true
     })
     try {
-      await messagesApi.massSend({
-        createBatchMessageRequestDto: {
-          includeListIds: listIds,
-          excludeListIds: excludedIds,
-          passIds: passIds,
-          text: message,
-          contentIds: contentIds,
-          price: messagePrice,
-          previewIndex: isPaid ? mediaPreviewIndex : 0,
-          scheduledAt: getValues()?.scheduledAt ?? undefined
-        }
-      })
+      await save(
+        message,
+        contentIds,
+        messagePrice,
+        isPaid ? mediaPreviewIndex : 0,
+        getValues()?.scheduledAt ?? undefined
+      )
       setFiles([])
-      setMessagePrice(0)
-      setVaultContent([])
-      setSelectedLists([])
-      setSelectedPasses([])
-      setExcludedLists([])
-      setMassMessage(false)
+      clear()
       reset()
     } catch (err) {
       errorMessage(err, true)
@@ -234,13 +207,15 @@ export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
               selectors={[PhotoSelector, VideoSelector]}
             >
               <VaultSelector selectVaultContent={addContent} />
-              <CalendarSelector
-                name="Schedule"
-                activeHeader=""
-                setScheduledTime={setScheduledTime}
-                scheduledTime={scheduledTime}
-                placement="bottom"
-              />
+              {schedulable && (
+                <CalendarSelector
+                  name="Schedule"
+                  activeHeader=""
+                  setScheduledTime={setScheduledTime}
+                  scheduledTime={scheduledTime}
+                  placement="bottom"
+                />
+              )}
             </MediaSelector>
             <button
               type="submit"
