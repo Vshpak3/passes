@@ -52,12 +52,9 @@ export const tabToPath: Record<TabsEnum, string> = {
   [TabsEnum.PayoutSettings]: "payout"
 }
 
-export const pathToTab = Object.keys(tabToPath).reduce((result, key) => {
-  result[tabToPath[key as unknown as TabsEnum]] = parseInt(
-    key as unknown as string
-  )
-  return result
-}, {} as Record<string, TabsEnum>)
+export const pathToTab: Record<string, TabsEnum> = Object.fromEntries(
+  Object.entries(tabToPath).map(([k, v]) => [v, parseInt(k)])
+)
 
 export enum SubTabsEnum {
   // Accounts

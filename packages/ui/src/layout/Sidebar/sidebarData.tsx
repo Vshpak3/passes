@@ -11,9 +11,9 @@ const creatorToolsItems: SidebarNavigation[] = [
   ...(!isProd
     ? [
         {
-          id: "manage-passes",
-          name: "Manage Passes",
-          href: "/tools/manage-passes",
+          id: "manage-memberships",
+          name: "Memberships",
+          href: "/tools/manage-memberships",
           creatorOnly: true
         }
       ]

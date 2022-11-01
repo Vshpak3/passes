@@ -14,15 +14,15 @@ interface SelectPassFilterProps {
 const PASS_DROPDOWN_OPTIONS: { value: PassType; label: string }[] = [
   {
     value: undefined,
-    label: "All Passes"
+    label: "All Memberships"
   },
   {
     value: PassDtoTypeEnum.Subscription,
-    label: "Subscription Passes"
+    label: "Subscriptions"
   },
   {
     value: PassDtoTypeEnum.Lifetime,
-    label: "Lifetime Passes"
+    label: "Lifetime Memberships"
   },
   {
     value: PassDtoTypeEnum.External,

@@ -1,5 +1,11 @@
 import { useRouter } from "next/router"
-import React, { FC, PropsWithChildren, useEffect, useState } from "react"
+import React, {
+  FC,
+  forwardRef,
+  PropsWithChildren,
+  useEffect,
+  useState
+} from "react"
 
 import { authRouter } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
@@ -36,7 +42,7 @@ export const WithLoginPageLayout = (
   Page: any,
   options: LoginWrapperProps = {}
 ) => {
-  const WithLoginPageLayout = React.forwardRef((props, ref) => (
+  const WithLoginPageLayout = forwardRef((props, ref) => (
     <LoginWrapper routeOnlyIfAuth={options.routeOnlyIfAuth}>
       <Page {...props} ref={ref} />
     </LoginWrapper>

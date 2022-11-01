@@ -30,13 +30,9 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
   const searchOptions = useMemo(
     () =>
       results.map((result) => (
-        <UserSearchResultOption
-          key={result.userId}
-          {...result}
-          onSelect={() => goToProfile(result.username)}
-        />
+        <UserSearchResultOption key={result.userId} {...result} />
       )),
-    [results, goToProfile]
+    [results]
   )
 
   return (
@@ -54,6 +50,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
             searchValue={searchValue}
             onInputChange={onChangeInput}
             contentName="creators"
+            onSelect={goToProfile}
           />
         </div>
       </div>

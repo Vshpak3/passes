@@ -1,16 +1,19 @@
 import { Combobox } from "@headlessui/react"
-import { FC, Fragment } from "react"
+import { UserDisplayInfoDto } from "@passes/api-client"
+import { FC } from "react"
 
-import { UserSearchResult, UserSearchResultProps } from "./UserSearchResults"
+import { UserSearchResult } from "./UserSearchResults"
 
-type UserSearchResultOptionProps = Omit<UserSearchResultProps, "active">
+type UserSearchResultOptionProps = UserDisplayInfoDto
 
 export const UserSearchResultOption: FC<UserSearchResultOptionProps> = (
   props
 ) => {
   return (
-    <Combobox.Option key={props.userId} value={props.username} as={Fragment}>
-      {({ active }) => <UserSearchResult active={active} {...props} />}
+    <Combobox.Option key={props.userId} value={props.username}>
+      {({ active, disabled }) => (
+        <UserSearchResult active={active} disabled={disabled} {...props} />
+      )}
     </Combobox.Option>
   )
 }

@@ -4,20 +4,17 @@ import { FC } from "react"
 
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
-export interface UserSearchResultProps extends UserDisplayInfoDto {
+interface UserSearchResultProps extends UserDisplayInfoDto {
   active: boolean
-  disabled?: boolean
-  onSelect?: (value: string) => void
+  disabled: boolean
 }
 
 export const UserSearchResult: FC<UserSearchResultProps> = ({
-  userId,
-  displayName,
-  username,
   active,
   disabled,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  onSelect = () => {}
+  userId,
+  displayName,
+  username
 }) => {
   return (
     <div
@@ -28,13 +25,6 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
           : "hover:bg-[#1b141d]/90",
         { "bg-[#1b141d]/90": active }
       )}
-      onClick={() => {
-        if (disabled) {
-          return
-        }
-
-        onSelect(username)
-      }}
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
         <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">

@@ -9,7 +9,7 @@ interface SearchBarProps<T> {
   loading: boolean
   options: JSX.Element[]
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
-  onSelect?: (value: T) => void
+  onSelect: (value: T) => void
   contentName: string
 }
 
@@ -22,7 +22,7 @@ export const SearchBar = <T,>({
   contentName
 }: PropsWithChildren<SearchBarProps<T>>) => {
   return (
-    <Combobox<T> onChange={onSelect}>
+    <Combobox<T> value={searchValue as unknown as T} onChange={onSelect}>
       <div className="relative flex flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">

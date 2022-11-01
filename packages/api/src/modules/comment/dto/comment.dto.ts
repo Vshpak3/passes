@@ -1,4 +1,4 @@
-import { Length } from 'class-validator'
+import { ArrayMaxSize, ArrayMinSize, IsArray, Length } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -6,7 +6,7 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { COMMENT_TEXT_LENGTH } from '../constants/schema'
+import { COMMENT_TAG_MAX_COUNT, COMMENT_TEXT_LENGTH } from '../constants/schema'
 import { CommentEntity } from '../entities/comment.entity'
 
 export class CommentDto {
@@ -23,6 +23,9 @@ export class CommentDto {
   @DtoProperty({ type: 'string' })
   text: string
 
+  @IsArray()
+  @ArrayMinSize(0)
+  @ArrayMaxSize(COMMENT_TAG_MAX_COUNT)
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 

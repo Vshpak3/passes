@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { FC, ReactElement } from "react"
+import React, { FC, forwardRef, ReactElement } from "react"
 
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
@@ -23,9 +23,7 @@ export const WithNormalPageLayout = (
   options: WithNormalPageLayoutOptions = {}
 ) => {
   options = new WithNormalPageLayoutOptions(options)
-  const component = React.forwardRef((props, ref) => (
-    <Page {...props} ref={ref} />
-  ))
+  const component = forwardRef((props, ref) => <Page {...props} ref={ref} />)
   component.displayName = `WithNormalPageLayout(${getComponentName(Page)})`
 
   return {

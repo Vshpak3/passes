@@ -1,20 +1,13 @@
-import { Length } from 'class-validator'
+import { PickType } from '@nestjs/swagger'
 
-import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
-import { COMMENT_TEXT_LENGTH } from '../constants/schema'
+import { CommentDto } from './comment.dto'
 
-export class CreateCommentRequestDto {
-  @DtoProperty({ type: 'uuid' })
-  postId: string
-
-  @Length(1, COMMENT_TEXT_LENGTH)
-  @DtoProperty({ type: 'string' })
-  text: string
-
-  @DtoProperty({ custom_type: [TagDto] })
-  tags: TagDto[]
-}
+export class CreateCommentRequestDto extends PickType(CommentDto, [
+  'postId',
+  'text',
+  'tags',
+] as const) {}
 
 export class CreateCommentResponseDto {
   @DtoProperty({ type: 'uuid' })

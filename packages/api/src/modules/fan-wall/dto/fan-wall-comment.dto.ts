@@ -1,4 +1,4 @@
-import { Length } from 'class-validator'
+import { ArrayMaxSize, ArrayMinSize, IsArray, Length } from 'class-validator'
 
 import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
@@ -6,7 +6,10 @@ import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
-import { FAN_COMMENT_TEXT_LENGTH } from '../constants/schema'
+import {
+  FAN_COMMENT_TAG_MAX_COUNT,
+  FAN_COMMENT_TEXT_LENGTH,
+} from '../constants/schema'
 import { FanWallCommentEntity } from '../entities/fan-wall-comment.entity'
 
 export class FanWallCommentDto {
@@ -23,6 +26,9 @@ export class FanWallCommentDto {
   @DtoProperty({ type: 'string' })
   text: string
 
+  @IsArray()
+  @ArrayMinSize(0)
+  @ArrayMaxSize(FAN_COMMENT_TAG_MAX_COUNT)
   @DtoProperty({ custom_type: [TagDto] })
   tags: TagDto[]
 

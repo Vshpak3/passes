@@ -32,12 +32,13 @@ const MENTION_LIMIT = 5
 
 const TRIGGER = "@"
 
-const Entry: FC<EntryComponentProps & { disabled?: boolean }> = ({
+const Entry: FC<EntryComponentProps & { disabled: boolean }> = ({
   mention,
   isFocused,
   disabled,
   ...parentProps
 }) => {
+  // TODO: handle selectMention from parentProps dom error
   return (
     <div {...parentProps}>
       <UserSearchResult

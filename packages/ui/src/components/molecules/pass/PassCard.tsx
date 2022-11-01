@@ -110,7 +110,9 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
           }}
           className="w-full rounded-full bg-passes-primary-color py-2 text-center"
         >
-          {isCreator ? `${isPinned ? "Unpin" : "Pin"} Pass` : "Buy Pass"}
+          {isCreator
+            ? `${isPinned ? "Unpin" : "Pin"} Membership`
+            : "Buy Membership"}
         </button>
         <p className="mt-2 text-sm font-medium leading-[16px]">
           <span className="text-xs font-normal leading-[23px] text-white/70">
