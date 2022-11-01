@@ -17,7 +17,7 @@ interface PaymentSettingsDefaultProps {
 export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
   isEmbedded
 }) => {
-  const { defaultPayinMethod, defaultCard } = usePayinMethod()
+  const { defaultPayinMethod, defaultCard } = usePayinMethod(true)
 
   const hasDefaultPaymentMethod =
     defaultPayinMethod?.method !== PayinMethodDtoMethodEnum.None

@@ -5,14 +5,14 @@ import {
 } from "@passes/api-client"
 
 export const serializePayinMethod = (payinMethod: PayinMethodDto) => {
-  return `${payinMethod.method}_${payinMethod.cardId ?? ""}_${
+  return `${payinMethod.method}.${payinMethod.cardId ?? ""}.${
     payinMethod.chain ?? ""
   }`
 }
 export const deserializePayinMethod = (
   payinMethodSeralized: string
 ): PayinMethodDto => {
-  const parse = payinMethodSeralized.split("_")
+  const parse = payinMethodSeralized.split(".")
   return {
     method: parse[0] as PayinMethodDtoMethodEnum,
     cardId: parse[1].length ? parse[1] : undefined,

@@ -3,7 +3,6 @@ import {
   CircleCardDtoStatusEnum,
   CircleCreateCardAndExtraRequestDto,
   PayinMethodDto,
-  PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
 import { useEffect, useState } from "react"
@@ -12,7 +11,7 @@ import useSWR, { useSWRConfig } from "swr"
 const CACHE_KEY_PAYIN_METHOD = "/payment/default-payin-method"
 const CACHE_KEY_CARDS = "/payment/cards"
 
-export const usePayinMethod = () => {
+export const usePayinMethod = (disableOnLoad?: boolean) => {
   const api = new PaymentApi()
 
   const {
@@ -25,8 +24,7 @@ export const usePayinMethod = () => {
       return await api.getDefaultPayinMethod()
     },
     {
-      revalidateOnFocus: true,
-      fallbackData: { method: PayinMethodDtoMethodEnum.None }
+      revalidateOnFocus: true
     }
   )
 
@@ -93,10 +91,10 @@ export const usePayinMethod = () => {
   }, [cards, payinMethod])
 
   useEffect(() => {
-    if (!payinMethod) {
+    if (!payinMethod && !disableOnLoad) {
       mutatePayinMethod()
     }
-    if (!cards) {
+    if (!cards && !disableOnLoad) {
       mutateCards()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -25,7 +25,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
   handleSetDefaultPayInMethod
 }) => {
   const { cards, defaultPayinMethod, getDefaultPayinMethod, deleteCard } =
-    usePayinMethod()
+    usePayinMethod(true)
 
   return (
     <div className="mt-8 flex flex-col">

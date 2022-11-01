@@ -29,7 +29,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
   isEmbedded,
   handleSetDefaultPayinMethod
 }) => {
-  const { defaultPayinMethod } = usePayinMethod()
+  const { defaultPayinMethod } = usePayinMethod(true)
 
   const { register, getValues, setValue, watch } = useForm({
     defaultValues: {
