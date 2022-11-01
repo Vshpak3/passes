@@ -29,6 +29,10 @@ const PAYOUT_FREQUENCY_OPTIONS: PayoutFrequencyOption[] = [
     value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.TwoWeeks
   },
   {
+    label: "1 week",
+    value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.OneWeek
+  },
+  {
     label: "Manual Only",
     value: UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum.Manual
   }
