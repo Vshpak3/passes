@@ -20,10 +20,6 @@ const ProfileThumbnailUnmemo: FC<ProfileThumbnailProps> = ({ userId }) => {
         src={ContentService.profileThumbnailPath(userId)}
         alt="user profile thumbnail"
         onLoad={() => setLoaded(true)}
-        // onError={({ currentTarget }) => {
-        //   currentTarget.onerror = null
-        //   currentTarget.src = "/img/profile/default-profile-img.svg"
-        // }}
       />
     </div>
   )
