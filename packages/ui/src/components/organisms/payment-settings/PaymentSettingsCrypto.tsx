@@ -33,8 +33,8 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
 
   const { register, getValues, setValue, watch } = useForm({
     defaultValues: {
-      metamask: MetaMaskSelectOptions[0].value,
-      phantom: PhantomSelectOptions[0].value
+      metamask: MetaMaskSelectOptions[0].value as string,
+      phantom: PhantomSelectOptions[0].value as string
     }
   })
 
