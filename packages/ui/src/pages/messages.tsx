@@ -40,7 +40,7 @@ const MessagesPage = () => {
               <span className="font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
                 {massMessage ? "Mass Messaging" : "Messages"}
               </span>
-              {massMessage ? null : (
+              {massMessage && user.isCreator ? null : (
                 <div className="mr-6 cursor-pointer lg:mr-0">
                   <MessagesPlusIcon onClick={() => setMassMessage(true)} />
                 </div>
