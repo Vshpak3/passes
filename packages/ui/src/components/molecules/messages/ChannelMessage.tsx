@@ -34,7 +34,12 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   } = message
 
   const tipComponent = (
-    <div className="flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2.5">
+    <div
+      className={classNames(
+        "flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2.5",
+        ownsMessage ? "md:flex-row" : "md:flex-row-reverse"
+      )}
+    >
       <DollarSymbol dimensions={11} />
       <span className="text-base text-xs font-bold text-white">
         Tip: {formatCurrency(message.tipAmount ?? 0)}
@@ -103,17 +108,19 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           </div>
           {!!message?.tipAmount && !ownsMessage && tipComponent}
         </div>
-        {message?.pending ? (
-          <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
-            <SpinnerIcon />
-            Pending...
-          </span>
-        ) : (
-          <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
-            <DoubleCheckMarkIcon />
-            Sent
-          </span>
-        )}
+
+        {ownsMessage &&
+          (message?.pending ? (
+            <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
+              <SpinnerIcon />
+              Pending...
+            </span>
+          ) : (
+            <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
+              <DoubleCheckMarkIcon />
+              Sent
+            </span>
+          ))}
       </div>
     </div>
   )
