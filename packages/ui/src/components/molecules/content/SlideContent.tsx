@@ -5,7 +5,6 @@ import {
   SlideImage,
   SlideImageProps
 } from "src/components/atoms/content/SlideImage"
-import { Video } from "src/components/atoms/content/Video"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
 
