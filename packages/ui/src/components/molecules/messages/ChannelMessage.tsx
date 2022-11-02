@@ -37,7 +37,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     <div className="flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2.5">
       <DollarSymbol dimensions={11} />
       <span className="text-base text-xs font-bold text-white">
-        Tipped: {formatCurrency(message.tipAmount ?? 0)}
+        Tip: {formatCurrency(message.tipAmount ?? 0)}
       </span>
     </div>
   )
