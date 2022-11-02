@@ -1,7 +1,6 @@
 import classNames from "classnames"
 import { toLower } from "lodash"
-import React, { FC, HTMLProps } from "react"
-import ReactInputMask from "react-input-mask"
+import React, { FC } from "react"
 
 import {
   FormErrors,
@@ -33,7 +32,6 @@ export type InputProps = {
   iconAlign?: EIcon
   textPosition?: string
   value?: string
-  mask?: string
   onFocus?: (event: Event) => void
 }
 
@@ -49,7 +47,6 @@ export const Input: FC<InputProps> = ({
   icon,
   iconAlign,
   textPosition,
-  mask,
   iconMargin = "0",
   ...rest
 }) => {
@@ -71,49 +68,23 @@ export const Input: FC<InputProps> = ({
             </span>
           </div>
         )}
-        {mask ? (
-          <ReactInputMask
-            mask={mask}
-            maskChar=""
-            readOnly={options.readOnly}
-            autoComplete="off"
-            type={type}
-            placeholder={placeholder || label}
-            {...register(name, options)}
-            {...rest}
-            className={classNames(
-              `mt-1 block w-full appearance-none rounded-md border p-2  ${
-                textPosition === "RIGHT" ? "text-right" : "text-left"
-              } min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${
-                icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-2"
-              }`,
-              className,
-              errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
-            )}
-          >
-            {(inputProps: HTMLProps<HTMLInputElement>) => (
-              <input {...inputProps} />
-            )}
-          </ReactInputMask>
-        ) : (
-          <input
-            readOnly={options.readOnly}
-            autoComplete="off"
-            type={type}
-            placeholder={placeholder || label}
-            {...register(name, options)}
-            {...rest}
-            className={classNames(
-              `block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 ${
-                textPosition === "RIGHT" ? "text-right" : "text-left"
-              } min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${
-                icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3"
-              }`,
-              className,
-              errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
-            )}
-          />
-        )}
+        <input
+          readOnly={options.readOnly}
+          autoComplete="off"
+          type={type}
+          placeholder={placeholder || label}
+          {...register(name, options)}
+          {...rest}
+          className={classNames(
+            `block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 ${
+              textPosition === "RIGHT" ? "text-right" : "text-left"
+            } min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${
+              icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3"
+            }`,
+            className,
+            errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
+          )}
+        />
         {errors && errors[name] && (
           <span className="text-xs text-red-500">{errors[name].message}</span>
         )}
