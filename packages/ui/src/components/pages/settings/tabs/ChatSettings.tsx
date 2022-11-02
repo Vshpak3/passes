@@ -186,7 +186,7 @@ const ChatSettings = () => {
 
 const ChatSettingsCreatorWrapper = () => {
   return (
-    <AuthWrapper isPage creatorOnly={true}>
+    <AuthWrapper isPage creatorOnly>
       <ChatSettings />
     </AuthWrapper>
   )

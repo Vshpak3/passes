@@ -69,7 +69,7 @@ export const HomeContentFeed: FC = () => {
               return (
                 <Post
                   post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-                  inHomeFeed={true}
+                  inHomeFeed
                 />
               )
             }}

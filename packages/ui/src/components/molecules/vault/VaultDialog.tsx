@@ -48,7 +48,7 @@ export const VaultDialog: FC<VaultDialogProps> = ({
         </div>
       }
     >
-      <AuthWrapper isPage creatorOnly={true}>
+      <AuthWrapper isPage creatorOnly>
         <div className="">
           <Vault passSelectedItems={setSelectedItems} />
         </div>

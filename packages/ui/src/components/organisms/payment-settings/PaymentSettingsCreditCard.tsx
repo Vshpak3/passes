@@ -53,7 +53,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
             key={item.id}
             className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
           >
-            <CreditCardEntry card={item} showName={true} />
+            <CreditCardEntry card={item} showName />
             <div className="flex flex-row gap-2 md:gap-4">
               <div>
                 {item.id === defaultPayinMethod?.cardId ? (

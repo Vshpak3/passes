@@ -35,7 +35,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      shouldCloseOnOverlayClick={true}
+      shouldCloseOnOverlayClick
       onRequestClose={() => setOpen(false)}
       style={{
         content: {

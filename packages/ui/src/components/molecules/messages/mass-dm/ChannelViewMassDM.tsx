@@ -68,12 +68,12 @@ export const ChannelViewMassDM: FC<ChannelViewMassDMProps> = ({
         excludedLists={excludedLists}
         setExcludedLists={setExcludedLists}
       />
-      <div className="flex h-full flex-1 flex-col overflow-y-scroll"></div>
+      <div className="flex h-full flex-1 flex-col overflow-y-scroll" />
       {/* TODO:  after submit successful batch message the massMessage Components are disabled and redirected to messages as onlufans so there is no need for chat stream */}
       <InputMessageGeneral
         vaultContent={vaultContent}
         clear={clear}
-        schedulable={true}
+        schedulable
         save={save}
       />
     </div>

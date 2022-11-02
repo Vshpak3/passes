@@ -79,7 +79,7 @@ export const PostFeed: FC<PostFeedProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(posts[post.postId] ?? {}) }}
-          isPinned={true}
+          isPinned
           updateProfileStats={updateProfileStats}
         />
       ))}

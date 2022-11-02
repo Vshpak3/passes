@@ -228,7 +228,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             scrollableTarget="scrollableDiv"
             loadingElement={<div>Loading older messages...</div>}
             style={{ display: "flex", flexDirection: "column-reverse" }}
-            inverse={true}
+            inverse
           >
             {messages.length > 0 &&
               messages.map((m, i) => {

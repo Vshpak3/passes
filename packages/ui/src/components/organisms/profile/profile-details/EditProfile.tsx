@@ -154,7 +154,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   return (
     <Dialog
       className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
-      open={true}
+      open
       onClose={() => setEditProfileModalOpen(false)}
       footer={
         <div className="left-20 mx-0 mb-6 flex cursor-pointer self-center  xs:mx-5 sm:mx-12 md:mx-0  md:-mb-4">

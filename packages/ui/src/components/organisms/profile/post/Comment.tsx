@@ -84,7 +84,7 @@ export const Comment: FC<CommentProps> = ({
                 <MessagesNameDisplay
                   displayName={commenterDisplayName}
                   username={commenterUsername}
-                  linked={true}
+                  linked
                 />
                 {!!isHidden && (
                   <Text fontSize={14} className="text-gray-500">

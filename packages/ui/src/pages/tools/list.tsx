@@ -139,7 +139,7 @@ const FanLists: NextPage = () => {
           }}
           fetchProps={{ order, orderType, search }}
           KeyedComponent={({ arg }: ComponentArg<ListDto>) => {
-            return <List list={arg} removable={true} />
+            return <List list={arg} removable />
           }}
           resets={resets}
         />

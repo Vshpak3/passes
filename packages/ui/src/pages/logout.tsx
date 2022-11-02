@@ -26,7 +26,7 @@ const Logout = () => {
     safePush("/login")
   }, [safePush, logout])
 
-  return <div className="h-screen w-screen bg-black"></div>
+  return <div className="h-screen w-screen bg-black" />
 }
 
 export default Logout // no WithNormalPageLayout

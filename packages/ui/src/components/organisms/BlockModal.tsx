@@ -50,7 +50,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
   }
 
   return (
-    <Modal isOpen={true} setOpen={() => setBlockData(null)}>
+    <Modal isOpen setOpen={() => setBlockData(null)}>
       <h2 className="mb-5 font-semibold text-white">BLOCK {username}</h2>
       <RadioGroup
         value={blockValue}

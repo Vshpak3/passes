@@ -60,7 +60,7 @@ export const MediaModal: FC<ModalProps> = ({
       {file.content && !carouselContent && (
         <Media
           src={ContentService.userContentMediaPath(file.content)}
-          preview={true}
+          preview
           type={file.content.contentType}
           contentWidth={800}
           contentHeight={800}

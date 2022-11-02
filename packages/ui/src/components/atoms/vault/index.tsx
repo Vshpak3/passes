@@ -132,7 +132,7 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
       <FileInput
         register={register}
         name="file"
-        multiple={true}
+        multiple
         trigger={<MdAdd size={16} />}
         options={{
           onChange: <T extends InputChange>(e: ChangeEvent<T>) => {

@@ -24,7 +24,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
       defaultOpen={router?.asPath.startsWith(`/${item.id}/`)}
     >
       {({ open }) => (
-        <Fragment>
+        <>
           <Disclosure.Button className="block">
             <span className="group flex cursor-pointer items-center py-3 pr-0 hover:text-white">
               <Link
@@ -61,12 +61,12 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                   key={subItem.id}
                   item={subItem}
                   isActive={subItem.id === active}
-                  isDropdown={true}
+                  isDropdown
                 />
               ))}
             </Disclosure.Panel>
           )}
-        </Fragment>
+        </>
       )}
     </Disclosure>
   )

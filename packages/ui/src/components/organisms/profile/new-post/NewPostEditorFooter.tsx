@@ -49,7 +49,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
         )}
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
-            <VaultSelector selectVaultContent={addContent} expanded={true} />
+            <VaultSelector selectVaultContent={addContent} expanded />
             <CalendarSelector
               name="Schedule"
               activeHeader="Schedule"

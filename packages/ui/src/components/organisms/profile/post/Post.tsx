@@ -122,7 +122,7 @@ const PostUnmemo: FC<PostProps> = ({
               userId={userId}
               username={username}
               displayName={displayName}
-              isCreator={true}
+              isCreator
               isPinned={isPinned}
               dropdownOptions={dropdownOptions}
               statisticsButtonProps={{

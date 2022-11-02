@@ -13,7 +13,7 @@ interface BuyPassModalProps {
 const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
   return (
-    <Modal isOpen={true} setOpen={() => setPass(null)}>
+    <Modal isOpen setOpen={() => setPass(null)}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
         <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
           Buy{" "}

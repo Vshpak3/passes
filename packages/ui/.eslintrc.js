@@ -11,31 +11,58 @@ module.exports = {
     "next/core-web-vitals",
     // 'plugin:jsx-a11y/recommended',
     "plugin:react-hooks/recommended",
-    "plugin:react/recommended"
+    "plugin:react/all"
     // 'plugin:tailwindcss/recommended',
   ],
   rules: {
-    "@next/next/no-img-element": "off",
+    // Opt in / adjust these rules
     "@typescript-eslint/no-explicit-any": "error",
     "no-console": ["error", { allow: ["error"] }],
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
       { allowSameFolder: true }
     ],
-    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
-    "react/react-in-jsx-scope": "off", // Not needed for Next.js
-    "simple-import-sort/imports": [
-      "error",
-      {
-        // Default grouping but treats src/ as first-party
-        groups: [
-          ["^\\u0000", "^node:", "^@?\\w", "^"],
-          ["^src/", "^\\."]
-        ]
-      }
-    ],
-    "sonarjs/cognitive-complexity": "off"
+
+    // Turn on soon
+    "react/no-array-index-key": "off",
+    "react/jsx-sort-props": "off",
+    "react/no-unstable-nested-components": "off",
+    "react/no-unused-prop-types": "off",
+    "react/destructuring-assignment": "off",
+    "react/hook-use-state": "off",
+    "react/jsx-handler-names": "off",
+    "react/jsx-pascal-case": "off",
+    "react/jsx-child-element-spacing": "off",
+    "react/jsx-no-constructed-context-values": "off",
+
+    // Turned off since we often want to use <img> tags
+    "@next/next/no-img-element": "off",
+
+    // Turned off since these conflict with prettier
+    "react/jsx-curly-newline": "off",
+    "react/jsx-indent-props": "off",
+    "react/jsx-indent": "off",
+    "react/jsx-max-props-per-line": "off",
+    "react/jsx-newline": "off",
+    "react/jsx-one-expression-per-line": "off",
+
+    // Turned off since we currently don't follow these
+    "react/forbid-component-props": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-max-depth": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-no-literals": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/button-has-type": "off",
+    "react/no-multi-comp": "off",
+    "react/require-default-props": "off",
+    "sonarjs/cognitive-complexity": "off",
+
+    // Turned off for a necessary issue
+    "react/jsx-no-leaked-render": "off", // Does not respect boolean types
+    "react/react-in-jsx-scope": "off" // Not needed for Next.js
   },
   overrides: [
     {

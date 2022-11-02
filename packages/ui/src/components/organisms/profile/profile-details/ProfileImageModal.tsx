@@ -18,7 +18,7 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
     <Modal
       isOpen={isProfilePicModalOpen}
       setOpen={setIsProfilePicModalOpen}
-      shouldCloseOnClickOutside={true}
+      shouldCloseOnClickOutside
     >
       <div className="flex flex-row justify-center">
         <img

@@ -90,7 +90,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
               className="h-[170px]"
               register={register}
               name="drag-drop"
-              multiple={true}
+              multiple
               accept={ACCEPTED_MEDIA_TYPES}
               options={{ onChange: onFileInputChange }}
               errors={errors}
@@ -151,7 +151,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 className="mySwiper"
                 slidesPerView={messages ? 3 : 4}
                 spaceBetween={10}
-                navigation={true}
+                navigation
                 modules={[Navigation]}
               >
                 {files.map(({ file, content }, index) => (
@@ -210,7 +210,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                       <DragDropFile
                         register={register}
                         name="drag-drop"
-                        multiple={true}
+                        multiple
                         options={{ onChange: onFileInputChange }}
                         accept={ACCEPTED_MEDIA_TYPES}
                         errors={errors}

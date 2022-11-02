@@ -51,7 +51,7 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
       onDelete={handleDelete}
       onCancel={closeModal}
       setOpen={closeModal}
-      isOpen={true}
+      isOpen
     />
   )
 }

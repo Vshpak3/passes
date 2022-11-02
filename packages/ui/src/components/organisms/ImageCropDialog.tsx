@@ -105,7 +105,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
   return (
     <Dialog
       className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#0c0609] px-[29px] pt-[37px] transition-all md:max-w-[544px] md:rounded-[15px]"
-      open={true}
+      open
       title={
         <div className="flex justify-between bg-[#0c0609] pb-4">
           <Button

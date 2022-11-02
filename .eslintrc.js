@@ -25,11 +25,20 @@ module.exports = {
     curly: 'error',
     eqeqeq: 'error',
     'eslint-comments/no-unused-disable': 'error',
-    'import/no-default-export': 'error',
     'import/newline-after-import': 'error',
+    'import/no-default-export': 'error',
     'no-trailing-spaces': 'error',
     'simple-import-sort/exports': 'error',
-    'simple-import-sort/imports': 'error',
+    'simple-import-sort/imports': [
+      'error',
+      {
+        // Default grouping but treats src/ as first-party
+        groups: [
+          ['^\\u0000', '^node:', '^@?\\w', '^'],
+          ['^src/', '^\\.'],
+        ],
+      },
+    ],
   },
   ignorePatterns: ['.eslintrc.js', '**/coverage/*'],
 }

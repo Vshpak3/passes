@@ -26,7 +26,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
   }
 
   return (
-    <Modal isOpen={true} setOpen={() => setMessageRequest(null)}>
+    <Modal isOpen setOpen={() => setMessageRequest(null)}>
       <PaymentModalBody
         price={messageRequest?.price ?? 0}
         closeModal={() => setMessageRequest(null)}

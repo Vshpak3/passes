@@ -43,7 +43,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           type: "fraction"
         }}
         initialSlide={activeIndex}
-        navigation={true}
+        navigation
         modules={[Pagination, Navigation]}
         className="mySwiper"
         // autoHeight={true}

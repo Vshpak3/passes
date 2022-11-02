@@ -63,7 +63,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
                   username={selectedChannel.otherUserUsername}
-                  linked={true}
+                  linked
                 />
                 {isCreator && (
                   <div className="flex w-full items-center justify-between">

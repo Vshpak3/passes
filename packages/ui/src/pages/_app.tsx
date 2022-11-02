@@ -185,7 +185,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       <ToastContainer
         position="bottom-center"
         autoClose={ms("4 seconds")}
-        hideProgressBar={true}
+        hideProgressBar
         newestOnTop={false}
         closeOnClick
         rtl={false}

@@ -248,7 +248,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               setFiles={setFiles}
               onRemove={onRemove}
               addNewMedia={addNewMedia}
-              isNewPost={true}
+              isNewPost
               isPaid={isPaid}
               reorderContent={reorderContent}
               mediaPreviewIndex={mediaPreviewIndex}

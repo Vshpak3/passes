@@ -29,7 +29,7 @@ const AuthSuccess: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  return <div className="h-screen w-screen bg-black"></div>
+  return <div className="h-screen w-screen bg-black" />
 }
 
 export default AuthSuccess // no WithNormalPageLayout

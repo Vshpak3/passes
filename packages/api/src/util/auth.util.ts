@@ -1,5 +1,4 @@
 import * as querystring from 'node:querystring'
-
 import { Response } from 'express'
 
 import { AuthRecord } from '../modules/auth/core/auth-record'
