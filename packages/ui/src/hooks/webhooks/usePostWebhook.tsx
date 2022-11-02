@@ -72,7 +72,10 @@ export const usePostWebhook = () => {
             break
         }
         setPosts((posts) => {
-          return { ...posts, ...{ [post.postId]: post } }
+          return {
+            ...posts,
+            ...{ [post.postId]: { ...(posts[post.postId] ?? {}), ...post } }
+          }
         })
       })
       return () => {
