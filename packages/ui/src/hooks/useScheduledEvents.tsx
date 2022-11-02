@@ -114,7 +114,8 @@ export const useScheduledEvents = (defaultDate?: DateProps) => {
       scheduledEventId: "",
       scheduledAt: post.scheduledAt,
       createPost: post,
-      type: ScheduledEventDtoTypeEnum.CreatePost
+      type: ScheduledEventDtoTypeEnum.CreatePost,
+      processed: false
     }
     data.push(content)
     data.sort((a, b) => a.scheduledAt.getTime() - b.scheduledAt.getTime())
