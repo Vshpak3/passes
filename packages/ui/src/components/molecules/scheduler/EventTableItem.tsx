@@ -111,7 +111,11 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   ) : (
     <div className="mb-8 bg-passes-purple-200 px-5 py-5">
       <div className="mb-6 flex items-center justify-between">
-        <span>{format(scheduledAt, "LLLL do, yyyy")}</span>
+        <span>
+          {format(scheduledAt, "LLL do, yyyy")}
+          <br />
+          {format(scheduledAt, "hh:mm a")}
+        </span>
         <span>{generateActionStatus}</span>
       </div>
       <div className="flex flex-col gap-2">
