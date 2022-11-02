@@ -1,4 +1,5 @@
 import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
+import classNames from "classnames"
 import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
 
 import {
@@ -13,11 +14,12 @@ interface SlideContentProps extends SlideImageProps {
   autoplayVideo?: boolean
   carouselContent?: ContentDto[]
   index?: number
+  fixedHeight: boolean
 }
 
 export const SlideContent: FC<SlideContentProps> = forwardRef(
   (
-    { content, carouselContent, index = 0 }: SlideContentProps,
+    { content, carouselContent, index = 0, fixedHeight }: SlideContentProps,
     ref: ForwardedRef<HTMLImageElement>
   ) => {
     const [openModal, setOpenModal] = useState(false)
@@ -43,7 +45,13 @@ export const SlideContent: FC<SlideContentProps> = forwardRef(
       case ContentDtoContentTypeEnum.Image:
         return (
           <>
-            <button className="w-full" onClick={onImgClickHandler}>
+            <button
+              className={classNames(
+                fixedHeight ? "max-h-[85vh]" : "",
+                "h-full w-full"
+              )}
+              onClick={onImgClickHandler}
+            >
               <SlideImage content={content} ref={ref} />
             </button>
             {openModal && (

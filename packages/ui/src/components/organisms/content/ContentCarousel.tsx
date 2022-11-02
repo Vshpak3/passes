@@ -37,7 +37,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   const hasAccess = paid || price === 0 || previewIndex >= content.length
   return (
     <>
-      <style>{`.swiper-button-prev, .swiper-button-next { color: white; }`}</style>
+      <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
       <Swiper
         pagination={{
           type: "fraction"
@@ -46,8 +46,6 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         navigation
         modules={[Pagination, Navigation]}
         className="mySwiper"
-        // autoHeight={true}
-        // lazy={true}
       >
         {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
           return hasAccess || index < previewIndex ? (
@@ -57,6 +55,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
                 content={c}
                 ref={imgRef}
                 autoplayVideo={autoplayVideo}
+                fixedHeight={contents.length > 1}
                 carouselContent={array}
               />
             </SwiperSlide>
