@@ -1,18 +1,15 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const PURCHASE_CONTENT_PAYMENT_SUCCESS_EMAIL_SUBJECT =
-  'Your content purchase was successful!'
+export const PAYMENT_CARD_SUCCESS_EMAIL_SUBJECT =
+  'Success! Your Card is connected & ready to be used on Passes'
 
-export interface PurchaseContentPaymentSuccessTemplateVariables {
-  creatorName: string
-  amount: string
-  paymentMethod: string
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface PaymentCardSuccessTemplateVariables {}
 
-export const PURCHASE_CONTENT_PAYMENT_SUCCESS = `---
-title: Your content purchase was successful!
-preheader: Your content purchase was successful!
+export const PAYMENT_CARD_SUCCESS = `---
+title: Success! Your Card is connected & ready to be used on Passes
+preheader: Success! Your Card is connected & ready to be used on Passes
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -30,17 +27,11 @@ preheader: Your content purchase was successful!
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Your content purchase was successful!
+                  Success! Your Card is connected & ready to be used on Passes
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  You purchased content on Passes!
-                </p>
-
-                <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Creator Name: {{ page.creatorName }}<br />
-                  Amount: {{ page.amount }}<br />
-                  Payment Method: {{ page.paymentMethod }}<br />
+                  Your credit/debit card was added as a payment method on Passes. You can update your default payment method under "Settings".
                 </p>
 
                 ${SUPPORT}

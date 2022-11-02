@@ -1,16 +1,18 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const PAYMENT_FAILURE_EMAIL_SUBJECT = 'Oops! Your payment failed'
+export const SUBSCRIPTION_RENEW_SUCCESS_EMAIL_SUBJECT =
+  'Your Subscription was renewed'
 
-export interface PaymentFailureTemplateVariables {
+export interface SubscriptionRenewSuccessTemplateVariables {
+  creatorName: string
   amount: string
   paymentMethod: string
 }
 
-export const PAYMENT_FAILURE = `---
-title: Oops! Your payment failed
-preheader: Oops! Your payment failed
+export const SUBSCRIPTION_RENEW_SUCCESS = `---
+title: Your Subscription was renewed
+preheader: Your Subscription was renewed
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -32,10 +34,7 @@ preheader: Oops! Your payment failed
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Your recent attempt to make a payment failed. Please try again with a different payment method by selecting or adding a new payment method under "Payment & Wallet Settings".
-                </p>
-
-                <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
+                  Creator Name: {{ page.creatorName }}<br />
                   Amount: {{ page.amount }}<br />
                   Payment Method: {{ page.paymentMethod }}<br />
                 </p>

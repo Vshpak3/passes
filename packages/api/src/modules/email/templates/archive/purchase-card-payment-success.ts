@@ -1,17 +1,18 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const SUBSCRIPTION_EXPIRED_EMAIL_SUBJECT = 'Your Subscription expired'
+export const PURCHASE_CARD_PAYMENT_SUCCESS_EMAIL_SUBJECT =
+  'Your Special Access Card purchase was successful!'
 
-export interface SubscriptionExpiredTemplateVariables {
+export interface PurchaseCardPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string
-  expirationDate: string
+  paymentMethod: string
 }
 
-export const SUBSCRIPTION_EXPIRED = `---
-title: Your Subscription expired
-preheader: Your Subscription expired
+export const PURCHASE_CARD_PAYMENT_SUCCESS = `---
+title: Your Special Access Card purchase was successful!
+preheader: Your Special Access Card purchase was successful!
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -29,21 +30,21 @@ preheader: Your Subscription expired
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Your Subscription expired
+                  Your Special Access Card purchase was successful!
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Your subscription expired because we could not process a new payment...
+                  You purchased a Special Access Card! Please see details of the purchase below.
                 </p>
-
+                
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
                   Creator Name: {{ page.creatorName }}<br />
                   Amount: {{ page.amount }}<br />
-                  Expiration Date: {{ page.expirationDate }}<br />
+                  Payment Method: {{ page.paymentMethod }}<br />
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  If you want to renew this subscription, go to "My Cards", find this subscription under "Expired Cards" and click "Renew".
+                  This card should be available in your Passes wallet or your Phantom wallet connected on the platform. More info about your subscription can be found under "My Cards" on the left side panel.
                 </p>
 
                 ${SUPPORT}

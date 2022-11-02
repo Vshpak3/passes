@@ -1,18 +1,16 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const PURCHASE_CARD_PAYMENT_SUCCESS_EMAIL_SUBJECT =
-  'Your Special Access Card purchase was successful!'
+export const PAYMENT_FAILURE_EMAIL_SUBJECT = 'Oops! Your payment failed'
 
-export interface PurchaseCardPaymentSuccessTemplateVariables {
-  creatorName: string
+export interface PaymentFailureTemplateVariables {
   amount: string
   paymentMethod: string
 }
 
-export const PURCHASE_CARD_PAYMENT_SUCCESS = `---
-title: Your Special Access Card purchase was successful!
-preheader: Your Special Access Card purchase was successful!
+export const PAYMENT_FAILURE = `---
+title: Oops! Your payment failed
+preheader: Oops! Your payment failed
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -30,21 +28,16 @@ preheader: Your Special Access Card purchase was successful!
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Your Special Access Card purchase was successful!
+                  Your subscription was renewed successfully!
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  You purchased a Special Access Card! Please see details of the purchase below.
+                  Your recent attempt to make a payment failed. Please try again with a different payment method by selecting or adding a new payment method under "Payment & Wallet Settings".
                 </p>
-                
+
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Creator Name: {{ page.creatorName }}<br />
                   Amount: {{ page.amount }}<br />
                   Payment Method: {{ page.paymentMethod }}<br />
-                </p>
-
-                <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  This card should be available in your Passes wallet or your Phantom wallet connected on the platform. More info about your subscription can be found under "My Cards" on the left side panel.
                 </p>
 
                 ${SUPPORT}

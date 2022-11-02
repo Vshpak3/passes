@@ -1,5 +1,5 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
 export const PURCHASE_CARD_SUBSCRIPTION_PAYMENT_SUCCESS_EMAIL_SUBJECT =
   'Your Subscription has started!'

@@ -1,18 +1,15 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const TIP_PAYMENT_SUCCESS_EMAIL_SUBJECT =
-  'Your tip was processed successfully!'
+export const PAYOUT_WALLET_CONNECT_SUCCESS_EMAIL_SUBJECT =
+  'Success! Your Wallet Address can be used for payouts'
 
-export interface TipPaymentSuccessTemplateVariables {
-  creatorName: string
-  amount: string
-  paymentMethod: string
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface PayoutWalletConnectSuccessTemplateVariables {}
 
-export const TIP_PAYMENT_SUCCESS = `---
-title: Your tip was processed successfully!
-preheader: Your tip was processed successfully!
+export const PAYOUT_WALLET_CONNECT_SUCCESS = `---
+title: Success! Your Wallet Address can be used for payouts
+preheader: Success! Your Wallet Address can be used for payouts
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -30,17 +27,15 @@ preheader: Your tip was processed successfully!
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Your tip was processed successfully!
+                  Success! Your Wallet Address can be used for payouts
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  You tipped on Passes.
+                  Your wallet address was added as a payout method on Passes. Go to the "Payouts" page under Creator Tools on the left side panel to request manual or automated payouts.
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Creator Name: {{ page.creatorName }}<br />
-                  Amount: {{ page.amount }}<br />
-                  Payment Method: {{ page.paymentMethod }}<br />
+                  You can update your default payout method under "Payment & Wallet Settings".
                 </p>
 
                 ${SUPPORT}

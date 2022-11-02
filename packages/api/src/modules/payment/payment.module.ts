@@ -16,6 +16,7 @@ import { PaymentService } from './payment.service'
     EmailModule,
     EthModule,
     SentryModule,
+    EmailModule,
   ],
   controllers: [PaymentController],
   providers: [PaymentService],

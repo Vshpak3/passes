@@ -1,18 +1,18 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const SUBSCRIPTION_RENEW_SUCCESS_EMAIL_SUBJECT =
-  'Your Subscription was renewed'
+export const TIP_PAYMENT_SUCCESS_EMAIL_SUBJECT =
+  'Your tip was processed successfully!'
 
-export interface SubscriptionRenewSuccessTemplateVariables {
+export interface TipPaymentSuccessTemplateVariables {
   creatorName: string
   amount: string
   paymentMethod: string
 }
 
-export const SUBSCRIPTION_RENEW_SUCCESS = `---
-title: Your Subscription was renewed
-preheader: Your Subscription was renewed
+export const TIP_PAYMENT_SUCCESS = `---
+title: Your tip was processed successfully!
+preheader: Your tip was processed successfully!
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -30,7 +30,11 @@ preheader: Your Subscription was renewed
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Your subscription was renewed successfully!
+                  Your tip was processed successfully!
+                </p>
+
+                <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
+                  You tipped on Passes.
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">

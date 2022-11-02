@@ -1,15 +1,17 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
-export const PAYOUT_WALLET_CONNECT_SUCCESS_EMAIL_SUBJECT =
-  'Success! Your Wallet Address can be used for payouts'
+export const SUBSCRIPTION_EXPIRED_EMAIL_SUBJECT = 'Your Subscription expired'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PayoutWalletConnectSuccessTemplateVariables {}
+export interface SubscriptionExpiredTemplateVariables {
+  creatorName: string
+  amount: string
+  expirationDate: string
+}
 
-export const PAYOUT_WALLET_CONNECT_SUCCESS = `---
-title: Success! Your Wallet Address can be used for payouts
-preheader: Success! Your Wallet Address can be used for payouts
+export const SUBSCRIPTION_EXPIRED = `---
+title: Your Subscription expired
+preheader: Your Subscription expired
 ---
 
 <extends src="{{ page.mainLayoutPath }}">
@@ -27,15 +29,21 @@ preheader: Success! Your Wallet Address can be used for payouts
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  Success! Your Wallet Address can be used for payouts
+                  Your Subscription expired
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Your wallet address was added as a payout method on Passes. Go to the "Payouts" page under Creator Tools on the left side panel to request manual or automated payouts.
+                  Your subscription expired because we could not process a new payment...
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  You can update your default payout method under "Payment & Wallet Settings".
+                  Creator Name: {{ page.creatorName }}<br />
+                  Amount: {{ page.amount }}<br />
+                  Expiration Date: {{ page.expirationDate }}<br />
+                </p>
+
+                <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
+                  If you want to renew this subscription, go to "My Cards", find this subscription under "Expired Cards" and click "Renew".
                 </p>
 
                 ${SUPPORT}

@@ -1,5 +1,5 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
 export const SUBSCRIPTION_RENEW_REMINDER_EMAIL_SUBJECT =
   'Your Subscription is about to expire'
