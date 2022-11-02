@@ -37,9 +37,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 }) => {
   const { user } = useUser()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [time, setTime] = useState<number>(Date.now())
-
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.7
   })
@@ -220,8 +217,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             }}
             fetchProps={{ channelId, pending: false, contentOnly: false }}
             inverse
-            keyValue={`messages/${time}/${channelId}`}
+            keyValue={`messages/${channelId}`}
             loadingElement={<div>Loading older messages...</div>}
+            options={{ revalidateOnMount: true }}
             scrollableTarget="scrollableDiv"
             style={{ display: "flex", flexDirection: "column-reverse" }}
           >
