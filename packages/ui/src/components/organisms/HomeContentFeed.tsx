@@ -13,6 +13,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { Header } from "src/components/molecules/performance/Header"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
@@ -52,28 +53,30 @@ export const HomeContentFeed: FC = () => {
   return (
     <>
       <Header />
-      <div className="w-full">
-        <div className="mx-auto grid w-full grid-cols-10 gap-5 px-4 sm:w-[653px] md:w-[653px] md:pt-20 lg:w-[900px] lg:w-[1000px] lg:px-0">
-          <div className="col-span-10 w-full space-y-6 lg:col-span-7 lg:max-w-[680px]">
-            <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
-              keyValue="/feed"
-              fetch={async (req: GetFeedRequestDto) => {
-                return await api.getFeed({ getFeedRequestDto: req })
-              }}
-              fetchProps={{}}
-              emptyElement={ContentFeedEmpty}
-              loadingElement={ContentFeedLoading}
-              endElement={ContentFeedEnd}
-              KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-                return (
-                  <Post
-                    post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-                    inHomeFeed={true}
-                  />
-                )
-              }}
-            />
-          </div>
+      <div className="grid w-full grid-cols-9">
+        <div className="col-span-9 lg:col-span-6">
+          <SectionTitle>Home</SectionTitle>
+          <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
+            keyValue="/feed"
+            fetch={async (req: GetFeedRequestDto) => {
+              return await api.getFeed({ getFeedRequestDto: req })
+            }}
+            fetchProps={{}}
+            emptyElement={ContentFeedEmpty}
+            loadingElement={ContentFeedLoading}
+            endElement={ContentFeedEnd}
+            KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+              return (
+                <Post
+                  post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
+                  inHomeFeed={true}
+                />
+              )
+            }}
+          />
+        </div>
+        <div className="col-span-3 h-screen border-l-[0.5px] border-gray-600">
+          <SectionTitle>Suggested</SectionTitle>
         </div>
       </div>
     </>
