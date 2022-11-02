@@ -239,9 +239,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         errors={errors}
         className="mt-3"
       />
-      <FormInput
+      <Select
         register={register}
-        type="select"
         selectOptions={COUNTRIES}
         name="country"
         errors={errors}

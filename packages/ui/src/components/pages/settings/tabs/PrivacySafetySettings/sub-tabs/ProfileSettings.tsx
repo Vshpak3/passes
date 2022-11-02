@@ -2,7 +2,7 @@ import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
@@ -46,7 +46,7 @@ const ProfileSettings = () => {
             {/* Disable private profiles for now
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Fully Private Profile</span>
-            <FormInput
+            <Checkbox
               name="fullPrivateProfile"
               register={register}
               type="toggle"
@@ -54,7 +54,7 @@ const ProfileSettings = () => {
           </label> */}
             {/*<label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Show fans count on your profile</span>
-            <FormInput
+            <Checkbox
               name="showFollowerCount"
               register={register}
               type="toggle"
@@ -62,7 +62,7 @@ const ProfileSettings = () => {
           </label>
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Show media count on your profile</span>
-            <FormInput
+            <Checkbox
               name="showMediaCount"
               register={register}
               type="toggle"
@@ -73,7 +73,7 @@ const ProfileSettings = () => {
               <span className="text-label">
                 Show likes count on your profile
               </span>
-              <FormInput
+              <Checkbox
                 name="showLikeCount"
                 register={register}
                 type="toggle"
@@ -83,7 +83,7 @@ const ProfileSettings = () => {
               <span className="text-label">
                 Show post count on your profile
               </span>
-              <FormInput
+              <Checkbox
                 name="showPostCount"
                 register={register}
                 type="toggle"

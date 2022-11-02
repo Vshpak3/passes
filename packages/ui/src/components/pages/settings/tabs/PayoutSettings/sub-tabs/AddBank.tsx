@@ -174,9 +174,8 @@ const AddBank = () => {
         errors={errors}
         className="mt-4"
       />
-      <FormInput
+      <Select
         register={register}
-        type="select"
         selectOptions={COUNTRIES}
         name="bank-country"
         errors={errors}
@@ -219,9 +218,8 @@ const AddBank = () => {
           errors={errors}
           className="mt-4"
         />
-        <FormInput
+        <Select
           register={register}
-          type="select"
           selectOptions={COUNTRIES}
           name="country"
           errors={errors}

@@ -16,7 +16,7 @@ import React, {
 import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
@@ -192,7 +192,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         {isCreator && (
           <div className="flex w-full items-center justify-between pt-2">
             <div className="flex min-h-[45px] items-center justify-start gap-4 ">
-              <FormInput
+              <Checkbox
                 label="Pay to View"
                 type="toggle"
                 register={register}

@@ -7,7 +7,7 @@ import {
   UseFormRegister
 } from "react-hook-form"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import {
   PassesSectionTitle,
@@ -47,7 +47,7 @@ export const PassSupply: FC<PassSupplyProps> = ({
         <RadioGroup value={passValue} onChange={setPassValue}>
           <RadioGroup.Option value={SupplyTypesEnum.UNLIMITED}>
             {() => (
-              <FormInput
+              <Checkbox
                 checked={passValue === SupplyTypesEnum.UNLIMITED}
                 register={register}
                 label="Unlimited"
@@ -60,7 +60,7 @@ export const PassSupply: FC<PassSupplyProps> = ({
           </RadioGroup.Option>
           <RadioGroup.Option value={SupplyTypesEnum.TOTAL_SUPPLY}>
             <div className="align-center mt-[20px] flex items-center">
-              <FormInput
+              <Checkbox
                 checked={passValue === SupplyTypesEnum.TOTAL_SUPPLY}
                 register={register}
                 label="Set amount of total supply"

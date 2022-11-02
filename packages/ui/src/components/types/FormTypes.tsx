@@ -11,11 +11,8 @@ export type FormType =
   | "phone"
   | "password"
   | "date"
-  | "checkbox"
-  | "toggle"
   | "select"
   | "tags"
-  | "radio"
 export type FormPlaceholder = string
 export type FormOptions = Partial<{
   required: Message | ValidationRule<boolean>

@@ -6,14 +6,13 @@ import {
   FormLabel,
   FormName,
   FormOptions,
-  FormRegister,
-  FormType
+  FormRegister
 } from "src/components/types/FormTypes"
 import { Label } from "./Label"
 
 type CheckBoxProps = {
   name: FormName
-  type: FormType
+  type: "radio" | "checkbox" | "toggle"
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   register?: FormRegister
   textPosition?: string

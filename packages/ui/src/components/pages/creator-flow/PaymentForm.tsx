@@ -11,8 +11,10 @@ import {
   ButtonTypeEnum,
   PassesPinkButton
 } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { FormInput } from "src/components/atoms/FormInput"
+import { Select } from "src/components/atoms/Select"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
 
@@ -159,12 +161,11 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div className="text-[#b3bee7] opacity-[0.6]">
                 Type of Bank Account
               </div>
-              <FormInput
+              <Select
                 register={register}
                 name="bankAccountType"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Choose"
-                type="select"
                 errors={errors}
                 options={{
                   required: true
@@ -177,12 +178,11 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Country</div>
-              <FormInput
+              <Select
                 register={register}
                 name="bankAddress.country"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 placeholder="Choose Country"
-                type="select"
                 errors={errors}
                 options={{
                   required: true
@@ -345,7 +345,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   />
                   <div className="mt-2.5">
                     <label className="flex items-center">
-                      <FormInput
+                      <Checkbox
                         register={register}
                         type="checkbox"
                         name="termsAndConditions"

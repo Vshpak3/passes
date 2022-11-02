@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { boolean, mixed, number, object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { FormInput } from "src/components/atoms/FormInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -122,11 +123,7 @@ const ChatSettings = () => {
           >
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-label">Accept messages without a Tip</span>
-              <FormInput
-                name="isWithoutTip"
-                register={register}
-                type="toggle"
-              />
+              <Checkbox name="isWithoutTip" register={register} type="toggle" />
             </label>
 
             {!values.isWithoutTip && (
@@ -152,7 +149,7 @@ const ChatSettings = () => {
               <span className="text-label">
                 Send a welcome message to new fans
               </span>
-              <FormInput
+              <Checkbox
                 name="showWelcomeMessageInput"
                 register={register}
                 type="toggle"

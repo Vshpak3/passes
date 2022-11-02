@@ -1,7 +1,7 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { FormRegister } from "src/components/types/FormTypes"
 
 interface NewPostEditorHeaderProps {
@@ -26,7 +26,7 @@ export const NewPostEditorHeader: FC<NewPostEditorHeaderProps> = ({
         <h4 className="text-xl font-bold leading-4">{title}</h4>
       </div>
 
-      <FormInput
+      <Checkbox
         label="Paid"
         type="toggle"
         register={register}

@@ -2,7 +2,7 @@ import { RadioGroup } from "@headlessui/react"
 import { FC } from "react"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { PassesSectionTitle } from "src/components/atoms/passes/CreatePass"
 
@@ -31,7 +31,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
     <RadioGroup value={passValue} onChange={setPassValue}>
       <RadioGroup.Option value={MessageTypesEnum.UNLIMITED}>
         {() => (
-          <FormInput
+          <Checkbox
             checked={passValue === MessageTypesEnum.UNLIMITED}
             register={register}
             label="Unlimited free messages"
@@ -45,7 +45,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
       <RadioGroup.Option value={MessageTypesEnum.NUMBER}>
         {() => (
           <div className="align-center flex items-center">
-            <FormInput
+            <Checkbox
               checked={passValue === MessageTypesEnum.NUMBER}
               register={register}
               label="Set number of free messages per month"
@@ -67,7 +67,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
       </RadioGroup.Option>
       <RadioGroup.Option value={MessageTypesEnum.NO_FREE_MESSAGE}>
         {() => (
-          <FormInput
+          <Checkbox
             checked={passValue === MessageTypesEnum.NO_FREE_MESSAGE}
             register={register}
             label="No free messages"

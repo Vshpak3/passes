@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
@@ -51,7 +51,7 @@ const PostsSettings = () => {
           <div className="mt-[32px] space-y-[32px]">
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-label">Enable Comments</span>
-              <FormInput
+              <Checkbox
                 name="enableComments"
                 register={register}
                 type="toggle"

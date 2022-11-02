@@ -2,6 +2,7 @@ import classNames from "classnames"
 import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { FormInput } from "src/components/atoms/FormInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { FormErrors, FormRegister } from "src/components/types/FormTypes"
@@ -32,7 +33,7 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
   register
 }) => (
   <div className="my-3 flex items-center">
-    <FormInput
+    <Checkbox
       register={register}
       type="checkbox"
       name={name}

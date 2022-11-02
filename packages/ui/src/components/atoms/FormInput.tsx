@@ -1,9 +1,7 @@
 import React, { CSSProperties, FC } from "react"
 
-import { Checkbox } from "src/components/atoms/Checkbox"
 import { EIcon, Input } from "src/components/atoms/Input"
-import { Select, SelectProps } from "src/components/atoms/Select"
-import { TagsInput } from "src/components/molecules/TagsInput"
+import { SelectProps } from "src/components/atoms/Select"
 import {
   FileAccept,
   FormErrors,
@@ -63,13 +61,9 @@ export const FormInput: FC<FormInputProps> = ({
   options,
   register,
   errors,
-  selectOptions,
   className,
-  labelClassName,
   icon,
   iconAlign,
-  tagsFromServer,
-  checked,
   iconMargin,
   ...rest
 }) => {
@@ -104,75 +98,6 @@ export const FormInput: FC<FormInputProps> = ({
         textPosition={textPosition}
         icon={icon}
         iconAlign={iconAlign}
-        {...rest}
-      />
-    ),
-    radio: (
-      <Checkbox
-        name={name}
-        type={type}
-        label={label}
-        checked={checked}
-        options={options}
-        className={className}
-        textPosition={textPosition}
-        errors={errors}
-        register={register}
-        labelClassName={labelClassName}
-        {...rest}
-      />
-    ),
-    tags: (
-      <TagsInput
-        name={name}
-        // type={type}
-        placeholder={placeholder}
-        label={label}
-        register={register}
-        options={options}
-        tagsFromServer={tagsFromServer}
-        // errors={errors}
-        // icon={icon}
-        {...rest}
-      />
-    ),
-    checkbox: (
-      <Checkbox
-        name={name}
-        type={type}
-        label={label}
-        options={options}
-        className={className}
-        textPosition={textPosition}
-        errors={errors}
-        register={register}
-        labelClassName={labelClassName}
-        {...rest}
-      />
-    ),
-    toggle: (
-      <Checkbox
-        textPosition={textPosition}
-        name={name}
-        type={type}
-        label={label}
-        options={options}
-        errors={errors}
-        className={className}
-        register={register}
-        {...rest}
-      />
-    ),
-    select: (
-      <Select
-        name={name}
-        label={label}
-        placeholder={placeholder}
-        register={register}
-        options={options}
-        selectOptions={selectOptions}
-        errors={errors}
-        className={className}
         {...rest}
       />
     )

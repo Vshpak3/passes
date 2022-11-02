@@ -5,7 +5,6 @@ import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/Checkbox"
-import { FormInput } from "src/components/atoms/FormInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"
@@ -113,7 +112,7 @@ const EmailNotifications = () => {
               <span className="text-sm font-medium leading-6">
                 Direct Messages
               </span>
-              <FormInput
+              <Checkbox
                 name="directMessageEmails"
                 register={register}
                 type="toggle"
@@ -121,15 +120,11 @@ const EmailNotifications = () => {
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">Passes</span>
-              <FormInput
-                name="passesEmails"
-                register={register}
-                type="toggle"
-              />
+              <Checkbox name="passesEmails" register={register} type="toggle" />
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">Payments</span>
-              <FormInput
+              <Checkbox
                 name="paymentEmails"
                 register={register}
                 type="toggle"
@@ -137,21 +132,17 @@ const EmailNotifications = () => {
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">Posts</span>
-              <FormInput name="postEmails" register={register} type="toggle" />
+              <Checkbox name="postEmails" register={register} type="toggle" />
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">
                 Passes Marketing & Product Update Emails
               </span>
-              <FormInput
-                name="marketingEmails"
-                register={register}
-                type="toggle"
-              />
+              <Checkbox name="marketingEmails" register={register} g />
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">Mentions</span>
-              <FormInput
+              <Checkbox
                 name="mentionEmails"
                 register={register}
                 type="toggle"

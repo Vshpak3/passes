@@ -17,6 +17,7 @@ import {
   ButtonTypeEnum,
   RoundedIconButton
 } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { FormInput } from "src/components/atoms/FormInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
@@ -140,7 +141,7 @@ const LoginPage: FC = () => {
             </div>
 
             <div className="flex flex-row gap-14">
-              <FormInput
+              <Checkbox
                 type="checkbox"
                 label="Remember for 30 days"
                 register={register}

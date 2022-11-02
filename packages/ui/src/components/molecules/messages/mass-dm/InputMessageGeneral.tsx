@@ -1,10 +1,10 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { ChangeEvent, FC, KeyboardEvent, useState } from "react"
+import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Checkbox } from "src/components/atoms/Checkbox"
 import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
@@ -118,7 +118,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     >
       <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-3">
         <div className="flex min-h-[45px] items-center justify-start gap-4 px-3 pt-2">
-          <FormInput
+          <Checkbox
             label="Pay to View"
             type="toggle"
             register={register}
