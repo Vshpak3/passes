@@ -17,6 +17,7 @@ import {
   RoundedIconButton
 } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
@@ -171,12 +172,11 @@ const SignupInitialPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Password
               </Text>
-              <FormInput
+              <PasswordInput
                 register={register}
                 name="password"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 placeholder="Enter your password"
-                type="password"
                 errors={errors}
               />
             </div>
@@ -185,12 +185,11 @@ const SignupInitialPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Confirm Password
               </Text>
-              <FormInput
+              <PasswordInput
                 register={register}
                 name="confirmPassword"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 placeholder="Confirm your password"
-                type="password"
                 errors={errors}
               />
             </div>

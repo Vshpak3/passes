@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { passwordFormSchema } from "src/pages/signup"
@@ -73,11 +73,10 @@ const ChangePassword = () => {
       />
       <form className="mt-6" onSubmit={handleSubmit(onChangePassword)}>
         <div className="border-b border-passes-dark-200 pb-6">
-          <FormInput
+          <PasswordInput
             errors={errors}
             placeholder="Current Password"
             name="oldPassword"
-            type="password"
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
           />
@@ -91,18 +90,16 @@ const ChangePassword = () => {
         </div>
 
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
-          <FormInput
+          <PasswordInput
             placeholder="New Password"
             name="password"
-            type="password"
             register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
           />
-          <FormInput
+          <PasswordInput
             placeholder="Confirm Password"
             name="confirmPassword"
-            type="password"
             register={register}
             className="mt-6 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}

@@ -19,7 +19,7 @@ export enum EIcon {
   Right = "RIGHT"
 }
 
-type InputProps = {
+export type InputProps = {
   name: FormName
   type: FormType
   register: FormRegister
