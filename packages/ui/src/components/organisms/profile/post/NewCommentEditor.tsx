@@ -92,7 +92,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       onSubmit={onSubmit}
       className="flex w-full flex-row items-center pt-5"
     >
-      <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-lg border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
+      <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
         <CustomComponentMentionEditor
           isReset={isReset}
           setIsReset={setIsReset}

@@ -53,8 +53,8 @@ export const HomeContentFeed: FC = () => {
   return (
     <>
       <Header />
-      <div className="grid w-full grid-cols-9">
-        <div className="col-span-9 lg:col-span-6">
+      <div className="grid w-full grid-cols-7">
+        <div className="col-span-7 lg:col-span-4">
           <SectionTitle>Home</SectionTitle>
           <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
             keyValue="/feed"

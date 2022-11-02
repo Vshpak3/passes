@@ -18,8 +18,8 @@ const ProfileUnmemo: FC = () => {
           <Loader />
         </div>
       ) : profile ? (
-        <div className="grid grid-cols-9">
-          <div className="col-span-9 pt-28 md:space-y-6 md:pt-0 lg:col-span-6">
+        <div className="grid grid-cols-7">
+          <div className="col-span-7 pt-28 md:space-y-6 md:pt-0 lg:col-span-4">
             <ProfileDetails />
             {!!profile.isCreator && (
               <ProfileContent
@@ -27,7 +27,7 @@ const ProfileUnmemo: FC = () => {
               />
             )}
           </div>
-          <div className="sticky col-span-3 flex h-full flex-col border-l-[0.5px] border-gray-600">
+          <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600">
             <PassesSidebar />
           </div>
         </div>

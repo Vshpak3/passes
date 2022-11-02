@@ -50,7 +50,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   }
 
   return (
-    <div className="flex max-w-[500px] flex-col rounded-xl border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
+    <div className="flex max-w-[500px] flex-col border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
       <PassMedia
         passId={pass.passId}
         imageType={pass.imageType}
