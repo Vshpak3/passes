@@ -58,7 +58,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     Record<string, Partial<MessageDto>>
   >({})
   const [attempts, setAttempts] = useState<number>(0)
-
   useEffect(() => {
     setSocket(
       accessToken && accessToken.length
@@ -178,40 +177,40 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  // useEffect(() => {
-  //   // if you scroll to the bottom, get rid of unread message IDs
-  //   if (unreadMessageIds.size > 0 && isBottomOfChatVisible) {
-  //     setUnreadMessageIds(new Set())
-  //   }
-  // }, [isBottomOfChatVisible, unreadMessageIds.size])
+  useEffect(() => {
+    // if you scroll to the bottom, get rid of unread message IDs
+    if (unreadMessageIds.size > 0 && isBottomOfChatVisible) {
+      setUnreadMessageIds(new Set())
+    }
+  }, [isBottomOfChatVisible, unreadMessageIds.size])
 
-  // useEffect(() => {
-  //   if (
-  //     !!prevMessages &&
-  //     prevMessages.length < messages.length &&
-  //     !isBottomOfChatVisible
-  //   ) {
-  //     // collect new message IDs as unread as they come in
-  //     //  when not at the bottom of the chat box
-  //     setUnreadMessageIds(
-  //       (unread) =>
-  //         new Set([
-  //           ...Array.from(unread),
-  //           ...messages
-  //             // grab new messages from the front of the array
-  //             .slice(0, messages.length - prevMessages.length)
-  //             // remove your own messages (other sender only)
-  //             .filter((m) => m.senderId !== user?.userId)
-  //             .map((m) => m.messageId)
-  //         ])
-  //     )
-  //   }
-  // }, [isBottomOfChatVisible, messages, prevMessages, user?.userId])
+  useEffect(() => {
+    if (
+      !!prevMessages &&
+      prevMessages.length < messages.length &&
+      !isBottomOfChatVisible
+    ) {
+      // collect new message IDs as unread as they come in
+      //  when not at the bottom of the chat box
+      setUnreadMessageIds(
+        (unread) =>
+          new Set([
+            ...Array.from(unread),
+            ...messages
+              // grab new messages from the front of the array
+              .slice(0, messages.length - prevMessages.length)
+              // remove your own messages (other sender only)
+              .filter((m) => m.senderId !== user?.userId)
+              .map((m) => m.messageId)
+          ])
+      )
+    }
+  }, [isBottomOfChatVisible, messages, prevMessages, user?.userId])
 
   return (
     <>
       {!!minimumTip && freeMessages !== undefined && (
-        <div className="z-20">
+        <div className="top-0 z-20 bg-transparent">
           <FreeMessagesLeftContainer freeMessages={freeMessages} />
         </div>
       )}
