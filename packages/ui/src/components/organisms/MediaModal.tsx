@@ -1,12 +1,12 @@
 import { ContentDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
+import { ContentCarousel } from "src/components/organisms/content/ContentCarousel"
 import { Modal } from "src/components/organisms/Modal"
 import {
   Media,
   MediaFile
 } from "src/components/organisms/profile/main-content/new-post/Media"
-import { ContentCarousel } from "src/components/organisms/profile/post/ContentCarousel"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 

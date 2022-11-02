@@ -8,13 +8,13 @@ import { FC, ForwardedRef, forwardRef, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
 
-export interface PostImageProps {
+export interface SlideImageProps {
   content: ContentDto
   ref: ForwardedRef<HTMLImageElement>
 }
 
-export const PostImage: FC<PostImageProps> = forwardRef(
-  ({ content }: PostImageProps, ref: ForwardedRef<HTMLImageElement>) => {
+export const SlideImage: FC<SlideImageProps> = forwardRef(
+  ({ content }: SlideImageProps, ref: ForwardedRef<HTMLImageElement>) => {
     const [loaded, setLoaded] = useState(false)
     const image = ContentService.userContentMediaPath(content)
     return (
@@ -46,4 +46,4 @@ export const PostImage: FC<PostImageProps> = forwardRef(
   }
 )
 
-PostImage.displayName = "PostImage"
+SlideImage.displayName = "PostImage"

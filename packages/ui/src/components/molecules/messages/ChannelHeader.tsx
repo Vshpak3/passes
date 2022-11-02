@@ -3,7 +3,7 @@ import BackIcon from "public/icons/back-icon.svg"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
-import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
+import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"

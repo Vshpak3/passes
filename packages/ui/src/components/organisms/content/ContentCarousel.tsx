@@ -9,7 +9,7 @@ import { Lazy, Navigation, Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { content } from "tailwind.config"
 
-import { PostContent } from "src/components/molecules/PostContent"
+import { SlideContent } from "src/components/molecules/content/SlideContent"
 import { LockedMedia } from "./LockedMedia"
 
 export interface ContentCarouselProps {
@@ -52,7 +52,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
           return hasAccess || index < previewIndex ? (
             <SwiperSlide key={index}>
-              <PostContent
+              <SlideContent
                 index={index}
                 content={c}
                 ref={imgRef}

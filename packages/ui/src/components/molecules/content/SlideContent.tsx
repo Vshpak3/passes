@@ -1,21 +1,24 @@
 import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
 
-import { PostImage, PostImageProps } from "src/components/atoms/PostImage"
+import {
+  SlideImage,
+  SlideImageProps
+} from "src/components/atoms/content/SlideImage"
+import { PostVideo } from "src/components/molecules/post/PostVideo"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
-import { PostVideo } from "./post/PostVideo"
 
-interface PostContentProps extends PostImageProps {
+interface SlideContentProps extends SlideImageProps {
   ref: ForwardedRef<HTMLImageElement>
   autoplayVideo?: boolean
   carouselContent?: ContentDto[]
   index?: number
 }
 
-export const PostContent: FC<PostContentProps> = forwardRef(
+export const SlideContent: FC<SlideContentProps> = forwardRef(
   (
-    { content, autoplayVideo, carouselContent, index = 0 }: PostContentProps,
+    { content, autoplayVideo, carouselContent, index = 0 }: SlideContentProps,
     ref: ForwardedRef<HTMLImageElement>
   ) => {
     const [openModal, setOpenModal] = useState(false)
@@ -42,7 +45,7 @@ export const PostContent: FC<PostContentProps> = forwardRef(
         return (
           <>
             <button className="w-full" onClick={onImgClickHandler}>
-              <PostImage content={content} ref={ref} />
+              <SlideImage content={content} ref={ref} />
             </button>
             {openModal && (
               <MediaModal
@@ -70,4 +73,4 @@ export const PostContent: FC<PostContentProps> = forwardRef(
   }
 )
 
-PostContent.displayName = "PostContent"
+SlideContent.displayName = "PostContent"

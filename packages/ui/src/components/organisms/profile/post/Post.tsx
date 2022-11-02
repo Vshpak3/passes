@@ -4,7 +4,7 @@ import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
-import { MediaContent } from "src/components/molecules/MediaContent"
+import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {

@@ -2,8 +2,8 @@ import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
+import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
 import { FormattedText } from "src/components/atoms/FormattedText"
-import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
 import { Text } from "src/components/atoms/Text"
 import {
   Dropdown,

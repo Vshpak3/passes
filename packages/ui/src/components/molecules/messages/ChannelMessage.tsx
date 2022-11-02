@@ -5,7 +5,7 @@ import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { MediaContent } from "src/components/molecules/MediaContent"
+import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency, formatText } from "src/helpers/formatters"

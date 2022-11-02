@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 
-import { MessagesNameDisplay } from "src/components/atoms/MessagesNameDisplay"
+import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
 

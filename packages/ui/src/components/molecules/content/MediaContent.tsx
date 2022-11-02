@@ -3,7 +3,7 @@ import { FC } from "react"
 import {
   ContentCarousel,
   ContentCarouselProps
-} from "src/components/organisms/profile/post/ContentCarousel"
+} from "src/components/organisms/content/ContentCarousel"
 
 interface MediaContentProps extends ContentCarouselProps {
   isProcessing: boolean
