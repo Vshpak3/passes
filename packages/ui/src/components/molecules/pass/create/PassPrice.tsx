@@ -1,4 +1,3 @@
-import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import { FC } from "react"
 import {
   DeepMap,
@@ -7,9 +6,8 @@ import {
   UseFormRegister
 } from "react-hook-form"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { PassFormError } from "src/components/atoms/passes/CreatePass"
-import { preventNegative } from "src/helpers/keyboard"
 
 type FieldErrors<TFieldValues extends FieldValues = FieldValues> = DeepMap<
   TFieldValues,
@@ -29,15 +27,11 @@ export const PassPrice: FC<PassPriceProps> = ({ register, errors }) => {
         <span className="w-[250px] text-lg font-bold text-[#ffff]/90 md:text-[15px] md:font-semibold">
           Set price of the pass
         </span>
-        <FormInput
+        <NumberInput
+          type="currency"
           register={register}
-          type="number"
           name="price"
-          onKeyPress={preventNegative}
           className="ml-2 max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
-          placeholder="0.00"
-          icon={<DollarIcon className="ml-[20px]" />}
-          iconMargin="50"
         />
         {errors?.price?.type === "required" && (
           <PassFormError message="Price is required" />

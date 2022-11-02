@@ -16,6 +16,7 @@ import { Button } from "src/components/atoms/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { FormInput } from "src/components/atoms/FormInput"
 import { EIcon } from "src/components/atoms/Input"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Select } from "src/components/atoms/Select"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
@@ -201,12 +202,11 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         </div>
         <div className="mb-4 flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
-          <FormInput
+          <NumberInput
+            type="integer"
             register={register}
-            type="number"
             name="cvv"
-            placeholder=""
-            maxLength="4"
+            maxInput={999}
             errors={errors}
             options={{
               required: {

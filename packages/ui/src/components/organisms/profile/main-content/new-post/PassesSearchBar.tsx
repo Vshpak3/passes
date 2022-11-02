@@ -57,7 +57,7 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
       options={searchOptions}
       loading={loading}
       searchValue={searchValue}
-      contentName="passes"
+      contentName="memberships"
       onInputChange={onInputChange}
       onSelect={onSelect}
     />

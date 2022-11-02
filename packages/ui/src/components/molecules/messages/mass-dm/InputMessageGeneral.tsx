@@ -15,6 +15,7 @@ import {
 } from "src/components/organisms/MediaSelector"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
+import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
 interface InputMessageGeneralProps {
@@ -100,12 +101,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     }
   }
 
-  const prevent = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.code === "Minus") {
-      e.preventDefault()
-    }
-  }
-
   const setScheduledTime = (date: Date | null) => {
     setValue("scheduledAt", date, { shouldValidate: true })
   }
@@ -145,7 +140,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
                 id="postPrice"
                 placeholder="$"
                 aria-placeholder="$"
-                onKeyPress={prevent}
+                onKeyPress={preventNegative}
                 min="0"
                 max="5000"
                 step="0.01"

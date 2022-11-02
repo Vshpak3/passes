@@ -9,7 +9,6 @@ export type FormType =
   | "email"
   | "tel"
   | "phone"
-  | "number"
   | "password"
   | "date"
   | "text-area"

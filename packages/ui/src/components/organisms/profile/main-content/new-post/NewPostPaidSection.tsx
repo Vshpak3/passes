@@ -2,10 +2,10 @@ import { PassDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Tag } from "src/components/atoms/Tag"
+import { MAX_PAID_POST_PRICE } from "src/config/post"
 import { formatText } from "src/helpers/formatters"
-import { preventNegative } from "src/helpers/keyboard"
 import { NewPostFormProps } from "./NewPostEditor"
 import { PassesSearchBar } from "./PassesSearchBar"
 
@@ -46,7 +46,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
         </span>
         <div className="flex flex-col items-start gap-[15px]">
           <span className="text-small leading-[22px] text-[#FFFFFF]">
-            These pass holders will be able to view your content for free
+            These membership holders will be able to view your content for free
           </span>
           <PassesSearchBar
             selectedPassIds={selectedPasses.map((pass) => pass.passId)}
@@ -55,20 +55,20 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
         </div>
       </div>
       <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
-        <div className="flex flex-1 items-center gap-1 pb-5 sm:gap-4">
-          <span className="text-xs text-[#ffff] sm:text-base">
-            Price (if not an above pass holder)
+        <div className="flex items-center gap-1 pb-5 sm:gap-4">
+          <span className="text-small text-[#ffff]">
+            Price (if not an above membership holder)
           </span>
           <div className="relative flex max-w-[140px] justify-between rounded-md shadow-sm">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <span className="text-base font-bold text-[#ffffff]/40">$</span>
             </div>
-            <FormInput
+            <NumberInput
+              type="currency"
               register={register}
-              type="number"
               name="price"
-              onKeyPress={preventNegative}
-              className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0 "
+              maxInput={MAX_PAID_POST_PRICE}
+              className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
             />
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { RadioGroup } from "@headlessui/react"
-import HashtagIcon from "public/icons/hashtag-icon.svg"
 import { FC } from "react"
 import {
   DeepMap,
@@ -9,6 +8,7 @@ import {
 } from "react-hook-form"
 
 import { FormInput } from "src/components/atoms/FormInput"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import {
   PassesSectionTitle,
   PassFormError
@@ -70,13 +70,11 @@ export const PassSupply: FC<PassSupplyProps> = ({
                 className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               />
               <div className="align-center ml-10 flex items-center justify-center">
-                <FormInput
+                <NumberInput
+                  type="integer"
                   register={register}
-                  type="number"
                   name="totalSupply"
                   className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
-                  placeholder="0"
-                  icon={<HashtagIcon />}
                 />
                 {errors?.totalSupply?.type === "totalSupply" && (
                   <PassFormError message="Total supply is required" />

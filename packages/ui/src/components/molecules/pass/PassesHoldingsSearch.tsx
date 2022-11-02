@@ -25,7 +25,7 @@ const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
         onChange={onChange}
         value={passSearchTerm}
         autoComplete="off"
-        placeholder="Search passes"
+        placeholder="Search memberships"
         className="form-input h-[51px] w-[210px] rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0 md:max-w-[250px]"
       />
     </div>

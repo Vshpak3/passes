@@ -3,6 +3,7 @@ import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { FormErrors, FormRegister } from "src/components/types/FormTypes"
 
 interface PassFormErrorProps {
@@ -64,9 +65,9 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
     </div>
     <div className="grid grid-flow-col">
       <div className="align-items relative flex w-fit items-center justify-start">
-        <FormInput
+        <NumberInput
+          type="integer"
           register={register}
-          type="number"
           name={name}
           placeholder={placeholder}
           className={classNames(

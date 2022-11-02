@@ -7,9 +7,13 @@ import { boolean, mixed, number, object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { MIN_TIP_MESSAGE_PRICE } from "src/config/messaging"
+import {
+  MAX_TIP_MESSAGE_PRICE,
+  MIN_TIP_MESSAGE_PRICE
+} from "src/config/messaging"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
@@ -130,13 +134,14 @@ const ChatSettings = () => {
                 <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
                   Minimum ${MIN_TIP_MESSAGE_PRICE}
                 </span>
-                <FormInput
-                  placeholder="Enter Minimum Tip Amount"
-                  name="minimumTipAmount"
-                  type="number"
+                <NumberInput
+                  type="currency"
                   register={register}
-                  className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                  name="minimumTipAmount"
+                  placeholder="Enter Minimum Tip Amount"
+                  maxInput={MAX_TIP_MESSAGE_PRICE}
                   errors={errors}
+                  className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                 />
               </div>
             )}

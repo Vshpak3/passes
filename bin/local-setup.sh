@@ -12,6 +12,10 @@ cd "$( dirname "${BASH_SOURCE[0]}" )"
 # needed for rebase: yes
 yarn install
 
+# ensure all docker containers are up
+# needed for rebase: no
+docker compose up -d
+
 # spins up docker containers for backend
 # needed for rebase: yes
 ./reset-local-database.sh

@@ -7,7 +7,7 @@ import {
 import { Dispatch, FC, SetStateAction } from "react"
 import { useForm } from "react-hook-form"
 
-import { Input } from "src/components/atoms/Input"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
@@ -63,12 +63,12 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
           Tip Post (Minimum ${MIN_TIP_POST_PRICE})
         </span>
       </div>
-      <Input
-        className="border-passes-dark-100 bg-transparent"
+      <NumberInput
+        type="currency"
         register={register}
         name="tip-value"
         errors={errors}
-        type="number"
+        className="border-passes-dark-100 bg-transparent"
         options={{
           required: { message: "Tip amount is required", value: true },
           min: {
