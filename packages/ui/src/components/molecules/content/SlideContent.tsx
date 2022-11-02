@@ -5,7 +5,6 @@ import {
   SlideImage,
   SlideImageProps
 } from "src/components/atoms/content/SlideImage"
-import { PostVideo } from "src/components/molecules/post/PostVideo"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
 
@@ -18,7 +17,7 @@ interface SlideContentProps extends SlideImageProps {
 
 export const SlideContent: FC<SlideContentProps> = forwardRef(
   (
-    { content, autoplayVideo, carouselContent, index = 0 }: SlideContentProps,
+    { content, carouselContent, index = 0 }: SlideContentProps,
     ref: ForwardedRef<HTMLImageElement>
   ) => {
     const [openModal, setOpenModal] = useState(false)
@@ -62,10 +61,9 @@ export const SlideContent: FC<SlideContentProps> = forwardRef(
         )
       case ContentDtoContentTypeEnum.Video:
         return (
-          <PostVideo
-            key={content.contentId}
-            videoUrl={ContentService.userContentMediaPath(content)}
-            autoplayVideo={autoplayVideo}
+          <video
+            src={ContentService.userContentMediaPath(content)}
+            className="video-js vjs-big-play-centered"
           />
         )
     }
