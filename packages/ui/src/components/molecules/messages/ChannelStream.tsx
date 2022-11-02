@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   GetMessagesRequestDto,
   GetMessagesResponseDto,
@@ -36,7 +38,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 }) => {
   const { user } = useUser()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [time, _setTime] = useState(Date.now())
   const api = new MessagesApi()
 
@@ -177,35 +178,35 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  useEffect(() => {
-    // if you scroll to the bottom, get rid of unread message IDs
-    if (unreadMessageIds.size > 0 && isBottomOfChatVisible) {
-      setUnreadMessageIds(new Set())
-    }
-  }, [isBottomOfChatVisible, unreadMessageIds.size])
+  // useEffect(() => {
+  //   // if you scroll to the bottom, get rid of unread message IDs
+  //   if (unreadMessageIds.size > 0 && isBottomOfChatVisible) {
+  //     setUnreadMessageIds(new Set())
+  //   }
+  // }, [isBottomOfChatVisible, unreadMessageIds.size])
 
-  useEffect(() => {
-    if (
-      !!prevMessages &&
-      prevMessages.length < messages.length &&
-      !isBottomOfChatVisible
-    ) {
-      // collect new message IDs as unread as they come in
-      //  when not at the bottom of the chat box
-      setUnreadMessageIds(
-        (unread) =>
-          new Set([
-            ...Array.from(unread),
-            ...messages
-              // grab new messages from the front of the array
-              .slice(0, messages.length - prevMessages.length)
-              // remove your own messages (other sender only)
-              .filter((m) => m.senderId !== user?.userId)
-              .map((m) => m.messageId)
-          ])
-      )
-    }
-  }, [isBottomOfChatVisible, messages, prevMessages, user?.userId])
+  // useEffect(() => {
+  //   if (
+  //     !!prevMessages &&
+  //     prevMessages.length < messages.length &&
+  //     !isBottomOfChatVisible
+  //   ) {
+  //     // collect new message IDs as unread as they come in
+  //     //  when not at the bottom of the chat box
+  //     setUnreadMessageIds(
+  //       (unread) =>
+  //         new Set([
+  //           ...Array.from(unread),
+  //           ...messages
+  //             // grab new messages from the front of the array
+  //             .slice(0, messages.length - prevMessages.length)
+  //             // remove your own messages (other sender only)
+  //             .filter((m) => m.senderId !== user?.userId)
+  //             .map((m) => m.messageId)
+  //         ])
+  //     )
+  //   }
+  // }, [isBottomOfChatVisible, messages, prevMessages, user?.userId])
 
   return (
     <>
