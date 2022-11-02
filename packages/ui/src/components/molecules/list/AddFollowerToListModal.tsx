@@ -36,7 +36,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
             value={searchValue}
             ref={searchRef}
             autoComplete="off"
-            placeholder={"Find user"}
+            placeholder="Find user"
             className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0 xs:min-w-[320px] sm:min-w-[360px]"
           />
         </div>

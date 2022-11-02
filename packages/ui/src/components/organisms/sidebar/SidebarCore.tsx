@@ -64,7 +64,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
           <AuthWrapper>
             <div className="flex flex-col items-start gap-0">
               <SidebarItem
-                key={`sidebar-logout`}
+                key="sidebar-logout"
                 item={{
                   name: "Logout",
                   id: "logout",

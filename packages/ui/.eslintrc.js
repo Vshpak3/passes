@@ -22,6 +22,7 @@ module.exports = {
       "error",
       { allowSameFolder: true }
     ],
+    "react/jsx-curly-brace-presence": "error",
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
     "react/react-in-jsx-scope": "off", // Not needed for Next.js
     "simple-import-sort/imports": [

@@ -39,7 +39,7 @@ const PostStatistics = () => {
         </div>
       </div>
       <InfiniteScrollPagination<PostDto, GetPostsResponseDto>
-        keyValue={`posts`}
+        keyValue="posts"
         fetch={getPosts}
         fetchProps={{}}
         emptyElement={<span>No posts to show</span>}

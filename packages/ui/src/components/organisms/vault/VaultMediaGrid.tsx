@@ -61,7 +61,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
       />
       <div>
         <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
-          keyValue={`vault`}
+          keyValue="vault"
           fetch={async (req: GetVaultQueryRequestDto) => {
             const api = new ContentApi()
             return await api.getVaultContent({

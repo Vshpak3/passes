@@ -24,7 +24,7 @@ const BlockedRestrictedAccounts = () => {
     >
       <div className="mt-5 space-y-[26px] px-2.5">
         <InfiniteScrollPagination<ListMemberDto, GetBlockedResponseDto>
-          keyValue={`blocked`}
+          keyValue="blocked"
           fetch={async (req: SearchFollowRequestDto) => {
             const api = new FollowApi()
             return await api.getBlocked({

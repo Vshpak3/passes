@@ -107,10 +107,9 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   childrenClassname="p-0"
                 />
               )}
-              {
-                <style>
-                  {!messages
-                    ? `.swiper-button-next{
+              <style>
+                {!messages
+                  ? `.swiper-button-next{
                 position: absolute;
                 right: -9px;
                 width: 45px;
@@ -127,7 +126,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 color:white;
                 transform: scale(0.6, 0.9);
           }`
-                    : `.swiper-button-next{
+                  : `.swiper-button-next{
                   position: absolute;
                   right: -9px;
                   width: 45px;
@@ -146,8 +145,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   transform: scale(0.6, 0.9);
                   mix-blend-mode: difference;
             }`}
-                </style>
-              }
+              </style>
 
               <Swiper
                 className="mySwiper"

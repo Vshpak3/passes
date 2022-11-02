@@ -146,7 +146,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     <div className="text-white">
       <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
         <div onClick={() => router.back()}>
-          <ArrowLeft className="cursor-pointer" width={"16"} height={"16"} />
+          <ArrowLeft className="cursor-pointer" width="16" height="16" />
         </div>
         <h1 className="text-xl font-bold">{listName}</h1>
       </div>

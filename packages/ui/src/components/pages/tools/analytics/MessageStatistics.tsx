@@ -45,7 +45,7 @@ const MessageStatistics = () => {
         </div>
       </div>
       <InfiniteScrollPagination<PaidMessageDto, GetPaidMessagesResponseDto>
-        keyValue={`paid-messages`}
+        keyValue="paid-messages"
         fetch={async (req: GetPaidMessagesRequestDto) => {
           const api = new MessagesApi()
           return await api.getPaidMessages({
