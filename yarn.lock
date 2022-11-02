@@ -6337,7 +6337,6 @@ __metadata:
     "@types/react-beautiful-dnd": 13.1.2
     "@types/react-date-range": 1.4.4
     "@types/react-dom": 18.0.6
-    "@types/react-input-mask": 3.0.1
     "@types/react-modal": 3.13.1
     "@types/react-timeago": 4.1.3
     "@types/uuid": 8.3.4
@@ -6396,7 +6395,6 @@ __metadata:
     react-hook-form: 7.36.0
     react-icons: 4.4.0
     react-infinite-scroll-component: 6.1.0
-    react-input-mask: 2.0.4
     react-modal: 3.15.1
     react-timeago: 7.1.0
     react-toastify: 9.0.8
@@ -7557,15 +7555,6 @@ __metadata:
   dependencies:
     "@types/react": "*"
   checksum: db571047af1a567631758700b9f7d143e566df939cfe5fbf7535347cc0c726a1cdbb5e3f8566d076e54cf708b6c1166689de194a9ba09ee35efc9e1d45911685
-  languageName: node
-  linkType: hard
-
-"@types/react-input-mask@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@types/react-input-mask@npm:3.0.1"
-  dependencies:
-    "@types/react": "*"
-  checksum: 1752057d898c6f8abb26ed3b99c4fd7572697a1f94d6b76bbd6f3df617917054d258342df9b48ba4a0df51068cfdec9039c86c785852a77f7dd43abfa2f344e1
   languageName: node
   linkType: hard
 
@@ -14494,7 +14483,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:2.2.4, invariant@npm:^2.2.4":
+"invariant@npm:2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -19811,19 +19800,6 @@ __metadata:
   peerDependencies:
     react: ">=16.0.0"
   checksum: 3708398934366df907dbad215247ebc1033221957ce7e32289ea31750cce70aa16513e2d03743e06c8b868ac7c542d12d5dbb6c830fd408433a4762f3cb5ecfb
-  languageName: node
-  linkType: hard
-
-"react-input-mask@npm:2.0.4":
-  version: 2.0.4
-  resolution: "react-input-mask@npm:2.0.4"
-  dependencies:
-    invariant: ^2.2.4
-    warning: ^4.0.2
-  peerDependencies:
-    react: ">=0.14.0"
-    react-dom: ">=0.14.0"
-  checksum: 429b46c54c9572fe2d4856c399c41c3b02b3ac398adde88e6f8f5f6dd95999528551d84222e0925a538eec775b2330e7b56c40dd79549addfe8b10e901ed4446
   languageName: node
   linkType: hard
 

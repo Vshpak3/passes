@@ -24,7 +24,7 @@ jobs:
           node-version: 16
           cache: yarn
       - run: ./packages/ui/bin/lint_light.sh
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: ./packages/ui/bin/lint_heavy.sh
       - run: yarn workspace @passes/ui prettier:check
       - run: yarn workspace @passes/ui lint:check
@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: 16
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn workspace @passes/ui ts:check
       # ts:check should be sufficient for now
       # - run: yarn workspace @passes/ui build
@@ -60,7 +60,7 @@ jobs:
         with:
           node-version: 16
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn workspace @passes/api prettier:check
       - run: yarn workspace @passes/api lint:check
       - run: yarn workspace @passes/api ts:check
@@ -77,7 +77,7 @@ jobs:
         with:
           node-version: 16
           cache: yarn
-      - run: yarn install --frozen-lockfile
+      - run: yarn install --immutable
       - run: yarn workspace @passes/api test
 
   api-check-configs:
