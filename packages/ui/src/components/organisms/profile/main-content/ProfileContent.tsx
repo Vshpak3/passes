@@ -22,7 +22,7 @@ const UnMemoizedProfileContent: FC<ProfileContentProps> = ({
     history.replaceState(window.history.state, "", `#${activeTab}`)
   }, [activeTab])
   return (
-    <div className="px-4">
+    <div>
       <ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       <ProfileContentFeed activeTab={activeTab} />
     </div>

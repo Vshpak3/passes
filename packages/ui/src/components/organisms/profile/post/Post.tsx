@@ -110,12 +110,12 @@ const PostUnmemo: FC<PostProps> = ({
   return (
     <>
       {!isRemoved && (
-        <div className="mt-6">
+        <div>
           <FormContainer
             borderColor={
               isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
             }
-            className={"!min-h-[10px] w-full rounded-[15px] border px-5 pt-5"}
+            className="!min-h-[10px] w-full border px-5 pt-5"
           >
             <PostHeader
               createdAt={createdAt}
