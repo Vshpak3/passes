@@ -58,6 +58,11 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     LandingMessageEnum.TIP
   )
 
+  const onSubmit = () => {
+    handleSubmit(submit)
+    setPost(null)
+  }
+
   return (
     <Modal isOpen setOpen={() => setPost(null)}>
       <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
@@ -84,7 +89,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         price={tipValue}
         setPayinMethod={setPayinMethod}
       />
-      <TipPostButton isLoading={loading} onClick={handleSubmit(submit)} />
+      <TipPostButton isLoading={loading} onClick={onSubmit} />
     </Modal>
   )
 }
