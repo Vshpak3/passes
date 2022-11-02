@@ -7,7 +7,7 @@ import { boolean, mixed, number, object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/Checkbox"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
@@ -157,7 +157,7 @@ const ChatSettings = () => {
             </label>
 
             {values.showWelcomeMessageInput && (
-              <FormInput
+              <Input
                 placeholder="Type a message..."
                 name="welcomeMessage"
                 type="text"

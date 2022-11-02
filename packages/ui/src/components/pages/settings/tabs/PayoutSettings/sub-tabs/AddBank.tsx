@@ -7,8 +7,7 @@ import { memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { v4 } from "uuid"
 
-import { FormInput } from "src/components/atoms/FormInput"
-import { EIcon } from "src/components/atoms/Input"
+import { EIcon, Input } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
@@ -114,7 +113,7 @@ const AddBank = () => {
           <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
             Routing Number
           </span>
-          <FormInput
+          <Input
             register={register}
             type="text"
             name="routing-number"
@@ -128,7 +127,7 @@ const AddBank = () => {
           <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
             Account Number
           </span>
-          <FormInput
+          <Input
             register={register}
             type="text"
             name="account-number"
@@ -144,7 +143,7 @@ const AddBank = () => {
           <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
             IBAN
           </span>
-          <FormInput
+          <Input
             register={register}
             type="text"
             name="iban"
@@ -159,14 +158,14 @@ const AddBank = () => {
       <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
         Bank Info
       </span>
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="bank-name"
         placeholder="Bank Name"
         errors={errors}
       />
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="bank-city"
@@ -188,7 +187,7 @@ const AddBank = () => {
 
       <div className="mt-4">
         <span className="text-[16px] font-[500]">Billing address</span>
-        <FormInput
+        <Input
           register={register}
           type="text"
           name="name"
@@ -199,7 +198,7 @@ const AddBank = () => {
           }}
           className="mt-4"
         />
-        <FormInput
+        <Input
           register={register}
           type="text"
           name="address1"
@@ -210,7 +209,7 @@ const AddBank = () => {
           }}
           className="mt-4"
         />
-        <FormInput
+        <Input
           register={register}
           type="text"
           name="address2"
@@ -230,7 +229,7 @@ const AddBank = () => {
           }}
           onChange={(newValue: string) => setValue("country", newValue)}
         />
-        <FormInput
+        <Input
           register={register}
           type="text"
           name="city"
@@ -257,7 +256,7 @@ const AddBank = () => {
               showOnTop
             />
           ) : (
-            <FormInput
+            <Input
               register={register}
               type="text"
               name="district"
@@ -278,7 +277,7 @@ const AddBank = () => {
               }}
             />
           )}
-          <FormInput
+          <Input
             register={register}
             type="text"
             name="postal-code"

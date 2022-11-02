@@ -18,7 +18,7 @@ import {
   RoundedIconButton
 } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/Checkbox"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
@@ -117,7 +117,7 @@ const LoginPage: FC = () => {
           >
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
-              <FormInput
+              <Input
                 register={register}
                 name="email"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"

@@ -15,7 +15,7 @@ import {
 import { ChevronDown } from "src/icons/ChevronDown"
 import { Label } from "./Label"
 
-export type SelectProps = {
+type SelectProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions

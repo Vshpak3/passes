@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
@@ -50,7 +50,7 @@ const Username: FC = () => {
           <span>Username</span>
           <div className="relative">
             <span className="absolute top-1/2 left-3 -translate-y-1/2">@</span>
-            <FormInput
+            <Input
               name="username"
               type="text"
               register={register}

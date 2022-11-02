@@ -32,7 +32,9 @@ export type InputProps = {
   iconMargin?: string
   iconAlign?: EIcon
   textPosition?: string
+  value?: string
   mask?: string
+  onFocus?: (event: Event) => void
 }
 
 export const Input: FC<InputProps> = ({

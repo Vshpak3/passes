@@ -8,7 +8,7 @@ import { toast } from "react-toastify"
 import { object, string } from "yup"
 
 import { PassesPinkButton } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { TextAreaInput } from "src/components/atoms/input/TextAreaInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
@@ -31,7 +31,7 @@ const editProfileSchema = object({
 })
 
 interface RenderInputProps {
-  type: typeof FormInput | typeof TextAreaInput
+  type: typeof Input | typeof TextAreaInput
   placeholder: FormLabel
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: any
@@ -45,14 +45,14 @@ const bioForm: Record<string, RenderInputProps> = {
 }
 
 const profilermationForm: Record<string, RenderInputProps> = {
-  displayName: { type: FormInput, placeholder: "Display Name" }
+  displayName: { type: Input, placeholder: "Display Name" }
 }
 
 const socialMediaForm: Record<string, RenderInputProps> = Object.fromEntries(
   Object.entries(socialUsernameToIcon).map(([type, icon]) => [
     type,
     {
-      type: FormInput,
+      type: Input,
       placeholder:
         type.charAt(0).toUpperCase() + type.slice(1).replace("Username", ""),
       icon

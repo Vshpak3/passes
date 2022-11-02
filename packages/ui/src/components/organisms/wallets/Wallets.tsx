@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
@@ -215,7 +215,7 @@ export const Wallets = () => {
             </span>
             <div className="flex w-full flex-row md:basis-1">
               <div className="mr-2 basis-4/5 md:basis-1">
-                <FormInput
+                <Input
                   icon={<Wallet />}
                   type="text"
                   name="address"

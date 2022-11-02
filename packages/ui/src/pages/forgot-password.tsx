@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { object, SchemaOf } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { isDev } from "src/helpers/env"
@@ -96,7 +96,7 @@ const ForgotPassword = () => {
             >
               <div className="flex flex-col">
                 <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
-                <FormInput
+                <Input
                   register={register}
                   name="email"
                   className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"

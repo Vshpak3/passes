@@ -13,7 +13,7 @@ import {
 } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/Checkbox"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
@@ -131,7 +131,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
 
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Routing Number</div>
-              <FormInput
+              <Input
                 register={register}
                 name="routingNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -145,7 +145,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Account Number</div>
-              <FormInput
+              <Input
                 register={register}
                 name="accountNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -195,7 +195,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">First Name</div>
-              <FormInput
+              <Input
                 register={register}
                 name="firstName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -209,7 +209,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Last Name</div>
-              <FormInput
+              <Input
                 register={register}
                 name="lastName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -223,7 +223,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Business Name</div>
-              <FormInput
+              <Input
                 register={register}
                 name="businessName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -234,7 +234,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Email</div>
-              <FormInput
+              <Input
                 register={register}
                 name="email"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -253,7 +253,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[24px]">
               <div className="text-lg font-bold">Billing Address</div>
-              <FormInput
+              <Input
                 register={register}
                 name="billingAddress"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -264,7 +264,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   required: true
                 }}
               />
-              <FormInput
+              <Input
                 register={register}
                 name="alternativeAddress"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -275,7 +275,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   required: true
                 }}
               />
-              <FormInput
+              <Input
                 register={register}
                 name="city"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -287,7 +287,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
               />
               <div className="flex flex-row gap-3">
-                <FormInput
+                <Input
                   register={register}
                   name="district"
                   className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -298,7 +298,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                     required: true
                   }}
                 />
-                <FormInput
+                <Input
                   register={register}
                   name="postalCode"
                   className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -327,7 +327,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   <div className="text-base font-bold">
                     Send email receipts to
                   </div>
-                  <FormInput
+                  <Input
                     register={register}
                     name="emailRecipient"
                     className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"

@@ -15,7 +15,7 @@ import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Select } from "src/components/atoms/Select"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
@@ -168,7 +168,7 @@ const SignupInfoPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Your name
               </Text>
-              <FormInput
+              <Input
                 register={register}
                 name="legalFullName"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -188,7 +188,7 @@ const SignupInfoPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Username
               </Text>
-              <FormInput
+              <Input
                 register={register}
                 name="username"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -208,7 +208,7 @@ const SignupInfoPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Display Name
               </Text>
-              <FormInput
+              <Input
                 register={register}
                 name="displayName"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -228,7 +228,7 @@ const SignupInfoPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Birthday
               </Text>
-              <FormInput
+              <Input
                 // onChange is handled by the calendar
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                 register={() => {}}

@@ -14,8 +14,7 @@ import { v4 } from "uuid"
 
 import { Button } from "src/components/atoms/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
-import { FormInput } from "src/components/atoms/FormInput"
-import { EIcon } from "src/components/atoms/Input"
+import { EIcon, Input } from "src/components/atoms/Input"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Select } from "src/components/atoms/Select"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -155,7 +154,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           }
         }}
       />
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="card-holder"
@@ -220,7 +219,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         </div>
       </div>
       <span className="mt-4 text-[16px] font-[500]">Billing address</span>
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="address1"
@@ -231,7 +230,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         }}
         className="mt-3"
       />
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="address2"
@@ -249,7 +248,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         defaultValue={COUNTRIES[0]}
         onChange={(newValue: string) => setValue("country", newValue)}
       />
-      <FormInput
+      <Input
         register={register}
         type="text"
         name="city"
@@ -276,7 +275,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             showOnTop
           />
         ) : (
-          <FormInput
+          <Input
             register={register}
             type="text"
             name="district"
@@ -295,7 +294,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           />
         )}
 
-        <FormInput
+        <Input
           register={register}
           type="text"
           name="postal-code"

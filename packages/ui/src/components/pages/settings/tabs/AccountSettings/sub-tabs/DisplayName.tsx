@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"
@@ -52,7 +52,7 @@ const DisplayName: FC = () => {
       <form className="mt-6" onSubmit={handleSubmit(onSaveDisplayName)}>
         <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
           <span>Display Name</span>
-          <FormInput
+          <Input
             name="displayName"
             type="text"
             className="mt-1.5 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"

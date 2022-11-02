@@ -225,7 +225,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
           )}
           {/* <div>
             <div className="relative mt-6 flex max-w-[140px] justify-between rounded-md shadow-sm">
-              <FormInput
+              <Input
                 register={register}
                 name="previewIndex"
                 type="number"

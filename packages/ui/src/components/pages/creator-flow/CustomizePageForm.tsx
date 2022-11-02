@@ -12,7 +12,7 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
 import { updateProfile } from "src/helpers/updateProfile"
@@ -193,7 +193,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
         <div className="mb-6 flex flex-col gap-6">
           <div className="flex flex-col gap-[6px]">
             <div className="text-[#b3bee7] opacity-[0.6]">Display Name</div>
-            <FormInput
+            <Input
               register={register}
               name="displayName"
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -207,7 +207,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
             <div className="text-[#b3bee7] opacity-[0.6]">
               Profile Description
             </div>
-            <FormInput
+            <Input
               register={register}
               name="description"
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -226,7 +226,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.facebook ? (
                 <span>@fbusername</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="facebookUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -241,7 +241,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.instagram ? (
                 <span>@instaname</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="instagramUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -256,7 +256,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.twitter ? (
                 <span>@twittername</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="twitterUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -271,7 +271,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.discord ? (
                 <span>@discordname</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="discordUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -286,7 +286,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.tiktok ? (
                 <span>@tiktokname</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="tiktokUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -301,7 +301,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.twitch ? (
                 <span>@twitchname</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="twitchUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -316,7 +316,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               {connectedAccounts.youtube ? (
                 <span>@youtubename</span>
               ) : (
-                <FormInput
+                <Input
                   register={register}
                   name="youtubeUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
@@ -331,7 +331,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
 
         {/* Temp remove for Circle */}
         {/* <div className="mb-6 flex gap-[6px]">
-          <FormInput
+          <Input
             register={register}
             type="checkbox"
             name="isAdult"

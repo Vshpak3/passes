@@ -3,7 +3,7 @@ import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/Checkbox"
-import { FormInput } from "src/components/atoms/FormInput"
+import { Input } from "src/components/atoms/Input"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { FormErrors, FormRegister } from "src/components/types/FormTypes"
 
@@ -139,7 +139,7 @@ export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
 }) => (
   <>
     <PassesSectionTitle title="Add description" />
-    <FormInput
+    <Input
       register={register}
       type="text"
       name="passDescription"
@@ -160,7 +160,7 @@ interface PassNameInputProps {
 export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
-    <FormInput
+    <Input
       register={register}
       type="text"
       name="passName"

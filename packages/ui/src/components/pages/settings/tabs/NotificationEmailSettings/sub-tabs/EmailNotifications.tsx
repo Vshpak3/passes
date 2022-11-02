@@ -138,7 +138,11 @@ const EmailNotifications = () => {
               <span className="text-sm font-medium leading-6">
                 Passes Marketing & Product Update Emails
               </span>
-              <Checkbox name="marketingEmails" register={register} g />
+              <Checkbox
+                name="marketingEmails"
+                register={register}
+                type="toggle"
+              />
             </label>
             <label className="flex cursor-pointer items-center justify-between">
               <span className="text-sm font-medium leading-6">Mentions</span>
