@@ -1,19 +1,16 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Message, ValidationRule } from "react-hook-form"
 
 export type FormLabel = string
 export type FormName = string
-export type FormType =
-  | "text"
-  | "email"
-  | "tel"
-  | "phone"
-  | "password"
-  | "date"
-  | "select"
-  | "tags"
 export type FormPlaceholder = string
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FormRegister = any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type FormErrors = any
+
+// TOOD: remove and switch to yup for all of these uses
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type FormOptions = Partial<{
   required: Message | ValidationRule<boolean>
   min: ValidationRule<number | string>
@@ -26,12 +23,3 @@ export type FormOptions = Partial<{
   onChange?: (event: any, keyDownEvent?: any) => void
   onBlur?: (event: any) => void
 }>
-export type FormRegister = any
-export type FormErrors = any
-export type SelectOption = {
-  value: string | number
-  label: string | JSX.Element
-}
-export type FormSelectOption = string | SelectOption
-export type FormSelectOptions = Array<FormSelectOption>
-export type FileAccept = Array<"audio" | "image" | "video" | `.${string}`>

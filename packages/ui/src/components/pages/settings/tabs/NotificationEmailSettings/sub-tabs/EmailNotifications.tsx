@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { Checkbox } from "src/components/atoms/Checkbox"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"

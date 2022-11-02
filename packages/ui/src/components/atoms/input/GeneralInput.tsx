@@ -8,10 +8,18 @@ import {
   FormName,
   FormOptions,
   FormPlaceholder,
-  FormRegister,
-  FormType
-} from "src/components/types/FormTypes"
-import { Label } from "./Label"
+  FormRegister
+} from "src/components/atoms/input/InputTypes"
+import { Label } from "src/components/atoms/Label"
+
+type FormType =
+  | "text"
+  | "email"
+  | "tel"
+  | "phone"
+  | "date"
+  | "tags"
+  | "password"
 
 export enum EIcon {
   Left = "LEFT",

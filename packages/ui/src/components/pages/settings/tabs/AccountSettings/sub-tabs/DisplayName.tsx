@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { Input } from "src/components/atoms/Input"
+import { Input } from "src/components/atoms/input/GeneralInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { getYupRequiredStringSchema } from "src/helpers/validation"

@@ -7,7 +7,7 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
-import { Select } from "src/components/atoms/Select"
+import { Select } from "src/components/atoms/input/Select"
 import {
   deserializePayinMethod,
   MetaMaskSelectOptions,

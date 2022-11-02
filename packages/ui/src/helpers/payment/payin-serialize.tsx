@@ -4,7 +4,7 @@ import {
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
 
-import { SelectOption } from "src/components/types/FormTypes"
+import { SelectOption } from "src/components/atoms/input/Select"
 
 export const serializePayinMethod = (payinMethod?: PayinMethodDto) => {
   if (!payinMethod) {

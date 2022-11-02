@@ -1,8 +1,8 @@
 import CloseIcon from "public/icons/sidebar-close-icon.svg"
 import { FC } from "react"
 
-import { Checkbox } from "src/components/atoms/Checkbox"
-import { FormRegister } from "src/components/types/FormTypes"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { FormRegister } from "src/components/atoms/input/InputTypes"
 
 interface NewPostEditorHeaderProps {
   title: string

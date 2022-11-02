@@ -7,7 +7,7 @@ import {
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
 
 type NumberFormType = "integer" | "currency"
 

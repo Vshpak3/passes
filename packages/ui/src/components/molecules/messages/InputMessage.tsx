@@ -16,7 +16,7 @@ import React, {
 import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/Button"
-import { Checkbox } from "src/components/atoms/Checkbox"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"

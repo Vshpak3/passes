@@ -2,10 +2,10 @@ import classNames from "classnames"
 import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
-import { Checkbox } from "src/components/atoms/Checkbox"
-import { Input } from "src/components/atoms/Input"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { Input } from "src/components/atoms/input/GeneralInput"
+import { FormErrors, FormRegister } from "src/components/atoms/input/InputTypes"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { FormErrors, FormRegister } from "src/components/types/FormTypes"
 
 interface PassFormErrorProps {
   message: string

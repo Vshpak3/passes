@@ -16,7 +16,7 @@ import {
   ButtonTypeEnum,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { Input } from "src/components/atoms/Input"
+import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"

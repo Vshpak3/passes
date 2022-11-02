@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormName,
   FormOptions
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
 import { formatText } from "src/helpers/formatters"
 
 type LabelProps = {

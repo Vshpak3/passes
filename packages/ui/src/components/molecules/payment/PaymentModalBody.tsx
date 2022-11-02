@@ -4,7 +4,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-import { Select } from "src/components/atoms/Select"
+import { Select } from "src/components/atoms/input/Select"
 import {
   deserializePayinMethod,
   MetaMaskSelectOptions,

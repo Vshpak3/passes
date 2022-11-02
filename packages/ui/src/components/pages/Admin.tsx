@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { Input } from "src/components/atoms/Input"
+import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { errorMessage } from "src/helpers/error"

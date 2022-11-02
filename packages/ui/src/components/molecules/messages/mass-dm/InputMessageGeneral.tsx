@@ -4,7 +4,7 @@ import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
-import { Checkbox } from "src/components/atoms/Checkbox"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"

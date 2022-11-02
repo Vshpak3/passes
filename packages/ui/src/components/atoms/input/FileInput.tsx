@@ -1,15 +1,16 @@
 import React, { FC, useRef } from "react"
 
-import { Label } from "src/components/atoms/Label"
 import {
-  FileAccept,
   FormErrors,
   FormLabel,
   FormName,
   FormOptions,
   FormPlaceholder,
   FormRegister
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
+import { Label } from "src/components/atoms/Label"
+
+export type FileAccept = Array<"audio" | "image" | "video" | `.${string}`>
 
 type FileInputProps = {
   label?: FormLabel

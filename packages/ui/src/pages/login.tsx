@@ -17,8 +17,8 @@ import {
   ButtonTypeEnum,
   RoundedIconButton
 } from "src/components/atoms/Button"
-import { Checkbox } from "src/components/atoms/Checkbox"
-import { Input } from "src/components/atoms/Input"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"

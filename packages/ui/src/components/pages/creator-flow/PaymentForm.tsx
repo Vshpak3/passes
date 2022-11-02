@@ -11,10 +11,10 @@ import {
   ButtonTypeEnum,
   PassesPinkButton
 } from "src/components/atoms/Button"
-import { Checkbox } from "src/components/atoms/Checkbox"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
-import { Input } from "src/components/atoms/Input"
-import { Select } from "src/components/atoms/Select"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { Input } from "src/components/atoms/input/GeneralInput"
+import { Select } from "src/components/atoms/input/Select"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
 

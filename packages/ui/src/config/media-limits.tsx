@@ -1,4 +1,4 @@
-import { FileAccept } from "src/components/types/FormTypes"
+import type { FileAccept } from "src/components/atoms/input/FileInput"
 
 export const MAX_FILE_COUNT = 20
 

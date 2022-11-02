@@ -3,13 +3,12 @@ import Recorder from "public/icons/media-recorder.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { ChangeEvent, FC, PropsWithChildren } from "react"
 
-import { FileInput } from "src/components/atoms/input/FileInput"
+import { FileAccept, FileInput } from "src/components/atoms/input/FileInput"
 import {
-  FileAccept,
   FormErrors,
   FormOptions,
   FormRegister
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
 
 export const PhotoSelector = {
   name: "Photo",

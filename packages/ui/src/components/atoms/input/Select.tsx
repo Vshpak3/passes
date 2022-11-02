@@ -8,12 +8,18 @@ import {
   FormName,
   FormOptions,
   FormPlaceholder,
-  FormRegister,
-  FormSelectOption,
-  FormSelectOptions
-} from "src/components/types/FormTypes"
+  FormRegister
+} from "src/components/atoms/input/InputTypes"
+import { Label } from "src/components/atoms/Label"
 import { ChevronDown } from "src/icons/ChevronDown"
-import { Label } from "./Label"
+
+export type SelectOption = {
+  value: string | number
+  label: string | JSX.Element
+}
+
+type FormSelectOption = string | SelectOption
+type FormSelectOptions = Array<FormSelectOption>
 
 type SelectProps = {
   label?: FormLabel

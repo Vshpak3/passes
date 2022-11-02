@@ -1,14 +1,13 @@
 import UploadIcon from "public/icons/upload.svg"
 import { DragEvent, FC, useState } from "react"
 
-import { FileInput } from "src/components/atoms/input/FileInput"
+import { FileAccept, FileInput } from "src/components/atoms/input/FileInput"
 import {
-  FileAccept,
   FormErrors,
   FormName,
   FormOptions,
   FormRegister
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
 
 type DragDropFileProps = {
   name: FormName

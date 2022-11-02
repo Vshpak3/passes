@@ -1,14 +1,14 @@
 import classNames from "classnames"
 import React, { FC, useEffect, useRef, useState } from "react"
 
-import { Label } from "src/components/atoms/Label"
 import {
   FormErrors,
   FormLabel,
   FormName,
   FormOptions,
   FormRegister
-} from "src/components/types/FormTypes"
+} from "src/components/atoms/input/InputTypes"
+import { Label } from "src/components/atoms/Label"
 
 type TextAreaInputProps = {
   label?: FormLabel

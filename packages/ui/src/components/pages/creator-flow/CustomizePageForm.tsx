@@ -12,7 +12,7 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
-import { Input } from "src/components/atoms/Input"
+import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
 import { updateProfile } from "src/helpers/updateProfile"

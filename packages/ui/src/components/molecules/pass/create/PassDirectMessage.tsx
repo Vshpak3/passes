@@ -2,7 +2,7 @@ import { RadioGroup } from "@headlessui/react"
 import { FC } from "react"
 import { FieldValues, UseFormRegister } from "react-hook-form"
 
-import { Checkbox } from "src/components/atoms/Checkbox"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { PassesSectionTitle } from "src/components/atoms/passes/CreatePass"
 
