@@ -210,7 +210,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   return (
     <>
       {!!minimumTip && freeMessages !== undefined && (
-        <div className="sticky top-0 z-20 w-full">
+        <div className="z-20">
           <FreeMessagesLeftContainer freeMessages={freeMessages} />
         </div>
       )}
