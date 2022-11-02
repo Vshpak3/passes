@@ -1,6 +1,6 @@
 import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
-import { FC, ForwardedRef, forwardRef, useEffect, useState } from "react"
+import { ForwardedRef, forwardRef, useEffect, useState } from "react"
 
 import {
   SlideImage,
@@ -11,15 +11,13 @@ import { ContentService } from "src/helpers/content"
 
 interface SlideContentProps extends SlideImageProps {
   // eslint-disable-next-line react/no-unused-prop-types
-  ref: ForwardedRef<HTMLImageElement>
-  // eslint-disable-next-line react/no-unused-prop-types
   autoplayVideo?: boolean
   carouselContent?: ContentDto[]
   index?: number
   fixedHeight: boolean
 }
 
-export const SlideContent: FC<SlideContentProps> = forwardRef(
+export const SlideContent = forwardRef(
   (
     { content, carouselContent, index = 0, fixedHeight }: SlideContentProps,
     ref: ForwardedRef<HTMLImageElement>

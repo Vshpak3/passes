@@ -2,17 +2,15 @@
 import "swiper/css"
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { FC, ForwardedRef, forwardRef, useState } from "react"
+import { ForwardedRef, forwardRef, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
 
 export interface SlideImageProps {
   content: ContentDto
-  // eslint-disable-next-line react/no-unused-prop-types
-  ref: ForwardedRef<HTMLImageElement>
 }
 
-export const SlideImage: FC<SlideImageProps> = forwardRef(
+export const SlideImage = forwardRef(
   ({ content }: SlideImageProps, ref: ForwardedRef<HTMLImageElement>) => {
     const [loaded, setLoaded] = useState(false)
     const image = ContentService.userContentMediaPath(content)
