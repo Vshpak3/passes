@@ -5,7 +5,7 @@ import { ChangeEvent, Dispatch, FC, SetStateAction, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { MdAdd, MdDelete } from "react-icons/md"
 
-import { File } from "src/components/atoms/File"
+import { FileInput } from "src/components/atoms/input/FileInput"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
 import { ContentFile } from "src/hooks/useMedia"
 
@@ -129,7 +129,7 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
       onClick={handleSelectContent}
       className="cursor-pointer rounded-[50%] bg-[#ffffff40] p-[4px] text-white"
     >
-      <File
+      <FileInput
         register={register}
         name="file"
         multiple={true}

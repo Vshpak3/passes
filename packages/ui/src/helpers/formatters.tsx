@@ -1,7 +1,9 @@
 import { parse } from "dom-parser-react"
 import { createElement, Fragment } from "react"
 
-import { FormatCurrencyOption } from "src/components/types/UtilTypes"
+export type FormatCurrencyOption = {
+  locale?: string
+} & Intl.NumberFormatOptions
 
 const formatter = Intl.NumberFormat("en", { notation: "compact" })
 

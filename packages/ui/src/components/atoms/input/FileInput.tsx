@@ -9,9 +9,9 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/types/FormTypes"
-import { Label } from "./Label"
+import { Label } from "../Label"
 
-type FileProps = {
+type FileInputProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
@@ -41,7 +41,7 @@ const acceptProp = (accept?: FileAccept) =>
     return acc
   }, "")
 
-export const File: FC<FileProps> = ({
+export const FileInput: FC<FileInputProps> = ({
   name,
   label,
   register,

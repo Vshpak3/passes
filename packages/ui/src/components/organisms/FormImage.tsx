@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react"
 import { UseFormRegister, UseFormSetValue } from "react-hook-form"
 
-import { File } from "src/components/atoms/File"
+import { FileInput } from "src/components/atoms/input/FileInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 
 interface FormImageProps {
@@ -43,7 +43,7 @@ export const FormImage: FC<FormImageProps> = ({
           src={URL.createObjectURL(imgData[0])}
         />
       )}
-      <File
+      <FileInput
         accept={["image"]}
         register={register}
         name={name}

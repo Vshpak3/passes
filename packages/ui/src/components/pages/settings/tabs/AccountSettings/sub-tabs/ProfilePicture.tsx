@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
-import { File } from "src/components/atoms/File"
+import { FileInput } from "src/components/atoms/input/FileInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import { Tab } from "src/components/pages/settings/Tab"
 import { ContentService } from "src/helpers/content"
@@ -69,7 +69,7 @@ const ProfilePicture: FC = () => {
         className="mt-6 flex items-center space-x-[30px]"
         onSubmit={handleSubmit(onSaveProfile)}
       >
-        <File
+        <FileInput
           register={register}
           name="profileImage"
           accept={["image"]}

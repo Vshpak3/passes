@@ -1,7 +1,7 @@
 import UploadIcon from "public/icons/upload.svg"
 import { DragEvent, FC, useState } from "react"
 
-import { File } from "src/components/atoms/File"
+import { FileInput } from "src/components/atoms/input/FileInput"
 import {
   FileAccept,
   FormErrors,
@@ -84,7 +84,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
           <div className="flex gap-1">
-            <File
+            <FileInput
               className="cursor-pointer "
               errors={errors}
               name={name}
