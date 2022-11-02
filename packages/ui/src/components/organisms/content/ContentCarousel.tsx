@@ -5,7 +5,7 @@ import "swiper/css/pagination"
 import "swiper/css/navigation"
 import { ContentDto } from "@passes/api-client"
 import { FC, useRef } from "react"
-import { Lazy, Navigation, Pagination } from "swiper"
+import { Navigation, Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { content } from "tailwind.config"
 
@@ -44,7 +44,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         }}
         initialSlide={activeIndex}
         navigation={true}
-        modules={[Lazy, Pagination, Navigation]}
+        modules={[Pagination, Navigation]}
         className="mySwiper"
         autoHeight={true}
         lazy={true}
