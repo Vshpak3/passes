@@ -5,6 +5,7 @@ import {
   SlideImage,
   SlideImageProps
 } from "src/components/atoms/content/SlideImage"
+import { Video } from "src/components/atoms/content/Video"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
 
@@ -61,10 +62,12 @@ export const SlideContent: FC<SlideContentProps> = forwardRef(
         )
       case ContentDtoContentTypeEnum.Video:
         return (
-          <video
-            src={ContentService.userContentMediaPath(content)}
-            className="video-js vjs-big-play-centered"
-          />
+          <div data-vjs-player>
+            <video
+              src={ContentService.userContentMediaPath(content)}
+              className="video-js vjs-big-play-centered"
+            />
+          </div>
         )
     }
     return null
