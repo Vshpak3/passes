@@ -75,7 +75,7 @@ export const HomeContentFeed: FC = () => {
             }}
           />
         </div>
-        <div className="col-span-3 h-screen border-l-[0.5px] border-gray-600">
+        <div className="col-span-3 h-screen border-gray-600 lg:border-l-[0.5px]">
           <SectionTitle>Suggested</SectionTitle>
         </div>
       </div>
