@@ -34,17 +34,17 @@ export const ProfileDetails: FC = () => {
         />
       )}
       <ProfileImageModal
-        profileUserId={profileUserId}
         isProfilePicModalOpen={isProfilePicModalOpen}
+        profileUserId={profileUserId}
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
       <div className="md:min-h-12 relative rounded-[15px] md:flex md:gap-[40px] md:pb-10">
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
-            userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
             override={profileImageOverride}
+            userId={profileUserId}
           />
           {ownsProfile && (
             <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
@@ -58,8 +58,8 @@ export const ProfileDetails: FC = () => {
         {/* Mobile */}
         <div className="align-center my-4 -mt-[220px] grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
           <ProfileImage
-            userId={profileUserId}
             onClick={() => setIsProfilePicModalOpen(true)}
+            userId={profileUserId}
           />
           {ownsProfile && (
             <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />

@@ -28,15 +28,15 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
 
   return (
     <Dialog
-      open={isOpen}
-      onClose={onCancel}
-      triggerClassName="flex items-center justify-center self-center lg:pt-8"
       className="h-screen w-screen transform overflow-hidden transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
+      onClose={onCancel}
       onTriggerClick={onCancel}
+      open={isOpen}
+      triggerClassName="flex items-center justify-center self-center lg:pt-8"
     >
       <NewPostEditor
-        initialData={{ scheduledAt: selectionDate }}
         handleSavePost={handleSavePost}
+        initialData={{ scheduledAt: selectionDate }}
         isExtended
         onClose={onCancel}
       />

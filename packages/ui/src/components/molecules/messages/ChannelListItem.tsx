@@ -29,14 +29,14 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   }
   return (
     <div
-      onClick={() => {
-        read()
-        onClick()
-      }}
       className={classNames(
         "mb-2 flex cursor-pointer  items-center rounded-md py-[7px] px-[10px] hover:bg-[#ffffff]/10",
         isSelected && "bg-[#ffffff]/10"
       )}
+      onClick={() => {
+        read()
+        onClick()
+      }}
     >
       <div className="item-center flex pr-[10px]">
         <ProfileThumbnail userId={channel.otherUserId} />

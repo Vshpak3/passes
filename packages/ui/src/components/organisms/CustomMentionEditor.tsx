@@ -42,11 +42,11 @@ const Entry: FC<EntryComponentProps & { disabled: boolean }> = ({
   return (
     <div {...parentProps}>
       <UserSearchResult
-        userId={mention.id as string}
-        displayName={mention.displayName}
-        username={mention.username}
         active={isFocused}
         disabled={disabled}
+        displayName={mention.displayName}
+        userId={mention.id as string}
+        username={mention.username}
       />
     </div>
   )
@@ -216,20 +216,19 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
       <Editor
         editorKey="editor"
         editorState={editorState}
+        keyBindingFn={myKeyBindingFn}
         onChange={onChange}
+        placeholder={placeholder}
         plugins={plugins}
         ref={ref}
-        placeholder={placeholder}
-        keyBindingFn={myKeyBindingFn}
       />
       <MentionSuggestions
-        open={areSuggestionsOpen}
-        onOpenChange={onOpenChange}
-        suggestions={suggestions}
-        onSearchChange={onSearchChange}
         entryComponent={(props) => (
           <Entry {...props} disabled={numMentions >= MENTION_LIMIT} />
         )}
+        onOpenChange={onOpenChange}
+        onSearchChange={onSearchChange}
+        open={areSuggestionsOpen}
         popoverContainer={({ children, ...props }) => (
           <Popover {...props}>
             <div className="z-50 border border-passes-dark-100 bg-black">
@@ -237,6 +236,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
             </div>
           </Popover>
         )}
+        suggestions={suggestions}
       />
     </div>
   )

@@ -44,7 +44,9 @@ interface PaymentFormFields {
 }
 
 export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
-  const [bankType] = useState<BankTypeEnum>(BankTypeEnum.US)
+  // TODO
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const idempotencyKey = v4()
 
   const {
@@ -107,17 +109,17 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               You will be able to edit it in the settings later.
             </div>
             <DownloadW9FormButton />
-            <UploadW9FormButton text="Upload W9 Form" icon={false} />
+            <UploadW9FormButton icon={false} text="Upload W9 Form" />
           </div>
         </div>
         <form
+          className="flex-[67]"
           onSubmit={(e) => {
             handleSubmit(onSubmit)(e).catch((err) => {
               toast.error(err)
               console.error(`errors: ${err}`)
             })
           }}
-          className="flex-[67]"
         >
           <div className="flex w-full flex-col gap-[12px] rounded-3xl px-4 py-8 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-5 sm:backdrop-blur-3xl">
             <div className="flex flex-col">
@@ -132,29 +134,29 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Routing Number</div>
               <Input
-                register={register}
-                name="routingNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="123456789"
-                type="text"
                 errors={errors}
+                name="routingNumber"
                 options={{
                   required: true
                 }}
+                placeholder="123456789"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Account Number</div>
               <Input
-                register={register}
-                name="accountNumber"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="123456789"
-                type="text"
                 errors={errors}
+                name="accountNumber"
                 options={{
                   required: true
                 }}
+                placeholder="123456789"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
@@ -162,85 +164,82 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 Type of Bank Account
               </div>
               <Select
-                register={register}
-                name="bankAccountType"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Choose"
                 errors={errors}
-                options={{
-                  required: true
-                }}
-                selectOptions={[{ label: "US", value: "US" }]}
+                name="bankAccountType"
                 onChange={(newValue: BankTypeEnum) =>
                   setValue("bankAccountType", newValue)
                 }
+                options={{
+                  required: true
+                }}
+                placeholder="Choose"
+                register={register}
+                selectOptions={[{ label: "US", value: "US" }]}
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Country</div>
               <Select
-                register={register}
-                name="bankAddress.country"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Choose Country"
                 errors={errors}
-                options={{
-                  required: true
-                }}
-                selectOptions={[{ label: "USA", value: "US" }]}
+                name="bankAddress.country"
                 onChange={(newValue: string) =>
                   setValue("bankAddress", { country: newValue })
                 }
+                options={{
+                  required: true
+                }}
+                placeholder="Choose Country"
+                register={register}
+                selectOptions={[{ label: "USA", value: "US" }]}
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">First Name</div>
               <Input
-                register={register}
-                name="firstName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="First Name"
-                type="text"
                 errors={errors}
+                name="firstName"
                 options={{
                   required: true
                 }}
+                placeholder="First Name"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Last Name</div>
               <Input
-                register={register}
-                name="lastName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Last Name"
-                type="text"
                 errors={errors}
+                name="lastName"
                 options={{
                   required: true
                 }}
+                placeholder="Last Name"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Business Name</div>
               <Input
-                register={register}
-                name="businessName"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Business (optional)"
-                type="text"
                 errors={errors}
+                name="businessName"
+                placeholder="Business (optional)"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.6]">Email</div>
               <Input
-                register={register}
-                name="email"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Email Address"
-                type="text"
                 errors={errors}
+                name="email"
                 options={{
                   required: true,
                   pattern: {
@@ -249,65 +248,68 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                     message: "Invalid email address"
                   }
                 }}
+                placeholder="Email Address"
+                register={register}
+                type="text"
               />
             </div>
             <div className="flex flex-col gap-[24px]">
               <div className="text-lg font-bold">Billing Address</div>
               <Input
-                register={register}
+                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                errors={errors}
                 name="billingAddress"
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                options={{
+                  required: true
+                }}
                 placeholder="Address 1"
+                register={register}
                 type="text"
-                errors={errors}
-                options={{
-                  required: true
-                }}
               />
               <Input
-                register={register}
+                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                errors={errors}
                 name="alternativeAddress"
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Address 2"
-                type="text"
-                errors={errors}
                 options={{
                   required: true
                 }}
+                placeholder="Address 2"
+                register={register}
+                type="text"
               />
               <Input
-                register={register}
-                name="city"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="City"
-                type="text"
                 errors={errors}
+                name="city"
                 options={{
                   required: true
                 }}
+                placeholder="City"
+                register={register}
+                type="text"
               />
               <div className="flex flex-row gap-3">
                 <Input
-                  register={register}
-                  name="district"
                   className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="State"
-                  type="text"
                   errors={errors}
+                  name="district"
                   options={{
                     required: true
                   }}
+                  placeholder="State"
+                  register={register}
+                  type="text"
                 />
                 <Input
-                  register={register}
-                  name="postalCode"
                   className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Zip Code"
-                  type="text"
                   errors={errors}
+                  name="postalCode"
                   options={{
                     required: true
                   }}
+                  placeholder="Zip Code"
+                  register={register}
+                  type="text"
                 />
               </div>
             </div>
@@ -328,12 +330,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                     Send email receipts to
                   </div>
                   <Input
-                    register={register}
-                    name="emailRecipient"
                     className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                    placeholder=""
-                    type="text"
                     errors={errors}
+                    name="emailRecipient"
                     options={{
                       required: true,
                       pattern: {
@@ -342,18 +341,21 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                         message: "Invalid email address"
                       }
                     }}
+                    placeholder=""
+                    register={register}
+                    type="text"
                   />
                   <div className="mt-2.5">
                     <label className="flex items-center">
                       <Checkbox
+                        className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-600"
+                        name="termsAndConditions"
                         register={register}
                         type="checkbox"
-                        name="termsAndConditions"
-                        className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-600"
                       />
                       <span className="text-base">
                         By checking this box I agree to Passes{" "}
-                        <Link href="/terms" className="text-passes-pink-100">
+                        <Link className="text-passes-pink-100" href="/terms">
                           <a target="_blank">Terms and Conditions</a>
                         </Link>
                       </span>
@@ -364,19 +366,19 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="mt-4 flex flex-col gap-3">
               <PassesPinkButton
-                name="Confirm and Save"
-                type={ButtonTypeEnum.SUBMIT}
                 className="font-normal"
                 isDisabled={isSubmitSuccessful}
+                name="Confirm and Save"
+                type={ButtonTypeEnum.SUBMIT}
               />
               <Button
-                variant="primary"
+                onClick={onFinishPaymentForm}
                 style={{
                   background: "transparent",
                   width: "100%",
                   color: "#737893"
                 }}
-                onClick={onFinishPaymentForm}
+                variant="primary"
               >
                 Skip for now
               </Button>

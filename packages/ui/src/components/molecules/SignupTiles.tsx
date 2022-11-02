@@ -11,11 +11,11 @@ export const SignupTiles = () => {
       </GradientBorderTile>
       <GradientBorderTile>
         <Image
-          src="/img/tiles/anna-deguzman.png"
           alt="alex drachnik card"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          src="/img/tiles/anna-deguzman.png"
         />
       </GradientBorderTile>
       <GradientBorderTile />
@@ -23,11 +23,11 @@ export const SignupTiles = () => {
       <GradientBorderTile />
       <GradientBorderTile>
         <Image
-          src="/img/tiles/blair-walnut.png"
           alt="blair-walnut card"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          src="/img/tiles/blair-walnut.png"
         />
       </GradientBorderTile>
       <GradientBorderTile>
@@ -40,30 +40,30 @@ export const SignupTiles = () => {
       </GradientBorderTile>
       <GradientBorderTile>
         <Image
-          src="/img/tiles/alex-drachnik.png"
           alt="anna deguzman card"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          src="/img/tiles/alex-drachnik.png"
         />
       </GradientBorderTile>
 
       <GradientBorderTile>
         <Image
-          src="/img/tiles/lucy-palooza.png"
           alt="lucy palooza card"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          src="/img/tiles/lucy-palooza.png"
         />
       </GradientBorderTile>
       <GradientBorderTile>
         <Image
-          src="/img/tiles/josh-morris.png"
           alt="josh morris card"
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          src="/img/tiles/josh-morris.png"
         />
       </GradientBorderTile>
       <GradientBorderTile />

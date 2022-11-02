@@ -66,11 +66,9 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         </span>
       </div>
       <NumberInput
-        type="currency"
-        register={register}
-        name="tip-value"
-        errors={errors}
         className="border-passes-dark-100 bg-transparent"
+        errors={errors}
+        name="tip-value"
         options={{
           required: { message: "Tip amount is required", value: true },
           min: {
@@ -78,13 +76,15 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
             message: `Tip must be more than $${MIN_TIP_POST_PRICE}`
           }
         }}
+        register={register}
+        type="currency"
       />
       <PaymentModalBody
-        price={tipValue}
         closeModal={() => setPost(null)}
+        price={tipValue}
         setPayinMethod={setPayinMethod}
       />
-      <TipPostButton onClick={handleSubmit(submit)} isLoading={loading} />
+      <TipPostButton isLoading={loading} onClick={handleSubmit(submit)} />
     </Modal>
   )
 }

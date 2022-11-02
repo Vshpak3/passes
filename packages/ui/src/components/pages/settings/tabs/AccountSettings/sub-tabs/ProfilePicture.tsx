@@ -17,7 +17,7 @@ interface ProfileFormProps {
 
 const ProfilePicture: FC = () => {
   const { user } = useUser()
-  const [profileImageCropOpen, setprofileImageCropOpen] = useState(false)
+  const [profileImageCropOpen, setProfileImageCropOpen] = useState(false)
   const {
     register,
     watch,
@@ -37,7 +37,7 @@ const ProfilePicture: FC = () => {
 
   const onProfileCrop = (croppedImage: File) => {
     setValue("profileImage", [croppedImage], { shouldValidate: true })
-    setprofileImageCropOpen(false)
+    setProfileImageCropOpen(false)
   }
 
   const onSaveProfile = async () => {
@@ -61,27 +61,27 @@ const ProfilePicture: FC = () => {
 
   return (
     <Tab
-      withBack
-      title="Profile Picture"
       description="Change your profile picture."
+      title="Profile Picture"
+      withBack
     >
       <form
         className="mt-6 flex items-center space-x-[30px]"
         onSubmit={handleSubmit(onSaveProfile)}
       >
         <FileInput
-          register={register}
-          name="profileImage"
           accept={["image"]}
           className="hidden"
+          name="profileImage"
           options={{
-            onChange: () => setprofileImageCropOpen(true)
+            onChange: () => setProfileImageCropOpen(true)
           }}
+          register={register}
           trigger={
             <div className="relative flex h-[138px] w-[138px] items-center justify-center rounded-full bg-black">
               <CameraIcon className="absolute z-30 cursor-pointer" />
 
-              {/* USE PROFILE IMAGE INSTEAD <ProfileImage userId={userId} /> */}
+              {/* TODO: USE PROFILE IMAGE INSTEAD <ProfileImage userId={userId} /> */}
               <img
                 alt=""
                 className="z-20 h-[138px] w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
@@ -96,24 +96,24 @@ const ProfilePicture: FC = () => {
         />
         {profileImageCropOpen && !!profileImage.length && (
           <ImageCropDialog
-            onCrop={onProfileCrop}
-            onClose={() => setprofileImageCropOpen(false)}
-            width={400}
             height={400}
+            onClose={() => setProfileImageCropOpen(false)}
+            onCrop={onProfileCrop}
             src={URL.createObjectURL(profileImage[0])}
+            width={400}
           />
         )}
         <Button
-          variant="pink"
           className="w-auto !px-[52px]"
-          tag="button"
           disabled={
             !profileImage?.length ||
             profileImage === lastSubmittedProfPic ||
             isSubmitting
           }
           disabledClass="opacity-[0.5]"
+          tag="button"
           type={ButtonTypeEnum.SUBMIT}
+          variant="pink"
         >
           <span>Save</span>
         </Button>

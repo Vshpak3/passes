@@ -26,9 +26,9 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
     () =>
       results.map((list) => (
         <Combobox.Option
+          disabled={selectedListIds.includes(list.listId)}
           key={list.listId}
           value={list}
-          disabled={selectedListIds.includes(list.listId)}
         >
           {({ active, disabled }) => (
             <span
@@ -54,12 +54,12 @@ export const ListsSearchBar: FC<ListsSearchBarProps> = ({
 
   return (
     <SearchBar
-      options={searchOptions}
-      loading={loading}
-      searchValue={searchValue}
       contentName="lists"
+      loading={loading}
       onInputChange={onInputChange}
       onSelect={onSelect}
+      options={searchOptions}
+      searchValue={searchValue}
     />
   )
 }

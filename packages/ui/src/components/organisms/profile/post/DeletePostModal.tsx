@@ -48,10 +48,10 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
 
   return (
     <DeleteConfirmationModal
-      onDelete={handleDelete}
-      onCancel={closeModal}
-      setOpen={closeModal}
       isOpen
+      onCancel={closeModal}
+      onDelete={handleDelete}
+      setOpen={closeModal}
     />
   )
 }

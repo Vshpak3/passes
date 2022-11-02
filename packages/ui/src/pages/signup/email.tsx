@@ -93,10 +93,10 @@ const SignupEmailPage: FC = () => {
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
-        height={28}
-        width={122}
-        whiteOnly
         className="z-10 self-center lg:self-start"
+        height={28}
+        whiteOnly
+        width={122}
       />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
       <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
@@ -104,8 +104,8 @@ const SignupEmailPage: FC = () => {
           {hasSentEmail ? (
             <>
               <Text
-                fontSize={36}
                 className="mb-4 w-[360px] text-center font-semibold text-white"
+                fontSize={36}
               >
                 Email sent!
               </Text>
@@ -115,14 +115,14 @@ const SignupEmailPage: FC = () => {
                 Please click in the link your email to continue.
               </Text>
               <Button
-                onClick={resendEmail}
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                tag="button"
-                type={ButtonTypeEnum.SUBMIT}
                 disabled={isSubmitting}
                 disabledClass="opacity-[0.5]"
+                onClick={resendEmail}
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
               >
-                <Text fontSize={16} className="font-medium">
+                <Text className="font-medium" fontSize={16}>
                   Resend Verification Email
                 </Text>
               </Button>
@@ -135,40 +135,40 @@ const SignupEmailPage: FC = () => {
           ) : (
             <>
               <Text
-                fontSize={36}
                 className="mb-4 w-[360px] text-center font-semibold text-white"
+                fontSize={36}
               >
                 Let&apos;s get to know each other
               </Text>
               <form
-                onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-y-5"
+                onSubmit={handleSubmit(onSubmit)}
               >
                 <div className="flex flex-col">
                   <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                     Email address
                   </Text>
                   <Input
-                    register={register}
-                    name="email"
                     className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                    placeholder="Enter your email address"
-                    type="text"
                     errors={errors}
+                    name="email"
                     options={{
                       required: true
                     }}
+                    placeholder="Enter your email address"
+                    register={register}
+                    type="text"
                   />
                 </div>
 
                 <Button
                   className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                  tag="button"
-                  type={ButtonTypeEnum.SUBMIT}
                   disabled={isSubmitting}
                   disabledClass="opacity-[0.5]"
+                  tag="button"
+                  type={ButtonTypeEnum.SUBMIT}
                 >
-                  <Text fontSize={16} className="font-medium">
+                  <Text className="font-medium" fontSize={16}>
                     Register account
                   </Text>
                   <EnterIcon />

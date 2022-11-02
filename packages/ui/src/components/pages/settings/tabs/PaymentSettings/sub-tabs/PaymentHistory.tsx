@@ -55,22 +55,20 @@ const PaymentHistory = () => {
 
   return (
     <>
-      <Tab withBack title="Payment History" />
+      <Tab title="Payment History" withBack />
       <button
-        className="my-4"
         aria-describedby={monthYearPopperId}
-        type="button"
+        className="my-4"
         onClick={handleShowMonthYearPopper}
+        type="button"
       >
         <span className="w-[100px] select-none">
           {`${format(new Date(2000, month, 1), "MMMM")} ${year}`}
         </span>
       </button>
       <Popper
-        id={monthYearPopperId}
-        open={monthYearPopperOpen}
         anchorEl={anchorEl}
-        transition
+        id={monthYearPopperId}
         modifiers={[
           {
             name: "offset",
@@ -79,20 +77,22 @@ const PaymentHistory = () => {
             }
           }
         ]}
+        open={monthYearPopperOpen}
+        transition
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <div
-              ref={popperMonthYearPickerRef}
               className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
+              ref={popperMonthYearPickerRef}
             >
               <MonthYearPicker
-                selectedMonth={month}
-                selectedYear={year}
-                onChangeYear={(year: number) => handleChangeTime("year", year)}
                 onChangeMonth={(month: number) =>
                   handleChangeTime("month", month)
                 }
+                onChangeYear={(year: number) => handleChangeTime("year", year)}
+                selectedMonth={month}
+                selectedYear={year}
               />
             </div>
           </Fade>
@@ -135,7 +135,9 @@ const PaymentHistory = () => {
             </div>
           </div>
           <InfiniteScrollPagination<PayinDto, GetPayinsResponseDto>
-            keyValue="/payins"
+            KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
+              return <Payin payin={arg} />
+            }}
             fetch={async (req: GetPayinsRequestDto) => {
               return await api.getPayins({ getPayinsRequestDto: req })
             }}
@@ -143,9 +145,7 @@ const PaymentHistory = () => {
               startDate,
               endDate
             }}
-            KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
-              return <Payin payin={arg} />
-            }}
+            keyValue="/payins"
             options={{ revalidateOnMount: true }}
           />
         </div>

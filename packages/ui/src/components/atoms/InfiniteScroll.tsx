@@ -111,15 +111,15 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [data])
   return (
     <InfiniteScroll
-      dataLength={flattenedData.length}
       className={"w-full " + className ?? ""}
-      style={{ width: "100%", ...style }}
-      next={triggerFetch}
-      hasMore={!data || !!data[data.length - 1].lastId}
-      loader={loadingElement}
+      dataLength={flattenedData.length}
       endMessage={size !== 1 && endElement}
-      scrollableTarget={scrollableTarget}
+      hasMore={!data || !!data[data.length - 1].lastId}
       inverse={inverse}
+      loader={loadingElement}
+      next={triggerFetch}
+      scrollableTarget={scrollableTarget}
+      style={{ width: "100%", ...style }}
     >
       {children}
       {data?.length === 1 &&
@@ -127,7 +127,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         !hasInitialElement &&
         emptyElement}
       {flattenedData.map((data, index) => (
-        <KeyedComponent key={index} arg={data} index={index} />
+        <KeyedComponent arg={data} index={index} key={index} />
       ))}
     </InfiniteScroll>
   )

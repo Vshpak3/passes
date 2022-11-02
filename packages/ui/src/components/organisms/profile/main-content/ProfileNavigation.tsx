@@ -35,14 +35,14 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
     <nav className="align-items mb-5 flex w-full items-center justify-center border-b border-passes-dark-200 p-0">
       {navigationTabs.map((item, index) => (
         <span
-          key={index}
-          onClick={() => setActiveTab(item.id)}
           className={classNames(
             activeTab === item.id
               ? "border-b-[3px] border-passes-primary-color"
               : "border-b-[3px] border-b-transparent hover:border-passes-primary-color",
             "align-center group mx-2 box-border flex w-full max-w-[300px] cursor-pointer justify-center py-[10px]"
           )}
+          key={index}
+          onClick={() => setActiveTab(item.id)}
         >
           <a
             className={classNames(

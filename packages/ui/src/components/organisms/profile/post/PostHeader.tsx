@@ -3,7 +3,6 @@ import PinIcon from "public/icons/pin.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
 
-import { PostStatisticsButtonProps } from "src/components/molecules/post/PostStatisticsButton"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import {
   Dropdown,
@@ -15,7 +14,6 @@ interface PostHeaderProps
   isCreator: boolean
   isPinned?: boolean
   dropdownOptions: DropdownOption[]
-  statisticsButtonProps?: PostStatisticsButtonProps
 }
 
 export const PostHeader: FC<PostHeaderProps> = ({
@@ -32,7 +30,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center space-x-4 overflow-x-clip">
-        <ProfileWidget user={user} isCreator={isCreator} />
+        <ProfileWidget isCreator={isCreator} user={user} />
       </div>
       <div className="ml-[8px] -mt-[21px] flex flex-shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
         <div className="leading=[22px] text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">

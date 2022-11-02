@@ -35,8 +35,8 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      shouldCloseOnOverlayClick
       onRequestClose={() => setOpen(false)}
+      shouldCloseOnOverlayClick
       style={{
         content: {
           display: "flex",
@@ -62,26 +62,26 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
       }}
     >
       <div
-        id="popup-modal"
         className="m-auto w-full w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10"
+        id="popup-modal"
       >
         <div className="relative text-right">
           <button
-            type="button"
             className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
             data-modal-toggle="popup-modal"
             onClick={() => setOpen(false)}
+            type="button"
           >
             <Image
-              src="/icons/exit-icon.svg"
               alt="Close button"
-              width={20}
               height={20}
+              src="/icons/exit-icon.svg"
+              width={20}
             />
             <span className="sr-only">Close modal</span>
           </button>
         </div>
-        <div ref={modalContentRef} className="p-3 pt-0">
+        <div className="p-3 pt-0" ref={modalContentRef}>
           <div className="flex flex-col items-center">
             <h2 className="mb-[6px] text-[16px] font-bold text-white">
               Are You Sure?

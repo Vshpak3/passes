@@ -12,19 +12,19 @@ export const Caret: FC<CaretProps> = ({
   ...restOfProps
 }) => (
   <svg
-    width={width}
+    fill="none"
     height={height}
     viewBox="0 0 15 15"
-    fill="none"
+    width={width}
     xmlns="http://www.w3.org/2000/svg"
     {...restOfProps}
   >
     <path
       d="M1 0.999999L7 7L13 1"
       stroke="white"
-      strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
+      strokeWidth="2"
     />
   </svg>
 )

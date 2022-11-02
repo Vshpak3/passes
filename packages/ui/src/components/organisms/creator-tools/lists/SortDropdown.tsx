@@ -57,20 +57,17 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
   return (
     <>
       <button
+        aria-describedby={sortPopperId}
+        aria-label="Sort"
+        onClick={handleOpenPopper}
         ref={ref}
         type="button"
-        aria-label="Sort"
-        aria-describedby={sortPopperId}
-        onClick={handleOpenPopper}
       >
         <FilterIcon />
       </button>
       <Popper
-        id={sortPopperId}
-        open={isPopperOpen}
         anchorEl={ref.current}
-        transition
-        placement="bottom-end"
+        id={sortPopperId}
         modifiers={[
           {
             name: "offset",
@@ -79,6 +76,9 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
             }
           }
         ]}
+        open={isPopperOpen}
+        placement="bottom-end"
+        transition
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
@@ -105,9 +105,9 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
 
                     return (
                       <RadioGroup.Option
+                        className="flex w-full cursor-pointer items-center justify-between text-passes-gray-800"
                         key={`${orderType}:${order}`}
                         value={option}
-                        className="flex w-full cursor-pointer items-center justify-between text-passes-gray-800"
                       >
                         <span
                           className={

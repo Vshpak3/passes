@@ -89,26 +89,26 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
 
   return (
     <form
-      onSubmit={onSubmit}
       className="flex w-full flex-row items-center pt-5"
+      onSubmit={onSubmit}
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
         <CustomComponentMentionEditor
           isReset={isReset}
-          setIsReset={setIsReset}
-          placeholder="Type a comment..."
           onInputChange={(params: NewPostTextFormProps) => {
             setIsButtonDisabled(!params?.text)
             setValue("comment", params?.text)
             setValue("mentions", params?.tags)
           }}
+          placeholder="Type a comment..."
+          setIsReset={setIsReset}
         />
       </div>
       <Button
+        className="ml-4 h-[40px] w-[96px] shrink-0"
+        disabled={isButtonDisabled || isSubmitting}
         tag="button"
         variant="pink"
-        disabled={isButtonDisabled || isSubmitting}
-        className="ml-4 h-[40px] w-[96px] shrink-0"
       >
         Comment
       </Button>

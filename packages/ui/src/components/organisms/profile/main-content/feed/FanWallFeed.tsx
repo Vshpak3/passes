@@ -42,7 +42,11 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
 
   return (
     <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
-      keyValue={`/fanwall/${profileUserId}`}
+      KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
+        return <FanWallComment comment={arg} ownsProfile={ownsProfile} />
+      }}
+      emptyElement={FanWallFeedEnd}
+      endElement={FanWallFeedEnd}
       fetch={async (req: GetFanWallRequestDto) => {
         const api = new FanWallApi()
         return await api.getFanWallForCreator({
@@ -50,17 +54,13 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
         })
       }}
       fetchProps={{ creatorId: profileUserId }}
+      keyValue={`/fanwall/${profileUserId}`}
       loadingElement={FallWallFeedLoader}
-      emptyElement={FanWallFeedEnd}
-      endElement={FanWallFeedEnd}
-      KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
-        return <FanWallComment comment={arg} ownsProfile={ownsProfile} />
-      }}
     >
       {!!accessToken.length && (
         <NewFanwallPosts
-          profileUserId={profileUserId}
           ownsProfile={ownsProfile}
+          profileUserId={profileUserId}
         />
       )}
     </InfiniteScrollPagination>

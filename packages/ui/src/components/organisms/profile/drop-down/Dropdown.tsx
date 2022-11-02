@@ -5,7 +5,7 @@ import { FC, Fragment } from "react"
 
 export interface DropdownOption {
   readonly text: string
-  readonly onClick: () => void
+  readonly handleClick: () => void
 }
 
 interface DropdownProps {
@@ -34,9 +34,9 @@ export const Dropdown: FC<DropdownProps> = ({ items }) => {
           <div className="py-1">
             {items.map((item, index) => (
               <div key={index}>
-                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment  */}
                 {/* @ts-ignore */}
-                <Menu.Item key={index} onClick={item.onClick}>
+                <Menu.Item key={index} onClick={item.handleClick}>
                   {({ active }) => (
                     <span
                       className={classNames(

@@ -38,9 +38,9 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
       <div>
         {defaultPayinMethod && (
           <PayinMethodDisplay
-            payinMethod={defaultPayinMethod}
             card={defaultCard}
             closeModal={() => setOpen(false)}
+            payinMethod={defaultPayinMethod}
           />
         )}
       </div>
@@ -49,8 +49,8 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
           !defaultPayinMethod ||
           defaultPayinMethod.method === GetPayinMethodResponseDtoMethodEnum.None
         }
-        passHolderId={passHolder.passHolderId}
         onSuccess={() => setOpen(false)}
+        passHolderId={passHolder.passHolderId}
       />
     </Modal>
   )

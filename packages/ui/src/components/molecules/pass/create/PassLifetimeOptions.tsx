@@ -30,21 +30,19 @@ export const PassLifetimeOptions: FC<PassLifetimeOptionsProps> = ({
       <hr className="border-passes-dark-200" />
       <div className="grid grid-rows-2 gap-1">
         <PassNumberInput
-          suffix="%"
-          register={register}
-          // errors={errors}
-          title="Set royalties % on re-sales"
+          className="pl-[50px]"
           name="royalties"
           placeholder="0.00"
-          className="pl-[50px]"
-          // infoIcon
+          register={register}
+          suffix="%"
+          title="Set royalties % on re-sales"
         />
         <PassNumberInput
-          register={register}
-          title="Set amount of total supply"
+          className="pl-[50px]"
           name="totalSupply"
           placeholder="0.00"
-          className="pl-[50px]"
+          register={register}
+          title="Set amount of total supply"
         />
         {errors?.royalties ||
           (errors?.totalSupply && (

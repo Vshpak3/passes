@@ -10,7 +10,9 @@ import { MediaModal } from "src/components/organisms/MediaModal"
 import { ContentService } from "src/helpers/content"
 
 interface SlideContentProps extends SlideImageProps {
+  // eslint-disable-next-line react/no-unused-prop-types
   ref: ForwardedRef<HTMLImageElement>
+  // eslint-disable-next-line react/no-unused-prop-types
   autoplayVideo?: boolean
   carouselContent?: ContentDto[]
   index?: number
@@ -56,13 +58,13 @@ export const SlideContent: FC<SlideContentProps> = forwardRef(
             </button>
             {openModal && (
               <MediaModal
-                isOpen={openModal}
-                setOpen={setOpenModal}
-                file={{ content }}
-                modalContainerClassname="p-0"
-                childrenClassname="p-0"
-                carouselContent={carouselContent}
                 activeIndex={activeIndex}
+                carouselContent={carouselContent}
+                childrenClassname="p-0"
+                file={{ content }}
+                isOpen={openModal}
+                modalContainerClassname="p-0"
+                setOpen={setOpenModal}
               />
             )}
           </>
@@ -71,8 +73,8 @@ export const SlideContent: FC<SlideContentProps> = forwardRef(
         return (
           <div data-vjs-player>
             <video
-              src={ContentService.userContentMediaPath(content)}
               className="video-js vjs-big-play-centered"
+              src={ContentService.userContentMediaPath(content)}
             />
           </div>
         )

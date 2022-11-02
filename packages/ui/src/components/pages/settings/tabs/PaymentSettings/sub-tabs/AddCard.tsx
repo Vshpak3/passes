@@ -133,7 +133,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
 
   return (
     <>
-      <Tab withBack title="Add Card" />
+      <Tab title="Add Card" withBack />
 
       <span className="mt-3 block text-[16px] font-[500] text-white">
         Card Info
@@ -155,58 +155,57 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         }}
       />
       <Input
-        register={register}
-        type="text"
-        name="card-holder"
-        placeholder="Card holder"
+        className="mt-4"
         errors={errors}
+        name="card-holder"
         options={{
           required: { message: "Name is required", value: true }
         }}
-        className="mt-4"
+        placeholder="Card holder"
+        register={register}
+        type="text"
       />
       <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <Select
+            className="mt-2 w-[100px]"
+            errors={errors}
+            name="exp-month"
+            onChange={(month: string) => setValue("exp-month", month)}
+            options={{
+              required: { message: "Month is required", value: true }
+            }}
             register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
             )}
-            options={{
-              required: { message: "Month is required", value: true }
-            }}
-            errors={errors}
-            name="exp-month"
-            className="mt-2 w-[100px]"
             value={getValues("exp-month") || undefined}
-            onChange={(month: string) => setValue("exp-month", month)}
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
           <Select
-            register={register}
-            selectOptions={years}
-            placeholder=" "
+            className="mt-2 w-[100px]"
+            errors={errors}
+            name="exp-year"
+            onChange={(year: string) => setValue("exp-year", year)}
             options={{
               required: { message: "Year is required", value: true }
             }}
-            errors={errors}
-            name="exp-year"
+            placeholder=" "
+            register={register}
+            selectOptions={years}
             value={getValues("exp-year")}
-            className="mt-2 w-[100px]"
-            onChange={(year: string) => setValue("exp-year", year)}
           />
         </div>
         <div className="mb-4 flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <NumberInput
-            type="integer"
-            register={register}
-            name="cvv"
-            maxInput={999}
+            className="mt-2 w-[71px]"
             errors={errors}
+            maxInput={999}
+            name="cvv"
             options={{
               required: {
                 message: "CVV is required",
@@ -214,73 +213,71 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
               },
               pattern: { message: "must be CVV number", value: /\d{3}/ }
             }}
-            className="mt-2 w-[71px]"
+            register={register}
+            type="integer"
           />
         </div>
       </div>
       <span className="mt-4 text-[16px] font-[500]">Billing address</span>
       <Input
-        register={register}
-        type="text"
-        name="address1"
-        placeholder="Address 1"
+        className="mt-3"
         errors={errors}
+        name="address1"
         options={{
           required: { message: "Address is required", value: true }
         }}
-        className="mt-3"
-      />
-      <Input
+        placeholder="Address 1"
         register={register}
         type="text"
+      />
+      <Input
+        className="mt-3"
+        errors={errors}
         name="address2"
         placeholder="Address 2"
-        errors={errors}
-        className="mt-3"
-      />
-      <Select
-        register={register}
-        selectOptions={COUNTRIES}
-        name="country"
-        errors={errors}
-        placeholder="Country"
-        className="mt-3"
-        defaultValue={COUNTRIES[0]}
-        onChange={(newValue: string) => setValue("country", newValue)}
-      />
-      <Input
         register={register}
         type="text"
-        name="city"
-        placeholder="City"
+      />
+      <Select
+        className="mt-3"
+        defaultValue={COUNTRIES[0]}
         errors={errors}
+        name="country"
+        onChange={(newValue: string) => setValue("country", newValue)}
+        placeholder="Country"
+        register={register}
+        selectOptions={COUNTRIES}
+      />
+      <Input
+        className="mt-3"
+        errors={errors}
+        name="city"
         options={{
           required: { message: "City is required", value: true }
         }}
-        className="mt-3"
+        placeholder="City"
+        register={register}
+        type="text"
       />
       <div className="flex gap-4">
         {countrySelected === COUNTRIES[0] ? (
           <Select
-            register={register}
-            name="district"
-            selectOptions={US_STATES}
+            className="mt-3 w-[120px]"
             errors={errors}
-            placeholder="State"
+            name="district"
+            onChange={(newValue: string) => setValue("district", newValue)}
             options={{
               required: { message: "State is required", value: true }
             }}
-            onChange={(newValue: string) => setValue("district", newValue)}
-            className="mt-3 w-[120px]"
+            placeholder="State"
+            register={register}
+            selectOptions={US_STATES}
             showOnTop
           />
         ) : (
           <Input
-            register={register}
-            type="text"
-            name="district"
-            placeholder="State/District"
-            iconAlign={EIcon.Right}
+            className="mt-3"
+            errors={errors}
             icon={
               <div
                 className="tooltip absolute right-[15px] top-[30px] h-4 w-4"
@@ -289,27 +286,30 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
                 <InfoIcon />
               </div>
             }
-            errors={errors}
-            className="mt-3"
+            iconAlign={EIcon.Right}
+            name="district"
+            placeholder="State/District"
+            register={register}
+            type="text"
           />
         )}
 
         <Input
-          register={register}
-          type="text"
-          name="postal-code"
-          placeholder="Zip"
+          className="mt-3"
           errors={errors}
+          name="postal-code"
           options={{
             required: { message: "Postal code is required", value: true }
           }}
-          className="mt-3"
+          placeholder="Zip"
+          register={register}
+          type="text"
         />
       </div>
       <Button
         className="mt-4 mb-8 w-full text-[16px] font-[500]"
-        onClick={handleSubmit(onSubmit)}
         disabled={isSubmitting}
+        onClick={handleSubmit(onSubmit)}
         variant="pink"
       >
         {isSubmitting ? "Submitting ..." : "Confirm and Continue"}

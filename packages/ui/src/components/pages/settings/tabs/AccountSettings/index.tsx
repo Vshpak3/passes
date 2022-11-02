@@ -35,9 +35,9 @@ const AccountSettings: FC = () => {
 
   return (
     <Tab
-      withBackMobile
-      title="Account Settings"
       description="See information about your account, download an archive of your data, or learn about your account deactivation options"
+      title="Account Settings"
+      withBackMobile
     >
       <ul className="mt-[34px]">
         {subTabs.map(({ Icon, id, name, subText }) => (

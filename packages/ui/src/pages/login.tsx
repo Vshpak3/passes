@@ -105,25 +105,25 @@ const LoginPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-center gap-y-5">
-          <Text fontSize={36} className="mb-4 font-semibold text-white">
+          <Text className="mb-4 font-semibold text-white" fontSize={36}>
             Sign In
           </Text>
           <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">
             Welcome back!
           </Text>
           <form
-            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-5"
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
               <Input
-                register={register}
-                name="email"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your email"
-                type="text"
                 errors={errors}
+                name="email"
+                placeholder="Enter your email"
+                register={register}
+                type="text"
               />
             </div>
 
@@ -132,21 +132,21 @@ const LoginPage: FC = () => {
                 Password
               </Text>
               <PasswordInput
-                register={register}
-                name="password"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your password"
                 errors={errors}
+                name="password"
+                placeholder="Enter your password"
+                register={register}
               />
             </div>
 
             <div className="flex flex-row gap-14">
               <Checkbox
-                type="checkbox"
-                label="Remember for 30 days"
-                register={register}
-                name="remember"
                 errors={errors}
+                label="Remember for 30 days"
+                name="remember"
+                register={register}
+                type="checkbox"
               />
               <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
                 <NextLink href="/forgot-password">Forgot Password</NextLink>
@@ -155,12 +155,12 @@ const LoginPage: FC = () => {
 
             <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-              tag="button"
-              type={ButtonTypeEnum.SUBMIT}
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
             >
-              <Text fontSize={16} className="font-medium">
+              <Text className="font-medium" fontSize={16}>
                 Login
               </Text>
               <EnterIcon />
@@ -180,8 +180,8 @@ const LoginPage: FC = () => {
           </div>
 
           <Text
-            fontSize={13}
             className="z-10 flex w-[360px] justify-center text-[#b3bee7] opacity-[0.6]"
+            fontSize={13}
           >
             Don&apos;t have an account?
             <NextLink href="/signup">

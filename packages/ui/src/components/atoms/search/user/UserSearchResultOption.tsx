@@ -6,13 +6,21 @@ import { UserSearchResult } from "./UserSearchResults"
 
 type UserSearchResultOptionProps = UserDisplayInfoDto
 
-export const UserSearchResultOption: FC<UserSearchResultOptionProps> = (
-  props
-) => {
+export const UserSearchResultOption: FC<UserSearchResultOptionProps> = ({
+  userId,
+  displayName,
+  username
+}) => {
   return (
-    <Combobox.Option key={props.userId} value={props.username}>
+    <Combobox.Option key={userId} value={username}>
       {({ active, disabled }) => (
-        <UserSearchResult active={active} disabled={disabled} {...props} />
+        <UserSearchResult
+          active={active}
+          disabled={disabled}
+          displayName={displayName}
+          userId={userId}
+          username={username}
+        />
       )}
     </Combobox.Option>
   )

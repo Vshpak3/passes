@@ -32,40 +32,40 @@ export const MediaModal: FC<ModalProps> = ({
   carouselContent = undefined // deprecate content carousel for now
   return (
     <Modal
-      isNewPost
-      isOpen={isOpen}
-      setOpen={setOpen}
-      modalContainerClassname={modalContainerClassname}
       childrenClassname={childrenClassname}
       isCloseOutside
+      isNewPost
+      isOpen={isOpen}
+      modalContainerClassname={modalContainerClassname}
+      setOpen={setOpen}
     >
       {carouselContent && (
         <div className="max-w-[900px]">
           <ContentCarousel
-            contents={carouselContent}
             activeIndex={activeIndex}
+            contents={carouselContent}
           />
         </div>
       )}
       {file.file && !carouselContent && (
         <MediaFile
-          preview
-          file={file.file}
           className="m-0 rounded-[6px] p-0"
           contentHeight={800}
           contentWidth={800}
+          file={file.file}
           objectFit="contain"
+          preview
         />
       )}
       {file.content && !carouselContent && (
         <Media
-          src={ContentService.userContentMediaPath(file.content)}
-          preview
-          type={file.content.contentType}
-          contentWidth={800}
-          contentHeight={800}
           className="m-0 rounded-[6px] p-0"
+          contentHeight={800}
+          contentWidth={800}
           objectFit="contain"
+          preview
+          src={ContentService.userContentMediaPath(file.content)}
+          type={file.content.contentType}
         />
       )}
     </Modal>

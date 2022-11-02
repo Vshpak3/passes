@@ -50,12 +50,12 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
       >
         {trigger}
       </button>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition appear as={Fragment} show={isOpen}>
         <HeadlessDialog
           as="div"
           className="relative z-10"
-          open={isOpen}
           onClose={handleOnClose}
+          open={isOpen}
         >
           <Transition.Child
             as={Fragment}

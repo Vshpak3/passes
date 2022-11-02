@@ -62,14 +62,14 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
         )}
       </div>
       <PaymentModalBody
-        price={post?.price ?? 0}
         closeModal={() => setPost(null)}
+        price={post?.price ?? 0}
         setPayinMethod={setPayinMethod}
       />
       <BuyPostButton
+        onSuccess={onSuccessHandler}
         payinMethod={payinMethod}
         postId={post?.postId || ""}
-        onSuccess={onSuccessHandler}
       />
     </Modal>
   )

@@ -26,12 +26,12 @@ export const Label: FC<LabelProps> = ({
 }) => {
   return (
     <label
-      htmlFor={name}
       className={classNames(
         "block ",
         errors[name] ? "text-red-500" : "text-white",
         className ?? "text-sm font-medium"
       )}
+      htmlFor={name}
     >
       {formatText(label)} {options.required && "*"}
     </label>

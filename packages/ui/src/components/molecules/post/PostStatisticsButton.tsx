@@ -6,7 +6,7 @@ import {
   PostStatisticsMenuProps
 } from "./PostStatisticsMenu"
 
-export type PostStatisticsButtonProps = Omit<PostStatisticsMenuProps, "onClose">
+type PostStatisticsButtonProps = Omit<PostStatisticsMenuProps, "onClose">
 
 // Might be used in the future
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,8 +21,8 @@ const PostStatisticsButton: FC<PostStatisticsButtonProps> = (menuProps) => {
     <div className="relative flex-shrink-0">
       <button
         className="flex items-center rounded-lg bg-white/10 py-[5px] px-2.5"
-        onMouseDown={stopPropagation}
         onClick={toggleMenu}
+        onMouseDown={stopPropagation}
       >
         <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
           Post Statistics

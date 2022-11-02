@@ -66,18 +66,18 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
   return (
     <>
       {label && (
-        <Label name={name} label={label} errors={errors} options={options} />
+        <Label errors={errors} label={label} name={name} options={options} />
       )}
       <textarea
-        id={name}
-        placeholder={placeholder}
-        name={name}
-        rows={rows}
         cols={cols}
+        id={name}
+        name={name}
+        placeholder={placeholder}
         ref={(r) => {
           ref(r)
           textAreaRef.current = r
         }}
+        rows={rows}
         {...reg}
         {...rest}
         className={classNames(

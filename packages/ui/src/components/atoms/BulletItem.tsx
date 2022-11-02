@@ -11,10 +11,10 @@ export const BulletItem: FC<BulletItemProps> = ({
 }) => {
   return (
     <div
-      onClick={setSelectedStep}
       className={`cursor-pointer ${
         isSelected ? "text-gray-500" : "text-gray-700"
       }`}
+      onClick={setSelectedStep}
     >
       &bull;
     </div>

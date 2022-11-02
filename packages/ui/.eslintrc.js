@@ -25,23 +25,17 @@ module.exports = {
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
 
-    // Turn on soon
-    "react/no-array-index-key": "off",
-    "react/jsx-sort-props": "off",
-    "react/no-unstable-nested-components": "off",
-    "react/no-unused-prop-types": "off",
-    "react/destructuring-assignment": "off",
-    "react/hook-use-state": "off",
-    "react/jsx-handler-names": "off",
-    "react/jsx-pascal-case": "off",
-    "react/jsx-child-element-spacing": "off",
-    "react/jsx-no-constructed-context-values": "off",
-
     // Turned off since we often want to use <img> tags
     "@next/next/no-img-element": "off",
 
+    // Consider turning on
+    "react/jsx-no-constructed-context-values": "off",
+    "react/no-array-index-key": "off",
+    "react/no-unstable-nested-components": "off",
+
     // Turned off since these conflict with prettier
     "react/jsx-curly-newline": "off",
+    "react/jsx-child-element-spacing": "off",
     "react/jsx-indent-props": "off",
     "react/jsx-indent": "off",
     "react/jsx-max-props-per-line": "off",

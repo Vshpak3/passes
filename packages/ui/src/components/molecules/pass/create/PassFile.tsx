@@ -24,12 +24,12 @@ interface PassFileProps {
 const PassFile = ({ onRemove, file, gridLayout }: PassFileProps) => (
   <div className={`col-span-12 ${gridLayout}`}>
     <MediaFile
-      isPassUpload
       className="ml-[30px]"
       contentHeight={200}
       contentWidth={130}
-      onRemove={onRemove}
       file={file}
+      isPassUpload
+      onRemove={onRemove}
     />
   </div>
 )
@@ -58,10 +58,10 @@ const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
     const onRemoveFile = () => onRemove(index)
     return (
       <PassFile
-        key={`media_${index}`}
-        onRemove={onRemoveFile}
         file={file}
         gridLayout={gridLayout}
+        key={`media_${index}`}
+        onRemove={onRemoveFile}
       />
     )
   })
@@ -103,15 +103,15 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
         <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
       ) : (
         <DragDropFile
-          className="h-[200px]"
-          register={register}
-          name="passFile"
-          multiple={false}
           accept={["image", "video"]}
-          options={{ onChange: onDragDropChange }}
+          className="h-[200px]"
           errors={errors}
           helperText="you may upload 1 image of your choice as art work for your pass. If
           no image is uploaded, a default will be selected"
+          multiple={false}
+          name="passFile"
+          options={{ onChange: onDragDropChange }}
+          register={register}
           // maximumLimit={maximumLimit}
         />
       )}

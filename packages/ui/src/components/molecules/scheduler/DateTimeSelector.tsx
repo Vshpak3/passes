@@ -44,32 +44,32 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
   return (
     <>
       <button
-        type="button"
         aria-label="Go to previous month"
         disabled={disablePast}
         onClick={previousMonth}
+        type="button"
       >
         <ChevronLeft
           className={classNames({ "opacity-[0.5]": disablePast })}
-          width="24"
           height="24"
+          width="24"
         />
       </button>
-      <button type="button" onClick={showDateYearModal}>
+      <button onClick={showDateYearModal} type="button">
         <span className="w-[100px] select-none">
           {format(new Date(year, month, 1), "MMMM yyyy")}
         </span>
       </button>
       <button
-        type="button"
         aria-label="Go to previous month"
         disabled={disableFuture}
         onClick={nextMonth}
+        type="button"
       >
         <ChevronRight
-          width="24"
-          height="24"
           className={classNames({ "opacity-[0.5]": disableFuture })}
+          height="24"
+          width="24"
         />
       </button>
     </>

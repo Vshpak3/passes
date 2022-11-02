@@ -30,14 +30,14 @@ export const ConnectWithFans = () => {
           }}
         />
         <img
+          alt="Connect with your fans"
           className="my-20 mx-auto flex md:hidden"
           src="/img/homepage/connect-mobile.webp"
-          alt="Connect with your fans"
         />
         <img
+          alt="Connect with your fans"
           className="my-20 mx-auto hidden md:flex"
           src="/img/homepage/connect.webp"
-          alt="Connect with your fans"
         />
       </div>
     </div>

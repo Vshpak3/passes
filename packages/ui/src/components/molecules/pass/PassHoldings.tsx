@@ -25,17 +25,20 @@ export const PassHoldings: FC = () => {
       <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
         <div className="w-fit">
           <SelectPassHolderTab
-            setPassType={setPassType}
+            expired={expired}
             passType={passType}
             setExpired={setExpired}
-            expired={expired}
+            setPassType={setPassType}
           />
         </div>
         <hr className="md:display my-auto hidden grow border-passes-dark-200" />
       </div>
 
       <InfiniteScrollPagination<PassHolderDto, GetPassHoldingsResponseDto>
-        keyValue="/passholdings"
+        KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
+          return <PassHoldingCard passHolder={arg} />
+        }}
+        className="gap-3 md:flex md:flex-wrap"
         fetch={(req: GetPassHoldingsRequestDto) => {
           const api = new PassApi()
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
@@ -45,10 +48,7 @@ export const PassHoldings: FC = () => {
           expired,
           order: "desc"
         }}
-        KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
-          return <PassHoldingCard passHolder={arg} />
-        }}
-        className="gap-3 md:flex md:flex-wrap"
+        keyValue="/passholdings"
         options={{ revalidateOnMount: true }}
       />
     </div>

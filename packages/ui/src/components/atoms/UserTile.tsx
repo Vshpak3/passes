@@ -13,11 +13,11 @@ export const UserTile = () => {
       <div className="mt-1 flex flex-col items-center">
         <span className="relative h-[55px] w-[55px] rounded-full">
           <Image
-            src="/img/tiles/profile-lucy-guo.png"
-            layout="fill"
             alt="user profile img"
+            layout="fill"
             objectFit="cover"
             objectPosition="center"
+            src="/img/tiles/profile-lucy-guo.png"
           />
         </span>
         <p className="mt-[5px] text-[9px] font-medium leading-[11px]">

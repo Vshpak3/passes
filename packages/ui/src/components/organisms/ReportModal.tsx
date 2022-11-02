@@ -43,18 +43,18 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
     <Modal isOpen setOpen={() => setReportData(null)}>
       <h2 className="mb-5 font-semibold text-white">REPORT @{username}</h2>
       <RadioGroup
-        value={reportValue}
-        onChange={setReportValue}
         className="flex flex-col gap-4"
+        onChange={setReportValue}
+        value={reportValue}
       >
         <RadioGroup.Option value="offensive">
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                readOnly
-                type="radio"
                 checked={checked}
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">
                 This content is offensive or violates &quot;Passes&quot; Terms
@@ -67,10 +67,10 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                type="radio"
-                readOnly
                 checked={checked}
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">
                 This content contains stolen material (DMCA)
@@ -82,10 +82,10 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                type="radio"
                 checked={checked}
-                readOnly
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">This content is spam</Text>
             </div>
@@ -95,10 +95,10 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                type="radio"
                 checked={checked}
-                readOnly
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">Report abuse</Text>
             </div>

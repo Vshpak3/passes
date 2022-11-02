@@ -119,13 +119,13 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
       <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-3">
         <div className="flex min-h-[45px] items-center justify-start gap-4 px-3 pt-2">
           <Checkbox
-            label="Pay to View"
-            type="toggle"
-            register={register}
-            errors={errors}
-            options={options}
-            name="isPaid"
             className="group"
+            errors={errors}
+            label="Pay to View"
+            name="isPaid"
+            options={options}
+            register={register}
+            type="toggle"
           />
           {isPaid ? (
             <div className="relative flex items-center rounded-md shadow-sm">
@@ -133,19 +133,19 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
                 Price
               </div>
               <input
+                aria-placeholder="$"
+                autoFocus
+                className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
+                id="postPrice"
+                max="5000"
+                min="0"
+                name="postPrice"
+                onChange={handleChange}
+                onKeyPress={preventNegative}
+                placeholder="$"
+                step="0.01"
                 type="number"
                 value={messagePrice}
-                name="postPrice"
-                autoFocus
-                id="postPrice"
-                placeholder="$"
-                aria-placeholder="$"
-                onKeyPress={preventNegative}
-                min="0"
-                max="5000"
-                step="0.01"
-                onChange={handleChange}
-                className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
               />
             </div>
           ) : null}
@@ -153,34 +153,34 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
 
         <div className="flex h-fit w-full flex-col items-start justify-start px-3 py-1">
           <textarea
+            cols={40}
             placeholder="Send a message.."
             rows={3}
-            cols={40}
             {...register("message", { required: true })}
+            autoComplete="off"
             className={classNames(
               files.length
                 ? "focus:border-b-transparent"
                 : errors.message && "border-b-red",
               "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
             )}
-            autoComplete="off"
-            onKeyDown={submitOnEnter}
             onFocus={() => {
               clearErrors()
             }}
+            onKeyDown={submitOnEnter}
           />
           {files.length > 0 && (
             <div className="relative  max-w-[390px] sm:max-w-[590px]">
               <MediaSection
-                register={register}
+                addNewMedia={addNewMedia}
                 errors={errors}
                 files={files}
-                setFiles={setFiles}
-                onRemove={onRemove}
-                addNewMedia={addNewMedia}
-                mediaPreviewIndex={mediaPreviewIndex}
-                setMediaPreviewIndex={setMediaPreviewIndex}
                 isPaid={isPaid}
+                mediaPreviewIndex={mediaPreviewIndex}
+                onRemove={onRemove}
+                register={register}
+                setFiles={setFiles}
+                setMediaPreviewIndex={setMediaPreviewIndex}
                 // messages={true}
               />
             </div>
@@ -188,33 +188,33 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
 
           {scheduledTime && (
             <ScheduleAlert
-              scheduledPostTime={scheduledTime}
               onRemoveScheduledPostTime={() => setScheduledTime(null)}
+              scheduledPostTime={scheduledTime}
             />
           )}
           <div className="flex w-full items-center justify-between pt-6">
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
-              // setActiveMediaHeader={setActiveMediaHeader}
-              register={register}
               errors={errors}
               onChange={onMediaChange}
+              register={register}
               selectors={[PhotoSelector, VideoSelector]}
+              // setActiveMediaHeader={setActiveMediaHeader}
             >
               <VaultSelector selectVaultContent={addContent} />
               {schedulable && (
                 <CalendarSelector
-                  name="Schedule"
                   activeHeader=""
-                  setScheduledTime={setScheduledTime}
-                  scheduledTime={scheduledTime}
+                  name="Schedule"
                   placement="bottom"
+                  scheduledTime={scheduledTime}
+                  setScheduledTime={setScheduledTime}
                 />
               )}
             </MediaSelector>
             <button
-              type="submit"
               className="flex min-w-[151px] items-center justify-start  rounded-[50px] bg-[#C943A8] py-2 px-4 text-[16px] font-bold leading-[25px] text-white"
+              type="submit"
             >
               {scheduledTime ? "Schedule message" : "Send message"}
             </button>

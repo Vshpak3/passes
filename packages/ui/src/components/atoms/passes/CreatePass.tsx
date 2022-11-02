@@ -34,11 +34,11 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
 }) => (
   <div className="my-3 flex items-center">
     <Checkbox
+      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+      label={label}
+      name={name}
       register={register}
       type="checkbox"
-      name={name}
-      label={label}
-      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
     />
   </div>
 )
@@ -67,14 +67,14 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
     <div className="grid grid-flow-col">
       <div className="align-items relative flex w-fit items-center justify-start">
         <NumberInput
-          type="integer"
-          register={register}
-          name={name}
-          placeholder={placeholder}
           className={classNames(
             "max-w-[140px] border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90",
             className
           )}
+          name={name}
+          placeholder={placeholder}
+          register={register}
+          type="integer"
         />
         {suffix && (
           <span className="absolute top-1/2 right-[40px] -translate-y-1/2 text-[#ffff]/90">
@@ -106,10 +106,10 @@ export const CreatePassButton: FC<CreatePassButtonProps> = ({
   <div className="align-end my-6 flex justify-end md:my-0">
     <Button
       className="w-full border-none !py-4 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white md:w-[195px]"
-      variant="pink"
+      disabled={isDisabled}
       fontSize={16}
       onClick={onCreateHandler}
-      disabled={isDisabled}
+      variant="pink"
     >
       Create Pass
     </Button>
@@ -140,11 +140,11 @@ export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
   <>
     <PassesSectionTitle title="Add description" />
     <Input
+      className="m-0 w-full border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      name="passDescription"
+      placeholder="Type a caption here that describes the pass"
       register={register}
       type="text"
-      name="passDescription"
-      className="m-0 w-full border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
-      placeholder="Type a caption here that describes the pass"
     />
     {errors.passDescription?.type === "required" && (
       <PassFormError message="Description is required" />
@@ -161,11 +161,11 @@ export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <Input
+      className="flex-grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      name="passName"
+      placeholder="Name of your new pass!"
       register={register}
       type="text"
-      name="passName"
-      className="flex-grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
-      placeholder="Name of your new pass!"
     />
     {errors.passName?.type === "required" && (
       <PassFormError message="Name is required" />

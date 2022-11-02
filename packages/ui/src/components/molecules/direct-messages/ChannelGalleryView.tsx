@@ -30,7 +30,18 @@ export const ChannelGalleryView: FC<ChannelGalleryViewProps> = ({
   return (
     <div className="flex h-full flex-wrap items-start justify-start gap-2 overflow-auto p-[10px]">
       <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-        keyValue="messages"
+        KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+          return (
+            <GalleryMedia
+              contents={arg.contents}
+              createdAt={arg.sentAt}
+              isCreator={isCreator}
+              price={arg.price}
+              purchased={!!arg.paidAt}
+              text={arg.text}
+            />
+          )
+        }}
         fetch={async (req: GetMessagesRequestDto) => {
           const api = new MessagesApi()
           return await api.getMessages({ getMessagesRequestDto: req })
@@ -41,18 +52,7 @@ export const ChannelGalleryView: FC<ChannelGalleryViewProps> = ({
           contentOnly: true,
           paid
         }}
-        KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
-          return (
-            <GalleryMedia
-              contents={arg.contents}
-              text={arg.text}
-              price={arg.price}
-              createdAt={arg.sentAt}
-              isCreator={isCreator}
-              purchased={!!arg.paidAt}
-            />
-          )
-        }}
+        keyValue="messages"
       />
     </div>
   )

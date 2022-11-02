@@ -16,9 +16,7 @@ export const BlockedUser = ({ blockedUser }: BlockedUserProps) => {
       <ProfileWidget user={blockedUser} />
 
       <Button
-        variant="pink"
         className="w-auto !px-6"
-        tag="button"
         disabledClass="opacity-[0.5]"
         onClick={async () => {
           if (blocked) {
@@ -29,6 +27,8 @@ export const BlockedUser = ({ blockedUser }: BlockedUserProps) => {
             await api.blockFollower({ followerId: blockedUser.userId })
           }
         }}
+        tag="button"
+        variant="pink"
       >
         <span>{blocked ? "Unblock" : "Block"}</span>
       </Button>

@@ -64,11 +64,11 @@ export const MessagesChannelGalleryHeader: FC<
         </div>
       </div>
       <SortDropdown
-        selection={{ orderType: paid ? "purchased" : "notPurchased" }}
-        options={sortOptions}
-        onSelect={onSortSelect}
         dropdownTitle="Filter by"
         isCheckbox={false}
+        onSelect={onSortSelect}
+        options={sortOptions}
+        selection={{ orderType: paid ? "purchased" : "notPurchased" }}
       />
     </div>
   )

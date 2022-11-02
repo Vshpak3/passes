@@ -49,8 +49,8 @@ export const MobileNavBar = ({ activeRoute }: Props) => {
       {mobileLinks.map((navBarItem, index) => (
         <Link href={navBarItem.href} key={`${navBarItem.id}-${index}`}>
           <div
-            key={`${navBarItem.id}-${index}`}
             className="flex flex-1 items-center justify-center"
+            key={`${navBarItem.id}-${index}`}
           >
             <navBarItem.icon
               className={classNames(

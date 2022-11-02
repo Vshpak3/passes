@@ -3,8 +3,7 @@ import {
   ChannelMemberDto,
   GetChannelsRequestDto,
   GetChannelsRequestDtoOrderTypeEnum as OrderType,
-  GetChannelsResponseDto,
-  ListMemberDto
+  GetChannelsResponseDto
 } from "@passes/api-client/models"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
@@ -22,7 +21,6 @@ import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 
 interface ChannelListProps {
-  onUserSelect: (user: ListMemberDto) => void
   selectedChannel?: ChannelMemberDto
   onChannelClicked: (channel: ChannelMemberDto) => void
 }
@@ -61,9 +59,9 @@ export const ChannelList: FC<ChannelListProps> = ({
           <span className="text-base font-medium">Find people</span>
           {!!user?.isCreator && (
             <SortDropdown
-              selection={{ orderType: channelOrderType }}
-              options={sortOptions}
               onSelect={onSortSelect}
+              options={sortOptions}
+              selection={{ orderType: channelOrderType }}
             />
           )}
         </div>
@@ -75,7 +73,17 @@ export const ChannelList: FC<ChannelListProps> = ({
 
       <div className="pt-6">
         <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
-          keyValue="/channels"
+          KeyedComponent={({
+            arg: channel
+          }: ComponentArg<ChannelMemberDto>) => {
+            return (
+              <ChannelListItem
+                channel={channel}
+                isSelected={selectedChannel?.channelId === channel.channelId}
+                onClick={() => onChannelClicked(channel)}
+              />
+            )
+          }}
           fetch={async (req: GetChannelsRequestDto) => {
             const api = new MessagesApi()
             return await api.getChannels({ getChannelsRequestDto: req })
@@ -86,6 +94,7 @@ export const ChannelList: FC<ChannelListProps> = ({
             orderType: channelOrderType,
             search
           }}
+          keyValue="/channels"
           options={{
             revalidateOnMount: true,
             revalidateAll: true,
@@ -94,17 +103,6 @@ export const ChannelList: FC<ChannelListProps> = ({
             revalidateOnReconnect: true,
             refreshInterval: 1000,
             persistSize: true
-          }}
-          KeyedComponent={({
-            arg: channel
-          }: ComponentArg<ChannelMemberDto>) => {
-            return (
-              <ChannelListItem
-                onClick={() => onChannelClicked(channel)}
-                channel={channel}
-                isSelected={selectedChannel?.channelId === channel.channelId}
-              />
-            )
           }}
         />
       </div>

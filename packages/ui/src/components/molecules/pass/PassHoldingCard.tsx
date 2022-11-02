@@ -32,9 +32,9 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
     <div className="col-span-1 w-full min-w-[400px] max-w-[400px] rounded rounded-[15px] border border-[#2C282D] py-[24px] px-[16px]">
       <div className="aspect-[1/1] w-full rounded-[15px]">
         <PassMedia
-          passId={passHolder.passId}
-          imageType={passHolder.imageType}
           animationType={passHolder.animationType}
+          imageType={passHolder.imageType}
+          passId={passHolder.passId}
         />
       </div>
       <div className=" grow cursor-pointer rounded-xl drop-shadow transition-colors">

@@ -48,10 +48,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
         <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
-            type="button"
             aria-label="Toggle comments"
-            onClick={() => setShowCommentSection((prev) => !prev)}
             className="flex cursor-pointer items-center gap-[5px] p-0"
+            onClick={() => setShowCommentSection((prev) => !prev)}
+            type="button"
           >
             <MessagesIcon />
             <span className="text-[12px] leading-[15px] text-passes-gray-100">
@@ -59,9 +59,9 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             </span>
           </button>
           <button
-            type="button"
             aria-label="Copy link to post"
             className="flex cursor-pointer items-center gap-[5px] p-0"
+            type="button"
           >
             <ShareIcon onClick={() => copyLinkToClipboard(username, postId)} />
           </button>
@@ -84,10 +84,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
       </div>
       {showCommentSection && (
         <CommentSection
-          postId={postId}
-          incrementNumComments={incrementNumComments}
           decrementNumComments={decrementNumComments}
+          incrementNumComments={incrementNumComments}
           ownsPost={isOwner}
+          postId={postId}
         />
       )}
     </div>

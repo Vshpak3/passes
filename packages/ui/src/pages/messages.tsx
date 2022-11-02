@@ -62,10 +62,10 @@ const MessagesPage = () => {
         )}
         <Messages
           defaultUserId={router.query.user as string | undefined}
-          vaultContent={vaultContent}
-          setVaultContent={setVaultContent}
           massMessage={massMessage}
           setMassMessage={setMassMessage}
+          setVaultContent={setVaultContent}
+          vaultContent={vaultContent}
         />
       </div>
     </Suspense>

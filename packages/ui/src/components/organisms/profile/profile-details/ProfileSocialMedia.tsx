@@ -9,17 +9,20 @@ import { FC } from "react"
 
 import { formatTextToString } from "src/helpers/formatters"
 
-export const socialUsernames = [
-  "discordUsername",
-  "facebookUsername",
-  "instagramUsername",
-  "tiktokUsername",
-  "twitchUsername",
-  "twitterUsername",
-  "youtubeUsername"
-]
+export const SocialUsernames = {
+  discordUsername: true,
+  facebookUsername: true,
+  instagramUsername: true,
+  tiktokUsername: true,
+  twitchUsername: true,
+  twitterUsername: true,
+  youtubeUsername: true
+}
 
-const socialUsernameToUrl = {
+const socialUsernameToUrl: Record<
+  keyof typeof SocialUsernames,
+  (u: string) => string
+> = {
   discordUsername: (u: string) => `https://www.discord.gg/${u}`,
   facebookUsername: (u: string) => `https://www.facebook.com/${u}`,
   instagramUsername: (u: string) => `https://www.instagram.com/${u}`,
@@ -29,7 +32,8 @@ const socialUsernameToUrl = {
   youtubeUsername: (u: string) => `https://www.youtube.com/c/${u}`
 }
 
-export const socialUsernameToIcon = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const socialUsernameToIcon: Record<keyof typeof SocialUsernames, any> = {
   discordUsername: Discord,
   facebookUsername: Facebook,
   instagramUsername: Instagram,
@@ -40,8 +44,8 @@ export const socialUsernameToIcon = {
 }
 
 interface ProfileSocialMediaButtonProps {
-  type: keyof typeof socialUsernameToUrl
-  username: string
+  type: keyof typeof SocialUsernames
+  username: string | undefined | null
 }
 
 const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
@@ -54,8 +58,8 @@ const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
       {username && (
         <a
           href={formatTextToString(socialUsernameToUrl[type](username))}
-          target="_blank"
           rel="noopener noreferrer"
+          target="_blank"
         >
           <Icon className="h-[22px] w-[22px]" />
         </a>
@@ -64,15 +68,10 @@ const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   )
 }
 
-interface ProfileSocialMediaProps {
-  discordUsername: string | undefined | null
-  facebookUsername: string | undefined | null
-  instagramUsername: string | undefined | null
-  tiktokUsername: string | undefined | null
-  twitchUsername: string | undefined | null
-  twitterUsername: string | undefined | null
-  youtubeUsername: string | undefined | null
-}
+type ProfileSocialMediaProps = Record<
+  keyof typeof SocialUsernames,
+  string | undefined | null
+>
 
 export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = (props) => (
   <div className="flex cursor-pointer items-center justify-center gap-3">

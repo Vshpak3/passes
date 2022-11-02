@@ -27,11 +27,11 @@ export const NewPostEditorHeader: FC<NewPostEditorHeaderProps> = ({
       </div>
 
       <Checkbox
-        label="Paid"
-        type="toggle"
-        register={register}
-        name={formName}
         className="group"
+        label="Paid"
+        name={formName}
+        register={register}
+        type="toggle"
       />
     </div>
   )

@@ -146,41 +146,41 @@ const SignupInfoPage: FC = () => {
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 md:pt-6 lg:px-20">
       <Wordmark
-        height={28}
-        width={122}
-        whiteOnly
         className="z-10 self-center lg:self-start"
+        height={28}
+        whiteOnly
+        width={122}
       />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
       <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
         <div className="flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] pt-8 opacity-[60] md:border md:py-[3%]">
           <Text
-            fontSize={36}
             className="mb-4 w-[360px] text-center font-semibold text-white"
+            fontSize={36}
           >
             Let&apos;s get to know each other
           </Text>
           <form
-            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-5"
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Your name
               </Text>
               <Input
-                register={register}
-                name="legalFullName"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your name"
-                type="text"
                 errors={errors}
+                name="legalFullName"
                 options={{
                   required: {
                     value: true,
                     message: "Full name is required"
                   }
                 }}
+                placeholder="Enter your name"
+                register={register}
+                type="text"
               />
             </div>
 
@@ -189,18 +189,18 @@ const SignupInfoPage: FC = () => {
                 Username
               </Text>
               <Input
-                register={register}
-                name="username"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your username"
-                type="text"
                 errors={errors}
+                name="username"
                 options={{
                   required: {
                     value: true,
                     message: "Username is required"
                   }
                 }}
+                placeholder="Enter your username"
+                register={register}
+                type="text"
               />
             </div>
 
@@ -209,18 +209,18 @@ const SignupInfoPage: FC = () => {
                 Display Name
               </Text>
               <Input
-                register={register}
-                name="displayName"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your display name"
-                type="text"
                 errors={errors}
+                name="displayName"
                 options={{
                   required: {
                     value: true,
                     message: "Display name is required"
                   }
                 }}
+                placeholder="Enter your display name"
+                register={register}
+                type="text"
               />
             </div>
 
@@ -229,31 +229,31 @@ const SignupInfoPage: FC = () => {
                 Birthday
               </Text>
               <Input
-                // onChange is handled by the calendar
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                register={() => {}}
-                value={watch("birthday")}
-                name="birthday"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your birthday"
-                type="text"
                 errors={errors}
+                name="birthday"
+                onFocus={() => {
+                  setIsCalendarVisible(true)
+                }}
                 options={{
                   required: {
                     value: true,
                     message: "Birthday is required"
                   }
                 }}
-                onFocus={() => {
-                  setIsCalendarVisible(true)
-                }}
+                placeholder="Enter your birthday"
+                // onChange is handled by the calendar
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                register={() => {}}
+                type="text"
+                value={watch("birthday")}
               />
               {isCalendarVisible && (
                 <>
                   <Calendar
                     date={calendarDate}
-                    minDate={subYears(new Date(), 100)}
                     maxDate={new Date()}
+                    minDate={subYears(new Date(), 100)}
                     onChange={(e: Date) => {
                       setCalendarDate(e)
                       setValue("birthday", format(e, BIRTHDAY_DATE_FORMAT))
@@ -272,33 +272,33 @@ const SignupInfoPage: FC = () => {
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Country</Text>
               <Select
-                register={register}
-                name="countryCode"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                placeholder="Enter your country"
-                selectOptions={COUNTRIES}
                 errors={errors}
+                name="countryCode"
+                onChange={(newValue: string) =>
+                  setValue("countryCode", newValue)
+                }
                 options={{
                   required: {
                     value: true,
                     message: "Country is required"
                   }
                 }}
-                onChange={(newValue: string) =>
-                  setValue("countryCode", newValue)
-                }
+                placeholder="Enter your country"
+                register={register}
+                selectOptions={COUNTRIES}
                 showOnTop
               />
             </div>
 
             <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-              tag="button"
-              type={ButtonTypeEnum.SUBMIT}
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
             >
-              <Text fontSize={16} className="font-medium">
+              <Text className="font-medium" fontSize={16}>
                 Register account
               </Text>
               <EnterIcon />

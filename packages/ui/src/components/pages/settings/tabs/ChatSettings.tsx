@@ -56,7 +56,7 @@ const ChatSettings = () => {
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
   })
-  const [isDisableBtn, setIsDisabledBtn] = useState(false)
+  const [isDisableBtn, setIsDisableBtn] = useState(false)
   const values = watch()
 
   const saveChatSettingsHandler = async () => {
@@ -99,19 +99,19 @@ const ChatSettings = () => {
     chatSettingsSchema
       .validate(values)
       .then(() => {
-        return setIsDisabledBtn(false)
+        return setIsDisableBtn(false)
       })
       .catch(() => {
-        setIsDisabledBtn(true)
+        setIsDisableBtn(true)
       })
   }, [values, creatorSettings])
 
   return (
     <>
       <Tab
-        withBackMobile
-        title="Chat Settings"
         description="Setup auto welcome message, and manage messages without tips."
+        title="Chat Settings"
+        withBackMobile
       />
       {!isLoading && (
         <form className="mt-6" onSubmit={handleSubmit(saveChatSettingsHandler)}>
@@ -132,13 +132,13 @@ const ChatSettings = () => {
                   Minimum ${MIN_TIP_MESSAGE_PRICE}
                 </span>
                 <NumberInput
-                  type="currency"
-                  register={register}
+                  className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                  errors={errors}
+                  maxInput={MAX_TIP_MESSAGE_PRICE}
                   name="minimumTipAmount"
                   placeholder="Enter Minimum Tip Amount"
-                  maxInput={MAX_TIP_MESSAGE_PRICE}
-                  errors={errors}
-                  className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                  register={register}
+                  type="currency"
                 />
               </div>
             )}
@@ -158,23 +158,23 @@ const ChatSettings = () => {
 
             {values.showWelcomeMessageInput && (
               <Input
-                placeholder="Type a message..."
-                name="welcomeMessage"
-                type="text"
-                register={register}
                 className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                 errors={errors}
+                name="welcomeMessage"
+                placeholder="Type a message..."
+                register={register}
+                type="text"
               />
             )}
           </div>
 
           <Button
-            variant="pink"
             className="mt-6 w-auto !px-[52px]"
-            tag="button"
             disabled={!isDisableBtn || isLoading}
             disabledClass="opacity-[0.5]"
+            tag="button"
             type={ButtonTypeEnum.SUBMIT}
+            variant="pink"
           >
             <span>Save</span>
           </Button>
@@ -186,7 +186,7 @@ const ChatSettings = () => {
 
 const ChatSettingsCreatorWrapper = () => {
   return (
-    <AuthWrapper isPage creatorOnly>
+    <AuthWrapper creatorOnly isPage>
       <ChatSettings />
     </AuthWrapper>
   )

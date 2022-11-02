@@ -42,7 +42,7 @@ const PostsSettings = () => {
   }, [creatorSettings, setValue])
 
   return (
-    <Tab withBack title="Posts">
+    <Tab title="Posts" withBack>
       {!isLoading && (
         <form
           className="mt-[22px]"
@@ -60,12 +60,12 @@ const PostsSettings = () => {
           </div>
 
           <Button
-            variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-            tag="button"
             disabled={isLoading || flipped}
             disabledClass="opacity-[0.5]"
+            tag="button"
             type={ButtonTypeEnum.SUBMIT}
+            variant="pink"
           >
             <span>Save</span>
           </Button>

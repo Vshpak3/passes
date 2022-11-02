@@ -44,7 +44,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 }) => {
   const { user } = useUser()
 
-  const [time, _setTime] = useState(Date.now())
+  const time = Date.now()
+
   const api = new MessagesApi()
 
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
@@ -202,21 +203,16 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       )}
       {isConnected ? (
         <div
-          id="scrollableDiv"
           className="relative flex h-full flex-1 flex-col-reverse overflow-y-scroll"
+          id="scrollableDiv"
           onFocus={onReadLastMessage}
         >
           {/*
              Dummy ref to allow scrolling to bottom of chat.
              Note it has to go at the top because of 'flex-col-reverse'
           */}
-          <div ref={bottomOfChatRef} className="h-1 w-1" id="bottom-of-chat" />
+          <div className="h-1 w-1" id="bottom-of-chat" ref={bottomOfChatRef} />
           <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-            keyValue={`messages/${time}/${channelId}`}
-            fetch={async (req: GetMessagesRequestDto) => {
-              return await api.getMessages({ getMessagesRequestDto: req })
-            }}
-            fetchProps={{ channelId, pending: false, contentOnly: false }}
             KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
               return (
                 <ChannelMessage
@@ -228,10 +224,15 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 />
               )
             }}
-            scrollableTarget="scrollableDiv"
-            loadingElement={<div>Loading older messages...</div>}
-            style={{ display: "flex", flexDirection: "column-reverse" }}
+            fetch={async (req: GetMessagesRequestDto) => {
+              return await api.getMessages({ getMessagesRequestDto: req })
+            }}
+            fetchProps={{ channelId, pending: false, contentOnly: false }}
             inverse
+            keyValue={`messages/${time}/${channelId}`}
+            loadingElement={<div>Loading older messages...</div>}
+            scrollableTarget="scrollableDiv"
+            style={{ display: "flex", flexDirection: "column-reverse" }}
           >
             {messages.length > 0 &&
               messages.map((m, i) => {

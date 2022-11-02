@@ -51,8 +51,8 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
             Include Lists
           </span>
           <ListsSearchBar
-            selectedListIds={selectedLists.map((list) => list.listId)}
             onSelect={onListSelect}
+            selectedListIds={selectedLists.map((list) => list.listId)}
           />
         </div>
         <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
@@ -60,8 +60,8 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
             Include Passes
           </span>
           <PassesSearchBar
-            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
             onSelect={onPassSelect}
+            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
           />
         </div>
         <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
@@ -69,8 +69,8 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
             Exclude Lists
           </span>
           <ListsSearchBar
-            selectedListIds={excludedLists.map((list) => list.listId)}
             onSelect={onExcludeListSelect}
+            selectedListIds={excludedLists.map((list) => list.listId)}
           />
         </div>
       </div>

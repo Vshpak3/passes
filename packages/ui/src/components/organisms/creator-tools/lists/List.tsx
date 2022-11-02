@@ -20,7 +20,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
       {!removed && (
         <li className="duration-400 flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
           <Link href={`/tools/list-members/${list.listId}`}>
-            <a key={list.listId} className="flex-1">
+            <a className="flex-1" key={list.listId}>
               <div className="flex flex-1 flex-col gap-[10px]">
                 <h1 className="text-xl font-bold">
                   {list.name || list.listId}
@@ -33,6 +33,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
           </Link>
           {list.type === ListDtoTypeEnum.Normal ? (
             <Button
+              className="flex h-[45px] w-[45px] items-center  justify-center !rounded-[50%] bg-[#fffeff26]"
               onClick={async () => {
                 const api = new ListApi()
                 await api
@@ -42,17 +43,16 @@ export const List: FC<ListProps> = ({ list, removable }) => {
                   setRemoved(true)
                 }
               }}
-              className="flex h-[45px] w-[45px] items-center  justify-center !rounded-[50%] bg-[#fffeff26]"
             >
               <DeleteIcon />
             </Button>
           ) : (
             <div className="flex h-[45px] w-[45px] items-center  justify-center">
               <IconTooltip
-                tooltipText="Automatic list"
                 Icon={AlertIcon}
                 position="top"
                 tooltipClassName="w-[100px]"
+                tooltipText="Automatic list"
               />
             </div>
           )}

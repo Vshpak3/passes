@@ -186,13 +186,13 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
                 .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
                 .map(({ name, id }) => (
                   <li
-                    key={id}
                     className={cn(
                       "rounded-l-[4px] border-r p-2.5 pr-[13px]",
                       id === activeTab
                         ? "border-passes-primary-color bg-passes-primary-color/25"
                         : "border-transparent"
                     )}
+                    key={id}
                   >
                     <button
                       className="text-label flex w-full items-center justify-between"

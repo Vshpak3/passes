@@ -36,8 +36,8 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
       </span>
       {isOpen && (
         <VaultDialog
-          isOpen={isOpen}
           closeVault={() => setIsOpen(false)}
+          isOpen={isOpen}
           setContent={selectVaultContent}
         />
       )}

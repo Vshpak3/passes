@@ -22,9 +22,9 @@ const CreateNewListModal: FC<CreateNewListModalProps> = ({
       <span className="absolute top-[20px]">Create New List</span>
       <div className="relative flex flex-col pt-[18px]">
         <input
+          className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] "
           onChange={handleChange}
           placeholder="Enter List Name"
-          className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] "
         />
         <div className="mt-[30px] flex flex-row justify-end gap-[20px]">
           <Button
@@ -40,8 +40,8 @@ const CreateNewListModal: FC<CreateNewListModalProps> = ({
                 "!text-[#ffffffeb]": listName === ""
               }
             )}
-            onClick={() => onSubmit(listName)}
             disabled={listName === ""}
+            onClick={() => onSubmit(listName)}
           >
             Create
           </Button>

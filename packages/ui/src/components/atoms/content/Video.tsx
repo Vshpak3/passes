@@ -24,9 +24,9 @@ export const Video: FC = forwardRef<HTMLVideoElement, unknown>((_, ref) => {
     <div data-vjs-player>
       <style>{inlineStylesForPlayerJs}</style>
       <video
+        className="video-js vjs-big-play-centered"
         muted
         ref={ref as VideRefType}
-        className="video-js vjs-big-play-centered"
       />
     </div>
   )

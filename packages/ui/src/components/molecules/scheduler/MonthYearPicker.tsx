@@ -82,11 +82,11 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
             onClick={handleOnClickLeftArrow}
           >
             <ChevronLeft
-              width="24"
-              height="24"
               className={classNames({
                 "opacity-[0.3]": currentYear === minYear
               })}
+              height="24"
+              width="24"
             />
           </button>
           <button
@@ -94,11 +94,11 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
             onClick={handleOnClickRightArrow}
           >
             <ChevronRight
-              width="24"
-              height="24"
               className={classNames({
                 "opacity-[0.3]": currentYear === maxYear
               })}
+              height="24"
+              width="24"
             />
           </button>
         </div>
@@ -108,7 +108,6 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
           .fill(0)
           .map((_, i) => (
             <button
-              key={i}
               className={classNames(
                 "flex h-[55px] items-center justify-center rounded-lg bg-passes-dark-200 font-bold text-white transition-all duration-100",
                 isDisabledBtn(i) ? "text-gray-600" : "hover:bg-[#4f4d4f]",
@@ -118,6 +117,7 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
                 }
               )}
               disabled={isDisabledBtn(i)}
+              key={i}
               onClick={() => {
                 onChangeMonth(i)
                 onChangeYear(currentYear)

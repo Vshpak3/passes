@@ -7,7 +7,6 @@ import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 export type PassType = PassDtoTypeEnum | undefined
 
 interface SelectPassFilterProps {
-  selectedPassType?: PassType
   onSelectedPassType: Dispatch<SetStateAction<PassType>>
 }
 
@@ -33,7 +32,7 @@ const PASS_DROPDOWN_OPTIONS: { value: PassType; label: string }[] = [
 export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   onSelectedPassType
 }) => {
-  const [selectedPassType, setSelectedPassType] = useState<PassType>()
+  const [selectedPassType, setSelectedPassType] = useState<PassType>(undefined)
 
   const [showOptions, setShowOptions] = useState(false)
   const menuEl = useRef(null)
@@ -48,9 +47,9 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   return (
     <div className="text-label relative mb-5 inline-block" ref={menuEl}>
       <div
-        role="button"
-        onClick={() => setShowOptions(!showOptions)}
         className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
+        onClick={() => setShowOptions(!showOptions)}
+        role="button"
       >
         <span>
           {
@@ -66,16 +65,16 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
         <ul className="absolute z-10 w-[338px] translate-y-1.5 rounded-[15px] border border-passes-dark-200 bg-[#1B141D] p-[26px]">
           {PASS_DROPDOWN_OPTIONS.map((type, i) => (
             <li
-              key={i}
               className="mb-[18px] flex cursor-pointer flex-row items-center justify-between"
+              key={i}
               onClick={() => handleOnChange(type.value)}
             >
               {type.label}
               <input
-                type="checkbox"
-                className="rounded-full bg-[#100C11] text-[#C943A8] outline-none checked:bg-[#C943A8]"
                 checked={type.value === selectedPassType}
+                className="rounded-full bg-[#100C11] text-[#C943A8] outline-none checked:bg-[#C943A8]"
                 onChange={() => handleOnChange(type.value)}
+                type="checkbox"
               />
             </li>
           ))}

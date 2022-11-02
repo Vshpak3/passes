@@ -35,8 +35,8 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
       </div>
       <div className={`${isMobile ? "" : "hidden"} px-6 lg:flex`}>
         <Button
-          onClick={onClick}
           className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
+          onClick={onClick}
           variant="pink"
         >
           Become a Creator

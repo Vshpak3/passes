@@ -49,10 +49,10 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
             )}
             {!!profile?.isCreator && (
               <PassesPinkButton
-                name={isFollowing ? "Unfollow" : "Follow"}
-                type={ButtonTypeEnum.SUBMIT}
-                onClick={isFollowing ? unfollow : follow}
                 className="h-[36px] w-[115px]"
+                name={isFollowing ? "Unfollow" : "Follow"}
+                onClick={isFollowing ? unfollow : follow}
+                type={ButtonTypeEnum.SUBMIT}
               />
             )}
           </div>
@@ -63,8 +63,8 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
         <ProfileStatsDesktop
-          numPosts={creatorStats?.numPosts}
           likes={creatorStats?.numLikes}
+          numPosts={creatorStats?.numPosts}
         />
         <ProfileSocialMedia
           discordUsername={profile?.discordUsername}
@@ -111,8 +111,8 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
         youtubeUsername={profile?.youtubeUsername}
       />
       <ProfileStatsMobile
-        numPosts={creatorStats?.numPosts}
         likes={creatorStats?.numLikes}
+        numPosts={creatorStats?.numPosts}
       />
       {!ownsProfile && (
         <div className="flex space-x-3">
@@ -126,10 +126,10 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
 
           {!!profile?.isCreator && (
             <PassesPinkButton
-              name={isFollowing ? "Unfollow" : "Follow"}
-              type={ButtonTypeEnum.SUBMIT}
-              onClick={isFollowing ? unfollow : follow}
               className="h-[36px] w-[115px]"
+              name={isFollowing ? "Unfollow" : "Follow"}
+              onClick={isFollowing ? unfollow : follow}
+              type={ButtonTypeEnum.SUBMIT}
             />
           )}
         </div>

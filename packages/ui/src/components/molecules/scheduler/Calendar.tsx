@@ -92,7 +92,6 @@ export const Calendar: FC = () => {
           const numberPostInDate = countEventsInDate(date.date)
           return (
             <div
-              key={`${numberPostInDate}-${index}`}
               className={classNames({
                 "relative h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px]":
                   true,
@@ -102,6 +101,7 @@ export const Calendar: FC = () => {
                 "rounded-bl-[20px]": index === 35,
                 "rounded-br-[20px]": index === 41
               })}
+              key={`${numberPostInDate}-${index}`}
             >
               <span className="absolute top-3 right-3">
                 {date.date.getDate()}

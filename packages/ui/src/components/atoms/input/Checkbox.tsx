@@ -51,9 +51,9 @@ export const Checkbox: FC<CheckBoxProps> = ({
           {label && (
             <Label
               className={labelClassName}
-              name={`${name}-${type}`}
-              label={label}
               errors={errors}
+              label={label}
+              name={`${name}-${type}`}
               options={options}
             />
           )}
@@ -66,10 +66,10 @@ export const Checkbox: FC<CheckBoxProps> = ({
         )}
       >
         <input
+          checked={checked}
           id={`${name}-${type}`}
           name={name}
           type="checkbox"
-          checked={checked}
           {...(register && register(name, options))}
           {...rest}
           className={classNames(
@@ -93,9 +93,9 @@ export const Checkbox: FC<CheckBoxProps> = ({
           {label && (
             <Label
               className={labelClassName}
-              name={`${name}-${type}`}
-              label={label}
               errors={errors}
+              label={label}
+              name={`${name}-${type}`}
               options={options}
             />
           )}

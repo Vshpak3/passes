@@ -53,9 +53,9 @@ export const Hero = () => {
             Exclusive Content from creators to fans
           </h3>
           <img
+            alt="Palooza"
             className="my-20 mx-auto"
             src="/img/homepage/palooza.gif"
-            alt="Palooza"
           />
           <p className="max-w-2xl text-center text-lg font-medium">
             Welcome to Passes.
@@ -65,19 +65,19 @@ export const Hero = () => {
 
             <div className="flex w-full flex-grow items-center py-4">
               <input
+                autoComplete="email"
+                className="mr-4 h-12 flex-grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder-white"
                 id="email"
                 name="email"
-                type="email"
-                autoComplete="email"
                 onChange={(v) => setEmailAddress(v.target.value)}
-                value={emailAddress}
                 placeholder="Email address"
-                className="mr-4 h-12 flex-grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder-white"
+                type="email"
+                value={emailAddress}
               />
               <button
                 className="rounded-sm bg-[#CF42A4] px-6 py-4 font-semibold"
-                type="submit"
                 onClick={handleSubmitEmail}
+                type="submit"
               >
                 Join Waitlist
               </button>

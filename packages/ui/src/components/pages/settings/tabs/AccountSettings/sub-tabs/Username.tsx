@@ -44,30 +44,28 @@ const Username: FC = () => {
   }
 
   return (
-    <Tab withBack title="Change Username">
+    <Tab title="Change Username" withBack>
       <form className="mt-6" onSubmit={handleSubmit(onSaveUserName)}>
         <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
           <span>Username</span>
           <div className="relative">
             <span className="absolute top-1/2 left-3 -translate-y-1/2">@</span>
             <Input
-              name="username"
-              type="text"
-              register={register}
               className="mt-1.5 border-passes-gray-700/80 bg-transparent !py-4 !pl-[26px] !pr-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+              name="username"
+              register={register}
+              type="text"
             />
           </div>
         </label>
         {errors.username && (
-          <Text fontSize={12} className="mt-1 block text-[red]">
+          <Text className="mt-1 block text-[red]" fontSize={12}>
             {errors.username.message}
           </Text>
         )}
 
         <Button
-          variant="pink"
           className="mt-6 w-auto !px-[52px]"
-          tag="button"
           disabled={
             loading ||
             username.trim().length === 0 ||
@@ -75,7 +73,9 @@ const Username: FC = () => {
             disableForm
           }
           disabledClass="opacity-[0.5]"
+          tag="button"
           type={ButtonTypeEnum.SUBMIT}
+          variant="pink"
         >
           <span>Save</span>
         </Button>

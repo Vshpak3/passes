@@ -43,17 +43,15 @@ export const TimePicker: FC<TimePickerProps> = ({
     <div className="relative">
       <div className="flex space-x-2">
         <button
-          tabIndex={0}
           className="w-[98px] rounded-lg border border-white bg-[#0E0A0F] px-5 py-2 text-lg leading-6 text-white focus:border-2 focus:border-blue-700"
-          type="button"
           onClick={() => setShowDropdown(true)}
+          tabIndex={0}
+          type="button"
         >
           {padTime(time.hours + 1)}:{padTime(time.minutes)}
         </button>
         <span className="flex rounded-lg border border-white bg-[#0E0A0F]">
           <button
-            tabIndex={1}
-            onClick={() => setTime({ timeShift: TimeShiftEnum.AM })}
             className={classNames(
               "duration-400 cursor-pointer rounded-bl-lg rounded-tl-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
@@ -61,12 +59,12 @@ export const TimePicker: FC<TimePickerProps> = ({
                   time.timeShift === TimeShiftEnum.AM
               }
             )}
+            onClick={() => setTime({ timeShift: TimeShiftEnum.AM })}
+            tabIndex={1}
           >
             AM
           </button>
           <button
-            tabIndex={1}
-            onClick={() => setTime({ timeShift: TimeShiftEnum.PM })}
             className={classNames(
               "duration-400 cursor-pointer rounded-tr-lg rounded-br-lg py-2 px-3 transition-all hover:bg-white hover:text-passes-gray-200",
               {
@@ -74,6 +72,8 @@ export const TimePicker: FC<TimePickerProps> = ({
                   time.timeShift === TimeShiftEnum.PM
               }
             )}
+            onClick={() => setTime({ timeShift: TimeShiftEnum.PM })}
+            tabIndex={1}
           >
             PM
           </button>
@@ -82,20 +82,20 @@ export const TimePicker: FC<TimePickerProps> = ({
 
       {showDropdown && (
         <div
-          ref={dropdownEl}
           className="absolute top-full z-50 flex h-[178px] w-[113px] translate-y-2 rounded border border-white bg-[#0E0A0F] py-2 text-center text-white"
+          ref={dropdownEl}
         >
           <ul className="h-full flex-1 overflow-scroll">
             {Array.from({ length: HOURS }, (_, i) => (
               <li
-                onClick={() => setTime({ hours: i })}
-                role="button"
-                tabIndex={0}
                 className={classNames(
                   "cursor-pointer py-0.5 text-sm font-medium hover:bg-[#edfaff42]",
                   { "bg-[#edfaff42]": time.hours === i }
                 )}
                 key={i}
+                onClick={() => setTime({ hours: i })}
+                role="button"
+                tabIndex={0}
               >
                 {padTime(i + 1)}
               </li>
@@ -104,14 +104,14 @@ export const TimePicker: FC<TimePickerProps> = ({
           <ul className="h-full flex-1 overflow-scroll">
             {Array.from({ length: MINUTES }, (_, i) => (
               <li
-                onClick={() => setTime({ minutes: i })}
-                role="button"
-                tabIndex={0}
                 className={classNames(
                   "cursor-pointer py-0.5 text-sm font-medium hover:bg-[#edfaff42]",
                   { "bg-[#edfaff42]": time.minutes === i }
                 )}
                 key={i}
+                onClick={() => setTime({ minutes: i })}
+                role="button"
+                tabIndex={0}
               >
                 {padTime(i)}
               </li>

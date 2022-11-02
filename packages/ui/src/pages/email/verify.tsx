@@ -69,10 +69,10 @@ const VerifyEmailPage = () => {
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
-        height={28}
-        width={122}
-        whiteOnly
         className="z-10 self-center lg:self-start"
+        height={28}
+        whiteOnly
+        width={122}
       />
       <div className="z-10 my-auto flex justify-center">
         <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24  lg:py-16 lg:px-48">
@@ -82,8 +82,8 @@ const VerifyEmailPage = () => {
           {isLoading ? (
             <>
               <Text
-                fontSize={36}
                 className="mb-4 w-[360px] text-center font-semibold text-white"
+                fontSize={36}
               >
                 Verifying...
               </Text>
@@ -94,8 +94,8 @@ const VerifyEmailPage = () => {
           ) : error ? (
             <>
               <Text
-                fontSize={36}
                 className="mb-4 w-[360px] text-center font-semibold text-white"
+                fontSize={36}
               >
                 Verification Failed.
               </Text>
@@ -104,8 +104,8 @@ const VerifyEmailPage = () => {
           ) : (
             <>
               <Text
-                fontSize={36}
                 className="mb-4 w-[420px] text-center font-semibold text-white"
+                fontSize={36}
               >
                 Thank you for verifying!
               </Text>
@@ -115,10 +115,10 @@ const VerifyEmailPage = () => {
               </Text>
               <button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                type="submit"
                 onClick={() => authRouter(safePush, userClaims)}
+                type="submit"
               >
-                <Text fontSize={16} className="font-medium">
+                <Text className="font-medium" fontSize={16}>
                   Continue
                 </Text>
               </button>

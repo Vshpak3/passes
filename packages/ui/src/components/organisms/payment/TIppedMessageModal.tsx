@@ -28,8 +28,8 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
   return (
     <Modal isOpen setOpen={() => setMessageRequest(null)}>
       <PaymentModalBody
-        price={messageRequest?.price ?? 0}
         closeModal={() => setMessageRequest(null)}
+        price={messageRequest?.price ?? 0}
         setPayinMethod={setPayinMethod}
       />
       <TippedMessageButton

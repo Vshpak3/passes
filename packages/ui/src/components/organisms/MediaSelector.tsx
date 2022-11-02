@@ -59,15 +59,28 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
             {selectors.map(({ name, Icon, accept, multiple }) => {
               return (
                 <FileInput
+                  accept={accept}
+                  className={classNames(
+                    activeMediaHeader === name
+                      ? " bg-[#FF51A8]/10 "
+                      : "hover:bg-[#FF51A8]/10",
+                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
+                  )}
+                  errors={errors}
+                  key={`media-header-${name}`}
+                  multiple={multiple}
+                  name={`media-header-${name}`}
+                  options={{ ...options, onChange }}
+                  register={register}
                   trigger={
                     <button
-                      type="button"
                       className={classNames(
                         activeMediaHeader === name
                           ? " bg-[#FF51A8]/10 "
                           : "hover:bg-[#FF51A8]/10",
                         "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
                       )}
+                      type="button"
                       // onClick={() => setActiveMediaHeader(name)}
                     >
                       <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
@@ -87,19 +100,6 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                   }
                   // onBlur={() => setActiveMediaHeader("")}
                   // there's no way to detect closing event
-                  register={register}
-                  errors={errors}
-                  options={{ ...options, onChange }}
-                  key={`media-header-${name}`}
-                  name={`media-header-${name}`}
-                  accept={accept}
-                  multiple={multiple}
-                  className={classNames(
-                    activeMediaHeader === name
-                      ? " bg-[#FF51A8]/10 "
-                      : "hover:bg-[#FF51A8]/10",
-                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
-                  )}
                 />
               )
             })}

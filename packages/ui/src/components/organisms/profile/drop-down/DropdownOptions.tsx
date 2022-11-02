@@ -8,9 +8,9 @@ import { DropdownOption } from "./Dropdown"
 export const DropDownGeneral = (
   text: string,
   showOption: boolean,
-  onClick: () => void
+  handleClick: () => void
 ): DropdownOption[] => {
-  return showOption ? [{ text, onClick }] : []
+  return showOption ? [{ text, handleClick }] : []
 }
 
 export const DropDownReport = (

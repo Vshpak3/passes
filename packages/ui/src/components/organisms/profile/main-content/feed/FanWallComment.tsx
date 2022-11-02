@@ -80,16 +80,16 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
           <FormContainer className="!min-h-[10px] border border-white/10 px-5 pt-5">
             <PostHeader
               createdAt={createdAt}
+              displayName={commenterDisplayName}
+              dropdownOptions={dropdownItems}
+              isCreator={commenterIsCreator}
               userId={commenterId}
               username={commenterUsername}
-              displayName={commenterDisplayName}
-              isCreator={commenterIsCreator}
-              dropdownOptions={dropdownItems}
             />
             <div className="flex flex-col items-start">
               <div className="break-normal break-all text-start text-base font-medium text-white/90">
                 {!isHidden || showHidden ? (
-                  <FormattedText text={text} tags={tags} />
+                  <FormattedText tags={tags} text={text} />
                 ) : (
                   <p
                     className="text-gray-500"

@@ -16,9 +16,9 @@ export const ChannelSearchInput: FC<SearchInputDropdownProps> = ({
       <div className="relative">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
         <Combobox.Input
-          placeholder={placeholder}
           className="box-border flex w-full items-start justify-between gap-[10px] rounded-md border border-passes-dark-200 bg-[#100C11] p-[12px] pl-10 text-sm outline-0 ring-0 focus:border-passes-dark-200 focus:outline-none focus:ring-0"
           onChange={handleSearch}
+          placeholder={placeholder}
         />
       </div>
     </Combobox>

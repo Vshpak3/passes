@@ -67,23 +67,23 @@ const ChangePassword = () => {
   return (
     <>
       <Tab
-        withBack
-        title="Change Password"
         description="Change your password at any time."
+        title="Change Password"
+        withBack
       />
       <form className="mt-6" onSubmit={handleSubmit(onChangePassword)}>
         <div className="border-b border-passes-dark-200 pb-6">
           <PasswordInput
-            errors={errors}
-            placeholder="Current Password"
-            name="oldPassword"
-            register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+            errors={errors}
+            name="oldPassword"
+            placeholder="Current Password"
+            register={register}
           />
           <Link
+            className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100"
             href="/forgot-password"
             passHref
-            className="ml-3 mt-1.5 inline-block text-xs font-light leading-3 text-passes-pink-100"
           >
             Forgot Password?
           </Link>
@@ -91,28 +91,28 @@ const ChangePassword = () => {
 
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
           <PasswordInput
-            placeholder="New Password"
-            name="password"
-            register={register}
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
+            name="password"
+            placeholder="New Password"
+            register={register}
           />
           <PasswordInput
-            placeholder="Confirm Password"
-            name="confirmPassword"
-            register={register}
             className="mt-6 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            register={register}
           />
         </div>
 
         <Button
-          variant="pink"
           className="mt-6 w-auto !px-[52px]"
-          tag="button"
           disabled={isSubmitting}
           disabledClass="opacity-[0.5]"
+          tag="button"
           type={ButtonTypeEnum.SUBMIT}
+          variant="pink"
         >
           <span>Save</span>
         </Button>

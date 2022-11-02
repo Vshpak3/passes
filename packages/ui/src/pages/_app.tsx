@@ -170,8 +170,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       {tippedMessage && (
         <TippedMessageModal
           messageRequest={tippedMessage}
-          setMessageRequest={setTippedMessage}
           onSuccess={onSuccess}
+          setMessageRequest={setTippedMessage}
         />
       )}
       {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
@@ -183,16 +183,16 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       )}
       {tipPost && <TipPostModal post={tipPost} setPost={setTipPost} />}
       <ToastContainer
-        position="bottom-center"
         autoClose={ms("4 seconds")}
-        hideProgressBar
-        newestOnTop={false}
         closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
         draggable={false}
-        pauseOnHover
+        hideProgressBar
         limit={3}
+        newestOnTop={false}
+        pauseOnFocusLoss
+        pauseOnHover
+        position="bottom-center"
+        rtl={false}
         theme="colored"
       />
     </AppProviders>,
@@ -218,8 +218,8 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
         <DndProvider backend={HTML5Backend}>
           <SubApp
             Component={Component}
-            pageProps={pageProps}
             getLayout={getLayout}
+            pageProps={pageProps}
           />
         </DndProvider>
       </SWRConfig>

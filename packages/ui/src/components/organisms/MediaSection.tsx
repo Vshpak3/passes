@@ -36,7 +36,6 @@ interface MediaSectionProps {
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
-  isNewPost?: boolean
   messages?: boolean
   isPaid: boolean
   reorderContent?: boolean
@@ -77,34 +76,34 @@ export const MediaSection: FC<MediaSectionProps> = ({
         <div className="flex w-full">
           <MediaSectionReorder
             files={files}
-            setFiles={setFiles}
-            mediaPreviewIndex={mediaPreviewIndex}
-            setMediaPreviewIndex={setMediaPreviewIndex}
             isPaid={isPaid}
+            mediaPreviewIndex={mediaPreviewIndex}
+            setFiles={setFiles}
+            setMediaPreviewIndex={setMediaPreviewIndex}
           />
         </div>
       ) : (
         <div className="pt-5">
           {files.length === 0 ? (
             <DragDropFile
-              className="h-[170px]"
-              register={register}
-              name="drag-drop"
-              multiple
               accept={ACCEPTED_MEDIA_TYPES}
-              options={{ onChange: onFileInputChange }}
+              className="h-[170px]"
               errors={errors}
               helperText={`You may upload up to ${MAX_FILE_COUNT} pictures/videos per post`}
+              multiple
+              name="drag-drop"
+              options={{ onChange: onFileInputChange }}
+              register={register}
             />
           ) : (
             <div className="">
               {!!selectedMedia?.file && (
                 <MediaModal
-                  isOpen={isNewPostModalOpen}
-                  setOpen={setIsNewPostModalOpen}
-                  file={selectedMedia}
-                  modalContainerClassname="p-0"
                   childrenClassname="p-0"
+                  file={selectedMedia}
+                  isOpen={isNewPostModalOpen}
+                  modalContainerClassname="p-0"
+                  setOpen={setIsNewPostModalOpen}
                 />
               )}
               <style>
@@ -149,24 +148,16 @@ export const MediaSection: FC<MediaSectionProps> = ({
 
               <Swiper
                 className="mySwiper"
+                modules={[Navigation]}
+                navigation
                 slidesPerView={messages ? 3 : 4}
                 spaceBetween={10}
-                navigation
-                modules={[Navigation]}
               >
                 {files.map(({ file, content }, index) => (
                   <Fragment key={index}>
                     {content && (
                       <SwiperSlide key={index}>
                         <Media
-                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                            onRemove(index, e)
-                          }
-                          contentHeight={150}
-                          contentWidth={150}
-                          src={ContentService.userContentMediaPath(content)}
-                          type={content.contentType}
-                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
                           className={classNames(
                             content.contentType.startsWith("image/")
                               ? "cursor-pointer rounded-[6px] object-contain"
@@ -176,6 +167,14 @@ export const MediaSection: FC<MediaSectionProps> = ({
                               ? "absolute inset-0 m-auto min-w-full max-w-full cursor-pointer rounded-[6px] object-cover"
                               : null
                           )}
+                          contentHeight={150}
+                          contentWidth={150}
+                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                            onRemove(index, e)
+                          }
+                          src={ContentService.userContentMediaPath(content)}
+                          type={content.contentType}
                         />
                       </SwiperSlide>
                     )}
@@ -193,12 +192,12 @@ export const MediaSection: FC<MediaSectionProps> = ({
                           )}
                           contentHeight={150}
                           contentWidth={150}
+                          file={file}
                           iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
                           onRemove={(e: MouseEvent<HTMLDivElement>) =>
                             onRemove(index, e)
                           }
                           onSelect={() => onMediaFileSelect({ file, content })}
-                          file={file}
                         />
                       </SwiperSlide>
                     )}
@@ -208,12 +207,12 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   <div className="flex min-h-[150px] min-w-[50px] items-center">
                     {files.length !== MAX_FILE_COUNT && (
                       <DragDropFile
-                        register={register}
-                        name="drag-drop"
-                        multiple
-                        options={{ onChange: onFileInputChange }}
                         accept={ACCEPTED_MEDIA_TYPES}
                         errors={errors}
+                        multiple
+                        name="drag-drop"
+                        options={{ onChange: onFileInputChange }}
+                        register={register}
                       />
                     )}
                   </div>

@@ -78,21 +78,21 @@ const EmailNotifications = () => {
 
   return (
     <Tab
-      withBack
-      title="Email Settings"
       description="Select your preferences for receiving emails."
+      title="Email Settings"
+      withBack
     >
       <div className="mt-[22px] border-b border-passes-dark-200 pb-3">
         <label className="flex cursor-pointer items-center justify-between">
           <span className="text-label">Email Notifications</span>
           <Checkbox
-            name="emailAllNotifications"
-            type="toggle"
             checked={isEmailAll}
+            name="emailAllNotifications"
             onChange={(e) => {
               emailAllNotificationsHandler(e.target.checked)
               setIsEmailAll(e.target.checked)
             }}
+            type="toggle"
           />
         </label>
         <p className="mt-2.5 text-white/50">
@@ -156,12 +156,12 @@ const EmailNotifications = () => {
         </div>
 
         <Button
-          variant="pink"
           className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-          tag="button"
           disabled={_.isEqual(watch(), formattedNotificationSettings)}
           disabledClass="opacity-[0.5]"
+          tag="button"
           type={ButtonTypeEnum.SUBMIT}
+          variant="pink"
         >
           <span>Save</span>
         </Button>

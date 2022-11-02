@@ -82,22 +82,22 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
           >
             <CustomMentionEditor
               isReset={isReset}
-              setIsReset={setIsReset}
-              placeholder={`Write something${
-                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
-              }`}
               onInputChange={(params: NewPostTextFormProps) => {
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}
+              placeholder={`Write something${
+                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
+              }`}
+              setIsReset={setIsReset}
             />
           </div>
         </div>
         {extended && (
           <button
-            type="submit"
-            disabled={disableForm}
             className="mt-4 ml-auto flex items-center justify-center rounded-[50px] bg-passes-pink-100 px-[30px] py-[10px] text-base font-bold text-[#ffffff]/90"
+            disabled={disableForm}
+            type="submit"
           >
             Post
           </button>

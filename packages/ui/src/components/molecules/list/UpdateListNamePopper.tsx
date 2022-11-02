@@ -38,38 +38,38 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
         <EditIcon />
       </span>
       <Popover
-        id={id}
-        open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left"
         }}
+        classes={{
+          paper:
+            "!bg-[#1B141D] p-[24px] border border-[#ffffff26] w-[273px] flex flex-col text-white !rounded-[25px] "
+        }}
+        id={id}
+        onClose={handleClose}
+        open={open}
         sx={{
           padding: 0,
           border: 0,
           background: "transparent"
-        }}
-        classes={{
-          paper:
-            "!bg-[#1B141D] p-[24px] border border-[#ffffff26] w-[273px] flex flex-col text-white !rounded-[25px] "
         }}
       >
         <div className="flex flex-row items-center justify-between">
           <span className="font-bold text-white">Edit List Name</span>
           <div className="relative text-right">
             <button
-              type="button"
               className="inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="popup-modal"
               onClick={handleClose}
+              type="button"
             >
               <Image
-                src="/icons/exit-icon.svg"
                 alt="Close button"
-                width={20}
                 height={20}
+                src="/icons/exit-icon.svg"
+                width={20}
               />
               <span className="sr-only">Close modal</span>
             </button>
@@ -78,9 +78,9 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
 
         <div className="relative flex flex-col pt-[10px]">
           <input
+            className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] text-white"
             onChange={handleChange}
             placeholder="Enter List Name"
-            className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] text-white"
             value={listName}
           />
           <div className="mt-[20px] flex flex-row justify-end gap-[10px]">
@@ -97,11 +97,11 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
                   "!text-[#ffffffeb]": listName === ""
                 }
               )}
+              disabled={listName === ""}
               onClick={async () => {
                 await onSubmit(listName)
                 handleClose()
               }}
-              disabled={listName === ""}
             >
               Save
             </Button>

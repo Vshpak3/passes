@@ -64,17 +64,17 @@ const ForgotPassword = () => {
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
       <Wordmark
-        whiteOnly
-        height={28}
-        width={122}
         className="z-10 self-center lg:self-start"
+        height={28}
+        whiteOnly
+        width={122}
       />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#1b141d] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
       <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
         <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
           <Text
-            fontSize={36}
             className="mb-4 w-[360px] text-center font-semibold text-white"
+            fontSize={36}
           >
             Forgot Password
           </Text>
@@ -91,29 +91,29 @@ const ForgotPassword = () => {
           )}
           {!emailSent && (
             <form
-              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-y-5"
+              onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col">
                 <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
                 <Input
-                  register={register}
-                  name="email"
                   className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter your email"
-                  type="text"
                   errors={errors}
+                  name="email"
+                  placeholder="Enter your email"
+                  register={register}
+                  type="text"
                 />
               </div>
 
               <Button
                 className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9"
-                tag="button"
-                type={ButtonTypeEnum.SUBMIT}
                 disabled={isSubmitting}
                 disabledClass="opacity-[0.5]"
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
               >
-                <Text fontSize={16} className="font-medium">
+                <Text className="font-medium" fontSize={16}>
                   Reset Password
                 </Text>
                 <EnterIcon />

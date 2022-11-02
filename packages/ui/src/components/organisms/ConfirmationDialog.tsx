@@ -22,7 +22,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
   cancelString = "Cancel"
 }) => {
   return (
-    <Dialog open={isOpen} onClose={onClose}>
+    <Dialog onClose={onClose} open={isOpen}>
       <div className="relative rounded-md bg-[#100C11] px-6 pt-[30px] pb-4">
         <button className="absolute top-3 right-6" onClick={onClose}>
           <span>X</span>
@@ -46,8 +46,8 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
             {confirmString}
           </button>
           <button
-            onClick={onClose}
             className="text-label rounded-full bg-[#9C9C9C]/[0.17] px-4 py-1.5 text-white"
+            onClick={onClose}
           >
             {cancelString}
           </button>

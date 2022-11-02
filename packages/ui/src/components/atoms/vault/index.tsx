@@ -75,7 +75,7 @@ export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
     "group cursor-pointer items-center text-center text-xs font-semibold text-white"
   )
   return (
-    <span onClick={onClick} className={buttonClass}>
+    <span className={buttonClass} onClick={onClick}>
       <div className={labelClass}>{label}</div>
     </span>
   )
@@ -96,8 +96,8 @@ export const VaultSelectLabel: FC<VaultSelectLabelProps> = ({
 
 export const VaultAddToItem: FC<VaultAddToItemProps> = ({ label, onClick }) => (
   <div
-    onClick={onClick}
     className="align-items flex w-full cursor-pointer items-center rounded p-2 text-base text-[#FFFF] ring-0 hover:bg-[#9C4DC1] focus:shadow-none focus:ring-0 focus:ring-offset-0"
+    onClick={onClick}
   >
     <AddToIcon />
     <div className="ml-3">{label}</div>
@@ -109,8 +109,8 @@ export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
 }) => {
   return (
     <div
-      onClick={toggleDeleteModal}
       className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
+      onClick={toggleDeleteModal}
     >
       <MdDelete size={23} />
     </div>
@@ -126,21 +126,21 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
 
   return (
     <div
-      onClick={handleSelectContent}
       className="cursor-pointer rounded-[50%] bg-[#ffffff40] p-[4px] text-white"
+      onClick={handleSelectContent}
     >
       <FileInput
-        register={register}
-        name="file"
+        accept={ACCEPTED_MEDIA_TYPES}
+        className="hidden"
         multiple
-        trigger={<MdAdd size={16} />}
+        name="file"
         options={{
           onChange: <T extends InputChange>(e: ChangeEvent<T>) => {
             e.target.files && onClick([{ file: e.target.files[0] }])
           }
         }}
-        accept={ACCEPTED_MEDIA_TYPES}
-        className="hidden"
+        register={register}
+        trigger={<MdAdd size={16} />}
       />
     </div>
   )

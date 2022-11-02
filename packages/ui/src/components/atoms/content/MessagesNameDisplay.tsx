@@ -17,7 +17,7 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   const text = (
     <div className="flex flex-row items-center">
       <span>{displayName}</span>
-      <Text fontSize={11} className="ml-2 text-gray-500">
+      <Text className="ml-2 text-gray-500" fontSize={11}>
         {" @" + username}
       </Text>
     </div>

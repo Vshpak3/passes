@@ -43,12 +43,12 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   // const { viewPostActiveIndex } = useViewPostModal()
   const { removePost } = usePost()
 
-  const [imageToShow, setShowcaseImg] = useState<null | string>(null)
+  const [imageToShow, setImageToShow] = useState<null | string>(null)
 
   // Set image if it exists in post
   useEffect(() => {
     if (post.contents?.[0]?.contentType === "image") {
-      setShowcaseImg(ContentService.userContentMediaPath(post.contents[0]))
+      setImageToShow(ContentService.userContentMediaPath(post.contents[0]))
     }
   }, [post.contents])
 
@@ -71,12 +71,12 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
   ]
 
   return (
-    <Dialog open className="z-10" onClose={() => setPost(null)}>
+    <Dialog className="z-10" onClose={() => setPost(null)} open>
       <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[15px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
         <div className="relative flex flex-1">
           {!postUnlocked && imageToShow && (
             <div className="absolute h-[80%] w-[80%] translate-x-[10%] translate-y-[10%] [filter:blur(15px)]">
-              <img src={imageToShow} alt="post" />
+              <img alt="post" src={imageToShow} />
             </div>
           )}
           <div className="relative mr-[27px] flex h-96 flex-1 flex-col space-y-[35px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px] lg:h-auto">
@@ -84,7 +84,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               {postUnlocked &&
                 post.contents &&
                 post.contents.length === 1 &&
-                imageToShow && <img src={imageToShow} alt="post" />}
+                imageToShow && <img alt="post" src={imageToShow} />}
               <div className="relative mt-3 flex h-[500px]  w-full w-[600px] flex-row items-center justify-center bg-transparent">
                 {/* {postUnlocked && post.contents && post.contents.length > 1 && (
                   <ContentCarousel
@@ -100,9 +100,9 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               {!postUnlocked && (
                 <>
                   <ContentUnlockButton
-                    onClick={() => setBuyPost(post)}
-                    name={`Unlock Post For ${formatCurrency(post.price ?? 0)}`}
                     className="w-auto !px-[30px] !py-2.5"
+                    name={`Unlock Post For ${formatCurrency(post.price ?? 0)}`}
+                    onClick={() => setBuyPost(post)}
                   />
                   <p className="mt-[17px] text-base font-medium">
                     <span>
@@ -160,11 +160,11 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
           </div>
           <div className="max-h-[380px] overflow-auto">
             <CommentFeed
-              postId={post.postId}
-              ownsPost={post.isOwner}
               // TODO: add this
               // eslint-disable-next-line @typescript-eslint/no-empty-function
               decrementNumComments={() => {}}
+              ownsPost={post.isOwner}
+              postId={post.postId}
             />
           </div>
         </div>

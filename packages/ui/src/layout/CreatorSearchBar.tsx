@@ -45,12 +45,12 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
       >
         <div className="mr-[40px] box-border w-full xs:max-w-[360px]">
           <SearchBar
-            options={searchOptions}
-            loading={loading}
-            searchValue={searchValue}
-            onInputChange={onChangeInput}
             contentName="creators"
+            loading={loading}
+            onInputChange={onChangeInput}
             onSelect={goToProfile}
+            options={searchOptions}
+            searchValue={searchValue}
           />
         </div>
       </div>

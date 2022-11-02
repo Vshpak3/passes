@@ -34,7 +34,7 @@ export const FAQ = () => {
         <div className="mx-auto max-w-3xl divide-y-2">
           <dl className="mt-6 space-y-6">
             {faqs.map((faq) => (
-              <Disclosure as="div" key={faq.question} className="pt-6">
+              <Disclosure as="div" className="pt-6" key={faq.question}>
                 {({ open }) => (
                   <>
                     <dt className="text-lg">
@@ -42,11 +42,11 @@ export const FAQ = () => {
                         <span className="font-medium">{faq.question}</span>
                         <span className="ml-6 flex h-7 items-center">
                           <ChevronDown
+                            aria-hidden="true"
                             className={classNames(
                               open ? "-rotate-180" : "rotate-0",
                               "h-6 w-6 transform"
                             )}
-                            aria-hidden="true"
                           />
                         </span>
                       </Disclosure.Button>

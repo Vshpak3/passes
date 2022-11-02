@@ -23,7 +23,7 @@ export const CreatorPinnedPasses: FC<CreatorPinnedPassesProps> = ({
           <div className=" w-full items-center px-4">
             {pinnedPasses?.map((pass) => (
               <div className="py-2" key={pass.passId}>
-                <PassCard pass={pass} key={pass.passId} />
+                <PassCard key={pass.passId} pass={pass} />
               </div>
             ))}
           </div>

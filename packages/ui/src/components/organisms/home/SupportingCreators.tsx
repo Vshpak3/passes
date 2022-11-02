@@ -10,10 +10,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Podcasters",
     icon: (
       <svg
-        width="14"
+        fill="none"
         height="16"
         viewBox="0 0 14 16"
-        fill="none"
+        width="14"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -27,10 +27,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Video Creators",
     icon: (
       <svg
-        width="17"
+        fill="none"
         height="12"
         viewBox="0 0 17 12"
-        fill="none"
+        width="17"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -44,10 +44,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Musicians",
     icon: (
       <svg
-        width="15"
+        fill="none"
         height="16"
         viewBox="0 0 15 16"
-        fill="none"
+        width="15"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -61,10 +61,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Visual Artist",
     icon: (
       <svg
-        width="17"
+        fill="none"
         height="16"
         viewBox="0 0 17 16"
-        fill="none"
+        width="17"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -78,10 +78,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Communities",
     icon: (
       <svg
-        width="19"
+        fill="none"
         height="16"
         viewBox="0 0 19 16"
-        fill="none"
+        width="19"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -95,10 +95,10 @@ const SUPPORTING_CREATOR: SupportingCreatorTag[] = [
     name: "Writers & Journalist",
     icon: (
       <svg
-        width="17"
+        fill="none"
         height="16"
         viewBox="0 0 17 16"
-        fill="none"
+        width="17"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -117,8 +117,8 @@ export const SupportingCreators = () => {
       <div className="grid grid-cols-2 gap-x-2 gap-y-8 py-12 px-2 sm:grid-cols-3 lg:grid-cols-6">
         {SUPPORTING_CREATOR.map((v) => (
           <div
-            key={v.name}
             className="flex w-full flex-row items-center rounded-full border border-white py-2 px-4"
+            key={v.name}
           >
             {v.icon}
             <span className="ml-2 text-sm font-semibold">{v.name}</span>

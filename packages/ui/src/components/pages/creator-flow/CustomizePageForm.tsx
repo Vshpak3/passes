@@ -12,6 +12,7 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
@@ -54,15 +55,17 @@ type CustomizePageFormProps = {
 export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   onFinishCustomizePage = identity
 }) => {
-  const [connectedAccounts] = useState<ConnectedAccountsProps>({
-    discord: false,
-    facebook: false,
-    instagram: false,
-    tiktok: false,
-    twitch: false,
-    twitter: false,
-    youtube: false
-  })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [connectedAccounts, setConnectedAccounts] =
+    useState<ConnectedAccountsProps>({
+      discord: false,
+      facebook: false,
+      instagram: false,
+      tiktok: false,
+      twitch: false,
+      twitter: false,
+      youtube: false
+    })
   const { user } = useUser()
   const {
     register,
@@ -124,8 +127,8 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   return (
     <div className="flex justify-center pb-20 text-white">
       <form
-        onSubmit={handleSubmit(onSubmit)}
         className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 lg:px-40"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-6 flex flex-col items-center justify-center">
           <p className="mb-3 text-2xl">Tell us about your page</p>
@@ -136,12 +139,9 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
 
         <div className="mb-6 flex flex-col">
           <FormImage
-            setValue={setValue}
-            register={register}
-            name="profileBannerImage"
-            imgData={profileBannerImage}
-            cropWidth={1500}
             cropHeight={300}
+            cropWidth={1500}
+            imgData={profileBannerImage}
             inputUI={
               <div className="z-10 flex w-full flex-col">
                 <div className="relative w-full">
@@ -162,15 +162,15 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 </div>
               </div>
             }
+            name="profileBannerImage"
+            register={register}
+            setValue={setValue}
           />
 
           <FormImage
-            setValue={setValue}
-            register={register}
-            name="profileImage"
-            imgData={profileImage}
-            cropWidth={400}
             cropHeight={400}
+            cropWidth={400}
+            imgData={profileImage}
             inputUI={
               <div className="relative -mt-20 ml-[26px] flex h-28 w-28 items-center justify-center rounded-full sm:-mt-24 sm:h-[138px] sm:w-[138px]">
                 <img
@@ -187,6 +187,9 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 />
               </div>
             }
+            name="profileImage"
+            register={register}
+            setValue={setValue}
           />
         </div>
 
@@ -194,12 +197,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
           <div className="flex flex-col gap-[6px]">
             <div className="text-[#b3bee7] opacity-[0.6]">Display Name</div>
             <Input
-              register={register}
-              name="displayName"
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-              placeholder="Display Name"
-              type="text"
               errors={errors}
+              name="displayName"
+              placeholder="Display Name"
+              register={register}
+              type="text"
             />
           </div>
 
@@ -208,12 +211,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               Profile Description
             </div>
             <Input
-              register={register}
-              name="description"
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-              placeholder="Tell us more about yourself"
-              type="text"
               errors={errors}
+              name="description"
+              placeholder="Tell us more about yourself"
+              register={register}
+              type="text"
             />
           </div>
 
@@ -227,12 +230,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@fbusername</span>
               ) : (
                 <Input
-                  register={register}
-                  name="facebookUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="facebookUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -242,12 +245,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@instaname</span>
               ) : (
                 <Input
-                  register={register}
-                  name="instagramUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="instagramUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -257,12 +260,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@twittername</span>
               ) : (
                 <Input
-                  register={register}
-                  name="twitterUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="twitterUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -272,12 +275,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@discordname</span>
               ) : (
                 <Input
-                  register={register}
-                  name="discordUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="discordUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -287,12 +290,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@tiktokname</span>
               ) : (
                 <Input
-                  register={register}
-                  name="tiktokUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="tiktokUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -302,12 +305,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@twitchname</span>
               ) : (
                 <Input
-                  register={register}
-                  name="twitchUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="twitchUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
@@ -317,39 +320,38 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@youtubename</span>
               ) : (
                 <Input
-                  register={register}
-                  name="youtubeUsername"
                   className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  placeholder="Enter username"
-                  type="text"
                   errors={errors}
+                  name="youtubeUsername"
+                  placeholder="Enter username"
+                  register={register}
+                  type="text"
                 />
               )}
             </div>
           </div>
         </div>
 
-        {/* Temp remove for Circle */}
-        {/* <div className="mb-6 flex gap-[6px]">
-          <Input
-            register={register}
-            type="checkbox"
-            name="isAdult"
+        <div className="mb-6 flex gap-[6px]">
+          <Checkbox
             className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             labelClassName="text-[#b3bee7] opacity-[0.6]"
+            name="isAdult"
+            register={register}
+            type="checkbox"
           />
           <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px] text-[#b3bee7] opacity-[0.6]">
             My work contains audio or visual creations depicting explicit sexual
             situations, including nudity in sexual contexts.
           </div>
-        </div> */}
+        </div>
 
         <div className="mb-6 flex flex-col">
           <PassesPinkButton
-            name="Continue"
-            type={ButtonTypeEnum.SUBMIT}
             className="rounded-xl font-normal"
             isDisabled={isSubmitting}
+            name="Continue"
+            type={ButtonTypeEnum.SUBMIT}
           />
         </div>
       </form>

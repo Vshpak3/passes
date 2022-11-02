@@ -101,19 +101,19 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           {dateDiff(startDate, endDate)} Days
         </h3>
         <label
-          htmlFor="calender-modal"
           className="modal-button flex cursor-pointer flex-row items-end gap-[24px] text-base font-bold"
+          htmlFor="calender-modal"
           onChange={datePickerModalToggle}
         >
           {getFormattedDate(startDate)} - {getFormattedDate(endDate)}
           <Caret height={15} width={15} />
           <input
-            type="checkbox"
-            id="calender-modal"
             className="modal-toggle hidden"
+            id="calender-modal"
+            type="checkbox"
           />
         </label>
-        <label htmlFor="calender-modal" className="modal cursor-pointer">
+        <label className="modal cursor-pointer" htmlFor="calender-modal">
           <label
             className="absolute flex w-fit items-center justify-center rounded-[15px] bg-[#fff]"
             htmlFor=""
@@ -121,13 +121,13 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
             {isDatePickerOpen && (
               <div className="w-fit" ref={datepickerRef}>
                 <DateRangePicker
-                  ranges={[dateRange]}
                   maxDate={new Date()}
                   minDate={getNYearsAgoDate(2)}
                   onChange={(newRange) => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     setDateRange(newRange.selection as any)
                   }}
+                  ranges={[dateRange]}
                 />
               </div>
             )}
@@ -137,10 +137,10 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
       <div className="flex flex-row gap-[16px]">
         {EARNINGS_GRAPH_TABS.map(({ id, value, label }) => (
           <TabButton
-            variant="tab"
+            active={activeTab === value}
             key={id}
             onClick={() => handleOnTabClick(value)}
-            active={activeTab === value}
+            variant="tab"
           >
             {label}
           </TabButton>
@@ -151,6 +151,22 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
       </div>
       <div className="w-full">
         <Line
+          className="rounded-[15px] border border-[#FFFFFF26] bg-[#1B141D80] p-4"
+          data={{
+            labels: eachDayOfInterval({
+              start: startDate,
+              end: endDate
+            }).map((item) => item.toLocaleDateString()),
+            datasets: [
+              {
+                showLine: true,
+                fill: false,
+                borderColor: "#9C4DC1",
+                pointBackgroundColor: "#9C4DC1",
+                data: graphData.map(({ amount }) => amount)
+              }
+            ]
+          }}
           options={{
             responsive: true,
             showLine: true,
@@ -180,22 +196,6 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
               }
             }
           }}
-          data={{
-            labels: eachDayOfInterval({
-              start: startDate,
-              end: endDate
-            }).map((item) => item.toLocaleDateString()),
-            datasets: [
-              {
-                showLine: true,
-                fill: false,
-                borderColor: "#9C4DC1",
-                pointBackgroundColor: "#9C4DC1",
-                data: graphData.map(({ amount }) => amount)
-              }
-            ]
-          }}
-          className="rounded-[15px] border border-[#FFFFFF26] bg-[#1B141D80] p-4"
         />
       </div>
     </div>

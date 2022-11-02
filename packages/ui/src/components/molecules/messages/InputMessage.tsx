@@ -208,13 +208,13 @@ export const InputMessage: FC<InputMessageProps> = ({
           <div className="flex w-full items-center justify-between pt-2">
             <div className="flex min-h-[45px] items-center justify-start gap-4 ">
               <Checkbox
-                label="Pay to View"
-                type="toggle"
-                register={register}
-                errors={errors}
-                options={options}
-                name="isPaid"
                 className="group"
+                errors={errors}
+                label="Pay to View"
+                name="isPaid"
+                options={options}
+                register={register}
+                type="toggle"
               />
               {isPaid ? (
                 <div className="relative flex items-center rounded-md shadow-sm">
@@ -222,19 +222,19 @@ export const InputMessage: FC<InputMessageProps> = ({
                     Price
                   </div>
                   <input
+                    aria-placeholder="$"
+                    autoFocus
+                    className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
+                    id="postPrice"
+                    max="5000"
+                    min="0"
+                    name="postPrice"
+                    onChange={handleChange}
+                    onKeyPress={preventNegative}
+                    placeholder="$"
+                    step="0.01"
                     type="number"
                     value={messagePrice}
-                    name="postPrice"
-                    autoFocus
-                    id="postPrice"
-                    placeholder="$"
-                    aria-placeholder="$"
-                    onKeyPress={preventNegative}
-                    min="0"
-                    max="5000"
-                    step="0.01"
-                    onChange={handleChange}
-                    className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
                   />
                 </div>
               ) : null}
@@ -244,7 +244,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px] "
                 onClick={() => setReorderContent(!reorderContent)}
               >
-                <Text fontSize={16} className="font-bold text-[#FF51A8]">
+                <Text className="font-bold text-[#FF51A8]" fontSize={16}>
                   {reorderContent ? "Reorder Done" : "Reorder"}
                 </Text>
               </Button>
@@ -254,36 +254,36 @@ export const InputMessage: FC<InputMessageProps> = ({
 
         <div className="pt-3">
           <textarea
+            cols={40}
             placeholder="Send a message.."
             rows={4}
-            cols={40}
             {...register("message", { required: true })}
+            autoComplete="off"
             className={classNames(
               files.length
                 ? "focus:border-b-transparent"
                 : errors.message && "border-b-red",
               "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
             )}
-            autoComplete="off"
-            onKeyDown={submitOnEnter}
             onFocus={() => {
               clearErrors()
             }}
+            onKeyDown={submitOnEnter}
           />
         </div>
         {files.length > 0 && (
           <div className="relative  max-w-[390px] sm:max-w-[590px]">
             <MediaSection
-              register={register}
+              addNewMedia={addNewMedia}
               errors={errors}
               files={files}
-              setFiles={setFiles}
-              onRemove={onRemove}
-              addNewMedia={addNewMedia}
-              mediaPreviewIndex={mediaPreviewIndex}
-              setMediaPreviewIndex={setMediaPreviewIndex}
               isPaid={isPaid}
+              mediaPreviewIndex={mediaPreviewIndex}
+              onRemove={onRemove}
+              register={register}
               reorderContent={reorderContent}
+              setFiles={setFiles}
+              setMediaPreviewIndex={setMediaPreviewIndex}
               // messages={true}
             />
           </div>
@@ -292,9 +292,9 @@ export const InputMessage: FC<InputMessageProps> = ({
           {isCreator && (
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
-              register={register}
               errors={errors}
               onChange={onMediaChange}
+              register={register}
               selectors={[PhotoSelector, VideoSelector]}
             >
               <VaultSelector selectVaultContent={addContent} />
@@ -319,29 +319,29 @@ export const InputMessage: FC<InputMessageProps> = ({
                 ) : null}
               </div>
               <input
-                type="number"
-                placeholder="0.00"
-                onChange={handleChangeTip}
-                className=" w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
                 autoComplete="off"
+                className=" w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
                 min="0"
-                step=".01"
+                onChange={handleChangeTip}
                 onKeyPress={preventNegative}
+                placeholder="0.00"
+                step=".01"
+                type="number"
               />
             </div>
             <div
+              aria-roledescription="button"
               className="messaging-input__button h-[45px]  !p-0"
               role="button"
-              aria-roledescription="button"
             >
               <button
-                type="button"
-                disabled={!isNaN(tip) && !!blocked}
                 className={classNames(
                   blocked ? " cursor-not-allowed opacity-50" : "",
                   " min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
                 )}
+                disabled={!isNaN(tip) && !!blocked}
                 onClick={submit}
+                type="button"
               >
                 {submitting
                   ? "Sending..."

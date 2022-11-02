@@ -61,7 +61,7 @@ export const Input: FC<InputProps> = ({
   return (
     <>
       {label && (
-        <Label name={name} label={label} errors={errors} options={options} />
+        <Label errors={errors} label={label} name={name} options={options} />
       )}
 
       <div className="w-full">
@@ -77,10 +77,10 @@ export const Input: FC<InputProps> = ({
           </div>
         )}
         <input
-          readOnly={options.readOnly}
           autoComplete="off"
-          type={type}
           placeholder={placeholder || label}
+          readOnly={options.readOnly}
+          type={type}
           {...register(name, options)}
           {...rest}
           className={classNames(

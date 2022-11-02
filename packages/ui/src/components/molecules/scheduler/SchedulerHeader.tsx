@@ -50,10 +50,8 @@ export const SchedulerHeader: FC = () => {
     <>
       {/* month year picker */}
       <Popper
-        id={monthYearPopperId}
-        open={monthYearPopperOpen}
         anchorEl={anchorEl}
-        transition
+        id={monthYearPopperId}
         modifiers={[
           {
             name: "offset",
@@ -62,20 +60,22 @@ export const SchedulerHeader: FC = () => {
             }
           }
         ]}
+        open={monthYearPopperOpen}
+        transition
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <div
-              ref={popperMonthYearPickerRef}
               className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
+              ref={popperMonthYearPickerRef}
             >
               <MonthYearPicker
-                maxPastMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO}
                 maxFutureMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE}
+                maxPastMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO}
+                onChangeMonth={setMonth}
+                onChangeYear={setYear}
                 selectedMonth={month}
                 selectedYear={year}
-                onChangeYear={setYear}
-                onChangeMonth={setMonth}
               />
             </div>
           </Fade>

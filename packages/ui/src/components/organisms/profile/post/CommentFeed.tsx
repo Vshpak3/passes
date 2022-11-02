@@ -17,7 +17,6 @@ import { Comment } from "./Comment"
 interface CommentFeedProps {
   postId: PostDto["postId"]
   ownsPost: PostDto["isOwner"]
-  numComments?: number
   decrementNumComments: () => void
 }
 
@@ -30,29 +29,29 @@ const CommentFeedUnmemo: FC<CommentFeedProps> = ({
 }) => {
   return (
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
-      keyValue={`/comments/${postId}`}
+      KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
+        return (
+          <Comment
+            comment={arg}
+            decrementNumComments={decrementNumComments}
+            ownsPost={ownsPost}
+          />
+        )
+      }}
       fetch={async (req: GetCommentsForPostRequestDto) => {
         return await api.findCommentsForPost({
           getCommentsForPostRequestDto: req
         })
       }}
       fetchProps={{ postId }}
-      KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
-        return (
-          <Comment
-            comment={arg}
-            ownsPost={ownsPost}
-            decrementNumComments={decrementNumComments}
-          />
-        )
-      }}
+      keyValue={`/comments/${postId}`}
+      loadMoreMessage="Load previous comments"
+      loadMorePosition={LoadMsgPositionEnum.BOTTOM}
       loadingElement={
         <div className="flex w-full items-center justify-center">
           <span className="h-7 w-7 animate-spin rounded-[50%] border-4 border-t-4 border-gray-400 border-t-white" />
         </div>
       }
-      loadMoreMessage="Load previous comments"
-      loadMorePosition={LoadMsgPositionEnum.BOTTOM}
       options={{
         revalidateOnMount: false,
         revalidateAll: false,

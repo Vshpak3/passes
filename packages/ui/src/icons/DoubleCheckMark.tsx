@@ -3,10 +3,10 @@ import React from "react"
 export const DoubleCheckMarkIcon = () => {
   return (
     <svg
-      width="21"
+      fill="none"
       height="10"
       viewBox="0 0 15 8"
-      fill="none"
+      width="21"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

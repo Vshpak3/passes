@@ -114,7 +114,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
       )}
       {children}
       {flattenedData.map((data, index) => (
-        <KeyedComponent key={index} arg={data} index={index} />
+        <KeyedComponent arg={data} index={index} key={index} />
       ))}
       {loadMorePosition === LoadMsgPositionEnum.BOTTOM && hasMore && (
         <button onClick={triggerFetch}>{loadMoreMessage}</button>

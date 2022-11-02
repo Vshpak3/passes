@@ -48,13 +48,13 @@ export const Backers = () => {
       <div className="my-12 grid grid-cols-2 gap-x-4 gap-y-8 px-4 sm:grid-cols-3 lg:grid-cols-6">
         {BACKERS.map((backer) => (
           <div
-            key={backer.name}
             className="flex flex-col items-center space-y-2"
+            key={backer.name}
           >
             <img
-              src={backer.image}
               alt={backer.name}
               className="h-24 w-24 md:h-32 md:w-32"
+              src={backer.image}
             />
             <div className="flex flex-col text-center">
               <p className="text-lg font-bold">{backer.name}</p>

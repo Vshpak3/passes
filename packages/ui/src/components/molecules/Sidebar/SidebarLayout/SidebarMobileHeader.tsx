@@ -14,13 +14,13 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
       <div className="border-r-[0.5px] border-gray-600">
         <Disclosure.Button>
           <span
-            onClick={toggleSidebar}
             className="group my-4 mx-3 flex cursor-pointer items-center"
+            onClick={toggleSidebar}
           >
             <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
               <CloseIcon
-                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2"
                 aria-hidden="true"
+                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2"
               />
             </div>
           </span>

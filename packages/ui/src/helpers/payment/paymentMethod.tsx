@@ -14,15 +14,15 @@ import { cryptoWalletsType } from "./cryptoWalletsType"
 export const displayCardIcon = (cardDigit: string, size: number) => {
   switch (cardDigit) {
     case "4":
-      return <VisaIcon width={size} height={size} />
+      return <VisaIcon height={size} width={size} />
     case "5":
-      return <MasterCardIcon width={size} height={size} />
+      return <MasterCardIcon height={size} width={size} />
     case "3":
-      return <AmexCardIcon width={size} height={size} />
+      return <AmexCardIcon height={size} width={size} />
     case "6":
-      return <DiscoverCardIcon width={size} height={size} />
+      return <DiscoverCardIcon height={size} width={size} />
     default:
-      return <CardIcon width={size} height={size} />
+      return <CardIcon height={size} width={size} />
   }
 }
 export const paymentMethodConfig = (

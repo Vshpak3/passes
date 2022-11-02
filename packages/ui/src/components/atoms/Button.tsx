@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable react/no-unused-prop-types */
 import classNames from "classnames"
 import clsx from "clsx"
 import DollarIcon from "public/icons/profile-dollar-icon.svg"
@@ -121,10 +123,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
 
   return (
     <Tag
-      onClick={onClick}
-      // ref={ref}
-      href={href}
-      style={style}
       className={
         "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
         (bigger ? " !px-4 !py-3" : " ") +
@@ -133,35 +131,38 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         (disabled &&
           `${disabledClass ?? " cursor-auto border-[#3333]/80 bg-[#3333]/80"}`)
       }
-      role={tag === "a" ? "button" : undefined}
-      tabIndex={tag === "a" ? 0 : undefined}
       data-focus-ring=""
       disabled={disabled}
+      href={href}
+      onClick={onClick}
+      role={tag === "a" ? "button" : undefined}
+      style={style}
+      tabIndex={tag === "a" ? 0 : undefined}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       type={type}
       {...restOfProps}
     >
       <Text
-        style={{ lineHeight: 1 }}
         className={
           "flex items-center space-x-2 xs:hidden " +
           (variantInnerClassName && ` ${variantInnerClassName}`) +
           innerClassName
         }
         fontSize={fontSize || 16}
+        style={{ lineHeight: 1 }}
       >
         {icon}
         {children}
       </Text>
       <Text
-        style={{ lineHeight: 1 }}
         className={
           "hidden items-center gap-2 space-x-2 xs:flex " +
           (variantInnerClassName && ` ${variantInnerClassName}`) +
           innerClassName
         }
         fontSize={fontSize || 14}
+        style={{ lineHeight: 1 }}
       >
         {icon}
         {children}
@@ -179,13 +180,13 @@ export const PassesPinkButton: FC<GenericButtonProps> = ({
 }) => {
   return (
     <button
-      disabled={isDisabled}
       className={classNames(
         isDisabled
           ? "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
           : "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
         className
       )}
+      disabled={isDisabled}
       onClick={onClick}
       type={type}
     >
@@ -225,9 +226,9 @@ export const ContentUnlockButton: FC<GenericButtonProps> = ({
       className,
       "flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
     )}
-    value={value}
-    onClick={onClick}
     disabled={!!isDisabled}
+    onClick={onClick}
+    value={value}
   >
     <UnlockLockIcon className="flex h-6 w-6" />
     {name}

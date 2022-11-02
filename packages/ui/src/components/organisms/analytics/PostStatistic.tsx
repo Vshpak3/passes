@@ -97,8 +97,8 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
       </div>
       {deletePostModelOpen && (
         <DeletePostModal
-          post={post}
           onDelete={onDelete}
+          post={post}
           setOpen={setDeletePostModelOpen}
         />
       )}

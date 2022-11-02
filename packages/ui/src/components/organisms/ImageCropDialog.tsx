@@ -105,54 +105,54 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
   return (
     <Dialog
       className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#0c0609] px-[29px] pt-[37px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      footer={
+        <div className="left-20 -mb-4 bg-inherit !bg-[#0c0609] p-4">
+          <input
+            aria-labelledby="Zoom"
+            className="zoom-range w-full max-w-[300px]"
+            max={3}
+            min={1}
+            onChange={(e) => {
+              setZoom(Number(e.target.value))
+            }}
+            step={0.1}
+            type="range"
+            value={zoom}
+          />
+        </div>
+      }
       open
       title={
         <div className="flex justify-between bg-[#0c0609] pb-4">
           <Button
-            onClick={onClose}
             className="!px-6 !py-4 font-medium sm:!px-12"
-            variant="primary"
             fontSize={15}
+            onClick={onClose}
+            variant="primary"
           >
             Back
           </Button>
           <Button
-            onClick={showCroppedImage}
             className="!px-6 !py-5 font-medium sm:!px-12 sm:!py-4"
-            variant="gradient"
             fontSize={15}
+            onClick={showCroppedImage}
+            variant="gradient"
           >
             Save
           </Button>
         </div>
       }
-      footer={
-        <div className="left-20 -mb-4 bg-inherit !bg-[#0c0609] p-4">
-          <input
-            type="range"
-            value={zoom}
-            min={1}
-            max={3}
-            step={0.1}
-            aria-labelledby="Zoom"
-            onChange={(e) => {
-              setZoom(Number(e.target.value))
-            }}
-            className="zoom-range w-full max-w-[300px]"
-          />
-        </div>
-      }
     >
       <div className="relative h-full">
         <Cropper
-          image={src}
-          crop={crop}
-          zoom={zoom}
           aspect={width / height}
+          crop={crop}
+          image={src}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}
           showGrid={false}
+          zoom={zoom}
         />
       </div>
     </Dialog>

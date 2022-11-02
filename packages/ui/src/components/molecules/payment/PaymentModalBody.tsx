@@ -102,13 +102,13 @@ const PaymentModalBodyUnmemo = ({
       /> */}
       Payment Method:
       <Select
-        register={register}
-        selectOptions={options}
-        onChange={(newValue: string) => setValue("method", newValue)}
-        name="method"
+        changeOnDefault
         className="my-4 w-[130px]"
         defaultValue={defaultSelected}
-        changeOnDefault
+        name="method"
+        onChange={(newValue: string) => setValue("method", newValue)}
+        register={register}
+        selectOptions={options}
       />
       <div className="my-4 mr-1 text-[#ffff]/90 underline">
         Click here to update your default payment method or add a new one.
@@ -116,7 +116,7 @@ const PaymentModalBodyUnmemo = ({
           <a onClick={closeModal}>settings</a>
         </Link>
       </div>
-      <ThreeDSInfo price={price} payinMethod={payinMethod} />
+      <ThreeDSInfo payinMethod={payinMethod} price={price} />
     </form>
   )
 }

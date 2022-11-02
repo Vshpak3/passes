@@ -26,9 +26,9 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
     () =>
       results.map((pass) => (
         <Combobox.Option
+          disabled={selectedPassIds.includes(pass.passId)}
           key={pass.passId}
           value={pass}
-          disabled={selectedPassIds.includes(pass.passId)}
         >
           {({ active, disabled }) => (
             <span
@@ -54,12 +54,12 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
 
   return (
     <SearchBar
-      options={searchOptions}
-      loading={loading}
-      searchValue={searchValue}
       contentName="memberships"
+      loading={loading}
       onInputChange={onInputChange}
       onSelect={onSelect}
+      options={searchOptions}
+      searchValue={searchValue}
     />
   )
 }

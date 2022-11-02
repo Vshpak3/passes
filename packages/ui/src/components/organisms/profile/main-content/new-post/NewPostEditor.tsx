@@ -209,10 +209,10 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       <div className="min-h-12 flex flex-col items-start justify-start border border-[#ffffff]/10 bg-[#1b141d]/50 p-5  md:px-7 md:py-5">
         {extended && (
           <NewPostEditorHeader
-            title="New post"
             formName="isPaid"
             onClose={closeEditor}
             register={register}
+            title="New post"
           />
         )}
 
@@ -230,28 +230,27 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
             }}
           >
             <CustomMentionEditor
-              placeholder="What's on your mind?"
               defaultText={initialData.text}
               isReset={isReset}
-              setIsReset={setIsReset}
               onInputChange={(params: NewPostTextFormProps) => {
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}
+              placeholder="What's on your mind?"
+              setIsReset={setIsReset}
             />
           </div>
           {!onlyText && extended && (
             <MediaSection
-              register={register}
+              addNewMedia={addNewMedia}
               errors={errors}
               files={files}
-              setFiles={setFiles}
-              onRemove={onRemove}
-              addNewMedia={addNewMedia}
-              isNewPost
               isPaid={isPaid}
-              reorderContent={reorderContent}
               mediaPreviewIndex={mediaPreviewIndex}
+              onRemove={onRemove}
+              register={register}
+              reorderContent={reorderContent}
+              setFiles={setFiles}
               setMediaPreviewIndex={setMediaPreviewIndex}
             />
           )}
@@ -266,13 +265,13 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               />
             )}
             <NewPostEditorFooter
-              disableForm={disableForm}
-              setScheduledTime={setScheduledTime}
-              scheduledTime={getValues()?.scheduledAt}
               addContent={addContent}
+              disableForm={disableForm}
               reorderButton={files.length > 1}
               reorderContent={reorderContent}
+              scheduledTime={getValues()?.scheduledAt}
               setReorderContent={setReorderContent}
+              setScheduledTime={setScheduledTime}
             />
           </>
         )}

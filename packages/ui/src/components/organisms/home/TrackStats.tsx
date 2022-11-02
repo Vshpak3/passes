@@ -11,9 +11,9 @@ export const TrackStats = () => {
       </p>
       <div className="mx-auto max-w-7xl overflow-clip px-4 sm:py-32 sm:px-6 lg:py-16 lg:px-8">
         <img
+          alt="Track Stats"
           className="my-20 mx-auto"
           src="/img/homepage/stats.webp"
-          alt="Track Stats"
         />
       </div>
     </div>

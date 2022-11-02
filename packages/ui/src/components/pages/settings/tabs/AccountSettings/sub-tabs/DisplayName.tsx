@@ -48,22 +48,20 @@ const DisplayName: FC = () => {
   }
 
   return (
-    <Tab withBack title="Change Display Name">
+    <Tab title="Change Display Name" withBack>
       <form className="mt-6" onSubmit={handleSubmit(onSaveDisplayName)}>
         <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
           <span>Display Name</span>
           <Input
-            name="displayName"
-            type="text"
             className="mt-1.5 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-            register={register}
             errors={errors}
+            name="displayName"
+            register={register}
+            type="text"
           />
         </label>
         <Button
-          variant="pink"
           className="mt-6 w-auto !px-[52px]"
-          tag="button"
           disabled={
             loading ||
             displayName.trim().length === 0 ||
@@ -71,7 +69,9 @@ const DisplayName: FC = () => {
             disableForm
           }
           disabledClass="opacity-[0.5]"
+          tag="button"
           type={ButtonTypeEnum.SUBMIT}
+          variant="pink"
         >
           <span>Save</span>
         </Button>

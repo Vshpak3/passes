@@ -25,14 +25,14 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
     case ProfileNavigationOptions.POST:
       return (
         <PostFeed
-          profileUserId={profileUserId}
           ownsProfile={ownsProfile}
+          profileUserId={profileUserId}
           updateProfileStats={mutateManualCreatorStats}
         />
       )
     case ProfileNavigationOptions.FANWALL:
       return (
-        <FanWallFeed profileUserId={profileUserId} ownsProfile={ownsProfile} />
+        <FanWallFeed ownsProfile={ownsProfile} profileUserId={profileUserId} />
       )
     case ProfileNavigationOptions.PASSES:
       return <PassesFeed creatorId={profileUserId} />

@@ -70,18 +70,18 @@ export const ChannelView: FC<ChannelViewProps> = ({
         <>
           <ChannelHeader
             gallery={gallery}
-            setGallery={setGallery}
-            selectedChannel={selectedChannel}
-            paid={paid}
-            setPaid={setPaid}
             isCreator={isCreator}
             onBack={onBack}
+            paid={paid}
+            selectedChannel={selectedChannel}
+            setGallery={setGallery}
+            setPaid={setPaid}
           />
           {gallery ? (
             <ChannelGalleryView
+              isCreator={isCreator}
               paid={paid}
               selectedChannel={selectedChannel}
-              isCreator={isCreator}
             />
           ) : (
             <>
@@ -93,12 +93,12 @@ export const ChannelView: FC<ChannelViewProps> = ({
               {selectedChannel.channelId && (
                 <InputMessage
                   channelId={selectedChannel.channelId}
-                  minimumTip={minimumTip}
                   isCreator={isCreator}
-                  vaultContent={vaultContent}
+                  minimumTip={minimumTip}
                   otherUserIsCreator={otherUserIsCreator}
-                  setVaultContent={setVaultContent}
                   removeFree={removeFree}
+                  setVaultContent={setVaultContent}
+                  vaultContent={vaultContent}
                 />
               )}
             </>

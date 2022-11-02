@@ -67,14 +67,14 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
   }, [blocked, owns])
   return (
     <button
-      onClick={submit}
       className={classNames(
         !!blocked || submitting || isDisabled
           ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
           : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
       )}
-      type="submit"
       disabled={waiting || !!blocked || submitting || isDisabled}
+      onClick={submit}
+      type="submit"
     >
       {waiting ? "Processing..." : loading ? "Loading" : "Buy pass"}
     </button>

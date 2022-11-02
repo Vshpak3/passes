@@ -46,17 +46,12 @@ const PostUnmemo: FC<PostProps> = ({
     contents,
     createdAt,
     displayName,
-    earningsPurchases,
     isOwner,
-    numComments,
-    numLikes,
-    numPurchases,
     pinnedAt,
     postId,
     paying,
     tags,
     text,
-    totalTipAmount,
     userId,
     username,
     contentProcessed,
@@ -119,34 +114,26 @@ const PostUnmemo: FC<PostProps> = ({
           >
             <PostHeader
               createdAt={createdAt}
-              userId={userId}
-              username={username}
               displayName={displayName}
+              dropdownOptions={dropdownOptions}
               isCreator
               isPinned={isPinned}
-              dropdownOptions={dropdownOptions}
-              statisticsButtonProps={{
-                createdAt,
-                earningsPurchases,
-                numComments,
-                numLikes,
-                numPurchases,
-                totalTipAmount
-              }}
+              userId={userId}
+              username={username}
             />
 
             <p className="break-all text-start text-base font-medium text-[#ffffff]/90">
-              <FormattedText text={text} tags={tags} />
+              <FormattedText tags={tags} text={text} />
             </p>
             {!!contents?.length && (
               <MediaContent
                 contents={contents}
                 isProcessing={!contentProcessed}
-                paying={paying}
+                openBuyModal={() => setPost(post)}
                 paid={!!paidAt || isOwner}
+                paying={paying}
                 previewIndex={previewIndex}
                 price={price ?? 0}
-                openBuyModal={() => setPost(post)}
               />
             )}
             <PostEngagement post={post} />
@@ -155,8 +142,8 @@ const PostUnmemo: FC<PostProps> = ({
       )}
       {deletePostModelOpen && (
         <DeletePostModal
-          post={post}
           onDelete={onDelete}
+          post={post}
           setOpen={setDeletePostModelOpen}
           updateProfileStats={updateProfileStats}
         />

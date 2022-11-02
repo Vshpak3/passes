@@ -61,18 +61,16 @@ export const PayoutHistory = () => {
         <div className="flex flex-col justify-between gap-2 md:flex-row">
           <button
             aria-describedby={monthYearPopperId}
-            type="button"
             onClick={handleShowMonthYearPopper}
+            type="button"
           >
             <span className="w-[100px] select-none">
               {`${format(new Date(2000, month, 1), "MMMM")} ${year}`}
             </span>
           </button>
           <Popper
-            id={monthYearPopperId}
-            open={monthYearPopperOpen}
             anchorEl={anchorEl}
-            transition
+            id={monthYearPopperId}
             modifiers={[
               {
                 name: "offset",
@@ -81,22 +79,24 @@ export const PayoutHistory = () => {
                 }
               }
             ]}
+            open={monthYearPopperOpen}
+            transition
           >
             {({ TransitionProps }) => (
               <Fade {...TransitionProps} timeout={350}>
                 <div
-                  ref={popperMonthYearPickerRef}
                   className="month-year-picker-wrapper rounded border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-4 py-6 backdrop-blur-md"
+                  ref={popperMonthYearPickerRef}
                 >
                   <MonthYearPicker
-                    selectedMonth={month}
-                    selectedYear={year}
-                    onChangeYear={(year: number) =>
-                      handleChangeTime("year", year)
-                    }
                     onChangeMonth={(month: number) =>
                       handleChangeTime("month", month)
                     }
+                    onChangeYear={(year: number) =>
+                      handleChangeTime("year", year)
+                    }
+                    selectedMonth={month}
+                    selectedYear={year}
                   />
                 </div>
               </Fade>
@@ -127,7 +127,9 @@ export const PayoutHistory = () => {
           </div>
         </div>
         <InfiniteScrollPagination<PayoutDto, GetPayoutsResponseDto>
-          keyValue="/payouts"
+          KeyedComponent={({ arg }: ComponentArg<PayoutDto>) => {
+            return <Payout payout={arg} />
+          }}
           fetch={async (req: GetPayoutsRequestDto) => {
             return await api.getPayouts({ getPayoutsRequestDto: req })
           }}
@@ -135,9 +137,7 @@ export const PayoutHistory = () => {
             startDate,
             endDate
           }}
-          KeyedComponent={({ arg }: ComponentArg<PayoutDto>) => {
-            return <Payout payout={arg} />
-          }}
+          keyValue="/payouts"
           options={{ revalidateOnMount: true }}
         />
       </div>

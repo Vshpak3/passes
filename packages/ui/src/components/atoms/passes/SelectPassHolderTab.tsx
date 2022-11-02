@@ -52,11 +52,11 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
           key={option.label}
         >
           <div
+            className="flex w-full items-center pb-[10px]"
             onClick={() => {
               setPassType(option.passType)
               setExpired(option.expired)
             }}
-            className="flex w-full items-center pb-[10px]"
           >
             {option.label}
           </div>

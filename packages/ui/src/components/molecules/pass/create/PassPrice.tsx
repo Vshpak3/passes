@@ -28,10 +28,10 @@ export const PassPrice: FC<PassPriceProps> = ({ register, errors }) => {
           Set price of the pass
         </span>
         <NumberInput
-          type="currency"
-          register={register}
-          name="price"
           className="ml-2 max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
+          name="price"
+          register={register}
+          type="currency"
         />
         {errors?.price?.type === "required" && (
           <PassFormError message="Price is required" />

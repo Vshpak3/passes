@@ -64,19 +64,19 @@ export const FileInput: FC<FileInputProps> = ({
   return (
     <>
       {label && (
-        <Label name={name} label={label} errors={errors} options={options} />
+        <Label errors={errors} label={label} name={name} options={options} />
       )}
       <div className={className}>
         <input
+          accept={acceptProp(accept)}
+          className="hidden"
+          multiple={multiple}
+          onBlur={onBlur}
           ref={(r) => {
             ref(r)
             uploadRef.current = r
           }}
           type="file"
-          accept={acceptProp(accept)}
-          className="hidden"
-          multiple={multiple}
-          onBlur={onBlur}
           {...reg}
           {...rest}
         />

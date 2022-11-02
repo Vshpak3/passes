@@ -42,10 +42,10 @@ const Analytics: NextPage = () => {
       <div className="flex flex-row gap-[16px] overflow-hidden">
         {ANALYTICS_OPTIONS.map((tab) => (
           <TabButton
-            variant="tab"
-            key={tab.value}
             active={analyticsTab === tab.value}
+            key={tab.value}
             onClick={() => handleAnalyticsTabClick(tab.value)}
+            variant="tab"
           >
             {tab.label}
           </TabButton>

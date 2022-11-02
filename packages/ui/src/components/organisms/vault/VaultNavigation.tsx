@@ -88,20 +88,20 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         </div>
       </div>
       <VaultSelectContainer
-        selectedItems={selectedItems}
         deselectAll={deselectAll}
+        selectedItems={selectedItems}
       />
       <VaultFilterContainer
-        vaultType={vaultType}
-        vaultCategory={vaultCategory}
-        setVaultType={setVaultType}
         setVaultCategory={setVaultCategory}
+        setVaultType={setVaultType}
+        vaultCategory={vaultCategory}
+        vaultType={vaultType}
       />
       <DeleteConfirmationModal
         isOpen={deleteModalActive}
+        onCancel={toggleDeleteModal}
         onDelete={handleVaultDeleteItems}
         setOpen={setDeleteModalActive}
-        onCancel={toggleDeleteModal}
       />
       {!embedded && (
         <div className="align-center items-align flex justify-center">
@@ -123,11 +123,11 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           </div>
           <div>
             <SortDropdown
+              onSelect={onSortSelect}
+              options={sortOptions}
               selection={{
                 orderType: order === "desc" ? "recent" : "oldest"
               }}
-              options={sortOptions}
-              onSelect={onSortSelect}
             />
           </div>
         </div>

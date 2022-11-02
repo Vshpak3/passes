@@ -79,9 +79,9 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           {!!wallet.custodial && (
             <IconTooltip
               Icon={InfoIcon}
+              className=""
               position="top"
               tooltipText={CUSTODIAL_TOOLTIP_TEXT}
-              className=""
             />
           )}
         </div>
@@ -110,8 +110,8 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           amountLast: 7
         })}
         <Clipboard
-          width="12px"
           className="invisible ml-2 group-hover:visible md:block"
+          width="12px"
         />
       </div>
       {!!wallet.authenticated && (
@@ -128,11 +128,11 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           )}
           {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
             <Button
-              variant="purple-light"
-              tag="button"
               onClick={async () =>
                 await setDefaultMinting(wallet.walletId, wallet.chain)
               }
+              tag="button"
+              variant="purple-light"
             >
               Set {wallet.chain} default
             </Button>
@@ -146,8 +146,8 @@ export const WalletListItem: FC<WalletListItemProps> = ({
         <Button
           disabled={wallet.custodial}
           onClick={onDeleteHandler}
-          variant="link-purple"
           tag="button"
+          variant="link-purple"
         >
           Delete
         </Button>

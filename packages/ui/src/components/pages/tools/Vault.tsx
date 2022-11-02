@@ -90,51 +90,51 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
     <div className="ml-4 w-full px-2 md:px-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VaultNavigation
-          setFiles={setFiles}
+          deletedItems={deletedItems}
+          embedded={!!passSelectedItems}
+          order={order}
+          pushToMessages={pushToMessages}
           selectedItems={selectedItems}
+          setDeletedItems={setDeletedItems}
+          setFiles={setFiles}
+          setOrder={setOrder}
           setSelectedItems={setItems}
-          vaultType={vaultType}
-          vaultCategory={vaultCategory}
           setVaultCategory={setVaultCategory}
           setVaultType={setVaultType}
-          pushToMessages={pushToMessages}
-          embedded={!!passSelectedItems}
-          setOrder={setOrder}
-          order={order}
-          deletedItems={deletedItems}
-          setDeletedItems={setDeletedItems}
+          vaultCategory={vaultCategory}
+          vaultType={vaultType}
         />
         {!!files?.length && (
           <>
             <MediaSection
-              register={register}
+              addNewMedia={addNewMedia}
               errors={errors}
               files={files}
-              setFiles={setFiles}
-              onRemove={onRemove}
-              addNewMedia={addNewMedia}
-              mediaPreviewIndex={0}
-              setMediaPreviewIndex={() => null}
               isPaid={false}
+              mediaPreviewIndex={0}
+              onRemove={onRemove}
+              register={register}
+              setFiles={setFiles}
+              setMediaPreviewIndex={() => null}
             />
             <Button
-              variant="pink"
+              className="my-[10px] w-fit"
               tag="button"
               type={ButtonTypeEnum.SUBMIT}
-              className="my-[10px] w-fit"
+              variant="pink"
             >
               Save to Vault
             </Button>
           </>
         )}
         <VaultMediaGrid
+          category={vaultCategory}
+          deletedItems={deletedItems}
+          isMaxFileCountSelected={isMaxFileCountSelected}
+          order={order}
           selectedItems={selectedItems}
           setSelectedItems={setItems}
-          deletedItems={deletedItems}
-          order={order}
-          category={vaultCategory}
           type={vaultType}
-          isMaxFileCountSelected={isMaxFileCountSelected}
         />
       </form>
     </div>

@@ -64,11 +64,11 @@ export const DragDropFile: FC<DragDropFileProps> = ({
   return (
     <div className={className} onDragEnter={handleDrag}>
       <input
-        type="file"
-        name={registerName}
-        ref={ref}
         className="hidden"
         multiple={multiple}
+        name={registerName}
+        ref={ref}
+        type="file"
       />
       {dragActive && (
         <div
@@ -84,13 +84,13 @@ export const DragDropFile: FC<DragDropFileProps> = ({
         <div className="flex flex-col items-center justify-center gap-1">
           <div className="flex gap-1">
             <FileInput
+              accept={accept}
               className="cursor-pointer "
               errors={errors}
+              multiple={multiple}
               name={name}
               options={options}
               register={register}
-              multiple={multiple}
-              accept={accept}
               trigger={
                 <span className="text-sm font-medium text-passes-secondary-color">
                   Click to upload

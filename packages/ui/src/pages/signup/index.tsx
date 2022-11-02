@@ -146,25 +146,25 @@ const SignupInitialPage: FC = () => {
         </div>
 
         <div className="mb-8 flex flex-col items-center gap-y-5">
-          <Text fontSize={36} className="mb-4 font-semibold text-white">
+          <Text className="mb-4 font-semibold text-white" fontSize={36}>
             Create an account
           </Text>
           <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">
             Please enter your details.
           </Text>
           <form
-            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-5"
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
               <Input
-                register={register}
-                name="email"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
-                placeholder="Enter your email"
-                type="text"
                 errors={errors}
+                name="email"
+                placeholder="Enter your email"
+                register={register}
+                type="text"
               />
             </div>
 
@@ -173,11 +173,11 @@ const SignupInitialPage: FC = () => {
                 Password
               </Text>
               <PasswordInput
-                register={register}
-                name="password"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
-                placeholder="Enter your password"
                 errors={errors}
+                name="password"
+                placeholder="Enter your password"
+                register={register}
               />
             </div>
 
@@ -186,22 +186,22 @@ const SignupInitialPage: FC = () => {
                 Confirm Password
               </Text>
               <PasswordInput
-                register={register}
-                name="confirmPassword"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
-                placeholder="Confirm your password"
                 errors={errors}
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                register={register}
               />
             </div>
 
             <Button
               className="dark:via-purpleDark-purple-9 z-10 flex h-[44px] w-[340px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:to-plumDark-plum9 xs:w-[360px]"
-              tag="button"
-              type={ButtonTypeEnum.SUBMIT}
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
+              tag="button"
+              type={ButtonTypeEnum.SUBMIT}
             >
-              <Text fontSize={16} className="font-medium">
+              <Text className="font-medium" fontSize={16}>
                 Register account
               </Text>
               <EnterIcon />
@@ -220,24 +220,24 @@ const SignupInitialPage: FC = () => {
           </div>
 
           <Text
-            fontSize={13}
             className="z-10 w-[340px] text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
+            fontSize={13}
           >
             By signing up, you agree to Passes&apos;{" "}
             <a
-              href="/terms"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-blue-blue10"
+              href="/terms"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Terms of Use
             </a>{" "}
             and{" "}
             <a
-              href="/privacy"
-              target="_blank"
-              rel="noopener noreferrer"
               className="text-blue-blue10"
+              href="/privacy"
+              rel="noopener noreferrer"
+              target="_blank"
             >
               Privacy Policy
             </a>
@@ -245,8 +245,8 @@ const SignupInitialPage: FC = () => {
           </Text>
 
           <Text
-            fontSize={13}
             className="z-10 flex w-[340px] justify-center text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
+            fontSize={13}
           >
             Have an account?
             <NextLink href="/login">

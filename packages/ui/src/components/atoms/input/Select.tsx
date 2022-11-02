@@ -76,7 +76,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <div className="relative">
       {label && (
-        <Label name={name} label={label} errors={errors} options={options} />
+        <Label errors={errors} label={label} name={name} options={options} />
       )}
       <Listbox
         {...register(name, options)}
@@ -113,13 +113,13 @@ export const Select: FC<SelectProps> = ({
 
               return (
                 <Listbox.Option
-                  key={isString ? option : option.value}
-                  value={option}
                   className={({ active }) =>
                     classNames("p1-2 block cursor-pointer py-1 px-4", {
                       "bg-[#1b141d]/90 text-passes-primary-color": active
                     })
                   }
+                  key={isString ? option : option.value}
+                  value={option}
                 >
                   <span>{isString ? option : option.label}</span>
                 </Listbox.Option>

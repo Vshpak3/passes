@@ -15,7 +15,6 @@ import { usePayinMethod } from "src/hooks/usePayinMethod"
 import AddCard from "./sub-tabs/AddCard"
 
 interface PaymentSettingsProps {
-  addCardHandler?: null | (() => void)
   isEmbedded?: boolean
   onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
@@ -52,31 +51,31 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({
       )}
       {!isEmbedded && (
         <Tab
-          withBackMobile
-          title="Payment Settings"
           description="Add and manage payment methods."
+          title="Payment Settings"
+          withBackMobile
         />
       )}
       {!isEmbedded && (
         <Button
-          variant="pink"
-          tag="button"
           className="mt-5"
           onClick={() => addOrPopStackHandler(SubTabsEnum.PaymentHistory)}
+          tag="button"
+          variant="pink"
         >
           View Payment History
         </Button>
       )}
       <PaymentSettingsDefault isEmbedded={isEmbedded} />
       <PaymentSettingsCrypto
-        isEmbedded={isEmbedded}
         handleSetDefaultPayinMethod={handleSetDefaultPayInMethod}
+        isEmbedded={isEmbedded}
       />
       <PaymentSettingsCreditCard
-        isEmbedded={isEmbedded}
-        setOpen={setOpen}
         addOrPopStackHandler={addOrPopStackHandler}
         handleSetDefaultPayInMethod={handleSetDefaultPayInMethod}
+        isEmbedded={isEmbedded}
+        setOpen={setOpen}
       />
     </>
   )

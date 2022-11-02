@@ -39,13 +39,13 @@ const PostStatistics = () => {
         </div>
       </div>
       <InfiniteScrollPagination<PostDto, GetPostsResponseDto>
-        keyValue="posts"
-        fetch={getPosts}
-        fetchProps={{}}
-        emptyElement={<span>No posts to show</span>}
         KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
           return <PostStatistic post={arg} />
         }}
+        emptyElement={<span>No posts to show</span>}
+        fetch={getPosts}
+        fetchProps={{}}
+        keyValue="posts"
         options={{ revalidateOnMount: true }}
       />
     </div>

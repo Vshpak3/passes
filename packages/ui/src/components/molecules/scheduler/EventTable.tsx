@@ -14,13 +14,8 @@ export const EventTable: FC = () => {
   const { isTablet } = useWindowSize()
   const { month, year } = useContext(SchedulerContext)
 
-  const {
-    data,
-    setMonthYear,
-    deleteScheduledEvent,
-    mutate,
-    updateScheduledTime
-  } = useScheduledEvents()
+  const { data, setMonthYear, deleteScheduledEvent, updateScheduledTime } =
+    useScheduledEvents()
 
   useEffect(() => {
     setMonthYear({ month, year })
@@ -57,12 +52,11 @@ export const EventTable: FC = () => {
 
   const tableItems = data?.map((item: ScheduledEventDto) => (
     <EventTableItem
-      key={item.scheduledEventId}
-      scheduledEvent={item}
-      onDeleteEvent={handleOnDeleteEvent}
-      mutate={mutate}
-      onChangeTime={handleOnUpdateEvent}
       isTablet={isTablet}
+      key={item.scheduledEventId}
+      onChangeTime={handleOnUpdateEvent}
+      onDeleteEvent={handleOnDeleteEvent}
+      scheduledEvent={item}
     />
   ))
 

@@ -61,14 +61,22 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
       />
       <div>
         <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
-          keyValue="vault"
-          fetch={async (req: GetVaultQueryRequestDto) => {
-            const api = new ContentApi()
-            return await api.getVaultContent({
-              getVaultQueryRequestDto: req
-            })
+          KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
+            return (
+              <>
+                {!deletedItems.some((x) => x.contentId === arg.contentId) && (
+                  <VaultMediaItem
+                    content={arg}
+                    handleClickOnItem={handleClickOnItem}
+                    isMaxFileCountSelected={isMaxFileCountSelected}
+                    selectedItems={selectedItems}
+                    setSelectedItems={setSelectedItems}
+                  />
+                )}
+              </>
+            )
           }}
-          fetchProps={{ category, type, order }}
+          className="grid-cols-1-[365px_minmax(165px,_200px)_400px] mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
           emptyElement={
             <>
               <div className="col-span-1 w-[115px] md:w-[320px]" />
@@ -76,22 +84,14 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               <div className="col-span-1 w-[115px] md:w-[320px]" />
             </>
           }
-          KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
-            return (
-              <>
-                {!deletedItems.some((x) => x.contentId === arg.contentId) && (
-                  <VaultMediaItem
-                    content={arg}
-                    setSelectedItems={setSelectedItems}
-                    selectedItems={selectedItems}
-                    isMaxFileCountSelected={isMaxFileCountSelected}
-                    handleClickOnItem={handleClickOnItem}
-                  />
-                )}
-              </>
-            )
+          fetch={async (req: GetVaultQueryRequestDto) => {
+            const api = new ContentApi()
+            return await api.getVaultContent({
+              getVaultQueryRequestDto: req
+            })
           }}
-          className="grid-cols-1-[365px_minmax(165px,_200px)_400px] mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
+          fetchProps={{ category, type, order }}
+          keyValue="vault"
         />
       </div>
     </div>

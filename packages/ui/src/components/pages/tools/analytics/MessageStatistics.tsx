@@ -45,7 +45,10 @@ const MessageStatistics = () => {
         </div>
       </div>
       <InfiniteScrollPagination<PaidMessageDto, GetPaidMessagesResponseDto>
-        keyValue="paid-messages"
+        KeyedComponent={({ arg }: ComponentArg<PaidMessageDto>) => {
+          return <PaidMessageStatistic paidMessage={arg} />
+        }}
+        emptyElement={<span>No messages to show</span>}
         fetch={async (req: GetPaidMessagesRequestDto) => {
           const api = new MessagesApi()
           return await api.getPaidMessages({
@@ -53,10 +56,7 @@ const MessageStatistics = () => {
           })
         }}
         fetchProps={{}}
-        emptyElement={<span>No messages to show</span>}
-        KeyedComponent={({ arg }: ComponentArg<PaidMessageDto>) => {
-          return <PaidMessageStatistic paidMessage={arg} />
-        }}
+        keyValue="paid-messages"
         options={{ revalidateOnMount: true }}
       />
     </div>

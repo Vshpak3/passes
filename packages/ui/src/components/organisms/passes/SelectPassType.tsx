@@ -29,19 +29,19 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
       <CreatePassOption
         colStyle="lg:col-[3_/_span_3]"
         icon={<SubscriptionImg />}
-        title="Subscription"
+        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Subscription)}
         subtitle="Subscriptions are unlimited in quantity and must be paid for
             by fans on a recurring basis before they expire."
-        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Subscription)}
+        title="Subscription"
       />
       <CreatePassOption
         colStyle="lg:col-[6_/_span_3]"
         icon={<LimitedEditionImg />}
-        title="Lifetime"
+        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Lifetime)}
         subtitle="Super Memberships are limited in quantity. This means once they
             sell out they can only be bought on a secondary market. Fans make a
             one-time payment to buy these memberships."
-        onGetStarted={redirectToCreatePass(PassDtoTypeEnum.Lifetime)}
+        title="Lifetime"
       />
     </div>
   )

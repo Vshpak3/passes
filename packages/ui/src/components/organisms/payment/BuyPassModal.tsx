@@ -28,18 +28,18 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
         </span>
       </div>
       <PaymentModalBody
-        price={pass?.price ?? 0}
         closeModal={() => setPass(null)}
+        price={pass?.price ?? 0}
         setPayinMethod={setPayinMethod}
       />
 
       <BuyPassButton
-        passId={pass?.passId ?? ""}
-        payinMethod={payinMethod}
         onSuccess={() => {
           // toast.success("Please wait as we mint your membership card")
           setPass(null)
         }}
+        passId={pass?.passId ?? ""}
+        payinMethod={payinMethod}
       />
     </Modal>
   )

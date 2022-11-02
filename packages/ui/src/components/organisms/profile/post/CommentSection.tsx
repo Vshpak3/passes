@@ -33,19 +33,19 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
       {newComments.map((comment) => {
         return (
           <Comment
-            key={comment.commentId}
             comment={comment}
-            ownsPost={ownsPost}
             decrementNumComments={decrementNumComments}
+            key={comment.commentId}
+            ownsPost={ownsPost}
           />
         )
       })}
       <CommentFeed
-        postId={postId}
-        ownsPost={ownsPost}
         decrementNumComments={decrementNumComments}
+        ownsPost={ownsPost}
+        postId={postId}
       />
-      <NewCommentEditor postId={postId} addComment={addNewComment} />
+      <NewCommentEditor addComment={addNewComment} postId={postId} />
     </div>
   )
 }

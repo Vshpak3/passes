@@ -57,22 +57,22 @@ export const HomeContentFeed: FC = () => {
         <div className="col-span-7 lg:col-span-4">
           <SectionTitle>Home</SectionTitle>
           <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
-            keyValue="/feed"
+            KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+              return (
+                <Post
+                  inHomeFeed
+                  post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
+                />
+              )
+            }}
+            emptyElement={ContentFeedEmpty}
+            endElement={ContentFeedEnd}
             fetch={async (req: GetFeedRequestDto) => {
               return await api.getFeed({ getFeedRequestDto: req })
             }}
             fetchProps={{}}
-            emptyElement={ContentFeedEmpty}
+            keyValue="/feed"
             loadingElement={ContentFeedLoading}
-            endElement={ContentFeedEnd}
-            KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-              return (
-                <Post
-                  post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-                  inHomeFeed
-                />
-              )
-            }}
           />
         </div>
         <div className="col-span-3 h-screen border-gray-600 lg:border-l-[0.5px]">

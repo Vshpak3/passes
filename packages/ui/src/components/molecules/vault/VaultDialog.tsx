@@ -23,23 +23,21 @@ export const VaultDialog: FC<VaultDialogProps> = ({
   return (
     <Dialog
       className="flex h-full transform flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all  md:rounded-[15px]"
-      open={isOpen}
-      onClose={closeVault}
       footer={
         <div className="relative h-full pt-5">
           <div className="flex flex-col items-start justify-start gap-3">
             <div className="flex w-full items-end justify-between gap-3">
               <button
                 className="rounded-full bg-passes-secondary-color py-2 px-6"
-                type="button"
                 onClick={closeVault}
+                type="button"
               >
                 Cancel
               </button>
               <button
                 className="rounded-full bg-passes-secondary-color py-2 px-6"
-                type="button"
                 onClick={pushToMessages}
+                type="button"
               >
                 Use selected media
               </button>
@@ -47,8 +45,10 @@ export const VaultDialog: FC<VaultDialogProps> = ({
           </div>
         </div>
       }
+      onClose={closeVault}
+      open={isOpen}
     >
-      <AuthWrapper isPage creatorOnly>
+      <AuthWrapper creatorOnly isPage>
         <div className="">
           <Vault passSelectedItems={setSelectedItems} />
         </div>

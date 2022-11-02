@@ -52,9 +52,9 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   return (
     <div className="flex max-w-[500px] flex-col border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
       <PassMedia
-        passId={pass.passId}
-        imageType={pass.imageType}
         animationType={pass.animationType}
+        imageType={pass.imageType}
+        passId={pass.passId}
       />
       <div className="flex h-full flex-col items-start pt-4 text-[#ffff]/90">
         <div className="align-items flex w-full flex-row items-center justify-between">
@@ -105,10 +105,10 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
           ${pass.price} / {getPassType(pass.type)}
         </span>
         <button
+          className="w-full rounded-full bg-passes-primary-color py-2 text-center"
           onClick={() => {
             isCreator ? pinOrUnpinPass() : setPass(pass)
           }}
-          className="w-full rounded-full bg-passes-primary-color py-2 text-center"
         >
           {isCreator
             ? `${isPinned ? "Unpin" : "Pin"} Membership`

@@ -50,10 +50,10 @@ export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
             return (
               <VaultFilterOption
                 buttonStyle={filterStyles.button}
-                onClick={() => setVaultCategory(category.id)}
-                key={index}
                 isActive={category.id === vaultCategory}
+                key={index}
                 label={category.label}
+                onClick={() => setVaultCategory(category.id)}
               />
             )
           })}
@@ -63,10 +63,10 @@ export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
             return (
               <VaultFilterOption
                 buttonStyle={filterStyles.media}
-                onClick={() => setVaultType(type.id)}
-                key={index}
                 isActive={type.id === vaultType}
+                key={index}
                 label={type.label}
+                onClick={() => setVaultType(type.id)}
               />
             )
           })}

@@ -83,11 +83,11 @@ export const Comment: FC<CommentProps> = ({
               <div className="flex gap-x-2">
                 <MessagesNameDisplay
                   displayName={commenterDisplayName}
-                  username={commenterUsername}
                   linked
+                  username={commenterUsername}
                 />
                 {!!isHidden && (
-                  <Text fontSize={14} className="text-gray-500">
+                  <Text className="text-gray-500" fontSize={14}>
                     &nbsp;&nbsp; hidden
                   </Text>
                 )}
@@ -103,11 +103,11 @@ export const Comment: FC<CommentProps> = ({
               </div>
             </div>
             <Text
-              fontSize={14}
               className="whitespace-pre-wrap break-all font-light"
+              fontSize={14}
             >
               {!isHidden || showHidden ? (
-                <FormattedText text={comment.text} tags={comment.tags} />
+                <FormattedText tags={comment.tags} text={comment.text} />
               ) : (
                 <div
                   className="text-gray-500"

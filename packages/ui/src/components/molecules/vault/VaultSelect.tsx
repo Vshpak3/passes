@@ -21,8 +21,8 @@ export const VaultSelectContainer: FC<VaultSelectContainerProps> = ({
       <VaultSelectLabel selectedItemsLength={selectedItems?.length} />
       <div className="align-items flex items-center justify-center">
         <VaultDeselectButton
-          isVisible={hasSelectedItems}
           deselectAll={deselectAll}
+          isVisible={hasSelectedItems}
         />
       </div>
     </div>

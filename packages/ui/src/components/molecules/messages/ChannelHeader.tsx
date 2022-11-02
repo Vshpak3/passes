@@ -36,10 +36,10 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
         {gallery ? (
           <MessagesChannelGalleryHeader
             gallery={gallery}
-            setGallery={setGallery}
             paid={paid}
-            setPaid={setPaid}
             selectedChannel={selectedChannel}
+            setGallery={setGallery}
+            setPaid={setPaid}
           />
         ) : (
           <div className="flex items-center">
@@ -62,8 +62,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               <div className="text-brand-600 flex flex-col items-start gap-2 pl-3">
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
-                  username={selectedChannel.otherUserUsername}
                   linked
+                  username={selectedChannel.otherUserUsername}
                 />
                 {isCreator && (
                   <div className="flex w-full items-center justify-between">
@@ -87,8 +87,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
         )}
         {!gallery && galleryAvailable && (
           <div
-            onClick={() => setGallery(!gallery)}
             className="mr-24 flex cursor-pointer items-center gap-1 rounded-md bg-[#B52A6F40]/10 py-1 px-3 opacity-80 hover:opacity-100 "
+            onClick={() => setGallery(!gallery)}
           >
             <PhotosIcon className="flex flex-shrink-0" />
             <span className="text-sm text-[#B52A6F]">Gallery</span>

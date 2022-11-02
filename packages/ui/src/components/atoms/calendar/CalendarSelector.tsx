@@ -25,9 +25,9 @@ export const CalendarSelector: FC<CalendarSelectorProps> = ({
   const [isOpen, setIsOpen] = useState(false)
   return (
     <CalendarPicker
-      scheduledTime={scheduledTime}
       onSave={setScheduledTime}
       placement={placement}
+      scheduledTime={scheduledTime}
       setOpen={setIsOpen}
     >
       <span

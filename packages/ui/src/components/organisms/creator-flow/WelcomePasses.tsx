@@ -27,12 +27,12 @@ export function WelcomeToPasses() {
             </div>
           </div>
           <PassesPinkButton
+            className="mt-6 font-normal"
+            name="Get Started"
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=subscription")
             }
-            name="Get Started"
             type={ButtonTypeEnum.BUTTON}
-            className="mt-6 font-normal"
           />
         </div>
         <div className="flex min-w-[330px] flex-1 flex-col items-center justify-between rounded-md border border-[#624256] bg-black px-10 py-8">
@@ -48,12 +48,12 @@ export function WelcomeToPasses() {
             </div>
           </div>
           <PassesPinkButton
+            className="mt-6 font-normal"
+            name="Get Started"
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=lifetime")
             }
-            name="Get Started"
             type={ButtonTypeEnum.BUTTON}
-            className="mt-6 font-normal"
           />
         </div>
       </div>

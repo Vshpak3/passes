@@ -53,18 +53,18 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
     <Modal isOpen setOpen={() => setBlockData(null)}>
       <h2 className="mb-5 font-semibold text-white">BLOCK {username}</h2>
       <RadioGroup
-        value={blockValue}
-        onChange={setBlockValue}
         className="flex flex-col gap-4"
+        onChange={setBlockValue}
+        value={blockValue}
       >
         <RadioGroup.Option value="block">
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                type="radio"
-                readOnly
                 checked={checked}
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">
                 Block user from accessing your profile.
@@ -76,10 +76,10 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
-                type="radio"
-                readOnly
                 checked={checked}
                 className="h-6 w-6 cursor-pointer checked:bg-[#BF7AF0]"
+                readOnly
+                type="radio"
               />
               <Text className="text-white">
                 Restrict, user will not be able to send you direct messages or

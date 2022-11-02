@@ -31,8 +31,8 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
     <div className="w-full">
       {scheduledTime && (
         <ScheduleAlert
-          scheduledPostTime={scheduledTime}
           onRemoveScheduledPostTime={() => setScheduledTime(null)}
+          scheduledPostTime={scheduledTime}
         />
       )}
 
@@ -42,34 +42,34 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
             className="flex items-center justify-center rounded-[5px] border  border-[#FF51A8] bg-transparent px-6 py-2 pr-10 text-base  font-bold sm:rounded-[5px] sm:py-2.5 sm:px-8"
             onClick={() => setReorderContent(!reorderContent)}
           >
-            <Text fontSize={16} className="font-bold text-[#FF51A8]">
+            <Text className="font-bold text-[#FF51A8]" fontSize={16}>
               {reorderContent ? "Reorder Done" : "Reorder"}
             </Text>
           </Button>
         )}
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
-            <VaultSelector selectVaultContent={addContent} expanded />
+            <VaultSelector expanded selectVaultContent={addContent} />
             <CalendarSelector
-              name="Schedule"
               activeHeader="Schedule"
-              setScheduledTime={setScheduledTime}
-              scheduledTime={scheduledTime}
+              name="Schedule"
               placement="bottom"
+              scheduledTime={scheduledTime}
+              setScheduledTime={setScheduledTime}
             />
           </div>
         </div>
 
         <Button
           className="flex items-center justify-center rounded-[30px] bg-passes-pink-100 px-4 py-2 text-base font-bold text-[#ffffff]/90 sm:rounded-[50px] sm:py-2.5 sm:px-8"
-          tag="button"
-          type={ButtonTypeEnum.SUBMIT}
           disabled={disableForm}
           disabledClass="opacity-[0.5]"
+          tag="button"
+          type={ButtonTypeEnum.SUBMIT}
         >
-          <Text fontSize={16} className="font-bold">
+          <Text className="font-bold" fontSize={16}>
             {disableForm ? (
-              <CircularProgress size="14px" color="inherit" />
+              <CircularProgress color="inherit" size="14px" />
             ) : (
               "Post"
             )}

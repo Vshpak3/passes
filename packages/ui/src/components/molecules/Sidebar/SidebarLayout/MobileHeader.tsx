@@ -14,13 +14,13 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
       <Disclosure>
         <Disclosure.Button>
           <span
-            onClick={openSidebar}
             className="group flex cursor-pointer items-center px-[10px]"
+            onClick={openSidebar}
           >
             <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
               <MenuIcon
-                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2 "
                 aria-hidden="true"
+                className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2 "
               />
             </div>
           </span>

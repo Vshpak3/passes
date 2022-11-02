@@ -163,8 +163,8 @@ export const Wallets = () => {
   return (
     <div>
       <Modal
-        modalContainerClassname="rounded-[15px]"
         isOpen={isModalOpen}
+        modalContainerClassname="rounded-[15px]"
         setOpen={setIsModalOpen}
       >
         <div className="md:px-10 md:pb-10">
@@ -176,7 +176,7 @@ export const Wallets = () => {
               className="flex cursor-pointer items-center space-x-4 rounded-full px-3 py-2 hover:bg-gray-700"
               onClick={handleOnETHWalletConnect}
             >
-              <Metamask width="34px" className="cursor-pointer" />
+              <Metamask className="cursor-pointer" width="34px" />
               <span className="text-xl font-bold">Metamask</span>
             </div>
             <div
@@ -192,10 +192,10 @@ export const Wallets = () => {
       <div className="mt-4 flex w-full flex-col items-start justify-start md:flex-row">
         <div>
           <Button
-            variant="pink"
-            tag="button"
-            onClick={() => setIsModalOpen(true)}
             className="mt-1"
+            onClick={() => setIsModalOpen(true)}
+            tag="button"
+            variant="pink"
           >
             <div className="flex items-center justify-center">
               <div className="block w-[24px]">
@@ -207,8 +207,8 @@ export const Wallets = () => {
         </div>
         {!!user?.isCreator && (
           <form
-            onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
             className="flex w-full flex-col items-start md:flex-row"
+            onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
           >
             <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-3">
               or
@@ -216,38 +216,38 @@ export const Wallets = () => {
             <div className="flex w-full flex-row md:basis-1">
               <div className="mr-2 basis-4/5 md:basis-1">
                 <Input
-                  icon={<Wallet />}
-                  type="text"
-                  name="address"
-                  register={register}
                   className="mr-3 pl-[45px] md:w-[250px]"
-                  placeholder="Insert your Payout Address"
                   errors={errors}
+                  icon={<Wallet />}
+                  name="address"
                   options={{
                     required: {
                       message: "Payout Address is required",
                       value: true
                     }
                   }}
+                  placeholder="Insert your Payout Address"
+                  register={register}
+                  type="text"
                 />
               </div>
               <div className="basis-1/5">
                 <Select
-                  name="chain"
-                  register={register}
                   className="mr-3 mt-0 w-[80px]"
-                  selectOptions={["SOL", "ETH"]}
+                  defaultValue="SOL"
                   errors={errors}
+                  name="chain"
+                  onChange={(newValue: string) => setValue("chain", newValue)}
                   options={{
                     required: { message: "Chain is required", value: true }
                   }}
-                  onChange={(newValue: string) => setValue("chain", newValue)}
-                  defaultValue="SOL"
+                  register={register}
+                  selectOptions={["SOL", "ETH"]}
                 />
               </div>
             </div>
             <div className="mt-2">
-              <Button type={ButtonTypeEnum.SUBMIT} variant="pink" tag="button">
+              <Button tag="button" type={ButtonTypeEnum.SUBMIT} variant="pink">
                 Confirm
               </Button>
             </div>
@@ -268,12 +268,12 @@ export const Wallets = () => {
             {wallets.map((wallet) => {
               return (
                 <WalletListItem
-                  wallet={wallet}
-                  deleteWalletHandler={deleteWalletHandler}
-                  defaultSolMinting={solWallet?.walletId === wallet.walletId}
                   defaultEthMinting={ethWallet?.walletId === wallet.walletId}
+                  defaultSolMinting={solWallet?.walletId === wallet.walletId}
+                  deleteWalletHandler={deleteWalletHandler}
                   key={wallet.walletId}
                   setDefaultMinting={setDefaultWallet}
+                  wallet={wallet}
                 />
               )
             })}

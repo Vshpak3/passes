@@ -25,12 +25,13 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
 
   return (
     <>
-      <SelectPassFilter
-        selectedPassType={selectedPassType}
-        onSelectedPassType={setSelectedPassType}
-      />
+      <SelectPassFilter onSelectedPassType={setSelectedPassType} />
       <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
-        keyValue={`pass/creator-passes/${creatorId}`}
+        KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
+          return <PassCard pass={arg} />
+        }}
+        className="grid grid-cols-2 gap-3 pb-20 lg:grid-cols-3"
+        emptyElement={<span>No passes available</span>}
         fetch={async (req: GetPassesRequestDto) => {
           const api = new PassApi()
           return await api.getCreatorPasses({
@@ -38,11 +39,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
           })
         }}
         fetchProps={{ creatorId, type: selectedPassType }}
-        emptyElement={<span>No passes available</span>}
-        KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
-          return <PassCard pass={arg} />
-        }}
-        className="grid grid-cols-2 gap-3 pb-20 lg:grid-cols-3"
+        keyValue={`pass/creator-passes/${creatorId}`}
         style={{ overflow: "visible" }}
       />
     </>

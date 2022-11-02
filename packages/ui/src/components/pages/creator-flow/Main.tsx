@@ -135,10 +135,10 @@ const CreatorFlow = () => {
                 {Object.values(CREATOR_STEPS).map((step: string) => {
                   return (
                     <CreatorSteps
-                      key={`item-${step}`}
-                      isDone={stepsDone.includes(step)}
                       creatorStep={step}
+                      isDone={stepsDone.includes(step)}
                       isSelected={selectedStep === step}
+                      key={`item-${step}`}
                     />
                   )
                 })}
@@ -147,8 +147,8 @@ const CreatorFlow = () => {
                 {Object.values(CREATOR_STEPS).map((step) => {
                   return (
                     <BulletItem
-                      key={`bullet-${step}`}
                       isSelected={selectedStep === step}
+                      key={`bullet-${step}`}
                       setSelectedStep={() => setSelectedStep(step)}
                     />
                   )
@@ -189,8 +189,8 @@ const CreatorFlow = () => {
         )}
 
         <PersonaVerification
-          showPersonaModal={selectedStep === CREATOR_STEPS.VERIFICATION}
           onFinishPersonaVerification={onFinishPersonaVerification}
+          showPersonaModal={selectedStep === CREATOR_STEPS.VERIFICATION}
         />
 
         {selectedStep === CREATOR_STEPS.PAYMENT && (
@@ -212,10 +212,10 @@ const CreatorFlow = () => {
 
       {!isMobile && (
         <Modal
-          isOpen={isVerificationDialogOpen}
-          setOpen={setIsVerificationDialogOpen}
           closable={false}
+          isOpen={isVerificationDialogOpen}
           modalContainerClassname="!w-auto sm:flex hidden rounded-[15px] bg-[#1B141D]/50 backdrop-blur-[50px]"
+          setOpen={setIsVerificationDialogOpen}
         >
           <div className="px-[72px] py-[95px] text-xl font-bold text-white">
             <div className="flex max-w-[624px] items-center justify-center">
@@ -230,10 +230,10 @@ const CreatorFlow = () => {
 
       {!isMobile && (
         <Modal
-          isOpen={isWelcomeModalOpen}
-          setOpen={setIsWelcomeModalOpen}
           closable={false}
+          isOpen={isWelcomeModalOpen}
           modalContainerClassname="w-auto sm:flex hidden"
+          setOpen={setIsWelcomeModalOpen}
         >
           <WelcomeToPasses />
         </Modal>

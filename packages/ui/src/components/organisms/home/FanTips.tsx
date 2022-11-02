@@ -10,7 +10,7 @@ export const FanTips = () => {
       </h3>
       <p className="mx-auto py-4 text-center">Get paid for your time.</p>
       <div className="mx-auto max-w-7xl px-4 py-16 sm:py-32 sm:px-6 lg:py-16 lg:px-8">
-        <img className="mx-auto" src="/img/homepage/tips.svg" alt="Fan Tips" />
+        <img alt="Fan Tips" className="mx-auto" src="/img/homepage/tips.svg" />
       </div>
     </div>
   )

@@ -17,25 +17,25 @@ const DeactivateAccount = () => {
   return (
     <>
       <Tab
-        withBack
-        title="Deactivate Your Account"
         description="Find out how you can deactivate your account."
+        title="Deactivate Your Account"
+        withBack
       />
       <Button
-        variant="pink"
         className="mt-6 w-auto !px-[68px]"
-        tag="button"
         onClick={() => setShowDeactivateConfirmationModal(true)}
+        tag="button"
+        variant="pink"
       >
         <span>Deactivate Account</span>
       </Button>
       <ConfirmationDialog
+        confirmString="Deactivate"
+        desc="This process can not be undone."
         isOpen={showDeactivateConfirmationModal}
         onClose={hideDeactivateModalHandler}
         onConfirm={deactivateAccountHandler}
         title="Are You Sure?"
-        desc="This process can not be undone."
-        confirmString="Deactivate"
       />
     </>
   )

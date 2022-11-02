@@ -12,96 +12,96 @@ export const DefaultHead = () => {
   return (
     <NextHead>
       <title key="title">{TITLE}</title>
-      <meta key="description" name="description" content={DESCRIPTION} />
-      <meta key="application-name" name="application-name" content={TITLE} />
+      <meta content={DESCRIPTION} key="description" name="description" />
+      <meta content={TITLE} key="application-name" name="application-name" />
       <meta
+        content={TITLE}
         key="apple-mobile-web-app-title"
         name="apple-mobile-web-app-title"
-        content={TITLE}
       />
-      <meta key="twitter-title" name="twitter:title" content={TITLE} />
+      <meta content={TITLE} key="twitter-title" name="twitter:title" />
       <meta
+        content={DESCRIPTION}
         key="twitter-description"
         name="twitter:description"
-        content={DESCRIPTION}
       />
       <meta
+        content="summary_large_image"
         key="twitter-card"
         name="twitter:card"
-        content="summary_large_image"
       />
       <meta
+        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
         key="twitter-image"
         property="twitter:image"
-        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
       />
       <meta
+        content="Passes wordmark"
         key="twitter-image-alt"
         property="twitter:image:alt"
-        content="Passes wordmark"
       />
-      <meta key="og-title" property="og:title" content={TITLE} />
-      <meta key="og-site-name" property="og:site_name" content={TITLE} />
-      <meta key="og-type" property="og:type" content="website" />
-      <meta key="og-locale" property="og:locale" content={router.locale} />
+      <meta content={TITLE} key="og-title" property="og:title" />
+      <meta content={TITLE} key="og-site-name" property="og:site_name" />
+      <meta content="website" key="og-type" property="og:type" />
+      <meta content={router.locale} key="og-locale" property="og:locale" />
       <meta
+        content={`${CLIENT_URL}${router.asPath}`}
         key="og-url"
         property="og:url"
-        content={`${CLIENT_URL}${router.asPath}`}
       />
       <meta
+        content={DESCRIPTION}
         key="og-description"
         property="og:description"
-        content={DESCRIPTION}
       />
       <meta
+        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
         key="og-image"
         property="og:image"
-        content={`${CLIENT_URL}/other/open-graph/og-image-300x300.png`}
       />
       <meta
+        content="Passes wordmark"
         key="og-image-alt"
         property="og:image:alt"
-        content="Passes wordmark"
       />
       <meta
+        content="minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
         key="viewport"
         name="viewport"
-        content="minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, width=device-width, viewport-fit=cover"
       />
-      <meta key="robots" name="robots" content="follow, index" />
-      <meta key="googlebot" name="googlebot" content="follow, index" />
-      <meta key="theme-color" name="theme-color" content="#000000" />
+      <meta content="follow, index" key="robots" name="robots" />
+      <meta content="follow, index" key="googlebot" name="googlebot" />
+      <meta content="#000000" key="theme-color" name="theme-color" />
       <meta
+        content={`${CLIENT_URL}/browserconfig.xml`}
         key="msapplication-config"
         name="msapplication-config"
-        content={`${CLIENT_URL}/browserconfig.xml`}
       />
 
       <link
+        href={`${CLIENT_URL}${router.asPath}`}
         key="canonical"
         rel="canonical"
-        href={`${CLIENT_URL}${router.asPath}`}
       />
       <link
+        href="/other/favicon/favicon.ico"
         key="favicon"
         rel="shortcut icon"
         sizes="any"
-        href="/other/favicon/favicon.ico"
       />
       <link
+        href="/other/favicon/favicon-32x32.png"
         key="favicon-32"
         rel="icon"
-        type="image/png"
         sizes="32x32"
-        href="/other/favicon/favicon-32x32.png"
+        type="image/png"
       />
       <link
+        href="/other/favicon/favicon-16x16.png"
         key="favicon-16"
         rel="icon"
-        type="image/png"
         sizes="16x16"
-        href="/other/favicon/favicon-16x16.png"
+        type="image/png"
       />
     </NextHead>
   )

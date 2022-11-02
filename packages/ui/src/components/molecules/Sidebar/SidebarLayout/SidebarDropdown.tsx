@@ -20,33 +20,33 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
   return (
     <Disclosure
       as={Fragment}
-      key={item.name}
       defaultOpen={router?.asPath.startsWith(`/${item.id}/`)}
+      key={item.name}
     >
       {({ open }) => (
         <>
           <Disclosure.Button className="block">
             <span className="group flex cursor-pointer items-center py-3 pr-0 hover:text-white">
               <Link
-                href={item.href}
                 as={item.href}
-                passHref
                 className={classNames(
                   isItemActive
                     ? "text-passes-primary-color"
                     : "text-[#eeedef]/50 group-hover:text-white",
                   "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
                 )}
+                href={item.href}
+                passHref
               >
                 <>
                   <item.icon
+                    aria-hidden="true"
                     className={classNames(
                       isItemActive
                         ? "fill-transparent stroke-passes-primary-color stroke-2"
                         : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                       "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
                     )}
-                    aria-hidden="true"
                   />
                   {item.name}
                 </>
@@ -55,13 +55,13 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
             </span>
           </Disclosure.Button>
           {open && (
-            <Disclosure.Panel static className="block pl-[40px]">
+            <Disclosure.Panel className="block pl-[40px]" static>
               {item.children?.map((subItem) => (
                 <SidebarItem
-                  key={subItem.id}
-                  item={subItem}
                   isActive={subItem.id === active}
                   isDropdown
+                  item={subItem}
+                  key={subItem.id}
                 />
               ))}
             </Disclosure.Panel>

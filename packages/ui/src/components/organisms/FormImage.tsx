@@ -36,18 +36,18 @@ export const FormImage: FC<FormImageProps> = ({
     <>
       {imageCropOpen && imgData?.length && (
         <ImageCropDialog
-          onCrop={onCrop}
-          onClose={() => setImageCropOpen(false)}
-          width={cropWidth}
           height={cropHeight}
+          onClose={() => setImageCropOpen(false)}
+          onCrop={onCrop}
           src={URL.createObjectURL(imgData[0])}
+          width={cropWidth}
         />
       )}
       <FileInput
         accept={["image"]}
-        register={register}
         name={name}
         options={{ onChange: () => setImageCropOpen(true) }}
+        register={register}
         trigger={inputUI}
       />
     </>

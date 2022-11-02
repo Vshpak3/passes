@@ -30,7 +30,7 @@ const HomePage: NextPage = () => {
             <ConnectWithFans />
             <TrackStats />
             <FanTips />
-            <FAQ />
+            <FAQ /> {/* eslint-disable-line react/jsx-pascal-case */}
             <SupportingCreators />
           </>
         )}

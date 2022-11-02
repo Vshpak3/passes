@@ -31,12 +31,12 @@ export const VaultAddToDropdown: FC<VaultAddToDropdownProps> = ({
       >
         <Menu.Items className="absolute right-0 top-10 z-10 mt-2 box-border flex w-[250px] origin-top-right flex-col items-start justify-start gap-[10px] rounded-md border border-[#2C282D] bg-[#100C11]/50 p-[10px] backdrop-blur-[100px]">
           <Menu.Item>
-            <VaultAddToItem onClick={onAddToPost} label="Add to a new post" />
+            <VaultAddToItem label="Add to a new post" onClick={onAddToPost} />
           </Menu.Item>
           <Menu.Item>
             <VaultAddToItem
-              onClick={onAddToMessage}
               label="Add to a new message"
+              onClick={onAddToMessage}
             />
           </Menu.Item>
         </Menu.Items>

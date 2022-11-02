@@ -34,15 +34,15 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
       </span>
       <div className="w-[130px]">
         <Button
-          icon={<CardIcon />}
-          variant="pink"
-          tag="button"
           className="mt-5 mb-6"
+          icon={<CardIcon />}
           onClick={
             isEmbedded
               ? () => setOpen(true)
               : () => addOrPopStackHandler(SubTabsEnum.AddCard)
           }
+          tag="button"
+          variant="pink"
         >
           Add card
         </Button>
@@ -50,8 +50,8 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
       <div>
         {cards?.map((item) => (
           <div
-            key={item.id}
             className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
+            key={item.id}
           >
             <CreditCardEntry card={item} showName />
             <div className="flex flex-row gap-2 md:gap-4">
@@ -78,11 +78,11 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
                 )}
               </div>
               <button
+                className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-white/10"
                 onClick={() => {
                   deleteCard(item.id)
                   getDefaultPayinMethod()
                 }}
-                className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-white/10"
               >
                 <DeleteIcon />
               </button>

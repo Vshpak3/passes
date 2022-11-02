@@ -122,16 +122,9 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
         {children}
       </div>
       <Popper
-        id={id}
-        open={open}
-        placement={placement}
         anchorEl={anchorEl}
-        transition
         disablePortal={false}
-        style={{
-          zIndex: 10000,
-          margin: "0px"
-        }}
+        id={id}
         modifiers={[
           {
             name: "offset",
@@ -140,12 +133,19 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
             }
           }
         ]}
+        open={open}
+        placement={placement}
+        style={{
+          zIndex: 10000,
+          margin: "0px"
+        }}
+        transition
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <div
-              ref={calenderRef}
               className="h-567px rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
+              ref={calenderRef}
             >
               <div className="calendar relative w-full">
                 <div className="absolute top-11 flex w-full items-center gap-3 bg-[rgba(27,20,29,0.5)]">
@@ -160,21 +160,21 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
                   </button>
                 </div>
                 <DayPicker
+                  fromDate={new Date()}
                   mode="single"
-                  showOutsideDays
-                  required
-                  selected={selectionDate}
-                  onSelect={setSelectionDate}
                   month={month}
                   onMonthChange={setMonth}
-                  fromDate={new Date()}
+                  onSelect={setSelectionDate}
+                  required
+                  selected={selectionDate}
+                  showOutsideDays
                   toDate={maxDate}
                 />
                 <div className="mt-3 flex w-full items-center justify-between">
                   <span className="text-base font-normal leading-6 text-white">
                     Time
                   </span>
-                  <TimePicker time={time} setTime={setTime} />
+                  <TimePicker setTime={setTime} time={time} />
                 </div>
                 <button
                   className="duration-400 mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"

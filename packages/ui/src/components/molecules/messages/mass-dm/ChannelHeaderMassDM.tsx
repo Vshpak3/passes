@@ -81,20 +81,20 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
         <div className="flex gap-[10px]">
           {selectedLists.map((list) => (
             <SelectedBadge
+              id={list.listId}
               key={list.listId}
-              type="list"
               name={list.name}
               removeProp={removeList}
-              id={list.listId}
+              type="list"
             />
           ))}
           {selectedPasses.map((pass) => (
             <SelectedBadge
+              id={pass.passId}
               key={pass.passId}
-              type="pass"
               name={pass.title}
               removeProp={removePass}
-              id={pass.passId}
+              type="pass"
             />
           ))}
         </div>
@@ -106,11 +106,11 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
         <div className="flex gap-[10px]">
           {excludedLists.map((list) => (
             <SelectedBadge
+              id={list.listId}
               key={list.listId}
-              type="list"
               name={list.name}
               removeProp={removeExcludedList}
-              id={list.listId}
+              type="list"
             />
           ))}
         </div>

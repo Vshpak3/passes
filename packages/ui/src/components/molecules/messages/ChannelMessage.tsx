@@ -71,11 +71,11 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}
-                  paying={paying}
+                  openBuyModal={() => setMessage(message)}
                   paid={!!paidAt || !!ownsMessage}
+                  paying={paying}
                   previewIndex={previewIndex}
                   price={price}
-                  openBuyModal={() => setMessage(message)}
                 />
               </div>
             )}

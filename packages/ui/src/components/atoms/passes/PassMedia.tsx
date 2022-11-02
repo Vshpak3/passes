@@ -35,39 +35,39 @@ export const PassMedia: FC<PassMediaProps> = ({
     return animationType ? (
       <video autoPlay loop muted>
         <source
+          onError={handleErrorLoadingAsset}
           src={ContentService.passHolderAnimationPath(
             passId,
             passHolderId,
             animationType
           )}
-          onError={handleErrorLoadingAsset}
           type="video/mp4"
         />
       </video>
     ) : (
       <img
+        alt="no media exists"
         src={ContentService.passHolderImagePath(
           passId,
           passHolderId,
           imageType
         )}
-        alt="no media exists"
       />
     )
   } else {
     return animationType ? (
       <video autoPlay loop muted>
         <source
-          src={ContentService.passAnimationPath(passId, animationType)}
           onError={handleErrorLoadingAsset}
+          src={ContentService.passAnimationPath(passId, animationType)}
           type="video/mp4"
         />
       </video>
     ) : (
       <img
-        src={ContentService.passImagePath(passId, imageType)}
-        onError={handleErrorLoadingAsset}
         alt="no media exists"
+        onError={handleErrorLoadingAsset}
+        src={ContentService.passImagePath(passId, imageType)}
       />
     )
   }

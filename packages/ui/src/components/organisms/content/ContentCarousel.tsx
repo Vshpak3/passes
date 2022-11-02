@@ -39,24 +39,24 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
     <>
       <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
       <Swiper
+        className="mySwiper"
+        initialSlide={activeIndex}
+        modules={[Pagination, Navigation]}
+        navigation
         pagination={{
           type: "fraction"
         }}
-        initialSlide={activeIndex}
-        navigation
-        modules={[Pagination, Navigation]}
-        className="mySwiper"
       >
         {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
           return hasAccess || index < previewIndex ? (
             <SwiperSlide key={index}>
               <SlideContent
-                index={index}
-                content={c}
-                ref={imgRef}
                 autoplayVideo={autoplayVideo}
-                fixedHeight={contents.length > 1}
                 carouselContent={array}
+                content={c}
+                fixedHeight={contents.length > 1}
+                index={index}
+                ref={imgRef}
               />
             </SwiperSlide>
           ) : null
@@ -65,9 +65,9 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           <SwiperSlide>
             <LockedMedia
               contents={contents}
-              price={price}
-              paying={paying}
               openBuyModal={openBuyModal}
+              paying={paying}
+              price={price}
             />
           </SwiperSlide>
         )}

@@ -146,7 +146,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     <div className="text-white">
       <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
         <div onClick={() => router.back()}>
-          <ArrowLeft className="cursor-pointer" width="16" height="16" />
+          <ArrowLeft className="cursor-pointer" height="16" width="16" />
         </div>
         <h1 className="text-xl font-bold">{listName}</h1>
       </div>
@@ -174,14 +174,14 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             <span className="relative opacity-70 hover:opacity-100">
               <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
               <input
-                type="text"
+                className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
                 onChange={handleChangeSearch}
                 placeholder="Search list"
-                className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                type="text"
               />
             </span>
             <SortDropdown
-              selection={{ orderType, order }}
+              onSelect={onSortSelect}
               options={[
                 {
                   orderType: OrderType.Username,
@@ -200,15 +200,15 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                   order: "desc"
                 }
               ]}
-              onSelect={onSortSelect}
+              selection={{ orderType, order }}
             />
           </div>
 
           <div className="flex items-center justify-center gap-3">
             {listInfo?.type === ListDtoTypeEnum.Normal && (
               <Button
-                icon={<AddIcon />}
                 className="font-[700]"
+                icon={<AddIcon />}
                 onClick={() => setAddFollowerOpen(true)}
               >
                 Add
@@ -217,23 +217,15 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           </div>
         </li>
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
-          keyValue={`list/list-members/${listId}`}
-          fetch={async (req: GetListMembersRequestDto) => {
-            return await listApi.getListMembers({
-              getListMembersRequestDto: req
-            })
-          }}
-          fetchProps={{ order, orderType, search, listId }}
           KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
             return (
               <ListMember
                 fanInfo={arg}
-                removable={listInfo?.type === ListDtoTypeEnum.Normal}
                 onRemoveFan={handleRemoveFan}
+                removable={listInfo?.type === ListDtoTypeEnum.Normal}
               />
             )
           }}
-          resets={resets}
           emptyElement={
             <div className="mt-[10px] flex h-[40px] w-full flex-row items-center  justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
               <div className="flex flex-row items-center gap-[10px]">
@@ -248,13 +240,21 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
               </div>
             </div>
           }
+          fetch={async (req: GetListMembersRequestDto) => {
+            return await listApi.getListMembers({
+              getListMembersRequestDto: req
+            })
+          }}
+          fetchProps={{ order, orderType, search, listId }}
+          keyValue={`list/list-members/${listId}`}
+          resets={resets}
         />
       </ul>
       <AddFollowerToListModal
-        onSubmit={handleAddFan}
         isOpen={addFollowerOpen}
-        setOpen={setAddFollowerOpen}
         listId={listId}
+        onSubmit={handleAddFan}
+        setOpen={setAddFollowerOpen}
       />
     </div>
   )

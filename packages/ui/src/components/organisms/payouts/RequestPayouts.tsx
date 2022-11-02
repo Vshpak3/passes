@@ -87,9 +87,9 @@ export const RequestPayouts = () => {
             <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:justify-between">
               <div className="text-label relative inline-block " ref={menuEl}>
                 <div
-                  role="button"
-                  onClick={() => setShowOptions(true)}
                   className="flex cursor-pointer items-center justify-between rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
+                  onClick={() => setShowOptions(true)}
+                  role="button"
                 >
                   <div className="flex items-center gap-[5px]">
                     <ClockIcon className="h-[20px] w-[20px] fill-white" />
@@ -108,13 +108,13 @@ export const RequestPayouts = () => {
                   <ul className="absolute z-10 w-full translate-y-1.5 space-y-2.5 rounded-md border border-passes-dark-200 bg-passes-black py-2.5 px-3">
                     {PAYOUT_FREQUENCY_OPTIONS.map(({ value, label }, i) => (
                       <li
-                        key={value}
                         className={classNames(
                           "cursor-pointer",
                           i !== PAYOUT_FREQUENCY_OPTIONS.length - 1
                             ? "border-b border-passes-dark-200 pb-2.5"
                             : ""
                         )}
+                        key={value}
                         onClick={async () => {
                           await updateCreatorSettings(
                             {
@@ -186,18 +186,18 @@ export const RequestPayouts = () => {
             <div className="flex flex-row items-center gap-[10px]">
               <span className="rounded-[15px] bg-[#C943A8] p-[10px]">
                 <svg
-                  width="22"
+                  fill="none"
                   height="18"
                   viewBox="0 0 22 18"
-                  fill="none"
+                  width="22"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M19 6.5V4.2C19 3.0799 19 2.51984 18.782 2.09202C18.5903 1.7157 18.2843 1.40974 17.908 1.21799C17.4802 1 16.9201 1 15.8 1H4.2C3.0799 1 2.51984 1 2.09202 1.21799C1.7157 1.40973 1.40973 1.71569 1.21799 2.09202C1 2.51984 1 3.0799 1 4.2V13.8C1 14.9201 1 15.4802 1.21799 15.908C1.40973 16.2843 1.71569 16.5903 2.09202 16.782C2.51984 17 3.07989 17 4.2 17L15.8 17C16.9201 17 17.4802 17 17.908 16.782C18.2843 16.5903 18.5903 16.2843 18.782 15.908C19 15.4802 19 14.9201 19 13.8V11.5M14 9C14 8.53535 14 8.30302 14.0384 8.10982C14.1962 7.31644 14.8164 6.69624 15.6098 6.53843C15.803 6.5 16.0353 6.5 16.5 6.5H18.5C18.9647 6.5 19.197 6.5 19.3902 6.53843C20.1836 6.69624 20.8038 7.31644 20.9616 8.10982C21 8.30302 21 8.53535 21 9C21 9.46466 21 9.69698 20.9616 9.89018C20.8038 10.6836 20.1836 11.3038 19.3902 11.4616C19.197 11.5 18.9647 11.5 18.5 11.5H16.5C16.0353 11.5 15.803 11.5 15.6098 11.4616C14.8164 11.3038 14.1962 10.6836 14.0384 9.89018C14 9.69698 14 9.46465 14 9Z"
                     stroke="white"
-                    strokeWidth="1.4"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    strokeWidth="1.4"
                   />
                 </svg>
               </span>

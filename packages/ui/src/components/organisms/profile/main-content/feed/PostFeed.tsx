@@ -52,13 +52,6 @@ export const PostFeed: FC<PostFeedProps> = ({
 
   return (
     <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
-      keyValue={`/feed/creator/${profileUserId}`}
-      fetch={async (req: GetProfileFeedRequestDto) => {
-        return await api.getFeedForCreator({
-          getProfileFeedRequestDto: req
-        })
-      }}
-      fetchProps={{ creatorId: profileUserId, pinned: false }}
       KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
         return (
           <Post
@@ -68,18 +61,25 @@ export const PostFeed: FC<PostFeedProps> = ({
         )
       }}
       emptyElement={PostFeedEnd}
-      loadingElement={PostFeedLoader}
       endElement={PostFeedEnd}
+      fetch={async (req: GetProfileFeedRequestDto) => {
+        return await api.getFeedForCreator({
+          getProfileFeedRequestDto: req
+        })
+      }}
+      fetchProps={{ creatorId: profileUserId, pinned: false }}
       hasInitialElement={isNewPostAdded}
+      keyValue={`/feed/creator/${profileUserId}`}
+      loadingElement={PostFeedLoader}
     >
       {ownsProfile && (
-        <NewPosts setIsNewPostAdded={setIsNewPostAdded} postUpdates={posts} />
+        <NewPosts postUpdates={posts} setIsNewPostAdded={setIsNewPostAdded} />
       )}
       {pinnedPosts.map((post) => (
         <Post
+          isPinned
           key={post.postId}
           post={{ ...post, ...(posts[post.postId] ?? {}) }}
-          isPinned
           updateProfileStats={updateProfileStats}
         />
       ))}

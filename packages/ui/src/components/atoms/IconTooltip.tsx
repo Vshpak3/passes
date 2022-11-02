@@ -50,19 +50,19 @@ export const IconTooltip: FC<IconTooltipProps> = ({
 
   return (
     <div
+      className={classNames("relative", className)}
       onMouseEnter={() => setTooltipStatus(true)}
       onMouseLeave={() => setTooltipStatus(false)}
-      className={classNames("relative", className)}
     >
       <Icon />
       {tooltipStatus && (
         <div
-          role="tooltip"
           className={classNames(
             "absolute z-20 mb-[11px] w-[200px] rounded bg-[#2A242B] p-4 px-[8px] py-[12px] text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
             tooltipPositionDefinition(position),
             tooltipClassName
           )}
+          role="tooltip"
         >
           {tooltipText}
           <span

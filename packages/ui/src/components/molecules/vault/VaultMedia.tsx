@@ -3,7 +3,6 @@ import classNames from "classnames"
 import { format } from "date-fns"
 import { FC, MouseEvent } from "react"
 
-import { ImageWithDefault } from "src/components/atoms/ImageWithDefault"
 import { ContentService } from "src/helpers/content"
 
 interface VaultMediaItemProps {
@@ -62,16 +61,24 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
         )}
         onClick={handleClick}
       >
-        <ImageWithDefault // All content types have an image thumbnail
+        <img
+          alt="Can't find image"
+          height={300}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null
+            // setHasErrored(true)
+          }}
+          // All content types have an image thumbnail
           src={ContentService.userContentThumbnailPath(content)}
-          defaultColor="black/50"
+          style={{ objectFit: "cover" }}
+          width={300}
         />
         <div className="flex justify-end p-[10px]">
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div
-              onMouseDown={(e) => e.preventDefault()}
-              onCopy={(e) => e.preventDefault()}
               className="text-center text-[12px] font-medium uppercase text-white opacity-50"
+              onCopy={(e) => e.preventDefault()}
+              onMouseDown={(e) => e.preventDefault()}
             >
               {format(content.createdAt || new Date(), "LLL dd")}
             </div>

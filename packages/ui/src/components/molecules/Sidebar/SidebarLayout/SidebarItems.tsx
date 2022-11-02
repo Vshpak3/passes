@@ -17,14 +17,13 @@ export const SidebarItem: FC<SidebarItemProps> = ({
 }) => {
   return (
     <span
-      key={item.id}
       className={classNames(
         isDropdown ? "py-2" : "py-3",
         "group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center group-hover:text-white"
       )}
+      key={item.id}
     >
       <Link
-        href={item.href}
         as={item.href}
         className={classNames(
           isActive
@@ -32,6 +31,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
             : "text-[#eeedef]/50 group-hover:text-white",
           "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
         )}
+        href={item.href}
       >
         <a>
           <span
@@ -42,13 +42,13 @@ export const SidebarItem: FC<SidebarItemProps> = ({
           >
             {item.icon && (
               <item.icon
+                aria-hidden="true"
                 className={classNames(
                   isActive
                     ? "text- fill-transparent stroke-passes-primary-color stroke-2"
                     : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
                   "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
                 )}
-                aria-hidden="true"
               />
             )}
             {item.name}

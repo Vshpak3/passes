@@ -33,9 +33,9 @@ const ProfileSettings = () => {
 
   return (
     <Tab
-      withBack
-      title="Profile"
       description="Manage what information you and your fans see and share on Passes."
+      title="Profile"
+      withBack
     >
       {!isLoading && (
         <form
@@ -92,12 +92,12 @@ const ProfileSettings = () => {
           </div>
 
           <Button
-            variant="pink"
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-            tag="button"
             disabled={isLoading}
             disabledClass="opacity-[0.5]"
+            tag="button"
             type={ButtonTypeEnum.SUBMIT}
+            variant="pink"
           >
             <span>Save</span>
           </Button>

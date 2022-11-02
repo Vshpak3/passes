@@ -46,10 +46,10 @@ export const WithNormalPageLayout = (
             </div>
           )}
           <AuthWrapper
-            isPage
-            skipAuth={!!options.skipAuth}
             creatorOnly={!!options.creatorOnly}
             hasRefreshed={hasRefreshed}
+            isPage
+            skipAuth={!!options.skipAuth}
           >
             {page}
           </AuthWrapper>

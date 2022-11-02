@@ -40,14 +40,14 @@ export const LockedMedia: FC<LockedMediaProps> = ({
       )} */}
       <div className="absolute inset-0 flex flex-col items-center justify-center space-y-[35px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
         <ContentUnlockButton
-          onClick={openBuyModal} // onClick={() => setPost(post)}
+          className="w-auto !px-[30px] !py-2.5"
+          isDisabled={paying}
           name={
             paying
               ? "Paying..."
               : `Unlock Post For ${formatCurrency(price ?? 0)}`
           }
-          className="w-auto !px-[30px] !py-2.5"
-          isDisabled={paying}
+          onClick={openBuyModal} // onClick={() => setPost(post)}
         />
         <p className="mt-[17px] text-base font-medium">
           <span>

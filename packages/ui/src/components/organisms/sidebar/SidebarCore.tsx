@@ -32,22 +32,22 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
             <nav className="flex flex-col items-start gap-0 pt-[35px]">
               {navigation.map((item: SidebarNavigation) => (
                 <AuthWrapper
+                  creatorOnly={item.creatorOnly !== false}
                   key={`sidebar-${item.id}`}
                   skipAuth={item.showWithoutAuth}
-                  creatorOnly={item.creatorOnly !== false}
                 >
                   {!item.children ? (
                     <SidebarItem
-                      key={`sidebar-${item.id}`}
                       isActive={item.id === active}
-                      item={item}
                       isDropdown={false}
+                      item={item}
+                      key={`sidebar-${item.id}`}
                     />
                   ) : (
                     <SidebarDropdown
-                      key={`sidebar-${item.id}`}
                       active={active}
                       item={item}
+                      key={`sidebar-${item.id}`}
                     />
                   )}
                 </AuthWrapper>
@@ -64,15 +64,15 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
           <AuthWrapper>
             <div className="flex flex-col items-start gap-0">
               <SidebarItem
-                key="sidebar-logout"
+                isActive={false}
+                isDropdown={false}
                 item={{
                   name: "Logout",
                   id: "logout",
                   icon: LogoutIcon,
                   href: "/logout"
                 }}
-                isActive={false}
-                isDropdown={false}
+                key="sidebar-logout"
               />
             </div>
           </AuthWrapper>

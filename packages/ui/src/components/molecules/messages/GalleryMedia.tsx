@@ -30,7 +30,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
+  const [openBuyPostModal, setOpenBuyPostModal] = useState<boolean>(false)
   const { images, video } = contentTypeCounter(contents)
   const [isLoadingStart, setIsLoadingStart] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -88,12 +88,12 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                 if (c.contentType === ContentDtoContentTypeEnum.Image) {
                   return (
                     <img
-                      ref={imgRef}
-                      onLoad={startLoadingHandler}
-                      key={c.contentId}
-                      src={ContentService.userContentMediaPath(c)}
                       alt=""
                       className="w-full rounded-[15px] object-cover shadow-xl"
+                      key={c.contentId}
+                      onLoad={startLoadingHandler}
+                      ref={imgRef}
+                      src={ContentService.userContentMediaPath(c)}
                     />
                   )
                 } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
@@ -108,12 +108,12 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
           ) : contents.length > 1 ? (
             <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
               <img
-                ref={imgRef}
-                onLoad={startLoadingHandler}
-                key={contents[0].contentId}
-                src={ContentService.userContentMediaPath(contents[0])}
                 alt=""
                 className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
+                key={contents[0].contentId}
+                onLoad={startLoadingHandler}
+                ref={imgRef}
+                src={ContentService.userContentMediaPath(contents[0])}
               />
             </div>
           ) : null}
@@ -129,10 +129,10 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
             {!purchased && (
               <div className="flex-center h-45 flex w-[245px] flex-col items-center">
                 <ContentUnlockButton
+                  className="max-w-[200px] gap-1 py-2 text-[14px]"
+                  name={`Unlock For ${formatCurrency(price ?? 100)}`}
                   onClick={() => setOpenBuyPostModal(true)}
                   value={purchased.toString()}
-                  name={`Unlock For ${formatCurrency(price ?? 100)}`}
-                  className="max-w-[200px] gap-1 py-2 text-[14px]"
                 />
                 {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
                 <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
@@ -152,16 +152,16 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   if (c.contentType === ContentDtoContentTypeEnum.Image) {
                     return (
                       <div
-                        key={c.contentId}
                         className="relative flex h-full w-full  cursor-pointer items-center  justify-center"
+                        key={c.contentId}
                       >
                         <img
-                          ref={imgRef}
-                          onLoad={startLoadingHandler}
-                          key={c.contentId}
-                          src={ContentService.userContentMediaPath(c)}
                           alt=""
                           className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
+                          key={c.contentId}
+                          onLoad={startLoadingHandler}
+                          ref={imgRef}
+                          src={ContentService.userContentMediaPath(c)}
                         />
                       </div>
                     )
@@ -182,12 +182,12 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
             ) : contents.length > 1 ? (
               <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
                 <img
-                  ref={imgRef}
-                  onLoad={startLoadingHandler}
-                  key={contents[0].contentId}
-                  src={ContentService.userContentMediaPath(contents[0])}
                   alt=""
                   className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
+                  key={contents[0].contentId}
+                  onLoad={startLoadingHandler}
+                  ref={imgRef}
+                  src={ContentService.userContentMediaPath(contents[0])}
                 />
               </div>
             ) : null}

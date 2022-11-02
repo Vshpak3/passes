@@ -12,7 +12,7 @@ export const SidebarMobileContainer: FC<
   PropsWithChildren<SidebarMobileContainerProps>
 > = ({ children, mobileSidebarOpen, toggleSidebar }) => {
   return (
-    <Transition.Root show={mobileSidebarOpen} as={Fragment}>
+    <Transition.Root as={Fragment} show={mobileSidebarOpen}>
       <Dialog as="div" className="relative z-40" onClose={toggleSidebar}>
         <Transition.Child
           as={Fragment}
@@ -47,7 +47,7 @@ export const SidebarMobileContainer: FC<
               </div>
             </Dialog.Panel>
           </Transition.Child>
-          <div className="w-14 flex-shrink-0" aria-hidden="true">
+          <div aria-hidden="true" className="w-14 flex-shrink-0">
             {/* Dummy element to force sidebar to shrink to fit close icon */}
           </div>
         </div>

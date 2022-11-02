@@ -59,15 +59,15 @@ export const NumberInput: FC<NumberInputProps> = ({
     <div className="w-full">
       <input
         {...register(name, options)}
-        placeholder={_placeholder}
         autoComplete="off"
-        type="number"
-        onKeyPress={onKeyPress}
         className={classNames(
           "block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",
           className,
           errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
         )}
+        onKeyPress={onKeyPress}
+        placeholder={_placeholder}
+        type="number"
       />
       {errors && errors[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>

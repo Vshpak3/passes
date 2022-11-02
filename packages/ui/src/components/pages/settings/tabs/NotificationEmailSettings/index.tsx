@@ -19,16 +19,16 @@ const NotificationEmailSettings = () => {
   const { addTabToStackHandler } = useSettings() as SettingsContextProps
   return (
     <Tab
-      withBackMobile
-      title="Notifications & Emails Settings"
       description="Select the notifications you receive about your activities, transactions, and recommendations."
+      title="Notifications & Emails Settings"
+      withBackMobile
     >
       <ul className="mt-[34px]">
         {subTabs.map(({ Icon, id, name, subText }) => (
           <li key={id}>
             <button
-              onClick={() => addTabToStackHandler(id)}
               className="flex w-full items-center space-x-6 p-2.5 text-left hover:bg-passes-primary-color/25"
+              onClick={() => addTabToStackHandler(id)}
             >
               <Icon />
               <div className="flex-1">

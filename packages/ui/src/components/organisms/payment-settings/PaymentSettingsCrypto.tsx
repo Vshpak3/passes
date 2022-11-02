@@ -58,12 +58,12 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             Metamask
           </span>
           <Select
-            register={register}
-            selectOptions={MetaMaskSelectOptions}
-            onChange={(newValue: string) => setValue("metamask", newValue)}
-            name="metamask"
             className="my-4 w-[130px]"
             defaultValue={MetaMaskSelectOptions[0]}
+            name="metamask"
+            onChange={(newValue: string) => setValue("metamask", newValue)}
+            register={register}
+            selectOptions={MetaMaskSelectOptions}
           />
         </div>
         {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
@@ -74,6 +74,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </Button>
         ) : (
           <Button
+            className="w-auto px-1 py-2 md:px-4"
             onClick={async () =>
               await handleSetDefaultPayinMethod(
                 deserializePayinMethod(getValues("metamask"))
@@ -81,7 +82,6 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             }
             tag="button"
             variant="purple-light"
-            className="w-auto px-1 py-2 md:px-4"
           >
             <span className="font-[700]">{buttonName(isEmbedded)}</span>
           </Button>
@@ -94,12 +94,12 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             Phantom
           </span>
           <Select
-            register={register}
-            selectOptions={PhantomSelectOptions}
-            onChange={(newValue: "sol") => setValue("phantom", newValue)}
-            name="phantom"
             className="my-4 w-[130px]"
             defaultValue={PhantomSelectOptions[0]}
+            name="phantom"
+            onChange={(newValue: "sol") => setValue("phantom", newValue)}
+            register={register}
+            selectOptions={PhantomSelectOptions}
           />
         </div>
         {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
@@ -110,6 +110,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </Button>
         ) : (
           <Button
+            className="w-auto px-1 py-2 md:px-4"
             onClick={async () =>
               await handleSetDefaultPayinMethod(
                 deserializePayinMethod(getValues("phantom"))
@@ -117,7 +118,6 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             }
             tag="button"
             variant="purple-light"
-            className="w-auto px-1 py-2 md:px-4"
           >
             <span className="font-[700]">{buttonName(isEmbedded)}</span>
           </Button>

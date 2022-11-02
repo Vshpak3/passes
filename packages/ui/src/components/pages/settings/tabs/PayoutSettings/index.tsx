@@ -74,9 +74,9 @@ const PayoutSettings = () => {
   return (
     <>
       <Tab
-        withBackMobile
-        title="Payout Settings"
         description="Add and manage payout methods."
+        title="Payout Settings"
+        withBackMobile
       />
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div
@@ -105,11 +105,11 @@ const PayoutSettings = () => {
         </div>
         <div>
           <Button
-            icon={<WalletIcon />}
-            variant="pink"
-            tag="button"
             className="w-auto"
+            icon={<WalletIcon />}
             onClick={() => addOrPopStackHandler(SubTabsEnum.WalletSettings)}
+            tag="button"
+            variant="pink"
           >
             Manage wallets
           </Button>
@@ -144,21 +144,21 @@ const PayoutSettings = () => {
                       amountLast: 7
                     })}
                     <Clipboard
-                      width="12px"
                       className="invisible ml-2 group-hover:visible"
+                      width="12px"
                     />
                   </span>
                   <span className="basis-1/4 text-center">
                     <Button
-                      disabled={defaultWallet?.walletId === wallet.walletId}
-                      variant="pink"
                       className="w-auto"
+                      disabled={defaultWallet?.walletId === wallet.walletId}
                       onClick={async () => {
                         await setDefaultPayoutMethod({
                           walletId: wallet.walletId,
                           method: PayoutMethodDtoMethodEnum.CircleUsdc
                         })
                       }}
+                      variant="pink"
                     >
                       {defaultWallet?.walletId === wallet.walletId
                         ? "Default"
@@ -173,11 +173,11 @@ const PayoutSettings = () => {
       <div className="my-6">
         <div className="mb-4 font-bold">Add Bank as a Payout Method</div>
         <Button
-          icon={<BankIcon />}
-          variant="pink"
           className="w-auto"
-          tag="button"
+          icon={<BankIcon />}
           onClick={() => addOrPopStackHandler(SubTabsEnum.AddBank)}
+          tag="button"
+          variant="pink"
         >
           Add bank
         </Button>
@@ -188,8 +188,8 @@ const PayoutSettings = () => {
         )}
         {banks?.map((bank) => (
           <div
-            key={bank.id}
             className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-7"
+            key={bank.id}
           >
             <div className="flex basis-3/4 flex-col justify-between">
               <span className="mb-6 font-[700]">
@@ -220,16 +220,16 @@ const PayoutSettings = () => {
               <div className="flex flex-col">
                 <div className="flex flex-row gap-2">
                   <Button
-                    disabled={defaultBank?.id === bank.id}
-                    variant={
-                      defaultBank?.id === bank.id ? "pink" : "purple-light"
-                    }
                     className="w-auto"
+                    disabled={defaultBank?.id === bank.id}
                     onClick={() =>
                       setDefaultPayoutMethod({
                         bankId: bank.id,
                         method: PayoutMethodDtoMethodEnum.CircleWire
                       })
+                    }
+                    variant={
+                      defaultBank?.id === bank.id ? "pink" : "purple-light"
                     }
                   >
                     <span className="text-[16px] font-[500]">
@@ -239,10 +239,10 @@ const PayoutSettings = () => {
                     </span>
                   </Button>
                   <button
-                    onClick={() => deleteBank(bank.id)}
                     className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10"
+                    onClick={() => deleteBank(bank.id)}
                   >
-                    <DeleteIcon width="25px" height="25px" />
+                    <DeleteIcon height="25px" width="25px" />
                   </button>
                 </div>
               </div>

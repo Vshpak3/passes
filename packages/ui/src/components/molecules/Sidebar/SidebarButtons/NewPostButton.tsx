@@ -28,16 +28,16 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
               className={`flex h-12 w-12 items-center justify-center rounded-[50%] ${
                 isMobile ? "hidden" : "lg:hidden"
               }`}
-              variant="pink"
               onClick={() => setIsNewPostModalOpen(true)}
+              variant="pink"
             >
               <PlusSign className="h-4 w-4" />
             </Button>
             <div className={`${isMobile ? "" : "hidden"} lg:flex`}>
               <Button
                 className="mt-4 !px-4 !py-5"
-                variant="pink"
                 onClick={() => setIsNewPostModalOpen(true)}
+                variant="pink"
               >
                 Create New Post
               </Button>

@@ -90,8 +90,14 @@ const AddBank = () => {
           Type of Bank Account
         </span>
         <Select
-          register={register}
           defaultValue={bankType}
+          errors={errors}
+          name="bank-country"
+          onChange={(newValue: BankTypeEnum) => {
+            setBankType(newValue)
+            setValue(BANK_COUNTRY_FIELD, newValue)
+          }}
+          register={register}
           selectOptions={[
             { label: "US Bank", value: BankTypeEnum.US },
             { label: "International Bank - IBAN", value: BankTypeEnum.IBAN },
@@ -100,12 +106,6 @@ const AddBank = () => {
               value: BankTypeEnum.NON_IBAN
             }
           ]}
-          onChange={(newValue: BankTypeEnum) => {
-            setBankType(newValue)
-            setValue(BANK_COUNTRY_FIELD, newValue)
-          }}
-          name="bank-country"
-          errors={errors}
         />
       </div>
       {bankType === BankTypeEnum.US || bankType === BankTypeEnum.NON_IBAN ? (
@@ -114,28 +114,28 @@ const AddBank = () => {
             Routing Number
           </span>
           <Input
-            register={register}
-            type="text"
-            name="routing-number"
-            placeholder="4444 1902 0192 0100"
             errors={errors}
+            name="routing-number"
             options={{
               required: { message: "Routing number is required", value: true }
             }}
+            placeholder="4444 1902 0192 0100"
+            register={register}
+            type="text"
           />
 
           <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
             Account Number
           </span>
           <Input
-            register={register}
-            type="text"
-            name="account-number"
-            placeholder="-"
             errors={errors}
+            name="account-number"
             options={{
               required: { message: "Account number is required", value: true }
             }}
+            placeholder="-"
+            register={register}
+            type="text"
           />
         </>
       ) : (
@@ -144,14 +144,14 @@ const AddBank = () => {
             IBAN
           </span>
           <Input
-            register={register}
-            type="text"
-            name="iban"
-            placeholder="IBAN"
             errors={errors}
+            name="iban"
             options={{
               required: { message: "IBAN is required", value: true }
             }}
+            placeholder="IBAN"
+            register={register}
+            type="text"
           />
         </>
       )}
@@ -159,109 +159,106 @@ const AddBank = () => {
         Bank Info
       </span>
       <Input
-        register={register}
-        type="text"
+        errors={errors}
         name="bank-name"
         placeholder="Bank Name"
-        errors={errors}
-      />
-      <Input
         register={register}
         type="text"
+      />
+      <Input
+        className="mt-4"
+        errors={errors}
         name="bank-city"
         placeholder="Bank City"
-        errors={errors}
-        className="mt-4"
+        register={register}
+        type="text"
       />
       <Select
-        register={register}
-        selectOptions={COUNTRIES}
-        name="bank-country"
-        errors={errors}
         className="mt-4"
+        errors={errors}
+        name="bank-country"
+        onChange={(newValue: string) => setValue("bank-country", newValue)}
         options={{
           required: { message: "Country is required", value: true }
         }}
-        onChange={(newValue: string) => setValue("bank-country", newValue)}
+        register={register}
+        selectOptions={COUNTRIES}
       />
 
       <div className="mt-4">
         <span className="text-[16px] font-[500]">Billing address</span>
         <Input
-          register={register}
-          type="text"
-          name="name"
-          placeholder="Name"
+          className="mt-4"
           errors={errors}
+          name="name"
           options={{
             required: { message: "Name is required", value: true }
           }}
-          className="mt-4"
-        />
-        <Input
+          placeholder="Name"
           register={register}
           type="text"
-          name="address1"
-          placeholder="Address 1"
+        />
+        <Input
+          className="mt-4"
           errors={errors}
+          name="address1"
           options={{
             required: { message: "Address is required", value: true }
           }}
-          className="mt-4"
-        />
-        <Input
+          placeholder="Address 1"
           register={register}
           type="text"
+        />
+        <Input
+          className="mt-4"
+          errors={errors}
           name="address2"
           placeholder="Address 2"
-          errors={errors}
-          className="mt-4"
+          register={register}
+          type="text"
         />
         <Select
-          register={register}
-          selectOptions={COUNTRIES}
-          name="country"
-          errors={errors}
-          placeholder="Country"
           className="mt-4"
+          errors={errors}
+          name="country"
+          onChange={(newValue: string) => setValue("country", newValue)}
           options={{
             required: { message: "Country is required", value: true }
           }}
-          onChange={(newValue: string) => setValue("country", newValue)}
+          placeholder="Country"
+          register={register}
+          selectOptions={COUNTRIES}
         />
         <Input
-          register={register}
-          type="text"
-          name="city"
-          placeholder="City"
+          className="mt-4"
           errors={errors}
+          name="city"
           options={{
             required: { message: "City is required", value: true }
           }}
-          className="mt-4"
+          placeholder="City"
+          register={register}
+          type="text"
         />
         <div className="flex gap-4">
           {countrySelected === COUNTRIES[0] ? (
             <Select
-              register={register}
-              selectOptions={US_STATES}
+              className="mt-4"
               errors={errors}
-              placeholder="State"
+              name="district"
+              onChange={(newValue: string) => setValue("district", newValue)}
               options={{
                 required: { message: "State is required", value: true }
               }}
-              name="district"
-              className="mt-4"
-              onChange={(newValue: string) => setValue("district", newValue)}
+              placeholder="State"
+              register={register}
+              selectOptions={US_STATES}
               showOnTop
             />
           ) : (
             <Input
-              register={register}
-              type="text"
-              name="district"
-              placeholder="State/District"
-              iconAlign={EIcon.Right}
+              className="mt-4"
+              errors={errors}
               icon={
                 <div
                   className="tooltip absolute right-[15px] top-6 h-4 w-4"
@@ -270,23 +267,26 @@ const AddBank = () => {
                   <InfoIcon />
                 </div>
               }
-              errors={errors}
-              className="mt-4"
+              iconAlign={EIcon.Right}
+              name="district"
               options={{
                 required: { message: "State is required", value: true }
               }}
+              placeholder="State/District"
+              register={register}
+              type="text"
             />
           )}
           <Input
-            register={register}
-            type="text"
-            name="postal-code"
-            placeholder="Zip"
+            className="mt-4"
             errors={errors}
+            name="postal-code"
             options={{
               required: { message: "Postal Code is required", value: true }
             }}
-            className="mt-4"
+            placeholder="Zip"
+            register={register}
+            type="text"
           />
         </div>
       </div>

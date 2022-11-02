@@ -44,10 +44,10 @@ export const LikeButton: FC<LikeButtonProps> = ({
 
   return (
     <button
-      type="button"
       aria-label="Toggle like"
-      onClick={toggleLike}
       className="flex cursor-pointer items-center gap-[5px] p-0"
+      onClick={toggleLike}
+      type="button"
     >
       <HeartIcon
         fill={isLiked ? "#FF60DC" : "none"}

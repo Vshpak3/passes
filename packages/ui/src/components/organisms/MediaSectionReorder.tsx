@@ -42,10 +42,10 @@ const getMediaClassname = (contentType: string) => {
 const Contents: FC<ContentsProps> = ({ listId, items }) => {
   return (
     <Droppable
-      droppableId={listId}
-      type="CARD"
       direction="horizontal"
+      droppableId={listId}
       isCombineEnabled={false}
+      type="CARD"
     >
       {(dropProvided) => (
         <div
@@ -65,7 +65,7 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
               </div>
             ) : (
               items.map((item, index) => (
-                <Draggable key={item._id} draggableId={item._id} index={index}>
+                <Draggable draggableId={item._id} index={index} key={item._id}>
                   {(dragProvided, snapshot) => (
                     <div
                       className="flex flex-shrink-0"
@@ -75,23 +75,22 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                     >
                       {item.content ? (
                         <Media
-                          contentHeight={175}
-                          preview
-                          contentWidth={175}
-                          src={ContentService.userContentMediaPath(
-                            item.content
-                          )}
-                          type={item.content.contentType}
-                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
                           className={classNames(
                             snapshot.isDragging
                               ? "!cursor-grabbing select-none"
                               : getMediaClassname(item.content.contentType)
                           )}
+                          contentHeight={175}
+                          contentWidth={175}
+                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          preview
+                          src={ContentService.userContentMediaPath(
+                            item.content
+                          )}
+                          type={item.content.contentType}
                         />
                       ) : item.file ? (
                         <MediaFile
-                          preview
                           className={classNames(
                             snapshot.isDragging
                               ? "!cursor-grabbing select-none"
@@ -99,8 +98,9 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                           )}
                           contentHeight={175}
                           contentWidth={175}
-                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
                           file={item.file}
+                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          preview
                         />
                       ) : null}
                     </div>
@@ -194,9 +194,9 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
           <div className="flex overflow-x-auto">
             <Contents
               internalScroll
+              items={filesMap["Free"]}
               key="Free"
               listId="Free"
-              items={filesMap["Free"]}
             />
           </div>
         </div>
@@ -210,9 +210,9 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
               <div className="flex items-center overflow-x-auto">
                 <Contents
                   internalScroll
+                  items={filesMap["Paid"]}
                   key="Paid"
                   listId="Paid"
-                  items={filesMap["Paid"]}
                 />
               </div>
             </div>

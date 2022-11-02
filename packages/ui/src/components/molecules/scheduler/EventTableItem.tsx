@@ -6,7 +6,6 @@ import { format } from "date-fns"
 import CheckIcon from "public/icons/check.svg"
 import TrashIcon from "public/icons/trash.svg"
 import { FC } from "react"
-import { KeyedMutator } from "swr"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { formatCurrency, formatText } from "src/helpers/formatters"
@@ -15,7 +14,6 @@ interface EventTableItemProps {
   scheduledEvent: ScheduledEventDto
   onDeleteEvent: (id: string) => void | Promise<void>
   onChangeTime: (id: string, time: Date) => void | Promise<void>
-  mutate: KeyedMutator<ScheduledEventDto[] | undefined>
   isTablet: boolean
 }
 
@@ -73,8 +71,9 @@ export const EventTableItem: FC<EventTableItemProps> = ({
             onClick={async () => await onDeleteEvent(scheduledEventId)}
           />
           <CalendarSelector
-            name="Schedule"
             activeHeader="Schedule"
+            name="Schedule"
+            placement={isTablet ? "top" : "auto"}
             scheduledTime={scheduledAt}
             setScheduledTime={async (date: Date | null) => {
               if (!date) {
@@ -82,7 +81,6 @@ export const EventTableItem: FC<EventTableItemProps> = ({
               }
               await onChangeTime(scheduledEventId, date)
             }}
-            placement={isTablet ? "top" : "auto"}
           />
         </>
       ) : (

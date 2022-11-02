@@ -12,16 +12,16 @@ export const CheckVerified: FC<CheckVerifiedProps> = ({
   ...restOfProps
 }) => (
   <svg
-    width={width}
+    fill="none"
     height={height}
     viewBox="0 0 24 24"
-    fill="none"
+    width={width}
     xmlns="http://www.w3.org/2000/svg"
     {...restOfProps}
   >
     <linearGradient
-      id="a"
       gradientUnits="userSpaceOnUse"
+      id="a"
       x1={1}
       x2={23}
       y1={1}

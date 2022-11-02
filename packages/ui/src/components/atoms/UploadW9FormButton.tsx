@@ -48,9 +48,9 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
     <form onSubmit={handleSubmit(uploadW9FormHandler)}>
       {form && form[0] ? (
         <button
-          type="submit"
-          disabled={isSubmitSuccessful}
           className="w-full rounded-full bg-passes-green py-1 font-semibold text-black"
+          disabled={isSubmitSuccessful}
+          type="submit"
         >
           Upload
         </button>
@@ -58,17 +58,17 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
         <FileInput
           accept={[".pdf"]}
           name="form"
-          register={register}
           options={{ required: true }}
+          register={register}
           trigger={
             <Button
-              variant="primary"
               style={{
                 background: "rgba(255, 254, 255, 0.15)",
                 fontWeight: "bold",
                 width: "100%",
                 color: "white"
               }}
+              variant="primary"
             >
               {icon && <EditIcon />}
               {formatText(text)}

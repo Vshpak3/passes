@@ -39,7 +39,6 @@ export const CreditCardInput: FC<CreditCardInputProps> = ({
       <Controller
         control={control}
         name={name}
-        rules={rules}
         render={({ field: { onChange }, fieldState: { error } }) => (
           <div className="relative mt-4">
             <span className="absolute right-3 top-4 flex flex-row">
@@ -49,8 +48,8 @@ export const CreditCardInput: FC<CreditCardInputProps> = ({
             </span>
             <input
               className="block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
-              onChange={(event) => handleChange(event, onChange)}
               maxLength={19}
+              onChange={(event) => handleChange(event, onChange)}
               placeholder="Card number"
               value={visibleValue}
             />
@@ -59,6 +58,7 @@ export const CreditCardInput: FC<CreditCardInputProps> = ({
             )}
           </div>
         )}
+        rules={rules}
       />
     </div>
   )

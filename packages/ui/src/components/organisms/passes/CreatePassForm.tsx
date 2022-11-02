@@ -53,11 +53,11 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
       <CreatePassHeader title={createPassHeader} />
       {!isSubmitSuccessful && (
         <ConfirmationDialog
-          title="Are you sure?"
           desc="This pass can not be changed after it's created"
           isOpen={showCreatePassConfirmationModal}
           onClose={() => setShowCreatePassConfirmationModal(false)}
           onConfirm={onCreatePass}
+          title="Are you sure?"
         />
       )}
       <div className="col-span-12 mx-auto w-[100%] lg:col-span-10 lg:max-w-[680px]">
@@ -65,25 +65,25 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
           <PassNameInput errors={errors} register={register} />
           <PassFileUpload
             errors={errors}
-            files={files}
             fileUploadError={fileUploadError}
-            // maximumLimit={maximumLimit}
+            files={files}
+            isPreview={false}
             onDragDropChange={onDragDropChange}
             onRemoveFileUpload={onRemoveFileUpload}
             register={register}
-            isPreview={false}
+            // maximumLimit={maximumLimit}
           />
-          <PassDescriptionInput register={register} errors={errors} />
-          <PassPrice register={register} errors={errors} />
+          <PassDescriptionInput errors={errors} register={register} />
+          <PassPrice errors={errors} register={register} />
           {isSubscriptionPass && (
             <PassNumberInput
-              suffix="%"
-              register={register}
-              // errors={errors}
-              title="Set royalties % on re-sales"
+              className="pl-[50px]"
               name="royalties"
               placeholder="0.00"
-              className="pl-[50px]"
+              register={register}
+              suffix="%"
+              title="Set royalties % on re-sales"
+              // errors={errors}
               // infoIcon
             />
           )}
@@ -93,23 +93,23 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
             />
           )}
           {isSubscriptionPass && (
-            <PassFreeTrial register={register} errors={errors} />
+            <PassFreeTrial errors={errors} register={register} />
           )}
           {isLifetimePass && (
-            <PassLifetimeOptions register={register} errors={errors} />
+            <PassLifetimeOptions errors={errors} register={register} />
           )}
           {isSubscriptionPass && (
             <PassSupply
-              register={register}
               errors={errors}
-              setPassValue={setSupplyValue}
               passValue={supplyValue}
+              register={register}
+              setPassValue={setSupplyValue}
             />
           )}
           <PassDirectMessage
+            passValue={massagesValue}
             register={register}
             setPassValue={setMassagesValue}
-            passValue={massagesValue}
           />
           {isSubscriptionPass && <PassRenewal />}
           <CreatePassButton

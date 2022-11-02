@@ -41,15 +41,15 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           </span>
         </div>
         <PaymentModalBody
-          price={message?.price ?? 0}
           closeModal={() => setMessage(null)}
+          price={message?.price ?? 0}
           setPayinMethod={setPayinMethod}
         />
       </div>
       <BuyMessageButton
-        payinMethod={payinMethod}
         messageId={message.messageId}
         onSuccess={() => setMessage(null)}
+        payinMethod={payinMethod}
       />
     </Modal>
   )

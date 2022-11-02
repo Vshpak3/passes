@@ -49,8 +49,8 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
             These membership holders will be able to view your content for free
           </span>
           <PassesSearchBar
-            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
             onSelect={onPassSelect}
+            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
           />
         </div>
       </div>
@@ -64,11 +64,11 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
               <span className="text-base font-bold text-[#ffffff]/40">$</span>
             </div>
             <NumberInput
-              type="currency"
-              register={register}
-              name="price"
-              maxInput={MAX_PAID_POST_PRICE}
               className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+              maxInput={MAX_PAID_POST_PRICE}
+              name="price"
+              register={register}
+              type="currency"
             />
           </div>
         </div>
@@ -76,8 +76,8 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           {selectedPasses.map((pass: PassDto) => (
             <Tag
               key={pass.passId}
-              title={formatText(pass.title) as string}
               onClick={() => removePass(pass.passId)}
+              title={formatText(pass.title) as string}
             />
           ))}
         </div>

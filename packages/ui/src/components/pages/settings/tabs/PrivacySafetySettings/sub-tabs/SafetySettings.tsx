@@ -9,7 +9,7 @@ const SafetySettings = () => {
   const { addTabToStackHandler } = useSettings() as SettingsContextProps
 
   return (
-    <Tab withBack title="Safety" description="Manage blocked and restricted.">
+    <Tab description="Manage blocked and restricted." title="Safety" withBack>
       <div className="mt-6 px-2.5">
         <button
           className="flex w-full items-center justify-between"
