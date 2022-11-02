@@ -5,7 +5,10 @@ import { useEffect, useRef } from "react"
  *  from the previous render.
  *  https://usehooks.com/usePrevious/
  */
-export const usePrevious = <T,>(value: T): T | null => {
+
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const usePrevious = <T,>(value: T): T | null => {
   // The ref object is a generic container whose current property is mutable ...
   // ... and can hold any value, similar to an instance property on a class
   const ref = useRef<T | null>(null)

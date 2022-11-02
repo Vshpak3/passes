@@ -7,7 +7,14 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
-import { FC, useEffect, useState } from "react"
+import {
+  FC,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -21,7 +28,6 @@ import {
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useOnScreen } from "src/hooks/useOnScreen"
-import { usePrevious } from "src/hooks/usePrevious"
 import { useUser } from "src/hooks/useUser"
 import { ChannelMessage } from "./ChannelMessage"
 
@@ -41,13 +47,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const [time, _setTime] = useState(Date.now())
   const api = new MessagesApi()
 
-  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({})
+  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen()
 
   const [messages, setMessages] = useState<MessageDto[]>([])
-  const prevMessages = usePrevious(messages)
-  const [unreadMessageIds, setUnreadMessageIds] = useState<Set<string>>(
-    new Set()
-  )
+  const [unreadCount, setUnreadCount] = useState(0)
 
   const { accessToken } = useUser()
   const [isConnected, setIsConnected] = useState(false)
@@ -114,6 +117,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           switch (newMessage.notification) {
             case "message":
               setMessages((messages) => [newMessage, ...messages])
+              setUnreadCount((count) =>
+                newMessage.senderId !== user?.userId ? count + 1 : count
+              )
               setPendingMessages((pendingMessages) =>
                 pendingMessages.filter(
                   (message) => message.messageId !== newMessage.messageId
@@ -143,7 +149,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         socket.off("message")
       }
     }
-  }, [channelId, socket, setMessageUpdates])
+  }, [channelId, socket, setMessageUpdates, user?.userId])
 
   useEffect(() => {
     if (!channelId) {
@@ -173,39 +179,16 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     }
   }
 
-  const handleScrollToBottom = () => {
+  const handleScrollToBottom = useCallback(() => {
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+  }, [bottomOfChatRef])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     // if you scroll to the bottom, get rid of unread message IDs
-    if (unreadMessageIds.size > 0 && isBottomOfChatVisible) {
-      setUnreadMessageIds(new Set())
+    if (unreadCount > 0 && isBottomOfChatVisible) {
+      setUnreadCount(0)
     }
-  }, [isBottomOfChatVisible, unreadMessageIds.size])
-
-  useEffect(() => {
-    if (
-      !!prevMessages &&
-      prevMessages.length < messages.length &&
-      !isBottomOfChatVisible
-    ) {
-      // collect new message IDs as unread as they come in
-      //  when not at the bottom of the chat box
-      setUnreadMessageIds(
-        (unread) =>
-          new Set([
-            ...Array.from(unread),
-            ...messages
-              // grab new messages from the front of the array
-              .slice(0, messages.length - prevMessages.length)
-              // remove your own messages (other sender only)
-              .filter((m) => m.senderId !== user?.userId)
-              .map((m) => m.messageId)
-          ])
-      )
-    }
-  }, [isBottomOfChatVisible, messages, prevMessages, user?.userId])
+  }, [isBottomOfChatVisible, unreadCount])
 
   return (
     <>
@@ -274,7 +257,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 )
               })}
           </InfiniteScrollPagination>
-          {unreadMessageIds.size > 0 && (
+          {unreadCount > 0 && (
             <button
               className="fixed mb-5
             flex items-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
@@ -282,8 +265,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             >
               <ArrowDownIcon />
               <span className="ml-2">
-                +{unreadMessageIds.size} New Message
-                {unreadMessageIds.size !== 1 && "s"}
+                +{unreadCount} New Message
+                {unreadCount !== 1 && "s"}
               </span>
             </button>
           )}

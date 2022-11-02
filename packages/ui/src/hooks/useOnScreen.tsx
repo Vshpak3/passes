@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react"
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react"
 
 /**
  * Hook that can tell you whether an HTML element
@@ -7,27 +7,29 @@ import { MutableRefObject, useEffect, useRef, useState } from "react"
  * https://stackoverflow.com/questions/58341787/intersectionobserver-with-react-hooks/67826055#67826055
  */
 export const useOnScreen = (
-  options: IntersectionObserverInit
+  options?: IntersectionObserverInit
 ): [MutableRefObject<HTMLDivElement | null>, boolean] => {
   const ref = useRef(null)
   const [isOnScreen, setIsOnScreen] = useState(false)
 
-  useEffect(() => {
-    const currentRef = ref.current
-    const observer = new IntersectionObserver(([entry]) => {
-      setIsOnScreen(entry.isIntersecting)
-    }, options)
+  const observer = useMemo(
+    () =>
+      new IntersectionObserver(
+        ([entry]) => setIsOnScreen(entry.isIntersecting),
+        options
+      ),
+    [options]
+  )
 
-    if (currentRef) {
-      observer.observe(currentRef)
+  useEffect(() => {
+    if (ref.current) {
+      observer.observe(ref.current)
     }
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
+      observer.disconnect()
     }
-  }, [ref, options])
+  }, [ref, observer])
 
   return [ref, isOnScreen]
 }
