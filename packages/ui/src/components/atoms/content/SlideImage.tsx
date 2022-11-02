@@ -16,7 +16,7 @@ export const SlideImage: FC<SlideImageProps> = forwardRef(
   ({ content }: SlideImageProps, ref: ForwardedRef<HTMLImageElement>) => {
     const image = ContentService.userContentMediaPath(content)
     return (
-      <div className="relative mt-4 max-h-[1200px] cursor-pointer">
+      <div className="relative max-h-[1200px] cursor-pointer">
         <div className="relative h-full overflow-hidden bg-black">
           <img
             ref={ref}

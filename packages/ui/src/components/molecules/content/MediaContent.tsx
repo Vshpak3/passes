@@ -20,7 +20,7 @@ const MediaContentUnmemo: FC<MediaContentProps> = ({
           This content is being processed.
         </div>
       ) : (
-        <div className="relative mt-3 flex w-full items-center justify-center bg-transparent">
+        <div className="relative flex w-full items-center justify-center bg-transparent">
           <div className="relative w-[100%]">
             <ContentCarousel {...res} />
           </div>
