@@ -37,9 +37,9 @@ export const SlideImage: FC<SlideImageProps> = forwardRef(
             alt=""
             // height={400}
             // width={650}
-            className="swiper-lazy relative z-20 inline-block h-auto max-w-full object-contain"
+            className=" relative z-20 inline-block h-auto max-w-full object-contain"
           />
-          <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+          {/* <div className="swiper-lazy-preloader swiper-lazy-preloader-white"></div> */}
         </div>
       </div>
     )
