@@ -37,6 +37,8 @@ interface ChannelStreamProps {
   minimumTip?: number | null
 }
 
+const api = new MessagesApi()
+
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
@@ -45,8 +47,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const { user } = useUser()
 
   const time = Date.now()
-
-  const api = new MessagesApi()
 
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.7
@@ -170,17 +170,15 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       setPendingMessages(pendingMessagesRes.data)
     }
     fetch()
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [channelId])
 
-  const onReadLastMessage = async () => {
+  const onReadLastMessage = useCallback(async () => {
     if (channelId) {
       await api.readMessages({
         channelId
       })
     }
-  }
+  }, [channelId])
 
   const handleScrollToBottom = useCallback(() => {
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -192,7 +190,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     if (unreadCount > 0 && isBottomOfChatVisible) {
       setUnreadCount(0)
     }
-  }, [isBottomOfChatVisible, unreadCount])
+    if (isBottomOfChatVisible) {
+      onReadLastMessage()
+    }
+  }, [isBottomOfChatVisible, unreadCount, onReadLastMessage])
 
   return (
     <>
