@@ -15,7 +15,6 @@ export type FormType =
   | "checkbox"
   | "toggle"
   | "select"
-  | "file"
   | "drag-drop-file"
   | "tags"
   | "radio"

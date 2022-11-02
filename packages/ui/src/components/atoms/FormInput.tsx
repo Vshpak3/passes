@@ -1,7 +1,6 @@
 import React, { CSSProperties, FC } from "react"
 
 import { Checkbox } from "src/components/atoms/Checkbox"
-import { File } from "src/components/atoms/File"
 import { EIcon, Input } from "src/components/atoms/Input"
 import { Select, SelectProps } from "src/components/atoms/Select"
 import { TextArea } from "src/components/atoms/TextArea"
@@ -207,19 +206,6 @@ export const FormInput: FC<FormInputProps> = ({
         selectOptions={selectOptions}
         errors={errors}
         className={className}
-        {...rest}
-      />
-    ),
-    file: (
-      <File
-        name={name}
-        label={label}
-        accept={accept}
-        placeholder={placeholder}
-        register={register}
-        options={options}
-        errors={errors}
-        multiple={multiple}
         {...rest}
       />
     ),

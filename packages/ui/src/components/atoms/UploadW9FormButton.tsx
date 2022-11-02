@@ -6,7 +6,7 @@ import { Button } from "src/components/atoms/Button"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { formatText } from "src/helpers/formatters"
-import { FormInput } from "./FormInput"
+import { File } from "./File"
 
 interface UploadW9FormProps {
   form: File[]
@@ -55,9 +55,8 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
           Upload
         </button>
       ) : (
-        <FormInput
+        <File
           accept={[".pdf"]}
-          type="file"
           name="form"
           register={register}
           options={{ required: true }}
