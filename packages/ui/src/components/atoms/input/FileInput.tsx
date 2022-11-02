@@ -1,5 +1,6 @@
 import React, { FC, useRef } from "react"
 
+import { Label } from "src/components/atoms/Label"
 import {
   FileAccept,
   FormErrors,
@@ -9,7 +10,6 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/types/FormTypes"
-import { Label } from "../Label"
 
 type FileInputProps = {
   label?: FormLabel

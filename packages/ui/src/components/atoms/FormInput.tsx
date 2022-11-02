@@ -3,7 +3,6 @@ import React, { CSSProperties, FC } from "react"
 import { Checkbox } from "src/components/atoms/Checkbox"
 import { EIcon, Input } from "src/components/atoms/Input"
 import { Select, SelectProps } from "src/components/atoms/Select"
-import { TextArea } from "src/components/atoms/TextArea"
 import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { TagsInput } from "src/components/molecules/TagsInput"
 import {
@@ -154,18 +153,6 @@ export const FormInput: FC<FormInputProps> = ({
         tagsFromServer={tagsFromServer}
         // errors={errors}
         // icon={icon}
-        {...rest}
-      />
-    ),
-    "text-area": (
-      <TextArea
-        name={name}
-        label={label}
-        options={options}
-        errors={errors}
-        register={register}
-        className={className}
-        placeholder={placeholder}
         {...rest}
       />
     ),

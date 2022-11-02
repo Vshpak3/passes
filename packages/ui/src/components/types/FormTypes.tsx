@@ -11,7 +11,6 @@ export type FormType =
   | "phone"
   | "password"
   | "date"
-  | "text-area"
   | "checkbox"
   | "toggle"
   | "select"

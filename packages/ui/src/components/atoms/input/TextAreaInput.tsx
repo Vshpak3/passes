@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import React, { FC, useEffect, useRef, useState } from "react"
 
+import { Label } from "src/components/atoms/Label"
 import {
   FormErrors,
   FormLabel,
@@ -8,9 +9,8 @@ import {
   FormOptions,
   FormRegister
 } from "src/components/types/FormTypes"
-import { Label } from "./Label"
 
-type TextAreaProps = {
+type TextAreaInputProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
@@ -22,7 +22,7 @@ type TextAreaProps = {
   placeholder?: string
 }
 
-export const TextArea: FC<TextAreaProps> = ({
+export const TextAreaInput: FC<TextAreaInputProps> = ({
   name,
   label,
   register,

@@ -3,7 +3,7 @@ import Recorder from "public/icons/media-recorder.svg"
 import Photos from "public/icons/profile-photos1-icon.svg"
 import { ChangeEvent, FC, PropsWithChildren } from "react"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { FileInput } from "src/components/atoms/input/FileInput"
 import {
   FileAccept,
   FormErrors,
@@ -59,7 +59,7 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
           <div className="flex w-full flex-wrap justify-between gap-1">
             {selectors.map(({ name, Icon, accept, multiple }) => {
               return (
-                <FormInput
+                <FileInput
                   trigger={
                     <button
                       type="button"
@@ -88,7 +88,6 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                   }
                   // onBlur={() => setActiveMediaHeader("")}
                   // there's no way to detect closing event
-                  type={"file"}
                   register={register}
                   errors={errors}
                   options={{ ...options, onChange }}

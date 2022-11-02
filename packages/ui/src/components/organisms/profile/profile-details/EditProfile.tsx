@@ -9,9 +9,10 @@ import { object, string } from "yup"
 
 import { PassesPinkButton } from "src/components/atoms/Button"
 import { FormInput } from "src/components/atoms/FormInput"
+import { TextAreaInput } from "src/components/atoms/input/TextAreaInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
-import { FormLabel, FormType } from "src/components/types/FormTypes"
+import { FormLabel } from "src/components/types/FormTypes"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
@@ -30,29 +31,29 @@ const editProfileSchema = object({
 })
 
 interface RenderInputProps {
-  type: FormType
-  label: FormLabel
+  type: typeof FormInput | typeof TextAreaInput
+  placeholder: FormLabel
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: any
 }
 
 const bioForm: Record<string, RenderInputProps> = {
   description: {
-    type: "text-area",
-    label: "Description"
+    type: TextAreaInput,
+    placeholder: "Description"
   }
 }
 
 const profilermationForm: Record<string, RenderInputProps> = {
-  displayName: { type: "text", label: "Display Name" }
+  displayName: { type: FormInput, placeholder: "Display Name" }
 }
 
 const socialMediaForm: Record<string, RenderInputProps> = Object.fromEntries(
   Object.entries(socialUsernameToIcon).map(([type, icon]) => [
     type,
     {
-      type: "text",
-      label:
+      type: FormInput,
+      placeholder:
         type.charAt(0).toUpperCase() + type.slice(1).replace("Username", ""),
       icon
     }
@@ -103,12 +104,12 @@ export const EditProfile: FC<EditProfileProps> = ({
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex" key={key}>
       {!!input?.icon && <input.icon className="mr-3 mt-3 h-[22px] w-[22px]" />}
-      <FormInput
+      <input.type
+        type="text"
         register={register}
         name={key}
         className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
-        type={input.type}
-        placeholder={input.label}
+        placeholder={input.placeholder}
         errors={errors}
       />
     </div>
