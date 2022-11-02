@@ -46,6 +46,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         navigation={true}
         modules={[Lazy, Pagination, Navigation]}
         className="mySwiper"
+        autoHeight={true}
         lazy={true}
       >
         {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
