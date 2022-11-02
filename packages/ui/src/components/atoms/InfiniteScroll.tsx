@@ -92,10 +92,10 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const triggerFetch = useCallback(
-    debounce(async (_size: number) => {
-      setSize(_size)
+    debounce(async () => {
+      setSize((size) => size + 1)
     }, SCROLL_DEBOUNCE_MS),
-    []
+    [setSize]
   )
 
   const [flattenedData, setFlattenedData] = useState<A[]>([])
@@ -114,7 +114,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       dataLength={flattenedData.length}
       className={"w-full " + className ?? ""}
       style={{ width: "100%", ...style }}
-      next={() => triggerFetch(size + 1)}
+      next={triggerFetch}
       hasMore={!data || !!data[data.length - 1].lastId}
       loader={loadingElement}
       endMessage={size !== 1 && endElement}

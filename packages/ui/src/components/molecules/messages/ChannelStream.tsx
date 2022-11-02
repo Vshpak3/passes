@@ -183,7 +183,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           }}
         >
           <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-            keyValue={`messages/${time}`}
+            keyValue={`messages/${time}/${channelId}`}
             fetch={async (req: GetMessagesRequestDto) => {
               return await api.getMessages({ getMessagesRequestDto: req })
             }}
