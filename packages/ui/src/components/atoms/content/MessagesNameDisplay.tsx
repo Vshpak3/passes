@@ -15,12 +15,12 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   linked = false
 }) => {
   const text = (
-    <>
+    <div className="flex flex-row items-center">
       <span>{displayName}</span>
       <Text fontSize={11} className="ml-2 text-gray-500">
         {" @" + username}
       </Text>
-    </>
+    </div>
   )
   return linked ? (
     <Link href={`${window.location.origin}/${username}`}>
