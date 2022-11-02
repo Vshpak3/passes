@@ -8,16 +8,21 @@ import { Modal } from "src/components/organisms/Modal"
 interface TippedMessageModalProps {
   messageRequest: SendMessageRequestDto
   setMessageRequest: Dispatch<SetStateAction<SendMessageRequestDto | null>>
+  onSuccess: (() => void) | null
 }
 
 const TippedMessageModal: FC<TippedMessageModalProps> = ({
   messageRequest,
-  setMessageRequest
+  setMessageRequest,
+  onSuccess
 }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
   const onSuccessHandler = () => {
     setMessageRequest(null)
+    if (onSuccess) {
+      onSuccess
+    }
   }
 
   return (

@@ -27,6 +27,7 @@ import {
 } from "src/components/organisms/MediaSelector"
 import { ContentService } from "src/helpers/content"
 import { preventNegative } from "src/helpers/keyboard"
+import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
@@ -83,21 +84,9 @@ export const InputMessage: FC<InputMessageProps> = ({
     event.target.value = ""
   }
 
-  const registerMessage = async () => {
-    const contentIds = await new ContentService().uploadUserContent({
-      files,
-      inMessage: true
-    })
-    const result = await api.sendMessage({
-      sendMessageRequestDto: {
-        text: message,
-        contentIds: contentIds,
-        channelId,
-        tipAmount: tip,
-        price: isPaid ? messagePrice : 0,
-        previewIndex: isPaid ? mediaPreviewIndex : 0
-      }
-    })
+  const { setTippedMessage, setOnSuccess } = useTippedMessageModal()
+
+  const clear = () => {
     setFiles([])
     setMessagePrice(0)
     setVaultContent([])
@@ -105,6 +94,30 @@ export const InputMessage: FC<InputMessageProps> = ({
     if (!tip) {
       removeFree()
     }
+  }
+
+  const getRequest = async () => {
+    const contentIds = await new ContentService().uploadUserContent({
+      files,
+      inMessage: true
+    })
+    return {
+      text: message,
+      contentIds: contentIds,
+      channelId,
+      tipAmount: tip,
+      price: isPaid ? messagePrice : 0,
+      previewIndex: isPaid ? mediaPreviewIndex : 0
+    }
+  }
+
+  const registerMessage = async () => {
+    const result = await api.sendMessage({
+      sendMessageRequestDto: await getRequest()
+    })
+
+    clear()
+
     return result
   }
 
@@ -127,7 +140,9 @@ export const InputMessage: FC<InputMessageProps> = ({
     try {
       await submitData(tip)
       if (!blocked) {
-        submit()
+        // submit()
+        setOnSuccess(clear)
+        setTippedMessage(await getRequest())
         reset()
       }
     } catch (error) {

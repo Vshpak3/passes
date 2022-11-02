@@ -109,6 +109,9 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
+
+  const [onSuccess, setOnSuccess] = useState<(() => void) | null>(null)
+
   const { hasRefreshed, mutate, user } = useTokenRefresh()
   const { setPayin } = useThreeDS()
   const router = useRouter()
@@ -146,7 +149,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     ],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
     [BuyMessageModalContext.Provider, { setMessage: setBuyMessage }],
-    [TippedMessageModalContext.Provider, { setMessage: setTippedMessage }],
+    [
+      TippedMessageModalContext.Provider,
+      { setTippedMessage: setTippedMessage, setOnSuccess: setOnSuccess }
+    ],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
@@ -165,6 +171,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
         <TippedMessageModal
           messageRequest={tippedMessage}
           setMessageRequest={setTippedMessage}
+          onSuccess={onSuccess}
         />
       )}
       {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
