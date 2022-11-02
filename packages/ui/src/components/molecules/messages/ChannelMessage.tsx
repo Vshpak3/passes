@@ -2,26 +2,26 @@ import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
-import { FC, useState } from "react"
+import { FC } from "react"
 import TimeAgo from "react-timeago"
 
 import { MediaContent } from "src/components/molecules/content/MediaContent"
-import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency, formatText } from "src/helpers/formatters"
+import { useBuyMessageModal } from "src/hooks/context/useBuyMessageModal"
 import { DollarSymbol } from "src/icons/DollarSymbol"
 import { DoubleCheckMarkIcon } from "src/icons/DoubleCheckMark"
 import { SpinnerIcon } from "src/icons/SpinnerIcon"
 
 interface ChannelMessageProps {
-  isOwnMessage?: boolean
+  ownsMessage?: boolean
   message: MessageDto
 }
 export const ChannelMessage: FC<ChannelMessageProps> = ({
   message,
-  isOwnMessage = false
+  ownsMessage = false
 }) => {
-  const messageBackground = isOwnMessage ? "bg-black" : "bg-[#1E1820]"
+  const messageBackground = ownsMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
   const {
     senderId,
@@ -41,23 +41,22 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       </span>
     </div>
   )
-
-  const [openBuyMessageModal, setOpenBuyMessageModal] = useState(false)
+  const { setMessage } = useBuyMessageModal()
   return (
     <div
       className={classNames(
         "m-4 flex max-w-[70%] rounded",
-        isOwnMessage && "flex-row-reverse self-end"
+        ownsMessage && "flex-row-reverse self-end"
       )}
     >
-      {!isOwnMessage && (
+      {!ownsMessage && (
         <div className="flex flex-shrink-0 items-end">
           <ProfileThumbnail userId={senderId} />
         </div>
       )}
       <div className="mx-4 flex flex-col items-end">
         <div className="relative flex flex-col items-center gap-3 md:flex-row">
-          {!!message?.tipAmount && isOwnMessage && tipComponent}
+          {!!message?.tipAmount && ownsMessage && tipComponent}
           <div
             className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
@@ -68,18 +67,11 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   contents={messageContent}
                   isProcessing={!contentProcessed}
                   paying={paying}
-                  paid={!!paidAt || !!isOwnMessage}
+                  paid={!!paidAt || !!ownsMessage}
                   previewIndex={previewIndex}
                   price={price}
-                  openBuyModal={() => setOpenBuyMessageModal(true)}
+                  openBuyModal={() => setMessage(message)}
                 />
-                {openBuyMessageModal && (
-                  <BuyMessageModal
-                    message={message}
-                    isOpen={openBuyMessageModal}
-                    setOpen={setOpenBuyMessageModal}
-                  />
-                )}
               </div>
             )}
             {!message?.pending && sentAt && (
@@ -109,7 +101,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             )}
           </div>
-          {!!message?.tipAmount && !isOwnMessage && tipComponent}
+          {!!message?.tipAmount && !ownsMessage && tipComponent}
         </div>
         {message?.pending ? (
           <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">

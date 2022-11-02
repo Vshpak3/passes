@@ -1,20 +1,19 @@
 import {
-  GetPayinMethodResponseDtoMethodEnum,
   PayinDataDto,
+  PayinMethodDto,
   PostApi,
   PostDto
 } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
+import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
 import { MIN_TIP_POST_PRICE } from "src/config/post"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
-import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface TipPostModalProps {
   post: PostDto
@@ -22,22 +21,25 @@ interface TipPostModalProps {
 }
 
 const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
-  const { defaultPayinMethod, defaultCard } = usePayinMethod()
+  const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
   const {
     register,
     getValues,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors },
+    watch
   } = useForm<{
     "tip-value": number
   }>()
+  const tipValue = watch("tip-value")
   const api = new PostApi()
   const registerTip = async () => {
     return await api.registerTipPost({
       tipPostRequestDto: {
         postId: post.postId,
-        amount: Number(getValues("tip-value"))
+        amount: Number(getValues("tip-value")),
+        payinMethod: payinMethod
       }
     })
   }
@@ -77,25 +79,12 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
           }
         }}
       />
-      <div className="my-8">
-        {defaultPayinMethod && (
-          <PayinMethodDisplay
-            payinMethod={defaultPayinMethod}
-            card={defaultCard}
-            closeModal={() => setPost(null)}
-          />
-        )}
-      </div>
-      <TipPostButton
-        isDisabled={
-          !defaultPayinMethod ||
-          defaultPayinMethod.method ===
-            GetPayinMethodResponseDtoMethodEnum.None ||
-          isSubmitSuccessful
-        }
-        onClick={handleSubmit(submit)}
-        isLoading={loading}
+      <PaymentModalBody
+        price={tipValue}
+        closeModal={() => setPost(null)}
+        setPayinMethod={setPayinMethod}
       />
+      <TipPostButton onClick={handleSubmit(submit)} isLoading={loading} />
     </Modal>
   )
 }

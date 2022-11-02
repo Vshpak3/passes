@@ -11,8 +11,8 @@ import { toast } from "react-toastify"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"
 import { formatText } from "src/helpers/formatters"
+import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
-import { useBuyPassModal } from "src/hooks/useBuyPassModal"
 import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {

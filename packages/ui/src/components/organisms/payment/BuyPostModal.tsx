@@ -1,9 +1,10 @@
-import { PostDto } from "@passes/api-client"
+import { PayinMethodDto, PostDto } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
+import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
@@ -16,6 +17,7 @@ interface BuyPostModalProps {
 }
 
 const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
+  const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
   const { externalPasses } = useExternalPasses()
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
   const { images, video } = contentTypeCounter(post?.contents)
@@ -59,7 +61,16 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           </div>
         )}
       </div>
-      <BuyPostButton postId={post?.postId || ""} onSuccess={onSuccessHandler} />
+      <PaymentModalBody
+        price={post?.price ?? 0}
+        closeModal={() => setPost(null)}
+        setPayinMethod={setPayinMethod}
+      />
+      <BuyPostButton
+        payinMethod={payinMethod}
+        postId={post?.postId || ""}
+        onSuccess={onSuccessHandler}
+      />
     </Modal>
   )
 }

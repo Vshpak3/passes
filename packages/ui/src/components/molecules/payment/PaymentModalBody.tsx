@@ -1,4 +1,5 @@
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
+import Link from "next/link"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { memo, useEffect } from "react"
@@ -47,9 +48,9 @@ const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
 
 const PaymentModalBodyUnmemo = ({
   price,
-  setPayinMethod
-}: // closeModal
-PaymentModalBodyProps) => {
+  setPayinMethod,
+  closeModal
+}: PaymentModalBodyProps) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
 
   const { register, setValue, watch } = useForm<PaymentModalBodyFromProps>({
@@ -109,6 +110,12 @@ PaymentModalBodyProps) => {
         defaultValue={defaultSelected}
         changeOnDefault={true}
       />
+      <div className="my-4 mr-1 text-[#ffff]/90 underline">
+        Click here to update your default payment method or add a new one.
+        <Link href="/settings/payment">
+          <a onClick={closeModal}>settings</a>
+        </Link>
+      </div>
       <ThreeDSInfo price={price} payinMethod={payinMethod} />
     </form>
   )

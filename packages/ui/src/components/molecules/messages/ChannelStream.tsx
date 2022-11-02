@@ -221,7 +221,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                     ...arg,
                     ...(messageUpdates[arg.messageId] ?? {})
                   }}
-                  isOwnMessage={arg.senderId === user?.userId}
+                  ownsMessage={arg.senderId === user?.userId}
                 />
               )
             }}
@@ -239,7 +239,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                       ...m,
                       ...(messageUpdates[m.messageId] ?? {})
                     }}
-                    isOwnMessage={m.senderId === user?.userId}
+                    ownsMessage={m.senderId === user?.userId}
                   />
                 )
               })}
@@ -252,7 +252,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                       ...m,
                       ...(messageUpdates[m.messageId] ?? {})
                     }}
-                    isOwnMessage={m.senderId === user?.userId}
+                    ownsMessage={m.senderId === user?.userId}
                   />
                 )
               })}

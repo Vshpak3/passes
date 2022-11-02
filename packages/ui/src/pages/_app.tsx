@@ -1,6 +1,11 @@
 import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
-import { PassDto, PostDto } from "@passes/api-client"
+import {
+  MessageDto,
+  PassDto,
+  PostDto,
+  SendMessageRequestDto
+} from "@passes/api-client"
 import debounce from "lodash.debounce"
 import ms from "ms"
 import { NextPage } from "next"
@@ -18,16 +23,20 @@ import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModalData } from "src/components/organisms/BlockModal"
+import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
+import TippedMessageModal from "src/components/organisms/payment/TIppedMessageModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
 import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
 import { AppProviders } from "src/contexts/AppProviders"
 import { BlockModalContext } from "src/contexts/BlockModal"
+import { BuyMessageModalContext } from "src/contexts/BuyMessageModal"
 import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
+import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
 import {
   LANDING_MESSAGES,
@@ -93,6 +102,9 @@ type SubAppProps = {
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+  const [buyMessage, setBuyMessage] = useState<MessageDto | null>(null)
+  const [tippedMessage, setTippedMessage] =
+    useState<SendMessageRequestDto | null>(null)
   const [tipPost, setTipPost] = useState<PostDto | null>(null)
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
@@ -133,6 +145,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       { usernames: {}, profileImages: new Set<string>() }
     ],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
+    [BuyMessageModalContext.Provider, { setMessage: setBuyMessage }],
+    [TippedMessageModalContext.Provider, { setMessage: setTippedMessage }],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
@@ -144,6 +158,15 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     <AppProviders providers={providers}>
       <Component {...pageProps} />
       {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
+      {buyMessage && (
+        <BuyMessageModal message={buyMessage} setMessage={setBuyMessage} />
+      )}
+      {tippedMessage && (
+        <TippedMessageModal
+          messageRequest={tippedMessage}
+          setMessageRequest={setTippedMessage}
+        />
+      )}
       {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
       {reportData && (
         <ReportModal reportData={reportData} setReportData={setReportData} />

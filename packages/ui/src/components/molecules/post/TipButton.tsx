@@ -2,7 +2,7 @@ import { PostDto } from "@passes/api-client"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import React, { FC } from "react"
 
-import { useTipPostModal } from "src/hooks/useTipPostModal"
+import { useTipPostModal } from "src/hooks/context/useTipPostModal"
 
 interface TipButtonProps {
   post: PostDto
