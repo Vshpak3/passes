@@ -24,10 +24,14 @@ export class ScheduledEventDto {
   @DtoProperty({ type: 'date' })
   scheduledAt: Date
 
+  @DtoProperty({ type: 'boolean' })
+  processed: boolean
+
   constructor(scheduledEvent: ScheduledEventEntity | undefined) {
     if (scheduledEvent) {
       this.scheduledEventId = scheduledEvent.id
       this.type = scheduledEvent.type
+      this.processed = scheduledEvent.processed
       switch (this.type) {
         case ScheduledEventTypeEnum.CREATE_POST:
           this.createPost = scheduledEvent.body

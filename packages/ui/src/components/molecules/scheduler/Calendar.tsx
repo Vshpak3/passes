@@ -60,15 +60,17 @@ export const Calendar: FC = () => {
     setMatrixDate(flatten(getCalendarMatrix(month, year)))
   }, [month, year, setMonthYear])
 
-  const countEventsInDate = (date: Date): number => {
-    return (
-      data?.filter(
-        (event: ScheduledEventDto) =>
-          event.scheduledAt &&
-          event.scheduledAt.getMonth() === date.getMonth() &&
-          event.scheduledAt.getDate() === date.getDate()
-      ).length || 0
+  const countEventsInDate = (date: Date): [number, number] => {
+    const onDate = data?.filter(
+      (event: ScheduledEventDto) =>
+        event.scheduledAt &&
+        event.scheduledAt.getMonth() === date.getMonth() &&
+        event.scheduledAt.getDate() === date.getDate()
     )
+    return [
+      onDate?.filter((e) => e.processed).length || 0,
+      onDate?.filter((e) => !e.processed).length || 0
+    ]
   }
 
   return (
@@ -89,27 +91,33 @@ export const Calendar: FC = () => {
       </div>
       <div className="flex flex-wrap">
         {matrixDate.map((date: CalendarDate, index) => {
-          const numberPostInDate = countEventsInDate(date.date)
+          const [numberProcessedPostInDate, numberPendingPostInDate] =
+            countEventsInDate(date.date)
           return (
             <div
               className={classNames({
                 "relative h-[80px] w-[14.2%] border border-[#ffffff26] p-[10px] text-end md:h-[160px]":
                   true,
-                "text-passes-gray-200": !date.inMonth,
-                "rounded-tl-[20px]": index === 0,
-                "rounded-tr-[20px]": index === 6,
-                "rounded-bl-[20px]": index === 35,
-                "rounded-br-[20px]": index === 41
+                "text-passes-gray-300": !date.inMonth,
+                "rounded-tl-[10px]": index === 0,
+                "rounded-tr-[10px]": index === 6,
+                "rounded-bl-[10px]": index === 35,
+                "rounded-br-[10px]": index === 41
               })}
-              key={`${numberPostInDate}-${index}`}
+              key={date.date.toDateString()}
             >
               <span className="absolute top-3 right-3">
                 {date.date.getDate()}
               </span>
               <div className="mt-7 flex w-full">
-                {numberPostInDate > 0 && (
+                {numberProcessedPostInDate > 0 && (
+                  <span className="text-l w-full rounded bg-gray-400 px-2 py-[2px] text-left font-bold leading-6 text-white opacity-[0.40]">
+                    {numberProcessedPostInDate}
+                  </span>
+                )}
+                {numberPendingPostInDate > 0 && (
                   <span className="text-l w-full rounded bg-passes-primary-color px-2 py-[2px] text-left font-bold leading-6 text-white">
-                    {numberPostInDate}
+                    {numberPendingPostInDate}
                   </span>
                 )}
               </div>

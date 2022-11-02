@@ -74,6 +74,12 @@ export interface ScheduledEventDto {
      * @memberof ScheduledEventDto
      */
     scheduledAt: Date;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ScheduledEventDto
+     */
+    processed: boolean;
 }
 
 
@@ -96,6 +102,7 @@ export function instanceOfScheduledEventDto(value: object): boolean {
     isInstance = isInstance && "scheduledEventId" in value;
     isInstance = isInstance && "type" in value;
     isInstance = isInstance && "scheduledAt" in value;
+    isInstance = isInstance && "processed" in value;
 
     return isInstance;
 }
@@ -116,6 +123,7 @@ export function ScheduledEventDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'batchMessage': !exists(json, 'batchMessage') ? undefined : CreateBatchMessageRequestDtoFromJSON(json['batchMessage']),
         'type': json['type'],
         'scheduledAt': (new Date(json['scheduledAt'])),
+        'processed': json['processed'],
     };
 }
 
@@ -134,6 +142,7 @@ export function ScheduledEventDtoToJSON(value?: ScheduledEventDto | null): any {
         'batchMessage': CreateBatchMessageRequestDtoToJSON(value.batchMessage),
         'type': value.type,
         'scheduledAt': (value.scheduledAt.toISOString()),
+        'processed': value.processed,
     };
 }
 

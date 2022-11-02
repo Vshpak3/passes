@@ -72,15 +72,18 @@ export class ScheduledService {
     const { startDate, endDate } = getScheduledEventsRequestDto
 
     return (
-      await this.dbReader<ScheduledEventEntity>(ScheduledEventEntity.table)
-        .andWhere('user_id', userId)
-        .where('scheduled_at', '>=', startDate)
-        .andWhere('scheduled_at', '<', endDate)
-        .whereNull('deleted_at')
-        .andWhere('processed', false)
-        .orderBy('scheduled_at', 'asc')
-        .select('*')
-    ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
+      (
+        await this.dbReader<ScheduledEventEntity>(ScheduledEventEntity.table)
+          .andWhere('user_id', userId)
+          .where('scheduled_at', '>=', startDate)
+          .andWhere('scheduled_at', '<', endDate)
+          .whereNull('deleted_at')
+          // Gets events that have been scheduled
+          // .andWhere('processed', false)
+          .orderBy('scheduled_at', 'asc')
+          .select('*')
+      ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
+    )
   }
 
   async updateScheduledEvent(
