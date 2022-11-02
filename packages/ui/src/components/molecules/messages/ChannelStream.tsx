@@ -47,7 +47,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const [time, _setTime] = useState(Date.now())
   const api = new MessagesApi()
 
-  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen()
+  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
+    threshold: 0.7
+  })
 
   const [messages, setMessages] = useState<MessageDto[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
@@ -181,6 +183,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 
   const handleScrollToBottom = useCallback(() => {
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
+    setUnreadCount(0)
   }, [bottomOfChatRef])
 
   useLayoutEffect(() => {
