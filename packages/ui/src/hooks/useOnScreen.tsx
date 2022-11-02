@@ -1,15 +1,21 @@
 import { MutableRefObject, useEffect, useRef, useState } from "react"
 
+/**
+ * Hook that can tell you whether an HTML element
+ *  is in the viewport or not. Gives you back a [ref, isOnScreen] tuple.
+ *
+ * https://stackoverflow.com/questions/58341787/intersectionobserver-with-react-hooks/67826055#67826055
+ */
 export const useOnScreen = (
   options: IntersectionObserverInit
-): [MutableRefObject<HTMLElement | null>, boolean] => {
+): [MutableRefObject<HTMLDivElement | null>, boolean] => {
   const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
+  const [isOnScreen, setIsOnScreen] = useState(false)
 
   useEffect(() => {
     const currentRef = ref.current
     const observer = new IntersectionObserver(([entry]) => {
-      setVisible(entry.isIntersecting)
+      setIsOnScreen(entry.isIntersecting)
     }, options)
 
     if (currentRef) {
@@ -23,5 +29,5 @@ export const useOnScreen = (
     }
   }, [ref, options])
 
-  return [ref, visible]
+  return [ref, isOnScreen]
 }

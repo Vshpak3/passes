@@ -5,7 +5,7 @@ import useSWR from "swr"
 const api = new UserApi()
 const CACHE_KEY_IS_CREATOR = "/is-creator"
 export const useIsCreator = (userId: string) => {
-  const { data, isValidating, mutate } = useSWR<boolean | undefined>(
+  const { data, error, isValidating, mutate } = useSWR<boolean | undefined>(
     [CACHE_KEY_IS_CREATOR, userId],
     async () => {
       return (await api.isCreator({ userId })).value
@@ -13,10 +13,10 @@ export const useIsCreator = (userId: string) => {
   )
 
   useEffect(() => {
-    if (!isValidating && data === undefined) {
+    if (!isValidating && data === undefined && !error) {
       mutate()
     }
-  }, [data, isValidating, mutate])
+  }, [data, error, isValidating, mutate])
 
   return {
     isCreator: data
