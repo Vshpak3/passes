@@ -170,7 +170,9 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <Select
             register={register}
-            selectOptions={Array.from(Array(12).keys()).map(String)}
+            selectOptions={Array.from(Array(12).keys()).map((key) =>
+              String(key + 1)
+            )}
             options={{
               required: { message: "Month is required", value: true }
             }}
