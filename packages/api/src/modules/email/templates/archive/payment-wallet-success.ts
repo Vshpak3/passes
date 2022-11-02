@@ -1,5 +1,5 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
 export const PAYMENT_WALLET_SUCCESS_EMAIL_SUBJECT =
   'Success! Your Wallet is connected & ready to be used on Passes'
@@ -33,7 +33,7 @@ preheader: Success! Your Wallet is connected & ready to be used on Passes
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
                   Your wallet was added as a payment method on Passes. You can update your default payment method under "Payment & Wallet Settings".
                 </p>
-                
+
                 ${SUPPORT}
 
                 ${FOOTER}

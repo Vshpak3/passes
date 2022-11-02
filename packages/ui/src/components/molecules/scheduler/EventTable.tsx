@@ -68,7 +68,7 @@ export const EventTable: FC = () => {
 
   return (
     <div className="px-[15px] px-[30px] pb-[100px]">
-      <div className="mb-9 select-none text-base text-xl font-bold md:text-2xl">
+      <div className="mb-9 text-base text-xl font-bold md:text-2xl">
         Scheduled Events In {format(new Date(year, month, 1), "LLLL")}
       </div>
       {!data?.length ? (
@@ -90,13 +90,13 @@ export const EventTable: FC = () => {
           {!isTablet ? (
             <table className="table w-full">
               <thead>
-                <tr className="contents pb-2 text-left text-base font-medium leading-6 text-white opacity-50">
-                  <th className="pl-5 pb-1">Type</th>
-                  <th className="px-3 pb-1">Media</th>
-                  <th className="px-3 pb-1">Price</th>
-                  <th className="px-3 pb-1">Text</th>
-                  <th className="pb-1 text-center">Date</th>
-                  <th className="pb-1">Action</th>
+                <tr className="contents text-left text-base font-medium leading-6 text-white opacity-50">
+                  <th className="pl-5 pb-5">Type</th>
+                  <th className="px-3 pb-5">Media</th>
+                  <th className="px-3 pb-5">Price</th>
+                  <th className="px-3 pb-5">Text</th>
+                  <th className="pb-5 text-center">Date</th>
+                  <th className="px-10 pb-5">Action</th>
                 </tr>
               </thead>
               <tbody>{tableItems}</tbody>

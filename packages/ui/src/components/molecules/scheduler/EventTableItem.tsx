@@ -3,6 +3,7 @@ import {
   ScheduledEventDtoTypeEnum
 } from "@passes/api-client"
 import { format } from "date-fns"
+import CheckIcon from "public/icons/check.svg"
 import TrashIcon from "public/icons/trash.svg"
 import { FC } from "react"
 import { KeyedMutator } from "swr"
@@ -24,6 +25,8 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   onChangeTime,
   isTablet
 }) => {
+  const today = new Date()
+
   const {
     scheduledEventId,
     type,
@@ -63,22 +66,28 @@ export const EventTableItem: FC<EventTableItemProps> = ({
 
   const generateActionStatus = (
     <div className="flex items-center gap-[5px] xs:gap-[30px]">
-      <TrashIcon
-        className="mr-3 cursor-pointer"
-        onClick={async () => await onDeleteEvent(scheduledEventId)}
-      />
-      <CalendarSelector
-        name="Schedule"
-        activeHeader="Schedule"
-        scheduledTime={scheduledAt}
-        setScheduledTime={async (date: Date | null) => {
-          if (!date) {
-            return
-          }
-          await onChangeTime(scheduledEventId, date)
-        }}
-        placement={isTablet ? "top" : "auto"}
-      />
+      {scheduledEvent.scheduledAt > today ? (
+        <>
+          <TrashIcon
+            className="mr-3 cursor-pointer"
+            onClick={async () => await onDeleteEvent(scheduledEventId)}
+          />
+          <CalendarSelector
+            name="Schedule"
+            activeHeader="Schedule"
+            scheduledTime={scheduledAt}
+            setScheduledTime={async (date: Date | null) => {
+              if (!date) {
+                return
+              }
+              await onChangeTime(scheduledEventId, date)
+            }}
+            placement={isTablet ? "top" : "auto"}
+          />
+        </>
+      ) : (
+        <CheckIcon />
+      )}
     </div>
   )
 
@@ -94,7 +103,9 @@ export const EventTableItem: FC<EventTableItemProps> = ({
         {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
       </td>
       <td className="my-[6px] min-w-[200px] whitespace-nowrap px-3">
-        <div className="flex items-center">{generateActionStatus}</div>
+        <div className="flex min-h-[60px] items-center">
+          {generateActionStatus}
+        </div>
       </td>
     </tr>
   ) : (

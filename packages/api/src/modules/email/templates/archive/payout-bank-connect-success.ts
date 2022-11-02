@@ -1,5 +1,5 @@
-import { FOOTER } from '../components/footer'
-import { SUPPORT } from '../components/support'
+import { FOOTER } from '../../components/footer'
+import { SUPPORT } from '../../components/support'
 
 export const PAYOUT_BANK_CONNECT_SUCCESS_EMAIL_SUBJECT =
   'Success! Your Bank is connected for payouts'
