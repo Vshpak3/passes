@@ -33,6 +33,15 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     sentAt
   } = message
 
+  const tipComponent = (
+    <div className="flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2.5">
+      <DollarSymbol dimensions={11} />
+      <span className="text-base text-xs font-bold text-white">
+        Tipped: {formatCurrency(message.tipAmount ?? 0)}
+      </span>
+    </div>
+  )
+
   const [openBuyMessageModal, setOpenBuyMessageModal] = useState(false)
   return (
     <div
@@ -48,16 +57,9 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
       <div className="mx-4 flex flex-col items-end">
         <div className="relative flex flex-col items-center gap-4 md:flex-row">
-          {message?.tipAmount ? (
-            <div className="flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-3">
-              <DollarSymbol />
-              <span className="text-base font-bold text-white">
-                Tipped: {formatCurrency(message.tipAmount)}
-              </span>
-            </div>
-          ) : null}
+          {!!message?.tipAmount && isOwnMessage && tipComponent}
           <div
-            className={`flex flex-col gap-3 rounded border border-[#363037] p-4 ${messageBackground}`}
+            className={`flex flex-col gap-3 rounded border border-[#363037] p-3 ${messageBackground}`}
           >
             <span className="break-all">{formatText(message?.text)}</span>
             {!!messageContent.length && (
@@ -107,6 +109,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             )}
           </div>
+          {!!message?.tipAmount && !isOwnMessage && tipComponent}
         </div>
         {message?.pending ? (
           <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
