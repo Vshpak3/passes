@@ -13,7 +13,7 @@ import {
   MetaMaskSelectOptions,
   PhantomSelectOptions,
   serializePayinMethod
-} from "src/helpers/payment/serialize"
+} from "src/helpers/payment/payin-serialize"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 export const buttonName = (_isEmbedded?: boolean) => {

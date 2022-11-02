@@ -35,7 +35,10 @@ export type FormOptions = Partial<{
 }>
 export type FormRegister = any
 export type FormErrors = any
-type SelectOption = { value: string | number; label: string }
+export type SelectOption = {
+  value: string | number
+  label: string | JSX.Element
+}
 export type FormSelectOption = string | SelectOption
 export type FormSelectOptions = Array<FormSelectOption>
 export type FileAccept = Array<"audio" | "image" | "video" | `.${string}`>

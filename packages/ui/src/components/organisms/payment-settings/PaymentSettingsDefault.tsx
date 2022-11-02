@@ -6,7 +6,7 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
 
-import { PayinMethodDisplayNames } from "src/helpers/payment/serialize"
+import { PayinMethodDisplayNames } from "src/helpers/payment/payin-serialize"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
 

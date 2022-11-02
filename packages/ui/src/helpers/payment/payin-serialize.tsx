@@ -4,6 +4,8 @@ import {
   PayinMethodDtoMethodEnum
 } from "@passes/api-client"
 
+import { SelectOption } from "src/components/types/FormTypes"
+
 export const serializePayinMethod = (payinMethod?: PayinMethodDto) => {
   if (!payinMethod) {
     payinMethod = { method: PayinMethodDtoMethodEnum.None }
@@ -30,7 +32,7 @@ export const PayinMethodDisplayNames = {
   [PayinMethodDtoChainEnum.Sol]: "USDC (SOL)"
 }
 
-export const MetaMaskSelectOptions = [
+export const MetaMaskSelectOptions: SelectOption[] = [
   {
     label: PayinMethodDisplayNames[PayinMethodDtoChainEnum.Eth],
     value: serializePayinMethod({
@@ -54,7 +56,7 @@ export const MetaMaskSelectOptions = [
   }
 ]
 
-export const PhantomSelectOptions = [
+export const PhantomSelectOptions: SelectOption[] = [
   {
     label: PayinMethodDisplayNames[PayinMethodDtoChainEnum.Sol],
     value: serializePayinMethod({

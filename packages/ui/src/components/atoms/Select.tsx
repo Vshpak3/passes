@@ -1,6 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react"
 import classNames from "classnames"
-import { FC, Fragment, useCallback, useState } from "react"
+import { FC, Fragment, useCallback, useEffect, useState } from "react"
 
 import {
   FormErrors,
@@ -30,6 +30,7 @@ export type SelectProps = {
   onChange?: (value: any) => void
   placeholderClass?: string
   showOnTop?: boolean
+  changeOnDefault?: boolean
 }
 
 export const Select: FC<SelectProps> = ({
@@ -44,12 +45,17 @@ export const Select: FC<SelectProps> = ({
   defaultValue = "",
   onChange,
   showOnTop = false,
+  changeOnDefault = false,
   ...rest
 }) => {
   const isString = typeof defaultValue === "string"
-  const [displayedValue, setDisplayedValue] = useState(
-    isString ? defaultValue : defaultValue.label
-  )
+  const defaultDisplay = isString ? defaultValue : defaultValue.label
+  const [displayedValue, setDisplayedValue] = useState(defaultDisplay)
+  useEffect(() => {
+    if (changeOnDefault) {
+      setDisplayedValue(defaultDisplay)
+    }
+  }, [changeOnDefault, defaultDisplay])
 
   const onCustomChange = useCallback(
     (option: FormSelectOption) => {
