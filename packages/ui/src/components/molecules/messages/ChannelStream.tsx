@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   GetMessagesRequestDto,
   GetMessagesResponseDto,
@@ -7,14 +5,7 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
-import {
-  FC,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from "react"
+import { FC, useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -46,7 +37,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 }) => {
   const { user } = useUser()
 
-  const time = Date.now()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [time, setTime] = useState<number>(Date.now())
 
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.7
@@ -187,11 +179,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 
   useLayoutEffect(() => {
     // if you scroll to the bottom, get rid of unread message IDs
-    if (unreadCount > 0 && isBottomOfChatVisible) {
-      setUnreadCount(0)
-    }
     if (isBottomOfChatVisible) {
       onReadLastMessage()
+      setUnreadCount(0)
     }
   }, [isBottomOfChatVisible, unreadCount, onReadLastMessage])
 
