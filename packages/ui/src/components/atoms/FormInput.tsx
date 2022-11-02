@@ -3,7 +3,6 @@ import React, { CSSProperties, FC } from "react"
 import { Checkbox } from "src/components/atoms/Checkbox"
 import { EIcon, Input } from "src/components/atoms/Input"
 import { Select, SelectProps } from "src/components/atoms/Select"
-import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { TagsInput } from "src/components/molecules/TagsInput"
 import {
   FileAccept,
@@ -193,19 +192,6 @@ export const FormInput: FC<FormInputProps> = ({
         selectOptions={selectOptions}
         errors={errors}
         className={className}
-        {...rest}
-      />
-    ),
-    "drag-drop-file": (
-      <DragDropFile
-        name={name}
-        register={register}
-        options={options}
-        errors={errors}
-        multiple={multiple}
-        accept={accept}
-        className={className}
-        helperText={helperText}
         {...rest}
       />
     )

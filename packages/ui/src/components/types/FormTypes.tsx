@@ -14,7 +14,6 @@ export type FormType =
   | "checkbox"
   | "toggle"
   | "select"
-  | "drag-drop-file"
   | "tags"
   | "radio"
 export type FormPlaceholder = string

@@ -8,6 +8,7 @@ import {
   PassesSectionTitle,
   PassFormError
 } from "src/components/atoms/passes/CreatePass"
+import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { MediaFile } from "src/components/organisms/profile/main-content/new-post/Media"
 
 interface PassFilesProps {
@@ -102,11 +103,10 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
       {files.length ? (
         <PassFilePreview files={files} onRemove={onRemoveFileUpload} />
       ) : (
-        <FormInput
+        <DragDropFile
           className="h-[200px]"
           register={register}
           name="passFile"
-          type="drag-drop-file"
           multiple={false}
           accept={["image", "video"]}
           options={{ onChange: onDragDropChange }}

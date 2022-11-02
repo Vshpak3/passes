@@ -5,7 +5,6 @@ import "swiper/css"
 import "swiper/css/navigation"
 import "swiper/css/pagination"
 import classNames from "classnames"
-import PlusIcon from "public/icons/post-plus-icon.svg"
 import {
   ChangeEvent,
   Dispatch,
@@ -19,7 +18,7 @@ import { FieldErrorsImpl, UseFormRegister } from "react-hook-form"
 import { Navigation } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
-import { FormInput } from "src/components/atoms/FormInput"
+import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
@@ -87,11 +86,10 @@ export const MediaSection: FC<MediaSectionProps> = ({
       ) : (
         <div className="pt-5">
           {files.length === 0 ? (
-            <FormInput
+            <DragDropFile
               className="h-[170px]"
               register={register}
-              name={"drag-drop"}
-              type="drag-drop-file"
+              name="drag-drop"
               multiple={true}
               accept={ACCEPTED_MEDIA_TYPES}
               options={{ onChange: onFileInputChange }}
@@ -211,16 +209,10 @@ export const MediaSection: FC<MediaSectionProps> = ({
                 <SwiperSlide>
                   <div className="flex min-h-[150px] min-w-[50px] items-center">
                     {files.length !== MAX_FILE_COUNT && (
-                      <FormInput
+                      <DragDropFile
                         register={register}
                         name="drag-drop"
-                        type="drag-drop-file"
                         multiple={true}
-                        trigger={
-                          <div className="box-border flex h-[50px] w-[50px] cursor-pointer items-center justify-center rounded-[50%] border border-passes-secondary-color bg-transparent">
-                            <PlusIcon />
-                          </div>
-                        }
                         options={{ onChange: onFileInputChange }}
                         accept={ACCEPTED_MEDIA_TYPES}
                         errors={errors}
