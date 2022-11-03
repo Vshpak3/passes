@@ -9,6 +9,7 @@ import { plural } from "src/helpers/plural"
 interface LockedMediaProps {
   contents: ContentDto[]
   price: number
+  previewIndex: number
   paying: boolean
   openBuyModal: () => void
 }
@@ -16,10 +17,11 @@ interface LockedMediaProps {
 export const LockedMedia: FC<LockedMediaProps> = ({
   contents,
   price,
+  previewIndex,
   paying,
   openBuyModal
 }) => {
-  const { images, video } = contentTypeCounter(contents)
+  const { images, video } = contentTypeCounter(contents.slice(previewIndex))
 
   // const showcaseImg = useMemo(() => {
   //   if (contents?.[0]?.contentType === "image") {
@@ -43,9 +45,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({
           className="w-auto !px-[30px] !py-2.5"
           isDisabled={paying}
           name={
-            paying
-              ? "Paying..."
-              : `Unlock Post For ${formatCurrency(price ?? 0)}`
+            paying ? "Paying..." : `Unlock For ${formatCurrency(price ?? 0)}`
           }
           onClick={openBuyModal} // onClick={() => setPost(post)}
         />

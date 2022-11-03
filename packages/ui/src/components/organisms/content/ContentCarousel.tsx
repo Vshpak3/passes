@@ -66,6 +66,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
               contents={contents}
               openBuyModal={openBuyModal}
               paying={paying}
+              previewIndex={previewIndex}
               price={price}
             />
           </SwiperSlide>
