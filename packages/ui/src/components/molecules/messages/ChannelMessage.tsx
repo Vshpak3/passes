@@ -1,7 +1,6 @@
 import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
-import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
 
@@ -82,7 +81,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             )}
             {!message?.pending && sentAt && (
-              <div className="flex items-center">
+              <div className="flex items-center justify-between">
                 {isAfter(sentAt, subDays(new Date(), 1)) ? (
                   <TimeAgo
                     className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
@@ -95,11 +94,13 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   </span>
                 )}
                 {!!senderId && !!price && (
-                  <div className="ml-[20px] flex items-center text-[11px]">
-                    <DollarIcon />
+                  <div className="ml-10 flex flex-row items-center text-[11px]">
+                    <div>
+                      <DollarSymbol />
+                    </div>
                     <span className="ml-[5px] opacity-50">{price}</span>
                     {price && !!paidAt ? (
-                      <span className="opacity-50">, paid</span>
+                      <span className="opacity-50">{`, paid ${paidAt}`}</span>
                     ) : (
                       <span className="opacity-50">, not paid yet</span>
                     )}
