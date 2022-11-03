@@ -33,7 +33,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   const { isTablet } = useWindowSize()
   const galleryAvailable = false
   return (
-    <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
+    <div className="flex h-24 flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
       <div className="flex w-full flex-row items-center justify-between px-5 py-4">
         {gallery ? (
           <MessagesChannelGalleryHeader
