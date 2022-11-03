@@ -24,6 +24,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   const messageBackground = ownsMessage ? "bg-black" : "bg-[#1E1820]"
   const messageContent = message ? message.contents : []
   const {
+    messageId,
     senderId,
     contentProcessed,
     paidAt,
@@ -71,6 +72,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}
+                  key={messageId}
                   openBuyModal={() => setMessage(message)}
                   paid={!!paidAt || !!ownsMessage}
                   paying={paying}

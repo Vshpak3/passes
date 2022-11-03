@@ -129,6 +129,7 @@ const PostUnmemo: FC<PostProps> = ({
               <MediaContent
                 contents={contents}
                 isProcessing={!contentProcessed}
+                key={postId}
                 openBuyModal={() => setPost(post)}
                 paid={!!paidAt || isOwner}
                 paying={paying}

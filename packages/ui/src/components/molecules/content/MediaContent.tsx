@@ -7,10 +7,12 @@ import {
 
 interface MediaContentProps extends ContentCarouselProps {
   isProcessing: boolean
+  key: string
 }
 
 const MediaContentUnmemo: FC<MediaContentProps> = ({
   isProcessing,
+  key,
   ...res
 }) => {
   return (
@@ -22,7 +24,7 @@ const MediaContentUnmemo: FC<MediaContentProps> = ({
       ) : (
         <div className="relative flex w-full items-center justify-center bg-transparent">
           <div className="relative w-[100%]">
-            <ContentCarousel {...res} />
+            <ContentCarousel key={key} {...res} />
           </div>
         </div>
       )}
