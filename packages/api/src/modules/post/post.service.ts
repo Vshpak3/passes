@@ -131,6 +131,7 @@ export class PostService {
           pass_ids: JSON.stringify(createPostDto.passIds),
           contents: JSON.stringify(contents),
           content_processed: !contents.length || isEnv('dev'),
+          preview_index: createPostDto.previewIndex,
         })
 
         await trx<ContentEntity>(ContentEntity.table)
