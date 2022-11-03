@@ -9,7 +9,7 @@ const env = process.env.NEXT_PUBLIC_NODE_ENV
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self';
-  child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+  child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL} ${process.env.NEXT_PUBLIC_API_BASE_URL};
   style-src 'self' 'unsafe-inline';
   font-src 'self';
 `
