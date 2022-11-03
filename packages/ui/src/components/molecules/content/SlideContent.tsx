@@ -54,7 +54,7 @@ export const SlideContent = forwardRef(
           <>
             <button
               className={classNames(
-                fixedHeight ? "max-h-[85vh]" : "",
+                fixedHeight ? "max-h-[75vh]" : "",
                 "h-full w-full"
               )}
               onClick={onImgClickHandler}
