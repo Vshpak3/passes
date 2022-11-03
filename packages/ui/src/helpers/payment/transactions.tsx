@@ -6,8 +6,11 @@ import {
 import { Connection, PublicKey, Transaction } from "@solana/web3.js"
 import { ethers } from "ethers"
 
+import type {
+  EthereumProvider,
+  PhantomProvider
+} from "src/helpers/crypto/types"
 import { ERC20ABI } from "./ABI"
-import { EthereumProvider, PhantomProvider } from "./wallet-setup"
 
 const generateSolanaTokenTransactionMessage = async (
   connection: Connection,

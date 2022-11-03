@@ -11,15 +11,17 @@ import { useContext, useState } from "react"
 import { toast } from "react-toastify"
 
 import { ThreeDSContext } from "src/contexts/ThreeDS"
-import { getPhantomProvider } from "src/helpers/cryptoProviders"
+import {
+  detectSolanaProvider,
+  EthereumProvider,
+  PhantomProvider
+} from "src/helpers/crypto/types"
 import { errorMessage } from "src/helpers/error"
 import {
   connectMetamask,
-  EthereumProvider,
   executeMetamaskEthProvider,
   executeMetamaskUSDCProvider,
-  executePhantomUSDCProvider,
-  PhantomProvider
+  executePhantomUSDCProvider
 } from "src/helpers/payment/wallet-setup"
 import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
@@ -99,7 +101,7 @@ export const usePay = (
     registerResponse: RegisterPayinResponseDto,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    const provider = getPhantomProvider() as PhantomProvider
+    const provider = detectSolanaProvider({}) as PhantomProvider
     await checkProvider(provider, cancelPayinCallback)
     try {
       await executePhantomUSDCProvider(

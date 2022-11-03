@@ -77,7 +77,7 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Set default wallet',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: GetWalletResponseDto,
     responseDesc: 'Default wallet set',
     role: RoleEnum.GENERAL,
   })
@@ -85,8 +85,8 @@ export class WalletController {
   async setDefaultWallet(
     @Req() req: RequestWithUser,
     @Body() setDefaultWalletRequestDto: SetDefaultWalletRequestDto,
-  ): Promise<void> {
-    await this.walletService.setDefaultWallet(
+  ): Promise<GetWalletResponseDto> {
+    return await this.walletService.setDefaultWallet(
       req.user.id,
       setDefaultWalletRequestDto.walletId,
       setDefaultWalletRequestDto.chain,

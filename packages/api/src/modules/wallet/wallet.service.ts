@@ -178,14 +178,14 @@ export class WalletService {
     userId: string,
     walletId: string,
     chain: ChainEnum,
-  ): Promise<void> {
+  ): Promise<WalletDto> {
     const wallet = await this.dbWriter<WalletEntity>(WalletEntity.table)
       .where({
         chain,
         id: walletId,
         user_id: userId,
       })
-      .select('id')
+      .select('*')
       .first()
     if (!wallet) {
       throw new WalletNotFoundError('no wallet found')
@@ -199,6 +199,8 @@ export class WalletService {
       })
       .onConflict(['user_id', 'chain'])
       .merge(['wallet_id'])
+
+    return new WalletDto(wallet)
   }
 
   fixAddress(address: string, chain: ChainEnum): string {

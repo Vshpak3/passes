@@ -339,7 +339,7 @@ export class WalletApi extends runtime.BaseAPI {
     /**
      * Set default wallet
      */
-    async setDefaultWalletRaw(requestParameters: SetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async setDefaultWalletRaw(requestParameters: SetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetWalletResponseDto>> {
         if (requestParameters.setDefaultWalletRequestDto === null || requestParameters.setDefaultWalletRequestDto === undefined) {
             throw new runtime.RequiredError('setDefaultWalletRequestDto','Required parameter requestParameters.setDefaultWalletRequestDto was null or undefined when calling setDefaultWallet.');
         }
@@ -363,14 +363,15 @@ export class WalletApi extends runtime.BaseAPI {
             body: SetDefaultWalletRequestDtoToJSON(requestParameters.setDefaultWalletRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetWalletResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Set default wallet
      */
-    async setDefaultWallet(requestParameters: SetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.setDefaultWalletRaw(requestParameters, initOverrides);
+    async setDefaultWallet(requestParameters: SetDefaultWalletRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWalletResponseDto> {
+        const response = await this.setDefaultWalletRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
 }

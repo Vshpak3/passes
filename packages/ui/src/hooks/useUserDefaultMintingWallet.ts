@@ -4,54 +4,78 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useEffect } from "react"
-import useSWR from "swr"
+import useSWR, { useSWRConfig } from "swr"
 
 import { errorMessage } from "src/helpers/error"
-import { accessTokenKey } from "src/helpers/token"
-import { useLocalStorage } from "./storage/useLocalStorage"
+import { useUser } from "./useUser"
+
+const CACHE_KEY_DEFAULT_WALLET_ETH = "/mint/wallet/eth"
+const CACHE_KEY_DEFAULT_WALLET_SOL = "/mint/wallet/eth"
 
 export const useUserDefaultMintingWallets = () => {
-  const [accessToken] = useLocalStorage(accessTokenKey, "")
+  const { accessToken } = useUser()
+
   const api = new WalletApi()
 
   const {
     data: ethWallet,
     isValidating: loadingEthWallet,
     mutate: mutateEthWallet
-  } = useSWR<WalletDto>(accessToken ? "/mint/wallet/eth" : null, async () => {
-    return await api.getDefaultWallet({
-      getDefaultWalletRequestDto: {
-        chain: GetDefaultWalletRequestDtoChainEnum.Eth
-      }
-    })
-  })
+  } = useSWR<WalletDto>(
+    accessToken ? CACHE_KEY_DEFAULT_WALLET_ETH : null,
+    async () => {
+      return await api.getDefaultWallet({
+        getDefaultWalletRequestDto: {
+          chain: GetDefaultWalletRequestDtoChainEnum.Eth
+        }
+      })
+    }
+  )
 
   const {
     data: solWallet,
     isValidating: loadingSolWallet,
     mutate: mutateSolWallet
-  } = useSWR<WalletDto>(accessToken ? "/mint/wallet/sol" : null, async () => {
-    return await api.getDefaultWallet({
-      getDefaultWalletRequestDto: {
-        chain: GetDefaultWalletRequestDtoChainEnum.Sol
-      }
-    })
-  })
+  } = useSWR<WalletDto>(
+    accessToken ? CACHE_KEY_DEFAULT_WALLET_SOL : null,
+    async () => {
+      return await api.getDefaultWallet({
+        getDefaultWalletRequestDto: {
+          chain: GetDefaultWalletRequestDtoChainEnum.Sol
+        }
+      })
+    }
+  )
 
-  async function getDefaultWallet() {
-    mutateEthWallet()
-    mutateSolWallet()
-  }
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManualEth = (update: WalletDto) =>
+    _mutateManual(CACHE_KEY_DEFAULT_WALLET_ETH, update, {
+      populateCache: (update: WalletDto) => {
+        return update
+      },
+      revalidate: false
+    })
+  const mutateManualSol = (update: WalletDto) =>
+    _mutateManual(CACHE_KEY_DEFAULT_WALLET_SOL, update, {
+      populateCache: (update: WalletDto) => {
+        return update
+      },
+      revalidate: false
+    })
+
   async function setDefaultWallet(
     walletId: string,
     chain: GetDefaultWalletRequestDtoChainEnum
   ) {
     try {
-      await api.setDefaultWallet({
+      const wallet = await api.setDefaultWallet({
         setDefaultWalletRequestDto: { walletId, chain }
       })
-      setTimeout(() => undefined, 500)
-      getDefaultWallet()
+      if (chain === GetDefaultWalletRequestDtoChainEnum.Eth) {
+        mutateManualEth(wallet)
+      } else if (chain === GetDefaultWalletRequestDtoChainEnum.Sol) {
+        mutateManualSol(wallet)
+      }
     } catch (error: unknown) {
       errorMessage(error, true)
     }
@@ -68,11 +92,10 @@ export const useUserDefaultMintingWallets = () => {
   }, [])
 
   return {
-    loadingEthWallet,
-    loadingSolWallet,
     ethWallet,
     solWallet,
-    getDefaultWallet,
+    loadingEthWallet,
+    loadingSolWallet,
     setDefaultWallet
   }
 }

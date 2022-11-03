@@ -1,8 +1,4 @@
-import {
-  CreateWalletRequestDto,
-  CreateWalletRequestDtoChainEnum,
-  WalletApi
-} from "@passes/api-client"
+import { CreateWalletRequestDtoChainEnum } from "@passes/api-client"
 import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
@@ -33,17 +29,24 @@ export const Wallets = () => {
   } = useForm()
   const { ethWallet, solWallet, setDefaultWallet } =
     useUserDefaultMintingWallets()
-  const { wallets, mutate, loading } = useUserConnectedWallets()
+  const {
+    wallets,
+    loading,
+    addWallet,
+    addUnauthenticatedWallet,
+    deleteWallet,
+    getMessageToSign
+  } = useUserConnectedWallets()
 
   const handleOnETHWalletConnect = async () => {
     setIsModalOpen(false)
     try {
-      if (!window.ethereum) {
+      if (!window.ethereum || !window.ethereum.request) {
         toast.error("Metamask is not installed!")
         return
       }
 
-      await window.ethereum.send("eth_requestAccounts")
+      await window.ethereum.request({ method: "eth_requestAccounts" })
 
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()
@@ -55,18 +58,14 @@ export const Wallets = () => {
         return
       }
 
-      const signature = await signer.signMessage(rawMessage)
+      const signedMessage = await signer.signMessage(rawMessage)
 
-      const createWalletDto: CreateWalletRequestDto = {
+      addWallet({
         walletAddress,
-        signedMessage: signature,
-        rawMessage: rawMessage,
+        signedMessage,
+        rawMessage,
         chain: CreateWalletRequestDtoChainEnum.Eth
-      }
-
-      const api = new WalletApi()
-      await api.createWallet({ createWalletRequestDto: createWalletDto })
-      mutate()
+      })
     } catch (error) {
       errorMessage(error, true)
     }
@@ -100,34 +99,12 @@ export const Wallets = () => {
 
       const signature = Buffer.from(signedMessage.signature).toString("utf8")
 
-      const createWalletDto: CreateWalletRequestDto = {
+      addWallet({
         walletAddress,
         signedMessage: signature,
         rawMessage,
         chain: CreateWalletRequestDtoChainEnum.Sol
-      }
-
-      const api = new WalletApi()
-      await api.createWallet({ createWalletRequestDto: createWalletDto })
-      mutate()
-    } catch (error) {
-      errorMessage(error, true)
-    }
-  }
-
-  const getMessageToSign = async (
-    walletAddress: string,
-    chain: "eth" | "sol" | "avax" | "matic"
-  ) => {
-    try {
-      const api = new WalletApi()
-      const res = await api.authMessage({
-        authWalletRequestDto: {
-          walletAddress,
-          chain: chain
-        }
       })
-      return res.rawMessage
     } catch (error) {
       errorMessage(error, true)
     }
@@ -136,27 +113,15 @@ export const Wallets = () => {
   const confirmNewPayoutAddressOnSubmit = async () => {
     const walletAddress = getValues("address")
     const chain = getValues("chain").toLowerCase()
-    const api = new WalletApi()
-    await api
-      .createUnauthenticatedWallet({
-        createUnauthenticatedWalletRequestDto: {
-          walletAddress,
-          chain
-        }
-      })
-      .catch((error) => errorMessage(error, true))
+    await addUnauthenticatedWallet({
+      walletAddress,
+      chain
+    }).catch((error) => errorMessage(error, true))
     setValue("address", "")
-    await setTimeout(() => undefined, 50)
-    mutate().catch((error) => errorMessage(error, true))
   }
 
-  const deleteWalletHandler = async (id: string) => {
-    const api = new WalletApi()
-    await api.removeWallet({ walletId: id }).catch((error) => {
-      errorMessage(error, true)
-    })
-    await setTimeout(() => undefined, 50)
-    mutate()
+  const deleteWalletHandler = async (walletId: string) => {
+    await deleteWallet(walletId).catch((error) => errorMessage(error, true))
   }
 
   return (

@@ -1,58 +1,14 @@
-// TODO: fix any types in this file
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PaymentApi } from "@passes/api-client"
-import { PublicKey, Transaction } from "@solana/web3.js"
 
+import type {
+  EthereumProvider,
+  PhantomProvider
+} from "src/helpers/crypto/types"
 import {
   sendAndGenerateEthereumTokenTransactionMessage,
   sendAndGenerateEthereumTransactionMessage,
   sendAndGenerateSolanaTokenTransactionMessage
 } from "./transactions"
-
-type DisplayEncoding = "utf8" | "hex"
-type PhantomEvent = "disconnect" | "connect" | "accountChanged"
-type PhantomRequestMethod =
-  | "connect"
-  | "disconnect"
-  | "signTransaction"
-  | "signAllTransactions"
-  | "signMessage"
-
-interface ConnectOpts {
-  onlyIfTrusted: boolean
-}
-
-export interface PhantomProvider {
-  publicKey: PublicKey | null
-  isConnected: boolean | null
-  signTransaction: (transaction: Transaction) => Promise<Transaction>
-  signAllTransactions: (transactions: Transaction[]) => Promise<Transaction[]>
-  signMessage: (
-    message: Uint8Array | string,
-    display?: DisplayEncoding
-  ) => Promise<any>
-  signAndSendTransaction: (transaction: Transaction) => Promise<any>
-  connect: (opts?: Partial<ConnectOpts>) => Promise<{ publicKey: PublicKey }>
-  disconnect: () => Promise<void>
-  on: (event: PhantomEvent, handler: (args: any) => void) => void
-  off: (event: PhantomEvent) => void
-  request: (method: PhantomRequestMethod, params: any) => Promise<unknown>
-}
-
-interface EthereumMethod {
-  method: string
-  params?: any
-}
-
-export interface EthereumProvider {
-  isMetaMask?: boolean
-  request: (action: EthereumMethod) => Promise<any>
-  on: (event: string, handler: (args: any) => void) => void
-  off: (event: string) => void
-  waitForTransaction: (txHash: string) => void
-  send: (event: string) => void
-}
 
 export const connectMetamask = async (
   ethereum: EthereumProvider
@@ -68,7 +24,7 @@ export const executePhantomUSDCProvider = async (
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
-  const res = await window.solana.connect()
+  const res = await provider.connect()
   const response = await paymentApi.entryPhantomCircleUSDC({
     phantomCircleUSDCEntryRequestDto: {
       payinId
@@ -121,6 +77,7 @@ export const executeMetamaskUSDCProvider = async (
       chainId,
       provider
     )
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     // This error code indicates that the chain has not been added to MetaMask
     // if it is not, then install it into the user MetaMask
@@ -163,6 +120,7 @@ export const executeMetamaskEthProvider = async (
       chainId,
       provider
     )
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     // This error code indicates that the chain has not been added to MetaMask
     // if it is not, then install it into the user MetaMask
