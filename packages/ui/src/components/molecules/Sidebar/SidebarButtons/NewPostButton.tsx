@@ -25,7 +25,7 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
               onCancel={() => setIsNewPostModalOpen(false)}
             />
             <Button
-              className={`flex my-5 h-12 w-12 items-center justify-center rounded-[50%] ${
+              className={`my-5 flex h-12 w-12 items-center justify-center rounded-[50%] ${
                 isMobile ? "hidden" : "lg:hidden"
               }`}
               onClick={() => setIsNewPostModalOpen(true)}
