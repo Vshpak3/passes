@@ -2225,7 +2225,7 @@ export class PaymentService {
         'invalid amount value ' + request.amount,
       )
     }
-    const passholder = await this.dbReader<PassHolderEntity>(
+    const passholder = await this.dbWriter<PassHolderEntity>(
       PassHolderEntity.table,
     )
       .where({ id: request.passHolderId })
