@@ -101,7 +101,7 @@ const ChatSettings = () => {
       .then(() => {
         return setIsDisableBtn(false)
       })
-      .catch((e) => {
+      .catch(() => {
         setIsDisableBtn(true)
       })
   }, [values, creatorSettings])
