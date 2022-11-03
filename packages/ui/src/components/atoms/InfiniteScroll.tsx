@@ -109,6 +109,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         .flat() ?? []
     )
   }, [data])
+
   return (
     <InfiniteScroll
       className={"w-full " + (className ?? "")}

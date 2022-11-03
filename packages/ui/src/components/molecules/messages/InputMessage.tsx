@@ -141,8 +141,12 @@ export const InputMessage: FC<InputMessageProps> = ({
       await submitData(tip)
       if (!blocked) {
         // submit()
-        setOnSuccess(clear)
-        setTippedMessage(await getRequest())
+        if (tip > 0) {
+          setOnSuccess(clear)
+          setTippedMessage(await getRequest())
+        } else {
+          submit()
+        }
         reset()
       }
     } catch (error) {
@@ -169,7 +173,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }
   const { submitError } = errors
-  const { blocked, submitting, submitData } = usePay(
+  const { blocked, submitting, submit, submitData } = usePay(
     registerMessage,
     registerMessageData,
     onCallback

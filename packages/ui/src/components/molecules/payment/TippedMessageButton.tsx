@@ -46,7 +46,7 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
       onClick={submit}
       type="submit"
     >
-      {loading ? "Loading" : "Buy message"}
+      {loading ? "Loading" : "Send message"}
     </button>
   )
 }
