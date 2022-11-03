@@ -17,6 +17,7 @@ interface ChannelHeaderProps {
   setPaid: Dispatch<SetStateAction<boolean | undefined>>
   isCreator: boolean
   onBack?(): void
+  additionalTips: number
 }
 
 export const ChannelHeader: FC<ChannelHeaderProps> = ({
@@ -26,7 +27,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   setPaid,
   selectedChannel,
   isCreator,
-  onBack
+  onBack,
+  additionalTips
 }) => {
   const { isTablet } = useWindowSize()
   const galleryAvailable = false
@@ -74,7 +76,9 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                         </span>
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
                           {selectedChannel.tipRecieved > 0
-                            ? formatCurrency(selectedChannel.tipRecieved)
+                            ? formatCurrency(
+                                selectedChannel.tipRecieved + additionalTips
+                              )
                             : "$0.00"}
                         </span>
                       </div>

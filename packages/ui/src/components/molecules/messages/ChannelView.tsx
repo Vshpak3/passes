@@ -34,6 +34,12 @@ export const ChannelView: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
+  const [additionalTips, setAdditionalTips] = useState<number>(0)
+
+  useEffect(() => {
+    setAdditionalTips(0)
+  }, [selectedChannel])
+
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
       freeMessages ? freeMessages - 1 : freeMessages
@@ -69,6 +75,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
       {selectedChannel && (
         <>
           <ChannelHeader
+            additionalTips={additionalTips}
             gallery={gallery}
             isCreator={isCreator}
             onBack={onBack}
@@ -89,6 +96,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
                 channelId={selectedChannel.channelId}
                 freeMessages={freeMessages}
                 minimumTip={minimumTip}
+                setAdditionalTips={setAdditionalTips}
               />
               {selectedChannel.channelId && (
                 <InputMessage

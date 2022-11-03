@@ -5,7 +5,15 @@ import {
   MessagesApi
 } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
-import { FC, useCallback, useEffect, useLayoutEffect, useState } from "react"
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -26,6 +34,7 @@ interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
   minimumTip?: number | null
+  setAdditionalTips: Dispatch<SetStateAction<number>>
 }
 
 const api = new MessagesApi()
@@ -33,7 +42,8 @@ const api = new MessagesApi()
 export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
-  minimumTip
+  minimumTip,
+  setAdditionalTips
 }) => {
   const { user } = useUser()
 
@@ -117,6 +127,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   (message) => message.messageId !== newMessage.messageId
                 )
               )
+              if (newMessage.senderId !== user?.userId) {
+                setAdditionalTips((tips) => tips + (newMessage.tipAmount ?? 0))
+              }
               break
             case "pending":
               setPendingMessages((pendingMessages) => [
@@ -141,7 +154,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         socket.off("message")
       }
     }
-  }, [channelId, socket, setMessageUpdates, user?.userId])
+  }, [channelId, socket, setMessageUpdates, setAdditionalTips, user?.userId])
 
   useEffect(() => {
     if (!channelId) {
