@@ -39,7 +39,10 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
       }}
     >
       <div className="item-center flex pr-[10px]">
-        <ProfileThumbnail userId={channel.otherUserId} />
+        <ProfileThumbnail
+          key={channel.otherUserId}
+          userId={channel.otherUserId}
+        />
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col items-start justify-center">

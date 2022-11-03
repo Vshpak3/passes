@@ -75,7 +75,10 @@ export const Comment: FC<CommentProps> = ({
         <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
           <div>
             <a href={`${window.location.origin}/${comment.commenterUsername}`}>
-              <ProfileThumbnail userId={comment.commenterId} />
+              <ProfileThumbnail
+                key={comment.commenterId}
+                userId={comment.commenterId}
+              />
             </a>
           </div>
           <div className="flex grow flex-col">

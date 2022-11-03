@@ -19,7 +19,7 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
       <a>
         <div className="flex items-center">
           <div className="relative">
-            <ProfileThumbnail userId={user.userId} />
+            <ProfileThumbnail key={user.userId} userId={user.userId} />
           </div>
           <div className="flex flex-col">
             <span className="ml-3 flex flex-row items-center text-lg font-medium leading-6 text-white">

@@ -28,7 +28,7 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
         <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
-          <ProfileThumbnail userId={userId} />
+          <ProfileThumbnail key={userId} userId={userId} />
         </div>
       </div>
       <div className="col-start-2 row-span-2 w-full content-start">

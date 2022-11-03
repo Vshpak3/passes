@@ -56,7 +56,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     >
       {!ownsMessage && (
         <div className="flex flex-shrink-0 items-end">
-          <ProfileThumbnail userId={senderId} />
+          <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}
       <div className="mx-4 flex flex-col items-end">
