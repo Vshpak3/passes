@@ -45,7 +45,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                       isItemActive
                         ? "fill-transparent stroke-passes-primary-color stroke-2"
                         : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-                      "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-white stroke-2"
+                      "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
                     )}
                   />
                   {item.name}
