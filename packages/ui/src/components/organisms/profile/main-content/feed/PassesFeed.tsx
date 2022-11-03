@@ -24,7 +24,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
   const [selectedPassType, setSelectedPassType] = useState<PassType>()
 
   return (
-    <>
+    <div className="mx-5">
       <SelectPassFilter onSelectedPassType={setSelectedPassType} />
       <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
@@ -42,6 +42,6 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         keyValue={`pass/creator-passes/${creatorId}`}
         style={{ overflow: "visible" }}
       />
-    </>
+    </div>
   )
 }
