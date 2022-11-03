@@ -26,7 +26,8 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
             />
             <Button
               className={`my-5 flex h-12 w-12 items-center justify-center rounded-[50%] ${
-                isMobile ? "hidden" : "lg:hidden"
+                // isMobile ? "hidden" : "lg:hidden"
+                "hidden"
               }`}
               onClick={() => setIsNewPostModalOpen(true)}
               variant="pink"
