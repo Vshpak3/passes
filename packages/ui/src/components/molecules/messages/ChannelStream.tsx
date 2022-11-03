@@ -8,6 +8,7 @@ import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
   Dispatch,
   FC,
+  MutableRefObject,
   SetStateAction,
   useCallback,
   useEffect,
@@ -26,7 +27,6 @@ import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
-import { useOnScreen } from "src/hooks/useOnScreen"
 import { useUser } from "src/hooks/useUser"
 import { ChannelMessage } from "./ChannelMessage"
 
@@ -35,6 +35,8 @@ interface ChannelStreamProps {
   freeMessages?: number | null
   minimumTip?: number | null
   setAdditionalTips: Dispatch<SetStateAction<number>>
+  bottomOfChatRef: MutableRefObject<HTMLDivElement | null>
+  isBottomOfChatVisible: boolean
 }
 
 const api = new MessagesApi()
@@ -43,13 +45,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
   minimumTip,
-  setAdditionalTips
+  setAdditionalTips,
+  bottomOfChatRef,
+  isBottomOfChatVisible
 }) => {
   const { user } = useUser()
-
-  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
-    threshold: 0.7
-  })
 
   const [messages, setMessages] = useState<MessageDto[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
