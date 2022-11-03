@@ -101,7 +101,7 @@ const ChatSettings = () => {
       .then(() => {
         return setIsDisableBtn(false)
       })
-      .catch(() => {
+      .catch((e) => {
         setIsDisableBtn(true)
       })
   }, [values, creatorSettings])
@@ -170,7 +170,7 @@ const ChatSettings = () => {
 
           <Button
             className="mt-6 w-auto !px-[52px]"
-            disabled={!isDisableBtn || isLoading}
+            disabled={!!isDisableBtn || isLoading}
             disabledClass="opacity-[0.5]"
             tag="button"
             type={ButtonTypeEnum.SUBMIT}
