@@ -2,6 +2,23 @@
 
 const env = process.env.NEXT_PUBLIC_NODE_ENV
 
+const ContentSecurityPolicy = [
+  // Default is allow to from self and API
+  `default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};`,
+  // Add in wss to allow for connecting to WebSockets
+  `connect-src: 'self' wss://${process.env.NEXT_PUBLIC_API_BASE_URL} api.segment.io;`,
+  // Fonts need to be loaded from local data
+  `font-src 'self' data:;`,
+  // Images need to be loaded from local data and the CDN
+  `img-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
+  // Media only needs to be CDN
+  `media-src 'self' ${process.env.NEXT_PUBLIC_CDN_URL};`,
+  // TODO: figure this out
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;`,
+  // Must allow for unsafe-inline because of Tailwind
+  `style-src 'self' 'unsafe-inline' fonts.googleapis.com;`
+]
+
 // Security headers (docs at https://nextjs.org/docs/advanced-features/security-headers)
 // The following headers are not considered standard / best practice:
 //  - X-DNS-Prefetch-Control (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-DNS-Prefetch-Control)
@@ -42,22 +59,9 @@ const securityHeaders = [
   // attacks. Content Security Policy (CSP) can specify allowed origins for
   // content including scripts, stylesheets, images, fonts, objects, media
   // (audio, video), iframes, and more.
-  //
-  // This is more secure but we cannot because of Tailwind:
-  // style-src 'self' ${process.env.NEXT_PUBLIC_UI_BASE_URL};
   {
     key: "Content-Security-Policy",
-    value: `
-    default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};
-    connect-src: 'self' wss://${process.env.NEXT_PUBLIC_API_BASE_URL};
-    font-src 'self' data:;
-    img-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};
-    media-src 'self' ${process.env.NEXT_PUBLIC_CDN_URL};
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;
-    style-src 'self' 'unsafe-inline' fonts.googleapis.com;
-  `
-      .replace(/\s{2,}/g, " ")
-      .trim()
+    value: ContentSecurityPolicy.join(" ")
   }
 ]
 
