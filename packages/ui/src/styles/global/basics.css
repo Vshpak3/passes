@@ -12,6 +12,7 @@ body {
   font-kerning: normal;
   font-variant-ligatures: contextual common-ligatures;
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  overscroll-behavior-y: "none";
 }
 
 img,
