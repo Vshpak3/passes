@@ -265,8 +265,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           </InfiniteScrollPagination>
           {unreadCount > 0 && (
             <button
-              className="fixed mb-5
-            flex items-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
+              className="fixed z-20
+            mb-5 flex items-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
               onClick={handleScrollToBottom}
             >
               <ArrowDownIcon />
