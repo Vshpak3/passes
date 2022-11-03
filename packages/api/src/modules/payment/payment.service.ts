@@ -1390,6 +1390,9 @@ export class PaymentService {
     userId: string,
     payinMethodDto: PayinMethodDto,
   ): Promise<boolean> {
+    if (payinMethodDto.chain && !payinMethodDto?.chainId) {
+      payinMethodDto.chain = this.getEvmChain(payinMethodDto.chainId ?? 0)
+    }
     switch (payinMethodDto.method) {
       case PayinMethodEnum.CIRCLE_CARD:
         // assert that card exists and is not deleted
