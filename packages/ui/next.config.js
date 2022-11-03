@@ -1,14 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-const env = process.env.NEXT_PUBLIC_NODE_ENV
-
 const ContentSecurityPolicy = [
   // Default is allow to from self and API
   `default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};`,
   // Add in wss to allow for connecting to WebSockets
-  `connect-src: 'self' wss:`,
+  `connect-src 'self' https: wss:;`,
   // Fonts need to be loaded from local data
-  `font-src 'self' data:;`,
+  `font-src 'self' data: fonts.gstatic.com;`,
   // Images need to be loaded from local data and the CDN
   `img-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // Media only needs to be CDN
@@ -18,6 +16,16 @@ const ContentSecurityPolicy = [
   // Must allow for unsafe-inline because of Tailwind
   `style-src 'self' 'unsafe-inline' fonts.googleapis.com;`
 ]
+// Adjust the CSP in dev
+if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
+  for (var i = 0; i < ContentSecurityPolicy.length; i++) {
+    ContentSecurityPolicy[i] = ContentSecurityPolicy[i]
+      .replace("http://", "")
+      .replace("https", "http")
+      .replace("wss", "ws")
+  }
+}
+console.log(ContentSecurityPolicy)
 
 // Security headers (docs at https://nextjs.org/docs/advanced-features/security-headers)
 // The following headers are not considered standard / best practice:
@@ -83,7 +91,6 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"]
     })
-
     return config
   },
   async redirects() {
@@ -96,17 +103,13 @@ const nextConfig = {
     ]
   },
   async headers() {
-    if (env === "prod" || env === "stage") {
-      return [
-        {
-          // Apply the security headers to all routes in the application
-          source: "/:path*",
-          headers: securityHeaders
-        }
-      ]
-    }
-
-    return []
+    return [
+      {
+        // Apply the security headers to all routes in the application
+        source: "/:path*",
+        headers: securityHeaders
+      }
+    ]
   }
 }
 
