@@ -33,6 +33,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     sentAt
   } = message
 
+  const { setMessage } = useBuyMessageModal()
+
   const tipComponent = (
     <div
       className={classNames(
@@ -46,7 +48,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       </span>
     </div>
   )
-  const { setMessage } = useBuyMessageModal()
+
   return (
     <div
       className={classNames(
