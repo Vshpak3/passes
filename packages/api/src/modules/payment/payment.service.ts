@@ -1331,6 +1331,12 @@ export class PaymentService {
   -------------------------------------------------------------------------------
   */
 
+  fillChainId(payinMethodDto: PayinMethodDto) {
+    if (!payinMethodDto.chainId && payinMethodDto.chain) {
+      payinMethodDto.chainId = this.getEvmChainId(payinMethodDto.chain)
+    }
+  }
+
   /**
    * set default payin method
    * @param userId
@@ -1340,21 +1346,19 @@ export class PaymentService {
    */
   async setDefaultPayinMethod(
     userId: string,
-    payinMethoDto: PayinMethodDto,
+    payinMethodDto: PayinMethodDto,
   ): Promise<void> {
     // find mainnet or testnet chainId
-    if (!payinMethoDto.chainId && payinMethoDto.chain) {
-      payinMethoDto.chainId = this.getEvmChainId(payinMethoDto.chain)
-    }
+    this.fillChainId(payinMethodDto)
 
     await this.dbWriter<DefaultPayinMethodEntity>(
       DefaultPayinMethodEntity.table,
     )
       .insert({
         user_id: userId,
-        method: payinMethoDto.method,
-        card_id: payinMethoDto.cardId,
-        chain_id: payinMethoDto.chainId,
+        method: payinMethodDto.method,
+        card_id: payinMethodDto.cardId,
+        chain_id: payinMethodDto.chainId,
       })
       .onConflict('user_id')
       .merge(['method', 'card_id', 'chain_id'])
@@ -1390,9 +1394,7 @@ export class PaymentService {
     userId: string,
     payinMethodDto: PayinMethodDto,
   ): Promise<boolean> {
-    if (payinMethodDto.chain && !payinMethodDto?.chainId) {
-      payinMethodDto.chain = this.getEvmChain(payinMethodDto.chainId ?? 0)
-    }
+    this.fillChainId(payinMethodDto)
     switch (payinMethodDto.method) {
       case PayinMethodEnum.CIRCLE_CARD:
         // assert that card exists and is not deleted
