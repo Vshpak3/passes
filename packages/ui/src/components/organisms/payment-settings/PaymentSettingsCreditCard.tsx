@@ -1,6 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
+import ms from "ms"
 import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import { Dispatch, FC, SetStateAction } from "react"
@@ -10,7 +11,6 @@ import { SubTabsEnum } from "src/config/settings"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
 import { buttonName } from "./PaymentSettingsCrypto"
-import ms from "ms"
 
 interface PaymentSettingsCreditCardProps {
   isEmbedded: boolean
