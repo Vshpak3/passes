@@ -29,26 +29,35 @@ const securityHeaders = [
   {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload"
-  }
+  },
 
-  // Prevent cross-site scripting (XSS), clickjacking and other code injection attacks.
-  // Content Security Policy (CSP) can specify allowed origins for
+  // This header controls how much information the browser includes when
+  // navigating from the current website (origin) to another.
+  {
+    key: "Referrer-Policy",
+    value: "origin-when-cross-origin"
+  },
+
+  // Prevent cross-site scripting (XSS), clickjacking, and other code injection
+  // attacks. Content Security Policy (CSP) can specify allowed origins for
   // content including scripts, stylesheets, images, fonts, objects, media
   // (audio, video), iframes, and more.
+  //
   // This is more secure but we cannot because of Tailwind:
   // style-src 'self' ${process.env.NEXT_PUBLIC_UI_BASE_URL};
-  // {
-  //   key: "Content-Security-Policy",
-  //   value: `
-  //   default-src 'self';
-  //   script-src 'self';
-  //   child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL} ${process.env.NEXT_PUBLIC_API_BASE_URL};
-  //   style-src 'self' 'unsafe-inline';
-  //   font-src 'self';
-  // `
-  //     .replace(/\s{2,}/g, " ")
-  //     .trim()
-  // }
+  {
+    key: "Content-Security-Policy",
+    value: `
+    default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};
+    child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+    font-src 'self' data:;
+    image-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};
+    script-src 'self' data:;
+    style-src 'self' 'unsafe-inline';
+  `
+      .replace(/\s{2,}/g, " ")
+      .trim()
+  }
 ]
 
 const nextConfig = {
