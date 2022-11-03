@@ -11,9 +11,10 @@ const ContentSecurityPolicy = [
   `img-src 'self' blob: data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // Allows videos to be loaded from blobs (for upload) and the CDN
   `media-src 'self' blob: ${process.env.NEXT_PUBLIC_CDN_URL};`,
-  // TODO: figure this out
+  // Allows scripts to be loaded from Segment
+  // TODO: not sure why unsafe-* is needed; I think it is something from Next.js
   `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;`,
-  // Must allow for unsafe-inline because of Tailwind
+  // Allows style from self and unsafe inline because of Tailwind
   `style-src 'self' 'unsafe-inline';`
 ]
 // Adjust the CSP in dev
