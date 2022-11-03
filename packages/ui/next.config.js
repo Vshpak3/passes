@@ -1,31 +1,30 @@
 /** @type {import('next').NextConfig} */
 
 const ContentSecurityPolicy = [
-  // Default is allow to from self and API
-  `default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};`,
-  // Add in wss to allow for connecting to WebSockets
+  // Default is just self
+  `default-src 'self';`,
+  // Allows connections to https or wss on all domains
   `connect-src 'self' https: wss:;`,
-  // Fonts need to be loaded from local data
+  // Allows fonts to be loaded from embedded data; TODO: remove google font
   `font-src 'self' data: fonts.gstatic.com;`,
-  // Images need to be loaded from local data and the CDN
-  `img-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
-  // Media only needs to be CDN
-  `media-src 'self' ${process.env.NEXT_PUBLIC_CDN_URL};`,
+  // Allows images to be loaded from embedded data, blobs (for upload), and the CDN
+  `img-src 'self' blob: data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
+  // Allows videos to be loaded from blobs (for upload) and the CDN
+  `media-src 'self' blob: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // TODO: figure this out
   `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;`,
-  // Must allow for unsafe-inline because of Tailwind
+  // Must allow for unsafe-inline because of Tailwind; TODO: remove google font
   `style-src 'self' 'unsafe-inline' fonts.googleapis.com;`
 ]
 // Adjust the CSP in dev
 if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
   for (var i = 0; i < ContentSecurityPolicy.length; i++) {
     ContentSecurityPolicy[i] = ContentSecurityPolicy[i]
-      .replace("http://", "")
       .replace("https", "http")
       .replace("wss", "ws")
+      .replace("/passes", "")
   }
 }
-console.log(ContentSecurityPolicy)
 
 // Security headers (docs at https://nextjs.org/docs/advanced-features/security-headers)
 // The following headers are not considered standard / best practice:
