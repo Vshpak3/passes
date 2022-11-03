@@ -26,7 +26,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
       {({ open }) => (
         <>
           <Disclosure.Button className="block">
-            <span className="group flex cursor-pointer items-center py-3 pr-0 hover:text-white">
+            <span className="group flex cursor-pointer items-center py-3 pr-0 text-left hover:text-white">
               <Link
                 as={item.href}
                 className={classNames(
