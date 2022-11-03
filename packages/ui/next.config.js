@@ -6,7 +6,7 @@ const ContentSecurityPolicy = [
   // Default is allow to from self and API
   `default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};`,
   // Add in wss to allow for connecting to WebSockets
-  `connect-src: 'self' wss://${process.env.NEXT_PUBLIC_API_BASE_URL} api.segment.io;`,
+  `connect-src: 'self' wss:`,
   // Fonts need to be loaded from local data
   `font-src 'self' data:;`,
   // Images need to be loaded from local data and the CDN
