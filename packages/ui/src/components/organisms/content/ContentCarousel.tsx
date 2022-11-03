@@ -7,7 +7,6 @@ import { ContentDto } from "@passes/api-client"
 import { FC, useRef } from "react"
 import { Navigation, Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { content } from "tailwind.config"
 
 import { SlideContent } from "src/components/molecules/content/SlideContent"
 import { LockedMedia } from "./LockedMedia"
@@ -34,7 +33,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   activeIndex = 0
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
-  const hasAccess = paid || price === 0 || previewIndex >= content.length
+  const hasAccess = paid || price === 0 || previewIndex >= contents.length
   return (
     <>
       <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
