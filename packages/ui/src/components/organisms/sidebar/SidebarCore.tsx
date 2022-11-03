@@ -21,7 +21,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
 
   return (
     <header className="col-span-3 h-screen w-full items-end border-r-[0.5px] border-gray-600 md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
-      <div className="flex w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
+      <div className="flex h-full w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
           <div>
             <div className="justify-left items-left flex shrink-0">
@@ -29,7 +29,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
                 <PassesLogoWhite className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
               </div>
             </div>
-            <nav className="flex flex-col items-start gap-0 pt-[35px]">
+            <nav className="flex flex-col items-start gap-0 pt-10">
               {navigation.map((item: SidebarNavigation) => (
                 <AuthWrapper
                   creatorOnly={item.creatorOnly !== false}
@@ -62,7 +62,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
             </nav>
           </div>
           <AuthWrapper>
-            <div className="mt-10 flex w-full flex-col items-center gap-0">
+            <div className="mb-10 flex flex-col items-start gap-0">
               <SidebarItem
                 isActive={false}
                 isDropdown={false}

@@ -30,7 +30,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   return (
     <div
       className={classNames(
-        "mb-2 flex cursor-pointer  items-center rounded-md py-[7px] px-[10px] hover:bg-[#ffffff]/10",
+        "mb-2 flex cursor-pointer items-center rounded-md p-1 hover:bg-[#ffffff]/10",
         isSelected && "bg-[#ffffff]/10"
       )}
       onClick={() => {

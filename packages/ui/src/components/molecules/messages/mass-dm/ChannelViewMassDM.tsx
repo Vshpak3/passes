@@ -59,7 +59,7 @@ export const ChannelViewMassDM: FC<ChannelViewMassDMProps> = ({
     })
   }
   return (
-    <div className="flex max-h-[90vh] flex-1 flex-col">
+    <div className="col-span-7 flex max-h-[90vh] flex-1 flex-col lg:col-span-4">
       <ChannelHeaderMassDM
         excludedLists={excludedLists}
         selectedLists={selectedLists}

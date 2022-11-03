@@ -30,7 +30,7 @@ export const WithNormalPageLayout = (
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
-      <div className="relative grid min-h-screen w-full grid-cols-10 bg-passes-black">
+      <div className="background-gradient relative grid min-h-screen w-full grid-cols-10">
         {options.sidebar && <Sidebar />}
         <main
           className={classNames(

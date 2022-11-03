@@ -6,6 +6,7 @@ import MessagesPlusIcon from "public/icons/messages-plus-icon.svg"
 import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { useUser } from "src/hooks/useUser"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
@@ -36,12 +37,12 @@ const MessagesPage = () => {
                 <MessagesBackIcon onClick={() => setMassMessage(false)} />
               </div>
             ) : null}
-            <div className="flex w-[34.5%] flex-row items-center justify-between">
-              <span className="font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
+            <div className="flex flex-row items-center justify-between">
+              <SectionTitle>
                 {massMessage ? "Mass Messaging" : "Messages"}
-              </span>
+              </SectionTitle>
               {massMessage && user.isCreator ? null : (
-                <div className="mr-6 cursor-pointer lg:mr-0">
+                <div className="mx-6 cursor-pointer lg:mr-0">
                   <MessagesPlusIcon onClick={() => setMassMessage(true)} />
                 </div>
               )}

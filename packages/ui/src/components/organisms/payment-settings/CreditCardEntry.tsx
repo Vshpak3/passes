@@ -25,7 +25,7 @@ export const CreditCardEntry: FC<CreditCardEntryProps> = ({
         <div className="mr-1 flex flex-row justify-between">
           <div className="flex items-center">
             <div className="flex flex-col">
-              <span className="-mb-2 w-8 text-[10px] font-[500] opacity-70">
+              <span className="-mb-1 w-8 text-[10px] font-[500] opacity-70">
                 VALID
               </span>
               <span className="w-8 text-[10px] font-[500] opacity-70">

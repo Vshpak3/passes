@@ -25,6 +25,10 @@
   background-size: cover;
 }
 
+.background-gradient {
+  background: linear-gradient(to bottom left, #4e1e2f, #12070e 40%);
+}
+
 @layer components {
   .container {
     @apply mx-auto max-w-4xl pr-[var(--wrapper-padding-right)] pl-[var(--wrapper-padding-left)];

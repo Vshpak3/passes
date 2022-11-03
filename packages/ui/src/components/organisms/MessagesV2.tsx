@@ -86,7 +86,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
   }, [isMobile])
 
   return (
-    <div className="flex h-full flex-row border border-r-0 border-[#fff]/10">
+    <div className="grid h-full grid-cols-7 flex-row border border-r-0 border-[#fff]/10">
       {massMessage ? (
         <>
           <ChannelMassDM

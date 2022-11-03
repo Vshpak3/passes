@@ -44,7 +44,7 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
   )
 
   return (
-    <div className="min-w-[100%] overflow-y-auto border-r border-[#fff]/10 p-[30px]  backdrop-blur-[50px] md:min-w-[35%]">
+    <div className="col-span-7 overflow-y-auto border-r border-[#fff]/10 p-10 backdrop-blur-[50px] lg:col-span-3">
       <div className="flex flex-col gap-7">
         <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
           <span className="text-[16px] font-medium leading-[24px]">

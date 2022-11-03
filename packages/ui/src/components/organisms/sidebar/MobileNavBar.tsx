@@ -47,20 +47,19 @@ export const MobileNavBar = ({ activeRoute }: Props) => {
   return (
     <div className="fixed bottom-0 z-30 flex h-16 w-full bg-passes-black">
       {mobileLinks.map((navBarItem, index) => (
-        <Link href={navBarItem.href} key={`${navBarItem.id}-${index}`}>
-          <div
-            className="flex flex-1 items-center justify-center"
-            key={`${navBarItem.id}-${index}`}
-          >
-            <navBarItem.icon
-              className={classNames(
-                activeRoute === navBarItem.id
-                  ? " stroke-passes-primary-color stroke-2"
-                  : "stroke-[#ffffff]/50",
-                " stroke-2"
-              )}
-            />
-          </div>
+        <Link
+          className="flex flex-1 items-center justify-center"
+          href={navBarItem.href}
+          key={`${navBarItem.id}-${index}`}
+        >
+          <navBarItem.icon
+            className={classNames(
+              activeRoute === navBarItem.id
+                ? " stroke-passes-primary-color stroke-2"
+                : "stroke-[#ffffff]/50",
+              " stroke-2"
+            )}
+          />
         </Link>
       ))}
     </div>

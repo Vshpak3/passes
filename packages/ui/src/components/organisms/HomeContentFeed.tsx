@@ -14,8 +14,8 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
-import { Header } from "src/components/molecules/performance/Header"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
+import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 
 const Post = dynamic(
   () => import("src/components/organisms/profile/post/Post"),
@@ -51,34 +51,34 @@ export const HomeContentFeed: FC = () => {
   const { posts } = usePostWebhook()
 
   return (
-    <>
-      <Header />
-      <div className="grid w-full grid-cols-7">
-        <div className="col-span-7 lg:col-span-4">
-          <SectionTitle>Home</SectionTitle>
-          <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
-            KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-              return (
-                <Post
-                  inHomeFeed
-                  post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-                />
-              )
-            }}
-            emptyElement={ContentFeedEmpty}
-            endElement={ContentFeedEnd}
-            fetch={async (req: GetFeedRequestDto) => {
-              return await api.getFeed({ getFeedRequestDto: req })
-            }}
-            fetchProps={{}}
-            keyValue="/feed"
-            loadingElement={ContentFeedLoading}
-          />
-        </div>
-        <div className="col-span-3 h-screen border-gray-600 lg:border-l-[0.5px]">
-          <SectionTitle>Suggested</SectionTitle>
-        </div>
+    <div className="grid w-full grid-cols-7">
+      <div className="col-span-7 lg:col-span-4">
+        <SectionTitle>Home</SectionTitle>
+        <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <Post
+                inHomeFeed
+                post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
+              />
+            )
+          }}
+          emptyElement={ContentFeedEmpty}
+          endElement={ContentFeedEnd}
+          fetch={async (req: GetFeedRequestDto) => {
+            return await api.getFeed({ getFeedRequestDto: req })
+          }}
+          fetchProps={{}}
+          keyValue="/feed"
+          loadingElement={ContentFeedLoading}
+        />
       </div>
-    </>
+      <div className="col-span-3 h-screen border-gray-600 pl-8 lg:border-l-[0.5px]">
+        <div className="mt-2 hidden items-start md:flex">
+          <CreatorSearchBar />
+        </div>
+        <SectionTitle>Suggested</SectionTitle>
+      </div>
+    </div>
   )
 }
