@@ -119,6 +119,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
             <ChannelView
               gallery={gallery}
               isCreator={!!user?.isCreator}
+              key={selectedChannel?.channelId}
               onBack={handleOpenChannelView}
               selectedChannel={selectedChannel}
               setGallery={setGallery}

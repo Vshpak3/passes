@@ -36,16 +36,13 @@ export const ChannelView: FC<ChannelViewProps> = ({
   )
   const [additionalTips, setAdditionalTips] = useState<number>(0)
 
-  useEffect(() => {
-    setAdditionalTips(0)
-  }, [selectedChannel])
-
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
       freeMessages ? freeMessages - 1 : freeMessages
     )
   }
   useEffect(() => {
+    setAdditionalTips(0)
     if (selectedChannel?.channelId) {
       const fetch = async () => {
         const api = new UserApi()
