@@ -12,6 +12,9 @@ export class ContentDto {
   @DtoProperty({ type: 'string', optional: true })
   signedUrl?: string
 
+  @DtoProperty({ type: 'string', optional: true })
+  signedThumbnailUrl?: string
+
   @DtoProperty({ custom_type: ContentTypeEnum })
   contentType: ContentTypeEnum
 
@@ -30,12 +33,17 @@ export class ContentDto {
   @DtoProperty({ type: 'boolean', optional: true })
   failed?: boolean
 
-  constructor(content: ContentEntity, signedUrl?: string) {
+  constructor(
+    content: ContentEntity,
+    signedUrl?: string,
+    signedThumbnailUrl?: string,
+  ) {
     if (content) {
       this.contentId = content.id
       this.userId = content.user_id
       this.contentType = content.content_type
       this.signedUrl = signedUrl
+      this.signedThumbnailUrl = signedThumbnailUrl
       this.createdAt = content.created_at
       this.inPost = content.in_post
       this.inMessage = content.in_message

@@ -320,17 +320,20 @@ export class ContentService {
     isOwner?: boolean,
   ): ContentDto[] {
     return contents.map((content, index) => {
+      const needsSignature = (index < previewIndex || accessible) && !isOwner
       return {
         contentId: content.contentId,
         userId,
-        signedUrl:
-          (index < previewIndex || accessible) && !isOwner
-            ? this.preSignMediaContent(
-                userId,
-                content.contentId,
-                content.contentType,
-              )
-            : undefined,
+        signedUrl: needsSignature
+          ? this.preSignMediaContent(
+              userId,
+              content.contentId,
+              content.contentType,
+            )
+          : undefined,
+        signedThumbnailUrl: needsSignature
+          ? this.preSignMediaContentThumbnail(userId, content.contentId)
+          : undefined,
         contentType: content.contentType,
       }
     })

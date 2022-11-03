@@ -42,6 +42,12 @@ export interface ContentDto {
      * @type {string}
      * @memberof ContentDto
      */
+    signedThumbnailUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ContentDto
+     */
     contentType: ContentDtoContentTypeEnum;
     /**
      * 
@@ -113,6 +119,7 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'contentId': json['contentId'],
         'userId': json['userId'],
         'signedUrl': !exists(json, 'signedUrl') ? undefined : json['signedUrl'],
+        'signedThumbnailUrl': !exists(json, 'signedThumbnailUrl') ? undefined : json['signedThumbnailUrl'],
         'contentType': json['contentType'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'inPost': !exists(json, 'inPost') ? undefined : json['inPost'],
@@ -134,6 +141,7 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'contentId': value.contentId,
         'userId': value.userId,
         'signedUrl': value.signedUrl,
+        'signedThumbnailUrl': value.signedThumbnailUrl,
         'contentType': value.contentType,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'inPost': value.inPost,

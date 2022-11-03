@@ -100,6 +100,9 @@ export class ContentService {
     if (isDev) {
       return ContentService.userContentMediaPath(content)
     }
+    if (content.signedThumbnailUrl) {
+      return content.signedThumbnailUrl
+    }
     return getUrlPath(
       "media",
       content.userId,
