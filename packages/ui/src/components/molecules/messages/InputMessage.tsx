@@ -320,7 +320,8 @@ export const InputMessage: FC<InputMessageProps> = ({
               </div>
               <input
                 autoComplete="off"
-                className=" w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
+                // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+                className="w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
                 min="0"
                 onChange={handleChangeTip}
                 onKeyPress={preventNegative}

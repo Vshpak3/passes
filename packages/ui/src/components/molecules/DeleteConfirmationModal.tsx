@@ -62,7 +62,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
       }}
     >
       <div
-        className="m-auto w-full w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10"
+        className="m-auto w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10"
         id="popup-modal"
       >
         <div className="relative text-right">
@@ -92,13 +92,13 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
             <div className="my-3 h-[0.5px] w-full bg-[#2C282D]" />
             <div className="flex w-full flex-row justify-between">
               <button
-                className="text-4 text-4 rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
+                className="text-4 rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
                 onClick={handleDelete}
               >
                 Delete
               </button>
               <button
-                className="text-4 text-4 rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"
+                className="text-4 rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"
                 onClick={onCancel}
               >
                 Cancel

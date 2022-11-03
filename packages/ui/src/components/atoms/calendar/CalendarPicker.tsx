@@ -144,7 +144,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
             <div
-              className="h-567px rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
+              className="h-[567px] rounded-md border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] px-9 py-10 backdrop-blur-md"
               ref={calenderRef}
             >
               <div className="calendar relative w-full">
@@ -177,7 +177,7 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
                   <TimePicker setTime={setTime} time={time} />
                 </div>
                 <button
-                  className="duration-400 mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"
+                  className="mt-3 flex w-full cursor-pointer items-center justify-center rounded-lg border border-white bg-[rgba(27,20,29,0.5)] py-3 text-white transition-all hover:bg-white hover:text-passes-gray-200"
                   onClick={handleSaveDateAndTime}
                 >
                   Save

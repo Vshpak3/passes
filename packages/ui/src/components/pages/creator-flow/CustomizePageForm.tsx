@@ -127,7 +127,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   return (
     <div className="flex justify-center pb-20 text-white">
       <form
-        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-24 lg:px-40"
+        className="flex w-full max-w-screen-lg flex-col justify-center rounded-3xl border-gray-700 bg-black py-10 px-6 sm:-mt-12 sm:w-4/5 sm:border sm:py-24 sm:px-10 md:px-16 lg:px-40"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="mb-6 flex flex-col items-center justify-center">
@@ -225,7 +225,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               Social Media Accounts
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
-              <ProfileFacebookIcon className="h-[17px] w-[17px] flex-shrink-0" />
+              <ProfileFacebookIcon className="h-[17px] w-[17px] shrink-0" />
               {connectedAccounts.facebook ? (
                 <span>@fbusername</span>
               ) : (

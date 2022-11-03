@@ -76,7 +76,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   return (
     <>
       {!removed && (
-        <div className="z-1 mt-6 flex">
+        <div className="mt-6 flex">
           <FormContainer className="!min-h-[10px] border border-white/10 px-5 pt-5">
             <PostHeader
               createdAt={createdAt}
@@ -87,7 +87,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               username={commenterUsername}
             />
             <div className="flex flex-col items-start">
-              <div className="break-normal break-all text-start text-base font-medium text-white/90">
+              <div className="break-normal text-start text-base font-medium text-white/90">
                 {!isHidden || showHidden ? (
                   <FormattedText tags={tags} text={text} />
                 ) : (

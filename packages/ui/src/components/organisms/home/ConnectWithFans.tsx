@@ -2,14 +2,14 @@ import React from "react"
 
 export const ConnectWithFans = () => {
   return (
-    <div className="mx-auto max-w-7xl overflow-clip py-32 px-4">
+    <div className="mx-auto max-w-7xl text-clip py-32 px-4">
       <h3 className="mx-auto max-w-2xl text-center text-5xl font-extrabold leading-[4rem]">
         Connect with your fans and get paid doing it
       </h3>
       <p className="mx-auto py-4 text-center">
         Set your own pay-per-message price and earn tips on posts.
       </p>
-      <div className="mx-auto max-w-7xl overflow-clip px-4 sm:py-32 sm:px-6 lg:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl text-clip px-4 sm:py-32 sm:px-6 lg:py-16 lg:px-8">
         <div
           style={{
             backgroundImage:

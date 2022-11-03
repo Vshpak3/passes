@@ -47,7 +47,7 @@ export const SidebarMobileContainer: FC<
               </div>
             </Dialog.Panel>
           </Transition.Child>
-          <div aria-hidden="true" className="w-14 flex-shrink-0">
+          <div aria-hidden="true" className="w-14 shrink-0">
             {/* Dummy element to force sidebar to shrink to fit close icon */}
           </div>
         </div>

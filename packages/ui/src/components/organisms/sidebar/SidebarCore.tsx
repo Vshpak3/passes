@@ -20,11 +20,11 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { user } = useUser()
 
   return (
-    <header className="col-span-3 h-screen w-full items-end border-r-[0.5px] border-gray-600 md:sticky md:inset-y-0 md:flex md:flex-shrink-0 md:flex-col">
+    <header className="col-span-3 h-screen w-full items-end border-r-[0.5px] border-gray-600 md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
       <div className="flex w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
           <div>
-            <div className="justify-left items-left flex flex-shrink-0">
+            <div className="justify-left items-left flex shrink-0">
               <div>
                 <PassesLogoWhite className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
               </div>

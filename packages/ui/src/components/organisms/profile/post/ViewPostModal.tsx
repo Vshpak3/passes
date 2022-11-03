@@ -85,7 +85,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                 post.contents &&
                 post.contents.length === 1 &&
                 imageToShow && <img alt="post" src={imageToShow} />}
-              <div className="relative mt-3 flex h-[500px]  w-full w-[600px] flex-row items-center justify-center bg-transparent">
+              <div className="relative mt-3 flex h-[500px] w-[600px] flex-row items-center justify-center bg-transparent">
                 {/* {postUnlocked && post.contents && post.contents.length > 1 && (
                   <ContentCarousel
                     contents={post.contents}
@@ -129,7 +129,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               {post.createdAt && (
                 <span
                   className={classnames(
-                    "flex-shrink text-start text-xs text-white/50"
+                    "shrink text-start text-xs text-white/50"
                   )}
                 >
                   <TimeAgo date={post.createdAt} minPeriod={30} />

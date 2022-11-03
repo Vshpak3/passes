@@ -36,7 +36,7 @@ export const Hero = () => {
 
   return (
     <div className="bg-[url('/img/homepage/hero-bkg.webp')] bg-cover bg-no-repeat">
-      <div className="bg-fill mx-auto max-w-7xl overflow-clip px-4 py-24">
+      <div className="bg-fill mx-auto max-w-7xl text-clip px-4 py-24">
         <div className="flex flex-col items-center space-y-8">
           <a href="https://jobs.lever.co/Passes">
             <span
@@ -63,10 +63,10 @@ export const Hero = () => {
           <div className="mx-auto flex w-full max-w-lg flex-col py-8">
             <p className="text-center text-lg font-bold">Sign Up for Updates</p>
 
-            <div className="flex w-full flex-grow items-center py-4">
+            <div className="flex w-full grow items-center py-4">
               <input
                 autoComplete="email"
-                className="mr-4 h-12 flex-grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder-white"
+                className="mr-4 h-12 grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder:text-white"
                 id="email"
                 name="email"
                 onChange={(v) => setEmailAddress(v.target.value)}

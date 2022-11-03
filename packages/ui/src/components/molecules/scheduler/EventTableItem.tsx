@@ -107,7 +107,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       </td>
     </tr>
   ) : (
-    <div className="mb-8 bg-passes-purple-200 px-5 py-5">
+    <div className="mb-8 bg-passes-purple-200 p-5">
       <div className="mb-6 flex items-center justify-between">
         <span>
           {format(scheduledAt, "LLL do, yyyy")}

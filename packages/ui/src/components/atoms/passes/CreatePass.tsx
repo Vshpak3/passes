@@ -161,7 +161,7 @@ export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <Input
-      className="flex-grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      className="grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
       name="passName"
       placeholder="Name of your new pass!"
       register={register}

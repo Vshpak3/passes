@@ -68,7 +68,7 @@ const PassFilePreview: FC<PassFilesProps> = ({ files, onRemove }) => {
 
   return (
     <div className="min-h-[300px] w-full">
-      <div className="flex grid h-full grid-cols-12 items-start justify-start gap-4">
+      <div className="grid h-full grid-cols-12 items-start justify-start gap-4">
         {files.length > 0 && renderFilePreview}
       </div>
     </div>

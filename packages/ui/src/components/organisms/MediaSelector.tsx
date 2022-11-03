@@ -83,8 +83,8 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                       type="button"
                       // onClick={() => setActiveMediaHeader(name)}
                     >
-                      <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
-                        <Icon className="flex flex-shrink-0" />
+                      <span className="flex shrink-0 cursor-pointer items-center gap-1">
+                        <Icon className="flex shrink-0" />
                         <span
                           className={classNames(
                             activeMediaHeader === name

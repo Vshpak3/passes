@@ -22,7 +22,7 @@ export const CreatorSteps: FC<CreatorStepsProps> = ({
         ${
           isSelected
             ? "flex-1 pl-6"
-            : "h-12 w-12 flex-shrink-0 items-center justify-center border border-gray-700 xs:aspect-1 xs:h-full xs:w-auto"
+            : "h-12 w-12 shrink-0 items-center justify-center border border-gray-700 xs:aspect-1 xs:h-full xs:w-auto"
         }`}
       >
         <div className="bg-creator-flow-violet flex h-8 w-8 items-center justify-center rounded-full border border-gray-700">

@@ -32,7 +32,7 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
   activeTab
 }) => {
   return (
-    <nav className="align-items mb-5 flex w-full items-center justify-center border-b border-passes-dark-200 p-0">
+    <nav className="mb-5 flex w-full items-center justify-center border-b border-passes-dark-200 p-0">
       {navigationTabs.map((item, index) => (
         <span
           className={classNames(

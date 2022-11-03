@@ -81,7 +81,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   }
 
   return (
-    <div className="-mt-[180px] mb-[28px] flex w-full flex-col justify-between">
+    <div className="mt-[-180px] mb-[28px] flex w-full flex-col justify-between">
       <div className="align-items flex items-center justify-between">
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault

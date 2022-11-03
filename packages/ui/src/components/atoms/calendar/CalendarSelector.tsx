@@ -38,8 +38,8 @@ export const CalendarSelector: FC<CalendarSelectorProps> = ({
           "group flex h-full flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-passes-secondary-color sm:px-4 sm:py-3"
         )}
       >
-        <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
-          <ScheduledCalendarIcon className="flex flex-shrink-0" />
+        <span className="flex shrink-0 cursor-pointer items-center gap-1">
+          <ScheduledCalendarIcon className="flex shrink-0" />
           <span
             className={classNames(
               activeHeader === name || isOpen

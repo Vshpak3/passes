@@ -23,8 +23,8 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
       )}
       onClick={() => setIsOpen(true)}
     >
-      <span className="flex flex-shrink-0 cursor-pointer items-center gap-1">
-        <VaultIcon className="flex flex-shrink-0" />
+      <span className="flex shrink-0 cursor-pointer items-center gap-1">
+        <VaultIcon className="flex shrink-0" />
         <span
           className={classNames(
             isOpen || expanded ? "block" : "hidden group-hover:block",

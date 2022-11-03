@@ -96,7 +96,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             </div>
           </div>
         )}
-        <div className="mt-2 mb-auto w-full border-b border-t border-b-[#2C282D] border-t-[#2C282D]">
+        <div className="mt-2 mb-auto w-full border-y border-y-[#2C282D]">
           <p className="py-3 text-xs font-medium leading-[18px] text-white/70">
             {formatText(pass.description)}
           </p>

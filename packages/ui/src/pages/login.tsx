@@ -95,7 +95,7 @@ const LoginPage: FC = () => {
 
   return (
     <div className="flex-2 h-screen bg-black">
-      <div className="relative mx-auto flex h-full w-full max-w-[1440px] justify-center pt-12 md:px-4 md:pt-16 md:pt-[104px] lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
+      <div className="relative mx-auto flex h-full w-full max-w-[1440px] justify-center pt-12 md:px-4 md:pt-16 lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
         <span className="absolute top-[136px] left-0 hidden h-[650px] w-[650px] items-center justify-center lg:flex xl:left-12 xl:h-[751px] xl:w-[751px]">
           <span className="absolute h-full w-full bg-[conic-gradient(from_133.17deg_at_43.11%_51.11%,#F2BD6C_0deg,#BD499B_230.62deg,#A359D5_360deg)] opacity-60 blur-[125px]" />
           <span className="absolute h-[73%] w-[73%] rounded-full border-[41px] border-white/[0.15]" />

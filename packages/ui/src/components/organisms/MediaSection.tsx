@@ -147,7 +147,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
               </style>
 
               <Swiper
-                className="mySwiper"
                 modules={[Navigation]}
                 navigation
                 slidesPerView={messages ? 3 : 4}

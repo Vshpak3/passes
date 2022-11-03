@@ -27,7 +27,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
 
       <div className="relative flex flex-col pt-[18px]">
         <div className="relative flex items-center gap-3">
-          <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2 transform" />
+          <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2" />
           <input
             autoComplete="off"
             className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0 xs:min-w-[320px] sm:min-w-[360px]"

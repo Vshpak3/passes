@@ -42,7 +42,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
     >
       <DollarSymbol dimensions={11} />
-      <span className="text-base text-xs font-bold text-white">
+      <span className="text-base font-bold text-white">
         Tip: {formatCurrency(message.tipAmount ?? 0)}
       </span>
     </div>
@@ -56,7 +56,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
     >
       {!ownsMessage && (
-        <div className="flex flex-shrink-0 items-end">
+        <div className="flex shrink-0 items-end">
           <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}

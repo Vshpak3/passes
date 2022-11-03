@@ -3,16 +3,13 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json"
   },
-  plugins: [
-    "no-relative-import-paths"
-    // "tailwind",
-  ],
+  plugins: ["no-relative-import-paths", "tailwindcss"],
   extends: [
     "next/core-web-vitals",
     // 'plugin:jsx-a11y/recommended',
     "plugin:react-hooks/recommended",
-    "plugin:react/all"
-    // 'plugin:tailwindcss/recommended',
+    "plugin:react/all",
+    "plugin:tailwindcss/recommended"
   ],
   rules: {
     // Opt in / adjust these rules
@@ -29,6 +26,7 @@ module.exports = {
     "@next/next/no-img-element": "off",
 
     // Consider turning on
+    "tailwindcss/no-custom-classname": "off",
     "react/jsx-no-constructed-context-values": "off",
     "react/no-array-index-key": "off",
     "react/no-unstable-nested-components": "off",

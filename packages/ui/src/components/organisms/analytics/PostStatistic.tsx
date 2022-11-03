@@ -45,7 +45,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
         <div className="flex h-[72px] w-[100px] flex-1 items-center justify-start overflow-hidden">
           <Link href={`/${post.userId}/${post.postId}`}>
             <a>
-              <span className="w-full overflow-hidden truncate text-ellipsis whitespace-normal break-words text-[14px] font-[700]">
+              <span className="w-full overflow-hidden truncate whitespace-normal break-words text-[14px] font-[700]">
                 {formatText(post.text)}
               </span>
             </a>
@@ -85,11 +85,11 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
           {!deleted &&
           !post.deletedAt &&
           (!post.expiresAt || post.expiresAt > new Date()) ? (
-            <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-passes-pink-100">
+            <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-passes-pink-100">
               <Button onClick={handleConfirmDelete}>Delete</Button>
             </span>
           ) : (
-            <span className="w-full overflow-hidden text-ellipsis text-center text-[14px] font-[700] text-gray-500">
+            <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-gray-500">
               Deleted
             </span>
           )}

@@ -56,7 +56,7 @@ export const ProfileDetails: FC = () => {
         </div>
 
         {/* Mobile */}
-        <div className="align-center my-4 -mt-[220px] grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
+        <div className="align-center my-4 mt-[-220px] grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
           <ProfileImage
             onClick={() => setIsProfilePicModalOpen(true)}
             userId={profileUserId}

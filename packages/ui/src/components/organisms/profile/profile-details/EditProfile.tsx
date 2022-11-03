@@ -152,7 +152,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen transform flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       footer={
         <div className="left-20 mx-0 mb-6 flex cursor-pointer self-center  xs:mx-5 sm:mx-12 md:mx-0  md:-mb-4">
           <PassesPinkButton
@@ -166,7 +166,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       onClose={() => setEditProfileModalOpen(false)}
       open
       title={
-        <div className="flex w-full flex-row justify-end py-[8px] px-[8px] xs:px-[16px] md:hidden">
+        <div className="flex w-full flex-row justify-end p-[8px] xs:px-[16px] md:hidden">
           <button
             className="h-[30px] w-[30px]"
             onClick={() => setEditProfileModalOpen(false)}
@@ -177,7 +177,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       }
     >
       <form
-        className="flex flex-col gap-5 px-0 py-6 xs:px-5 sm:px-12 md:py-0 md:px-0"
+        className="flex flex-col gap-5 px-0 py-6 xs:px-5 sm:px-12 md:p-0"
         onSubmit={handleSubmit(onSubmit)}
       >
         <FormImage
