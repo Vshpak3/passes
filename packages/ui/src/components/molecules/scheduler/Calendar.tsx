@@ -109,16 +109,16 @@ export const Calendar: FC = () => {
               <span className="absolute top-3 right-3">
                 {date.date.getDate()}
               </span>
-              <div className="mt-7 flex w-full">
+              <div className="mt-7 w-full">
                 {numberProcessedPostInDate > 0 && (
-                  <span className="text-l w-full rounded bg-gray-400 px-2 py-[2px] text-left font-bold leading-6 text-white opacity-[0.40]">
+                  <div className="text-l mb-2 w-full rounded bg-gray-400 px-2 py-[2px] text-left font-bold leading-6 text-white opacity-[0.40]">
                     {numberProcessedPostInDate}
-                  </span>
+                  </div>
                 )}
                 {numberPendingPostInDate > 0 && (
-                  <span className="text-l w-full rounded bg-passes-primary-color px-2 py-[2px] text-left font-bold leading-6 text-white">
+                  <div className="text-l w-full rounded bg-passes-primary-color px-2 py-[2px] text-left font-bold leading-6 text-white">
                     {numberPendingPostInDate}
-                  </span>
+                  </div>
                 )}
               </div>
             </div>
