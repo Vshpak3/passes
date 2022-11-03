@@ -26,7 +26,7 @@ export const VideoContent = ({
   }, [isActive, pause])
   return (
     <div
-      className={classNames(fixedHeight ? "max-h-[85vh]" : "", "h-full w-full")}
+      className={classNames(fixedHeight ? "max-h-[75vh]" : "", "h-full w-full")}
     >
       <div className="relative h-full max-h-[1200px] cursor-pointer">
         <div className="relative h-full overflow-hidden">

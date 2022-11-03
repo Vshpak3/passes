@@ -36,12 +36,12 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   const tipComponent = (
     <div
       className={classNames(
-        "flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2.5",
+        "flex flex-row items-center gap-2 rounded-sm bg-[#B52A6F40] p-2",
         ownsMessage ? "md:flex-row" : "md:flex-row-reverse"
       )}
     >
       <DollarSymbol dimensions={11} />
-      <span className="text-base font-bold text-white">
+      <span className="text-xs font-bold text-white">
         Tip: {formatCurrency(message.tipAmount ?? 0)}
       </span>
     </div>
