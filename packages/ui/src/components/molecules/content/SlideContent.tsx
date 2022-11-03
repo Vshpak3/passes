@@ -6,20 +6,27 @@ import {
   SlideImage,
   SlideImageProps
 } from "src/components/atoms/content/SlideImage"
+import { VideoContent } from "src/components/atoms/content/VideoContent"
 import { MediaModal } from "src/components/organisms/MediaModal"
-import { ContentService } from "src/helpers/content"
 
 interface SlideContentProps extends SlideImageProps {
-  // eslint-disable-next-line react/no-unused-prop-types
   autoplayVideo?: boolean
   carouselContent?: ContentDto[]
-  index?: number
+  index: number
   fixedHeight: boolean
+  isActive: boolean
 }
 
 export const SlideContent = forwardRef(
   (
-    { content, carouselContent, index = 0, fixedHeight }: SlideContentProps,
+    {
+      content,
+      carouselContent,
+      index,
+      fixedHeight,
+      isActive,
+      autoplayVideo
+    }: SlideContentProps,
     ref: ForwardedRef<HTMLImageElement>
   ) => {
     const [openModal, setOpenModal] = useState(false)
@@ -69,12 +76,12 @@ export const SlideContent = forwardRef(
         )
       case ContentDtoContentTypeEnum.Video:
         return (
-          <div data-vjs-player>
-            <video
-              className="video-js vjs-big-play-centered"
-              src={ContentService.userContentMediaPath(content)}
-            />
-          </div>
+          <VideoContent
+            autoplay={autoplayVideo}
+            content={content}
+            fixedHeight={fixedHeight}
+            isActive={isActive}
+          />
         )
     }
     return null
