@@ -195,16 +195,16 @@ export const usePay = (
           )
           break
         case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
-          res = await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
           checkFunding = true
+          res = await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
-          res = await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
           checkFunding = true
+          res = await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
-          res = await handleMetamaskCircleEth(registerResponse, uncreatePayin)
           checkFunding = true
+          res = await handleMetamaskCircleEth(registerResponse, uncreatePayin)
           break
         default:
           break
