@@ -51,6 +51,7 @@ export interface EthereumProvider {
   on: (event: string, handler: (args: any) => void) => void
   off: (event: string) => void
   waitForTransaction: (txHash: string) => void
+  send: (event: string) => void
 }
 
 export const connectMetamask = async (
