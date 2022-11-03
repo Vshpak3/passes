@@ -31,13 +31,6 @@ const securityHeaders = [
     value: "SAMEORIGIN"
   },
 
-  // This header stops pages from loading when they detect reflected
-  // cross-site scripting (XSS) attacks.
-  {
-    key: "X-XSS-Protection",
-    value: "1; mode=block"
-  },
-
   // This header informs browsers it should only be accessed using HTTPS, instead
   // of using HTTP. Using the configuration below, all present and future
   // subdomains will use HTTPS for a max-age of 2 years. This blocks access to
@@ -48,11 +41,14 @@ const securityHeaders = [
   }
 
   // Prevent cross-site scripting (XSS), clickjacking and other code injection attacks.
-  // https://buildmoment.atlassian.net/browse/PASS-604
+  // https://buildmoment.atlassian.net/browsedom/PASS-604
   // {
   //   key: "Content-Security-Policy",
   //   value: ContentSecurityPolicy.replace(/\s{2,}/g, " ").trim()
   // }
+
+  // X-XSS-Protection No longer best practice
+  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
 ]
 
 const nextConfig = {

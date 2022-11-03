@@ -1,12 +1,9 @@
 /* eslint no-console: 0 */
 
-import {
-  INestApplication,
-  INestApplicationContext,
-  ValidationPipe,
-} from '@nestjs/common'
+import { INestApplicationContext, ValidationPipe } from '@nestjs/common'
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface'
 import { NestFactory } from '@nestjs/core'
+import { NestExpressApplication } from '@nestjs/platform-express'
 import { IoAdapter } from '@nestjs/platform-socket.io'
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
@@ -22,7 +19,7 @@ import { isEnv } from '../util/env'
 const APPLICATION_PORT = 3001
 
 export class App {
-  public app: INestApplication
+  public app: NestExpressApplication
   public document: OpenAPIObject
 
   async init() {
@@ -45,7 +42,7 @@ export class App {
   }
 
   private async initApp() {
-    this.app = await NestFactory.create(AppModule, {
+    this.app = await NestFactory.create<NestExpressApplication>(AppModule, {
       // Use a custom logger here to format the bootstrap/startup logs
       logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
     })
@@ -68,8 +65,8 @@ export class App {
       optionsSuccessStatus: 204,
       credentials: true,
     }
-
     this.app.enableCors(corsConfig)
+    this.app.disable('x-powered-by')
     this.app.use(cookieParser())
 
     // Adds protection against well-known web vulnerabilities by setting HTTP headers appropriately.
