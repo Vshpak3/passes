@@ -10,6 +10,7 @@ import { SubTabsEnum } from "src/config/settings"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
 import { buttonName } from "./PaymentSettingsCrypto"
+import ms from "ms"
 
 interface PaymentSettingsCreditCardProps {
   isEmbedded: boolean
@@ -25,7 +26,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
   handleSetDefaultPayInMethod
 }) => {
   const { cards, defaultPayinMethod, getDefaultPayinMethod, deleteCard } =
-    usePayinMethod(true)
+    usePayinMethod(true, ms("5 seconds"))
 
   return (
     <div className="mt-8 flex flex-col">

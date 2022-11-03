@@ -288,7 +288,7 @@ export class PaymentService {
     return (
       await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
         .select('*')
-        .where({ user_id: userId })
+        .where({ user_id: userId, status: CircleAccountStatusEnum.COMPLETE })
         .whereNull('deleted_at')
     ).map((card) => new CircleCardDto(card))
   }

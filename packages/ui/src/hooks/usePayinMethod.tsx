@@ -11,7 +11,10 @@ import useSWR, { useSWRConfig } from "swr"
 const CACHE_KEY_PAYIN_METHOD = "/payment/default-payin-method"
 const CACHE_KEY_CARDS = "/payment/cards"
 
-export const usePayinMethod = (disableOnLoad?: boolean) => {
+export const usePayinMethod = (
+  disableOnLoad?: boolean,
+  refreshInterval?: number
+) => {
   const api = new PaymentApi()
 
   const {
@@ -32,10 +35,14 @@ export const usePayinMethod = (disableOnLoad?: boolean) => {
     data: cards,
     isValidating: isLoadingCards,
     mutate: mutateCards
-  } = useSWR<CircleCardDto[]>(CACHE_KEY_CARDS, async () => {
-    setTimeout(() => undefined, 500)
-    return (await api.getCircleCards()).cards
-  })
+  } = useSWR<CircleCardDto[]>(
+    CACHE_KEY_CARDS,
+    async () => {
+      setTimeout(() => undefined, 500)
+      return (await api.getCircleCards()).cards
+    },
+    { refreshInterval }
+  )
 
   const [defaultCard, setDefaultCard] = useState<CircleCardDto>()
 
