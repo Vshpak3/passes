@@ -20,15 +20,16 @@ const ProfileUnmemo: FC = () => {
       ) : profile ? (
         <div className="grid grid-cols-7">
           <div className="col-span-7 pt-28 md:space-y-6 md:pt-0 lg:col-span-4">
-            <ProfileDetails />
+            <ProfileDetails key={profile.userId} />
             {!!profile.isCreator && (
               <ProfileContent
+                key={profile.userId}
                 tab={window.location.hash.slice(1) as ProfileNavigationOptions}
               />
             )}
           </div>
           <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600">
-            <PassesSidebar />
+            <PassesSidebar key={profile.userId} />
           </div>
         </div>
       ) : (
