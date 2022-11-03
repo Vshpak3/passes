@@ -340,8 +340,12 @@ export const InputMessage: FC<InputMessageProps> = ({
                   blocked ? " cursor-not-allowed opacity-50" : "",
                   " min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
                 )}
-                disabled={!isNaN(tip) && !!blocked}
-                onClick={submit}
+                disabled={
+                  !isNaN(tip) &&
+                  !!blocked &&
+                  blocked !== PayinDataDtoBlockedEnum.NoPayinMethod
+                }
+                onClick={submitMessage}
                 type="button"
               >
                 {submitting
@@ -353,9 +357,9 @@ export const InputMessage: FC<InputMessageProps> = ({
                   ? "Not following"
                   : blocked === PayinDataDtoBlockedEnum.InsufficientTip
                   ? "Insufficient tip"
-                  : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
-                  ? "No Payment Method (go to settings)"
-                  : ` Send Message`}
+                  : // : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
+                    // ? "No Payment Method (go to settings)"
+                    ` Send Message`}
               </button>
               {submitError?.message && (
                 <span className="text-red-500">
