@@ -31,7 +31,7 @@ import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 interface MediaSectionProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>
-  errors: FieldErrorsImpl
+  errors: Partial<FieldErrorsImpl>
   addNewMedia: (newFiles: FileList | null) => void
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void

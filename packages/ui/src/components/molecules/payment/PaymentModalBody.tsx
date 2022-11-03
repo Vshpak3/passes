@@ -111,9 +111,8 @@ const PaymentModalBodyUnmemo = ({
         selectOptions={options}
       />
       <div className="my-4 mr-1 text-[#ffff]/90 underline">
-        Click here to update your default payment method or add a new one.
-        <Link href="/settings/payment">
-          <a onClick={closeModal}>settings</a>
+        <Link href="/settings/payment" onClick={closeModal}>
+          Click here to update your default payment method or add a new one.
         </Link>
       </div>
       <ThreeDSInfo payinMethod={payinMethod} price={price} />

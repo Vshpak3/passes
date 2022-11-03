@@ -19,6 +19,10 @@ import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
+import {
+  EthereumProvider,
+  PhantomProvider
+} from "../../../helpers/payment/wallet-setup"
 import { WalletListItem } from "./WalletsList/WalletListItem"
 
 export const Wallets = () => {
@@ -43,8 +47,7 @@ export const Wallets = () => {
         return
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (window.ethereum as any).send("eth_requestAccounts")
+      await window.ethereum.send("eth_requestAccounts")
 
       const provider = new ethers.providers.Web3Provider(window.ethereum)
       const signer = provider.getSigner()

@@ -1,4 +1,4 @@
-FROM node:16-alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /usr/src/app
 
@@ -43,7 +43,7 @@ RUN rm -rf node_modules
 RUN yarn cache clean
 RUN yarn workspaces focus @passes/api --production
 
-FROM node:16-alpine as release
+FROM node:18-alpine as release
 
 # Setup the built code from the builder stage
 USER node

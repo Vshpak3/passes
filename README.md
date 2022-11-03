@@ -6,10 +6,10 @@ code. You must set up both to be able to run the application locally.
 System Requirements
 
 - macOS or Linux
-- Node: `brew install node`
-- Yarn: `npm install -g yarn@berry`
-- MySQL: `brew install mysql`
-- Docker: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- Node (v18): `brew install node`
+- Yarn (v3): `npm install -g yarn@berry`
+- MySQL (v8): `brew install mysql`
+- Docker (v20): [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 ## General
 

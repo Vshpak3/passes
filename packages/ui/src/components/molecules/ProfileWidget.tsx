@@ -16,26 +16,24 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
 }) => {
   return (
     <Link href={`/${user.username}`}>
-      <a>
-        <div className="flex items-center">
-          <div className="relative">
-            <ProfileThumbnail key={user.userId} userId={user.userId} />
-          </div>
-          <div className="flex flex-col">
-            <span className="ml-3 flex flex-row items-center text-lg font-medium leading-6 text-white">
-              {user.displayName}
-              {isCreator && (
-                <span className="ml-2">
-                  <CheckVerified height={18} width={18} />
-                </span>
-              )}
-            </span>
-            <span className="ml-3 text-xs font-medium leading-6 text-gray-400">
-              @{user.username}
-            </span>
-          </div>
+      <div className="flex items-center">
+        <div className="relative">
+          <ProfileThumbnail key={user.userId} userId={user.userId} />
         </div>
-      </a>
+        <div className="flex flex-col">
+          <span className="ml-3 flex flex-row items-center text-lg font-medium leading-6 text-white">
+            {user.displayName}
+            {isCreator && (
+              <span className="ml-2">
+                <CheckVerified height={18} width={18} />
+              </span>
+            )}
+          </span>
+          <span className="ml-3 text-xs font-medium leading-6 text-gray-400">
+            @{user.username}
+          </span>
+        </div>
+      </div>
     </Link>
   )
 }

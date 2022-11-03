@@ -1,5 +1,4 @@
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
-import Link from "next/link"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -355,9 +354,13 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                       />
                       <span className="text-base">
                         By checking this box I agree to Passes{" "}
-                        <Link className="text-passes-pink-100" href="/terms">
-                          <a target="_blank">Terms and Conditions</a>
-                        </Link>
+                        <a
+                          className="text-passes-pink-100"
+                          href="/terms"
+                          target="_blank"
+                        >
+                          Terms and Conditions
+                        </a>
                       </span>
                     </label>
                   </div>

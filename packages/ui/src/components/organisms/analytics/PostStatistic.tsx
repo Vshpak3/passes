@@ -35,38 +35,30 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
       <div className="flex flex-row justify-between border-b border-passes-dark-200">
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <Link href={`/${post.userId}/${post.postId}`}>
-            <a>
-              <span className="text-[14px] font-[700]">
-                {post.createdAt.toLocaleString()}
-              </span>
-            </a>
+            <span className="text-[14px] font-[700]">
+              {post.createdAt.toLocaleString()}
+            </span>
           </Link>
         </div>
         <div className="flex h-[72px] w-[100px] flex-1 items-center justify-start overflow-hidden">
           <Link href={`/${post.userId}/${post.postId}`}>
-            <a>
-              <span className="w-full overflow-hidden truncate whitespace-normal break-words text-[14px] font-[700]">
-                {formatText(post.text)}
-              </span>
-            </a>
+            <span className="w-full overflow-hidden truncate whitespace-normal break-words text-[14px] font-[700]">
+              {formatText(post.text)}
+            </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
           <Link href={`/${post.userId}/${post.postId}`}>
-            <a>
-              <span className="text-[12px] font-[500]">
-                {post.contents?.length ?? 0}
-              </span>
-            </a>
+            <span className="text-[12px] font-[500]">
+              {post.contents?.length ?? 0}
+            </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
           <Link href={`/${post.userId}/${post.postId}`}>
-            <a>
-              <span className="text-[12px] font-[500]">
-                {"$" + (post.price ?? 0).toFixed(2)}
-              </span>
-            </a>
+            <span className="text-[12px] font-[500]">
+              {"$" + (post.price ?? 0).toFixed(2)}
+            </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">

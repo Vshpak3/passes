@@ -80,8 +80,6 @@ const ProfilePicture: FC = () => {
           trigger={
             <div className="relative flex h-[138px] w-[138px] items-center justify-center rounded-full bg-black">
               <CameraIcon className="absolute z-30 cursor-pointer" />
-
-              {/* TODO: USE PROFILE IMAGE INSTEAD <ProfileImage userId={userId} /> */}
               <img
                 alt=""
                 className="z-20 h-[138px] w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"

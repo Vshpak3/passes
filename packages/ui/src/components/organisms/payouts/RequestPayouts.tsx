@@ -157,12 +157,10 @@ export const RequestPayouts = () => {
             </div>
             <div>
               <Link href="/settings/payout">
-                <a>
-                  <PassesPinkButton
-                    className="ml-2 flex px-[18px]"
-                    name="Manage Payment Method"
-                  />
-                </a>
+                <PassesPinkButton
+                  className="ml-2 flex px-[18px]"
+                  name="Manage Payment Method"
+                />
               </Link>
             </div>
           </div>

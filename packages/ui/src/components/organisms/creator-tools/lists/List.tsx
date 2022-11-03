@@ -19,17 +19,17 @@ export const List: FC<ListProps> = ({ list, removable }) => {
     <>
       {!removed && (
         <li className="duration-400 flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
-          <Link href={`/tools/list-members/${list.listId}`}>
-            <a className="flex-1" key={list.listId}>
-              <div className="flex flex-1 flex-col gap-[10px]">
-                <h1 className="text-xl font-bold">
-                  {list.name || list.listId}
-                </h1>
-                <span className="text-base font-bold text-gray-500">
-                  &nbsp; {list.count} members
-                </span>
-              </div>
-            </a>
+          <Link
+            className="flex-1"
+            href={`/tools/list-members/${list.listId}`}
+            key={list.listId}
+          >
+            <div className="flex flex-1 flex-col gap-[10px]">
+              <h1 className="text-xl font-bold">{list.name || list.listId}</h1>
+              <span className="text-base font-bold text-gray-500">
+                &nbsp; {list.count} members
+              </span>
+            </div>
           </Link>
           {list.type === ListDtoTypeEnum.Normal ? (
             <Button

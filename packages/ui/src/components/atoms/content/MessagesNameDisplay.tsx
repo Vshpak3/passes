@@ -24,7 +24,7 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   )
   return linked ? (
     <Link href={`${window.location.origin}/${username}`}>
-      <a className="flex items-center text-xl">{text}</a>
+      <span className="flex items-center text-xl">{text}</span>
     </Link>
   ) : (
     text

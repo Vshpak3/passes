@@ -12,7 +12,6 @@ import { toast } from "react-toastify"
 
 import { ThreeDSContext } from "src/contexts/ThreeDS"
 import { errorMessage } from "src/helpers/error"
-import { getPhantomProvider } from "src/helpers/payment/payment-wallet"
 import {
   connectMetamask,
   EthereumProvider,
@@ -22,6 +21,7 @@ import {
   PhantomProvider
 } from "src/helpers/payment/wallet-setup"
 import { accessTokenKey } from "src/helpers/token"
+import { getPhantomProvider } from "../helpers/cryptoProviders"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
 export const usePay = (
