@@ -111,7 +111,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [data])
   return (
     <InfiniteScroll
-      className={"w-full " + className ?? ""}
+      className={"w-full " + (className ?? "")}
       dataLength={flattenedData.length}
       endMessage={size !== 1 && endElement}
       hasMore={!data || !!data[data.length - 1].lastId}

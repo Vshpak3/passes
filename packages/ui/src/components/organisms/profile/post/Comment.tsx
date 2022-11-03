@@ -106,7 +106,7 @@ export const Comment: FC<CommentProps> = ({
               </div>
             </div>
             <Text
-              className="whitespace-pre-wrap break-all font-light"
+              className="whitespace-pre-wrap break-words font-light"
               fontSize={14}
             >
               {!isHidden || showHidden ? (

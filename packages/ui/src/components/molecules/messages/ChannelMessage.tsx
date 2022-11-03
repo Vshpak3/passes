@@ -67,7 +67,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           <div
             className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
-            <span className="break-all">{formatText(message?.text)}</span>
+            <span className="break-words">{formatText(message?.text)}</span>
             {!!messageContent.length && (
               <div className="max-w-[403px]">
                 <MediaContent
