@@ -49,11 +49,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: `
     default-src 'self' ${process.env.NEXT_PUBLIC_API_BASE_URL};
-    child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+    connect-src: 'self' wss://${process.env.NEXT_PUBLIC_API_BASE_URL};
     font-src 'self' data:;
-    image-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};
-    script-src 'self' data:;
-    style-src 'self' 'unsafe-inline';
+    img-src 'self' data: ${process.env.NEXT_PUBLIC_CDN_URL};
+    media-src 'self' ${process.env.NEXT_PUBLIC_CDN_URL};
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;
+    style-src 'self' 'unsafe-inline' fonts.googleapis.com;
   `
       .replace(/\s{2,}/g, " ")
       .trim()
