@@ -1,9 +1,4 @@
-import {
-  GetMessagesRequestDto,
-  GetMessagesResponseDto,
-  MessageDto,
-  MessagesApi
-} from "@passes/api-client"
+import { MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
   Dispatch,
@@ -18,17 +13,13 @@ import {
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
-import {
-  ComponentArg,
-  InfiniteScrollPagination
-} from "src/components/atoms/InfiniteScroll"
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/FreeMessagesLeftContainer"
 import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
-import { ChannelMessage } from "./ChannelMessage"
+import { ChannelStreamMessages } from "./ChannelStreamMessages"
 
 interface ChannelStreamProps {
   channelId?: string
@@ -213,56 +204,12 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
              Note it has to go at the top because of 'flex-col-reverse'
           */}
           <div className="h-1 w-1" id="bottom-of-chat" ref={bottomOfChatRef} />
-          <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-            KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
-              return (
-                <ChannelMessage
-                  message={{
-                    ...arg,
-                    ...(messageUpdates[arg.messageId] ?? {})
-                  }}
-                  ownsMessage={arg.senderId === user?.userId}
-                />
-              )
-            }}
-            fetch={async (req: GetMessagesRequestDto) => {
-              return await api.getMessages({ getMessagesRequestDto: req })
-            }}
-            fetchProps={{ channelId, pending: false, contentOnly: false }}
-            inverse
-            keyValue={`messages/${channelId}`}
-            loadingElement={<div>Loading older messages...</div>}
-            options={{ revalidateOnMount: true }}
-            scrollableTarget="scrollableDiv"
-            style={{ display: "flex", flexDirection: "column-reverse" }}
-          >
-            {messages.length > 0 &&
-              messages.map((m, i) => {
-                return (
-                  <ChannelMessage
-                    key={i}
-                    message={{
-                      ...m,
-                      ...(messageUpdates[m.messageId] ?? {})
-                    }}
-                    ownsMessage={m.senderId === user?.userId}
-                  />
-                )
-              })}
-            {pendingMessages.length > 0 &&
-              pendingMessages.map((m, i) => {
-                return (
-                  <ChannelMessage
-                    key={i}
-                    message={{
-                      ...m,
-                      ...(messageUpdates[m.messageId] ?? {})
-                    }}
-                    ownsMessage={m.senderId === user?.userId}
-                  />
-                )
-              })}
-          </InfiniteScrollPagination>
+          <ChannelStreamMessages
+            channelId={channelId}
+            messageUpdates={messageUpdates}
+            messages={messages}
+            pendingMessages={pendingMessages}
+          />
           {unreadCount > 0 && (
             <button
               className="fixed z-20
