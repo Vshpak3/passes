@@ -9,17 +9,17 @@ interface VideoPlayerProps {
   content: ContentDto
   autoplay?: boolean
   className?: string
+  poster: string
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  ({ content, autoplay = false, className = "" }, ref) => {
-    const videoThumbnail = ContentService.userContentThumbnailPath(content)
+  ({ content, autoplay = false, className = "", poster }, ref) => {
     return (
       <video
         autoPlay={autoplay}
         className={classNames(className)}
         controls
-        poster={videoThumbnail}
+        poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}
         src={ContentService.userContentMediaPath(content)}

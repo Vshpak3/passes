@@ -2,6 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { useEffect } from "react"
 
+import { ContentService } from "src/helpers/content"
 import { useVideoPlayer } from "src/hooks/useVideoPlayer"
 import { VideoPlayer } from "./VideoPlayer"
 
@@ -17,7 +18,7 @@ export const VideoContent = ({
   autoplay?: boolean
 }) => {
   const { ref, pause } = useVideoPlayer()
-
+  const videoThumbnail = ContentService.userContentThumbnailPath(content)
   useEffect(() => {
     if (!isActive) {
       pause()
@@ -34,7 +35,7 @@ export const VideoContent = ({
               "absolute inset-0 inset-x-4 z-10 h-auto max-h-[800px] bg-cover bg-center [filter:blur(10px)opacity(80%)]"
             )}
             style={{
-              backgroundImage: `url(http://localhost:4566/passes/media/58eb9094-5816-4149-9c19-3f21612a97d4/044b84f1-ef20-4230-9904-3a7d29340c48.jpeg)`
+              backgroundImage: `url(${videoThumbnail})`
             }}
           />
           <div className="flex h-full w-full items-center justify-center">
@@ -42,6 +43,7 @@ export const VideoContent = ({
               autoplay={autoplay}
               className="relative  z-20 inline-block h-auto  max-h-full max-w-full  object-contain"
               content={content}
+              poster={videoThumbnail}
               ref={ref}
             />
           </div>
