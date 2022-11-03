@@ -7,7 +7,7 @@ import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
 import Wallet from "public/icons/wallet-manage.svg"
-import React, { useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
@@ -19,10 +19,6 @@ import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
-import {
-  EthereumProvider,
-  PhantomProvider
-} from "../../../helpers/payment/wallet-setup"
 import { WalletListItem } from "./WalletsList/WalletListItem"
 
 export const Wallets = () => {

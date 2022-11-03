@@ -169,7 +169,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }
   const { submitError } = errors
-  const { blocked, submitting, submit, submitData } = usePay(
+  const { blocked, submitting, submitData } = usePay(
     registerMessage,
     registerMessageData,
     onCallback
