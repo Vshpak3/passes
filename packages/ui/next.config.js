@@ -10,9 +10,11 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self';
   child-src ${process.env.NEXT_PUBLIC_UI_BASE_URL};
-  style-src 'self' ${process.env.NEXT_PUBLIC_UI_BASE_URL};
+  style-src 'self' 'unsafe-inline';
   font-src 'self';
 `
+// This is more secure but we cannot because of Tailwind:
+// style-src 'self' ${process.env.NEXT_PUBLIC_UI_BASE_URL};
 
 // https://nextjs.org/docs/advanced-features/security-headers
 const securityHeaders = [
@@ -38,14 +40,13 @@ const securityHeaders = [
   {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload"
-  }
+  },
 
   // Prevent cross-site scripting (XSS), clickjacking and other code injection attacks.
-  // https://buildmoment.atlassian.net/browsedom/PASS-604
-  // {
-  //   key: "Content-Security-Policy",
-  //   value: ContentSecurityPolicy.replace(/\s{2,}/g, " ").trim()
-  // }
+  {
+    key: "Content-Security-Policy",
+    value: ContentSecurityPolicy.replace(/\s{2,}/g, " ").trim()
+  }
 
   // X-XSS-Protection No longer best practice
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
