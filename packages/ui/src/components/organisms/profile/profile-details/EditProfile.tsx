@@ -101,8 +101,8 @@ export const EditProfile: FC<EditProfileProps> = ({
   const profileBannerImage: File[] = watch("profileBannerImage")
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
-    <div className="col-span-6 flex" key={key}>
-      {!!input?.icon && <input.icon className="mr-3 mt-3 h-[22px] w-[22px]" />}
+    <div className="col-span-6 flex items-center" key={key}>
+      {!!input?.icon && <input.icon className="mr-3 h-[22px] w-[22px]" />}
       <input.type
         className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
         errors={errors}
@@ -154,7 +154,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     <Dialog
       className="flex h-[90vh] w-screen flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       footer={
-        <div className="left-20 mx-0 mb-6 flex cursor-pointer self-center  xs:mx-5 sm:mx-12 md:mx-0  md:-mb-4">
+        <div className="left-20 mx-0 my-5 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
           <PassesPinkButton
             className="flex w-full items-center justify-center self-center rounded-[50px] bg-passes-pink-100 py-[10px] text-center "
             isDisabled={isSubmitting}
