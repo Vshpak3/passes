@@ -60,7 +60,7 @@ export function formatTextToString(text?: string | null) {
     return ""
   }
   HTML_CHARACTERS_ORDER.forEach((char) => {
-    text.replaceAll(char, HTML_CHARACTERS[char])
+    text = text?.replaceAll(char, HTML_CHARACTERS[char])
   })
   return text
 }
@@ -84,5 +84,6 @@ function formatTextFromString(text: string) {
 }
 
 export function formatText(text?: string | null) {
+  // console.log(text)
   return formatTextFromString(formatTextToString(text))
 }
