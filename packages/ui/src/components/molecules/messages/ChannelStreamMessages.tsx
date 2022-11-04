@@ -54,8 +54,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       loadingElement={
         <div className="sticky top-0 left-0 z-50 h-0.5 w-full">
           <div
-            role="status"
             className="h-full w-24 animate-slide-in rounded-full bg-passes-pink-100"
+            role="status"
           />
           <span className="sr-only">Loading older messages...</span>
         </div>

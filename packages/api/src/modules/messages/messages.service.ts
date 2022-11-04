@@ -479,7 +479,7 @@ export class MessagesService {
       )
     }
     if (tipAmount && price) {
-      throw new MessageSendError('send message with tip and price')
+      throw new MessageSendError("Can't send message with tip and price")
     }
     if (text.length === 0 && contentIds.length === 0) {
       throw new BadRequestException(
