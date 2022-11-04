@@ -35,8 +35,6 @@ export const usePay = (
   callback?: (error?: Error) => void,
   landingMessage = "none"
 ) => {
-  console.log(registerPaymentDataFunc)
-  console.log(registerPaymentFunc)
   const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
