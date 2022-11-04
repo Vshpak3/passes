@@ -25,7 +25,6 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
     }
   }
 
-  console.log(payinMethod)
   return (
     <Modal isOpen setOpen={() => setMessageRequest(null)}>
       <PaymentModalBody

@@ -16,7 +16,6 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
   onSuccess,
   isDisabled = false
 }) => {
-  console.log(messageRequest)
   const api = new MessagesApi()
   const register = async () => {
     return await api.sendMessage({
