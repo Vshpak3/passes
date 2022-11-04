@@ -82,6 +82,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               createdAt={createdAt}
               displayName={commenterDisplayName}
               dropdownOptions={dropdownItems}
+              id={fanWallCommentId}
               isCreator={commenterIsCreator}
               userId={commenterId}
               username={commenterUsername}
