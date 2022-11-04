@@ -45,11 +45,11 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           />
         )
       }}
+      className="scale-y-[-1] "
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}
       fetchProps={{ channelId, pending: false, contentOnly: false }}
-      inverse
       keyValue={`messages/${time}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
       loadingElement={
         <div className="sticky top-0 left-0 z-50 h-0.5 w-full">

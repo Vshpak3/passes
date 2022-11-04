@@ -194,34 +194,41 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         </div>
       )}
       {isConnected ? (
-        <div
-          className="relative flex h-full flex-1 flex-col-reverse overflow-y-scroll"
-          id="scrollableDiv"
-          onFocus={onReadLastMessage}
-        >
-          {/*
+        <div className="relative h-full overflow-y-hidden">
+          <div
+            className="relative h-full scale-y-[-1] overflow-y-scroll"
+            id="scrollableDiv"
+            onFocus={onReadLastMessage}
+          >
+            {/*
              Dummy ref to allow scrolling to bottom of chat.
              Note it has to go at the top because of 'flex-col-reverse'
           */}
-          <div className="h-1 w-1" id="bottom-of-chat" ref={bottomOfChatRef} />
-          <ChannelStreamMessages
-            channelId={channelId}
-            messageUpdates={messageUpdates}
-            messages={messages}
-            pendingMessages={pendingMessages}
-          />
+            <div
+              className="h-1 w-1 scale-y-[-1]"
+              id="bottom-of-chat"
+              ref={bottomOfChatRef}
+            />
+            <ChannelStreamMessages
+              channelId={channelId}
+              messageUpdates={messageUpdates}
+              messages={messages}
+              pendingMessages={pendingMessages}
+            />
+          </div>
           {unreadCount > 0 && (
-            <button
-              className="fixed z-20
-            mb-5 flex items-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
-              onClick={handleScrollToBottom}
-            >
-              <ArrowDownIcon />
-              <span className="ml-2">
-                +{unreadCount} New Message
-                {unreadCount !== 1 && "s"}
-              </span>
-            </button>
+            <div className="absolute bottom-0 z-20 flex w-full items-center justify-center self-center">
+              <button
+                className="z-20 flex items-center justify-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
+                onClick={handleScrollToBottom}
+              >
+                <ArrowDownIcon />
+                <span className="ml-2">
+                  +{unreadCount} New Message
+                  {unreadCount !== 1 && "s"}
+                </span>
+              </button>
+            </div>
           )}
         </div>
       ) : (

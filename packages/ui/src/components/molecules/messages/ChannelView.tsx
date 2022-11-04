@@ -38,7 +38,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
   const [additionalTips, setAdditionalTips] = useState<number>(0)
 
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
-    threshold: 0.7
+    threshold: 0.1
   })
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
