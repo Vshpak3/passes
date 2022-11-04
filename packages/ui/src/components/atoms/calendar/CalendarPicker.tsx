@@ -12,7 +12,6 @@ import {
   MAX_SCHEDULE_DURATION_IN_MONTHS,
   SCHEDULE_MINUTE_LIMIT
 } from "src/config/scheduler"
-import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const CALENDAR_POPUP_ID = "calendar-popper"
 
@@ -98,10 +97,6 @@ export const CalendarPicker: FC<CalendarPickerProps> = ({
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
-
-  useOnClickOutside(calenderRef, () => {
-    setAnchorEl(null)
-  })
 
   useEffect(() => {
     if (setOpen) {

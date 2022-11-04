@@ -73,7 +73,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
           <CalendarSelector
             activeHeader="Schedule"
             name="Schedule"
-            placement={isTablet ? "top" : "auto"}
+            placement="top"
             scheduledTime={scheduledAt}
             setScheduledTime={async (date: Date | null) => {
               if (!date) {
