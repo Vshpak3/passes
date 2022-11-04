@@ -10,13 +10,17 @@ import {
 } from "src/components/organisms/profile/drop-down/Dropdown"
 
 interface PostHeaderProps
-  extends Pick<PostDto, "createdAt" | "userId" | "username" | "displayName"> {
+  extends Pick<
+    PostDto,
+    "postId" | "createdAt" | "userId" | "username" | "displayName"
+  > {
   isCreator: boolean
   isPinned?: boolean
   dropdownOptions: DropdownOption[]
 }
 
 export const PostHeader: FC<PostHeaderProps> = ({
+  postId,
   createdAt,
   userId,
   username,
@@ -37,6 +41,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
           <TimeAgo
             className="uppercase text-gray-300/60"
             date={createdAt}
+            key={postId}
             minPeriod={30}
           />
         </div>

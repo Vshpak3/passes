@@ -88,6 +88,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
                   <TimeAgo
                     className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
                     date={message?.sentAt ? sentAt : ""}
+                    key={message.messageId}
                     minPeriod={30}
                   />
                 ) : (

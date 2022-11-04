@@ -132,7 +132,11 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
                     "shrink text-start text-xs text-white/50"
                   )}
                 >
-                  <TimeAgo date={post.createdAt} minPeriod={30} />
+                  <TimeAgo
+                    date={post.createdAt}
+                    key={post.postId}
+                    minPeriod={30}
+                  />
                 </span>
               )}
               {/* {post.isOwner && (

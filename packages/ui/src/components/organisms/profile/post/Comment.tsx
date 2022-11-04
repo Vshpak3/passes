@@ -100,6 +100,7 @@ export const Comment: FC<CommentProps> = ({
                 <TimeAgo
                   className="shrink-0 text-[12px] text-gray-300/60"
                   date={comment.createdAt}
+                  key={comment.commentId}
                   live={false}
                 />
                 <Dropdown items={dropdownOptions} />

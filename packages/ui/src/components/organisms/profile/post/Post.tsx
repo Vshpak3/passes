@@ -119,6 +119,7 @@ const PostUnmemo: FC<PostProps> = ({
               dropdownOptions={dropdownOptions}
               isCreator
               isPinned={isPinned}
+              postId={postId}
               userId={userId}
               username={username}
             />
