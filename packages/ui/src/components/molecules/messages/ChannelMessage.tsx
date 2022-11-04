@@ -62,12 +62,12 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
         </div>
       )}
       <div className="mx-4 flex flex-col items-end">
-        <div className="relative flex flex-col items-center gap-3 md:flex-row">
+        <div className="relative flex items-center gap-3 ">
           {!!message?.tipAmount && ownsMessage && tipComponent}
           <div
             className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
-            <span className="break-words">{formatText(message?.text)}</span>
+            <span className="passes-break">{formatText(message?.text)}</span>
             {!!messageContent.length && (
               <div className="max-w-[403px]">
                 <MediaContent

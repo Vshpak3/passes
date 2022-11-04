@@ -69,7 +69,7 @@ export const ChannelView: FC<ChannelViewProps> = ({
   }, [selectedChannel])
 
   const { isCreator: otherUserIsCreator } = useIsCreator(
-    selectedChannel?.otherUserId ?? ""
+    selectedChannel?.otherUserId
   )
   return (
     <div className="absolute z-50 col-span-7 flex h-[90vh] w-full flex-col bg-[#120C14] lg:relative lg:col-span-5 lg:max-h-[90vh] lg:flex-1">

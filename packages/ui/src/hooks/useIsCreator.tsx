@@ -4,11 +4,11 @@ import useSWR from "swr"
 
 const api = new UserApi()
 const CACHE_KEY_IS_CREATOR = "/is-creator"
-export const useIsCreator = (userId: string) => {
+export const useIsCreator = (userId?: string) => {
   const { data, error, isValidating, mutate } = useSWR<boolean | undefined>(
-    [CACHE_KEY_IS_CREATOR, userId],
+    userId ? [CACHE_KEY_IS_CREATOR, userId] : null,
     async () => {
-      return (await api.isCreator({ userId })).value
+      return (await api.isCreator({ userId: userId ?? "" })).value
     }
   )
 
