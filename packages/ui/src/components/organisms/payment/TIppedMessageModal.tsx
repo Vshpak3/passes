@@ -1,5 +1,5 @@
 import { PayinMethodDto, SendMessageRequestDto } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction, useState } from "react"
+import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
@@ -18,12 +18,12 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
 }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
-  const onSuccessHandler = () => {
+  const onSuccessHandler = useCallback(() => {
     setMessageRequest(null)
     if (onSuccess) {
       onSuccess()
     }
-  }
+  }, [onSuccess, setMessageRequest])
 
   return (
     <Modal isOpen setOpen={() => setMessageRequest(null)}>

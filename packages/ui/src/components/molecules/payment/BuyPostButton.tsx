@@ -1,6 +1,6 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -12,29 +12,29 @@ interface BuyPostButtonProps {
   isDisabled?: boolean
 }
 
+const api = new PostApi()
 export const BuyPostButton: FC<BuyPostButtonProps> = ({
   postId,
   payinMethod,
   onSuccess,
   isDisabled = false
 }) => {
-  const api = new PostApi()
-  const register = async () => {
+  const register = useCallback(async () => {
     return await api.registerPurchasePost({
       purchasePostRequestDto: {
         postId,
         payinMethod
       }
     })
-  }
-  const registerData = async () => {
+  }, [payinMethod, postId])
+  const registerData = useCallback(async () => {
     return await api.registerPurchasePostData({
       purchasePostRequestDto: {
         postId,
         payinMethod
       }
     })
-  }
+  }, [payinMethod, postId])
 
   const { blocked, submitting, loading, submit } = usePay(
     register,

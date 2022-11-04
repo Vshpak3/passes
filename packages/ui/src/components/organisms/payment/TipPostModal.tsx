@@ -4,7 +4,7 @@ import {
   PostApi,
   PostDto
 } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction, useState } from "react"
+import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
@@ -21,6 +21,7 @@ interface TipPostModalProps {
   setPost: Dispatch<SetStateAction<PostDto | null>>
 }
 
+const api = new PostApi()
 const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
@@ -34,8 +35,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     "tip-value": number
   }>()
   const tipValue = watch("tip-value")
-  const api = new PostApi()
-  const registerTip = async () => {
+  const registerTip = useCallback(async () => {
     return await api.registerTipPost({
       tipPostRequestDto: {
         postId: post.postId,
@@ -43,14 +43,14 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         payinMethod: payinMethod
       }
     })
-  }
+  }, [getValues, payinMethod, post.postId])
 
-  const registerData = async () => {
+  const registerData = useCallback(async () => {
     return {
       blocked: undefined,
       amount: Number(getValues("tip-value"))
     } as PayinDataDto
-  }
+  }, [getValues])
 
   const { loading, submit } = usePay(
     registerTip,
@@ -60,12 +60,9 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   )
 
   const onSubmit = async () => {
-    console.log("submit")
     await handleSubmit(submit)()
-    console.log("submitted")
-    // setPost(null)
+    setPost(null)
   }
-  console.log(payinMethod)
   return (
     <Modal isOpen setOpen={() => setPost(null)}>
       <SectionTitle>Send Tip</SectionTitle>

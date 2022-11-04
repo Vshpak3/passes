@@ -1,6 +1,6 @@
 import { MessagesApi, SendMessageRequestDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -10,23 +10,23 @@ interface TippedMessageButtonProps {
   onSuccess: () => void
   isDisabled?: boolean
 }
+const api = new MessagesApi()
 
 export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
   messageRequest,
   onSuccess,
   isDisabled = false
 }) => {
-  const api = new MessagesApi()
-  const register = async () => {
+  const register = useCallback(async () => {
     return await api.sendMessage({
       sendMessageRequestDto: messageRequest
     })
-  }
-  const registerData = async () => {
+  }, [messageRequest])
+  const registerData = useCallback(async () => {
     return await api.sendMessageData({
       sendMessageRequestDto: messageRequest
     })
-  }
+  }, [messageRequest])
 
   const { blocked, submitting, loading, submit } = usePay(
     register,

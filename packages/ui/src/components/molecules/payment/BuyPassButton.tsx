@@ -4,7 +4,7 @@ import {
   PayinMethodDto
 } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC, useEffect } from "react"
+import React, { FC, useCallback, useEffect } from "react"
 
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -18,6 +18,7 @@ interface BuyPassButtonProps {
   isDisabled?: boolean
 }
 
+const api = new PassApi()
 export const BuyPassButton: FC<BuyPassButtonProps> = ({
   passId,
   walletAddress,
@@ -26,8 +27,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
   owns,
   isDisabled = false
 }) => {
-  const api = new PassApi()
-  const register = async () => {
+  const register = useCallback(async () => {
     return await api.registerPurchasePass({
       createPassHolderRequestDto: {
         passId,
@@ -35,9 +35,9 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
         payinMethod
       }
     })
-  }
+  }, [passId, payinMethod, walletAddress])
 
-  const registerData = async () => {
+  const registerData = useCallback(async () => {
     return await api.registerPurchasePassData({
       createPassHolderRequestDto: {
         passId,
@@ -45,7 +45,7 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
         payinMethod
       }
     })
-  }
+  }, [passId, payinMethod, walletAddress])
 
   const { blocked, submitting, loading, submit, submitData, waiting } = usePay(
     register,

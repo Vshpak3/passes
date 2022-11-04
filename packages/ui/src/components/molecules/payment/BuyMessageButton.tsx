@@ -1,6 +1,6 @@
 import { MessagesApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -12,29 +12,30 @@ interface BuyMessageButtonProps {
   isDisabled?: boolean
 }
 
+const api = new MessagesApi()
+
 export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
   messageId,
   payinMethod,
   onSuccess,
   isDisabled = false
 }) => {
-  const api = new MessagesApi()
-  const register = async () => {
+  const register = useCallback(async () => {
     return await api.registerPurchaseMessage({
       purchaseMessageRequestDto: {
         messageId,
         payinMethod
       }
     })
-  }
-  const registerData = async () => {
+  }, [messageId, payinMethod])
+  const registerData = useCallback(async () => {
     return await api.registerPurchaseMessageData({
       purchaseMessageRequestDto: {
         messageId,
         payinMethod
       }
     })
-  }
+  }, [messageId, payinMethod])
 
   const { blocked, submitting, loading, submit } = usePay(
     register,

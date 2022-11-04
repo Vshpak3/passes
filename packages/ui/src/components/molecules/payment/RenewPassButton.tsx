@@ -1,6 +1,6 @@
 import { PassApi, PayinMethodDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, useCallback } from "react"
 
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -12,30 +12,30 @@ interface RenewPassButtonProps {
   isDisabled?: boolean
 }
 
+const api = new PassApi()
 export const RenewPassButton: FC<RenewPassButtonProps> = ({
   passHolderId,
   payinMethod,
   onSuccess,
   isDisabled = false
 }) => {
-  const api = new PassApi()
-  const register = async () => {
+  const register = useCallback(async () => {
     return await api.registerRenewPass({
       renewPassHolderRequestDto: {
         passHolderId,
         payinMethod
       }
     })
-  }
+  }, [passHolderId, payinMethod])
 
-  const registerData = async () => {
+  const registerData = useCallback(async () => {
     return await api.registerRenewPassData({
       renewPassHolderRequestDto: {
         passHolderId,
         payinMethod
       }
     })
-  }
+  }, [passHolderId, payinMethod])
 
   const { blocked, submitting, loading, submit } = usePay(
     register,
