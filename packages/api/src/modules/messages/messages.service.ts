@@ -472,6 +472,7 @@ export class MessagesService {
       previewIndex,
       scheduledAt,
     } = sendMessageDto
+
     if (scheduledAt) {
       throw new MessageSendError(
         "We currently don't support scheduled normal direct messages",
@@ -527,6 +528,9 @@ export class MessagesService {
         callback: PayinCallbackEnum.TIPPED_MESSAGE,
         callbackInputJSON: callbackInput,
         creatorId: channelMember.other_user_id,
+        payinMethod:
+          sendMessageDto.payinMethod ??
+          (await this.payService.getDefaultPayinMethod(userId)),
       })
     } else {
       const { paidMessageId, contents } = await this.createPaidMessage(

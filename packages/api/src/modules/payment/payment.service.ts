@@ -1568,6 +1568,7 @@ export class PaymentService {
       )
     }
 
+    // legacy - payinMethod is enforced for now
     const payinMethod =
       request.payinMethod !== undefined
         ? request.payinMethod

@@ -34,8 +34,8 @@ export class RegisterPayinRequestDto {
   @DtoProperty({ type: 'number', optional: true })
   amountEth?: number
 
-  @DtoProperty({ custom_type: PayinMethodDto, optional: true })
-  payinMethod?: PayinMethodDto
+  @DtoProperty({ custom_type: PayinMethodDto })
+  payinMethod: PayinMethodDto
 
   // callback
   @DtoProperty({ custom_type: PayinCallbackEnum })

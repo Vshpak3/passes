@@ -17,7 +17,6 @@ import MessageValidator from 'sns-validator'
 import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
-import { ExamplePayinCallbackInput } from './callback.types'
 import { CircleCreateBankRequestDto } from './dto/circle/create-bank.dto'
 import { CircleCreateCardAndExtraRequestDto } from './dto/circle/create-card.dto'
 import { CircleEncryptionKeyResponseDto } from './dto/circle/encryption-key.dto'
@@ -38,7 +37,6 @@ import {
   GetPayoutsResponseDto,
 } from './dto/get-payout.dto'
 import { GetSubscriptionsResponseDto } from './dto/get-subscription.dto'
-import { PayinDataDto } from './dto/payin-data.dto'
 import {
   CircleCardPayinEntryRequestDto,
   CircleCardPayinEntryResponseDto,
@@ -63,8 +61,6 @@ import {
   GetPayoutMethodResponseDto,
   SetPayoutMethodRequestDto,
 } from './dto/payout-method.dto'
-import { RegisterPayinResponseDto } from './dto/register-payin.dto'
-import { PayinCallbackEnum } from './enum/payin.callback.enum'
 import { CircleRequestError } from './error/circle.error'
 import { PaymentService } from './payment.service'
 
@@ -570,55 +566,5 @@ export class PaymentController {
     return new GetSubscriptionsResponseDto(
       await this.paymentService.getSubscriptions(req.user.id),
     )
-  }
-
-  /*
-  -------------------------------------------------------------------------------
-  TEST (to be removed)
-  -------------------------------------------------------------------------------
-  */
-
-  @ApiEndpoint({
-    summary: 'Register payin',
-    responseStatus: HttpStatus.OK,
-    responseType: RegisterPayinResponseDto,
-    responseDesc: 'Payin registered',
-    role: RoleEnum.GENERAL,
-  })
-  @Post('test/register/payin')
-  async registerPayin(
-    @Req() req: RequestWithUser,
-  ): Promise<RegisterPayinResponseDto> {
-    return await this.paymentService.registerPayin({
-      userId: req.user.id,
-      amount: 1000,
-      callback: PayinCallbackEnum.EXAMPLE,
-      callbackInputJSON: { example: 'asdf' } as ExamplePayinCallbackInput,
-      creatorId: req.user.id,
-    })
-  }
-
-  @ApiEndpoint({
-    summary: 'Get register payin data',
-    responseStatus: HttpStatus.OK,
-    responseType: PayinDataDto,
-    responseDesc: 'Register payin data retrieved',
-    role: RoleEnum.GENERAL,
-  })
-  @Post('test/register/payin/data')
-  async registerPayinData(): Promise<PayinDataDto> {
-    return { blocked: undefined, amount: 1000 }
-  }
-
-  @ApiEndpoint({
-    summary: 'Rerun payout',
-    responseStatus: HttpStatus.OK,
-    responseType: undefined,
-    responseDesc: 'Payout rerun',
-    role: RoleEnum.NO_AUTH,
-  })
-  @Get('test/payout/:payoutId')
-  async rePayout(@Param('payoutId') payoutId: string): Promise<void> {
-    return await this.paymentService.submitPayout(payoutId)
   }
 }
