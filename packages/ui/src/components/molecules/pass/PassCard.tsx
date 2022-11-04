@@ -8,6 +8,7 @@ import SolanaIcon from "public/icons/sol.svg"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
+import { Button } from "src/components/atoms/Button"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"
 import { formatText } from "src/helpers/formatters"
@@ -50,7 +51,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   }
 
   return (
-    <div className="flex max-w-[500px] flex-col border border-passes-dark-200 bg-[#0E0A0F] px-3 py-4">
+    <div className="flex max-w-[300px] flex-col border border-passes-dark-200 bg-[#0E0A0F]/25 px-3 py-4">
       <PassMedia
         animationType={pass.animationType}
         imageType={pass.imageType}
@@ -104,16 +105,17 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         <span className="py-2">
           ${pass.price} / {getPassType(pass.type)}
         </span>
-        <button
-          className="w-full rounded-full bg-passes-primary-color py-2 text-center"
+        <Button
+          className="w-full rounded-full py-2 text-center"
           onClick={() => {
             isCreator ? pinOrUnpinPass() : setPass(pass)
           }}
+          variant="pink"
         >
           {isCreator
             ? `${isPinned ? "Unpin" : "Pin"} Membership`
             : "Buy Membership"}
-        </button>
+        </Button>
         <p className="mt-2 text-sm font-medium leading-[16px]">
           <span className="text-xs font-normal leading-[23px] text-white/70">
             {pass.remainingSupply}/{pass.totalSupply} left

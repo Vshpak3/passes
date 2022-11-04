@@ -243,7 +243,7 @@ export const InputMessage: FC<InputMessageProps> = ({
       <div className="flex w-full flex-col px-[30px]">
         {isCreator && (
           <div className="flex w-full items-center justify-between pt-2">
-            <div className="flex min-h-[45px] items-center justify-start gap-4 ">
+            <div className="flex min-h-[50px] items-center justify-start gap-4 ">
               <Checkbox
                 className="group"
                 errors={errors}
