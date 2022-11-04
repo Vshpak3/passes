@@ -52,10 +52,10 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       inverse
       keyValue={`messages/${time}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
       loadingElement={
-        <div className="sticky top-0 z-50 left-0 w-full h-0.5">
+        <div className="sticky top-0 left-0 z-50 h-0.5 w-full">
           <div
             role="status"
-            className="bg-passes-pink-100 animate-slide-in h-full w-24 rounded-full"
+            className="h-full w-24 animate-slide-in rounded-full bg-passes-pink-100"
           />
           <span className="sr-only">Loading older messages...</span>
         </div>
