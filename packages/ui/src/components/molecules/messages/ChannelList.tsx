@@ -58,7 +58,7 @@ export const ChannelList: FC<ChannelListProps> = ({
   return (
     <div
       className={classNames(
-        "col-span-7 overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-2",
+        "col-span-7 h-full overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-2",
         openChannelView ? "hidden" : "block",
         "lg:block"
       )}
@@ -79,8 +79,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           placeholder="Search people.."
         />
       </div>
-
-      <div className="pt-6">
+      <div className="overflow-y-auto h-[calc(100%-120px)]" id="channelDiv">
         <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
           KeyedComponent={({
             arg: channel
@@ -93,6 +92,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               />
             )
           }}
+          className="pt-6"
           fetch={async (req: GetChannelsRequestDto) => {
             const api = new MessagesApi()
             return await api.getChannels({ getChannelsRequestDto: req })
@@ -113,8 +113,10 @@ export const ChannelList: FC<ChannelListProps> = ({
             refreshInterval: 1000,
             persistSize: true
           }}
+          scrollableTarget="channelDiv"
         />
       </div>
+      .
     </div>
   )
 }

@@ -85,7 +85,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
   }, [defaultUserId])
 
   return (
-    <div className="grid h-[calc(100%-60px)] grid-cols-7 flex-row border border-r-0 border-[#fff]/10">
+    <div className="grid h-[calc(100vh-60px)] grid-cols-7 flex-row border border-r-0 border-[#fff]/10">
       {massMessage ? (
         <>
           <ChannelMassDM
