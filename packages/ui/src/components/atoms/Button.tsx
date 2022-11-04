@@ -224,7 +224,7 @@ export const ContentUnlockButton: FC<GenericButtonProps> = ({
   <button
     className={classNames(
       className,
-      "flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-[#9C4DC1] py-[10px] text-base font-medium text-white shadow-sm"
+      "flex w-full items-center justify-center gap-[10px] rounded-[5px] border-none bg-[#B52A6F] py-[9px] text-base font-medium text-white shadow-sm"
     )}
     disabled={!!isDisabled}
     onClick={onClick}

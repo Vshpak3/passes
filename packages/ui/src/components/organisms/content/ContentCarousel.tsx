@@ -34,6 +34,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const hasAccess = paid || price === 0 || previewIndex >= contents.length
+
   return (
     <>
       <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
@@ -69,6 +70,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           <SwiperSlide>
             <LockedMedia
               contents={contents}
+              fixedHeight={contents.length > 1}
               openBuyModal={openBuyModal}
               paying={paying}
               previewIndex={previewIndex}

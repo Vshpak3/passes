@@ -31,7 +31,7 @@ const getMediaClassname = (contentType: string) => {
     case contentType.startsWith("image/"):
       return "cursor-grab select-none rounded-[6px] object-contain"
     case contentType.startsWith("video/"):
-      return "absolute inset-0 m-auto max-h-full min-h-full min-w-full max-w-full cursor-grab select-none rounded-[6px] object-cover"
+      return "cursor-grab select-none rounded-[6px]"
     case contentType.startsWith("audio/"):
       return "absolute inset-0 m-auto min-w-full max-w-full cursor-grab select-none rounded-[6px] object-cover"
     default:
@@ -53,7 +53,7 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
           className="h-full w-full overflow-x-hidden"
         >
           <div
-            className="flex min-h-[175px] min-w-[175px] gap-[12px] overflow-x-auto  "
+            className="flex min-h-[175px] min-w-[175px] gap-[12px] overflow-x-auto"
             ref={dropProvided.innerRef}
           >
             {listId === "Free" && items.length === 0 ? (
@@ -83,6 +83,8 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                           contentHeight={175}
                           contentWidth={175}
                           iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          noRender
+                          noRenderString={`Vault Video content #${index}`}
                           preview
                           src={ContentService.userContentMediaPath(
                             item.content
@@ -100,6 +102,8 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                           contentWidth={175}
                           file={item.file}
                           iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          noRender
+                          noRenderString={item.file.name}
                           preview
                         />
                       ) : null}

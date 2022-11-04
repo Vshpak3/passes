@@ -113,6 +113,11 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
   const closeEditor = () => {
     setExtended(false)
+    reset()
+    setFiles([])
+    setSelectedPasses([])
+    setIsReset(true)
+    setReorderContent(false)
     if (onClose) {
       onClose()
     }
@@ -123,6 +128,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     setFiles([])
     setSelectedPasses([])
     setIsReset(true)
+    setReorderContent(false)
   }
 
   useEffect(() => {

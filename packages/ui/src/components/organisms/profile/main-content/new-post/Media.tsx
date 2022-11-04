@@ -1,6 +1,7 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
+import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import React, { FC, MouseEventHandler } from "react"
 
 import { Cross } from "src/icons/CrossIcon"
@@ -16,6 +17,8 @@ type MediaFileProp = {
   contentWidth?: number
   isPassUpload?: boolean
   objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
+  noRender?: boolean
+  noRenderString?: string
 }
 
 type MediaProp = {
@@ -30,6 +33,8 @@ type MediaProp = {
   contentWidth?: number
   isPassUpload?: boolean
   objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
+  noRender?: boolean
+  noRenderString?: string
 }
 
 export const MediaFile: FC<MediaFileProp> = ({
@@ -42,7 +47,9 @@ export const MediaFile: FC<MediaFileProp> = ({
   contentHeight,
   contentWidth,
   isPassUpload,
-  objectFit
+  objectFit,
+  noRender,
+  noRenderString
 }) => {
   const src = URL.createObjectURL(file)
   let type!: ContentDtoContentTypeEnum
@@ -62,6 +69,8 @@ export const MediaFile: FC<MediaFileProp> = ({
       contentWidth={contentWidth}
       iconClassName={iconClassName}
       isPassUpload={isPassUpload}
+      noRender={noRender}
+      noRenderString={noRenderString}
       objectFit={objectFit}
       onRemove={onRemove}
       onSelect={onSelect}
@@ -83,17 +92,31 @@ export const Media: FC<MediaProp> = ({
   contentHeight,
   contentWidth,
   isPassUpload,
-  objectFit = "cover"
+  objectFit = "cover",
+  noRender,
+  noRenderString
 }) => {
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
       <>
-        <video
-          className="video-js"
-          controls
-          src={src}
-          style={{ width: contentWidth, height: contentHeight }}
-        />
+        {noRender ? (
+          <div className="flex w-[200px]  flex-col items-center justify-center rounded-[6px] border border-white/20 bg-black ">
+            <div />
+            <PlayIcon />
+            <span>
+              {noRenderString
+                ? noRenderString.substring(0, 15) + "..."
+                : "Video"}
+            </span>
+          </div>
+        ) : (
+          <video
+            className="select-none"
+            controls
+            src={src}
+            style={{ width: contentWidth, height: contentHeight }}
+          />
+        )}
         {!preview && (
           <div
             className={classNames(
