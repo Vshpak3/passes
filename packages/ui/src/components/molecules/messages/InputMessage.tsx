@@ -60,7 +60,7 @@ export const InputMessageFormDefaults: InputMessageFormProps = {
   text: "",
   files: [],
   isPaid: false,
-  price: "0",
+  price: "",
   scheduledAt: null
 }
 

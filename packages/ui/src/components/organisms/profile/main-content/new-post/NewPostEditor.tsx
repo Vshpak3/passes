@@ -41,7 +41,7 @@ const newPostFormDefaults: NewPostFormProps = {
   tags: [],
   files: [],
   isPaid: false,
-  price: "0",
+  price: "",
   passes: [],
   expiresAt: null,
   scheduledAt: null
