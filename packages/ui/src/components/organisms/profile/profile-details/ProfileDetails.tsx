@@ -1,6 +1,7 @@
 import { FC, useState } from "react"
 
 import { useProfile } from "src/hooks/profile/useProfile"
+import { useUser } from "src/hooks/useUser"
 import { EditProfile } from "./EditProfile"
 import { EditProfileAction } from "./EditProfileAction"
 import { ProfileImage } from "./ProfileImage"
@@ -13,13 +14,14 @@ import {
 export const ProfileDetails: FC = () => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
+  const { user } = useUser()
   const { ownsProfile, profileUserId } = useProfile()
 
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
     useState<boolean>(false)
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
-  const chatLink = `/messages?user=${profileUserId}`
+  const chatLink = user ? `/messages?user=${profileUserId}` : "/login"
 
   if (!profileUserId) {
     return null

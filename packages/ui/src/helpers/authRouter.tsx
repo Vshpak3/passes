@@ -1,4 +1,6 @@
+import { GetUserResponseDto } from "@passes/api-client"
 import jwtDecode from "jwt-decode"
+import { NextRouter } from "next/router"
 
 import { JWTUserClaims } from "src/hooks/useUser"
 import { isProd } from "./env"
@@ -63,4 +65,15 @@ export function authRouter(
   }
 
   return route(url)
+}
+
+export function redirectUnauthedToLogin(
+  user: GetUserResponseDto | undefined,
+  router: NextRouter
+) {
+  if (!user) {
+    router.push(authStateToRoute(AuthStates.LOGIN))
+    return true
+  }
+  return false
 }

@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
+import { redirectUnauthedToLogin } from "src/helpers/authRouter"
 import { useUser } from "src/hooks/useUser"
 
 const CACHE_KEY_FOLLOW = "/profile/follow/"
@@ -33,8 +34,7 @@ export const useFollow = (creatorId?: string) => {
     })
 
   const follow = async () => {
-    if (!user) {
-      router.push("/login")
+    if (redirectUnauthedToLogin(user, router)) {
       return
     }
     if (!creatorId) {
@@ -46,8 +46,7 @@ export const useFollow = (creatorId?: string) => {
   }
 
   const unfollow = async () => {
-    if (!user) {
-      router.push("/login")
+    if (redirectUnauthedToLogin(user, router)) {
       return
     }
     if (!creatorId) {

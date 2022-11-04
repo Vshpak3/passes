@@ -3,6 +3,7 @@ import {
   PassDtoTypeEnum,
   PassHolderDtoChainEnum
 } from "@passes/api-client"
+import { useRouter } from "next/router"
 import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC, useState } from "react"
@@ -11,6 +12,7 @@ import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/Button"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"
+import { redirectUnauthedToLogin } from "src/helpers/authRouter"
 import { formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
@@ -34,6 +36,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   const { setPass } = useBuyPassModal()
 
   const { user } = useUser()
+  const router = useRouter()
   const isCreator = pass.creatorId === user?.userId
 
   const { pinnedPasses, pinPass, unpinPass } = useCreatorPinnedPasses(
@@ -108,7 +111,8 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         <Button
           className="w-full rounded-full py-2 text-center"
           onClick={() => {
-            isCreator ? pinOrUnpinPass() : setPass(pass)
+            redirectUnauthedToLogin(user, router) ||
+              (isCreator ? pinOrUnpinPass() : setPass(pass))
           }}
           variant="pink"
         >

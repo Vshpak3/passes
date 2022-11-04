@@ -41,19 +41,19 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         {!ownsProfile && (
           <div className="align-center flex items-center space-x-3">
             {!!profile?.isCreator && (
-              <a href={chatLink}>
-                <RoundedIconButton className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
-                  <ChatIcon />
-                </RoundedIconButton>
-              </a>
-            )}
-            {!!profile?.isCreator && (
-              <PassesPinkButton
-                className="h-[36px] w-[115px]"
-                name={isFollowing ? "Unfollow" : "Follow"}
-                onClick={isFollowing ? unfollow : follow}
-                type={ButtonTypeEnum.SUBMIT}
-              />
+              <>
+                <a href={chatLink}>
+                  <RoundedIconButton className="h-[32px] w-[32px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
+                    <ChatIcon />
+                  </RoundedIconButton>
+                </a>
+                <PassesPinkButton
+                  className="h-[36px] w-[115px]"
+                  name={isFollowing ? "Unfollow" : "Follow"}
+                  onClick={isFollowing ? unfollow : follow}
+                  type={ButtonTypeEnum.SUBMIT}
+                />
+              </>
             )}
           </div>
         )}
@@ -117,20 +117,19 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
       {!ownsProfile && (
         <div className="flex space-x-3">
           {!!profile?.isCreator && (
-            <a href={chatLink}>
-              <RoundedIconButton className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
-                <ChatIcon />
-              </RoundedIconButton>
-            </a>
-          )}
-
-          {!!profile?.isCreator && (
-            <PassesPinkButton
-              className="h-[36px] w-[115px]"
-              name={isFollowing ? "Unfollow" : "Follow"}
-              onClick={isFollowing ? unfollow : follow}
-              type={ButtonTypeEnum.SUBMIT}
-            />
+            <>
+              <a href={chatLink}>
+                <RoundedIconButton className="h-[36px] w-[36px] border border-passes-dark-200 bg-[#0E0A0F] p-0">
+                  <ChatIcon />
+                </RoundedIconButton>
+              </a>
+              <PassesPinkButton
+                className="h-[36px] w-[115px]"
+                name={isFollowing ? "Unfollow" : "Follow"}
+                onClick={isFollowing ? unfollow : follow}
+                type={ButtonTypeEnum.SUBMIT}
+              />
+            </>
           )}
         </div>
       )}
