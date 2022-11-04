@@ -14,7 +14,6 @@ import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
-import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
 import { WalletListItem } from "./WalletsList/WalletListItem"
 
 export const Wallets = () => {
@@ -27,8 +26,7 @@ export const Wallets = () => {
     handleSubmit,
     formState: { errors }
   } = useForm()
-  const { ethWallet, solWallet, setDefaultWallet } =
-    useUserDefaultMintingWallets()
+
   const {
     wallets,
     loading,
@@ -131,7 +129,7 @@ export const Wallets = () => {
         modalContainerClassname="rounded-[15px]"
         setOpen={setIsModalOpen}
       >
-        <div className="md:px-10 md:pb-10">
+        <div className="md:px-10 md:pb-20">
           <h4 className="mt-5 text-center text-2xl font-bold dark:text-white">
             Choose Wallet to Connect
           </h4>
@@ -218,7 +216,7 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div className="overflow-x-scroll md:overflow-x-auto">
+      <div className="overflow-x-scroll pb-6 md:overflow-x-auto">
         <div className="mt-6 flex w-[600px] gap-0 pt-1 text-center text-[#ffffffeb] md:w-full md:gap-[40px] md:pl-8">
           <span className="flex basis-1/4 justify-center">Wallet Type</span>
           <span className="flex basis-1/4 justify-center">Address</span>
@@ -232,11 +230,8 @@ export const Wallets = () => {
             {wallets.map((wallet) => {
               return (
                 <WalletListItem
-                  defaultEthMinting={ethWallet?.walletId === wallet.walletId}
-                  defaultSolMinting={solWallet?.walletId === wallet.walletId}
                   deleteWalletHandler={deleteWalletHandler}
                   key={wallet.walletId}
-                  setDefaultMinting={setDefaultWallet}
                   wallet={wallet}
                 />
               )

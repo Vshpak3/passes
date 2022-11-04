@@ -49,7 +49,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
   return (
     <div className="flex flex-col">
       <span className="mb-3 text-[18px] font-bold text-white">
-        Use Crypto as a Payment method
+        Use Crypto as a Payment Method
       </span>
       <div className="flex items-center justify-start">
         <div className="flex flex-1 flex-row items-center">
