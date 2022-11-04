@@ -89,7 +89,7 @@ export const SchedulerHeader: FC = () => {
         selectionDate={selectionDate as Date}
       />
 
-      <div className="flex items-center justify-between py-[45px] px-[15px] md:px-[30px]">
+      <div className="flex items-center justify-between px-[15px] pb-[45px] md:px-[30px]">
         <div className="select-none text-base font-bold md:text-2xl">
           Scheduler
         </div>

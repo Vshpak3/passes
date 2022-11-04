@@ -81,7 +81,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   }
 
   return (
-    <div className="mt-[-180px] mb-[28px] flex w-full flex-col justify-between">
+    <div className="relative mt-[-175px] mb-[28px] flex w-full flex-col justify-between">
       <div className="align-items flex items-center justify-between">
         <div className="align-items text-[24px] font-bold text-white">
           Creator Vault
@@ -104,7 +104,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         setOpen={setDeleteModalActive}
       />
       {!embedded && (
-        <div className="align-center items-align flex justify-center">
+        <div className="absolute right-20 bottom-0 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
               <div>20 media files can be posted at any given time</div>
