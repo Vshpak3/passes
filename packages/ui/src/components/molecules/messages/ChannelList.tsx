@@ -79,7 +79,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           placeholder="Search people.."
         />
       </div>
-      <div className="overflow-y-auto h-[calc(100%-120px)]" id="channelDiv">
+      <div className="h-[calc(100%-120px)] overflow-y-auto" id="channelDiv">
         <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
           KeyedComponent={({
             arg: channel
