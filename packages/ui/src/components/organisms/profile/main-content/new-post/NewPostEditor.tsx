@@ -181,7 +181,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start border-y-[0.5px] border-gray-600 bg-[#1b141d]/50 p-5  md:px-7 md:py-5">
+      <div className="flex flex-col items-start justify-start border-y-[0.5px] border-gray-600 bg-[#1b141d]/50 p-5  md:px-7 md:py-5">
         {extended && (
           <NewPostEditorHeader
             formName="isPaid"

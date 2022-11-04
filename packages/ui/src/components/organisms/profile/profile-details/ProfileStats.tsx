@@ -29,7 +29,7 @@ export const ProfileStatsMobile: FC<ProfileStatsProps> = ({
   numPosts,
   likes
 }) => (
-  <div className="align-center grid grid-cols-3 items-center text-center">
+  <div className="grid grid-cols-3 items-center text-center">
     <ProfileStatItemMobile label="POSTS" stat={numPosts?.toString()} />
     <div className="mx-[30px] h-[38px] w-[1px] bg-passes-dark-200" />
     <ProfileStatItemMobile

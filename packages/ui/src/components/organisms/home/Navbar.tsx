@@ -38,7 +38,7 @@ export const Navbar = () => {
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="md:text-md mt-4 flex flex-col items-center rounded-lg border p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:font-semibold">
+            <ul className="mt-4 flex flex-col items-center rounded-lg border p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:font-semibold">
               <li>
                 <a
                   className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"

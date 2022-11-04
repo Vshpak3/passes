@@ -40,7 +40,6 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
       <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
       <Swiper
         autoplay={false}
-        className="mySwiper"
         initialSlide={activeIndex}
         modules={[Pagination, Navigation]}
         navigation

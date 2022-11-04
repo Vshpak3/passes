@@ -23,7 +23,7 @@ export const ListMember: FC<ListMemberProps> = ({
           <ProfileWidget user={fanInfo} />
           {removable && (
             <span
-              className="duration-400 hover:text-passes-red-100 ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
+              className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={async () => {
                 await onRemoveFan(fanInfo.userId)
                 setRemoved(true)

@@ -280,7 +280,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             icon={
               <div
-                className="tooltip absolute right-[15px] top-[30px] h-4 w-4"
+                className="absolute right-[15px] top-[30px] h-4 w-4"
                 data-tip="2 letter input only (Example: “FL”)"
               >
                 <InfoIcon />

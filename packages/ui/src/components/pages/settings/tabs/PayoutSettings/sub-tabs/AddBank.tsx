@@ -261,7 +261,7 @@ const AddBank = () => {
               errors={errors}
               icon={
                 <div
-                  className="tooltip absolute right-[15px] top-6 h-4 w-4"
+                  className="absolute right-[15px] top-6 h-4 w-4"
                   data-tip="2 letter input only (Example: “FL”)"
                 >
                   <InfoIcon />

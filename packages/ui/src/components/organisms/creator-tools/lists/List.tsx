@@ -18,7 +18,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
   return (
     <>
       {!removed && (
-        <li className="duration-400 flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
+        <li className="flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
           <Link
             className="flex-1"
             href={`/tools/list-members/${list.listId}`}

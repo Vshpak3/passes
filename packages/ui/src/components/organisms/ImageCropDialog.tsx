@@ -109,7 +109,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
         <div className="left-20 -mb-4 bg-inherit p-4">
           <input
             aria-labelledby="Zoom"
-            className="zoom-range w-full max-w-[300px]"
+            className="w-full max-w-[300px]"
             max={3}
             min={1}
             onChange={(e) => {

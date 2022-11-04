@@ -23,7 +23,7 @@ interface PassProps {
 
 export const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
   return (
-    <div className="align-items flex w-fit items-center justify-start">
+    <div className="flex w-fit items-center justify-start">
       <PassFormCheckbox
         label=""
         name="free-dm-month-checkbox"

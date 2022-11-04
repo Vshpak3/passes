@@ -82,10 +82,8 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
 
   return (
     <div className="relative mt-[-175px] mb-[28px] flex w-full flex-col justify-between">
-      <div className="align-items flex items-center justify-between">
-        <div className="align-items text-[24px] font-bold text-white">
-          Creator Vault
-        </div>
+      <div className="flex items-center justify-between">
+        <div className="text-[24px] font-bold text-white">Creator Vault</div>
       </div>
       <VaultSelectContainer
         deselectAll={deselectAll}

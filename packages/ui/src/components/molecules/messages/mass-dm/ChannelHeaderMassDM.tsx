@@ -18,7 +18,7 @@ const SelectedBadge: FC<SelectedBadgeProps> = ({
   id
 }) => {
   return (
-    <div className="space-between flex items-start gap-[10px] rounded-md border border-[#2C282D] p-[10px]">
+    <div className="flex items-start gap-[10px] rounded-md border border-[#2C282D] p-[10px]">
       {type === "pass" ? <PassIcon /> : <ListIcon />}
       <span className="text-[16px] font-medium leading-[24px] text-white">
         {name}

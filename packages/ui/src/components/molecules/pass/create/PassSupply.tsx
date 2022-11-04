@@ -59,7 +59,7 @@ export const PassSupply: FC<PassSupplyProps> = ({
             )}
           </RadioGroup.Option>
           <RadioGroup.Option value={SupplyTypesEnum.TOTAL_SUPPLY}>
-            <div className="align-center mt-[20px] flex items-center">
+            <div className="mt-[20px] flex items-center">
               <Checkbox
                 checked={passValue === SupplyTypesEnum.TOTAL_SUPPLY}
                 className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
@@ -69,7 +69,7 @@ export const PassSupply: FC<PassSupplyProps> = ({
                 register={register}
                 type="radio"
               />
-              <div className="align-center ml-10 flex items-center justify-center">
+              <div className="ml-10 flex items-center justify-center">
                 <NumberInput
                   className="min-h-[50px] max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
                   name="totalSupply"

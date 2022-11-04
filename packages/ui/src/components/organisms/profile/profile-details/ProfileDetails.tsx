@@ -40,7 +40,7 @@ export const ProfileDetails: FC = () => {
         profileUserId={profileUserId}
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
-      <div className="md:min-h-12 relative rounded-[15px] md:flex md:gap-[40px] md:pb-10">
+      <div className="relative rounded-[15px] md:flex md:gap-[40px] md:pb-10">
         {/* Desktop */}
         <div className="relative hidden grid-cols-5 md:grid">
           <ProfileImage
@@ -58,7 +58,7 @@ export const ProfileDetails: FC = () => {
         </div>
 
         {/* Mobile */}
-        <div className="align-center my-4 mt-[-220px] grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
+        <div className="my-4 mt-[-220px] grid w-full content-center items-center justify-items-center gap-y-[16px] rounded-[15px] border border-[#ffffff]/10 bg-[#1b141d]/50 px-[16px] py-[13px] backdrop-blur-[100px] md:hidden">
           <ProfileImage
             onClick={() => setIsProfilePicModalOpen(true)}
             userId={profileUserId}

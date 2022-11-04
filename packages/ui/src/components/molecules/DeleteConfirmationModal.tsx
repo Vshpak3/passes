@@ -92,13 +92,13 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
             <div className="my-3 h-[0.5px] w-full bg-[#2C282D]" />
             <div className="flex w-full flex-row justify-between">
               <button
-                className="text-4 rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
+                className="rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
                 onClick={handleDelete}
               >
                 Delete
               </button>
               <button
-                className="text-4 rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"
+                className="rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"
                 onClick={onCancel}
               >
                 Cancel

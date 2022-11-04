@@ -24,7 +24,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
       <div className="flex h-full w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
           <div>
-            <div className="justify-left items-left flex shrink-0">
+            <div className="flex shrink-0">
               <div>
                 <PassesLogoPink className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
               </div>

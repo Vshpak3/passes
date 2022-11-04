@@ -95,7 +95,7 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
   isPreview
 }) => {
   return (
-    <div className="overflow-y-full h-full w-full items-center pb-2">
+    <div className="h-full w-full items-center pb-2">
       <div className="mb-3">
         <PassesSectionTitle title="Upload an image" />
       </div>

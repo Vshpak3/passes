@@ -22,7 +22,7 @@ export const PassHoldings: FC = () => {
 
   return (
     <div className="w-9/12 px-2">
-      <div className="md:align-items ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
+      <div className="ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
         <div className="w-fit">
           <SelectPassHolderTab
             expired={expired}
@@ -31,7 +31,7 @@ export const PassHoldings: FC = () => {
             setPassType={setPassType}
           />
         </div>
-        <hr className="md:display my-auto hidden grow border-passes-dark-200" />
+        <hr className="my-auto hidden grow border-passes-dark-200" />
       </div>
 
       <InfiniteScrollPagination<PassHolderDto, GetPassHoldingsResponseDto>

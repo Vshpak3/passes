@@ -24,6 +24,8 @@ export const Video: FC = forwardRef<HTMLVideoElement, unknown>((_, ref) => {
     <div data-vjs-player>
       <style>{inlineStylesForPlayerJs}</style>
       <video
+        // TODO: fix this
+        // eslint-disable-next-line tailwindcss/no-custom-classname
         className="video-js vjs-big-play-centered"
         muted
         ref={ref as VideRefType}

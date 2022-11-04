@@ -59,10 +59,7 @@ export const FAQ = () => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Disclosure.Panel
-                        as="dd"
-                        className="bg-[hsla(0, 0%, 100%, 0.05)] mt-2 py-2 pr-12"
-                      >
+                      <Disclosure.Panel as="dd" className="mt-2 py-2 pr-12">
                         <p className="text-base text-gray-500">{faq.answer}</p>
                       </Disclosure.Panel>
                     </Transition>

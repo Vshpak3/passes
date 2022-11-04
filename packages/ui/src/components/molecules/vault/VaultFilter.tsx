@@ -43,8 +43,8 @@ export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
   setVaultCategory
 }) => {
   return (
-    <div className="items-align align-center flex">
-      <div className="align-items mt-5 flex w-full flex-col justify-start">
+    <div className="flex">
+      <div className="mt-5 flex w-full flex-col justify-start">
         <div className="mb-[15px] flex items-start">
           {VAULT_CATEGORY_OPTIONS.map((category, index) => {
             return (

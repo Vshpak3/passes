@@ -13,7 +13,7 @@ export const NotFoundPage: FC = () => (
       <h1 className="mt-4 text-[32px] font-bold leading-[42px] text-white">
         Page not found
       </h1>
-      <span className="font-base text-[16px] leading-6 text-[#ffffff] opacity-50">
+      <span className="text-[16px] leading-6 text-[#ffffff] opacity-50">
         The page you are looking for may have expired or been removed. If you
         typed the address, double-check the spelling.
       </span>

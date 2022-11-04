@@ -38,7 +38,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         onClick()
       }}
     >
-      <div className="item-center flex pr-[10px]">
+      <div className="flex pr-[10px]">
         <ProfileThumbnail
           key={channel.otherUserId}
           userId={channel.otherUserId}

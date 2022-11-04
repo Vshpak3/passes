@@ -68,9 +68,11 @@ export const Input: FC<InputProps> = ({
         {!!icon && (
           <div className="relative text-gray-600">
             <span
-              className={`absolute inset-y-0 ${toLower(
-                iconAlign
-              )}-0 left-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`}
+              className={classNames(
+                `absolute inset-y-0 ${toLower(
+                  iconAlign
+                )}-0 left-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`
+              )}
             >
               {icon}
             </span>

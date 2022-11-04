@@ -39,7 +39,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           </span>
         </div>
         {!ownsProfile && (
-          <div className="align-center flex items-center space-x-3">
+          <div className="flex items-center space-x-3">
             {!!profile?.isCreator && (
               <>
                 <a href={chatLink}>
@@ -58,7 +58,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           </div>
         )}
       </div>
-      <span className="text-md my-3 font-semibold leading-[22px] text-white">
+      <span className="my-3 font-semibold leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
@@ -93,7 +93,7 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
       <span className="w-full truncate text-center text-[18px] font-semibold text-passes-white-100">
         {profile?.displayName}
       </span>
-      <div className="align-items flex items-center justify-center rounded-xl bg-passes-white-100/5 px-2 py-1">
+      <div className="flex items-center justify-center rounded-xl bg-passes-white-100/5 px-2 py-1">
         <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-center text-sm font-normal text-transparent">
           @{profileUsername}
         </span>

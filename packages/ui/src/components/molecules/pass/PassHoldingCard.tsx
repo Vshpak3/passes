@@ -39,7 +39,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
       </div>
       <div className=" grow cursor-pointer rounded-xl drop-shadow transition-colors">
         <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
-          <div className="align-items flex w-full flex-row items-center justify-between">
+          <div className="flex w-full flex-row items-center justify-between">
             <div className="text-[18px] font-[700]">{passHolder.title}</div>
             <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
               {passHolder.chain === PassHolderDtoChainEnum.Eth ? (

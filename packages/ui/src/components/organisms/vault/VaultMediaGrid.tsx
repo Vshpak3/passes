@@ -53,7 +53,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="vault-content-scrollbar max-h-[75vh] min-w-fit justify-center overflow-y-scroll">
+    <div className="max-h-[75vh] min-w-fit justify-center overflow-y-scroll">
       <MediaModal
         file={{ content }}
         isOpen={isViewMediaModal}
@@ -76,7 +76,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               </>
             )
           }}
-          className="grid-cols-1-[365px_minmax(165px,_200px)_400px] mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
           emptyElement={
             <>
               <div className="col-span-1 w-[115px] md:w-[320px]" />

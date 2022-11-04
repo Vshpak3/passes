@@ -16,9 +16,7 @@ export const PassFormError: FC<PassFormErrorProps> = ({
   message,
   className = ""
 }) => (
-  <div className={`text-md font-semibold text-[#ba3333] ${className}`}>
-    {message}
-  </div>
+  <div className={`font-semibold text-[#ba3333] ${className}`}>{message}</div>
 )
 
 interface PassFormCheckboxProps {
@@ -61,11 +59,11 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
   className
 }) => (
   <div className="my-2 grid w-fit auto-cols-auto grid-flow-col grid-rows-1">
-    <div className="align-items flex w-[100px] items-center md:w-[200px]">
+    <div className="flex w-[100px] items-center md:w-[200px]">
       <span className="text-[#ffff]/70">{title}</span>
     </div>
     <div className="grid grid-flow-col">
-      <div className="align-items relative flex w-fit items-center justify-start">
+      <div className="relative flex w-fit items-center justify-start">
         <NumberInput
           className={classNames(
             "min-h-[50px] max-w-[140px]  border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90",
@@ -103,7 +101,7 @@ export const CreatePassButton: FC<CreatePassButtonProps> = ({
   onCreateHandler,
   isDisabled
 }) => (
-  <div className="align-end my-6 flex justify-end md:my-0">
+  <div className="my-6 flex justify-end md:my-0">
     <Button
       className="w-full border-none !py-4 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white md:w-[195px]"
       disabled={isDisabled}
@@ -161,7 +159,7 @@ export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <Input
-      className="grow-1 m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      className="m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
       name="passName"
       placeholder="Name of your new pass!"
       register={register}

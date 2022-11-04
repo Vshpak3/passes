@@ -36,7 +36,7 @@ export const Hero = () => {
 
   return (
     <div className="bg-[url('/img/homepage/hero-bkg.webp')] bg-cover bg-no-repeat">
-      <div className="bg-fill mx-auto max-w-7xl text-clip px-4 py-24">
+      <div className="mx-auto max-w-7xl text-clip px-4 py-24">
         <div className="flex flex-col items-center space-y-8">
           <a href="https://jobs.lever.co/Passes">
             <span

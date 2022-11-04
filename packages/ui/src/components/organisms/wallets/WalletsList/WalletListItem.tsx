@@ -95,7 +95,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
         </div>
       </div>
       <div
-        className='text-[#ffffffeb]" group flex basis-1/4 cursor-pointer flex-row justify-center'
+        className="group flex basis-1/4 cursor-pointer flex-row justify-center"
         onClick={() => copyWalletToClipboard(wallet.address)}
       >
         {formatWalletAddress(wallet.address, {

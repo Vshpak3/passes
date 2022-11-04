@@ -254,7 +254,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 type="toggle"
               />
               {isPaid ? (
-                <div className="rounded-xs relative flex items-center shadow-sm">
+                <div className="relative flex items-center shadow-sm">
                   <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
                     Price
                   </div>
@@ -363,7 +363,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             )}
             <div
               aria-roledescription="button"
-              className="messaging-input__button h-[45px]  !p-0"
+              className="h-[45px]  !p-0"
               role="button"
             >
               <button

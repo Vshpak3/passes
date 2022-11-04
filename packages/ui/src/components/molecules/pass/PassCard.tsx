@@ -61,7 +61,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         passId={pass.passId}
       />
       <div className="flex h-full flex-col items-start pt-4 text-[#ffff]/90">
-        <div className="align-items flex w-full flex-row items-center justify-between">
+        <div className="flex w-full flex-row items-center justify-between">
           <div className="text-lg font-[500]">{pass.title}</div>
           <div className="flex flex-row items-center">
             {pass.chain === PassHolderDtoChainEnum.Eth ? (
@@ -78,7 +78,7 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
-          <div className="align-items mt-2 flex w-full flex-row items-center justify-between">
+          <div className="mt-2 flex w-full flex-row items-center justify-between">
             <div>
               {pass.totalMessages !== null && pass.totalMessages > 0 && (
                 <span className="flex flex-col text-sm text-white md:text-xs">

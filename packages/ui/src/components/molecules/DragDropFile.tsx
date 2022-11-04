@@ -107,7 +107,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
           {name === "passFile" ?? (
             <p className="self-stretch text-center text-sm font-normal text-gray-500">
               If no media is selected,{" "}
-              <span className="text-passes-secondr-pointer cursor-pointer text-sm font-medium">
+              <span className="cursor-pointer text-sm font-medium">
                 Passes will provide a default art piece.
               </span>
             </p>

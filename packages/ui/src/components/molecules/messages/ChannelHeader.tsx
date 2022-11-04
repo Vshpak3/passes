@@ -61,7 +61,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               </a>
             </div>
             <div className="flex flex-col">
-              <div className="text-brand-600 flex flex-col items-start gap-2 pl-3">
+              <div className="flex flex-col items-start gap-2 pl-3">
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
                   linked

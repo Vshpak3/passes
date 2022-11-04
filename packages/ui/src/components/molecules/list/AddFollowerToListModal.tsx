@@ -47,7 +47,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
           >
             <ProfileWidget user={user} />
             <span
-              className="duration-400 hover:text-passes-red-100 ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
+              className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={() => {
                 onSubmit(user.userId)
                 setResults((results) =>

@@ -44,7 +44,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
       </RadioGroup.Option>
       <RadioGroup.Option value={MessageTypesEnum.NUMBER}>
         {() => (
-          <div className="align-center flex items-center">
+          <div className="flex items-center">
             <Checkbox
               checked={passValue === MessageTypesEnum.NUMBER}
               className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
@@ -54,7 +54,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
               register={register}
               type="radio"
             />
-            <div className="align-center ml-10 flex items-center justify-center">
+            <div className="ml-10 flex items-center justify-center">
               <NumberInput
                 className="min-h-[50px] max-w-[140px]  border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
                 name="free-dms-month"

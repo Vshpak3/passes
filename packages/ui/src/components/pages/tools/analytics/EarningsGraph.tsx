@@ -101,19 +101,15 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           {dateDiff(startDate, endDate)} Days
         </h3>
         <label
-          className="modal-button flex cursor-pointer flex-row items-end gap-[24px] font-bold text-[#767676]"
+          className="flex cursor-pointer flex-row items-end gap-[24px] font-bold text-[#767676]"
           htmlFor="calender-modal"
           onChange={datePickerModalToggle}
         >
           {getFormattedDate(startDate)} - {getFormattedDate(endDate)}
           <Caret height={15} stroke="#3A444C" width={15} />
-          <input
-            className="modal-toggle hidden"
-            id="calender-modal"
-            type="checkbox"
-          />
+          <input className="hidden" id="calender-modal" type="checkbox" />
         </label>
-        <label className="modal cursor-pointer" htmlFor="calender-modal">
+        <label className="cursor-pointer" htmlFor="calender-modal">
           <label
             className="absolute flex w-fit items-center justify-center rounded-[15px] bg-[#fff]"
             htmlFor=""

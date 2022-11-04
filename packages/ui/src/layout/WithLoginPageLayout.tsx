@@ -34,7 +34,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router])
 
-  return <>{ready ? children : <div className="flex-2 h-screen bg-black" />}</>
+  return <>{ready ? children : <div className="h-screen bg-black" />}</>
 }
 
 export const WithLoginPageLayout = (

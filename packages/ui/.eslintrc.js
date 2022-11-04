@@ -26,7 +26,6 @@ module.exports = {
     "@next/next/no-img-element": "off",
 
     // Consider turning on
-    "tailwindcss/no-custom-classname": "off",
     "react/jsx-no-constructed-context-values": "off",
     "react/no-array-index-key": "off",
     "react/no-unstable-nested-components": "off",

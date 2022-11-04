@@ -84,8 +84,8 @@ export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
 export const VaultSelectLabel: FC<VaultSelectLabelProps> = ({
   selectedItemsLength
 }) => (
-  <div className="align-items flex">
-    <div className="text-md font-semibold text-white">
+  <div className="flex">
+    <div className="font-semibold text-white">
       {selectedItemsLength > 0 &&
         `${selectedItemsLength} ${
           selectedItemsLength === 1 ? "item" : "items"
@@ -96,7 +96,7 @@ export const VaultSelectLabel: FC<VaultSelectLabelProps> = ({
 
 export const VaultAddToItem: FC<VaultAddToItemProps> = ({ label, onClick }) => (
   <div
-    className="align-items flex w-full cursor-pointer items-center rounded p-2 text-base text-[#FFFF] ring-0 hover:bg-[#9C4DC1] focus:shadow-none focus:ring-0 focus:ring-offset-0"
+    className="flex w-full cursor-pointer items-center rounded p-2 text-base text-[#FFFF] ring-0 hover:bg-[#9C4DC1] focus:shadow-none focus:ring-0 focus:ring-offset-0"
     onClick={onClick}
   >
     <AddToIcon />

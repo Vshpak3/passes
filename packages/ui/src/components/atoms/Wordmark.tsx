@@ -18,9 +18,10 @@ export const Wordmark: FC<WordmarkProps> = ({
   <NextLink href="/home">
     <a className={className}>
       <h1
-        className={`w-[${width}px] h-[${height}px] font-display text-center text-2xl ${classNames(
+        className={classNames(
+          `w-[${width}px] h-[${height}px] font-display text-center text-2xl`,
           whiteOnly ? "text-white" : "text-black dark:text-white"
-        )}`}
+        )}
       />
     </a>
   </NextLink>

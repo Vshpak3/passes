@@ -17,7 +17,7 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
             className="group my-4 mx-3 flex cursor-pointer items-center"
             onClick={toggleSidebar}
           >
-            <div className="font-display group flex cursor-pointer items-center text-[26px] font-semibold text-white">
+            <div className="group flex cursor-pointer items-center text-[26px] font-semibold text-white">
               <CloseIcon
                 aria-hidden="true"
                 className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2"

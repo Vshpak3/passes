@@ -127,7 +127,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
             )}
           >
             {!purchased && (
-              <div className="flex-center h-45 flex w-[245px] flex-col items-center">
+              <div className="flex w-[245px] flex-col items-center">
                 <ContentUnlockButton
                   className="max-w-[200px] gap-1 py-2 text-[14px]"
                   name={`Unlock For ${formatCurrency(price ?? 100)}`}

@@ -23,7 +23,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
     defaultPayinMethod?.method !== PayinMethodDtoMethodEnum.None
 
   const defaultPaymentCard = defaultCard ? (
-    <div className="align-center mt-3 flex gap-6">
+    <div className="mt-3 flex gap-6">
       <CreditCardEntry card={defaultCard} showName={false} />
     </div>
   ) : null

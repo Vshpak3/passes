@@ -143,7 +143,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               type="toggle"
             />
             {isPaid ? (
-              <div className="rounded-xs relative flex items-center shadow-sm">
+              <div className="relative flex items-center shadow-sm">
                 <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
                   Price
                 </div>
