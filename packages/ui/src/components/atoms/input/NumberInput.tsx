@@ -8,6 +8,7 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/atoms/input/InputTypes"
+import { preventNegative } from "src/helpers/keyboard"
 
 type NumberFormType = "integer" | "currency"
 
@@ -48,8 +49,8 @@ export const NumberInput: FC<NumberInputProps> = ({
       e.preventDefault()
     }
 
-    if (!allowNegative && e.code === "Minus") {
-      e.preventDefault()
+    if (!allowNegative) {
+      preventNegative(e)
     }
   }
 

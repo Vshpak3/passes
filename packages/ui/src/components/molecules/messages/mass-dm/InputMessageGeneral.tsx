@@ -1,21 +1,29 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { ChangeEvent, FC, KeyboardEvent, useState } from "react"
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
+import {
+  InputMessageFormDefaults,
+  InputMessageFormProps,
+  newMessageFormSchema
+} from "src/components/molecules/messages/InputMessage"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import {
   MediaSelector,
   PhotoSelector,
   VideoSelector
 } from "src/components/organisms/MediaSelector"
+import { MAX_PAID_MESSAGE_PRICE } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
-import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
 interface InputMessageGeneralProps {
@@ -41,19 +49,22 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     register,
     formState: { errors },
     handleSubmit,
-    setError,
-    clearErrors,
     reset,
     watch,
     getValues,
     setValue
-  } = useForm()
-  const message = watch("message", "")
+  } = useForm<InputMessageFormProps>({
+    defaultValues: { ...InputMessageFormDefaults },
+    resolver: yupResolver(newMessageFormSchema)
+  })
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
+  useEffect(() => {
+    setValue("files", files, { shouldValidate: true })
+  }, [files, setValue])
+
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,18 +73,28 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     event.target.value = ""
   }
 
+  useEffect(() => {
+    // Any time we receive an error, just show the first one
+    const errorMessages = Object.entries(errors).map((e) => e[1].message)
+    if (errorMessages.length) {
+      toast.error(errorMessages[0])
+    }
+  }, [errors])
+
   const onSubmit = async () => {
     const contentIds = await new ContentService().uploadUserContent({
       files,
       inMessage: true
     })
+
+    const values = getValues()
     try {
       await save(
-        message,
+        values.text,
         contentIds,
-        messagePrice,
+        isPaid ? parseFloat(values.price) : 0,
         isPaid ? mediaPreviewIndex : 0,
-        getValues()?.scheduledAt ?? undefined
+        values.scheduledAt ?? undefined
       )
       setFiles([])
       clear()
@@ -87,10 +108,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     try {
       onSubmit()
     } catch (error) {
-      setError("submitError", {
-        type: "custom",
-        message: "There was an error sending the message"
-      })
+      errorMessage(error, true)
     }
   }
 
@@ -105,12 +123,8 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     setValue("scheduledAt", date, { shouldValidate: true })
   }
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setMessagePrice(parseFloat(event.target.value))
-  }
-
   const options = {}
-  const scheduledTime = getValues()?.scheduledAt
+  const scheduledTime = watch("scheduledAt")
   return (
     <form
       className="grid w-full grid-cols-3 border-t border-[#fff]/10"
@@ -132,20 +146,12 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
                 Price
               </div>
-              <input
-                aria-placeholder="$"
-                autoFocus
-                className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
-                id="postPrice"
-                max="5000"
-                min="0"
-                name="postPrice"
-                onChange={handleChange}
-                onKeyPress={preventNegative}
-                placeholder="$"
-                step="0.01"
-                type="number"
-                value={messagePrice}
+              <NumberInput
+                className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                maxInput={MAX_PAID_MESSAGE_PRICE}
+                name="price"
+                register={register}
+                type="currency"
               />
             </div>
           ) : null}
@@ -156,17 +162,17 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
             cols={40}
             placeholder="Send a message.."
             rows={3}
-            {...register("message", { required: true })}
+            {...register("text")}
             autoComplete="off"
             className={classNames(
               files.length
                 ? "focus:border-b-transparent"
-                : errors.message && "border-b-red",
+                : errors.text && "border-b-red",
               "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
             )}
-            onFocus={() => {
-              clearErrors()
-            }}
+            // onFocus={() => {
+            //   clearErrors()
+            // }}
             onKeyDown={submitOnEnter}
           />
           {files.length > 0 && (

@@ -1,6 +1,6 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { ContentDto, PayinDataDtoBlockedEnum } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
-import { AnyObject } from "chart.js/types/basic"
 import classNames from "classnames"
 import { debounce } from "lodash"
 import React, {
@@ -14,9 +14,11 @@ import React, {
   useState
 } from "react"
 import { useForm } from "react-hook-form"
+import { date, object } from "yup"
 
 import { Button } from "src/components/atoms/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import { MediaSection } from "src/components/organisms/MediaSection"
@@ -25,20 +27,26 @@ import {
   PhotoSelector,
   VideoSelector
 } from "src/components/organisms/MediaSelector"
+import {
+  MAX_PAID_MESSAGE_PRICE,
+  MIN_PAID_MESSAGE_PRICE
+} from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
 import { preventNegative } from "src/helpers/keyboard"
+import { yupPaid } from "src/helpers/yup"
 import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
 
-interface InputMessageFormProps {
-  message: string
+export interface InputMessageFormProps {
+  text: string
+  files: ContentFile[]
   isPaid: boolean
-  previewIndex: string
-  submitError: AnyObject
+  price: string
+  scheduledAt: Date | null
 }
 
-interface InputMessageProps {
+export interface InputMessageProps {
   channelId: string
   minimumTip?: number | null
   isCreator: boolean
@@ -48,7 +56,28 @@ interface InputMessageProps {
   removeFree: () => void
 }
 
+export const InputMessageFormDefaults: InputMessageFormProps = {
+  text: "",
+  files: [],
+  isPaid: false,
+  price: "0",
+  scheduledAt: null
+}
+
 const api = new MessagesApi()
+
+export const newMessageFormSchema = object(
+  // give generic error text
+  {
+    ...yupPaid(
+      "message",
+      MIN_PAID_MESSAGE_PRICE,
+      MAX_PAID_MESSAGE_PRICE,
+      "Message can't be empty"
+    ),
+    scheduledAt: date().nullable()
+  }
+)
 
 export const InputMessage: FC<InputMessageProps> = ({
   channelId,
@@ -63,19 +92,24 @@ export const InputMessage: FC<InputMessageProps> = ({
     register,
     formState: { errors },
     handleSubmit,
-    setError,
-    clearErrors,
     reset,
-    watch
-  } = useForm<InputMessageFormProps>()
+    setValue,
+    watch,
+    getValues
+  } = useForm<InputMessageFormProps>({
+    defaultValues: { ...InputMessageFormDefaults },
+    resolver: yupResolver(newMessageFormSchema)
+  })
   const [tip, setTip] = useState(0)
-  const message = watch("message", "")
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
+  useEffect(() => {
+    setValue("files", files, { shouldValidate: true })
+  }, [files, setValue])
+
   const [reorderContent, setReorderContent] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
-  const [messagePrice, setMessagePrice] = useState<number>(0)
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
 
@@ -89,7 +123,6 @@ export const InputMessage: FC<InputMessageProps> = ({
 
   const clear = () => {
     setFiles([])
-    setMessagePrice(0)
     setVaultContent([])
     reset()
     if (!tip) {
@@ -97,17 +130,27 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }
 
+  const [submitError, setSubmitError] = useState<string>()
+  useEffect(() => {
+    // Any time we receive an error, just show the first one
+    const errorMessages = Object.entries(errors).map((e) => e[1].message)
+    if (errorMessages.length) {
+      setSubmitError(errorMessages[0])
+    }
+  }, [errors])
+
   const getRequest = async () => {
     const contentIds = await new ContentService().uploadUserContent({
       files,
       inMessage: true
     })
+    const values = getValues()
     return {
-      text: message,
+      text: values.text,
       contentIds: contentIds,
       channelId,
       tipAmount: tip,
-      price: isPaid ? messagePrice : 0,
+      price: isPaid ? parseFloat(values.price) : 0,
       previewIndex: isPaid ? mediaPreviewIndex : 0
     }
   }
@@ -146,24 +189,18 @@ export const InputMessage: FC<InputMessageProps> = ({
           setOnSuccess(clear)
           setTippedMessage(await getRequest())
         } else {
-          submit()
+          await submit()
+          clear()
         }
-        reset()
       }
     } catch (error) {
-      setError("submitError", {
-        type: "custom",
-        message: "There was an error sending the message"
-      })
+      setSubmitError("There was an error sending the message")
     }
   }
 
   const onCallback = (error: unknown) => {
     if (error) {
-      setError("submitError", {
-        type: "custom",
-        message: "There was an error sending the message"
-      })
+      setSubmitError("There was an error sending the message")
     }
   }
 
@@ -173,7 +210,6 @@ export const InputMessage: FC<InputMessageProps> = ({
       handleSubmit(submitMessage)()
     }
   }
-  const { submitError } = errors
   const { blocked, submitting, submit, submitData } = usePay(
     registerMessage,
     registerMessageData,
@@ -196,11 +232,7 @@ export const InputMessage: FC<InputMessageProps> = ({
       }
       fetch()
     }
-  }, [channelId, message, submitData, tip])
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessagePrice(parseFloat(event.target.value))
-  }
+  }, [channelId, submitData, tip])
 
   const options = {}
   return (
@@ -226,20 +258,12 @@ export const InputMessage: FC<InputMessageProps> = ({
                   <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
                     Price
                   </div>
-                  <input
-                    aria-placeholder="$"
-                    autoFocus
-                    className="min-w-[121px] max-w-[121px] rounded-md border-passes-dark-200 bg-[#100C11] py-1 pr-4 text-right text-[14px] font-bold leading-[25px] text-[#ffffff]/90  focus:border-passes-primary-color focus:ring-0"
-                    id="postPrice"
-                    max="5000"
-                    min="0"
-                    name="postPrice"
-                    onChange={handleChange}
-                    onKeyPress={preventNegative}
-                    placeholder="$"
-                    step="0.01"
-                    type="number"
-                    value={messagePrice}
+                  <NumberInput
+                    className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                    maxInput={MAX_PAID_MESSAGE_PRICE}
+                    name="price"
+                    register={register}
+                    type="currency"
                   />
                 </div>
               ) : null}
@@ -262,17 +286,18 @@ export const InputMessage: FC<InputMessageProps> = ({
             cols={40}
             placeholder="Send a message.."
             rows={4}
-            {...register("message", { required: true })}
+            {...register("text")}
             autoComplete="off"
             className={classNames(
               files.length
                 ? "focus:border-b-transparent"
-                : errors.message && "border-b-red",
+                : errors.text && "border-b-red",
               "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
             )}
-            onFocus={() => {
-              clearErrors()
-            }}
+            name="text"
+            // onFocus={() => {
+            //   clearErrors()
+            // }}
             onKeyDown={submitOnEnter}
           />
         </div>
@@ -309,7 +334,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             {otherUserIsCreator && (
               <div
                 className={classNames(
-                  errors.message && "border-b-red",
+                  errors.text && "border-b-red",
                   "flex h-[45px] w-full min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
                 )}
               >
@@ -367,10 +392,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                     // ? "No Payment Method (go to settings)"
                     ` Send Message`}
               </button>
-              {submitError?.message && (
-                <span className="text-red-500">
-                  {String(submitError.message)}
-                </span>
+              {submitError && (
+                <span className="text-red-500">{submitError}</span>
               )}
             </div>
           </div>

@@ -5,13 +5,14 @@ import dynamic from "next/dynamic"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { array, bool, date, object, string } from "yup"
+import { array, date, object } from "yup"
 
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
 import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
 import { ContentService } from "src/helpers/content"
+import { yupPaid } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { NewPostPaidSection } from "./NewPostPaidSection"
@@ -47,45 +48,13 @@ const newPostFormDefaults: NewPostFormProps = {
 }
 
 const newPostFormSchema = object({
-  text: string()
-    .optional()
-    .transform((defaultText) => defaultText.trim())
-    .when("files", {
-      is: (f: File[]) => f.length === 0,
-      then: string().required("Must add either text or content")
-    }),
+  ...yupPaid(
+    "post",
+    MIN_PAID_POST_PRICE,
+    MAX_PAID_POST_PRICE,
+    "Must add either text or content"
+  ),
   tags: array<TagDto>().optional(),
-  files: array<File>().when("isPaid", {
-    is: true,
-    then: array().min(1, "You cannot create a paid post without media content")
-  }),
-  isPaid: bool().optional(),
-  price: string()
-    .optional()
-    .when("isPaid", {
-      is: true,
-      then: string()
-        .required("A price must be set for a paid post")
-        .test(
-          "is-currency",
-          "Please enter a valid currency amount",
-          (value) =>
-            !!(value || "").match(
-              // eslint-disable-next-line regexp/no-unused-capturing-group
-              /(?=.*?\d)^\$?(([1-9]\d{0,2}(,\d{3})*)|\d+)?(\.\d{1,2})?$/
-            )
-        )
-        .test(
-          "min",
-          `The minimum price of a post is $${MIN_PAID_POST_PRICE}`,
-          (value) => parseFloat(value || "") >= MIN_PAID_POST_PRICE
-        )
-        .test(
-          "max",
-          `The minimum price of a post is $${MAX_PAID_POST_PRICE}`,
-          (value) => parseFloat(value || "") <= MAX_PAID_POST_PRICE
-        )
-    }),
   passes: array<PassDto>()
     .optional()
     .transform((p: PassDto) => p.passId),
