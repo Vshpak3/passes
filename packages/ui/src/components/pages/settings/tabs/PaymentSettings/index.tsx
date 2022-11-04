@@ -16,23 +16,15 @@ import AddCard from "./sub-tabs/AddCard"
 
 interface PaymentSettingsProps {
   isEmbedded?: boolean
-  onSetDefaultPayment?: (value: PayinMethodDto) => void
 }
 
-const PaymentSettings: FC<PaymentSettingsProps> = ({
-  isEmbedded = false,
-  onSetDefaultPayment
-}) => {
+const PaymentSettings: FC<PaymentSettingsProps> = ({ isEmbedded = false }) => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
 
   const { setDefaultPayinMethod, getCards } = usePayinMethod()
 
   const handleSetDefaultPayInMethod = async (value: PayinMethodDto) => {
     await setDefaultPayinMethod(value)
-
-    if (onSetDefaultPayment) {
-      onSetDefaultPayment(value)
-    }
   }
 
   const [open, setOpen] = useState<boolean>(false)

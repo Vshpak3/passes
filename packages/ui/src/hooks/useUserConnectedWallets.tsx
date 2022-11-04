@@ -36,10 +36,10 @@ export const useUserConnectedWallets = () => {
     })
 
   const addWallet = async (request: CreateWalletRequestDto) => {
-    await api.createWallet({ createWalletRequestDto: request })
+    const { id } = await api.createWallet({ createWalletRequestDto: request })
     const _wallets = wallets || []
     _wallets?.push({
-      walletId: "", // TODO
+      walletId: id,
       userId: user?.userId ?? null,
       address: request.walletAddress,
       chain: request.chain,
@@ -52,12 +52,12 @@ export const useUserConnectedWallets = () => {
   const addUnauthenticatedWallet = async (
     request: CreateUnauthenticatedWalletRequestDto
   ) => {
-    await api.createUnauthenticatedWallet({
+    const { id } = await api.createUnauthenticatedWallet({
       createUnauthenticatedWalletRequestDto: request
     })
     const _wallets = wallets || []
     _wallets?.push({
-      walletId: "", // TODO
+      walletId: id,
       userId: user?.userId ?? null,
       address: request.walletAddress,
       chain: request.chain,

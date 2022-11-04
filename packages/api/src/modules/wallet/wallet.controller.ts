@@ -11,7 +11,6 @@ import {
 import { ApiTags } from '@nestjs/swagger'
 
 import { RequestWithUser } from '../../types/request'
-import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { EthService } from '../eth/eth.service'
@@ -20,6 +19,7 @@ import { AuthWalletResponseDto } from './dto/auth-wallet-response.dto'
 import {
   CreateUnauthenticatedWalletRequestDto,
   CreateWalletRequestDto,
+  CreateWalletResponseDto,
 } from './dto/create-wallet.dto'
 import { GetCustodialWalletRequestDto } from './dto/get-custodial-wallet.dto'
 import { GetDefaultWalletRequestDto } from './dto/get-default-wallet.dto'
@@ -96,7 +96,7 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Creates authenticated wallet for a user',
     responseStatus: HttpStatus.CREATED,
-    responseType: BooleanResponseDto,
+    responseType: CreateWalletResponseDto,
     responseDesc: 'Wallet was created',
     role: RoleEnum.GENERAL,
   })
@@ -104,10 +104,8 @@ export class WalletController {
   async createWallet(
     @Req() req: RequestWithUser,
     @Body() createWalletDto: CreateWalletRequestDto,
-  ): Promise<BooleanResponseDto> {
-    return new BooleanResponseDto(
-      await this.walletService.createWallet(req.user.id, createWalletDto),
-    )
+  ): Promise<CreateWalletResponseDto> {
+    return await this.walletService.createWallet(req.user.id, createWalletDto)
   }
 
   @ApiEndpoint({
@@ -162,7 +160,7 @@ export class WalletController {
   @ApiEndpoint({
     summary: 'Creates unchecked wallet for a user',
     responseStatus: HttpStatus.CREATED,
-    responseType: undefined,
+    responseType: CreateWalletResponseDto,
     responseDesc: 'Unchecked wallet was created',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -171,8 +169,8 @@ export class WalletController {
     @Req() req: RequestWithUser,
     @Body()
     createUnauthenticatedWalletDto: CreateUnauthenticatedWalletRequestDto,
-  ): Promise<void> {
-    await this.walletService.createUnauthenticatedWallet(
+  ): Promise<CreateWalletResponseDto> {
+    return await this.walletService.createUnauthenticatedWallet(
       req.user.id,
       createUnauthenticatedWalletDto,
     )

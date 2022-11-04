@@ -43,6 +43,10 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
       case PayinMethodDtoMethodEnum.MetamaskCircleEth:
       case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
         setValue("metamask", serializePayinMethod(defaultPayinMethod))
+        break
+      case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
+        setValue("phantom", serializePayinMethod(defaultPayinMethod))
+        break
     }
   }, [defaultPayinMethod, setValue])
 
@@ -58,7 +62,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             Metamask
           </span>
           <Select
-            className="my-4 w-[130px]"
+            className="my-4 w-[145px]"
             defaultValue={MetaMaskSelectOptions[0]}
             name="metamask"
             onChange={(newValue: string) => setValue("metamask", newValue)}
@@ -94,7 +98,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             Phantom
           </span>
           <Select
-            className="my-4 w-[130px]"
+            className="my-4 w-[145px]"
             defaultValue={PhantomSelectOptions[0]}
             name="phantom"
             onChange={(newValue: "sol") => setValue("phantom", newValue)}

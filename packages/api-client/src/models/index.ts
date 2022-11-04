@@ -43,6 +43,7 @@ export * from './CreatePostResponseDto';
 export * from './CreateUnauthenticatedWalletRequestDto';
 export * from './CreateUserRequestDto';
 export * from './CreateWalletRequestDto';
+export * from './CreateWalletResponseDto';
 export * from './CreateWelcomeMessageRequestDto';
 export * from './CreatorEarningDto';
 export * from './DeleteContentRequestDto';

@@ -70,6 +70,7 @@ models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
 models/CreateUserRequestDto.ts
 models/CreateWalletRequestDto.ts
+models/CreateWalletResponseDto.ts
 models/CreateWelcomeMessageRequestDto.ts
 models/CreatorEarningDto.ts
 models/DeleteContentRequestDto.ts
