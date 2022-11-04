@@ -67,7 +67,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
             </span>
           )}
           <TimeAgo
-            className="self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
+            className="absolute self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
             date={channel?.recent ? channel.recent : ""}
             key={channel.channelId}
             minPeriod={30}
