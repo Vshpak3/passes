@@ -1,6 +1,7 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
+  createRef,
   Dispatch,
   FC,
   MutableRefObject,
@@ -198,6 +199,27 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     }
   }, [isBottomOfChatVisible, unreadCount, onReadLastMessage])
 
+  const ref = createRef<HTMLDivElement>()
+
+  const wheel = useCallback(
+    (e: WheelEvent) => {
+      ref.current?.scrollBy(-e.deltaX, -e.deltaY)
+      e.preventDefault()
+      e.stopPropagation()
+    },
+    [ref]
+  )
+
+  useEffect(() => {
+    if (ref && ref.current) {
+      ref.current.addEventListener("wheel", wheel, { passive: false })
+      const c = ref.current
+      return () => {
+        c.removeEventListener("wheel", wheel)
+      }
+    }
+  }, [ref, wheel])
+
   return (
     <>
       {isConnected ? (
@@ -210,7 +232,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <div
             className="relative h-full scale-y-[-1] overflow-y-scroll"
             id="scrollableDiv"
-            onFocus={onReadLastMessage}
+            ref={ref}
           >
             {/*
              Dummy ref to allow scrolling to bottom of chat.
