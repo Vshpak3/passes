@@ -46,7 +46,7 @@ export interface InputMessageFormProps {
   scheduledAt: Date | null
 }
 
-export interface InputMessageProps {
+interface InputMessageProps {
   channelId: string
   minimumTip?: number | null
   isCreator: boolean
