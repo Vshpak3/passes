@@ -1,5 +1,5 @@
+import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
-import PassesLogoWhite from "public/icons/white-passes-logo.svg"
 import { FC } from "react"
 
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
@@ -26,7 +26,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
           <div>
             <div className="justify-left items-left flex shrink-0">
               <div>
-                <PassesLogoWhite className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
+                <PassesLogoPink className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
               </div>
             </div>
             <nav className="flex flex-col items-start gap-0 pt-10">
