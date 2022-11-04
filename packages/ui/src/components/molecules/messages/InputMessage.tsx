@@ -119,7 +119,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     event.target.value = ""
   }
 
-  const { setTippedMessage, setOnSuccess } = useTippedMessageModal()
+  const { setTippedMessage, setOnModalCallback } = useTippedMessageModal()
 
   const clear = () => {
     setFiles([])
@@ -186,7 +186,7 @@ export const InputMessage: FC<InputMessageProps> = ({
       if (!blocked) {
         // submit()
         if (tip > 0) {
-          setOnSuccess(clear)
+          setOnModalCallback(() => clear)
           setTippedMessage(await getRequest())
         } else {
           await submit()

@@ -5,7 +5,7 @@ interface TippedMessageModalContextProps {
   readonly setTippedMessage: Dispatch<
     SetStateAction<SendMessageRequestDto | null>
   >
-  readonly setOnSuccess: Dispatch<SetStateAction<(() => void) | null>>
+  readonly setOnModalCallback: Dispatch<SetStateAction<(() => void) | null>>
 }
 
 export const TippedMessageModalContext =

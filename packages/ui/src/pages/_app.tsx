@@ -110,7 +110,9 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
 
-  const [onSuccess, setOnSuccess] = useState<(() => void) | null>(null)
+  const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
+    null
+  )
 
   const { hasRefreshed, mutate, user } = useTokenRefresh()
   const { setPayin } = useThreeDS()
@@ -151,7 +153,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [BuyMessageModalContext.Provider, { setMessage: setBuyMessage }],
     [
       TippedMessageModalContext.Provider,
-      { setTippedMessage: setTippedMessage, setOnSuccess: setOnSuccess }
+      {
+        setTippedMessage: setTippedMessage,
+        setOnModalCallback: setOnModalCallback
+      }
     ],
     [BlockModalContext.Provider, { setBlockData }],
     [ReportModalContext.Provider, { setReportData }],
@@ -170,7 +175,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       {tippedMessage && (
         <TippedMessageModal
           messageRequest={tippedMessage}
-          onSuccess={onSuccess}
+          onSuccess={onModalCallback}
           setMessageRequest={setTippedMessage}
         />
       )}
