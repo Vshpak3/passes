@@ -62,7 +62,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
       <label
         className={classNames(
           type === "toggle" ? "switch" : "",
-          "flex h-5 items-center"
+          "relative flex h-5 items-center"
         )}
       >
         <input
@@ -74,11 +74,19 @@ export const Checkbox: FC<CheckBoxProps> = ({
           {...rest}
           className={classNames(
             errors[name] ? "border-red-500" : "border-gray-300",
-            type === "toggle" ? "w-9" : "",
+            type === "toggle" ? "h-3 w-7" : "",
+            "rounded border placeholder-gray-400 shadow-sm ring-passes-secondary-color focus:border-passes-secondary-color focus:bg-passes-secondary-color focus:text-passes-secondary-color focus:outline-none focus:ring-passes-secondary-color sm:text-sm",
             className
           )}
         />
-        {type === "toggle" && <div className={classNames(className)} />}
+        {type === "toggle" && (
+          <div
+            className={classNames(
+              className,
+              "slider absolute -left-1 h-5 w-9 cursor-pointer rounded-2xl bg-[#ccc] before:absolute before:left-1 before:bottom-[2px] before:h-4 before:w-4 before:rounded-[50%]"
+            )}
+          />
+        )}
       </label>
       {!textPosition && (
         <div className="ml-3 text-sm">
