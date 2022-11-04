@@ -51,7 +51,15 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       fetchProps={{ channelId, pending: false, contentOnly: false }}
       inverse
       keyValue={`messages/${time}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
-      loadingElement={<div>Loading older messages...</div>}
+      loadingElement={
+        <div className="sticky top-0 z-50 left-0 w-full h-0.5">
+          <div
+            role="status"
+            className="bg-passes-pink-100 animate-slide-in h-full w-24 rounded-full"
+          />
+          <span className="sr-only">Loading older messages...</span>
+        </div>
+      }
       options={{ revalidateOnMount: true }}
       scrollableTarget="scrollableDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}

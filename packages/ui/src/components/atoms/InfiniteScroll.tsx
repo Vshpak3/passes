@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import { debounce } from "lodash"
 import React, {
   CSSProperties,
@@ -112,7 +113,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   return (
     <InfiniteScroll
-      className={"w-full " + (className ?? "")}
+      className={classNames("w-full", className)}
       dataLength={flattenedData.length}
       endMessage={size !== 1 && endElement}
       hasMore={!data || !!data[data.length - 1].lastId}

@@ -74,10 +74,19 @@ module.exports = {
             opacity: "1",
             transform: "translateY(0)"
           }
+        },
+        slidein: {
+          from: {
+            "margin-left": "-20%"
+          },
+          to: {
+            "margin-left": "100%"
+          }
         }
       },
       animation: {
-        "fade-in-down": "fade-in-down 0.5s ease-out"
+        "fade-in-down": "fade-in-down 0.5s ease-out",
+        "slide-in": "2s linear infinite running slidein"
       }
     }
   },
