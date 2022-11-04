@@ -1,4 +1,4 @@
-import { FC, memo } from "react"
+import { FC } from "react"
 
 import {
   ContentCarousel,
@@ -7,12 +7,10 @@ import {
 
 interface MediaContentProps extends ContentCarouselProps {
   isProcessing: boolean
-  key: string
 }
 
-const MediaContentUnmemo: FC<MediaContentProps> = ({
+export const MediaContent: FC<MediaContentProps> = ({
   isProcessing,
-  key,
   ...res
 }) => {
   return (
@@ -24,11 +22,10 @@ const MediaContentUnmemo: FC<MediaContentProps> = ({
       ) : (
         <div className="relative flex w-full items-center justify-center bg-transparent">
           <div className="relative w-[100%]">
-            <ContentCarousel key={key} {...res} />
+            <ContentCarousel {...res} />
           </div>
         </div>
       )}
     </div>
   )
 }
-export const MediaContent = memo(MediaContentUnmemo)

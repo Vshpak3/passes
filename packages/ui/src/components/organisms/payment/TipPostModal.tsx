@@ -59,11 +59,13 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     LandingMessageEnum.TIP
   )
 
-  const onSubmit = () => {
-    handleSubmit(submit)
-    setPost(null)
+  const onSubmit = async () => {
+    console.log("submit")
+    await handleSubmit(submit)()
+    console.log("submitted")
+    // setPost(null)
   }
-
+  console.log(payinMethod)
   return (
     <Modal isOpen setOpen={() => setPost(null)}>
       <SectionTitle>Send Tip</SectionTitle>

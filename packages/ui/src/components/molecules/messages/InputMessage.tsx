@@ -351,7 +351,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                   !!blocked &&
                   blocked !== PayinDataDtoBlockedEnum.NoPayinMethod
                 }
-                onClick={submitMessage}
+                onClick={handleSubmit(submitMessage)}
                 type="button"
               >
                 {submitting

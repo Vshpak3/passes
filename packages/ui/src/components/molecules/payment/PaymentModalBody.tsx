@@ -80,7 +80,6 @@ const PaymentModalBodyUnmemo = ({
   }, [defaultPayinMethod, setValue])
   useEffect(() => {
     setPayinMethod(payinMethod)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [methodSeralized])
   const options = [
     ...cardOptions,

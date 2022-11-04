@@ -44,13 +44,13 @@ export const usePay = (
   const { setPayin } = useContext(ThreeDSContext)
 
   const checkProvider = async (
-    provider: PhantomProvider | EthereumProvider | undefined,
+    provider: PhantomProvider | EthereumProvider | undefined | null,
     cancelPayinCallback: () => Promise<void>
   ) => {
-    if (provider === undefined) {
+    if (!provider) {
       //display message to user
       cancelPayinCallback()
-      throw new Error("no provider exists")
+      throw new Error("Wallet provider does not exist")
     }
   }
 
@@ -199,11 +199,9 @@ export const usePay = (
           res = await handlePhantomCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
-          checkFunding = true
           res = await handleMetamaskCircleUSDC(registerResponse, uncreatePayin)
           break
         case PayinMethodDtoMethodEnum.MetamaskCircleEth:
-          checkFunding = true
           res = await handleMetamaskCircleEth(registerResponse, uncreatePayin)
           break
         default:
@@ -220,7 +218,9 @@ export const usePay = (
       errorMessage(error, true)
       if (checkFunding) {
         errorMessage(
-          "If paying with crypto, please check for sufficient funding",
+          new Error(
+            "If paying with crypto, please check for sufficient funding"
+          ),
           true
         )
       }

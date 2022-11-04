@@ -21,10 +21,11 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
   const onSuccessHandler = () => {
     setMessageRequest(null)
     if (onSuccess) {
-      onSuccess
+      onSuccess()
     }
   }
 
+  console.log(payinMethod)
   return (
     <Modal isOpen setOpen={() => setMessageRequest(null)}>
       <PaymentModalBody
