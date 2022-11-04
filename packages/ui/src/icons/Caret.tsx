@@ -3,12 +3,14 @@ import { FC, SVGProps } from "react"
 interface CaretProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
+  stroke?: string
 }
 
 // Adapted from: https://icons.modulz.app
 export const Caret: FC<CaretProps> = ({
   width = 15,
   height = 15,
+  stroke = "white",
   ...restOfProps
 }) => (
   <svg
@@ -21,7 +23,7 @@ export const Caret: FC<CaretProps> = ({
   >
     <path
       d="M1 0.999999L7 7L13 1"
-      stroke="white"
+      stroke={stroke}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth="2"

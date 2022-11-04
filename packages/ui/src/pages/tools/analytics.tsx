@@ -43,6 +43,7 @@ const Analytics: NextPage = () => {
         {ANALYTICS_OPTIONS.map((tab) => (
           <TabButton
             active={analyticsTab === tab.value}
+            className="rounded-[5px] !px-[16px] !py-[9px] text-[14px] sm:!px-[30px] sm:!py-[10px] sm:text-[16px]"
             key={tab.value}
             onClick={() => handleAnalyticsTabClick(tab.value)}
             variant="tab"

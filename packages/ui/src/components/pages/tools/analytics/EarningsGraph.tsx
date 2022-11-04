@@ -96,17 +96,17 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
 
   return (
     <div className="flex flex-col gap-[32px]">
-      <div className="relative flex flex-col gap-[8px]">
+      <div className="relative flex w-fit flex-col gap-[8px] rounded-[6px] border border-solid border-[#3A444C]/[0.32] bg-[#100C11] p-[10px]">
         <h3 className="text-2xl font-bold">
           {dateDiff(startDate, endDate)} Days
         </h3>
         <label
-          className="modal-button flex cursor-pointer flex-row items-end gap-[24px] text-base font-bold"
+          className="modal-button flex cursor-pointer flex-row items-end gap-[24px] font-bold text-[#767676]"
           htmlFor="calender-modal"
           onChange={datePickerModalToggle}
         >
           {getFormattedDate(startDate)} - {getFormattedDate(endDate)}
-          <Caret height={15} width={15} />
+          <Caret height={15} stroke="#3A444C" width={15} />
           <input
             className="modal-toggle hidden"
             id="calender-modal"
@@ -134,10 +134,11 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           </label>
         </label>
       </div>
-      <div className="flex flex-row gap-[16px]">
+      <div className="flex h-[39px] flex-row gap-[16px] overflow-x-auto">
         {EARNINGS_GRAPH_TABS.map(({ id, value, label }) => (
           <TabButton
             active={activeTab === value}
+            className="min-w-fit rounded-[5px] !px-[16px] !py-[9px] text-[14px]"
             key={id}
             onClick={() => handleOnTabClick(value)}
             variant="tab"
