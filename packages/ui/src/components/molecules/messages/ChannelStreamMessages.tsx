@@ -4,7 +4,7 @@ import {
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
-import { FC, memo } from "react"
+import { FC, memo, useEffect, useState } from "react"
 
 import {
   ComponentArg,
@@ -28,6 +28,10 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   pendingMessages
 }) => {
   const { user } = useUser()
+  const [time, setTime] = useState<number>(Date.now())
+  useEffect(() => {
+    setTime(Date.now())
+  }, [setTime, channelId])
   return (
     <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
       KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
@@ -46,7 +50,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       }}
       fetchProps={{ channelId, pending: false, contentOnly: false }}
       inverse
-      keyValue={`messages/${Date.now()}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
+      keyValue={`messages/${time}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
       loadingElement={<div>Loading older messages...</div>}
       options={{ revalidateOnMount: true }}
       scrollableTarget="scrollableDiv"
