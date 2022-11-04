@@ -2,7 +2,7 @@ import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import Link from "next/link"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { memo, useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 
 import { Select } from "src/components/atoms/input/Select"
@@ -46,35 +46,38 @@ const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
   return newOption
 })
 
-const PaymentModalBodyUnmemo = ({
+export const PaymentModalBody = ({
   price,
   setPayinMethod,
   closeModal
 }: PaymentModalBodyProps) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
 
-  const { register, setValue, watch } = useForm<PaymentModalBodyFromProps>({
+  const { setValue, watch } = useForm<PaymentModalBodyFromProps>({
     defaultValues: {
       method: serializePayinMethod({ method: PayinMethodDtoMethodEnum.None })
     }
   })
   const methodSeralized = watch("method")
   const payinMethod = deserializePayinMethod(methodSeralized)
-  const cardOptions =
-    cards?.map((card) => {
-      return {
-        label: (
-          <>
-            {displayCardIcon(card.firstDigit, 35)}
-            **** **** **** {card.fourDigits}
-          </>
-        ),
-        value: serializePayinMethod({
-          method: PayinMethodDtoMethodEnum.CircleCard,
-          cardId: card.id
-        })
-      }
-    }) ?? []
+  const cardOptions = useMemo(
+    () =>
+      cards?.map((card) => {
+        return {
+          label: (
+            <>
+              {displayCardIcon(card.firstDigit, 35)}
+              **** **** **** {card.fourDigits}
+            </>
+          ),
+          value: serializePayinMethod({
+            method: PayinMethodDtoMethodEnum.CircleCard,
+            cardId: card.id
+          })
+        }
+      }) ?? [],
+    [cards]
+  )
   useEffect(() => {
     setValue("method", serializePayinMethod(defaultPayinMethod))
   }, [defaultPayinMethod, setValue])
@@ -87,7 +90,6 @@ const PaymentModalBodyUnmemo = ({
     ...MetamMaskSelectOptionsWithImage,
     ...PhantomSelectOptionsWithImage
   ]
-  // const label
   const defaultSelected = defaultPayinMethod
     ? options.filter(
         (option) => option.value === serializePayinMethod(payinMethod)
@@ -102,7 +104,6 @@ const PaymentModalBodyUnmemo = ({
         defaultValue={defaultSelected}
         name="method"
         onChange={(newValue: string) => setValue("method", newValue)}
-        register={register}
         selectOptions={options}
       />
       <div className="my-4 mr-1 text-passes-dark-gray">
@@ -119,5 +120,3 @@ const PaymentModalBodyUnmemo = ({
     </form>
   )
 }
-
-export const PaymentModalBody = memo(PaymentModalBodyUnmemo)

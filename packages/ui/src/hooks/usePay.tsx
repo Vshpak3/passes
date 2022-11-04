@@ -7,7 +7,7 @@ import {
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import { useContext, useState } from "react"
+import { useCallback, useContext, useState } from "react"
 import { toast } from "react-toastify"
 
 import { ThreeDSContext } from "src/contexts/ThreeDS"
@@ -26,6 +26,8 @@ import {
 import { accessTokenKey } from "src/helpers/token"
 import { useLocalStorage } from "./storage/useLocalStorage"
 
+const paymentApi = new PaymentApi()
+
 export const usePay = (
   registerPaymentFunc: () => Promise<RegisterPayinResponseDto>,
   // for display only, ensure registerPaymentFunc register's a payment of same cost
@@ -33,12 +35,14 @@ export const usePay = (
   callback?: (error?: Error) => void,
   landingMessage = "none"
 ) => {
+  console.log(registerPaymentDataFunc)
+  console.log(registerPaymentFunc)
   const [submitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
     undefined
   )
-  const paymentApi = new PaymentApi()
+
   const [accessToken] = useLocalStorage(accessTokenKey, "")
   const [waiting, setWaiting] = useState<boolean>()
   const { setPayin } = useContext(ThreeDSContext)
@@ -58,115 +62,127 @@ export const usePay = (
     toast.info("Please wait as we confirm the transaction.")
   }
 
-  const handleCircleCard = async (
-    registerResponse: RegisterPayinResponseDto,
-    paymentApi: PaymentApi,
-    cancelPayinCallback: () => Promise<void>
-  ) => {
-    try {
-      const response = await paymentApi.entryCircleCard({
-        circleCardPayinEntryRequestDto: {
-          payinId: registerResponse.payinId,
-          ip: "",
-          sessionId: SHA256(accessToken).toString().substr(0, 50),
-          successUrl:
-            window.location.origin +
-            window.location.pathname +
-            "?r=success&lm=" +
-            landingMessage,
-          failureUrl:
-            window.location.origin +
-            window.location.pathname +
-            "?r=failure&lm=" +
-            landingMessage
+  const handleCircleCard = useCallback(
+    async (
+      registerResponse: RegisterPayinResponseDto,
+      paymentApi: PaymentApi,
+      cancelPayinCallback: () => Promise<void>
+    ) => {
+      try {
+        const response = await paymentApi.entryCircleCard({
+          circleCardPayinEntryRequestDto: {
+            payinId: registerResponse.payinId,
+            ip: "",
+            sessionId: SHA256(accessToken).toString().substr(0, 50),
+            successUrl:
+              window.location.origin +
+              window.location.pathname +
+              "?r=success&lm=" +
+              landingMessage,
+            failureUrl:
+              window.location.origin +
+              window.location.pathname +
+              "?r=failure&lm=" +
+              landingMessage
+          }
+        })
+        if (response.actionRequired) {
+          toast.info("Please wait as we redirect you.")
+          setPayin(registerResponse.payinId ?? null)
+          return false
+        } else {
+          toast.success(
+            "We have recieved your card payment. Please wait as we process it!"
+          )
         }
-      })
-      if (response.actionRequired) {
-        toast.info("Please wait as we redirect you.")
-        setPayin(registerResponse.payinId ?? null)
-        return false
-      } else {
-        toast.success(
-          "We have recieved your card payment. Please wait as we process it!"
-        )
+      } catch (error: unknown) {
+        await cancelPayinCallback()
+        errorMessage(error, true)
       }
-    } catch (error: unknown) {
-      await cancelPayinCallback()
-      errorMessage(error, true)
-    }
-    return true
-  }
+      return true
+    },
+    [accessToken, landingMessage, setPayin]
+  )
 
-  const handlePhantomCircleUSDC = async (
-    registerResponse: RegisterPayinResponseDto,
-    cancelPayinCallback: () => Promise<void>
-  ) => {
-    const provider = detectSolanaProvider({}) as PhantomProvider
-    await checkProvider(provider, cancelPayinCallback)
-    try {
-      await executePhantomUSDCProvider(
+  const handlePhantomCircleUSDC = useCallback(
+    async (
+      registerResponse: RegisterPayinResponseDto,
+      cancelPayinCallback: () => Promise<void>
+    ) => {
+      const provider = detectSolanaProvider({}) as PhantomProvider
+      await checkProvider(provider, cancelPayinCallback)
+      try {
+        await executePhantomUSDCProvider(
+          provider,
+          paymentApi,
+          registerResponse.payinId,
+          registerResponse.amount * 10 ** 6,
+          cancelPayinCallback
+        )
+      } catch (error: unknown) {
+        await cancelPayinCallback()
+        throw error
+      } finally {
+        provider.off("connect")
+        provider.off("accountChanged")
+        provider.off("disconnect")
+      }
+      toastPleaseWait()
+      return true
+    },
+    []
+  )
+
+  const handleMetamaskCircleUSDC = useCallback(
+    async (
+      registerResponse: RegisterPayinResponseDto,
+      cancelPayinCallback: () => Promise<void>
+    ) => {
+      const provider = (await detectEthereumProvider()) as EthereumProvider
+      await checkProvider(provider, cancelPayinCallback)
+      const account = await connectMetamask(provider)
+      await executeMetamaskUSDCProvider(
+        account,
         provider,
         paymentApi,
         registerResponse.payinId,
         registerResponse.amount * 10 ** 6,
         cancelPayinCallback
       )
-    } catch (error: unknown) {
-      await cancelPayinCallback()
-      throw error
-    } finally {
-      provider.off("connect")
-      provider.off("accountChanged")
-      provider.off("disconnect")
-    }
-    toastPleaseWait()
-    return true
-  }
+      toastPleaseWait()
+      return true
+    },
+    []
+  )
 
-  const handleMetamaskCircleUSDC = async (
-    registerResponse: RegisterPayinResponseDto,
-    cancelPayinCallback: () => Promise<void>
-  ) => {
-    const provider = (await detectEthereumProvider()) as EthereumProvider
-    await checkProvider(provider, cancelPayinCallback)
-    const account = await connectMetamask(provider)
-    await executeMetamaskUSDCProvider(
-      account,
-      provider,
-      paymentApi,
-      registerResponse.payinId,
-      registerResponse.amount * 10 ** 6,
-      cancelPayinCallback
-    )
-    toastPleaseWait()
-    return true
-  }
+  const handleMetamaskCircleEth = useCallback(
+    async (
+      registerResponse: RegisterPayinResponseDto,
+      cancelPayinCallback: () => Promise<void>
+    ) => {
+      const provider = (await detectEthereumProvider()) as EthereumProvider
+      await checkProvider(provider, cancelPayinCallback)
+      if (registerResponse.amountEth === undefined) {
+        //display message to user
+        cancelPayinCallback()
+        throw new Error("can't purchase with Eth")
+      }
+      const account = await connectMetamask(provider)
+      await executeMetamaskEthProvider(
+        account,
+        provider,
+        paymentApi,
+        registerResponse.payinId,
+        registerResponse.amountEth,
+        cancelPayinCallback
+      )
+      toastPleaseWait()
+      return true
+    },
+    []
+  )
 
-  const handleMetamaskCircleEth = async (
-    registerResponse: RegisterPayinResponseDto,
-    cancelPayinCallback: () => Promise<void>
-  ) => {
-    const provider = (await detectEthereumProvider()) as EthereumProvider
-    await checkProvider(provider, cancelPayinCallback)
-    if (registerResponse.amountEth === undefined) {
-      //display message to user
-      cancelPayinCallback()
-      throw new Error("can't purchase with Eth")
-    }
-    const account = await connectMetamask(provider)
-    await executeMetamaskEthProvider(
-      account,
-      provider,
-      paymentApi,
-      registerResponse.payinId,
-      registerResponse.amountEth,
-      cancelPayinCallback
-    )
-    toastPleaseWait()
-    return true
-  }
-
-  const submit = async () => {
+  const submit = useCallback(async () => {
     if (blocked) {
       return
     }
@@ -228,7 +244,15 @@ export const usePay = (
       setSubmitting(false)
       setLoading(false)
     }
-  }
+  }, [
+    blocked,
+    callback,
+    handleCircleCard,
+    handleMetamaskCircleEth,
+    handleMetamaskCircleUSDC,
+    handlePhantomCircleUSDC,
+    registerPaymentFunc
+  ])
 
   const submitData = async (amount?: number) => {
     const { blocked } = await registerPaymentDataFunc(amount)

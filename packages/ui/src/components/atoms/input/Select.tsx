@@ -25,7 +25,7 @@ type SelectProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
-  register: FormRegister
+  register?: FormRegister
   errors?: FormErrors
   value?: string
   defaultValue?: FormSelectOption
@@ -79,7 +79,7 @@ export const Select: FC<SelectProps> = ({
         <Label errors={errors} label={label} name={name} options={options} />
       )}
       <Listbox
-        {...register(name, options)}
+        {...(register?.(name, options) ?? {})}
         as="div"
         defaultValue={defaultValue}
         onChange={onCustomChange}

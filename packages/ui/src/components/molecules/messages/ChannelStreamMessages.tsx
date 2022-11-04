@@ -56,8 +56,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       scrollableTarget="scrollableDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
     >
-      {messages.length > 0 &&
-        messages.map((m, i) => {
+      {pendingMessages.length > 0 &&
+        pendingMessages.map((m, i) => {
           return (
             <ChannelMessage
               key={i}
@@ -69,8 +69,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
             />
           )
         })}
-      {pendingMessages.length > 0 &&
-        pendingMessages.map((m, i) => {
+      {messages.length > 0 &&
+        messages.map((m, i) => {
           return (
             <ChannelMessage
               key={i}
