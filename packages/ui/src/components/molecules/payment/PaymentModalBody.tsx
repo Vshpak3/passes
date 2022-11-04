@@ -29,9 +29,9 @@ interface PaymentModalBodyFromProps {
 const MetamMaskSelectOptionsWithImage = MetaMaskSelectOptions.map((option) => {
   const newOption = { ...option }
   newOption.label = (
-    <>
-      <MetamaskIcon width="20px" /> {option.label}
-    </>
+    <span className="my-1 flex">
+      <MetamaskIcon width="20px" /> <span className="ml-4">{option.label}</span>
+    </span>
   )
   return newOption
 })
@@ -39,9 +39,9 @@ const MetamMaskSelectOptionsWithImage = MetaMaskSelectOptions.map((option) => {
 const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
   const newOption = { ...option }
   newOption.label = (
-    <>
-      <PhantomIcon width="20px" /> {option.label}
-    </>
+    <span className="my-1 flex">
+      <PhantomIcon width="20px" /> <span className="ml-4">{option.label}</span>
+    </span>
   )
   return newOption
 })
@@ -65,10 +65,10 @@ export const PaymentModalBody = ({
       cards?.map((card) => {
         return {
           label: (
-            <>
-              {displayCardIcon(card.firstDigit, 35)}
-              **** **** **** {card.fourDigits}
-            </>
+            <span className="flex">
+              {displayCardIcon(card.firstDigit, 25, 35)}
+              <span className="ml-1">**** **** **** {card.fourDigits}</span>
+            </span>
           ),
           value: serializePayinMethod({
             method: PayinMethodDtoMethodEnum.CircleCard,
@@ -100,7 +100,7 @@ export const PaymentModalBody = ({
       Payment Method:
       <Select
         changeOnDefault
-        className="my-4 w-[130px]"
+        className="my-4"
         defaultValue={defaultSelected}
         name="method"
         onChange={(newValue: string) => setValue("method", newValue)}

@@ -1,5 +1,6 @@
-import classNames from "classnames"
 import React, { FC } from "react"
+
+import { Button } from "src/components/atoms/Button"
 
 interface TipPostButton {
   isDisabled?: boolean
@@ -13,17 +14,13 @@ export const TipPostButton: FC<TipPostButton> = ({
   onClick
 }) => {
   return (
-    <button
-      className={classNames(
-        isDisabled
-          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
-          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
-      )}
+    <Button
+      className="mt-4"
       disabled={isDisabled}
       onClick={onClick}
-      type="submit"
+      variant="pink"
     >
-      {isLoading ? "Loading..." : "Tip post"}
-    </button>
+      {isLoading ? "Loading..." : "Send Tip"}
+    </Button>
   )
 }

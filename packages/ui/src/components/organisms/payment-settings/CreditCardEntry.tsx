@@ -18,7 +18,7 @@ export const CreditCardEntry: FC<CreditCardEntryProps> = ({
     <div className="flex-1 items-center">
       {showName && <span className="text-[15px] font-[700]">{card.name}</span>}
       <div className="mt-4 flex flex-row">
-        {displayCardIcon(card.firstDigit, 35)}
+        {displayCardIcon(card.firstDigit, 35, 35)}
         <span className="mx-6 text-[14px] font-[500]">
           **** **** **** {card.fourDigits}
         </span>

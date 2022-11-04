@@ -11,18 +11,22 @@ import React from "react"
 
 import { cryptoWalletsType } from "./cryptoWalletsType"
 
-export const displayCardIcon = (cardDigit: string, size: number) => {
+export const displayCardIcon = (
+  cardDigit: string,
+  height: number,
+  width: number
+) => {
   switch (cardDigit) {
     case "4":
-      return <VisaIcon height={size} width={size} />
+      return <VisaIcon height={height} width={width} />
     case "5":
-      return <MasterCardIcon height={size} width={size} />
+      return <MasterCardIcon height={height} width={width} />
     case "3":
-      return <AmexCardIcon height={size} width={size} />
+      return <AmexCardIcon height={height} width={width} />
     case "6":
-      return <DiscoverCardIcon height={size} width={size} />
+      return <DiscoverCardIcon height={height} width={width} />
     default:
-      return <CardIcon height={size} width={size} />
+      return <CardIcon height={height} width={width} />
   }
 }
 export const paymentMethodConfig = (
@@ -49,7 +53,7 @@ export const paymentMethodConfig = (
           </div>
           <div className="flex justify-evenly rounded border border-passes-dark-200 bg-[#100C11] p-2 text-left text-[#ffff]/90">
             <div className="flex flex-1 gap-4 justify-self-start">
-              {displayCardIcon(cardInfo?.firstDigit as string, 25)}
+              {displayCardIcon(cardInfo?.firstDigit as string, 25, 25)}
               <span>• • • • ‏‎{cardInfo?.fourDigits}</span>
             </div>
             <div className="flex-1">

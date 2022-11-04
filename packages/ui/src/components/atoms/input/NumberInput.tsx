@@ -57,7 +57,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   const _placeholder = placeholder || (type === "currency" ? "0.00" : "0")
 
   return (
-    <div className="w-full">
+    <div>
       <input
         {...register(name, options)}
         autoComplete="off"

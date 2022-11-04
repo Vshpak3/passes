@@ -18,7 +18,11 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
   const { description, title, totalMessages, price, type } = pass
 
   return (
-    <Modal isOpen setOpen={() => setPass(null)}>
+    <Modal
+      isOpen
+      modalContainerClassname="lg:max-w-[30%]"
+      setOpen={() => setPass(null)}
+    >
       <div className="mb-4">
         <SectionTitle className="mt-0">
           Buy {pass?.type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly"}{" "}

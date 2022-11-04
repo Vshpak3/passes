@@ -64,23 +64,33 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     setPost(null)
   }
   return (
-    <Modal isOpen setOpen={() => setPost(null)}>
+    <Modal
+      isOpen
+      modalContainerClassname="lg:max-w-[30%]"
+      setOpen={() => setPost(null)}
+    >
       <SectionTitle>Send Tip</SectionTitle>
-      <NumberInput
-        className="min-h-[50px] border-passes-dark-100 bg-transparent"
-        errors={errors}
-        name="tip-value"
-        options={{
-          required: { message: "Tip amount is required", value: true },
-          min: {
-            value: MIN_TIP_POST_PRICE,
-            message: `Tip must be more than $${MIN_TIP_POST_PRICE}`
-          }
-        }}
-        register={register}
-        type="currency"
-      />
-      <span className="text-passes-dark-gray">
+      <div className="flex items-center rounded border border-passes-primary-color pl-4">
+        <div className="basis-2/3">
+          <span>Enter Tip Amount:</span>
+          <span className="ml-3 text-xs text-passes-dark-gray">Minimum $3</span>
+        </div>
+        <NumberInput
+          className="border-0 font-bold"
+          errors={errors}
+          name="tip-value"
+          options={{
+            required: { message: "Tip amount is required", value: true },
+            min: {
+              value: MIN_TIP_POST_PRICE,
+              message: `Tip must be more than $${MIN_TIP_POST_PRICE}`
+            }
+          }}
+          register={register}
+          type="currency"
+        />
+      </div>
+      <span className="my-2 flex text-passes-dark-gray">
         This message will be sent with your tip after purchase.
       </span>
       <PaymentModalBody
