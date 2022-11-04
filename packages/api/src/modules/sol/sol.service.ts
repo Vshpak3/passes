@@ -230,7 +230,7 @@ export class SolService {
         ...blockhash,
         signature: base58.encode(transaction.signature as Buffer),
       },
-      // { skipPreflight: true },
+      { skipPreflight: false },
     )
   }
 
