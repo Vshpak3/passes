@@ -100,6 +100,10 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     case "white-outline":
       variantClassName = "text-white max-h-[49px] border border-white "
       break
+    case "pink-outline":
+      variantClassName =
+        "text-passes-primary-color max-h-[49px] border border-passes-primary-color"
+      break
     case "link-blue":
       variantClassName =
         "text-blue-blue10 transition-colors hover:text-[hsl(208,_100%,_52%)] active:text-[hsl(208,_100%,_45%)] p-1"

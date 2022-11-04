@@ -5,15 +5,19 @@ import {
   PostDto
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 
+import { Button } from "src/components/atoms/Button"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { useFeaturedCreators } from "src/hooks/useFeaturedCreators"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 
@@ -24,7 +28,7 @@ const Post = dynamic(
 
 // TODO: fix formatting
 const ContentFeedEmpty = (
-  <div className="my-40 mx-auto flex flex-row items-center justify-center rounded-sm border border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">
+  <div className="my-40 mx-auto flex flex-row items-center justify-center rounded-sm border-y border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">
     <InfoIcon className="mr-2" />
     Posts of the creators you follow will be shown here.
   </div>
@@ -49,6 +53,7 @@ const ContentFeedEnd = (
 export const HomeContentFeed: FC = () => {
   const api = new FeedApi()
   const { posts } = usePostWebhook()
+  const { featuredCreators } = useFeaturedCreators()
 
   return (
     <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
@@ -73,11 +78,32 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="col-span-3 hidden h-screen border-gray-600 pl-8 lg:block lg:border-l-[0.5px]">
+      <div className="col-span-3 hidden h-screen border-gray-600 pl-8 lg:block lg:border-l-[0.5px] lg:pr-40">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>
-        <SectionTitle>Suggested</SectionTitle>
+        <div>
+          <SectionTitle>Suggested</SectionTitle>
+          {featuredCreators?.map((creator) => (
+            <div
+              className="flex items-center border-y border-gray-600/25 py-4"
+              key={creator.userId}
+            >
+              <Link className="flex flex-1" href={`/${creator.username}`}>
+                <ProfileThumbnail userId={creator.userId} />
+                <div className="ml-2 flex flex-col">
+                  <span>{creator.displayName}</span>
+                  <span className="text-passes-dark-gray">
+                    @{creator.username}
+                  </span>
+                </div>
+              </Link>
+              <Button className="px-0" variant="pink-outline">
+                Follow
+              </Button>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
