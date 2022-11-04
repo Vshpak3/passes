@@ -337,7 +337,6 @@ export class WalletService {
             user_id: userId,
           })
           .where({
-            user_id: null,
             address: walletAddress,
             chain: createWalletDto.chain,
           })
