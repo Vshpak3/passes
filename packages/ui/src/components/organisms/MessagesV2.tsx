@@ -34,7 +34,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
   const [selectedLists, setSelectedLists] = useState<ListDto[]>([])
   const [excludedLists, setExcludedLists] = useState<ListDto[]>([])
-  const [openChannelView, setOpenChannelView] = useState<boolean>(true)
+  const [openChannelView, setOpenChannelView] = useState<boolean>(false)
 
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
@@ -45,6 +45,12 @@ const MessagesV2: FC<MessagesV2Props> = ({
     setSelectedChannel(channel)
     setOpenChannelView(true)
   }
+
+  useEffect(() => {
+    if (selectedChannel) {
+      setOpenChannelView(true)
+    }
+  }, [selectedChannel])
 
   useEffect(() => {
     if (
