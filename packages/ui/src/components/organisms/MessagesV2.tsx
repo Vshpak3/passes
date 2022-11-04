@@ -40,8 +40,6 @@ const MessagesV2: FC<MessagesV2Props> = ({
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
 
-  const { isMobile } = useWindowSize()
-
   const handleOpenChannelView = () => setOpenChannelView(false)
 
   const handleChannelClicked = async (channel: ChannelMemberDto) => {
@@ -80,10 +78,6 @@ const MessagesV2: FC<MessagesV2Props> = ({
       }
     }
   }, [defaultUserId])
-
-  useEffect(() => {
-    setOpenChannelView(!isMobile)
-  }, [isMobile])
 
   return (
     <div className="grid h-full grid-cols-7 flex-row border border-r-0 border-[#fff]/10">
