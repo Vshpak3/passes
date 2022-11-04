@@ -37,10 +37,8 @@ import type {
   MetamaskCircleETHEntryResponseDto,
   MetamaskCircleUSDCEntryRequestDto,
   MetamaskCircleUSDCEntryResponseDto,
-  PayinDataDto,
   PhantomCircleUSDCEntryRequestDto,
   PhantomCircleUSDCEntryResponseDto,
-  RegisterPayinResponseDto,
   SetPayinMethodRequestDto,
   SetPayoutMethodRequestDto,
 } from '../models';
@@ -89,14 +87,10 @@ import {
     MetamaskCircleUSDCEntryRequestDtoToJSON,
     MetamaskCircleUSDCEntryResponseDtoFromJSON,
     MetamaskCircleUSDCEntryResponseDtoToJSON,
-    PayinDataDtoFromJSON,
-    PayinDataDtoToJSON,
     PhantomCircleUSDCEntryRequestDtoFromJSON,
     PhantomCircleUSDCEntryRequestDtoToJSON,
     PhantomCircleUSDCEntryResponseDtoFromJSON,
     PhantomCircleUSDCEntryResponseDtoToJSON,
-    RegisterPayinResponseDtoFromJSON,
-    RegisterPayinResponseDtoToJSON,
     SetPayinMethodRequestDtoFromJSON,
     SetPayinMethodRequestDtoToJSON,
     SetPayoutMethodRequestDtoFromJSON,
@@ -157,10 +151,6 @@ export interface GetPayinsRequest {
 
 export interface GetPayoutsRequest {
     getPayoutsRequestDto: GetPayoutsRequestDto;
-}
-
-export interface RePayoutRequest {
-    payoutId: string;
 }
 
 export interface ReceiveNotificationsRequest {
@@ -920,41 +910,6 @@ export class PaymentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Rerun payout
-     */
-    async rePayoutRaw(requestParameters: RePayoutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.payoutId === null || requestParameters.payoutId === undefined) {
-            throw new runtime.RequiredError('payoutId','Required parameter requestParameters.payoutId was null or undefined when calling rePayout.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        /* No auth for endpoint but always send access token */
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/payment/test/payout/{payoutId}`.replace(`{${"payoutId"}}`, encodeURIComponent(String(requestParameters.payoutId))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.VoidApiResponse(response);
-    }
-
-    /**
-     * Rerun payout
-     */
-    async rePayout(requestParameters: RePayoutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.rePayoutRaw(requestParameters, initOverrides);
-    }
-
-    /**
      * Circle notifications
      */
     async receiveNotificationsRaw(requestParameters: ReceiveNotificationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
@@ -1021,68 +976,6 @@ export class PaymentApi extends runtime.BaseAPI {
      */
     async registerNotifications(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<boolean> {
         const response = await this.registerNotificationsRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Register payin
-     */
-    async registerPayinRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RegisterPayinResponseDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/payment/test/register/payin`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => RegisterPayinResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Register payin
-     */
-    async registerPayin(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RegisterPayinResponseDto> {
-        const response = await this.registerPayinRaw(initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Get register payin data
-     */
-    async registerPayinDataRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<PayinDataDto>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/payment/test/register/payin/data`,
-            method: 'POST',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => PayinDataDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Get register payin data
-     */
-    async registerPayinData(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<PayinDataDto> {
-        const response = await this.registerPayinDataRaw(initOverrides);
         return await response.value();
     }
 
