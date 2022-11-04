@@ -56,6 +56,7 @@ export const InputMessage: FC<InputMessageProps> = ({
   isCreator,
   vaultContent,
   setVaultContent,
+  otherUserIsCreator,
   removeFree
 }) => {
   const {
@@ -305,35 +306,36 @@ export const InputMessage: FC<InputMessageProps> = ({
             </MediaSelector>
           )}
           <div className="flex w-full justify-end gap-[10px]">
-            {/* TODO: Patrick add here condition if otherUserId is not creator line 281-310 */}
-            <div
-              className={classNames(
-                errors.message && "border-b-red",
-                "flex h-[45px] w-full min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
-              )}
-            >
-              <div className="flex w-3/5 flex-col items-start">
-                <span className="text-[14px] font-medium leading-[14px] text-[#B52A6F]">
-                  Tip:
-                </span>
-                {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                  <span className="whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                    minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
+            {otherUserIsCreator && (
+              <div
+                className={classNames(
+                  errors.message && "border-b-red",
+                  "flex h-[45px] w-full min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
+                )}
+              >
+                <div className="flex w-3/5 flex-col items-start">
+                  <span className="text-[14px] font-medium leading-[14px] text-[#B52A6F]">
+                    Tip:
                   </span>
-                ) : null}
+                  {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
+                    <span className="whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                      minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
+                    </span>
+                  ) : null}
+                </div>
+                <input
+                  autoComplete="off"
+                  // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+                  className="w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
+                  min="0"
+                  onChange={handleChangeTip}
+                  onKeyPress={preventNegative}
+                  placeholder="0.00"
+                  step=".01"
+                  type="number"
+                />
               </div>
-              <input
-                autoComplete="off"
-                // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-                className="w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
-                min="0"
-                onChange={handleChangeTip}
-                onKeyPress={preventNegative}
-                placeholder="0.00"
-                step=".01"
-                type="number"
-              />
-            </div>
+            )}
             <div
               aria-roledescription="button"
               className="messaging-input__button h-[45px]  !p-0"

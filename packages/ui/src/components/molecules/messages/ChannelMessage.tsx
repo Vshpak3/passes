@@ -55,7 +55,6 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
         "m-4 flex max-w-[70%] rounded",
         ownsMessage && "flex-row-reverse self-end"
       )}
-      style={{ contentVisibility: "auto" }}
     >
       {!ownsMessage && (
         <div className="flex shrink-0 items-end">

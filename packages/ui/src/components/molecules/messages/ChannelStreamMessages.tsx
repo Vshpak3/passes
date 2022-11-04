@@ -21,7 +21,6 @@ interface ChannelStreamMessagesProps {
 }
 
 const api = new MessagesApi()
-
 const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   channelId,
   messageUpdates,
@@ -47,7 +46,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       }}
       fetchProps={{ channelId, pending: false, contentOnly: false }}
       inverse
-      keyValue={`messages/${channelId}`}
+      keyValue={`messages/${Date.now()}/${channelId}`} // add time to force reset, component doesn't remount since its memoized
       loadingElement={<div>Loading older messages...</div>}
       options={{ revalidateOnMount: true }}
       scrollableTarget="scrollableDiv"
