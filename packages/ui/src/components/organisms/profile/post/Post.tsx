@@ -1,4 +1,5 @@
 import { PostDto } from "@passes/api-client"
+import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC, memo, useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -107,10 +108,10 @@ const PostUnmemo: FC<PostProps> = ({
       {!isRemoved && (
         <div>
           <FormContainer
-            borderColor={
-              isPinned ? "border-passes-pink-100" : "border-[#ffffff]/10"
-            }
-            className="!min-h-[10px] w-full border"
+            className={classNames(
+              isPinned && "border-passes-pink-100",
+              "!min-h-[10px] w-full"
+            )}
           >
             <PostHeader
               createdAt={createdAt}

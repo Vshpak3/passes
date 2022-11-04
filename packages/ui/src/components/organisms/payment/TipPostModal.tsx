@@ -8,6 +8,7 @@ import { Dispatch, FC, SetStateAction, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
@@ -65,11 +66,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
 
   return (
     <Modal isOpen setOpen={() => setPost(null)}>
-      <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
-        <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Tip Post (Minimum ${MIN_TIP_POST_PRICE})
-        </span>
-      </div>
+      <SectionTitle>Send Tip</SectionTitle>
       <NumberInput
         className="border-passes-dark-100 bg-transparent"
         errors={errors}
@@ -84,6 +81,9 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         register={register}
         type="currency"
       />
+      <span className="text-passes-dark-gray">
+        This message will be sent with your tip after purchase.
+      </span>
       <PaymentModalBody
         closeModal={() => setPost(null)}
         price={tipValue}

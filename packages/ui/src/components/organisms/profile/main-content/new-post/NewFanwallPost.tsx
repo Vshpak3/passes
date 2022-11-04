@@ -62,7 +62,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-h-12 flex flex-col items-start justify-start border border-[#ffffff]/10 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
+      <div className="min-h-12 flex flex-col items-start justify-start border-y-[0.5px] border-gray-600 bg-[#1b141d]/50 p-5 backdrop-blur-[100px] md:px-7 md:py-5">
         {extended && (
           <div className="w-full border-b border-[#2B282D] pb-4">
             <button onClick={() => setExtended(false)} type="button">
