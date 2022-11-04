@@ -51,9 +51,9 @@ export const HomeContentFeed: FC = () => {
   const { posts } = usePostWebhook()
 
   return (
-    <div className="grid w-full grid-cols-7">
+    <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 lg:col-span-4">
-        <SectionTitle>Home</SectionTitle>
+        <SectionTitle className="ml-4">Home</SectionTitle>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
             return (

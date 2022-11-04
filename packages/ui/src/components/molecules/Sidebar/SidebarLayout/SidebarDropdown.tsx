@@ -38,18 +38,16 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 href={item.href}
                 passHref
               >
-                <>
-                  <item.icon
-                    aria-hidden="true"
-                    className={classNames(
-                      isItemActive
-                        ? "fill-transparent stroke-passes-primary-color stroke-2"
-                        : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
-                      "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
-                    )}
-                  />
-                  {item.name}
-                </>
+                <item.icon
+                  aria-hidden="true"
+                  className={classNames(
+                    isItemActive
+                      ? "fill-transparent stroke-passes-primary-color stroke-2"
+                      : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                    "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
+                  )}
+                />
+                {item.name}
               </Link>
               <ChevronDown className={`ml-2 ${open ? "rotate-180" : ""}`} />
             </span>

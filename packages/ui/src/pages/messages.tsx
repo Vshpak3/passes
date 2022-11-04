@@ -53,9 +53,7 @@ const MessagesPage = () => {
           </div>
         ) : (
           <div className="mt-4 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center justify-between gap-4 lg:w-[95%]">
-            <span className="pr-56 font-bold text-[#ffffff] md:text-[20px] md:leading-[25px]">
-              Messages
-            </span>
+            <SectionTitle>Messages</SectionTitle>
             <div className="z-[1000]">
               <CreatorSearchBar />
             </div>

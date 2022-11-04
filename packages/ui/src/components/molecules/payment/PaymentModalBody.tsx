@@ -95,11 +95,6 @@ const PaymentModalBodyUnmemo = ({
     : undefined
   return (
     <form>
-      {/* <PayinMethodDisplay
-        payinMethod={payinMethod}
-        card={card}
-        closeModal={closeModal}
-      /> */}
       Payment Method:
       <Select
         changeOnDefault
@@ -110,9 +105,14 @@ const PaymentModalBodyUnmemo = ({
         register={register}
         selectOptions={options}
       />
-      <div className="my-4 mr-1 text-[#ffff]/90 underline">
-        <Link href="/settings/payment" onClick={closeModal}>
-          Click here to update your default payment method or add a new one.
+      <div className="my-4 mr-1 text-passes-dark-gray">
+        Want to update your default payment or add a new one?
+        <Link
+          className="ml-1 text-passes-primary-color underline"
+          href="/settings/payment"
+          onClick={closeModal}
+        >
+          Settings
         </Link>
       </div>
       <ThreeDSInfo payinMethod={payinMethod} price={price} />

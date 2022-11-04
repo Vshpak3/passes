@@ -19,7 +19,7 @@ interface PassCardProps {
   pass: PassDto
 }
 
-const getPassType = (passType: PassDtoTypeEnum) => {
+export const getPassType = (passType: PassDtoTypeEnum) => {
   const types = {
     [PassDtoTypeEnum.Lifetime]: "Lifetime",
     [PassDtoTypeEnum.Subscription]: "30 days",

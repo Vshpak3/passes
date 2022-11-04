@@ -29,6 +29,8 @@ module.exports = {
         passes: {
           "primary-color": "#FF51A8",
           "secondary-color": "#9C4DC1",
+          "tertiary-color": "#F65D02",
+          "dark-gray": "#999999",
           "blue-100": "#598BF4",
           "blue-200": "#b3bee799",
           "purple-100": "#B53BEC",
