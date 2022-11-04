@@ -62,10 +62,13 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
         {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[68px]">
-        <ProfileStatsDesktop
-          likes={creatorStats?.numLikes}
-          numPosts={creatorStats?.numPosts}
-        />
+        {creatorStats?.numPosts !== undefined &&
+          creatorStats?.numLikes !== undefined && (
+            <ProfileStatsDesktop
+              likes={creatorStats?.numLikes}
+              numPosts={creatorStats?.numPosts}
+            />
+          )}
         <ProfileSocialMedia
           discordUsername={profile?.discordUsername}
           facebookUsername={profile?.facebookUsername}
@@ -110,10 +113,13 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
         twitterUsername={profile?.twitterUsername}
         youtubeUsername={profile?.youtubeUsername}
       />
-      <ProfileStatsMobile
-        likes={creatorStats?.numLikes}
-        numPosts={creatorStats?.numPosts}
-      />
+      {creatorStats?.numPosts !== undefined &&
+        creatorStats?.numLikes !== undefined && (
+          <ProfileStatsMobile
+            likes={creatorStats?.numLikes}
+            numPosts={creatorStats?.numPosts}
+          />
+        )}
       {!ownsProfile && (
         <div className="flex space-x-3">
           {!!profile?.isCreator && (
