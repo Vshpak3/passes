@@ -68,7 +68,7 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
       <div className="align-items relative flex w-fit items-center justify-start">
         <NumberInput
           className={classNames(
-            "max-w-[140px] border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90",
+            "min-h-[50px] max-w-[140px]  border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90",
             className
           )}
           name={name}

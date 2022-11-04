@@ -67,7 +67,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     <Modal isOpen setOpen={() => setPost(null)}>
       <SectionTitle>Send Tip</SectionTitle>
       <NumberInput
-        className="border-passes-dark-100 bg-transparent"
+        className="min-h-[50px] border-passes-dark-100 bg-transparent"
         errors={errors}
         name="tip-value"
         options={{

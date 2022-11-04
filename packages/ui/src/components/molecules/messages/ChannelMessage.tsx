@@ -9,7 +9,6 @@ import { ProfileThumbnail } from "src/components/organisms/profile/profile-detai
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyMessageModal } from "src/hooks/context/useBuyMessageModal"
 import { DollarSymbol } from "src/icons/DollarSymbol"
-import { DoubleCheckMarkIcon } from "src/icons/DoubleCheckMark"
 import { SpinnerIcon } from "src/icons/SpinnerIcon"
 
 interface ChannelMessageProps {
@@ -84,18 +83,6 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
             )}
             {!message?.pending && sentAt && (
               <div className="flex items-center justify-between">
-                {isAfter(sentAt, subDays(new Date(), 1)) ? (
-                  <TimeAgo
-                    className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
-                    date={message?.sentAt ? sentAt : ""}
-                    key={message.messageId}
-                    minPeriod={30}
-                  />
-                ) : (
-                  <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
-                    {message?.sentAt?.toLocaleDateString()}
-                  </span>
-                )}
                 {!!senderId && !!price && (
                   <div className="ml-10 flex flex-row items-center text-[11px]">
                     <div>
@@ -117,15 +104,25 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
 
         {ownsMessage &&
           (message?.pending ? (
-            <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
+            <span className="mt-2 flex flex-row items-center gap-1 text-[11px] text-[#767676]">
               <SpinnerIcon />
               Pending...
             </span>
           ) : (
-            <span className="text-md mt-2 flex flex-row items-center gap-1 text-[#767676]">
-              <DoubleCheckMarkIcon />
-              Sent
-            </span>
+            <>
+              {isAfter(sentAt, subDays(new Date(), 1)) ? (
+                <TimeAgo
+                  className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
+                  date={message?.sentAt ? sentAt : ""}
+                  key={message.messageId}
+                  minPeriod={30}
+                />
+              ) : (
+                <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
+                  {message?.sentAt?.toLocaleDateString()}
+                </span>
+              )}
+            </>
           ))}
       </div>
     </div>

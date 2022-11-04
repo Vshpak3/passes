@@ -62,7 +62,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         {...register(name, options)}
         autoComplete="off"
         className={classNames(
-          "block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",
+          "block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",
           className,
           errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
         )}

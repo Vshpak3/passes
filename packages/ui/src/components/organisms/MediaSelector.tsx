@@ -50,7 +50,7 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
   children
 }) => {
   return (
-    <div className="w-full">
+    <div>
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
         <div className="flex items-center">
           <div className="flex w-full flex-wrap justify-between gap-1">

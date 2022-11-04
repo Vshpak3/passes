@@ -240,10 +240,10 @@ export const InputMessage: FC<InputMessageProps> = ({
       className="flex w-full border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full flex-col px-[30px]">
+      <div className="flex w-full flex-col px-[30px] pt-2">
         {isCreator && (
-          <div className="flex w-full items-center justify-between pt-2">
-            <div className="flex min-h-[50px] items-center justify-start gap-4 ">
+          <div className="flex w-full items-center justify-between py-1">
+            <div className="flex h-[30px] items-center justify-start gap-4">
               <Checkbox
                 className="group"
                 errors={errors}
@@ -254,12 +254,12 @@ export const InputMessage: FC<InputMessageProps> = ({
                 type="toggle"
               />
               {isPaid ? (
-                <div className="relative flex items-center rounded-md shadow-sm">
+                <div className="rounded-xs relative flex items-center shadow-sm">
                   <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
                     Price
                   </div>
                   <NumberInput
-                    className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                    className="h-[40px] w-full rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
                     maxInput={MAX_PAID_MESSAGE_PRICE}
                     name="price"
                     register={register}
@@ -281,28 +281,26 @@ export const InputMessage: FC<InputMessageProps> = ({
           </div>
         )}
 
-        <div className="pt-3">
-          <textarea
-            cols={40}
-            placeholder="Send a message.."
-            rows={4}
-            {...register("text")}
-            autoComplete="off"
-            className={classNames(
-              files.length
-                ? "focus:border-b-transparent"
-                : errors.text && "border-b-red",
-              "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
-            )}
-            name="text"
-            // onFocus={() => {
-            //   clearErrors()
-            // }}
-            onKeyDown={submitOnEnter}
-          />
-        </div>
+        <textarea
+          cols={40}
+          placeholder="Send a message.."
+          rows={4}
+          {...register("text")}
+          autoComplete="off"
+          className={classNames(
+            files.length
+              ? "focus:border-b-transparent"
+              : errors.text && "border-b-red",
+            "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 pt-3 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
+          )}
+          name="text"
+          // onFocus={() => {
+          //   clearErrors()
+          // }}
+          onKeyDown={submitOnEnter}
+        />
         {files.length > 0 && (
-          <div className="relative  max-w-[390px] sm:max-w-[590px]">
+          <div className="relative max-w-[390px] sm:max-w-[590px]">
             <MediaSection
               addNewMedia={addNewMedia}
               errors={errors}
@@ -318,7 +316,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             />
           </div>
         )}
-        <div className="-ml-4 flex w-full items-center justify-between py-3">
+        <div className="-ml-4 flex w-full flex-wrap items-center justify-between pb-3 pt-1">
           {isCreator && (
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
@@ -327,15 +325,17 @@ export const InputMessage: FC<InputMessageProps> = ({
               register={register}
               selectors={[PhotoSelector, VideoSelector]}
             >
-              <VaultSelector selectVaultContent={addContent} />
+              <div>
+                <VaultSelector selectVaultContent={addContent} />
+              </div>
             </MediaSelector>
           )}
-          <div className="flex w-full justify-end gap-[10px]">
+          <div className="flex justify-end gap-[10px]">
             {otherUserIsCreator && (
               <div
                 className={classNames(
                   errors.text && "border-b-red",
-                  "flex h-[45px] w-full min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
+                  "flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
                 )}
               >
                 <div className="flex w-3/5 flex-col items-start">

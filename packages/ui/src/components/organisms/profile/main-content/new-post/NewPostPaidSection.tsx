@@ -64,7 +64,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
               <span className="text-base font-bold text-[#ffffff]/40">$</span>
             </div>
             <NumberInput
-              className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+              className="min-h-[50px] w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
               maxInput={MAX_PAID_POST_PRICE}
               name="price"
               register={register}

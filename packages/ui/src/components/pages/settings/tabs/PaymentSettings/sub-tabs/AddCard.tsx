@@ -202,7 +202,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         <div className="mb-4 flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <NumberInput
-            className="mt-2 w-[71px]"
+            className="mt-2 min-h-[50px] w-[71px]"
             errors={errors}
             maxInput={999}
             name="cvv"

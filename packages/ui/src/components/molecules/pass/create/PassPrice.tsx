@@ -28,7 +28,7 @@ export const PassPrice: FC<PassPriceProps> = ({ register, errors }) => {
           Set price of the pass
         </span>
         <NumberInput
-          className="ml-2 max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
+          className="ml-2 min-h-[50px] max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
           name="price"
           register={register}
           type="currency"

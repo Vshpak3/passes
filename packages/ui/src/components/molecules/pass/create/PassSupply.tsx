@@ -71,7 +71,7 @@ export const PassSupply: FC<PassSupplyProps> = ({
               />
               <div className="align-center ml-10 flex items-center justify-center">
                 <NumberInput
-                  className="max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
+                  className="min-h-[50px] max-w-[140px] border-passes-dark-200 bg-transparent p-0 pl-[60px] text-[#ffff]/90"
                   name="totalSupply"
                   register={register}
                   type="integer"

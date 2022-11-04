@@ -131,30 +131,32 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
       onSubmit={handleSubmit(submitMessage)}
     >
       <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-3">
-        <div className="flex min-h-[45px] items-center justify-start gap-4 px-3 pt-2">
-          <Checkbox
-            className="group"
-            errors={errors}
-            label="Pay to View"
-            name="isPaid"
-            options={options}
-            register={register}
-            type="toggle"
-          />
-          {isPaid ? (
-            <div className="relative flex items-center rounded-md shadow-sm">
-              <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
-                Price
+        <div className="flex h-[30px] items-center justify-start gap-4 py-1">
+          <div className="flex w-full items-center justify-between py-1">
+            <Checkbox
+              className="group"
+              errors={errors}
+              label="Pay to View"
+              name="isPaid"
+              options={options}
+              register={register}
+              type="toggle"
+            />
+            {isPaid ? (
+              <div className="rounded-xs relative flex items-center shadow-sm">
+                <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
+                  Price
+                </div>
+                <NumberInput
+                  className="h-[40px] w-full rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                  maxInput={MAX_PAID_MESSAGE_PRICE}
+                  name="price"
+                  register={register}
+                  type="currency"
+                />
               </div>
-              <NumberInput
-                className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
-                maxInput={MAX_PAID_MESSAGE_PRICE}
-                name="price"
-                register={register}
-                type="currency"
-              />
-            </div>
-          ) : null}
+            ) : null}
+          </div>
         </div>
 
         <div className="flex h-fit w-full flex-col items-start justify-start px-3 py-1">
@@ -198,7 +200,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               scheduledPostTime={scheduledTime}
             />
           )}
-          <div className="flex w-full items-center justify-between pt-6">
+          <div className="flex w-full items-center justify-between pb-3 pt-1">
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
               errors={errors}
