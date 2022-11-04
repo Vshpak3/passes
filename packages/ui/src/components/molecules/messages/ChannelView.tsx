@@ -72,7 +72,10 @@ export const ChannelView: FC<ChannelViewProps> = ({
     selectedChannel?.otherUserId
   )
   return (
-    <div className="z-50 col-span-7 flex h-[90vh] w-full flex-col bg-[#120C14] lg:relative lg:col-span-5 lg:max-h-[90vh] lg:flex-1">
+    <div
+      className="relative z-50 col-span-7 flex h-full max-h-[95vh] w-full flex-1 flex-col
+    bg-[#120C14] lg:col-span-5"
+    >
       {selectedChannel && (
         <>
           <ChannelHeader

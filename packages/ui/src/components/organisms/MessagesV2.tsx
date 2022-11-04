@@ -13,7 +13,6 @@ import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { ChannelMassDM } from "src/components/molecules/messages/mass-dm/ChannelMassDM"
 import { ChannelViewMassDM } from "src/components/molecules/messages/mass-dm/ChannelViewMassDM"
 import { useUser } from "src/hooks/useUser"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface MessagesV2Props {
   defaultUserId?: string
@@ -107,6 +106,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
         <>
           <ChannelList
             onChannelClicked={handleChannelClicked}
+            openChannelView={openChannelView}
             selectedChannel={selectedChannel}
           />
           {openChannelView && (

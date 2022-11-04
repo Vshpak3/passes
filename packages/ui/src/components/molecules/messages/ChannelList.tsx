@@ -5,6 +5,7 @@ import {
   GetChannelsRequestDtoOrderTypeEnum as OrderType,
   GetChannelsResponseDto
 } from "@passes/api-client/models"
+import classNames from "classnames"
 import { debounce } from "lodash"
 import React, { FC, useCallback, useState } from "react"
 
@@ -23,11 +24,13 @@ import { ChannelSearchInput } from "./ChannelSearchInput"
 interface ChannelListProps {
   selectedChannel?: ChannelMemberDto
   onChannelClicked: (channel: ChannelMemberDto) => void
+  openChannelView: boolean
 }
 
 export const ChannelList: FC<ChannelListProps> = ({
   selectedChannel,
-  onChannelClicked
+  onChannelClicked,
+  openChannelView
 }) => {
   const [channelOrderType, setChannelOrderType] = useState<OrderType>("recent")
   const { user } = useUser()
@@ -53,7 +56,13 @@ export const ChannelList: FC<ChannelListProps> = ({
   }, [])
 
   return (
-    <div className="col-span-7 overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-2">
+    <div
+      className={classNames(
+        "col-span-7 overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-2",
+        openChannelView ? "hidden" : "block",
+        "lg:block"
+      )}
+    >
       <div className="border-b border-[#fff]/10 pb-6">
         <div className="flex justify-between pb-6">
           <span className="text-base font-medium">Find people</span>
