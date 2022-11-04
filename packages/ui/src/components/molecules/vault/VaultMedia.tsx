@@ -63,14 +63,13 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
       >
         <img
           alt="Can't find image"
+          className="object-cover"
           height={300}
           onError={({ currentTarget }) => {
             currentTarget.onerror = null
-            // setHasErrored(true)
           }}
           // All content types have an image thumbnail
           src={ContentService.userContentThumbnailPath(content)}
-          style={{ objectFit: "cover" }}
           width={300}
         />
         <div className="flex justify-end p-[10px]">

@@ -53,7 +53,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
       <div className="mt-3 flex flex-row items-center">
         <MetamaskIcon width="40px" />
         <span className="mx-3 font-[700]">Metamask Wallet</span>
-        <span>{`${type} ${coin}`}</span>
+        <span>{`${type} ${coin.toUpperCase()}`}</span>
       </div>
     )
   }

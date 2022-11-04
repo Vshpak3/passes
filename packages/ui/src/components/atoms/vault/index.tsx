@@ -3,7 +3,7 @@ import ExitIcon from "public/icons/exit-icon.svg"
 import AddToIcon from "public/icons/plus-square.svg"
 import { ChangeEvent, Dispatch, FC, SetStateAction, useRef } from "react"
 import { useForm } from "react-hook-form"
-import { MdAdd, MdDelete } from "react-icons/md"
+import { MdAdd } from "react-icons/md"
 
 import { FileInput } from "src/components/atoms/input/FileInput"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
@@ -37,9 +37,6 @@ interface VaultAddToItemProps {
   onClick: () => void
 }
 
-interface VaultDeleteButtonProps {
-  toggleDeleteModal: () => void
-}
 interface VaultAddItemProps {
   onClick: Dispatch<SetStateAction<ContentFile[]>>
 }
@@ -103,19 +100,6 @@ export const VaultAddToItem: FC<VaultAddToItemProps> = ({ label, onClick }) => (
     <div className="ml-3">{label}</div>
   </div>
 )
-
-export const VaultDeleteButton: FC<VaultDeleteButtonProps> = ({
-  toggleDeleteModal
-}) => {
-  return (
-    <div
-      className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
-      onClick={toggleDeleteModal}
-    >
-      <MdDelete size={23} />
-    </div>
-  )
-}
 
 export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
   const { register } = useForm()

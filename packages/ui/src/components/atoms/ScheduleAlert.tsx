@@ -13,21 +13,14 @@ export const ScheduleAlert: FC<ScheduleAlertProps> = ({
   onRemoveScheduledPostTime
 }) => {
   return (
-    <div
-      className="mt-3 flex items-center justify-between gap-1 rounded-md p-[10px] text-sm text-white sm:h-10 md:p-2.5"
-      style={{
-        backgroundColor: "#C943A8"
-      }}
-    >
+    <div className="mt-3 flex items-center justify-between gap-1 rounded-md bg-[#C943A8] p-[10px] text-sm text-white sm:h-10 md:p-2.5">
       <div>
         Scheduled at:{" "}
         {scheduledPostTime &&
           format(scheduledPostTime, "EEEE, LLLL do, yyyy 'at' hh:mm a")}
       </div>
-      <div style={{ cursor: "pointer" }}>
-        <div onClick={onRemoveScheduledPostTime}>
-          <Cross />
-        </div>
+      <div className="cursor-pointer" onClick={onRemoveScheduledPostTime}>
+        <Cross />
       </div>
     </div>
   )

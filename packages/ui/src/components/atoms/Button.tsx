@@ -22,7 +22,6 @@ interface ButtonProps {
   fontSize?: number
   href?: string
   onClick?: () => void
-  style?: React.CSSProperties
   tag?: keyof JSX.IntrinsicElements
   variant?: string | "tab"
   active?: boolean
@@ -48,7 +47,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   fontSize,
   href,
   onClick,
-  style = {},
   tag = "a",
   variant,
   disabled,
@@ -136,7 +134,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       href={href}
       onClick={onClick}
       role={tag === "a" ? "button" : undefined}
-      style={style}
       tabIndex={tag === "a" ? 0 : undefined}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

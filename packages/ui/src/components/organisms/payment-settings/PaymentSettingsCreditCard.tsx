@@ -4,9 +4,11 @@ import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import ms from "ms"
 import CardIcon from "public/icons/bank-card.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
+import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/Button"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { SubTabsEnum } from "src/config/settings"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
@@ -25,6 +27,8 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
   addOrPopStackHandler,
   handleSetDefaultPayInMethod
 }) => {
+  const [cardIdDelete, setCardIdDelete] = useState<string | null>(null)
+
   const { cards, defaultPayinMethod, getDefaultPayinMethod, deleteCard } =
     usePayinMethod(true, ms("5 seconds"))
 
@@ -80,10 +84,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
               </div>
               <button
                 className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-white/10"
-                onClick={() => {
-                  deleteCard(item.id)
-                  getDefaultPayinMethod()
-                }}
+                onClick={() => setCardIdDelete(item.id)}
               >
                 <DeleteIcon />
               </button>
@@ -91,6 +92,17 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
           </div>
         ))}
       </div>
+      {!!cardIdDelete && (
+        <DeleteConfirmationModal
+          isOpen={!!cardIdDelete}
+          onClose={() => setCardIdDelete(null)}
+          onDelete={async () => {
+            await deleteCard(cardIdDelete)
+            toast.success("Card has been removed")
+            getDefaultPayinMethod()
+          }}
+        />
+      )}
     </div>
   )
 }

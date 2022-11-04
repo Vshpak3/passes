@@ -52,7 +52,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
         Use Crypto as a Payment Method
       </span>
       <div className="flex items-center justify-start">
-        <div className="flex flex-1 flex-row items-center">
+        <div className="flex flex-1 flex-row items-center justify-start">
           <MetamaskIcon width="40px" />
           <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
             Metamask

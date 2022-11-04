@@ -10,11 +10,12 @@ import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
-import { WalletListItem } from "./WalletsList/WalletListItem"
+import { WalletListItem } from "./WalletListItem"
 
 export const Wallets = () => {
   const { user } = useUser()
@@ -35,6 +36,8 @@ export const Wallets = () => {
     deleteWallet,
     getMessageToSign
   } = useUserConnectedWallets()
+
+  const [walletIdDelete, setWalletIdDelete] = useState<string | null>(null)
 
   const handleOnETHWalletConnect = async () => {
     setIsModalOpen(false)
@@ -118,12 +121,8 @@ export const Wallets = () => {
     setValue("address", "")
   }
 
-  const deleteWalletHandler = async (walletId: string) => {
-    await deleteWallet(walletId).catch((error) => errorMessage(error, true))
-  }
-
   return (
-    <div>
+    <>
       <Modal
         isOpen={isModalOpen}
         modalContainerClassname="rounded-[15px]"
@@ -230,7 +229,7 @@ export const Wallets = () => {
             {wallets.map((wallet) => {
               return (
                 <WalletListItem
-                  deleteWalletHandler={deleteWalletHandler}
+                  deleteWalletHandler={setWalletIdDelete}
                   key={wallet.walletId}
                   wallet={wallet}
                 />
@@ -239,6 +238,16 @@ export const Wallets = () => {
           </div>
         )}
       </div>
-    </div>
+      {!!walletIdDelete && (
+        <DeleteConfirmationModal
+          isOpen={!!walletIdDelete}
+          onClose={() => setWalletIdDelete(null)}
+          onDelete={async () => {
+            await deleteWallet(walletIdDelete)
+            toast.success("Wallet has been removed")
+          }}
+        />
+      )}
+    </>
   )
 }

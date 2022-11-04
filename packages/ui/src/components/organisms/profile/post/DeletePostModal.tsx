@@ -39,19 +39,13 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
     await deletePost()
     onDelete()
     toast.error("Deleted the post.")
-    closeModal()
-  }
-
-  const closeModal = () => {
-    setOpen(false)
   }
 
   return (
     <DeleteConfirmationModal
       isOpen
-      onCancel={closeModal}
+      onClose={() => setOpen(false)}
       onDelete={handleDelete}
-      setOpen={closeModal}
     />
   )
 }

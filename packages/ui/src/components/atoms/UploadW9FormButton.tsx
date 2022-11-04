@@ -61,15 +61,7 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
           options={{ required: true }}
           register={register}
           trigger={
-            <Button
-              style={{
-                background: "rgba(255, 254, 255, 0.15)",
-                fontWeight: "bold",
-                width: "100%",
-                color: "white"
-              }}
-              variant="primary"
-            >
+            <Button className="w-full bg-gray-100 font-bold" variant="primary">
               {icon && <EditIcon />}
               {formatText(text)}
             </Button>

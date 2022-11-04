@@ -4,8 +4,9 @@ import {
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
+import { MdDelete } from "react-icons/md"
 
-import { VaultAddButton, VaultDeleteButton } from "src/components/atoms/vault"
+import { VaultAddButton } from "src/components/atoms/vault"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
@@ -59,7 +60,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
     setSelectedItems([])
   }
   const [deleteModalActive, setDeleteModalActive] = useState(false)
-  const toggleDeleteModal = () => setDeleteModalActive(!deleteModalActive)
 
   const onSortSelect = useCallback(
     (option: SortOption<OrderType>) => {
@@ -95,18 +95,24 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         vaultCategory={vaultCategory}
         vaultType={vaultType}
       />
-      <DeleteConfirmationModal
-        isOpen={deleteModalActive}
-        onCancel={toggleDeleteModal}
-        onDelete={handleVaultDeleteItems}
-        setOpen={setDeleteModalActive}
-      />
+      {deleteModalActive && (
+        <DeleteConfirmationModal
+          isOpen={deleteModalActive}
+          onClose={() => setDeleteModalActive(false)}
+          onDelete={handleVaultDeleteItems}
+        />
+      )}
       {!embedded && (
         <div className="absolute right-20 bottom-0 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
               <div>20 media files can be posted at any given time</div>
-              <VaultDeleteButton toggleDeleteModal={toggleDeleteModal} />
+              <div
+                className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
+                onClick={() => setDeleteModalActive(true)}
+              >
+                <MdDelete size={23} />
+              </div>
               <VaultAddToDropdown
                 // TODO: connect with API to get selected items and add to new message
                 onAddToMessage={pushToMessages}

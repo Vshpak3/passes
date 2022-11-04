@@ -1,31 +1,29 @@
 import Image from "next/image"
-import React, { Dispatch, FC, SetStateAction, useEffect, useRef } from "react"
+import { FC, useEffect, useRef } from "react"
 import ReactModal from "react-modal"
 
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface DeleteConfirmationModalProps {
   isOpen: boolean
-  setOpen: Dispatch<SetStateAction<boolean>>
-  onCancel(): void
+  onClose(): void
   onDelete(): void
 }
 
 export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
-  isOpen = false,
-  setOpen,
-  onCancel,
+  isOpen,
+  onClose,
   onDelete
 }) => {
   const modalContentRef = useRef(null)
 
   const handleDelete = async () => {
     await onDelete()
-    setOpen(false)
+    onClose()
   }
 
   useOnClickOutside(modalContentRef, () => {
-    setOpen(false)
+    onClose()
   })
 
   useEffect(() => {
@@ -35,7 +33,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      onRequestClose={() => setOpen(false)}
+      onRequestClose={onClose}
       shouldCloseOnOverlayClick
       style={{
         content: {
@@ -69,7 +67,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
           <button
             className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
             data-modal-toggle="popup-modal"
-            onClick={() => setOpen(false)}
+            onClick={onClose}
             type="button"
           >
             <Image
@@ -99,7 +97,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
               </button>
               <button
                 className="rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"
-                onClick={onCancel}
+                onClick={onClose}
               >
                 Cancel
               </button>

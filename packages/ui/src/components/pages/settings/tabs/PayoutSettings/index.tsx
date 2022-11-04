@@ -8,7 +8,7 @@ import { memo } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { Tab } from "src/components/pages/settings/Tab"
-import { SubTabsEnum } from "src/config/settings"
+import { SubTabsEnum, TabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
@@ -16,7 +16,8 @@ import { BankIcon } from "src/icons/BankIcon"
 import { WalletIcon } from "src/icons/WalletIcon"
 
 const PayoutSettings = () => {
-  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
+  const { setActiveTab, addOrPopStackHandler } =
+    useSettings() as SettingsContextProps
   const {
     banks,
     defaultBank,
@@ -107,11 +108,11 @@ const PayoutSettings = () => {
           <Button
             className="w-auto"
             icon={<WalletIcon />}
-            onClick={() => addOrPopStackHandler(SubTabsEnum.WalletSettings)}
+            onClick={() => setActiveTab(TabsEnum.WalletSettings)}
             tag="button"
             variant="pink"
           >
-            Manage wallets
+            Manage Wallets
           </Button>
         </div>
       </div>
@@ -122,7 +123,7 @@ const PayoutSettings = () => {
       ) : (
         <div className="mt-8">
           <div className="flex flex-row pb-3">
-            <span className="basis-1/4 text-center">Walet type</span>
+            <span className="basis-1/4 text-center">Wallet Type</span>
             <span className="basis-1/2 text-center">Address</span>
             <span className="basis-1/4 text-center">Default for</span>
           </div>
@@ -134,7 +135,9 @@ const PayoutSettings = () => {
                   className="mb-3 flex items-center justify-between border-t border-[#2C282D] py-4"
                   key={wallet.walletId}
                 >
-                  <span className="basis-1/4 text-center">{wallet.chain}</span>
+                  <span className="basis-1/4 text-center">
+                    {wallet.chain.toUpperCase()}
+                  </span>
                   <span
                     className="group flex basis-1/2 cursor-pointer flex-row justify-center text-center"
                     onClick={() => copyWalletToClipboard(wallet.address)}
@@ -179,7 +182,7 @@ const PayoutSettings = () => {
           tag="button"
           variant="pink"
         >
-          Add bank
+          Add Bank
         </Button>
         {(!banks || banks.length === 0) && (
           <div className="mt-6 flex w-full items-center justify-center rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-7">

@@ -7,13 +7,8 @@ import { downloadFile } from "src/helpers/downloadFile"
 export const DownloadW9FormButton = () => {
   return (
     <Button
+      className="w-full bg-gray-100 font-bold"
       onClick={() => downloadFile(ContentService.w9PublicPdfPath(), "w9.pdf")}
-      style={{
-        background: "rgba(255, 254, 255, 0.15)",
-        fontWeight: "bold",
-        width: "100%",
-        color: "white"
-      }}
       variant="primary"
     >
       Download W9 Form

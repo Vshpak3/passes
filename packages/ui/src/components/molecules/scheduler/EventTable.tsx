@@ -1,14 +1,14 @@
 import { ScheduledEventDto } from "@passes/api-client"
 import { format } from "date-fns"
 import Calendar from "public/icons/calendar-minus.svg"
-import { FC, useCallback, useContext, useEffect, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
-import { DeleteEventModal } from "./DeleteEventModal"
 
 export const EventTable: FC = () => {
   const { isTablet } = useWindowSize()
@@ -24,26 +24,17 @@ export const EventTable: FC = () => {
   const [selectEventIdDelete, setSelectEventIdDelete] = useState<string | null>(
     null
   )
-  const [isDeleting, setIsDeleting] = useState<boolean>(false)
-
   const handleOnDeleteEvent = (targetId: string) => {
     setSelectEventIdDelete(targetId)
   }
 
-  const handleCancelDelete = () => {
-    setSelectEventIdDelete(null)
-  }
-
-  const handleDeleteEvent = useCallback(async () => {
+  const handleDeleteEvent = async () => {
     if (!selectEventIdDelete) {
       return
     }
-    setIsDeleting(true)
     await deleteScheduledEvent(selectEventIdDelete)
-    setSelectEventIdDelete(null)
-    setIsDeleting(false)
-    toast.success("Deleted event successefully")
-  }, [selectEventIdDelete, deleteScheduledEvent])
+    toast.success("Deleted event successfully")
+  }
 
   const handleOnUpdateEvent = async (id: string, time: Date) => {
     await updateScheduledTime(id, time)
@@ -75,9 +66,9 @@ export const EventTable: FC = () => {
       ) : (
         <div className="mb-[30px] w-full overflow-auto rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
           {selectEventIdDelete && (
-            <DeleteEventModal
-              isDeleting={isDeleting}
-              onCancel={handleCancelDelete}
+            <DeleteConfirmationModal
+              isOpen
+              onClose={() => setSelectEventIdDelete(null)}
               onDelete={handleDeleteEvent}
             />
           )}

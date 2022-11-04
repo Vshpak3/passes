@@ -375,12 +375,8 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 type={ButtonTypeEnum.SUBMIT}
               />
               <Button
+                className="w-full bg-transparent"
                 onClick={onFinishPaymentForm}
-                style={{
-                  background: "transparent",
-                  width: "100%",
-                  color: "#737893"
-                }}
                 variant="primary"
               >
                 Skip for now
