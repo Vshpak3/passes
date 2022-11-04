@@ -39,6 +39,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
         initialData={{ scheduledAt: selectionDate }}
         isExtended
         onClose={onCancel}
+        opaque={false}
       />
     </Dialog>
   )

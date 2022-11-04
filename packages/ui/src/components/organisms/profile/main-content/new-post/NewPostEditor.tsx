@@ -68,6 +68,7 @@ interface NewPostEditorProps {
   onlyText?: boolean
   isExtended?: boolean
   onClose?: () => void
+  opaque?: boolean
 }
 
 export const NewPostEditor: FC<NewPostEditorProps> = ({
@@ -75,6 +76,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   initialData = {},
   onlyText = false,
   isExtended = false,
+  opaque = true,
   onClose
 }) => {
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
@@ -181,7 +183,12 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col items-start justify-start border-y-[0.5px] border-gray-600 bg-[#1b141d]/50 p-5  md:px-7 md:py-5">
+      <div
+        className={classNames(
+          "flex flex-col items-start justify-start border-y-[0.5px] border-gray-600 p-5  md:px-7 md:py-5",
+          opaque ? "bg-[#1b141d]/50" : "bg-[#1b141d]/90"
+        )}
+      >
         {extended && (
           <NewPostEditorHeader
             formName="isPaid"
