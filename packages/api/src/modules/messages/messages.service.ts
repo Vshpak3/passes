@@ -854,12 +854,32 @@ export class MessagesService {
       .update({ recent: new Date(), preview_text: previewText })
   }
 
-  async deleteMessage(messageId: string): Promise<boolean> {
-    return (
+  async deletePendingMessage(messageId: string): Promise<boolean> {
+    const result =
       (await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .where({ id: messageId, pending: true })
+        .update({ deleted_at: new Date() })) === 1
+    if (result) {
+      const message = await this.dbReader<MessageEntity>(MessageEntity.table)
         .where({ id: messageId })
-        .delete()) === 1
-    )
+        .select('*')
+        .first()
+      if (!message) {
+        throw new InternalServerErrorException('message not found')
+      }
+      await this.redisService.publish(
+        'message',
+        JSON.stringify(
+          new MessageNotificationDto(
+            message,
+            [],
+            '',
+            MessageNotificationEnum.DELETED,
+          ),
+        ),
+      )
+    }
+    return result
   }
 
   async updateChannelTipStats(

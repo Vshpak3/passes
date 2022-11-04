@@ -5,4 +5,5 @@ export enum MessageNotificationEnum {
   FAILED_PAYMENT = 'failed_payment',
   PAID = 'paid',
   PROCESSED = 'processed',
+  DELETED = 'deleted',
 }

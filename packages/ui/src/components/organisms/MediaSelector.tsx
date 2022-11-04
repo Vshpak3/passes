@@ -34,7 +34,6 @@ interface FileSelectorProps {
 type MediaSelectorProps = {
   register: FormRegister
   activeMediaHeader?: string
-  // setActiveMediaHeader?: (mediaHeader: string) => void
   errors: FormErrors
   options?: FormOptions
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
@@ -47,7 +46,6 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
   options = {},
   onChange,
   activeMediaHeader,
-  // setActiveMediaHeader = () => null,
   selectors,
   children
 }) => {
@@ -60,12 +58,6 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
               return (
                 <FileInput
                   accept={accept}
-                  className={classNames(
-                    activeMediaHeader === name
-                      ? " bg-[#FF51A8]/10 "
-                      : "hover:bg-[#FF51A8]/10",
-                    "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
-                  )}
                   errors={errors}
                   key={`media-header-${name}`}
                   multiple={multiple}
@@ -81,7 +73,6 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                         "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
                       )}
                       type="button"
-                      // onClick={() => setActiveMediaHeader(name)}
                     >
                       <span className="flex shrink-0 cursor-pointer items-center gap-1">
                         <Icon className="flex shrink-0" />

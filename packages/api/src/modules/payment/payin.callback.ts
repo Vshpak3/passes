@@ -110,7 +110,9 @@ async function tippedMessageFailureCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
-  await payService.messagesService.deleteMessage(input.messageId as string)
+  await payService.messagesService.deletePendingMessage(
+    input.messageId as string,
+  )
   return { messageId: input.messageId as string }
 }
 

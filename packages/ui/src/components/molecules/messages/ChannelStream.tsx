@@ -138,6 +138,18 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 return { ...messageUpdates, [newMessage.messageId]: newMessage }
               })
               break
+            case "deleted":
+              setMessages((messages) =>
+                messages.filter(
+                  (message) => message.messageId !== newMessage.messageId
+                )
+              )
+              setPendingMessages((pendingMessages) =>
+                pendingMessages.filter(
+                  (message) => message.messageId !== newMessage.messageId
+                )
+              )
+              break
           }
         }
       })
@@ -188,13 +200,13 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
 
   return (
     <>
-      {!!minimumTip && freeMessages !== undefined && (
-        <div className="absolute top-24 z-20 flex w-full justify-center bg-transparent pr-4">
-          <FreeMessagesLeftContainer freeMessages={freeMessages} />
-        </div>
-      )}
       {isConnected ? (
         <div className="relative h-full overflow-y-hidden">
+          {!!minimumTip && freeMessages !== undefined && (
+            <div className="absolute z-20 flex w-full justify-center bg-transparent pr-4">
+              <FreeMessagesLeftContainer freeMessages={freeMessages} />
+            </div>
+          )}
           <div
             className="relative h-full scale-y-[-1] overflow-y-scroll"
             id="scrollableDiv"
