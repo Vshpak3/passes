@@ -7,10 +7,12 @@ import { ProfileNavigationOptions } from "src/components/organisms/profile/main-
 import { PassesSidebar } from "src/components/organisms/profile/passes/PassesSidebar"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { useProfile } from "src/hooks/profile/useProfile"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const ProfileUnmemo: FC = () => {
   const { profile, loadingProfile, hasInitialFetch } = useProfile()
 
+  const { isTablet } = useWindowSize()
   return (
     <>
       {!profile && loadingProfile ? (
@@ -27,9 +29,11 @@ const ProfileUnmemo: FC = () => {
               />
             )}
           </div>
-          <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600">
-            <PassesSidebar />
-          </div>
+          {!isTablet && (
+            <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600">
+              <PassesSidebar />
+            </div>
+          )}
         </div>
       ) : (
         hasInitialFetch && <NoProfile />
