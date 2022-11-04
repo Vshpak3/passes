@@ -51,7 +51,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
   return (
     <div
       className={classNames(
-        "m-4 flex max-w-[70%] rounded",
+        "m-2.5 flex max-w-[70%] rounded",
         ownsMessage && "flex-row-reverse self-end"
       )}
     >
