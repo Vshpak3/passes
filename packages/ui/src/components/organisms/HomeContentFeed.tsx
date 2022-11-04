@@ -73,7 +73,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="col-span-3 h-screen border-gray-600 pl-8 lg:border-l-[0.5px]">
+      <div className="col-span-3 hidden h-screen border-gray-600 pl-8 lg:block lg:border-l-[0.5px]">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>

@@ -3,8 +3,8 @@ import LogoSmall from "public/icons/sidebar-logo-small.svg"
 
 export const NoProfile = () => {
   return (
-    <div className="flex w-full items-center justify-center pt-[60px]">
-      <div className="flex w-[500px] flex-col items-center justify-center gap-[15px] text-center">
+    <div className="grid w-full grid-cols-7">
+      <div className="col-span-7 flex flex-col items-center px-8 pt-16 text-center lg:col-span-4">
         <div className="h-[56px] w-[56px]">
           <LogoSmall />
         </div>
@@ -21,6 +21,7 @@ export const NoProfile = () => {
           </span>
         </Link>
       </div>
+      <div className="col-span-3 h-screen border-gray-600 lg:border-l-[0.5px]" />
     </div>
   )
 }

@@ -66,17 +66,19 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             <ShareIcon onClick={() => copyLinkToClipboard(username, postId)} />
           </button>
         </div>
-        {/* or {passIds} */}
 
         {isOwner ? (
           <div className="text-sm font-normal text-gray-500">
-            {price && !passIds.length
-              ? `Viewable for $${price}`
-              : !price && passIds.length
-              ? "Requires a pass to view"
-              : price && passIds.length
-              ? `Viewable for $${price} or with pass`
-              : "Free"}
+            <span className="mr-4">Tipped: ${post.yourTips}</span>
+            <span>
+              {price && !passIds.length
+                ? `Viewable for $${price}`
+                : !price && passIds.length
+                ? "Requires a pass to view"
+                : price && passIds.length
+                ? `Viewable for $${price} or with pass`
+                : "Free"}
+            </span>
           </div>
         ) : (
           <TipButton post={post} />
