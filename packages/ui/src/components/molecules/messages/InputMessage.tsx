@@ -14,6 +14,7 @@ import React, {
   useState
 } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { date, object } from "yup"
 
 import { Button } from "src/components/atoms/Button"
@@ -130,7 +131,11 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }
 
-  const [submitError, setSubmitError] = useState<string>()
+  // const [submitError, setSubmitError] = useState<string>()
+  const setSubmitError = (err: string | undefined) => {
+    err ? toast.error(err) : toast.dismiss()
+  }
+
   useEffect(() => {
     // Any time we receive an error, just show the first one
     const errorMessages = Object.entries(errors).map((e) => e[1].message)
@@ -363,7 +368,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             )}
             <div
               aria-roledescription="button"
-              className="h-[45px]  !p-0"
+              className="flex h-[45px] flex-col !p-0"
               role="button"
             >
               <button
@@ -392,9 +397,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                     // ? "No Payment Method (go to settings)"
                     ` Send Message`}
               </button>
-              {submitError && (
-                <span className="text-red-500">{submitError}</span>
-              )}
             </div>
           </div>
         </div>
