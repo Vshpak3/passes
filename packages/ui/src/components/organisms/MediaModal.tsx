@@ -60,7 +60,6 @@ export const MediaModal: FC<ModalProps> = ({
       {file.content && !carouselContent && (
         <Media
           className="m-0 rounded-[6px] p-0"
-          contentHeight={800}
           contentWidth={800}
           objectFit="contain"
           preview

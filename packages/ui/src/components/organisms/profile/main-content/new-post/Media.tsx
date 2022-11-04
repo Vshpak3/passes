@@ -80,8 +80,8 @@ export const Media: FC<MediaProp> = ({
   onRemove,
   onSelect,
   preview,
-  contentHeight = 200,
-  contentWidth = 200,
+  contentHeight,
+  contentWidth,
   isPassUpload,
   objectFit = "cover"
 }) => {
@@ -113,7 +113,11 @@ export const Media: FC<MediaProp> = ({
           alt=""
           className={className}
           src={src}
-          style={{ objectFit, height: contentHeight, width: contentWidth }}
+          style={{
+            objectFit,
+            height: contentHeight || "fit-content",
+            width: contentWidth || "fit-content"
+          }}
         />
         {!preview && (
           <div
