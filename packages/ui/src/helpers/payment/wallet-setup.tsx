@@ -53,17 +53,12 @@ export const executeMetamaskUSDCProvider = async (
   amount: number,
   cancelPayinCallback: () => Promise<void>
 ) => {
-  let depositAddress = ""
-  let tokenAddress = ""
-  let chainId = ""
   const response = await paymentApi.entryMetamaskCircleUSDC({
     metamaskCircleUSDCEntryRequestDto: {
       payinId
     }
   })
-  depositAddress = response.depositAddress
-  tokenAddress = response.tokenAddress
-  chainId = "0x" + response.chainId.toString(16)
+  const chainId = "0x" + response.chainId.toString(16)
   try {
     await provider.request({
       method: "wallet_switchEthereumChain",
@@ -71,8 +66,8 @@ export const executeMetamaskUSDCProvider = async (
     })
     await sendAndGenerateEthereumTokenTransactionMessage(
       account,
-      depositAddress,
-      tokenAddress,
+      response.depositAddress,
+      response.tokenAddress,
       amount,
       chainId,
       provider

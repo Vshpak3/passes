@@ -16,7 +16,7 @@ import {
   EthereumProvider,
   PhantomProvider
 } from "src/helpers/crypto/types"
-import { errorMessage } from "src/helpers/error"
+import { errorMessage, HasMessage } from "src/helpers/error"
 import {
   connectMetamask,
   executeMetamaskEthProvider,
@@ -136,7 +136,9 @@ export const usePay = (
       registerResponse: RegisterPayinResponseDto,
       cancelPayinCallback: () => Promise<void>
     ) => {
-      const provider = (await detectEthereumProvider()) as EthereumProvider
+      const provider = (await detectEthereumProvider({
+        mustBeMetaMask: true
+      })) as EthereumProvider
       await checkProvider(provider, cancelPayinCallback)
       const account = await connectMetamask(provider)
       await executeMetamaskUSDCProvider(
@@ -158,7 +160,9 @@ export const usePay = (
       registerResponse: RegisterPayinResponseDto,
       cancelPayinCallback: () => Promise<void>
     ) => {
-      const provider = (await detectEthereumProvider()) as EthereumProvider
+      const provider = (await detectEthereumProvider({
+        mustBeMetaMask: true
+      })) as EthereumProvider
       await checkProvider(provider, cancelPayinCallback)
       if (registerResponse.amountEth === undefined) {
         //display message to user
@@ -228,12 +232,16 @@ export const usePay = (
       } else {
         setWaiting(true)
       }
-    } catch (error: unknown) {
-      errorMessage(error, true)
+    } catch (error: unknown | HasMessage) {
+      if ((error as HasMessage).message) {
+        errorMessage(new Error((error as HasMessage).message), true)
+      } else {
+        errorMessage(error, true)
+      }
       if (checkFunding) {
         errorMessage(
           new Error(
-            "If paying with crypto, please check for sufficient funding"
+            "When paying with crypto, please check for sufficient funding"
           ),
           true
         )

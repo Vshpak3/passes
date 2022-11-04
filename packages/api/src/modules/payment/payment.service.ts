@@ -1312,7 +1312,7 @@ export class PaymentService {
   getEvmChainIdsUSDC(): number[] {
     return Object.keys(
       this.EVM_USDC_CHAINIDS[this.getBlockchainSelector()],
-    ).map(parseInt)
+    ).map((value) => parseInt(value))
   }
 
   getEvmChain(chainId: number): ChainEnum {
