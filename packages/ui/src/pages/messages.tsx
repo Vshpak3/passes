@@ -30,35 +30,34 @@ const MessagesPage = () => {
   return (
     <Suspense fallback={<CenterLoader />}>
       <div className="flex h-screen flex-col">
-        {user?.isCreator ? (
-          <div className="space-between mt-4 ml-5 mb-3 flex min-h-[32px] items-center justify-between lg:w-[95%]">
-            {massMessage ? (
-              <div className="cursor-pointer">
-                <MessagesBackIcon onClick={() => setMassMessage(false)} />
-              </div>
-            ) : null}
-            <div className="flex flex-row items-center justify-between">
-              <SectionTitle>
-                {massMessage ? "Mass Messaging" : "Messages"}
-              </SectionTitle>
-              {!!user.isCreator && (
-                <div className="mx-6 cursor-pointer lg:mr-0">
-                  <MessagesPlusIcon onClick={() => setMassMessage(true)} />
+        <div className="flex items-center">
+          {user?.isCreator ? (
+            <div className="flex flex-1 items-center">
+              {massMessage ? (
+                <div className="ml-4 cursor-pointer">
+                  <MessagesBackIcon onClick={() => setMassMessage(false)} />
                 </div>
-              )}
+              ) : null}
+              <div className="flex flex-row items-center">
+                <SectionTitle className="ml-4">
+                  {massMessage ? "Mass Messaging" : "Messages"}
+                </SectionTitle>
+                {!!user.isCreator && (
+                  <div className="mx-6 cursor-pointer lg:mr-0">
+                    <MessagesPlusIcon onClick={() => setMassMessage(true)} />
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="z-[1000]">
-              <CreatorSearchBar />
+          ) : (
+            <div className="ml-4">
+              <SectionTitle>Messages</SectionTitle>
             </div>
+          )}
+          <div className="z-[1000]">
+            <CreatorSearchBar />
           </div>
-        ) : (
-          <div className="mt-4 ml-5 mb-3 flex min-h-[32px] min-w-[35%] items-center justify-between gap-4 lg:w-[95%]">
-            <SectionTitle>Messages</SectionTitle>
-            <div className="z-[1000]">
-              <CreatorSearchBar />
-            </div>
-          </div>
-        )}
+        </div>
         <Messages
           defaultUserId={router.query.user as string | undefined}
           massMessage={massMessage}

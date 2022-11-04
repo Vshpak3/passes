@@ -75,18 +75,10 @@ export const Checkbox: FC<CheckBoxProps> = ({
           className={classNames(
             errors[name] ? "border-red-500" : "border-gray-300",
             type === "toggle" ? "w-9" : "",
-            "rounded border placeholder-gray-400 shadow-sm ring-passes-secondary-color focus:border-passes-secondary-color focus:bg-passes-secondary-color focus:text-passes-secondary-color focus:outline-none focus:ring-passes-secondary-color sm:text-sm",
             className
           )}
         />
-        {type === "toggle" && (
-          <div
-            className={classNames(
-              className,
-              "slider absolute inset-0 h-5 w-9 cursor-pointer rounded-2xl bg-[#ccc] before:absolute before:left-1 before:bottom-[2px] before:h-4 before:w-4 before:rounded-[50%]"
-            )}
-          />
-        )}
+        {type === "toggle" && <div className={classNames(className)} />}
       </label>
       {!textPosition && (
         <div className="ml-3 text-sm">

@@ -43,7 +43,7 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
           "items-center justify-end md:flex"
         )}
       >
-        <div className="mr-[40px] box-border w-full xs:max-w-[360px]">
+        <div className="mr-[40px] box-border w-full xs:min-w-[320px] xs:max-w-[360px] sm:min-w-[360px]">
           <SearchBar
             contentName="creators"
             loading={loading}
