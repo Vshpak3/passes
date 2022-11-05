@@ -46,7 +46,7 @@ export const yupPaid = (
           )
           .test(
             "max",
-            `The minimum price of a ${text} is $${max}`,
+            `The maximum price of a ${text} is $${max}`,
             (value) => parseFloat(value || "") <= max
           )
       })

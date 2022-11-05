@@ -908,8 +908,8 @@ export class PaymentService {
         PayoutEntity.table + '.id',
         CirclePayoutEntity.table + '.payout_id',
       )
-      .select(PayoutEntity.table + '.id as id', PayoutEntity.table + '.user_id')
-      .where({ circle_id: payoutDto.id })
+      .select(`${PayoutEntity.table}.*`)
+      .where(`${CirclePayoutEntity}.circle_id`, payoutDto.id)
       .first()
 
     if (!payout) {
