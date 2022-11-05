@@ -18,7 +18,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
   listId,
   ...rest
 }) => {
-  const { results, searchValue, onChangeInput, searchRef, setResults } =
+  const { results, searchValue, onChangeInput, searchRef, setSearchValue } =
     useFollowerSearch(listId)
 
   return (
@@ -50,9 +50,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
               className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={() => {
                 onSubmit(user.userId)
-                setResults((results) =>
-                  results.filter((result) => result.userId !== user.userId)
-                )
+                setSearchValue("")
               }}
             >
               add
