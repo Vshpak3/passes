@@ -45,7 +45,7 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
         <div
           className={classNames(
             option.passType === passType && expired === option.expired
-              ? "border-b-[3px] border-[#9C4DC1] text-white"
+              ? "border-b-[3px] border-passes-pink-100 text-white"
               : "px-[10px] text-grayDark-gray8",
             "flex cursor-pointer  flex-row justify-between px-[30px] pb-[10px] text-[16px] font-bold"
           )}

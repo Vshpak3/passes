@@ -4,6 +4,7 @@ import EthereumIcon from "public/icons/eth.svg"
 import SolanaIcon from "public/icons/sol.svg"
 import { FC } from "react"
 
+import { Button } from "src/components/atoms/Button"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 
 interface PassHoldingCardProps {
@@ -85,16 +86,22 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                   parseInt(passHolder.tokenId ?? "0x0", 16).toString()
                 }
               >
-                <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
-                  View on EtherScan
-                </button>
+                <Button
+                  className="w-full rounded-full py-2 text-center"
+                  variant="pink"
+                >
+                  View on Etherscan
+                </Button>
               </Link>
             ) : (
               passHolder.chain === PassHolderDtoChainEnum.Sol && (
                 <Link href={"https://solscan.io/token/" + passHolder.address}>
-                  <button className="w-full rounded-[50px] bg-[#9C4DC1] py-[10px] px-[33px] !text-[18px] font-bold">
+                  <Button
+                    className="w-full rounded-full py-2 text-center"
+                    variant="pink"
+                  >
                     View on SolanaScan
-                  </button>
+                  </Button>
                 </Link>
               )
             )}
