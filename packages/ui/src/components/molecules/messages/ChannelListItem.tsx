@@ -61,18 +61,18 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
               {preview}
             </p>
           </div>
-          <div
-            className={`flex flex-col items-center gap-1 ${
-              channel?.unreadTip !== 0 ? "justify-center" : "justify-end"
-            }`}
-          >
-            {channel?.unreadTip !== 0 && (
-              <span className="w-full items-center self-end rounded-md border-2 border-[#FF51A8] p-1 text-center text-[12px] font-bold text-[#FF51A8]">
-                Tip: {formatCurrency(channel?.unreadTip)}
-              </span>
-            )}
-          </div>
         </div>
+      </div>
+      <div
+        className={`flex flex-col items-center gap-1 ${
+          channel?.unreadTip === 0 ? "justify-center" : "justify-end"
+        }`}
+      >
+        {channel?.unreadTip === 0 && (
+          <span className="absolute top-0 right-0 items-center self-end rounded-md border border-[#FF51A8] p-0.5 text-center text-[11px] font-bold text-[#FF51A8]">
+            Tip: {formatCurrency(channel?.unreadTip)}
+          </span>
+        )}
       </div>
       <TimeAgo
         className="absolute right-0 bottom-1 self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
