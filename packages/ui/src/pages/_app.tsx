@@ -11,7 +11,7 @@ import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
-import Router, { useRouter } from "next/router"
+import Router from "next/router"
 import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
@@ -114,17 +114,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     null
   )
 
-  const { hasRefreshed, mutate, user } = useTokenRefresh()
+  const { hasRefreshed, router } = useTokenRefresh()
   const { setPayin } = useThreeDS()
-  const router = useRouter()
-
-  // additional mutate on route change due to strange login issues
-  // where user change does not globablly propagate
-  useEffect(() => {
-    if (!user) {
-      mutate()
-    }
-  }, [mutate, router.route, user])
 
   useEffect(() => {
     if (router.isReady) {
