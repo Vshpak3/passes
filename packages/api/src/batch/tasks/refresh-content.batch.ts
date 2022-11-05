@@ -7,6 +7,7 @@ import { sleep } from '../../util/sleep.util'
 import { BatchTask } from '../batch.interface'
 
 const CHECK_PROCESSED_UNTIL = ms('1 hour')
+const RUNTIME = ms('3 minutes')
 const REFRESH_RETRIES = 3
 
 export class RefreshContentTask extends BatchTask {
@@ -22,7 +23,7 @@ export class RefreshContentTask extends BatchTask {
       await messagesService.checkRecentMessagesContentProcessed(
         CHECK_PROCESSED_UNTIL,
       )
-      await sleep(ms('1 minute') / REFRESH_RETRIES)
+      await sleep(RUNTIME / REFRESH_RETRIES)
     }
   }
 }
