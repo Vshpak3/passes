@@ -129,6 +129,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     if (!tip) {
       removeFree()
     }
+    setTip(0)
   }
 
   // const [submitError, setSubmitError] = useState<string>()
@@ -161,13 +162,9 @@ export const InputMessage: FC<InputMessageProps> = ({
   }
 
   const registerMessage = async () => {
-    const result = await api.sendMessage({
+    return await api.sendMessage({
       sendMessageRequestDto: await getRequest()
     })
-
-    clear()
-
-    return result
   }
 
   const registerMessageData = async () => {

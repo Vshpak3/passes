@@ -1,4 +1,4 @@
-import { MessagesApi, UserApi } from "@passes/api-client"
+import { MessagesApi } from "@passes/api-client"
 import { ChannelMemberDto, ContentDto } from "@passes/api-client/models"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
@@ -45,15 +45,16 @@ export const ChannelView: FC<ChannelViewProps> = ({
       freeMessages ? freeMessages - 1 : freeMessages
     )
   }
+
+  const { isCreator: otherUserIsCreator } = useIsCreator(
+    selectedChannel?.otherUserId
+  )
+
   useEffect(() => {
     setAdditionalTips(0)
     if (selectedChannel?.channelId) {
       const fetch = async () => {
-        const api = new UserApi()
-        const check = await api.isCreator({
-          userId: selectedChannel.otherUserId
-        })
-        if (check.value) {
+        if (otherUserIsCreator) {
           const messagesApi = new MessagesApi()
           const freeMessagesResponse = await messagesApi.getChannelMessageInfo({
             channelId: selectedChannel.channelId ?? ""
@@ -66,11 +67,8 @@ export const ChannelView: FC<ChannelViewProps> = ({
       }
       fetch()
     }
-  }, [selectedChannel])
+  }, [selectedChannel, otherUserIsCreator])
 
-  const { isCreator: otherUserIsCreator } = useIsCreator(
-    selectedChannel?.otherUserId
-  )
   return (
     <div
       className="z-50 col-span-7 flex h-full w-full flex-1 flex-col overflow-y-hidden
