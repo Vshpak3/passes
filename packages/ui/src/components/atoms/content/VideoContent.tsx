@@ -1,12 +1,12 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { useEffect } from "react"
+import { memo, useEffect } from "react"
 
 import { ContentService } from "src/helpers/content"
 import { useVideoPlayer } from "src/hooks/useVideoPlayer"
 import { VideoPlayer } from "./VideoPlayer"
 
-export const VideoContent = ({
+const VideoContentUnmemo = ({
   content,
   fixedHeight,
   isActive,
@@ -52,3 +52,5 @@ export const VideoContent = ({
     </div>
   )
 }
+
+export const VideoContent = memo(VideoContentUnmemo)
