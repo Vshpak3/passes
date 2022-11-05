@@ -68,7 +68,9 @@ export const usePostWebhook = () => {
         // eslint-disable-next-line sonarjs/no-small-switch
         switch (post.notification) {
           case "failed_payment":
-            toast.error("Payment for post failed")
+            if (!toast.isActive) {
+              toast.error("Payment for post failed")
+            }
             break
         }
         setPosts((posts) => {

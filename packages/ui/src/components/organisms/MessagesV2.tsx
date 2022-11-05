@@ -53,11 +53,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
   }, [selectedChannel])
 
   useEffect(() => {
-    if (
-      selectedChannel &&
-      router.isReady &&
-      router.query.user !== selectedChannel.otherUserId
-    ) {
+    if (selectedChannel && router.isReady) {
       // pushState messes with the ability to go back
       window.history.replaceState(
         window.history.state,

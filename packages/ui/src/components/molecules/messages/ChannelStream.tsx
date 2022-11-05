@@ -130,7 +130,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               ])
               break
             case "failed_payment":
-              toast.error("Payment for post failed")
+              if (!toast.isActive) {
+                toast.error("Payment for message failed")
+              }
             // falls through
             case "paying":
             case "paid":
