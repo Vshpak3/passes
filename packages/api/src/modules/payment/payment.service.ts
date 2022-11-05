@@ -382,13 +382,6 @@ export class PaymentService {
       verificationSuccessUrl: successUrl,
     }
 
-    if (successUrl) {
-      createCardPaymentDto.verificationSuccessUrl = successUrl
-    }
-    if (failureUrl) {
-      createCardPaymentDto.verificationSuccessUrl = failureUrl
-    }
-
     const data = {
       id: v4(),
       card_id: card.id,
