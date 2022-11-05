@@ -133,17 +133,9 @@ export const InputMessage: FC<InputMessageProps> = ({
   }
 
   // const [submitError, setSubmitError] = useState<string>()
-  const setSubmitError = (err: string | undefined) => {
+  const setSubmitError = (err: string) => {
     err ? toast.error(err) : toast.dismiss()
   }
-
-  useEffect(() => {
-    // Any time we receive an error, just show the first one
-    const errorMessages = Object.entries(errors).map((e) => e[1].message)
-    if (errorMessages.length) {
-      setSubmitError(errorMessages[0])
-    }
-  }, [errors])
 
   const getRequest = async () => {
     const contentIds = await new ContentService().uploadUserContent({
@@ -235,8 +227,8 @@ export const InputMessage: FC<InputMessageProps> = ({
       fetch()
     }
   }, [channelId, submitData, tip])
-
   const options = {}
+
   return (
     <form
       className="flex w-full border-t border-[#fff]/10"
@@ -301,6 +293,11 @@ export const InputMessage: FC<InputMessageProps> = ({
           // }}
           onKeyDown={submitOnEnter}
         />
+        {Object.values(errors)[0] && (
+          <Text className="mt-1 block text-[red]" fontSize={12}>
+            {Object.values(errors)[0]?.message}
+          </Text>
+        )}
         {files.length > 0 && (
           <div className="relative max-w-[390px] sm:max-w-[590px]">
             <MediaSection
@@ -318,7 +315,15 @@ export const InputMessage: FC<InputMessageProps> = ({
             />
           </div>
         )}
-        <div className="-ml-4 flex w-full flex-wrap items-center justify-between pb-3 pt-1">
+        <div
+          className={classNames(
+            isCreator
+              ? "items-center justify-between md:-ml-4 md:flex-nowrap"
+              : "flex-nowrap justify-end",
+            "flex-wrap flex  w-full md:flex-nowrap md:py-5",
+            Object.values(errors)[0] && "!pt-0"
+          )}
+        >
           {isCreator && (
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
