@@ -45,7 +45,7 @@ const HTML_CHARACTERS_ORDER = ["&", " ", "<", ">", "€", "£", '"', "'", "\n"]
 
 const HTML_CHARACTERS: Record<string, string> = {
   "&": "&amp;",
-  " ": "&ensp;",
+  " ": "&#32;&#8203;",
   "<": "&lt;",
   ">": "&gt",
   "€": "&euro;",
