@@ -43,7 +43,7 @@ export const EventTable: FC = () => {
 
   const tableItems = data?.map((item: ScheduledEventDto) => (
     <EventTableItem
-      isTablet={isTablet}
+      isTablet={!!isTablet}
       key={item.scheduledEventId}
       onChangeTime={handleOnUpdateEvent}
       onDeleteEvent={handleOnDeleteEvent}
