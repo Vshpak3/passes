@@ -46,8 +46,8 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
           {TitleBtn}
         </div>
         {description && (
-          <p className="mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
-            {formatText(description)}
+          <p className="passes-break mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
+            {description}
           </p>
         )}
       </div>
