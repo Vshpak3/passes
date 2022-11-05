@@ -1,7 +1,7 @@
 import { MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
-import { FC } from "react"
+import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 
 import { MediaContent } from "src/components/molecules/content/MediaContent"
@@ -15,7 +15,7 @@ interface ChannelMessageProps {
   ownsMessage?: boolean
   message: MessageDto
 }
-export const ChannelMessage: FC<ChannelMessageProps> = ({
+const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   message,
   ownsMessage = false
 }) => {
@@ -132,3 +132,5 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     </div>
   )
 }
+
+export const ChannelMessage = memo(ChannelMessageUnmemo)
