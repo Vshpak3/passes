@@ -138,8 +138,8 @@ export const Media: FC<MediaProp> = ({
           src={src}
           style={{
             objectFit,
-            height: contentHeight || "fit-content",
-            width: contentWidth || "fit-content"
+            maxHeight: contentHeight || "fit-content",
+            maxWidth: contentWidth || "fit-content"
           }}
         />
         {!preview && (
