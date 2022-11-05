@@ -53,7 +53,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       className={classNames(
         "m-2.5 flex max-w-[70%] rounded",
         ownsMessage && "flex-row-reverse self-end",
-        !!messageContent.length ?? "min-w-[60%]"
+        !!messageContent.length && "min-w-[60%]"
       )}
     >
       {!ownsMessage && (
@@ -63,8 +63,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
       <div
         className={classNames(
-          "mx-4 flex flex-col items-end"
-          // !!messageContent.length ?? "w-full"
+          "mx-4 flex flex-col items-end",
+          !!messageContent.length && "w-full"
         )}
       >
         <div className="relative flex w-full items-center gap-3">
