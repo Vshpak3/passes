@@ -8,6 +8,7 @@ import {
   PayoutDto
 } from "@passes/api-client"
 import { format } from "date-fns"
+import ms from "ms"
 import { useCallback, useRef, useState } from "react"
 
 import {
@@ -138,7 +139,10 @@ export const PayoutHistory = () => {
             endDate
           }}
           keyValue="/payouts"
-          options={{ revalidateOnMount: true }}
+          options={{
+            revalidateOnMount: true,
+            refreshInterval: ms("3 seconds")
+          }}
         />
       </div>
     </div>
