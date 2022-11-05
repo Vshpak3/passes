@@ -54,7 +54,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
               />
             </span>
             <p className="w-[120px] truncate text-[14px] font-medium text-[#ffff]/30">
-              {channel?.previewText ?? ""}
+              {channel?.previewText ?? <br />}
             </p>
           </div>
           <div
