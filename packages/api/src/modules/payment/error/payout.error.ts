@@ -27,3 +27,10 @@ export class PayoutAmountException extends BadRequestException {
     Object.setPrototypeOf(this, PayoutAmountException.prototype)
   }
 }
+
+export class PayoutMethodException extends BadRequestException {
+  constructor(msg: string) {
+    super(msg)
+    Object.setPrototypeOf(this, PayoutMethodException.prototype)
+  }
+}

@@ -33,10 +33,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
         return (
           <ChannelMessage
-            message={{
-              ...arg,
-              ...(messageUpdates[arg.messageId] ?? {})
-            }}
+            message={arg}
+            messageUpdate={messageUpdates[arg.messageId]}
             ownsMessage={arg.senderId === user?.userId}
           />
         )
@@ -64,10 +62,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           return (
             <ChannelMessage
               key={i}
-              message={{
-                ...m,
-                ...(messageUpdates[m.messageId] ?? {})
-              }}
+              message={m}
+              messageUpdate={messageUpdates[m.messageId]}
               ownsMessage={m.senderId === user?.userId}
             />
           )
@@ -77,10 +73,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           return (
             <ChannelMessage
               key={i}
-              message={{
-                ...m,
-                ...(messageUpdates[m.messageId] ?? {})
-              }}
+              message={m}
+              messageUpdate={messageUpdates[m.messageId]}
               ownsMessage={m.senderId === user?.userId}
             />
           )

@@ -1,4 +1,5 @@
 import { CreatorStatsApi } from "@passes/api-client"
+import ms from "ms"
 import useSWR from "swr"
 
 const CACHE_KEY_BALANCE = "/creator-stats/balance"
@@ -11,7 +12,7 @@ export const useCreatorBalance = () => {
     async () => {
       return await api.getAvailableBalance()
     },
-    { revalidateOnMount: true }
+    { revalidateOnMount: true, refreshInterval: ms("3 seconds") }
   )
 
   return { userBalance }

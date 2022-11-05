@@ -14,26 +14,33 @@ import { SpinnerIcon } from "src/icons/SpinnerIcon"
 interface ChannelMessageProps {
   ownsMessage?: boolean
   message: MessageDto
+  messageUpdate?: Partial<MessageDto>
 }
 const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   message,
+  messageUpdate = {},
   ownsMessage = false
 }) => {
   const messageBackground = ownsMessage ? "bg-black" : "bg-[#1E1820]"
-  const messageContent = message ? message.contents : []
   const {
     messageId,
     senderId,
     contentProcessed,
+    contents,
     paidAt,
     paying,
+    pending,
     price,
     previewIndex,
-    sentAt
-  } = message
+    sentAt,
+    tipAmount,
+    text
+  } = { ...message, ...messageUpdate }
+
+  const messageContent = contents ?? []
 
   const { setMessage } = useBuyMessageModal()
-
+  console.log("asdf", message.messageId)
   const tipComponent = (
     <div
       className={classNames(
@@ -43,7 +50,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
     >
       <DollarSymbol dimensions={11} />
       <span className="text-xs font-bold text-white">
-        Tip: {formatCurrency(message.tipAmount ?? 0)}
+        Tip: {formatCurrency(tipAmount ?? 0)}
       </span>
     </div>
   )
@@ -70,7 +77,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           <div
             className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
-            <span className="passes-break">{formatText(message?.text)}</span>
+            <span className="passes-break">{formatText(text)}</span>
             {!!messageContent.length && (
               <div className="w-[403px]">
                 <MediaContent
@@ -85,7 +92,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                 />
               </div>
             )}
-            {!message?.pending && sentAt && (
+            {!pending && sentAt && (
               <div className="flex items-center justify-between">
                 {!!senderId && !!price && (
                   <div className="ml-10 flex flex-row items-center text-[11px]">
@@ -103,11 +110,11 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               </div>
             )}
           </div>
-          {!!message?.tipAmount && tipComponent}
+          {!!tipAmount && tipComponent}
         </div>
 
         {ownsMessage &&
-          (message?.pending ? (
+          (pending ? (
             <span className="mt-2 flex flex-row items-center gap-1 text-[11px] text-[#767676]">
               <SpinnerIcon />
               Pending...
@@ -117,13 +124,13 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               {isAfter(sentAt, subDays(new Date(), 1)) ? (
                 <TimeAgo
                   className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
-                  date={message?.sentAt ? sentAt : ""}
-                  key={message.messageId}
+                  date={sentAt ?? ""}
+                  key={messageId}
                   minPeriod={30}
                 />
               ) : (
                 <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
-                  {message?.sentAt?.toLocaleDateString()}
+                  {sentAt?.toLocaleDateString()}
                 </span>
               )}
             </>

@@ -126,6 +126,7 @@ import {
   NoPayoutMethodExcption,
   PayoutAmountException,
   PayoutFrequencyException,
+  PayoutMethodException,
   PayoutNotFoundException,
 } from './error/payout.error'
 import { InvalidSubscriptionError } from './error/subscription.error'
@@ -144,7 +145,8 @@ const DEFAULT_CRYPTO_FEE_FLAT = 0
 
 const MAX_CARDS_PER_USER = 10
 const MAX_BANKS_PER_USER = 5
-const MIN_TIME_BETWEEN_PAYOUTS_MS = ms('1 second') // TODO: change to 5 days
+const MIN_TIME_BETWEEN_PAYOUTS_TEXT = '1 second'
+const MIN_TIME_BETWEEN_PAYOUTS_MS = ms(MIN_TIME_BETWEEN_PAYOUTS_TEXT) // TODO: change to 5 days
 const MAX_PAYINS_PER_REQUEST = 20
 const MAX_PAYOUTS_PER_REQUEST = 20
 
@@ -2021,7 +2023,7 @@ export class PaymentService {
     )
     if (!lockResult) {
       throw new PayoutFrequencyException(
-        `Payouts can only occur once every ${MIN_TIME_BETWEEN_PAYOUTS_MS}`,
+        `Payouts can only occur once every ${MIN_TIME_BETWEEN_PAYOUTS_TEXT}`,
       )
     }
 
@@ -2073,6 +2075,9 @@ export class PaymentService {
       }
     }
     const defaultPayoutMethod = await this.getDefaultPayoutMethod(userId)
+    if (defaultPayoutMethod.method === PayoutMethodEnum.NONE) {
+      throw new PayoutMethodException('No destination for payout')
+    }
 
     const availableBalances =
       await this.creatorStatsService.getAvailableBalances(userId)
@@ -2082,16 +2087,16 @@ export class PaymentService {
     }
 
     try {
-      await this.creatorStatsService.handlePayout(userId, {
-        [EarningCategoryEnum.NET]: availableBalances.net.amount,
-        [EarningCategoryEnum.GROSS]: availableBalances.gross.amount,
-        [EarningCategoryEnum.AGENCY]: availableBalances.agency.amount,
-      })
       if (creatorBalance < MIN_PAYOUT_AMOUNT) {
         throw new PayoutAmountException(
           `${creatorBalance} is not enough to payout`,
         )
       }
+      await this.creatorStatsService.handlePayout(userId, {
+        [EarningCategoryEnum.NET]: availableBalances.net.amount,
+        [EarningCategoryEnum.GROSS]: availableBalances.gross.amount,
+        [EarningCategoryEnum.AGENCY]: availableBalances.agency.amount,
+      })
       const data = {
         id: v4(),
         user_id: userId,
@@ -2125,6 +2130,7 @@ export class PaymentService {
       }
     } catch (err) {
       await this.lockService.unlock(redisKey)
+      throw err
       // await this.creatorStatsService.handlePayoutFail(userId, {
       //   [EarningCategoryEnum.NET]: availableBalance,
       //   [EarningCategoryEnum.GROSS]: availableBalance,
