@@ -60,7 +60,6 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           <span className="sr-only">Loading older messages...</span>
         </div>
       }
-      options={{ revalidateOnMount: true }}
       scrollableTarget="scrollableDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
     >
