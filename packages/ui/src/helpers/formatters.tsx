@@ -84,6 +84,5 @@ function formatTextFromString(text: string) {
 }
 
 export function formatText(text?: string | null) {
-  // console.log(text)
   return formatTextFromString(formatTextToString(text))
 }

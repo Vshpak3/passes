@@ -1,6 +1,6 @@
 export enum LandingStatusEnum {
   SUCCESS = "success",
-  FAILURE = "faliure"
+  FAILURE = "failure"
 }
 
 export enum LandingMessageEnum {

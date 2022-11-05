@@ -131,7 +131,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       const query = router.query
       const landingMessage = query.lm as LandingMessageEnum
       const result = query.r as LandingStatusEnum
-      if (landingMessage && result) {
+      if (landingMessage && result && LANDING_MESSAGES[result]) {
         const action =
           result === LandingStatusEnum.SUCCESS ? toast.success : toast.error
         if (LANDING_MESSAGES[result][landingMessage]) {
