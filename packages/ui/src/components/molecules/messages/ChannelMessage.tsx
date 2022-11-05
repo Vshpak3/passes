@@ -63,14 +63,14 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
       <div
         className={classNames(
-          "mx-4 flex flex-col items-end",
-          !!messageContent.length ?? "w-full"
+          "mx-4 flex flex-col items-end"
+          // !!messageContent.length ?? "w-full"
         )}
       >
         <div className="relative flex w-full items-center gap-3">
           {!!message?.tipAmount && ownsMessage && tipComponent}
           <div
-            className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground} w-full`}
+            className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
             <span className="passes-break">{formatText(message?.text)}</span>
             {!!messageContent.length && (
