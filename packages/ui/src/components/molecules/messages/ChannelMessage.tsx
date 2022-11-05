@@ -40,7 +40,6 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   const messageContent = contents ?? []
 
   const { setMessage } = useBuyMessageModal()
-  console.log("asdf", message.messageId)
   const tipComponent = (
     <div
       className={classNames(
