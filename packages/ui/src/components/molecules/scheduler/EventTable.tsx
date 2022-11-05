@@ -50,6 +50,9 @@ export const EventTable: FC = () => {
       scheduledEvent={item}
     />
   ))
+  if (isTablet === undefined) {
+    return null
+  }
 
   return (
     <div className="px-[30px] pb-[100px]">

@@ -167,6 +167,9 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     }
   }, [settingsPath, isMobile, activeTab, setActiveTab])
 
+  if (isMobile === undefined) {
+    return null
+  }
   return (
     <>
       <Header />

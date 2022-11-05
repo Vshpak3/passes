@@ -45,7 +45,9 @@ export const SchedulerHeader: FC = () => {
     () => () => setIsNewPostModalOpen(false),
     []
   )
-
+  if (isMobile === undefined) {
+    return null
+  }
   return (
     <>
       {/* month year picker */}

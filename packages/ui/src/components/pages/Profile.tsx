@@ -13,6 +13,9 @@ const ProfileUnmemo: FC = () => {
   const { profile, loadingProfile, hasInitialFetch } = useProfile()
 
   const { isTablet } = useWindowSize()
+  if (isTablet === undefined) {
+    return null
+  }
   return (
     <>
       {!profile && loadingProfile ? (
