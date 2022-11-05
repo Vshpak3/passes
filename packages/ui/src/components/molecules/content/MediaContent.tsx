@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, memo } from "react"
 
 import {
   ContentCarousel,
@@ -9,7 +9,7 @@ interface MediaContentProps extends ContentCarouselProps {
   isProcessing: boolean
 }
 
-export const MediaContent: FC<MediaContentProps> = ({
+const MediaContentUnmemo: FC<MediaContentProps> = ({
   isProcessing,
   ...res
 }) => {
@@ -29,3 +29,5 @@ export const MediaContent: FC<MediaContentProps> = ({
     </div>
   )
 }
+
+export const MediaContent = memo(MediaContentUnmemo)
