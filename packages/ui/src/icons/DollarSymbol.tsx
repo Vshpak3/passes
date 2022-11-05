@@ -6,6 +6,7 @@ interface DollarSymbolProps {
 export const DollarSymbol = ({ dimensions = 22 }: DollarSymbolProps) => {
   return (
     <svg
+      className="min-w-[11px]"
       fill="none"
       height={dimensions}
       viewBox="0 0 22 22"
