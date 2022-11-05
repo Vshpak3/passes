@@ -52,7 +52,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     <div
       className={classNames(
         "m-2.5 flex max-w-[70%] rounded",
-        ownsMessage ?? "flex-row-reverse self-end",
+        ownsMessage && "flex-row-reverse self-end",
         !!messageContent.length ?? "min-w-[60%]"
       )}
     >
@@ -63,7 +63,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
       <div
         className={classNames(
-          "mx-4 flex w-full flex-col items-end",
+          "fle mx-4 flex-col items-end",
           !!messageContent.length ?? "w-full"
         )}
       >
@@ -74,16 +74,18 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           >
             <span className="passes-break">{formatText(message?.text)}</span>
             {!!messageContent.length && (
-              <MediaContent
-                contents={messageContent}
-                isProcessing={!contentProcessed}
-                key={messageId}
-                openBuyModal={() => setMessage(message)}
-                paid={!!paidAt || !!ownsMessage}
-                paying={paying}
-                previewIndex={previewIndex}
-                price={price}
-              />
+              <div className="max-w-[403px]">
+                <MediaContent
+                  contents={messageContent}
+                  isProcessing={!contentProcessed}
+                  key={messageId}
+                  openBuyModal={() => setMessage(message)}
+                  paid={!!paidAt || !!ownsMessage}
+                  paying={paying}
+                  previewIndex={previewIndex}
+                  price={price}
+                />
+              </div>
             )}
             {!message?.pending && sentAt && (
               <div className="flex items-center justify-between">
