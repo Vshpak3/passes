@@ -3,12 +3,13 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
 
+import { Button } from "src/components/atoms/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
+import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
 import {
   InputMessageFormDefaults,
@@ -67,19 +68,12 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
+  const [reorderContent, setReorderContent] = useState(false)
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
     addNewMedia(event.target.files)
     event.target.value = ""
   }
-
-  useEffect(() => {
-    // Any time we receive an error, just show the first one
-    const errorMessages = Object.entries(errors).map((e) => e[1].message)
-    if (errorMessages.length) {
-      toast.error(errorMessages[0])
-    }
-  }, [errors])
 
   const onSubmit = async () => {
     const contentIds = await new ContentService().uploadUserContent({
@@ -127,12 +121,12 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
   const scheduledTime = watch("scheduledAt")
   return (
     <form
-      className="grid w-full grid-cols-3 border-t border-[#fff]/10"
+      className="flex w-full border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="order-2 col-span-3 flex flex-col sm:order-1 sm:col-span-3">
-        <div className="flex h-[30px] items-center justify-start gap-4 py-1">
-          <div className="flex w-full items-center justify-between py-1">
+      <div className="flex w-full flex-col px-[30px] pt-2">
+        <div className="flex w-full items-center justify-between py-1">
+          <div className="flex h-[30px] items-center justify-start gap-4">
             <Checkbox
               className="group"
               errors={errors}
@@ -157,50 +151,64 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               </div>
             ) : null}
           </div>
+          {files.length > 1 && (
+            <Button
+              className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px] "
+              onClick={() => setReorderContent(!reorderContent)}
+            >
+              <Text className="font-bold text-[#FF51A8]" fontSize={16}>
+                {reorderContent ? "Reorder Done" : "Reorder"}
+              </Text>
+            </Button>
+          )}
         </div>
 
-        <div className="flex h-fit w-full flex-col items-start justify-start px-3 py-1">
-          <textarea
-            cols={40}
-            placeholder="Send a message.."
-            rows={3}
-            {...register("text")}
-            autoComplete="off"
-            className={classNames(
-              files.length
-                ? "focus:border-b-transparent"
-                : errors.text && "border-b-red",
-              "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
-            )}
-            // onFocus={() => {
-            //   clearErrors()
-            // }}
-            onKeyDown={submitOnEnter}
-          />
-          {files.length > 0 && (
-            <div className="relative  max-w-[390px] sm:max-w-[590px]">
-              <MediaSection
-                addNewMedia={addNewMedia}
-                errors={errors}
-                files={files}
-                isPaid={isPaid}
-                mediaPreviewIndex={mediaPreviewIndex}
-                onRemove={onRemove}
-                register={register}
-                setFiles={setFiles}
-                setMediaPreviewIndex={setMediaPreviewIndex}
-                // messages={true}
-              />
-            </div>
+        <textarea
+          cols={40}
+          placeholder="Send a message.."
+          rows={3}
+          {...register("text")}
+          autoComplete="off"
+          className={classNames(
+            files.length
+              ? "focus:border-b-transparent"
+              : errors.text && "border-b-red",
+            "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
           )}
-
-          {scheduledTime && (
-            <ScheduleAlert
-              onRemoveScheduledPostTime={() => setScheduledTime(null)}
-              scheduledPostTime={scheduledTime}
+          // onFocus={() => {
+          //   clearErrors()
+          // }}
+          onKeyDown={submitOnEnter}
+        />
+        {Object.values(errors)[0] && (
+          <Text className="mt-1 block text-[red]" fontSize={12}>
+            {Object.values(errors)[0]?.message}
+          </Text>
+        )}
+        {files.length > 0 && (
+          <div className="relative  max-w-[390px] sm:max-w-[590px]">
+            <MediaSection
+              addNewMedia={addNewMedia}
+              errors={errors}
+              files={files}
+              isPaid={isPaid}
+              mediaPreviewIndex={mediaPreviewIndex}
+              onRemove={onRemove}
+              register={register}
+              reorderContent={reorderContent}
+              setFiles={setFiles}
+              setMediaPreviewIndex={setMediaPreviewIndex}
+              // messages={true}
             />
+          </div>
+        )}
+        <div
+          className={classNames(
+            Object.values(errors)[0] && "!pt-0",
+            "flex-wrap flex w-full items-center justify-between md:-ml-4 md:flex-nowrap md:pt-5 md:pb-2"
           )}
-          <div className="flex w-full items-center justify-between pb-3 pt-1">
+        >
+          <div className="flex w-full items-center justify-between">
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
               errors={errors}
@@ -221,13 +229,20 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               )}
             </MediaSelector>
             <button
-              className="flex min-w-[151px] items-center justify-start  rounded-[50px] bg-[#C943A8] py-2 px-4 text-[16px] font-bold leading-[25px] text-white"
+              className="min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
               type="submit"
             >
               {scheduledTime ? "Schedule message" : "Send message"}
             </button>
           </div>
         </div>
+
+        {scheduledTime && (
+          <ScheduleAlert
+            onRemoveScheduledPostTime={() => setScheduledTime(null)}
+            scheduledPostTime={scheduledTime}
+          />
+        )}
       </div>
     </form>
   )
