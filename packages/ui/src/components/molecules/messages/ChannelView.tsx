@@ -71,8 +71,8 @@ export const ChannelView: FC<ChannelViewProps> = ({
 
   return (
     <div
-      className="z-50 col-span-7 flex h-full w-full flex-1 flex-col overflow-y-hidden
-    bg-[#120C14] lg:col-span-5"
+      className="z-50 col-span-9 flex h-full w-full flex-1 flex-col overflow-y-hidden
+    bg-[#120C14] lg:col-span-6"
     >
       {selectedChannel && (
         <>
