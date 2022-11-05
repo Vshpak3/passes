@@ -1,12 +1,14 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { BadRequestException, Inject, Injectable } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import { Keypair } from '@solana/web3.js'
 import base58 from 'bs58'
 import dedent from 'dedent'
 import { ethers } from 'ethers'
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import nacl from 'tweetnacl'
 import { v4 } from 'uuid'
 import Web3 from 'web3'
+import { Logger } from 'winston'
 
 import {
   Database,
@@ -15,6 +17,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { localMockedAwsDev } from '../../util/aws.util'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { validateAddress } from '../../util/wallet.util'
 import { LambdaService } from '../lambda/lambda.service'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -43,6 +46,8 @@ export class WalletService {
   private web3: Web3
 
   constructor(
+    @Inject(WINSTON_MODULE_PROVIDER)
+    private readonly logger: Logger,
     private readonly lambdaService: LambdaService,
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -354,16 +359,18 @@ export class WalletService {
     const { walletAddress, chain } = createUnauthenticatedWalletDto
     const fixedWalletAddress = this.fixAddress(walletAddress, chain)
     const id = v4()
-    await this.dbWriter<WalletEntity>(WalletEntity.table)
-      .insert({
-        id,
-        user_id: userId,
-        authenticated: false,
-        address: fixedWalletAddress,
-        chain: createUnauthenticatedWalletDto.chain,
-      })
-      .onConflict(['chain', 'address'])
-      .ignore()
+    await createOrThrowOnDuplicate(
+      () =>
+        this.dbWriter<WalletEntity>(WalletEntity.table).insert({
+          id,
+          user_id: userId,
+          authenticated: false,
+          address: fixedWalletAddress,
+          chain: createUnauthenticatedWalletDto.chain,
+        }),
+      this.logger,
+      'Address already exists',
+    )
     return new CreateWalletResponseDto(id)
   }
 
