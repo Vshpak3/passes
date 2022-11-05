@@ -28,7 +28,6 @@ export const useUser = () => {
 
   const fetch = useCallback(async () => {
     // When this flag is false there is not yet a user to retrieve
-
     if (!accessToken || !jwtDecode<JWTUserClaims>(accessToken).isVerified) {
       return
     }

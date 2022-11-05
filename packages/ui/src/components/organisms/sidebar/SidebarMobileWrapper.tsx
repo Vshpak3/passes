@@ -18,6 +18,10 @@ export const SidebarMobileWrapper = ({ children, activeRoute }: Props) => {
     setMobileSidebarOpen(!mobileSidebarOpen)
   }
 
+  if (isTablet === undefined) {
+    return null
+  }
+
   return (
     <>
       {isTablet ? (
