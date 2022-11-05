@@ -27,6 +27,10 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
       })
     }
   }
+  let preview: string | null | JSX.Element = channel?.previewText
+  if (!preview || !preview.trim().length) {
+    preview = <br />
+  }
   return (
     <div
       className={classNames(
@@ -54,7 +58,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
               />
             </span>
             <p className="w-[120px] truncate text-[14px] font-medium text-[#ffff]/30">
-              {channel?.previewText ?? <br />}
+              {preview}
             </p>
           </div>
           <div
