@@ -2082,16 +2082,18 @@ export class PaymentService {
     const availableBalances =
       await this.creatorStatsService.getAvailableBalances(userId)
     const creatorBalance = availableBalances[EarningCategoryEnum.NET].amount
+
     if (!creatorBalance || creatorBalance <= 0) {
       throw new PayoutAmountException('No balance to payout')
     }
 
+    if (creatorBalance < MIN_PAYOUT_AMOUNT) {
+      throw new PayoutAmountException(
+        `${creatorBalance} is not enough to payout`,
+      )
+    }
+
     try {
-      if (creatorBalance < MIN_PAYOUT_AMOUNT) {
-        throw new PayoutAmountException(
-          `${creatorBalance} is not enough to payout`,
-        )
-      }
       await this.creatorStatsService.handlePayout(userId, {
         [EarningCategoryEnum.NET]: availableBalances.net.amount,
         [EarningCategoryEnum.GROSS]: availableBalances.gross.amount,
