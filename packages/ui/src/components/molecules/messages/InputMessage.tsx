@@ -292,11 +292,6 @@ export const InputMessage: FC<InputMessageProps> = ({
           // }}
           onKeyDown={submitOnEnter}
         />
-        {Object.values(errors)[0] && (
-          <Text className="mt-1 block text-[red]" fontSize={12}>
-            {Object.values(errors)[0]?.message}
-          </Text>
-        )}
         {files.length > 0 && (
           <div className="relative max-w-[390px] sm:max-w-[590px]">
             <MediaSection
@@ -313,6 +308,11 @@ export const InputMessage: FC<InputMessageProps> = ({
               // messages={true}
             />
           </div>
+        )}
+        {Object.values(errors)[0] && (
+          <Text className="mt-1 block text-[red]" fontSize={12}>
+            {Object.values(errors)[0]?.message}
+          </Text>
         )}
         <div
           className={classNames(
