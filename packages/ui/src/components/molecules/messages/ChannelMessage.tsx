@@ -52,8 +52,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     <div
       className={classNames(
         "m-2.5 flex max-w-[70%] rounded",
-        ownsMessage && "flex-row-reverse self-end",
-        !!messageContent.length && "min-w-[60%]"
+        ownsMessage && "flex-row-reverse self-end"
       )}
     >
       {!ownsMessage && (
@@ -61,20 +60,19 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}
-      <div
-        className={classNames(
-          "mx-4 flex flex-col items-end",
-          !!messageContent.length && "w-full"
-        )}
-      >
-        <div className="relative flex w-full items-center gap-3">
-          {!!message?.tipAmount && ownsMessage && tipComponent}
+      <div className={classNames("mx-4 flex flex-col items-end")}>
+        <div
+          className={classNames(
+            "relative flex w-full items-center gap-3",
+            ownsMessage && "flex-row-reverse self-end"
+          )}
+        >
           <div
             className={`flex flex-col gap-1 rounded border border-[#363037] p-2.5 ${messageBackground}`}
           >
             <span className="passes-break">{formatText(message?.text)}</span>
             {!!messageContent.length && (
-              <div className="max-w-[403px]">
+              <div className="w-[403px]">
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}
@@ -105,7 +103,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
               </div>
             )}
           </div>
-          {!!message?.tipAmount && !ownsMessage && tipComponent}
+          {!!message?.tipAmount && tipComponent}
         </div>
 
         {ownsMessage &&
