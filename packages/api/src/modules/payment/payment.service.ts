@@ -2087,7 +2087,7 @@ export class PaymentService {
       throw new PayoutAmountException('No balance to payout')
     }
 
-    if (creatorBalance < MIN_PAYOUT_AMOUNT) {
+    if (creatorBalance < MIN_PAYOUT_AMOUNT || creatorBalance - charge <= 0) {
       throw new PayoutAmountException(
         `${creatorBalance} is not enough to payout`,
       )
@@ -2132,6 +2132,7 @@ export class PaymentService {
       }
     } catch (err) {
       await this.lockService.unlock(redisKey)
+      this.sentry.instance().captureException(err)
       throw err
       // await this.creatorStatsService.handlePayoutFail(userId, {
       //   [EarningCategoryEnum.NET]: availableBalance,
