@@ -44,6 +44,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   inverse?: boolean
   hasInitialElement?: boolean
   initialScrollY?: number
+  mutateOnLoad?: boolean
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
@@ -75,6 +76,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   inverse = false,
   options = defaultOptions,
   initialScrollY,
+  mutateOnLoad = true,
   children
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   options = { ...defaultOptions, ...options }
@@ -91,7 +93,18 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return await fetch(props as Omit<T, "data">)
   }
 
-  const { data, size, setSize } = useSWRInfinite<T>(getKey, fetchData, options)
+  const { data, size, setSize, mutate } = useSWRInfinite<T>(
+    getKey,
+    fetchData,
+    options
+  )
+
+  useEffect(() => {
+    if (mutateOnLoad) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const triggerFetch = useCallback(
