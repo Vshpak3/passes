@@ -170,7 +170,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   return (
     <>
       <Header />
-      <div className="flex h-full min-h-screen w-full max-w-[1235px] flex-1">
+      <div className="flex h-full min-h-screen w-full max-w-[1235px]">
         <div
           className={cn(
             "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
@@ -213,7 +213,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
 
         <div
           className={cn(
-            "w-full px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
+            "w-full overflow-x-clip px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
             { hidden: !showSettingsTab }
           )}
         >

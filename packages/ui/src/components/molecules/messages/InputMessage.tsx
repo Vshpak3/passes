@@ -380,7 +380,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                 disabled={
                   !isNaN(tip) &&
                   !!blocked &&
-                  blocked !== PayinDataDtoBlockedEnum.NoPayinMethod
+                  blocked !== PayinDataDtoBlockedEnum.NoPayinMethod &&
+                  submitting
                 }
                 onClick={handleSubmit(submitMessage)}
                 type="button"
