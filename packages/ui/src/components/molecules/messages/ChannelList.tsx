@@ -95,7 +95,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               />
             )
           }}
-          className="pt-6"
+          className="overflow-x-hidden pt-6"
           fetch={async (req: GetChannelsRequestDto) => {
             const api = new MessagesApi()
             return await api.getChannels({ getChannelsRequestDto: req })
