@@ -52,8 +52,8 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
     <div
       className={classNames(
         "m-2.5 flex max-w-[70%] rounded",
-        ownsMessage ? "flex-row-reverse self-end" : "",
-        messageContent.length ? "min-w-[60%]" : ""
+        ownsMessage ?? "flex-row-reverse self-end",
+        !!messageContent.length ?? "min-w-[60%]"
       )}
     >
       {!ownsMessage && (
@@ -61,7 +61,12 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
           <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}
-      <div className="mx-4 flex w-full flex-col items-end">
+      <div
+        className={classNames(
+          "mx-4 flex w-full flex-col items-end",
+          !!messageContent.length ?? "w-full"
+        )}
+      >
         <div className="relative flex w-full items-center gap-3">
           {!!message?.tipAmount && ownsMessage && tipComponent}
           <div
