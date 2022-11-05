@@ -36,6 +36,7 @@ export const usePay = (
   landingMessage = "none"
 ) => {
   const [submitting, setSubmitting] = useState(false)
+  const [redirecting, setRedirecting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
     undefined
@@ -87,6 +88,7 @@ export const usePay = (
         if (response.actionRequired) {
           toast.info("Please wait as we redirect you.")
           setPayin(registerResponse.payinId ?? null)
+          setRedirecting(true)
           return false
         } else {
           toast.success(
@@ -266,7 +268,7 @@ export const usePay = (
   }
   return {
     blocked,
-    submitting,
+    submitting: submitting || redirecting,
     loading,
     submit,
     submitData,
