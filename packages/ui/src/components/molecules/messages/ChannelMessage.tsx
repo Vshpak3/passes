@@ -63,7 +63,7 @@ export const ChannelMessage: FC<ChannelMessageProps> = ({
       )}
       <div
         className={classNames(
-          "fle mx-4 flex-col items-end",
+          "mx-4 flex flex-col items-end",
           !!messageContent.length ?? "w-full"
         )}
       >
