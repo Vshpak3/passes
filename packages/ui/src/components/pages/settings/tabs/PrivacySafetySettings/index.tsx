@@ -22,9 +22,9 @@ const subTabs = [
     Icon: PostIcon
   },
   {
-    name: "Safety",
-    subText: "Manage blocked and restricted.",
-    id: SubTabsEnum.SafetySettings,
+    name: "Blocked & Restricted",
+    subText: "Manage blocked and restricted Accounts.",
+    id: SubTabsEnum.BlockedRestrictedAccounts,
     Icon: SafetyIcon
   }
 ]
