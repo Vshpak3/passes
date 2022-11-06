@@ -98,6 +98,7 @@ export class CreatorStatsService {
       .where({ user_id: userId, category: EarningCategoryEnum.GROSS })
       .andWhere('created_at', '>=', start)
       .andWhere('created_at', '<=', end)
+      .orderBy('created_at', 'asc')
       .select('*')
     if (type) {
       query = query.andWhere({ type: type })
