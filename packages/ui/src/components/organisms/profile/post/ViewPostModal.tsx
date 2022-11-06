@@ -152,7 +152,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
             </div>
             <Dropdown items={dropdownOptions} />
           </div>
-          <div className="mt-[50px] flex space-x-4 overflow-x-clip">
+          <div className="mt-[50px] flex space-x-4 overflow-x-hidden">
             <ProfileWidget user={user} />
           </div>
           <p className="mt-7 text-justify text-base font-medium">

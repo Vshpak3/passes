@@ -1,6 +1,6 @@
 import { MessagesApi } from "@passes/api-client"
 import { ChannelMemberDto, ContentDto } from "@passes/api-client/models"
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, FC, memo, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 import { useIsCreator } from "src/hooks/useIsCreator"
@@ -19,7 +19,7 @@ interface ChannelViewProps {
   onBack?(): void
 }
 
-export const ChannelView: FC<ChannelViewProps> = ({
+const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   selectedChannel,
   gallery,
   setGallery,
@@ -120,3 +120,5 @@ export const ChannelView: FC<ChannelViewProps> = ({
     </div>
   )
 }
+
+export const ChannelView = memo(ChannelViewUnmemo)

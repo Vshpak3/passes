@@ -1,7 +1,6 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
-  createRef,
   Dispatch,
   FC,
   MutableRefObject,
@@ -20,6 +19,7 @@ import {
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
+import { ChannelMessage } from "./ChannelMessage"
 import { ChannelStreamMessages } from "./ChannelStreamMessages"
 
 interface ChannelStreamProps {
@@ -142,11 +142,13 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               })
               break
             case "deleted":
-              setMessages((messages) =>
-                messages.filter(
-                  (message) => message.messageId !== newMessage.messageId
-                )
-              )
+              // regular message deletions don't update
+
+              // setMessages((messages) =>
+              //   messages.filter(
+              //     (message) => message.messageId !== newMessage.messageId
+              //   )
+              // )
               setPendingMessages((pendingMessages) =>
                 pendingMessages.filter(
                   (message) => message.messageId !== newMessage.messageId
@@ -201,27 +203,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     }
   }, [isBottomOfChatVisible, unreadCount, onReadLastMessage])
 
-  const ref = createRef<HTMLDivElement>()
-
-  const wheel = useCallback(
-    (e: WheelEvent) => {
-      ref.current?.scrollBy(-e.deltaX, -e.deltaY)
-      e.preventDefault()
-      e.stopPropagation()
-    },
-    [ref]
-  )
-
-  useEffect(() => {
-    if (ref && ref.current) {
-      ref.current.addEventListener("wheel", wheel, { passive: false })
-      const c = ref.current
-      return () => {
-        c.removeEventListener("wheel", wheel)
-      }
-    }
-  }, [ref, wheel])
-
   return (
     <>
       {isConnected ? (
@@ -232,24 +213,43 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             </div>
           )}
           <div
-            className="relative h-full scale-y-[-1] overflow-y-scroll"
+            className="relative flex h-full flex-col-reverse overflow-y-scroll"
             id="scrollableDiv"
-            ref={ref}
           >
             {/*
              Dummy ref to allow scrolling to bottom of chat.
              Note it has to go at the top because of 'flex-col-reverse'
           */}
             <div
-              className="h-1 w-1 scale-y-[-1]"
+              className="h-1 w-1"
               id="bottom-of-chat"
               ref={bottomOfChatRef}
             />
+            {pendingMessages.length > 0 &&
+              pendingMessages.map((m, i) => {
+                return (
+                  <ChannelMessage
+                    key={i}
+                    message={m}
+                    messageUpdate={messageUpdates[m.messageId]}
+                    ownsMessage={m.senderId === user?.userId}
+                  />
+                )
+              })}
+            {messages.length > 0 &&
+              messages.map((m, i) => {
+                return (
+                  <ChannelMessage
+                    key={i}
+                    message={m}
+                    messageUpdate={messageUpdates[m.messageId]}
+                    ownsMessage={m.senderId === user?.userId}
+                  />
+                )
+              })}
             <ChannelStreamMessages
               channelId={channelId}
               messageUpdates={messageUpdates}
-              messages={messages}
-              pendingMessages={pendingMessages}
             />
           </div>
           {unreadCount > 0 && (

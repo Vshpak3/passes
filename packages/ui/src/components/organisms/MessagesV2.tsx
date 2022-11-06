@@ -6,7 +6,7 @@ import {
   PassDto
 } from "@passes/api-client/models"
 import { useRouter } from "next/router"
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
+import { Dispatch, FC, memo, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
@@ -129,4 +129,4 @@ const MessagesV2: FC<MessagesV2Props> = ({
   )
 }
 
-export default MessagesV2 // eslint-disable-line import/no-default-export
+export default memo(MessagesV2) // eslint-disable-line import/no-default-export

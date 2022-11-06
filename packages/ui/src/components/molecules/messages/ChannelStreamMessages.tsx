@@ -16,16 +16,12 @@ import { ChannelMessage } from "./ChannelMessage"
 interface ChannelStreamMessagesProps {
   channelId?: string
   messageUpdates: Record<string, Partial<MessageDto>>
-  messages: MessageDto[]
-  pendingMessages: MessageDto[]
 }
 
 const api = new MessagesApi()
 const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   channelId,
-  messageUpdates,
-  messages,
-  pendingMessages
+  messageUpdates
 }) => {
   const { user } = useUser()
   return (
@@ -39,11 +35,12 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           />
         )
       }}
-      className="scale-y-[-1] "
+      // className="scale-y-[-1] "
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}
       fetchProps={{ channelId, pending: false, contentOnly: false }}
+      inverse
       keyValue={`messages/${channelId}`}
       loadingElement={
         <div className="sticky top-0 left-0 z-50 h-0.5 w-full">
@@ -56,30 +53,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       }
       scrollableTarget="scrollableDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
-    >
-      {pendingMessages.length > 0 &&
-        pendingMessages.map((m, i) => {
-          return (
-            <ChannelMessage
-              key={i}
-              message={m}
-              messageUpdate={messageUpdates[m.messageId]}
-              ownsMessage={m.senderId === user?.userId}
-            />
-          )
-        })}
-      {messages.length > 0 &&
-        messages.map((m, i) => {
-          return (
-            <ChannelMessage
-              key={i}
-              message={m}
-              messageUpdate={messageUpdates[m.messageId]}
-              ownsMessage={m.senderId === user?.userId}
-            />
-          )
-        })}
-    </InfiniteScrollPagination>
+    />
   )
 }
 
