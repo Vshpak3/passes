@@ -58,7 +58,7 @@ export const ChannelList: FC<ChannelListProps> = ({
   return (
     <div
       className={classNames(
-        "col-span-7 h-full overflow-y-visible border-r border-[#fff]/10 p-3 lg:col-span-3",
+        "col-span-7 h-full overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-3",
         openChannelView ? "hidden" : "block",
         "lg:block"
       )}

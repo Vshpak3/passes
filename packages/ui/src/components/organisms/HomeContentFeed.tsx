@@ -55,6 +55,7 @@ export const HomeContentFeed: FC = () => {
   const { posts } = usePostWebhook()
   const { featuredCreators } = useFeaturedCreators()
 
+  //sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600
   return (
     <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 lg:col-span-4">
@@ -78,7 +79,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="col-span-3 hidden h-screen border-gray-600 pl-8 lg:block lg:border-l-[0.5px] lg:pr-40">
+      <div className="sticky col-span-3 hidden min-h-screen flex-col border-l-[0.5px] border-gray-600 pl-8 lg:flex  lg:pr-40">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>
