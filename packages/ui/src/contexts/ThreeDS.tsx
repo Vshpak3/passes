@@ -46,6 +46,7 @@ export const useThreeDS = () => {
             } else if (
               payin.payinStatus !== PayinDtoPayinStatusEnum.Pending &&
               payin.payinStatus !== PayinDtoPayinStatusEnum.Created &&
+              payin.payinStatus !== PayinDtoPayinStatusEnum.CreatedReady &&
               payin.payinStatus !== PayinDtoPayinStatusEnum.ActionRequired
             ) {
               setWaiting(undefined)

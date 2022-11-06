@@ -17,6 +17,7 @@ import {
   PhantomProvider
 } from "src/helpers/crypto/types"
 import { errorMessage, HasMessage } from "src/helpers/error"
+import { LandingStatusEnum } from "src/helpers/landing-messages"
 import {
   connectMetamask,
   executeMetamaskEthProvider,
@@ -68,21 +69,16 @@ export const usePay = (
       cancelPayinCallback: () => Promise<void>
     ) => {
       try {
+        const path =
+          window.location.href + (window.location.search.length ? "?" : "&")
+        // window.location.pathname + window.loca
         const response = await paymentApi.entryCircleCard({
           circleCardPayinEntryRequestDto: {
             payinId: registerResponse.payinId,
             ip: "",
             sessionId: SHA256(accessToken).toString().substr(0, 50),
-            successUrl:
-              window.location.origin +
-              window.location.pathname +
-              "?r=success&lm=" +
-              landingMessage,
-            failureUrl:
-              window.location.origin +
-              window.location.pathname +
-              "?r=failure&lm=" +
-              landingMessage
+            successUrl: `${path}r=${LandingStatusEnum.SUCCESS}&lm=${landingMessage}`,
+            failureUrl: `${path}r=${LandingStatusEnum.FAILURE}&lm=${landingMessage}`
           }
         })
         if (response.actionRequired) {
