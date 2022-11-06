@@ -9,8 +9,8 @@ interface CustomResultProps {
 
 export const CustomResult: FC<CustomResultProps> = ({ text }) => (
   <Combobox.Option disabled value="placeholder">
-    <div className="my-4 pl-6 text-[#ffffff]/30">
-      <p>{formatText(text)}</p>
+    <div className="my-4 pl-6 text-[#ffffff]/30 ">
+      <p className="passes-break">{formatText(text)}</p>
     </div>
   </Combobox.Option>
 )

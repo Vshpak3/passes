@@ -33,7 +33,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700]">
+        <span className="passes-break text-[14px] font-[700]">
           {formatText(paidMessage.text)}
         </span>
       </div>

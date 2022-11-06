@@ -73,7 +73,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
         </div>
       </div>
       <div className="flex w-full">
-        <p className="truncate text-[16px] font-medium leading-[22px] text-white hover:text-clip">
+        <p className="truncate text-[16px] font-medium leading-[22px] text-white hover:text-clip ">
           {formatText(text)}
         </p>
       </div>

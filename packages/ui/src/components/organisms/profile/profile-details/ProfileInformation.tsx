@@ -58,7 +58,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
           </div>
         )}
       </div>
-      <span className="my-3 font-semibold leading-[22px] text-white">
+      <span className="passes-break my-3 font-semibold leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row items-center gap-[30px] lg:gap-[68px]">
@@ -98,7 +98,7 @@ export const ProfileInformationMobile: FC<ProfileInformationProps> = ({
           @{profileUsername}
         </span>
       </div>
-      <span className="max-w-[300px] text-center text-[14px] font-semibold text-white">
+      <span className="passes-break max-w-[300px] text-center text-[14px] font-semibold text-white">
         {formatText(profile?.description)}
       </span>
       <ProfileSocialMedia
