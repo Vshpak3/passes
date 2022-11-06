@@ -71,7 +71,6 @@ export enum SubTabsEnum {
   // PrivacySafety
   "ProfileSettings",
   "PostsSettings",
-  "SafetySettings",
   "BlockedRestrictedAccounts",
 
   // Payment
@@ -98,7 +97,6 @@ export const subTabToPath: Record<SubTabsEnum, string> = {
   // PrivacySafety
   [SubTabsEnum.ProfileSettings]: "profile",
   [SubTabsEnum.PostsSettings]: "posts",
-  [SubTabsEnum.SafetySettings]: "safety",
   [SubTabsEnum.BlockedRestrictedAccounts]: "blocked",
 
   // Payment

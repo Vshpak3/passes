@@ -108,12 +108,6 @@ const ProfileSettings = dynamic(
       "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
     )
 )
-const SafetySettings = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/SafetySettings"
-    )
-)
 const PaymentHistory = dynamic(
   () =>
     import(
@@ -280,8 +274,6 @@ const renderSubTab = (tab: SubTabsEnum) => {
       return <ProfileSettings />
     case SubTabsEnum.PostsSettings:
       return <PostsSettings />
-    case SubTabsEnum.SafetySettings:
-      return <SafetySettings />
     case SubTabsEnum.BlockedRestrictedAccounts:
       return <BlockedRestrictedAccounts />
     case SubTabsEnum.AddBank:

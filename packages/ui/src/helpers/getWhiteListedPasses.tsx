@@ -2,15 +2,10 @@ import { PassDto } from "@passes/api-client"
 
 export const getWhiteListedPasses = (
   external: PassDto[],
-  postPasses?: string[]
+  passIds?: string[]
 ) => {
-  const result =
-    postPasses &&
-    postPasses.map((post) => {
-      const whiteList = external.find(({ passId }) => passId === post)
-      if (whiteList) {
-        return whiteList
-      }
-    })
-  return Array.from(new Set(result))
+  const passSet = new Set(passIds ?? [])
+  return external.filter((external) => {
+    return passSet.has(external.passId)
+  })
 }
