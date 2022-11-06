@@ -100,7 +100,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                     </div>
                     <span className="ml-[5px] opacity-50">{price}</span>
                     {price && !!paidAt ? (
-                      <span className="opacity-50">{`, paid ${paidAt}`}</span>
+                      <span className="opacity-50">{`, paid ${paidAt.toLocaleDateString()}`}</span>
                     ) : (
                       <span className="opacity-50">, not paid yet</span>
                     )}
