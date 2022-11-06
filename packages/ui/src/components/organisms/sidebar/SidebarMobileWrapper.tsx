@@ -1,3 +1,4 @@
+import Router from "next/router"
 import { ReactNode, useState } from "react"
 
 import { MobileHeader } from "src/components/molecules/Sidebar/SidebarLayout/MobileHeader"
@@ -17,6 +18,8 @@ export const SidebarMobileWrapper = ({ children, activeRoute }: Props) => {
   const toggleMobileSidebar = () => {
     setMobileSidebarOpen(!mobileSidebarOpen)
   }
+
+  Router.events.on("routeChangeStart", () => setMobileSidebarOpen(false))
 
   if (isTablet === undefined) {
     return null
