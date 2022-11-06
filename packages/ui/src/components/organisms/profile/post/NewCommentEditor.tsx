@@ -89,7 +89,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
 
   return (
     <form
-      className="flex w-full flex-row items-center pt-5"
+      className="flex w-full flex-col items-center gap-2 pt-5 md:flex-row md:gap-0"
       onSubmit={onSubmit}
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible border border-white/50 bg-black/10 p-4 focus:border-[#9c4dc1cc] focus:ring-[#9c4dc1cc]">
@@ -105,7 +105,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
         />
       </div>
       <Button
-        className="ml-4 h-[40px] w-[96px] shrink-0"
+        className="h-[40px] w-full shrink-0 md:ml-4 md:w-[96px]"
         disabled={isButtonDisabled || isSubmitting}
         tag="button"
         variant="pink"
