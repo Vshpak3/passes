@@ -79,8 +79,8 @@ export const usePay = (
             payinId: registerResponse.payinId,
             ip: "",
             sessionId: SHA256(accessToken).toString().substr(0, 50),
-            successUrl: `${path}r=${LandingStatusEnum.SUCCESS}&lm=${landingMessage}`,
-            failureUrl: `${path}r=${LandingStatusEnum.FAILURE}&lm=${landingMessage}`
+            successUrl: `https://${path}r=${LandingStatusEnum.SUCCESS}&lm=${landingMessage}`,
+            failureUrl: `https://${path}r=${LandingStatusEnum.FAILURE}&lm=${landingMessage}`
           }
         })
         if (response.actionRequired) {
