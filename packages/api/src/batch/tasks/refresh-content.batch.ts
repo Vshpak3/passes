@@ -8,7 +8,8 @@ import { BatchTask } from '../batch.interface'
 
 const CHECK_PROCESSED_UNTIL = ms('1 hour')
 const RUNTIME = ms('3 minutes')
-const REFRESH_RETRIES = 3
+const REFERSH_TIME = ms('10 second')
+const REFRESH_RETRIES = RUNTIME / REFERSH_TIME
 
 export class RefreshContentTask extends BatchTask {
   async run(): Promise<void> {
@@ -23,7 +24,7 @@ export class RefreshContentTask extends BatchTask {
       await messagesService.checkRecentMessagesContentProcessed(
         CHECK_PROCESSED_UNTIL,
       )
-      await sleep(RUNTIME / REFRESH_RETRIES)
+      await sleep(REFERSH_TIME)
     }
   }
 }

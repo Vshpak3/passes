@@ -225,28 +225,26 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               id="bottom-of-chat"
               ref={bottomOfChatRef}
             />
-            {pendingMessages.length > 0 &&
-              pendingMessages.map((m, i) => {
-                return (
-                  <ChannelMessage
-                    key={i}
-                    message={m}
-                    messageUpdate={messageUpdates[m.messageId]}
-                    ownsMessage={m.senderId === user?.userId}
-                  />
-                )
-              })}
-            {messages.length > 0 &&
-              messages.map((m, i) => {
-                return (
-                  <ChannelMessage
-                    key={i}
-                    message={m}
-                    messageUpdate={messageUpdates[m.messageId]}
-                    ownsMessage={m.senderId === user?.userId}
-                  />
-                )
-              })}
+            {pendingMessages.map((m, i) => {
+              return (
+                <ChannelMessage
+                  key={i}
+                  message={m}
+                  messageUpdate={messageUpdates[m.messageId]}
+                  ownsMessage={m.senderId === user?.userId}
+                />
+              )
+            })}
+            {messages.map((m, i) => {
+              return (
+                <ChannelMessage
+                  key={i}
+                  message={m}
+                  messageUpdate={messageUpdates[m.messageId]}
+                  ownsMessage={m.senderId === user?.userId}
+                />
+              )
+            })}
             <ChannelStreamMessages
               channelId={channelId}
               messageUpdates={messageUpdates}
