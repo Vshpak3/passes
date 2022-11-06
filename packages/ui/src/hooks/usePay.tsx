@@ -70,7 +70,7 @@ export const usePay = (
     ) => {
       try {
         const path =
-          window.location.href + (window.location.search.length ? "?" : "&")
+          window.location.href + (window.location.search.length ? "&" : "?")
         // window.location.pathname + window.loca
         const response = await paymentApi.entryCircleCard({
           circleCardPayinEntryRequestDto: {

@@ -182,7 +182,7 @@ export const RequestPayouts = () => {
           )}
           {defaultWallet && (
             <div className="flex flex-row items-center gap-[10px]">
-              <span className="rounded-[15px] bg-[#C943A8] p-[10px]">
+              {/* <span className="rounded-[15px] bg-[#C943A8] p-[10px]">
                 <svg
                   fill="none"
                   height="18"
@@ -198,8 +198,8 @@ export const RequestPayouts = () => {
                     strokeWidth="1.4"
                   />
                 </svg>
-              </span>
-              <span className="text-[14px] font-[700]">cold wallet</span>
+              </span> */}
+              <span className="text-[14px] font-[700]">Wallet address:</span>
               <span className="text-[14px] font-[700]">
                 {defaultWallet.address}
               </span>
