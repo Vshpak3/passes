@@ -14,15 +14,15 @@ const socialMediaValidationInfo = {
     regex: /^\w(?!.*?\.{2})[\w.]{1,28}\w$/
   },
   twitterUsername: {
-    name: "TikTok",
+    name: "Twitter",
     regex: /^(@)?([a-z\d_]{1,15})$/
   },
   tiktokUsername: {
-    name: "Twitch",
+    name: "Tiktok",
     regex: /^[a-zA-Z\d.]{3,}$/
   },
   twitchUsername: {
-    name: "Twitter",
+    name: "Twitch",
     regex: /^[a-zA-Z\d.]{3,}$/
   },
   youtubeUsername: {
