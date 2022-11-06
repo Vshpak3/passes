@@ -18,7 +18,7 @@ export const LANDING_MESSAGES: Record<
       "Thank you for you purchase, your membership card is minting now",
     [LandingMessageEnum.PURCHASE]:
       "Thank you for you purchase, you will have access soon",
-    [LandingMessageEnum.TIP]: "Your tip was cancelled"
+    [LandingMessageEnum.TIP]: "Your tip was completed"
   },
   [LandingStatusEnum.FAILURE]: {
     [LandingMessageEnum.PASS_PURCHASE]:

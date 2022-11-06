@@ -69,7 +69,6 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
 
         {isOwner ? (
           <div className="text-sm font-normal text-gray-500">
-            <span className="mr-4">Tipped: ${post.yourTips}</span>
             <span>
               {price && !passIds.length
                 ? `Viewable for $${price}`
@@ -81,7 +80,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             </span>
           </div>
         ) : (
-          <TipButton post={post} />
+          <div className="text-sm font-normal text-gray-500">
+            <span className="mr-4">Tipped: ${post.yourTips}</span>
+            <TipButton post={post} />
+          </div>
         )}
       </div>
       {showCommentSection && (

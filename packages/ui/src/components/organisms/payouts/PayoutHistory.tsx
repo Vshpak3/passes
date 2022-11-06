@@ -19,7 +19,6 @@ import { Payout } from "src/components/molecules/payment/Payout"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { getStartEnd } from "src/helpers/monthYear"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
-import { ChevronDown } from "src/icons/ChevronDown"
 
 export const PayoutHistory = () => {
   const [month, setMonth] = useState<number>(new Date().getMonth())
@@ -115,7 +114,6 @@ export const PayoutHistory = () => {
           </div>
           <div className="mb-4 flex flex-1 items-center justify-center gap-2">
             <span className="text-[12px] font-[500]">Date</span>
-            <ChevronDown />
           </div>
           <div className="flex flex-1 justify-center">
             <span className="mb-4 text-[12px] font-[500]">Amount</span>
