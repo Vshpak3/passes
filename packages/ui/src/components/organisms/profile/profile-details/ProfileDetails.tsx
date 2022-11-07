@@ -3,6 +3,10 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Dropdown } from "src/components/organisms/profile/drop-down/Dropdown"
+import {
+  DropDownBlock,
+  DropDownReport
+} from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
 import { EditProfile } from "./EditProfile"
@@ -14,13 +18,11 @@ import {
   ProfileInformationMobile
 } from "./ProfileInformation"
 
-const follow = new FollowApi()
-
 export const ProfileDetails: FC = () => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
   const { user } = useUser()
-  const { ownsProfile, profileUserId } = useProfile()
+  const { ownsProfile, profileUserId, profileUsername } = useProfile()
 
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
     useState<boolean>(false)
@@ -58,39 +60,18 @@ export const ProfileDetails: FC = () => {
               <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
             </div>
           )}
-          {!ownsProfile && user?.isCreator && (
+          {!ownsProfile && (
             <div className="absolute top-5 right-5 items-center justify-between  md:right-0">
               <Dropdown
                 items={[
-                  {
-                    text: "block",
-                    handleClick: async () => {
-                      try {
-                        await follow.blockFollower({
-                          followerId: profileUserId
-                        })
-                        toast.success("User Blocked Successfully")
-                      } catch (error) {
-                        toast.error(error as string)
-                      }
-                    }
-                  },
-                  {
-                    text: "report",
-                    handleClick: async () => {
-                      try {
-                        await follow.reportUser({
-                          reportUserDto: {
-                            userId: profileUserId,
-                            reason: "inappropriate "
-                          }
-                        })
-                        toast.success("User Reported Successfully")
-                      } catch (error) {
-                        toast.error(error as string)
-                      }
-                    }
-                  }
+                  ...DropDownReport(true, {
+                    username: profileUsername ?? "",
+                    userId: profileUserId
+                  }),
+                  ...DropDownBlock(true, {
+                    username: profileUsername ?? "",
+                    userId: profileUserId
+                  })
                 ]}
               />
             </div>

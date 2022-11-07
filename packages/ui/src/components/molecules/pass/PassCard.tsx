@@ -1,6 +1,6 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
-import InfoIcon from "public/icons/pink-square-info.svg"
+import InfoIcon from "public/icons/square-info-icon.svg"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
