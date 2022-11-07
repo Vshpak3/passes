@@ -1,7 +1,7 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
 import PlusSquareIcon from "public/icons/plus-square.svg"
-import { FC, useCallback, useContext, useRef, useState } from "react"
+import { FC, useContext, useRef, useState } from "react"
 
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import {

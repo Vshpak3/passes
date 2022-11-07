@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import React, { useState } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
@@ -6,7 +5,6 @@ import { Calendar } from "src/components/molecules/scheduler/Calendar"
 import { EventTable } from "src/components/molecules/scheduler/EventTable"
 import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHeader"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 export const SchedulerContext = React.createContext({
@@ -21,7 +19,6 @@ export const SchedulerContext = React.createContext({
 const SchedulerPage: React.FC = () => {
   const today = new Date()
   const defaultDate = { month: today.getMonth(), year: today.getFullYear() }
-  const { isMobile } = useWindowSize()
 
   const [month, setMonth] = useState(defaultDate.month)
   const [year, setYear] = useState(defaultDate.year)
@@ -32,13 +29,7 @@ const SchedulerPage: React.FC = () => {
 
   return (
     <SchedulerContext.Provider value={contextValue}>
-      <div
-        className={classNames(
-          isMobile &&
-            "absolute top-[20px] left-[50%] box-border w-full translate-x-[-50%]",
-          "bg-black"
-        )}
-      >
+      <div className="bg-black">
         <SchedulerHeader />
         {!hasInitialFetch && !data ? (
           <div className="pt-[100px]">
