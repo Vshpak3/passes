@@ -1,10 +1,10 @@
 import { PassHolderDto, PassHolderDtoChainEnum } from "@passes/api-client"
 import Link from "next/link"
-import EthereumIcon from "public/icons/eth.svg"
-import SolanaIcon from "public/icons/sol.svg"
+import InfoIcon from "public/icons/square-info-icon.svg"
 import { FC } from "react"
 
 import { Button } from "src/components/atoms/Button"
+import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 
 interface PassHoldingCardProps {
@@ -30,53 +30,46 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
 
   // const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
   return (
-    <div className="col-span-1 w-full min-w-[400px] max-w-[400px] rounded border border-[#2C282D] py-[24px] px-[16px]">
-      <div className="aspect-[1/1] w-full rounded-[15px]">
+    <div className="col-span-1 box-border w-full min-w-[400px] max-w-[400px] rounded border border-[#2C282D] py-[24px] px-[16px]">
+      <div className="max-w-[374px] rounded-[15px]">
         <PassMedia
           animationType={passHolder.animationType}
           imageType={passHolder.imageType}
+          isSquare
           passId={passHolder.passId}
         />
       </div>
       <div className=" grow cursor-pointer rounded-xl drop-shadow transition-colors">
         <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
           <div className="flex w-full flex-row items-center justify-between">
-            <div className="text-[18px] font-[700]">{passHolder.title}</div>
-            <div className="flex flex-row gap-[5px] text-[18px] font-[700]">
-              {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
-                <>
-                  <EthereumIcon /> Ethereum
-                </>
-              ) : (
-                passHolder.chain === PassHolderDtoChainEnum.Sol && (
-                  <>
-                    <SolanaIcon /> Solana
-                  </>
-                )
-              )}
-            </div>
+            <div className="text-[16px] font-[700]">{passHolder.title}</div>
           </div>
-          <div className="border-b border-b-[#2C282D] py-[12px]">
+          <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
             <span className="w-full text-[12px] font-bold text-[#ffffff76]">
               {passHolder.description}
             </span>
           </div>
           {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (
             <div className="mt-[12px]">
-              <span className="ml-2 text-[14px] font-light">
-                {passHolder.messages} / {passHolder.totalMessages} free messages
-                left
+              <span className="text-[12px] font-normal text-[#767676]">
+                <span className=" text-[14px] font-medium text-white">
+                  {passHolder.messages}
+                </span>{" "}
+                free messages left
               </span>
             </div>
           )}
           {passHolder.totalMessages === null && (
             <div className="mt-[12px]">
-              <span className="ml-2 text-[14px] font-light">
-                Unlimited free messages
+              <span className="text-[12px] font-normal text-[#767676]">
+                <span className=" text-[14px] font-medium text-white">
+                  Unlimited
+                </span>{" "}
+                free messages
               </span>
             </div>
           )}
-          <div className="mt-[12px] w-full">
+          <div className="mt-[12px] w-full text-[16px]">
             {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
               <Link
                 href={
@@ -97,7 +90,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
               passHolder.chain === PassHolderDtoChainEnum.Sol && (
                 <Link href={"https://solscan.io/token/" + passHolder.address}>
                   <Button
-                    className="w-full rounded-full py-2 text-center"
+                    className="w-full rounded-full py-[10px] text-center"
                     variant="pink"
                   >
                     View on SolanaScan
@@ -106,14 +99,25 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
               )
             )}
           </div>
-          {!!passHolder.expiresAt && (
-            <div className="mt-[12px] w-full">
-              <span className="text-[#767676]">
-                {passHolder.expiresAt < new Date() ? "Expired on " : "Expires "}
-                {passHolder.expiresAt.toLocaleDateString()}
-              </span>
+          <div className="flex w-full items-center justify-between">
+            {!!passHolder.expiresAt && (
+              <div className="mt-[12px] w-full">
+                <span className="text-[#767676]">
+                  {passHolder.expiresAt < new Date()
+                    ? "Expired on "
+                    : "Expires "}
+                  {passHolder.expiresAt.toLocaleDateString()}
+                </span>
+              </div>
+            )}
+            <div>
+              <IconTooltip
+                Icon={InfoIcon}
+                position="top"
+                tooltipText="Test tooltip text"
+              />
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

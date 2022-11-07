@@ -39,6 +39,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
                   {!item.children ? (
                     <SidebarItem
                       isActive={item.id === active}
+                      isCreator={user?.isCreator}
                       isDropdown={false}
                       item={item}
                       key={`sidebar-${item.id}`}

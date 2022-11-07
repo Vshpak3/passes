@@ -2,6 +2,7 @@ import {
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
 } from "@passes/api-client"
+import classNames from "classnames"
 import { FC, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
@@ -11,13 +12,15 @@ interface PassMediaProps {
   passId: string
   imageType: PassDtoImageTypeEnum
   animationType?: PassDtoAnimationTypeEnum
+  isSquare?: boolean
 }
 
 export const PassMedia: FC<PassMediaProps> = ({
   passId,
   passHolderId,
   imageType,
-  animationType
+  animationType,
+  isSquare
 }) => {
   const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(false)
 
@@ -27,7 +30,12 @@ export const PassMedia: FC<PassMediaProps> = ({
 
   if (shouldUsePlaceholder) {
     return (
-      <div className="h-[200px] w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]" />
+      <div
+        className={classNames(
+          isSquare ? "h-[274px]" : "h-[200px]",
+          "w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]"
+        )}
+      />
     )
   }
 

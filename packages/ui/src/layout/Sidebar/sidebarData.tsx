@@ -1,7 +1,7 @@
+import MyPassesIcon from "public/icons/membership-icon.svg"
 import CreatorToolsIcon from "public/icons/sidebar-creator-tools-icon.svg"
 import HomeIcon from "public/icons/sidebar-home-icon.svg"
 import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
-import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
 import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
 
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
@@ -69,7 +69,7 @@ export const navigation: SidebarNavigation[] = [
   },
   {
     id: "memberships",
-    name: "Memberships",
+    name: "My Memberships",
     href: "/memberships",
     icon: MyPassesIcon,
     creatorOnly: false
