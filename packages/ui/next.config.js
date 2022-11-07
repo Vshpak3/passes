@@ -13,10 +13,11 @@ const ContentSecurityPolicy = [
   `media-src 'self' blob: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // Allows scripts to be loaded from Segment and Intercom
   // TODO: not sure why unsafe-* is needed; I think it is some script from Next.js
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com widget.intercom.io;`,
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com app.intercom.io js.intercomcdn.com widget.intercom.io;`,
   // Allows style from self and unsafe inline because of Tailwind
   `style-src 'self' 'unsafe-inline';`
 ]
+
 // Adjust the CSP in dev
 if (process.env.NEXT_PUBLIC_NODE_ENV === "dev") {
   for (var i = 0; i < ContentSecurityPolicy.length; i++) {
