@@ -82,7 +82,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
       <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-lg border-[1px] border-solid border-passes-secondary-color p-2 text-sm text-gray-500">
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
-          <div className="flex gap-5">
+          <div className="flex gap-1">
             <FileInput
               accept={accept}
               className="cursor-pointer"
@@ -102,14 +102,14 @@ export const DragDropFile: FC<DragDropFileProps> = ({
           {helperText && (
             <p className="self-stretch text-center font-normal">{helperText}</p>
           )}
-          {name === "passFile" ?? (
+          {/* {name === "passFile" ?? (
             <p className="self-stretch text-center font-normal">
               If no media is selected,{" "}
               <span className="cursor-pointer font-medium">
                 Passes will provide a default art piece.
               </span>
             </p>
-          )}
+          )} */}
         </div>
       </div>
     </div>
