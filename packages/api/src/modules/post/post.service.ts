@@ -672,6 +672,7 @@ export class PostService {
       (
         await this.dbWriter<PostEntity>(PostEntity.table)
           .whereNotNull('pinned_at')
+          .whereNotNull('deleted_at')
           .andWhere('user_id', userId)
           .count('*')
       )[0]['count(*)'] >= MAX_PINNED_POST

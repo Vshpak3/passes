@@ -24,7 +24,8 @@ export const useCreatorPinnedPasses = (creatorId: string) => {
       populateCache: (update: PassDto[]) => {
         return update
       },
-      revalidate: false
+      // Set true to force passes feed component to render
+      revalidate: true
     })
 
   const pinPass = async (pass: PassDto) => {

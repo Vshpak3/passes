@@ -103,18 +103,17 @@ const PostUnmemo: FC<PostProps> = ({
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
 
+  // When pinning/unpinning we revalidate which causes each post to re-render.
+  // We need this useEffect to ensure the posts are properly removed from their
+  // respective section.
   useEffect(() => {
-    const isAlreadyPinned = pinnedPosts.some(
-      ({ postId: pinnedPostId }) => pinnedPostId === postId
-    )
-    const currentPostPinTimeFromPinnedList = pinnedPosts.find(
-      ({ postId: pinnedPostId }) => pinnedPostId === postId
-    )?.pinnedAt
-
-    if (isAlreadyPinned && !!pinnedAt !== !!currentPostPinTimeFromPinnedList) {
+    if (
+      !isPinned &&
+      pinnedPosts.some(({ postId: pinnedPostId }) => pinnedPostId === postId)
+    ) {
       setIsRemoved(true)
     }
-  }, [pinnedPosts, pinnedAt, postId])
+  }, [isPinned, pinnedPosts, postId])
 
   return (
     <>
