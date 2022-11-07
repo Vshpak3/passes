@@ -57,7 +57,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0" // pb-[30px]"
+          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0"
         )}
         onClick={handleClick}
       >
@@ -72,13 +72,9 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           src={ContentService.userContentThumbnailPath(content)}
           width={300}
         />
-        <div className="flex justify-end p-[10px]" onClick={onSelectItem}>
-          <div className="h-[23px] w-[50px] rounded-md bg-transparent">
-            <div
-              className="text-center text-[12px] font-medium uppercase text-white opacity-50"
-              onCopy={(e) => e.preventDefault()}
-              onMouseDown={(e) => e.preventDefault()}
-            >
+        <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
+          <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
+            <div className="text-center text-[12px] font-medium uppercase text-white opacity-50">
               {format(content.createdAt || new Date(), "LLL dd")}
             </div>
           </div>
@@ -87,9 +83,8 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
               isSelected
                 ? "border-[#c943a8] bg-[#c943a8]"
                 : "border-white bg-transparent",
-              "hover:shadow-[0px_20px_20px_#1b141d]] ml-[10px] h-[21px] w-[21px] rounded-full border-2 hover:shadow"
+              "hover:shadow-[0px_20px_20px_#1b141d]] ml-[8px] h-[21px] w-[21px] rounded-full border-2 hover:shadow"
             )}
-            onClick={onSelectItem}
           />
         </div>
       </div>

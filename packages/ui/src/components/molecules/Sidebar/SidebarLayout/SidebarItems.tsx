@@ -8,16 +8,13 @@ interface SidebarItemProps {
   isActive: boolean
   item: SidebarNavigation
   isDropdown: boolean
-  isCreator?: boolean
 }
 
 export const SidebarItem: FC<SidebarItemProps> = ({
   isActive,
   item,
-  isDropdown,
-  isCreator = false
+  isDropdown
 }) => {
-  const MEMBERSHIP = "My Memberships"
   return (
     <span
       className={classNames(
@@ -39,7 +36,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
         <span
           className={classNames(
             isActive && "font-bold text-passes-primary-color",
-            "flex flex-row items-center"
+            "flex flex-row"
           )}
         >
           {item.icon && (
@@ -53,7 +50,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
               )}
             />
           )}
-          {item.name === MEMBERSHIP && isCreator ? "My Passes" : item.name}
+          {item.name}
         </span>
       </Link>
     </span>
