@@ -16,22 +16,22 @@ export const SidebarItem: FC<SidebarItemProps> = ({
   isDropdown
 }) => {
   return (
-    <span
+    <Link
+      as={item.href}
       className={classNames(
-        isDropdown ? "py-2" : "py-3",
-        "group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center group-hover:text-white"
+        isActive
+          ? "text-passes-primary-color"
+          : "text-[#eeedef]/50 group-hover:text-white",
+        "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
       )}
-      key={item.id}
+      href={item.href}
     >
-      <Link
-        as={item.href}
+      <span
         className={classNames(
-          isActive
-            ? "text-passes-primary-color"
-            : "text-[#eeedef]/50 group-hover:text-white",
-          "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
+          isDropdown ? "py-2" : "py-3",
+          "group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center group-hover:text-white"
         )}
-        href={item.href}
+        key={item.id}
       >
         <span
           className={classNames(
@@ -52,7 +52,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
           )}
           {item.name}
         </span>
-      </Link>
-    </span>
+      </span>
+    </Link>
   )
 }
