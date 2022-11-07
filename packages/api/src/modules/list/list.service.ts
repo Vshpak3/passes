@@ -224,6 +224,7 @@ export class ListService {
     userId: string,
     getListMembersRequestDto: GetListMembersRequestDto,
   ) {
+    const dbReader = this.dbReader
     const result = await createGetMemberQuery(
       this.dbReader<ListMemberEntity>(ListMemberEntity.table)
         .leftJoin(
@@ -231,11 +232,15 @@ export class ListService {
           `${ListMemberEntity.table}.user_id`,
           `${UserEntity.table}.id`,
         )
-        .leftJoin(
-          FollowEntity.table,
-          `${ListMemberEntity.table}.user_id`,
-          `${FollowEntity.table}.follower_id`,
-        )
+        .leftJoin(FollowEntity.table, function () {
+          this.on(
+            `${ListMemberEntity.table}.user_id`,
+            `${FollowEntity.table}.follower_id`,
+          ).andOn(
+            `${FollowEntity.table}.creator_id`,
+            dbReader.raw('?', [userId]),
+          )
+        })
         .select([
           `${UserEntity.table}.id as user_id`,
           `${UserEntity.table}.username`,
@@ -247,13 +252,7 @@ export class ListService {
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,
-        )
-        .andWhere(function () {
-          return this.whereNull(`${FollowEntity.table}.creator_id`).orWhere(
-            `${FollowEntity.table}.creator_id`,
-            userId,
-          )
-        }),
+        ),
       getListMembersRequestDto,
       ListMemberEntity.table,
     ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
