@@ -11,9 +11,9 @@ const ContentSecurityPolicy = [
   `img-src 'self' blob: data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // Allows videos to be loaded from blobs (for upload) and the CDN
   `media-src 'self' blob: ${process.env.NEXT_PUBLIC_CDN_URL};`,
-  // Allows scripts to be loaded from Segment
-  // TODO: not sure why unsafe-* is needed; I think it is something from Next.js
-  `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com;`,
+  // Allows scripts to be loaded from Segment and Intercom
+  // TODO: not sure why unsafe-* is needed; I think it is some script from Next.js
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com widget.intercom.io;`,
   // Allows style from self and unsafe inline because of Tailwind
   `style-src 'self' 'unsafe-inline';`
 ]
