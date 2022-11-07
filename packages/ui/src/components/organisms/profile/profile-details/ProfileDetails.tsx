@@ -1,5 +1,8 @@
+import { FollowApi } from "@passes/api-client"
 import { FC, useState } from "react"
+import { toast } from "react-toastify"
 
+import { Dropdown } from "src/components/organisms/profile/drop-down/Dropdown"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
 import { EditProfile } from "./EditProfile"
@@ -10,6 +13,8 @@ import {
   ProfileInformationDesktop,
   ProfileInformationMobile
 } from "./ProfileInformation"
+
+const follow = new FollowApi()
 
 export const ProfileDetails: FC = () => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
@@ -53,7 +58,43 @@ export const ProfileDetails: FC = () => {
               <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
             </div>
           )}
-
+          {!ownsProfile && user?.isCreator && (
+            <div className="absolute top-5 right-5 items-center justify-between  md:right-0">
+              <Dropdown
+                items={[
+                  {
+                    text: "block",
+                    handleClick: async () => {
+                      try {
+                        await follow.blockFollower({
+                          followerId: profileUserId
+                        })
+                        toast.success("User Blocked Successfully")
+                      } catch (error) {
+                        toast.error(error as string)
+                      }
+                    }
+                  },
+                  {
+                    text: "report",
+                    handleClick: async () => {
+                      try {
+                        await follow.reportUser({
+                          reportUserDto: {
+                            userId: profileUserId,
+                            reason: "inappropriate "
+                          }
+                        })
+                        toast.success("User Reported Successfully")
+                      } catch (error) {
+                        toast.error(error as string)
+                      }
+                    }
+                  }
+                ]}
+              />
+            </div>
+          )}
           <div className="col-span-4 flex flex-col px-5 pt-4">
             <ProfileInformationDesktop chatLink={chatLink} />
           </div>
