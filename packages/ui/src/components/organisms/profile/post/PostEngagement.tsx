@@ -43,7 +43,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
   )
 
   return (
-    <div className="flex w-full flex-col items-center justify-end overflow-x-hidden">
+    <div className="flex w-full flex-col items-center justify-end overflow-x-hidden px-5 sm:px-10 md:px-10 lg:px-5">
       <div className="flex w-full min-w-[340px] items-center justify-between overflow-x-hidden">
         <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />

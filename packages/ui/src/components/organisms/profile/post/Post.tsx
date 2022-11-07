@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { MediaContent } from "src/components/molecules/content/MediaContent"
-import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownCopyLink,
@@ -119,10 +118,10 @@ const PostUnmemo: FC<PostProps> = ({
     <>
       {!isRemoved && (
         <div>
-          <FormContainer
+          <div
             className={classNames(
               isPinned && "border-passes-pink-100",
-              "!min-h-[10px] w-full"
+              " flex !min-h-[10px] w-full flex-grow flex-col items-stretch gap-4 border-y-[0.5px] border-gray-600 py-5 md:min-h-[400px] md:pt-5"
             )}
           >
             <PostHeader
@@ -136,7 +135,7 @@ const PostUnmemo: FC<PostProps> = ({
               username={username}
             />
 
-            <p className="passes-break text-start text-base font-medium text-[#ffffff]/90">
+            <p className="passes-break px-5 text-start text-base font-medium text-[#ffffff]/90 sm:px-10 md:px-10 lg:px-5">
               <FormattedText tags={tags} text={text} />
             </p>
             {!!contents?.length && (
@@ -152,7 +151,7 @@ const PostUnmemo: FC<PostProps> = ({
               />
             )}
             <PostEngagement post={post} />
-          </FormContainer>
+          </div>
         </div>
       )}
       {deletePostModelOpen && (
