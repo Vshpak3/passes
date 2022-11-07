@@ -33,7 +33,7 @@ export const WithNormalPageLayout = (
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
       <div
         className={classNames(
-          options.background && "background-gradient",
+          options.background ? "background-gradient" : "bg-passes-black",
           "relative min-h-screen w-full"
         )}
       >

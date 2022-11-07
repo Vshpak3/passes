@@ -3,7 +3,6 @@ import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { FC, useEffect } from "react"
 
-import { Header } from "src/components/molecules/performance/Header"
 import {
   pathToSubTab,
   pathToTab,
@@ -165,61 +164,58 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     return null
   }
   return (
-    <>
-      <Header />
-      <div className="flex h-full min-h-screen w-full max-w-[1235px]">
-        <div
-          className={cn(
-            "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
-            { hidden: showSettingsTab }
-          )}
-        >
-          <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-6">
-            <div className="pr-[35px]">
-              <h2 className="text-label-lg">Settings</h2>
-            </div>
-            <ul className="mt-6 -mr-px">
-              {tabs
-                .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
-                .map(({ name, id }) => (
-                  <li
-                    className={cn(
-                      "rounded-l-[4px] border-r p-2.5 pr-[13px]",
-                      id === activeTab
-                        ? "border-passes-primary-color bg-passes-primary-color/25"
-                        : "border-transparent"
-                    )}
-                    key={id}
-                  >
-                    <button
-                      className="text-label flex w-full items-center justify-between"
-                      onClick={() => {
-                        setShowSettingsTab(true)
-                        setActiveTab(id)
-                        setSubTabsStack([])
-                      }}
-                    >
-                      <span>{name}</span>
-                      <ChevronRightIcon />
-                    </button>
-                  </li>
-                ))}
-            </ul>
+    <div className="flex h-full min-h-screen w-full max-w-[1235px]">
+      <div
+        className={cn(
+          "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
+          { hidden: showSettingsTab }
+        )}
+      >
+        <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-6">
+          <div className="pr-[35px]">
+            <h2 className="text-label-lg">Settings</h2>
           </div>
-        </div>
-
-        <div
-          className={cn(
-            "w-full overflow-x-hidden px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
-            { hidden: !showSettingsTab }
-          )}
-        >
-          {subTabsStack.length > 0
-            ? renderSubTab(subTabsStack.slice(-1)[0])
-            : renderTab(activeTab)}
+          <ul className="mt-6 -mr-px">
+            {tabs
+              .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
+              .map(({ name, id }) => (
+                <li
+                  className={cn(
+                    "rounded-l-[4px] border-r p-2.5 pr-[13px]",
+                    id === activeTab
+                      ? "border-passes-primary-color bg-passes-primary-color/25"
+                      : "border-transparent"
+                  )}
+                  key={id}
+                >
+                  <button
+                    className="text-label flex w-full items-center justify-between"
+                    onClick={() => {
+                      setShowSettingsTab(true)
+                      setActiveTab(id)
+                      setSubTabsStack([])
+                    }}
+                  >
+                    <span>{name}</span>
+                    <ChevronRightIcon />
+                  </button>
+                </li>
+              ))}
+          </ul>
         </div>
       </div>
-    </>
+
+      <div
+        className={cn(
+          "w-full overflow-x-hidden px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
+          { hidden: !showSettingsTab }
+        )}
+      >
+        {subTabsStack.length > 0
+          ? renderSubTab(subTabsStack.slice(-1)[0])
+          : renderTab(activeTab)}
+      </div>
+    </div>
   )
 }
 

@@ -15,4 +15,7 @@ const SettingPageWithParam = () => {
   return <SettingsWrapper settingsPath={path} />
 }
 
-export default WithNormalPageLayout(SettingPageWithParam, { header: false })
+export default WithNormalPageLayout(SettingPageWithParam, {
+  header: false,
+  background: false
+})
