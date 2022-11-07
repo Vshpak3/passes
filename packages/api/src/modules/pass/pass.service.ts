@@ -35,7 +35,10 @@ import { RegisterPayinResponseDto } from '../payment/dto/register-payin.dto'
 import { BlockedReasonEnum } from '../payment/enum/blocked-reason.enum'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { InvalidPayinRequestError } from '../payment/error/payin.error'
-import { PaymentService } from '../payment/payment.service'
+import {
+  EXPIRING_DURATION_MS,
+  PaymentService,
+} from '../payment/payment.service'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import {
   getCollectionMediaUri,
@@ -77,7 +80,6 @@ import {
 import { createPassHolderQuery } from './pass.util'
 
 const DEFAULT_PASS_DURATION_MS = ms('30 days')
-const DEFAULT_PASS_GRACE_MS = ms('2 days')
 const DEFAULT_PASS_SYMBOL = 'PASS'
 const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
@@ -611,7 +613,7 @@ export class PassService {
 
     const expiresAt =
       pass.type === PassTypeEnum.SUBSCRIPTION && pass.duration
-        ? new Date(Date.now() + pass.duration + DEFAULT_PASS_GRACE_MS)
+        ? new Date(Date.now() + pass.duration + EXPIRING_DURATION_MS)
         : undefined
     let walletId = ''
 
@@ -798,7 +800,7 @@ export class PassService {
     }
 
     const expiresAt = new Date(
-      Date.now() + passHolder.duration + DEFAULT_PASS_GRACE_MS,
+      Date.now() + passHolder.duration + EXPIRING_DURATION_MS,
     )
     await this.dbWriter<PassHolderEntity>(PassHolderEntity.table)
       .where({ id: passHolder.id })

@@ -150,7 +150,7 @@ const MIN_TIME_BETWEEN_PAYOUTS_MS = ms(MIN_TIME_BETWEEN_PAYOUTS_TEXT) // TODO: c
 const MAX_PAYINS_PER_REQUEST = 20
 const MAX_PAYOUTS_PER_REQUEST = 20
 
-const EXPIRING_DURATION_MS = ms('3 days')
+export const EXPIRING_DURATION_MS = ms('2 days')
 
 const ONE_WEEK_MS = ms('1 week')
 
