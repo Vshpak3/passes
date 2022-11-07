@@ -12,8 +12,8 @@ import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
-  suspense: true,
-  ssr: false
+  suspense: true
+  // ssr: false
 })
 
 const MessagesPage = () => {

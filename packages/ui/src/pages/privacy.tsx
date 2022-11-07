@@ -4,8 +4,8 @@ import { Suspense } from "react"
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 
 const PrivacyPolicy = dynamic(() => import("src/components/pages/Privacy"), {
-  suspense: true,
-  ssr: false
+  suspense: true
+  // ssr: false
 })
 
 const PrivacyPolicyPage = () => {

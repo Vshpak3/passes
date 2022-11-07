@@ -6,7 +6,10 @@ import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const CreatorFlowMain = dynamic(
   () => import("src/components/pages/creator-flow/Main"),
-  { suspense: true, ssr: false }
+  {
+    suspense: true
+    // ssr: false
+  }
 )
 
 const CreatorFlowPage = () => {
