@@ -85,7 +85,11 @@ export const NewPosts: FC<NewPostsProps> = ({
 
   return (
     <>
-      <NewPostEditor handleSavePost={handleSavePost} initialData={{}} />
+      <NewPostEditor
+        handleSavePost={handleSavePost}
+        initialData={{}}
+        popup={false}
+      />
       {newPosts.map((post) => (
         <Post
           key={post.postId}
