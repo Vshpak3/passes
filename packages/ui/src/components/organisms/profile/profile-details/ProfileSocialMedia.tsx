@@ -1,10 +1,10 @@
-import Discord from "public/icons/profile-discord-icon.svg"
-import Facebook from "public/icons/profile-facebook-icon.svg"
-import Instagram from "public/icons/profile-instagram-icon.svg"
-import TikTok from "public/icons/profile-tiktok-icon.svg"
-import Twitch from "public/icons/profile-twitch-icon.svg"
-import Twitter from "public/icons/profile-twitter-icon.svg"
-import Youtube from "public/icons/profile-youtube-icon.svg"
+import DiscordIcon from "public/icons/social/discord.svg"
+import FacebookIcon from "public/icons/social/facebook.svg"
+import InstagramIcon from "public/icons/social/instagram.svg"
+import TikTokIcon from "public/icons/social/tiktok.svg"
+import TwitchIcon from "public/icons/social/twitch.svg"
+import TwitterIcon from "public/icons/social/twitter.svg"
+import YoutubeIcon from "public/icons/social/youtube.svg"
 import { FC } from "react"
 
 import { formatTextToString } from "src/helpers/formatters"
@@ -34,13 +34,13 @@ const socialUsernameToUrl: Record<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const socialUsernameToIcon: Record<keyof typeof SocialUsernames, any> = {
-  discordUsername: Discord,
-  facebookUsername: Facebook,
-  instagramUsername: Instagram,
-  tiktokUsername: TikTok,
-  twitchUsername: Twitch,
-  twitterUsername: Twitter,
-  youtubeUsername: Youtube
+  discordUsername: DiscordIcon,
+  facebookUsername: FacebookIcon,
+  instagramUsername: InstagramIcon,
+  tiktokUsername: TikTokIcon,
+  twitchUsername: TwitchIcon,
+  twitterUsername: TwitterIcon,
+  youtubeUsername: YoutubeIcon
 }
 
 interface ProfileSocialMediaButtonProps {

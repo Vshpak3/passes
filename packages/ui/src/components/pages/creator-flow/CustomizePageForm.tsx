@@ -1,13 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import classNames from "classnames"
 import _, { identity } from "lodash"
-import ProfileDiscordIcon from "public/icons/profile-discord-icon.svg"
-import ProfileFacebookIcon from "public/icons/profile-facebook-icon.svg"
-import ProfileInstagramIcon from "public/icons/profile-instagram-icon.svg"
-import ProfileTiktokIcon from "public/icons/profile-tiktok-icon.svg"
-import ProfileTwitchIcon from "public/icons/profile-twitch-icon.svg"
-import ProfileTwitterIcon from "public/icons/profile-twitter-icon.svg"
-import ProfileYoutubeIcon from "public/icons/profile-youtube-icon.svg"
+import ProfileDiscordIcon from "public/icons/social/discord.svg"
+import ProfileFacebookIcon from "public/icons/social/facebook.svg"
+import ProfileInstagramIcon from "public/icons/social/instagram.svg"
+import ProfileTikTokIcon from "public/icons/social/tiktok.svg"
+import ProfileTwitchIcon from "public/icons/social/twitch.svg"
+import ProfileTwitterIcon from "public/icons/social/twitter.svg"
+import ProfileYoutubeIcon from "public/icons/social/youtube.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
@@ -285,7 +285,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
               )}
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
-              <ProfileTiktokIcon className="h-[17px] w-[17px]" />
+              <ProfileTikTokIcon className="h-[17px] w-[17px]" />
               {connectedAccounts.tiktok ? (
                 <span>@tiktokname</span>
               ) : (
