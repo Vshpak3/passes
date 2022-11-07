@@ -3,19 +3,20 @@ import {
   ContentDto,
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
+import { useRouter } from "next/router"
+import ExitIcon from "public/icons/exit-icon.svg"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddButton } from "src/components/molecules/vault/VaultAddButton"
-import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
-import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
 import {
   SortDropdown,
   SortOption
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+import { plural } from "src/helpers/plural"
 import { ContentFile } from "src/hooks/useMedia"
 
 type OrderType = "recent" | "oldest"
@@ -34,7 +35,6 @@ interface VaultNavigationProps {
   setOrder: (order: GetVaultQueryRequestDtoOrderEnum) => void
   vaultType: VaultType
   vaultCategory: VaultCategory
-  pushToMessages: () => void
   order: GetVaultQueryRequestDtoOrderEnum
   deletedItems: ContentDto[]
   setDeletedItems: (items: ContentDto[]) => void
@@ -49,13 +49,32 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   setVaultType,
   setVaultCategory,
   setOrder,
-  pushToMessages,
   order,
   deletedItems,
   setDeletedItems,
   setFiles,
   embedded = false
 }) => {
+  const router = useRouter()
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const pushToMessages = () => {
+    router.push(
+      {
+        pathname: "/messages",
+        query: {
+          content: JSON.stringify(
+            selectedItems.map(({ contentId, contentType }) => ({
+              contentId,
+              contentType
+            }))
+          )
+        }
+      },
+      "/messages"
+    )
+  }
+
   const deselectAll = () => {
     setSelectedItems([])
   }
@@ -98,14 +117,21 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           onDelete={handleVaultDeleteItems}
         />
       )}
-      <VaultSelectContainer
-        deselectAll={deselectAll}
-        selectedItems={selectedItems}
-      />
       {!embedded && (
         <div className="absolute right-20 bottom-0 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
+              <div className="flex">
+                <div
+                  className="h-[18px] w-[18px] cursor-pointer justify-center text-[#000000]"
+                  onClick={deselectAll}
+                >
+                  <ExitIcon />
+                </div>
+                <div className="font-semibold text-white">
+                  {plural("item", selectedItems?.length)} selected
+                </div>
+              </div>
               <div>20 media files can be posted at a time</div>
               <div
                 className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"

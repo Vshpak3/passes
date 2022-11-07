@@ -4,7 +4,6 @@ import {
   GetVaultQueryRequestDtoOrderEnum,
   GetVaultQueryRequestDtoTypeEnum
 } from "@passes/api-client"
-import { useRouter } from "next/router"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -46,24 +45,6 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
   const [isMaxFileCountSelected, setIsMaxFileCountSelected] = useState(false)
   const { files, setFiles, addNewMedia, onRemove } = useMedia()
 
-  const router = useRouter()
-  const pushToMessages = () => {
-    router.push(
-      {
-        pathname: "/messages",
-        query: {
-          content: JSON.stringify(
-            selectedItems.map(({ contentId, contentType }) => ({
-              contentId,
-              contentType
-            }))
-          )
-        }
-      },
-      "/messages"
-    )
-  }
-
   const setItems = (items: ContentDto[]) => {
     setSelectedItems(items)
     setIsMaxFileCountSelected(items.length === MAX_FILE_COUNT)
@@ -93,7 +74,6 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
           deletedItems={deletedItems}
           embedded={!!passSelectedItems}
           order={order}
-          pushToMessages={pushToMessages}
           selectedItems={selectedItems}
           setDeletedItems={setDeletedItems}
           setFiles={setFiles}
