@@ -6,6 +6,8 @@ import MyPassesIcon from "public/icons/sidebar/passes.svg"
 import SettingsIcon from "public/icons/sidebar/settings.svg"
 import React from "react"
 
+import { useSidebarContext } from "src/hooks/context/useSidebarContext"
+
 const mobileLinks = [
   {
     id: "home",
@@ -44,24 +46,29 @@ interface Props {
 }
 
 export const MobileNavBar = ({ activeRoute }: Props) => {
+  const { showBottomNav } = useSidebarContext()
   return (
-    <div className="fixed bottom-0 z-30 flex h-16 w-full bg-passes-black">
-      {mobileLinks.map((navBarItem, index) => (
-        <Link
-          className="flex flex-1 items-center justify-center"
-          href={navBarItem.href}
-          key={`${navBarItem.id}-${index}`}
-        >
-          <navBarItem.icon
-            className={classNames(
-              activeRoute === navBarItem.id
-                ? " stroke-passes-primary-color stroke-2"
-                : "stroke-[#ffffff]/50",
-              " stroke-2"
-            )}
-          />
-        </Link>
-      ))}
-    </div>
+    <>
+      {showBottomNav && (
+        <div className="fixed bottom-0 z-30 flex h-16 w-full bg-passes-black">
+          {mobileLinks.map((navBarItem, index) => (
+            <Link
+              className="flex flex-1 items-center justify-center"
+              href={navBarItem.href}
+              key={`${navBarItem.id}-${index}`}
+            >
+              <navBarItem.icon
+                className={classNames(
+                  activeRoute === navBarItem.id
+                    ? " stroke-passes-primary-color stroke-2"
+                    : "stroke-[#ffffff]/50",
+                  " stroke-2"
+                )}
+              />
+            </Link>
+          ))}
+        </div>
+      )}
+    </>
   )
 }

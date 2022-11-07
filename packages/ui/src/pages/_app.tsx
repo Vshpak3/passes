@@ -35,6 +35,7 @@ import { BuyPassModalContext } from "src/contexts/BuyPassModal"
 import { BuyPostModalContext } from "src/contexts/BuyPostModal"
 import { GlobalCacheContext } from "src/contexts/GlobalCache"
 import { ReportModalContext } from "src/contexts/ReportModal"
+import { SidebarContext } from "src/contexts/SidebarContext"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
 import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
@@ -109,6 +110,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPass, setBuyPass] = useState<PassDto | null>(null)
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
+  const [showBottomNav, setShowBottomNav] = useState<boolean>(true)
 
   const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
     null
@@ -134,6 +136,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     }
   }, [router])
 
+  useEffect(() => {
+    setShowBottomNav(true)
+  }, [router, router.route])
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [
@@ -153,46 +159,54 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
     [TipPostModalContext.Provider, { setPost: setTipPost }],
-    [ThreeDSContext.Provider, { setPayin }]
+    [ThreeDSContext.Provider, { setPayin }],
+    [SidebarContext.Provider, { setShowBottomNav, showBottomNav }]
   ]
 
-  return getLayout(
+  return (
     <AppProviders providers={providers}>
-      <Component {...pageProps} />
-      {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
-      {buyMessage && (
-        <BuyMessageModal message={buyMessage} setMessage={setBuyMessage} />
+      {getLayout(
+        <>
+          <Component {...pageProps} />
+          {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
+          {buyMessage && (
+            <BuyMessageModal message={buyMessage} setMessage={setBuyMessage} />
+          )}
+          {tippedMessage && (
+            <TippedMessageModal
+              messageRequest={tippedMessage}
+              onSuccess={onModalCallback}
+              setMessageRequest={setTippedMessage}
+            />
+          )}
+          {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
+          {reportData && (
+            <ReportModal
+              reportData={reportData}
+              setReportData={setReportData}
+            />
+          )}
+          {blockData && (
+            <BlockModal blockData={blockData} setBlockData={setBlockData} />
+          )}
+          {tipPost && <TipPostModal post={tipPost} setPost={setTipPost} />}
+          <ToastContainer
+            autoClose={ms("4 seconds")}
+            closeOnClick
+            draggable={false}
+            hideProgressBar
+            limit={3}
+            newestOnTop={false}
+            pauseOnFocusLoss
+            pauseOnHover
+            position="bottom-center"
+            rtl={false}
+            theme="colored"
+          />
+        </>,
+        hasRefreshed
       )}
-      {tippedMessage && (
-        <TippedMessageModal
-          messageRequest={tippedMessage}
-          onSuccess={onModalCallback}
-          setMessageRequest={setTippedMessage}
-        />
-      )}
-      {buyPass && <BuyPassModal pass={buyPass} setPass={setBuyPass} />}
-      {reportData && (
-        <ReportModal reportData={reportData} setReportData={setReportData} />
-      )}
-      {blockData && (
-        <BlockModal blockData={blockData} setBlockData={setBlockData} />
-      )}
-      {tipPost && <TipPostModal post={tipPost} setPost={setTipPost} />}
-      <ToastContainer
-        autoClose={ms("4 seconds")}
-        closeOnClick
-        draggable={false}
-        hideProgressBar
-        limit={3}
-        newestOnTop={false}
-        pauseOnFocusLoss
-        pauseOnHover
-        position="bottom-center"
-        rtl={false}
-        theme="colored"
-      />
-    </AppProviders>,
-    hasRefreshed
+    </AppProviders>
   )
 }
 

@@ -12,6 +12,7 @@ import { ChannelList } from "src/components/molecules/messages/ChannelList"
 import { ChannelView } from "src/components/molecules/messages/ChannelView"
 import { ChannelMassDM } from "src/components/molecules/messages/mass-dm/ChannelMassDM"
 import { ChannelViewMassDM } from "src/components/molecules/messages/mass-dm/ChannelViewMassDM"
+import { useSidebarContext } from "src/hooks/context/useSidebarContext"
 import { useUser } from "src/hooks/useUser"
 
 interface MessagesV2Props {
@@ -45,6 +46,12 @@ const MessagesV2: FC<MessagesV2Props> = ({
     setSelectedChannel(channel)
     setOpenChannelView(true)
   }
+
+  const { showBottomNav, setShowBottomNav } = useSidebarContext()
+
+  useEffect(() => {
+    setShowBottomNav(!openChannelView)
+  }, [openChannelView, showBottomNav, setShowBottomNav])
 
   useEffect(() => {
     if (selectedChannel) {
