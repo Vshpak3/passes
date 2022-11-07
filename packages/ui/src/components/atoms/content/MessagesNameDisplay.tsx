@@ -7,12 +7,14 @@ interface MessagesNameDisplayProps {
   username: string
   displayName: string
   linked?: boolean
+  className?: string
 }
 
 export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   username,
   displayName,
-  linked = false
+  linked = false,
+  className
 }) => {
   const text = (
     <div className="flex flex-row items-center truncate">
