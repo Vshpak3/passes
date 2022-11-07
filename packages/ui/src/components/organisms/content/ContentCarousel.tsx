@@ -36,48 +36,45 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   const hasAccess = paid || price === 0 || previewIndex >= contents.length
 
   return (
-    <>
-      <style>{`.swiper-button-prev, .swiper-button-next { color: white; } .swiper-slide{height:auto;}`}</style>
-      <Swiper
-        autoplay={false}
-        initialSlide={activeIndex}
-        modules={[Pagination, Navigation]}
-        navigation
-        pagination={{
-          type: "fraction"
-        }}
-        watchSlidesProgress
-      >
-        {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
-          return hasAccess || index < previewIndex ? (
-            <SwiperSlide key={index}>
-              {({ isActive }) => (
-                <SlideContent
-                  autoplayVideo={autoplayVideo}
-                  carouselContent={array}
-                  content={c}
-                  fixedHeight={contents.length > 1}
-                  index={index}
-                  isActive={isActive}
-                  ref={imgRef}
-                />
-              )}
-            </SwiperSlide>
-          ) : null
-        })}
-        {!hasAccess && openBuyModal && (
-          <SwiperSlide>
-            <LockedMedia
-              contents={contents}
-              fixedHeight={contents.length > 1}
-              openBuyModal={openBuyModal}
-              paying={paying}
-              previewIndex={previewIndex}
-              price={price}
-            />
+    <Swiper
+      autoplay={false}
+      initialSlide={activeIndex}
+      modules={[Pagination, Navigation]}
+      navigation
+      pagination={{
+        type: "fraction"
+      }}
+      watchSlidesProgress
+    >
+      {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
+        return hasAccess || index < previewIndex ? (
+          <SwiperSlide key={index}>
+            {({ isActive }) => (
+              <SlideContent
+                autoplayVideo={autoplayVideo}
+                carouselContent={array}
+                content={c}
+                fixedHeight={contents.length > 1}
+                index={index}
+                isActive={isActive}
+                ref={imgRef}
+              />
+            )}
           </SwiperSlide>
-        )}
-      </Swiper>
-    </>
+        ) : null
+      })}
+      {!hasAccess && openBuyModal && (
+        <SwiperSlide>
+          <LockedMedia
+            contents={contents}
+            fixedHeight={contents.length > 1}
+            openBuyModal={openBuyModal}
+            paying={paying}
+            previewIndex={previewIndex}
+            price={price}
+          />
+        </SwiperSlide>
+      )}
+    </Swiper>
   )
 }

@@ -193,7 +193,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               reorderContent={reorderContent}
               setFiles={setFiles}
               setMediaPreviewIndex={setMediaPreviewIndex}
-              // messages={true}
             />
           </div>
         )}
@@ -205,7 +204,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
         <div
           className={classNames(
             Object.values(errors)[0] && "!pt-0",
-            "flex w-full flex-wrap items-center justify-between md:-ml-4 md:flex-nowrap md:pt-5 md:pb-2"
+            "flex-wrap flex w-full items-center justify-between md:-ml-4 md:flex-nowrap md:pt-5 md:pb-2"
           )}
         >
           <div className="flex w-full items-center justify-between">

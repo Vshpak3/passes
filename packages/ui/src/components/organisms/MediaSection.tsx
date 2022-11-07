@@ -36,7 +36,6 @@ interface MediaSectionProps {
   files: ContentFile[]
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
-  messages?: boolean
   isPaid: boolean
   reorderContent?: boolean
   mediaPreviewIndex: number
@@ -50,7 +49,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
   files,
   setFiles,
   onRemove,
-  messages = false,
   isPaid,
   reorderContent,
   mediaPreviewIndex,
@@ -106,50 +104,11 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   setOpen={setIsNewPostModalOpen}
                 />
               )}
-              <style>
-                {!messages
-                  ? `.swiper-button-next{
-                position: absolute;
-                right: -9px;
-                width: 45px;
-                height: 45px;
-                color:white;
-                transform: scale(0.6, 0.9);
-              }
-              .swiper-button-prev{
-                position: absolute;
-                top: 50%;
-                left: -9px;
-                width: 45px;
-                height: 45px;
-                color:white;
-                transform: scale(0.6, 0.9);
-          }`
-                  : `.swiper-button-next{
-                  position: absolute;
-                  right: -9px;
-                  width: 45px;
-                  height: 45px;
-                  color:white;
-                  transform: scale(0.6, 0.9);
-                  mix-blend-mode: difference;
-                }
-                .swiper-button-prev{
-                  position: absolute;
-                  top: 50%;
-                  left: -9px;
-                  width: 45px;
-                  height: 45px;
-                  color:white;
-                  transform: scale(0.6, 0.9);
-                  mix-blend-mode: difference;
-            }`}
-              </style>
 
               <Swiper
                 modules={[Navigation]}
                 navigation
-                slidesPerView={messages ? 3 : 4}
+                slidesPerView={4}
                 spaceBetween={10}
               >
                 {files.map(({ file, content }, index) => (
@@ -219,22 +178,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
               </Swiper>
             </div>
           )}
-          {/* <div>
-            <div className="relative mt-6 flex max-w-[140px] justify-between rounded-md shadow-sm">
-              <Input
-                register={register}
-                name="previewIndex"
-                type="number"
-                min={0}
-                step={1}
-                placeholder="Preview index"
-                autoComplete="off"
-                onKeyPress={preventNegative}
-                className="w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
-              />
-            </div>
-          </div> */}
-          {/* TODO: this wont be needed after logic of drag and drop is included in messages and mass messages which is next pr   */}
         </div>
       )}
     </>
