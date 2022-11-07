@@ -42,7 +42,7 @@ const MessagesPage = () => {
                 <SectionTitle className="ml-4">
                   {massMessage ? "Mass Messaging" : "Messages"}
                 </SectionTitle>
-                {!!user.isCreator && (
+                {!!user.isCreator && !massMessage && (
                   <div className="mx-6 cursor-pointer lg:mr-0">
                     <MessagesPlusIcon onClick={() => setMassMessage(true)} />
                   </div>
