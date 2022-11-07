@@ -78,8 +78,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
 
   const createNewPost = () => {
     // TODO: connect with API to get selected items and add to new post
-    toast.error("Feature not supported")
-    return
+    toast.error("Feature not yet supported")
   }
 
   const deselectAll = () => {
