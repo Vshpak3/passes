@@ -6,6 +6,7 @@ import {
   PassesPinkButton,
   RoundedIconButton
 } from "src/components/atoms/Button"
+import { FollowButton } from "src/components/molecules/FollowButton"
 import { formatText } from "src/helpers/formatters"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useFollow } from "src/hooks/profile/useFollow"
@@ -22,8 +23,6 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
 }) => {
   const { profile, profileUsername, profileUserId, ownsProfile } = useProfile()
   const { creatorStats } = useCreatorStats(profileUserId)
-
-  const { follow, unfollow, isFollowing } = useFollow(profileUserId)
 
   return (
     <div className="flex flex-col items-start gap-[6px]">
@@ -47,11 +46,9 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
                     <ChatIcon />
                   </RoundedIconButton>
                 </a>
-                <PassesPinkButton
+                <FollowButton
                   className="h-[36px] w-[115px]"
-                  name={isFollowing ? "Unfollow" : "Follow"}
-                  onClick={isFollowing ? unfollow : follow}
-                  type={ButtonTypeEnum.SUBMIT}
+                  creatorId={profileUserId}
                 />
               </>
             )}

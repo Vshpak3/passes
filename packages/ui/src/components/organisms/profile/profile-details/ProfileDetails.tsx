@@ -3,7 +3,7 @@ import { FC, useState } from "react"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
 import { EditProfile } from "./EditProfile"
-import { EditProfileAction } from "./EditProfileAction"
+import { EditProfileButton } from "./EditProfileButton"
 import { ProfileImage } from "./ProfileImage"
 import { ProfileImageModal } from "./ProfileImageModal"
 import {
@@ -49,7 +49,9 @@ export const ProfileDetails: FC = () => {
             userId={profileUserId}
           />
           {ownsProfile && (
-            <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
+            <div className="absolute top-5 right-5 items-center justify-between md:top-10 md:right-0">
+              <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+            </div>
           )}
 
           <div className="col-span-4 flex flex-col px-5 pt-4">
@@ -64,7 +66,7 @@ export const ProfileDetails: FC = () => {
             userId={profileUserId}
           />
           {ownsProfile && (
-            <EditProfileAction setEditProfile={setIsEditProfileModalOpen} />
+            <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
           )}
           <ProfileInformationMobile chatLink={chatLink} />
         </div>

@@ -9,13 +9,13 @@ import Link from "next/link"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/Button"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
+import { FollowButton } from "src/components/molecules/FollowButton"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { useFeaturedCreators } from "src/hooks/useFeaturedCreators"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
@@ -79,7 +79,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="sticky col-span-3 hidden min-h-screen flex-col border-l-[0.5px] border-gray-600 pl-8 lg:flex lg:pr-40">
+      <div className="sticky col-span-3 hidden min-h-screen max-w-[500px] flex-col border-l-[0.5px] border-gray-600 lg:flex lg:pl-6 lg:pr-3 xl:pl-8">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>
@@ -99,9 +99,12 @@ export const HomeContentFeed: FC = () => {
                   </span>
                 </div>
               </Link>
-              <Button className="px-0" variant="pink-outline">
-                Follow
-              </Button>
+              <FollowButton
+                className="min-w-[89px]"
+                creatorId={creator.userId}
+                followVariant="pink-outline"
+                unfollowText="Following"
+              />
             </div>
           ))}
         </div>

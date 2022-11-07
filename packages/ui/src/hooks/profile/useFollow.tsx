@@ -37,7 +37,7 @@ export const useFollow = (creatorId?: string) => {
     if (redirectUnauthedToLogin(user, router)) {
       return
     }
-    if (!creatorId) {
+    if (!creatorId || user?.userId === creatorId) {
       return
     }
     await api.followCreator({ creatorId })
@@ -49,7 +49,7 @@ export const useFollow = (creatorId?: string) => {
     if (redirectUnauthedToLogin(user, router)) {
       return
     }
-    if (!creatorId) {
+    if (!creatorId || user?.userId === creatorId) {
       return
     }
     await api.unfollowCreator({ creatorId })

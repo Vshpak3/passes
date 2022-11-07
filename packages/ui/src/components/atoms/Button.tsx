@@ -2,7 +2,6 @@
 /* eslint-disable react/no-unused-prop-types */
 import classNames from "classnames"
 import clsx from "clsx"
-import DollarIcon from "public/icons/profile-dollar-icon.svg"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, PropsWithChildren } from "react"
 
@@ -195,25 +194,6 @@ export const PassesPinkButton: FC<GenericButtonProps> = ({
     </button>
   )
 }
-
-export const CoverButton: FC<GenericButtonProps> = ({
-  name,
-  onClick,
-  className = ""
-}) => (
-  <button
-    className={classNames(
-      className,
-      "flex w-full items-center justify-center rounded-lg border border-none bg-[#FFFEFF]/10 py-[10px] text-base font-semibold text-white shadow-sm hover:bg-passes-secondary-color/10"
-    )}
-    onClick={onClick}
-  >
-    {{
-      Tip: <DollarIcon className="mr-[6px]" />
-    }[name] || null}
-    {name}
-  </button>
-)
 
 export const ContentUnlockButton: FC<GenericButtonProps> = ({
   name,
