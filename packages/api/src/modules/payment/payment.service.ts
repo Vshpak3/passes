@@ -2384,17 +2384,21 @@ export class PaymentService {
             .update({ subscription_status: status })
 
           // TODO: send email notifications
-
           // try to pay subscription if possible
           if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
             try {
+              const method: PayinMethodDto = {
+                method: subscription.payin_method,
+                cardId: subscription.card_id,
+                chainId: subscription.chain_id,
+              }
               // can only autorenew with card
               if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
                 const registerResponse =
                   await this.passService.registerRenewPass(
                     subscription.user_id,
                     subscription.pass_holder_id,
-                    new PayinMethodDto(subscription),
+                    method,
                   )
                 await this.payinEntryHandler(subscription.user_id, {
                   payinId: registerResponse.payinId,
