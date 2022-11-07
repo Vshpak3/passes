@@ -10,9 +10,9 @@
 
 .swiper-button-next {
   position: absolute;
-  right: -7px !important;
+  right: -11px !important;
 }
 .swiper-button-prev {
   position: absolute;
-  left: -7px !important;
+  left: -11px !important;
 }

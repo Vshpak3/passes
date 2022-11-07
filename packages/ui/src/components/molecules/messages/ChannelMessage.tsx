@@ -83,6 +83,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                   contents={messageContent}
                   isProcessing={!contentProcessed}
                   key={messageId}
+                  messagesView
                   openBuyModal={() => setMessage(message)}
                   paid={!!paidAt || !!ownsMessage}
                   paying={paying}

@@ -14,6 +14,7 @@ interface LockedMediaProps {
   paying: boolean
   openBuyModal: () => void
   fixedHeight?: boolean
+  messagesView?: boolean
 }
 
 export const LockedMedia: FC<LockedMediaProps> = ({
@@ -22,13 +23,21 @@ export const LockedMedia: FC<LockedMediaProps> = ({
   previewIndex,
   paying,
   openBuyModal,
-  fixedHeight
+  fixedHeight,
+  messagesView
 }) => {
   const { images, video } = contentTypeCounter(contents.slice(previewIndex))
 
   return (
     <div
-      className={classNames(fixedHeight ? "max-h-[75vh]" : "", "h-full w-full")}
+      className={classNames(
+        messagesView && fixedHeight
+          ? "max-h-[45vh] md:max-h-[55vh]"
+          : fixedHeight
+          ? "max-h-[55vh] sm:max-h-[75vh]"
+          : "",
+        "h-full w-full"
+      )}
     >
       <div className="relative h-full max-h-[1200px] cursor-pointer">
         <div className="relative h-full overflow-hidden">

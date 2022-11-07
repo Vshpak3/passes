@@ -10,12 +10,14 @@ const VideoContentUnmemo = ({
   content,
   fixedHeight,
   isActive,
-  autoplay
+  autoplay,
+  messagesView
 }: {
   content: ContentDto
   fixedHeight: boolean
   isActive: boolean
   autoplay?: boolean
+  messagesView?: boolean
 }) => {
   const { ref, pause } = useVideoPlayer()
   const videoThumbnail = ContentService.userContentThumbnailPath(content)
@@ -26,7 +28,14 @@ const VideoContentUnmemo = ({
   }, [isActive, pause])
   return (
     <div
-      className={classNames(fixedHeight ? "max-h-[75vh]" : "", "h-full w-full")}
+      className={classNames(
+        messagesView && fixedHeight
+          ? "max-h-[45vh] md:max-h-[55vh]"
+          : fixedHeight
+          ? "max-h-[55vh] sm:max-h-[75vh]"
+          : "",
+        "h-full w-full"
+      )}
     >
       <div className="relative h-full max-h-[1200px] cursor-pointer">
         <div className="relative h-full overflow-hidden">

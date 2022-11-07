@@ -20,6 +20,7 @@ export interface ContentCarouselProps {
   previewIndex?: number
   price?: number
   openBuyModal?: () => void
+  messagesView?: boolean
 }
 
 export const ContentCarousel: FC<ContentCarouselProps> = ({
@@ -30,7 +31,8 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   previewIndex = 0,
   price = 0,
   openBuyModal,
-  activeIndex = 0
+  activeIndex = 0,
+  messagesView = false
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const hasAccess = paid || price === 0 || previewIndex >= contents.length
@@ -57,6 +59,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
                 fixedHeight={contents.length > 1}
                 index={index}
                 isActive={isActive}
+                messagesView={messagesView}
                 ref={imgRef}
               />
             )}
@@ -68,6 +71,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           <LockedMedia
             contents={contents}
             fixedHeight={contents.length > 1}
+            messagesView={messagesView}
             openBuyModal={openBuyModal}
             paying={paying}
             previewIndex={previewIndex}

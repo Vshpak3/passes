@@ -15,11 +15,20 @@ interface SlideContentProps extends SlideImageProps {
   index: number
   fixedHeight: boolean
   isActive: boolean
+  messagesView?: boolean
 }
 
 export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
   (
-    { content, carouselContent, index, fixedHeight, isActive, autoplayVideo },
+    {
+      content,
+      carouselContent,
+      index,
+      fixedHeight,
+      isActive,
+      autoplayVideo,
+      messagesView
+    },
     ref
   ) => {
     const [openModal, setOpenModal] = useState(false)
@@ -48,6 +57,11 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
             <button
               className={classNames(
                 fixedHeight ? "max-h-[75vh]" : "",
+                messagesView && fixedHeight
+                  ? "max-h-[45vh] md:max-h-[55vh]"
+                  : fixedHeight
+                  ? "max-h-[55vh] sm:max-h-[75vh]"
+                  : "",
                 "h-full w-full"
               )}
               onClick={onImgClickHandler}
