@@ -30,7 +30,6 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
     >
       <FileInput
         accept={ACCEPTED_MEDIA_TYPES}
-        className="hidden"
         multiple
         name="file"
         options={{
