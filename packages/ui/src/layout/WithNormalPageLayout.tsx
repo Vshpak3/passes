@@ -35,7 +35,7 @@ export const WithNormalPageLayout = (
         <main
           className={classNames(
             options.sidebar ? "lg:col-span-7" : "lg:col-span-12",
-            "col-span-12 flex w-full flex-col"
+            "col-span-12 flex w-full max-w-[2000px] flex-col"
           )}
         >
           {options.header && (
