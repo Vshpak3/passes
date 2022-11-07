@@ -1,5 +1,5 @@
 import PassesLogoPink from "public/icons/passes-logo-pink.svg"
-import LogoutIcon from "public/icons/sidebar-logout-icon.svg"
+import LogoutIcon from "public/icons/sidebar/logout.svg"
 import { FC } from "react"
 
 import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"

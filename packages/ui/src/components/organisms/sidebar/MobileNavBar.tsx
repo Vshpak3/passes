@@ -1,9 +1,9 @@
 import classNames from "classnames"
 import Link from "next/link"
-import HomeIcon from "public/icons/sidebar-home-icon.svg"
-import MessagesIcon from "public/icons/sidebar-messages-icon.svg"
-import MyPassesIcon from "public/icons/sidebar-passes-icon.svg"
-import SettingsIcon from "public/icons/sidebar-settings-icon.svg"
+import HomeIcon from "public/icons/sidebar/home.svg"
+import MessagesIcon from "public/icons/sidebar/messages.svg"
+import MyPassesIcon from "public/icons/sidebar/passes.svg"
+import SettingsIcon from "public/icons/sidebar/settings.svg"
 import React from "react"
 
 const mobileLinks = [

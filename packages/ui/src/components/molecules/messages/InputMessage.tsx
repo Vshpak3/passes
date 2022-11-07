@@ -318,7 +318,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             isCreator
               ? "items-center justify-between md:-ml-4 md:flex-nowrap"
               : "flex-nowrap justify-end",
-            "flex-wrap flex w-full md:flex-nowrap md:py-5",
+            "flex w-full flex-wrap md:flex-nowrap md:py-5",
             Object.values(errors)[0] && "!pt-0"
           )}
         >

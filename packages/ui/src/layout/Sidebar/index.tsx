@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import UserIcon from "public/icons/sidebar-profile-icon.svg"
+import UserIcon from "public/icons/sidebar/profile.svg"
 import { useEffect, useState } from "react"
 
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"

@@ -1,5 +1,5 @@
 import { Disclosure } from "@headlessui/react"
-import MenuIcon from "public/icons/sidebar-menu-icon.svg"
+import MenuIcon from "public/icons/sidebar/menu.svg"
 import { FC } from "react"
 
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"

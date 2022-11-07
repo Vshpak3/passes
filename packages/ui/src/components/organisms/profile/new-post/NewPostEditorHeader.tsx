@@ -1,4 +1,4 @@
-import CloseIcon from "public/icons/sidebar-close-icon.svg"
+import CloseIcon from "public/icons/sidebar/close.svg"
 import { FC } from "react"
 
 import { Checkbox } from "src/components/atoms/input/Checkbox"

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import LogoSmall from "public/icons/sidebar-logo-small.svg"
+import LogoSmall from "public/icons/logo-small.svg"
 
 export const NoProfile = () => {
   return (

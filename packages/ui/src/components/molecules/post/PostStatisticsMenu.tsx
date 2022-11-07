@@ -4,7 +4,7 @@ import ArrowUpRight from "public/icons/arrow-up-right.svg"
 import DollarGrayIcon from "public/icons/dollar-gray.svg"
 import HeartIcon from "public/icons/heart-gray.svg"
 import MessageIcon from "public/icons/message-dots-square.svg"
-import CloseIcon from "public/icons/sidebar-close-icon.svg"
+import CloseIcon from "public/icons/sidebar/close.svg"
 import TipsIcon from "public/icons/tips.svg"
 import { FC, useRef } from "react"
 
