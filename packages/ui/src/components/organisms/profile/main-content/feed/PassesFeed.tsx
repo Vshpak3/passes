@@ -31,7 +31,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
           return <PassCard pass={arg} />
         }}
         className="grid grid-cols-2 gap-3 pb-20 lg:grid-cols-3"
-        emptyElement={<span>No passes available</span>}
+        emptyElement={<span>No memberships available</span>}
         fetch={async (req: GetPassesRequestDto) => {
           const api = new PassApi()
           return await api.getCreatorPasses({
