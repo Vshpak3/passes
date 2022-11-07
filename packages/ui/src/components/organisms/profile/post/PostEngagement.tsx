@@ -81,7 +81,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           </div>
         ) : (
           <div className="flex flex-row flex-wrap text-sm font-normal text-gray-500">
-            <span className="mr-4 pt-1 text-center">
+            <span className="mr-4 pt-[0.35rem] text-center">
               Tipped: ${post.yourTips}
             </span>
             <TipButton post={post} />
