@@ -2397,7 +2397,7 @@ export class PaymentService {
                 const registerResponse =
                   await this.passService.registerRenewPass(
                     subscription.user_id,
-                    subscription.id,
+                    subscription.pass_holder_id,
                     new PayinMethodDto(subscription),
                   )
                 await this.payinEntryHandler(subscription.user_id, {
