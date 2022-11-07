@@ -162,18 +162,17 @@ export const MediaSection: FC<MediaSectionProps> = ({
                   </Fragment>
                 ))}
                 <SwiperSlide>
-                  <div className="flex min-h-[150px] min-w-[50px] items-center">
-                    {files.length !== MAX_FILE_COUNT && (
-                      <DragDropFile
-                        accept={ACCEPTED_MEDIA_TYPES}
-                        errors={errors}
-                        multiple
-                        name="drag-drop"
-                        options={{ onChange: onFileInputChange }}
-                        register={register}
-                      />
-                    )}
-                  </div>
+                  {files.length !== MAX_FILE_COUNT && (
+                    <DragDropFile
+                      accept={ACCEPTED_MEDIA_TYPES}
+                      className="flex min-h-[150px] w-[150px] items-center"
+                      errors={errors}
+                      multiple
+                      name="drag-drop"
+                      options={{ onChange: onFileInputChange }}
+                      register={register}
+                    />
+                  )}
                 </SwiperSlide>
               </Swiper>
             </div>

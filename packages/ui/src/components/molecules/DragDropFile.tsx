@@ -79,35 +79,33 @@ export const DragDropFile: FC<DragDropFileProps> = ({
           onDrop={handleDrop}
         />
       )}
-      <div className="flex h-full w-full flex-col items-center justify-center gap-4 rounded-lg border-[1px] border-solid border-passes-secondary-color p-1">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-lg border-[1px] border-solid border-passes-secondary-color p-2 text-sm text-gray-500">
         <UploadIcon />
         <div className="flex flex-col items-center justify-center gap-1">
-          <div className="flex gap-1">
+          <div className="flex gap-5">
             <FileInput
               accept={accept}
-              className="cursor-pointer "
+              className="cursor-pointer"
               errors={errors}
               multiple={multiple}
               name={name}
               options={options}
               register={register}
               trigger={
-                <span className="text-sm font-medium text-passes-secondary-color">
+                <span className="font-medium text-passes-secondary-color">
                   Click to upload
                 </span>
               }
             />
-            <span className="text-sm font-normal text-gray-500">
-              or drag and drop
-            </span>
+            <span className="font-normal">or drag and drop</span>
           </div>
-          <p className="self-stretch text-center text-sm font-normal text-gray-500">
-            {helperText}
-          </p>
+          {helperText && (
+            <p className="self-stretch text-center font-normal">{helperText}</p>
+          )}
           {name === "passFile" ?? (
-            <p className="self-stretch text-center text-sm font-normal text-gray-500">
+            <p className="self-stretch text-center font-normal">
               If no media is selected,{" "}
-              <span className="cursor-pointer text-sm font-medium">
+              <span className="cursor-pointer font-medium">
                 Passes will provide a default art piece.
               </span>
             </p>
