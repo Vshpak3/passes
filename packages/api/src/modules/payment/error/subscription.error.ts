@@ -1,6 +1,4 @@
-import { BadRequestException } from '@nestjs/common'
-
-export class InvalidSubscriptionError extends BadRequestException {
+export class InvalidSubscriptionError extends Error {
   constructor(msg: string) {
     super(msg)
     Object.setPrototypeOf(this, InvalidSubscriptionError.prototype)
