@@ -59,7 +59,7 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
             {listId === "Free" && items.length === 0 ? (
               <div className="flex h-[175px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-[#FF51A8] bg-[#0F0C10] px-6">
                 <BoxIcon />
-                <p className="text-center  text-[12px] font-normal leading-[16px] text-[#888689]">
+                <p className="text-center text-[12px] font-normal leading-[16px] text-[#888689]">
                   Reorder and drag content here to post as free preview
                 </p>
               </div>

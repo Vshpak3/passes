@@ -181,7 +181,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
           onKeyDown={submitOnEnter}
         />
         {files.length > 0 && (
-          <div className="relative  max-w-[390px] sm:max-w-[590px]">
+          <div className="relative max-w-[390px] sm:max-w-[590px]">
             <MediaSection
               addNewMedia={addNewMedia}
               errors={errors}

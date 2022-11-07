@@ -34,7 +34,7 @@ export const MessagesChannelGalleryHeader: FC<
   )
 
   return (
-    <div className="flex w-full  items-center justify-between">
+    <div className="flex w-full items-center justify-between">
       <div className="flex w-full items-center justify-start pl-2">
         <div className="flex items-center gap-3">
           <BackIcon className="h-4 w-4" onClick={() => setGallery(!gallery)} />

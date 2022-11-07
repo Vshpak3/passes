@@ -106,7 +106,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
               })
             )
           ) : contents.length > 1 ? (
-            <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
+            <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
               <img
                 alt=""
                 className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"
@@ -143,7 +143,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
               </div>
             )}
           </div>
-          <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
+          <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
             {contents.length === 1 ? (
               isLoading ? (
                 <span>Please wait! Your content is being uploaded</span>
@@ -152,7 +152,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   if (c.contentType === ContentDtoContentTypeEnum.Image) {
                     return (
                       <div
-                        className="relative flex h-full w-full  cursor-pointer items-center  justify-center"
+                        className="relative flex h-full w-full cursor-pointer items-center justify-center"
                         key={c.contentId}
                       >
                         <img
@@ -180,7 +180,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                 })
               )
             ) : contents.length > 1 ? (
-              <div className="relative flex h-full w-full  cursor-pointer items-center  justify-center">
+              <div className="relative flex h-full w-full cursor-pointer items-center justify-center">
                 <img
                   alt=""
                   className="w-full rounded-[15px] object-cover opacity-20 shadow-xl blur"

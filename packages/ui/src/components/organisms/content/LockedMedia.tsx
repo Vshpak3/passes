@@ -32,14 +32,14 @@ export const LockedMedia: FC<LockedMediaProps> = ({
     >
       <div className="relative h-full max-h-[1200px] cursor-pointer">
         <div className="relative h-full overflow-hidden">
-          <div className="[filter:blur(100px)]">
+          <div>
             <img
               alt="post"
               className="object-cover object-center"
               src="/img/PricedContentPlaceholder.png"
             />
           </div>
-          <div className="absolute inset-0 flex flex-col items-center justify-center  gap-[10px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-[10px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
             <ContentUnlockButton
               className="w-auto !px-[30px] !py-2.5"
               isDisabled={paying}

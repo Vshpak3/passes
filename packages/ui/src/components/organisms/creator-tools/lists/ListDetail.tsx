@@ -227,7 +227,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             )
           }}
           emptyElement={
-            <div className="mt-[10px] flex h-[40px] w-full flex-row items-center  justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
+            <div className="mt-[10px] flex h-[40px] w-full flex-row items-center justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
               <div className="flex flex-row items-center gap-[10px]">
                 <InfoIconOutlined />
                 <span>

@@ -33,7 +33,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
           </Link>
           {list.type === ListDtoTypeEnum.Normal ? (
             <Button
-              className="flex h-[45px] w-[45px] items-center  justify-center !rounded-[50%] bg-[#fffeff26]"
+              className="flex h-[45px] w-[45px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
               onClick={async () => {
                 const api = new ListApi()
                 await api
@@ -47,7 +47,7 @@ export const List: FC<ListProps> = ({ list, removable }) => {
               <DeleteIcon />
             </Button>
           ) : (
-            <div className="flex h-[45px] w-[45px] items-center  justify-center">
+            <div className="flex h-[45px] w-[45px] items-center justify-center">
               <IconTooltip
                 Icon={AlertIcon}
                 position="top"

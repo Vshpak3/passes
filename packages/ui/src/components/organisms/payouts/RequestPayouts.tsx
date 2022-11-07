@@ -142,8 +142,8 @@ export const RequestPayouts = () => {
 
       <div className="w-full text-[24px] font-[700]">Payout Destination</div>
       <div className="flex w-full flex-col gap-5 md:flex-row">
-        <div className="flex  w-full flex-col gap-[20px] rounded-[15px] border border-passes-dark-200 bg-[#1b141d80] p-5">
-          <div className="flex  w-full flex-row items-center justify-between">
+        <div className="flex w-full flex-col gap-[20px] rounded-[15px] border border-passes-dark-200 bg-[#1b141d80] p-5">
+          <div className="flex w-full flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-[10px]">
               <span className="text-[14px] font-[700]">
                 Default Payout Method:

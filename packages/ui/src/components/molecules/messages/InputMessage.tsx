@@ -341,7 +341,7 @@ export const InputMessage: FC<InputMessageProps> = ({
               <div
                 className={classNames(
                   errors.text && "border-b-red",
-                  "flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between  rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
+                  "flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
                 )}
               >
                 <div className="flex w-3/5 flex-col items-start">
