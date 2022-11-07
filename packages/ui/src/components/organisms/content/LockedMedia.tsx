@@ -35,7 +35,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({
           <div>
             <img
               alt="post"
-              className="object-cover object-center"
+              className="h-full w-full object-cover object-center"
               src="/img/PricedContentPlaceholder.png"
             />
           </div>
