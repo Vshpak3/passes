@@ -2356,11 +2356,7 @@ export class PaymentService {
         SubscriptionStatusEnum.CANCELLED,
       )
       .select(
-        `${SubscriptionEntity.table}.id`,
-        `${SubscriptionEntity.table}.user_id`,
-        'payin_method',
-        'chain_id',
-        'card_id',
+        `${SubscriptionEntity.table}.*`,
         `${PassHolderEntity.table}.expires_at`,
         `${PassHolderEntity.table}.holder_id`,
       )
