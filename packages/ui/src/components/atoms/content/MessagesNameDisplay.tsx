@@ -7,18 +7,18 @@ interface MessagesNameDisplayProps {
   username: string
   displayName: string
   linked?: boolean
-  className?: string
+  displayNameClassName?: string
 }
 
 export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   username,
   displayName,
   linked = false,
-  className
+  displayNameClassName = "text-base md:text-lg"
 }) => {
   const text = (
     <div className="flex flex-row items-center truncate">
-      <span className="text-base md:text-lg">{displayName}</span>
+      <span className={displayNameClassName}>{displayName}</span>
       <Text className="ml-2 text-gray-500 lg:block" fontSize={11}>
         {" @" + username}
       </Text>

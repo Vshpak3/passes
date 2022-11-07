@@ -85,8 +85,8 @@ export const Comment: FC<CommentProps> = ({
             <div className="flex justify-between">
               <div className="flex gap-x-2">
                 <MessagesNameDisplay
-                  className="text-base"
                   displayName={commenterDisplayName}
+                  displayNameClassName="text-base"
                   linked
                   username={commenterUsername}
                 />
