@@ -34,7 +34,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
       <div className="flex items-center space-x-4 overflow-x-hidden">
         <ProfileWidget isCreator={isCreator} user={user} />
       </div>
-      <div className="ml-[8px] mt-[-21px] flex shrink-0 flex-col-reverse items-end md:flex-row md:items-center md:gap-2">
+      <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-col-reverse items-center justify-end md:flex-row md:gap-2">
         <div className="text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
             className="uppercase text-gray-300/60"
@@ -44,13 +44,11 @@ export const PostHeader: FC<PostHeaderProps> = ({
           />
         </div>
         {isPinned && (
-          <div className="relative mb-[5px] flex shrink-0 items-center rounded-lg bg-white/10 py-[0px] px-2 md:mb-0 md:py-[4px]">
-            <span className="shrink-0">
-              <PinIcon />
-            </span>
+          <div className="flex items-center rounded-lg bg-white/10 px-2 py-1">
+            <PinIcon />
           </div>
         )}
-        <div className="flex shrink-0 items-center gap-[15px]">
+        <div className="mt-[5px] flex items-center">
           <Dropdown items={dropdownOptions} />
         </div>
       </div>
