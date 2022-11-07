@@ -30,30 +30,34 @@ export const WithNormalPageLayout = (
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
-      <div className="background-gradient relative grid min-h-screen w-full grid-cols-10">
-        {options.sidebar && <Sidebar />}
-        <main
-          className={classNames(
-            options.sidebar ? "lg:col-span-7" : "lg:col-span-12",
-            "col-span-12 flex w-full max-w-[2000px] flex-col"
-          )}
-        >
-          {options.header && (
-            <div className="cover-image col-span-12 h-[200px] pr-10 pt-4">
-              <span className="hidden lg:block">
-                <CreatorSearchBar />
-              </span>
-            </div>
-          )}
-          <AuthWrapper
-            creatorOnly={!!options.creatorOnly}
-            hasRefreshed={hasRefreshed}
-            isPage
-            skipAuth={!!options.skipAuth}
-          >
-            {page}
-          </AuthWrapper>
-        </main>
+      <div className="background-gradient relative min-h-screen w-full">
+        <div className="mx-auto block max-w-[3000px]">
+          <div className="relative grid min-h-screen w-full grid-cols-10">
+            {options.sidebar && <Sidebar />}
+            <main
+              className={classNames(
+                options.sidebar ? "lg:col-span-7" : "lg:col-span-12",
+                "col-span-12 flex w-full flex-col"
+              )}
+            >
+              {options.header && (
+                <div className="cover-image col-span-12 h-[200px] pr-10 pt-4">
+                  <span className="hidden lg:block">
+                    <CreatorSearchBar />
+                  </span>
+                </div>
+              )}
+              <AuthWrapper
+                creatorOnly={!!options.creatorOnly}
+                hasRefreshed={hasRefreshed}
+                isPage
+                skipAuth={!!options.skipAuth}
+              >
+                {page}
+              </AuthWrapper>
+            </main>
+          </div>
+        </div>
       </div>
     ),
     ...component
