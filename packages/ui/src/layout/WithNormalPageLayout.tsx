@@ -11,6 +11,7 @@ class WithNormalPageLayoutOptions {
   creatorOnly?: boolean = false
   header?: boolean = true
   sidebar?: boolean = true
+  background?: boolean = true
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -30,7 +31,12 @@ export const WithNormalPageLayout = (
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
     getLayout: (page: ReactElement, hasRefreshed: boolean) => (
-      <div className="background-gradient relative min-h-screen w-full">
+      <div
+        className={classNames(
+          options.background && "background-gradient",
+          "relative min-h-screen w-full"
+        )}
+      >
         <div className="mx-auto block max-w-[3000px]">
           <div className="relative grid min-h-screen w-full grid-cols-10">
             {options.sidebar && <Sidebar />}
