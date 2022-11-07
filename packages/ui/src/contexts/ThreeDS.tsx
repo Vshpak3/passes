@@ -26,6 +26,10 @@ export const useThreeDS = () => {
     setPayinId(payinId)
     setWaiting(new Date())
   }
+  const clear = () => {
+    setWaiting(undefined)
+    setPayinId(undefined)
+  }
   useEffect(() => {
     if (payinId && waiting) {
       const fetch = async () => {
@@ -41,7 +45,7 @@ export const useThreeDS = () => {
               payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
               payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
             ) {
-              setWaiting(undefined)
+              clear()
               toast.success("Your card payment was successful!")
             } else if (
               payin.payinStatus !== PayinDtoPayinStatusEnum.Pending &&
@@ -49,17 +53,17 @@ export const useThreeDS = () => {
               payin.payinStatus !== PayinDtoPayinStatusEnum.CreatedReady &&
               payin.payinStatus !== PayinDtoPayinStatusEnum.ActionRequired
             ) {
-              setWaiting(undefined)
+              clear()
               toast.error(
                 "Payment failure: an error has occured - please contact support"
               )
             }
           } catch (error: unknown) {
-            setWaiting(undefined)
+            clear()
             errorMessage(error, true)
           }
         } else {
-          setWaiting(undefined)
+          clear()
           toast.error(
             `Payment failure: no three d verification link after ${THREE_DS_EXPIRATION_TIME}`
           )
