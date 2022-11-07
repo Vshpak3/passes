@@ -10,7 +10,7 @@ export const EditProfileButton: FC<EditProfileButtonProps> = ({
   setEditProfile
 }) => (
   <Button
-    className="hidden px-4 md:block"
+    className="block px-4"
     onClick={() => setEditProfile(true)}
     variant="pink-outline"
   >

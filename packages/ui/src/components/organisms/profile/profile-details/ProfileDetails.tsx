@@ -66,7 +66,9 @@ export const ProfileDetails: FC = () => {
             userId={profileUserId}
           />
           {ownsProfile && (
-            <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+            <div className="absolute top-5 right-5 items-center justify-between md:top-10 md:right-0">
+              <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+            </div>
           )}
           <ProfileInformationMobile chatLink={chatLink} />
         </div>
