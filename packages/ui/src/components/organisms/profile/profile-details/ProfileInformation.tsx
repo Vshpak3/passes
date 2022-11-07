@@ -61,7 +61,7 @@ export const ProfileInformationDesktop: FC<ProfileInformationProps> = ({
       <span className="passes-break my-3 font-semibold leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
-      <div className="flex w-full flex-row flex-wrap items-center gap-[30px] lg:gap-[68px]">
+      <div className="flex w-full flex-row flex-wrap items-center gap-y-[30px] gap-x-[68px]">
         <ProfileStatsDesktop
           likes={creatorStats?.numLikes}
           numPosts={creatorStats?.numPosts}
