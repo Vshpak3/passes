@@ -41,7 +41,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({
           </div>
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-[10px] rounded-[15px] border border-white/20 bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
             <ContentUnlockButton
-              className="w-auto !px-[30px] !py-2.5"
+              className="w-auto !px-[15px] !py-1.5 md:!px-[30px] md:!py-2.5"
               isDisabled={paying}
               name={
                 paying

@@ -57,7 +57,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   return (
     <div
       className={classNames(
-        "m-2.5 flex max-w-[70%] rounded",
+        "m-2.5 flex max-w-[90%] rounded md:max-w-[70%]",
         ownsMessage && "flex-row-reverse self-end"
       )}
     >
@@ -69,7 +69,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
       <div className={classNames("mx-4 flex flex-col items-end")}>
         <div
           className={classNames(
-            "relative flex w-full items-center gap-3",
+            "relative flex  w-full items-center gap-3 ",
             ownsMessage && "flex-row-reverse self-end"
           )}
         >
@@ -78,7 +78,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           >
             <span className="passes-break">{formatText(text)}</span>
             {!!messageContent.length && (
-              <div className="w-[403px]">
+              <div className=" w-[296px] md:w-[403px]">
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}
