@@ -45,7 +45,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({
             <img
               alt="post"
               className="h-full w-full object-cover object-center"
-              src="/img/PricedContentPlaceholder.png"
+              src="/img/locked-media.png"
             />
           </div>
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-[10px] bg-[rgba(27,20,29,0.5)] py-[25px] px-[34px] backdrop-blur-[50px]">
