@@ -66,7 +66,7 @@ export const Hero = () => {
             <div className="flex w-full grow items-center py-4">
               <input
                 autoComplete="email"
-                className="mr-4 h-12 grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder:text-white"
+                className="mr-4 h-14 grow rounded-lg border-2 border-white bg-transparent px-4 text-white placeholder:text-white"
                 id="email"
                 name="email"
                 onChange={(v) => setEmailAddress(v.target.value)}
@@ -75,7 +75,7 @@ export const Hero = () => {
                 value={emailAddress}
               />
               <button
-                className="rounded-sm bg-[#CF42A4] px-6 py-4 font-semibold"
+                className="rounded-lg bg-[#CF42A4] px-6 py-4 font-semibold"
                 onClick={handleSubmitEmail}
                 type="submit"
               >
