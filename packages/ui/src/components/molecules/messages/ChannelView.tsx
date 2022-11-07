@@ -70,10 +70,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   }, [selectedChannel, otherUserIsCreator])
 
   return (
-    <div
-      className="z-50 col-span-9 flex h-full w-full flex-1 flex-col overflow-y-hidden
-    bg-[#120C14] lg:col-span-6"
-    >
+    <div className="z-50 col-span-9 flex h-full w-full flex-1 flex-col overflow-y-hidden lg:col-span-6 ">
       {selectedChannel && (
         <>
           <ChannelHeader

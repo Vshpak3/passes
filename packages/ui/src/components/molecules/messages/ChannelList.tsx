@@ -58,31 +58,32 @@ export const ChannelList: FC<ChannelListProps> = ({
   return (
     <div
       className={classNames(
-        "col-span-7 h-full overflow-y-hidden border-r border-[#fff]/10 p-3 lg:col-span-3",
+        "col-span-7 h-full overflow-y-hidden border-r border-[#fff]/10 lg:col-span-3",
         openChannelView ? "hidden" : "block",
         "lg:block"
       )}
     >
-      <div className="border-b border-[#fff]/10 pb-6">
-        <div className="flex justify-between pb-6">
-          <span className="text-base font-medium">Find people</span>
-          {!!user?.isCreator && (
-            <SortDropdown
-              onSelect={onSortSelect}
-              options={sortOptions}
-              selection={{ orderType: channelOrderType }}
-            />
-          )}
-        </div>
+      <div className="border-b border-[#fff]/10 p-3">
         <ChannelSearchInput
           handleSearch={handleChangeSearch}
-          placeholder="Search people.."
+          placeholder="Search channels.."
         />
       </div>
       <div
-        className={classNames("h-[calc(100%-120px)]", "overflow-y-auto")}
+        className={classNames("h-[calc(100%-120px)] p-3", "overflow-y-auto")}
         id="channelDiv"
       >
+        <div className="flex justify-between">
+          <div className="ml-auto mr-0">
+            {!!user?.isCreator && (
+              <SortDropdown
+                onSelect={onSortSelect}
+                options={sortOptions}
+                selection={{ orderType: channelOrderType }}
+              />
+            )}
+          </div>
+        </div>
         <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
           KeyedComponent={({
             arg: channel
@@ -95,7 +96,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               />
             )
           }}
-          className="pt-6"
+          className="pt-2"
           fetch={async (req: GetChannelsRequestDto) => {
             const api = new MessagesApi()
             return await api.getChannels({ getChannelsRequestDto: req })
