@@ -41,13 +41,10 @@ export const SchedulerHeader: FC = () => {
     setMonthYearPopperOpen(false)
   })
 
-  const hideNewPostModal = useCallback(
-    () => () => setIsNewPostModalOpen(false),
-    []
-  )
   if (isMobile === undefined) {
     return null
   }
+
   return (
     <>
       {/* month year picker */}
@@ -87,7 +84,7 @@ export const SchedulerHeader: FC = () => {
       {/* Create new post */}
       <NewPostPopup
         isOpen={isNewPostModalOpen && !!selectionDate}
-        onCancel={hideNewPostModal}
+        onCancel={() => setIsNewPostModalOpen(false)}
         selectionDate={selectionDate as Date}
       />
 
