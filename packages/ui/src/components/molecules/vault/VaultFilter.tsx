@@ -1,7 +1,7 @@
 import { FC } from "react"
 
-import { VaultFilterOption } from "src/components/atoms/vault"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+import { VaultFilterOption } from "./VaultFilterOptions"
 
 interface TypeFilterButton {
   id: VaultType
@@ -21,7 +21,7 @@ const VAULT_CATEGORY_OPTIONS: CategoryFilterButton[] = [
   { id: undefined, label: "All" },
   { id: "posts", label: "Posts" },
   { id: "messages", label: "Messages" },
-  { id: "uploads", label: "Upload" }
+  { id: "uploads", label: "Unused" }
 ]
 
 const filterStyles = {

@@ -16,7 +16,7 @@ interface NewFanwallPosts {
 export const NewFanwallPosts: FC<NewFanwallPosts> = ({
   profileUserId,
   ownsProfile
-}: NewFanwallPosts) => {
+}) => {
   const [newComments, setNewComments] = useState<FanWallCommentDto[]>([])
   const { user } = useUser()
   const createPost = async (

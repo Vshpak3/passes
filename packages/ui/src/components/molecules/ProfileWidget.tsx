@@ -17,9 +17,7 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
   return (
     <Link href={`/${user.username}`}>
       <div className="flex items-center">
-        <div className="relative">
-          <ProfileThumbnail key={user.userId} userId={user.userId} />
-        </div>
+        <ProfileThumbnail key={user.userId} userId={user.userId} />
         <div className="flex flex-col">
           <span className="ml-3 flex flex-row items-center text-lg font-medium leading-6 text-white">
             {user.displayName}

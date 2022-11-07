@@ -69,7 +69,7 @@ export const navigation: SidebarNavigation[] = [
   },
   {
     id: "memberships",
-    name: "gMemberships",
+    name: "Memberships",
     href: "/memberships",
     icon: MyPassesIcon,
     creatorOnly: false

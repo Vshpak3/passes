@@ -1,14 +1,11 @@
-import React from "react"
+import React, { FC } from "react"
 
 type HeartIconProps = {
   fill: string
   strokeColor: string
 }
 
-export const HeartIcon: React.FC<HeartIconProps> = ({
-  fill,
-  strokeColor
-}: HeartIconProps) => {
+export const HeartIcon: FC<HeartIconProps> = ({ fill, strokeColor }) => {
   return (
     <svg fill={fill} height="24" width="24" xmlns="http://www.w3.org/2000/svg">
       <path

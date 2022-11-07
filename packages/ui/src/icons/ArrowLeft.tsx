@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FC } from "react"
 
 type ArrowLeftProps = {
   className: string
@@ -6,11 +6,7 @@ type ArrowLeftProps = {
   height: string
 }
 
-export const ArrowLeft: React.FC<ArrowLeftProps> = ({
-  className,
-  width,
-  height
-}: ArrowLeftProps) => {
+export const ArrowLeft: FC<ArrowLeftProps> = ({ className, width, height }) => {
   return (
     <svg
       className={className}

@@ -1,6 +1,6 @@
 import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
-import { ForwardedRef, forwardRef, useEffect, useState } from "react"
+import { forwardRef, useEffect, useState } from "react"
 
 import {
   SlideImage,
@@ -17,17 +17,10 @@ interface SlideContentProps extends SlideImageProps {
   isActive: boolean
 }
 
-export const SlideContent = forwardRef(
+export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
   (
-    {
-      content,
-      carouselContent,
-      index,
-      fixedHeight,
-      isActive,
-      autoplayVideo
-    }: SlideContentProps,
-    ref: ForwardedRef<HTMLImageElement>
+    { content, carouselContent, index, fixedHeight, isActive, autoplayVideo },
+    ref
   ) => {
     const [openModal, setOpenModal] = useState(false)
     const [activeIndex, setActiveIndex] = useState(0)

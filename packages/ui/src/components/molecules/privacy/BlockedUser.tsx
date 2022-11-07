@@ -1,5 +1,5 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
-import React, { useState } from "react"
+import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/Button"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
@@ -9,7 +9,8 @@ interface BlockedUserProps {
 }
 
 const api = new FollowApi()
-export const BlockedUser = ({ blockedUser }: BlockedUserProps) => {
+
+export const BlockedUser: FC<BlockedUserProps> = ({ blockedUser }) => {
   const [blocked, setBlocked] = useState<boolean>(true)
   return (
     <div className="flex items-center justify-between">

@@ -1,4 +1,5 @@
 import { PayinMethodDto } from "@passes/api-client"
+import { FC } from "react"
 
 import { MIN_THREE_DS_LIMIT } from "src/config/payments"
 import { formatCurrency } from "src/helpers/formatters"
@@ -8,7 +9,7 @@ interface ThreeDSInfoProps {
   payinMethod?: PayinMethodDto
 }
 
-export const ThreeDSInfo = ({ price, payinMethod }: ThreeDSInfoProps) => {
+export const ThreeDSInfo: FC<ThreeDSInfoProps> = ({ price, payinMethod }) => {
   return (
     <>
       {payinMethod?.cardId && price > MIN_THREE_DS_LIMIT && (

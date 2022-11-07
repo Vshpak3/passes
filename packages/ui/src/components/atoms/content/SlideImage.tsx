@@ -2,7 +2,7 @@
 import "swiper/css"
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { ForwardedRef, forwardRef, useState } from "react"
+import { forwardRef, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
 
@@ -10,8 +10,8 @@ export interface SlideImageProps {
   content: ContentDto
 }
 
-export const SlideImage = forwardRef(
-  ({ content }: SlideImageProps, ref: ForwardedRef<HTMLImageElement>) => {
+export const SlideImage = forwardRef<HTMLImageElement, SlideImageProps>(
+  ({ content }, ref) => {
     const [loaded, setLoaded] = useState(false)
     const image = ContentService.userContentMediaPath(content)
     return (

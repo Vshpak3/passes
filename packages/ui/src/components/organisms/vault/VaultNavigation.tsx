@@ -6,8 +6,8 @@ import {
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
 
-import { VaultAddButton } from "src/components/atoms/vault"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
+import { VaultAddButton } from "src/components/molecules/vault/VaultAddButton"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
 import { VaultSelectContainer } from "src/components/molecules/vault/VaultSelect"
@@ -85,10 +85,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
       <div className="flex items-center justify-between">
         <div className="text-[24px] font-bold text-white">Creator Vault</div>
       </div>
-      <VaultSelectContainer
-        deselectAll={deselectAll}
-        selectedItems={selectedItems}
-      />
       <VaultFilterContainer
         setVaultCategory={setVaultCategory}
         setVaultType={setVaultType}
@@ -102,24 +98,29 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
           onDelete={handleVaultDeleteItems}
         />
       )}
+      <VaultSelectContainer
+        deselectAll={deselectAll}
+        selectedItems={selectedItems}
+      />
       {!embedded && (
         <div className="absolute right-20 bottom-0 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
-              <div>20 media files can be posted at any given time</div>
+              <div>20 media files can be posted at a time</div>
               <div
                 className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
                 onClick={() => setDeleteModalActive(true)}
               >
                 <MdDelete size={23} />
               </div>
+              {/*
+              TODO: connect with API to get selected items and add to new
+              TODO: connect with API to get selected items and add to new post
               <VaultAddToDropdown
-                // TODO: connect with API to get selected items and add to new message
                 onAddToMessage={pushToMessages}
-                // TODO: connect with API to get selected items and add to new post
-                // eslint-disable-next-line no-console
-                onAddToPost={() => console.log("add to post")}
+                onAddToPost={() => undefined}
               />
+              */}
             </>
           )}
           <div className="mr-3">

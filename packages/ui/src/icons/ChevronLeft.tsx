@@ -1,4 +1,4 @@
-import React from "react"
+import React, { FC } from "react"
 
 type ChevronLeftProps = {
   className: string
@@ -6,11 +6,11 @@ type ChevronLeftProps = {
   height: string
 }
 
-export const ChevronLeft: React.FC<ChevronLeftProps> = ({
+export const ChevronLeft: FC<ChevronLeftProps> = ({
   className,
   width,
   height
-}: ChevronLeftProps) => {
+}) => {
   return (
     <svg
       className={className}

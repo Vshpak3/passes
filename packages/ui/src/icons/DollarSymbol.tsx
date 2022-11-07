@@ -1,9 +1,9 @@
-import React from "react"
+import React, { FC } from "react"
 
 interface DollarSymbolProps {
   dimensions?: number
 }
-export const DollarSymbol = ({ dimensions = 22 }: DollarSymbolProps) => {
+export const DollarSymbol: FC<DollarSymbolProps> = ({ dimensions = 22 }) => {
   return (
     <svg
       className="min-w-[11px]"

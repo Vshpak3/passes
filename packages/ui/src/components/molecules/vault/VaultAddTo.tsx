@@ -2,7 +2,7 @@ import { Menu, Transition } from "@headlessui/react"
 import AddToIcon from "public/icons/plus-square.svg"
 import { FC, Fragment } from "react"
 
-import { VaultAddToItem } from "src/components/atoms/vault"
+import { VaultAddToItem } from "./VaultAddToItem"
 
 interface VaultAddToDropdownProps {
   onAddToPost: () => void

@@ -1,7 +1,11 @@
 import classNames from "classnames"
-import React from "react"
+import React, { FC } from "react"
 
-export const ChevronDown = ({ className }: { className?: string }) => (
+type ChevronDownProps = {
+  className?: string
+}
+
+export const ChevronDown: FC<ChevronDownProps> = ({ className }) => (
   <svg
     className={classNames("bi bi-chevron-down", className)}
     fill="currentColor"
