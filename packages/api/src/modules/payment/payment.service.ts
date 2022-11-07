@@ -2370,7 +2370,7 @@ export class PaymentService {
         try {
           // holder of pass changed
           if (subscription.user_id !== subscription.holder_id) {
-            await this.dbWriter
+            await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
               .where({ id: subscription.id })
               .update({ subscription_status: SubscriptionStatusEnum.CANCELLED })
             return
@@ -2383,7 +2383,7 @@ export class PaymentService {
             status = SubscriptionStatusEnum.EXPIRING
           }
 
-          await this.dbWriter
+          await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
             .where({ id: subscription.id })
             .update({ subscription_status: status })
 
