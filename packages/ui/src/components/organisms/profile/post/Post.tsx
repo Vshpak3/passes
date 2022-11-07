@@ -103,6 +103,19 @@ const PostUnmemo: FC<PostProps> = ({
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
 
+  useEffect(() => {
+    const isAlreadyPinned = pinnedPosts.some(
+      ({ postId: pinnedPostId }) => pinnedPostId === postId
+    )
+    const currentPostPinTimeFromPinnedList = pinnedPosts.find(
+      ({ postId: pinnedPostId }) => pinnedPostId === postId
+    )?.pinnedAt
+
+    if (isAlreadyPinned && !!pinnedAt !== !!currentPostPinTimeFromPinnedList) {
+      setIsRemoved(true)
+    }
+  }, [pinnedPosts, pinnedAt, postId])
+
   return (
     <>
       {!isRemoved && (

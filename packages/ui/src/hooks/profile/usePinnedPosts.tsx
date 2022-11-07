@@ -24,8 +24,7 @@ export const usePinnedPosts = (creatorId: string) => {
     _mutateManual([CACHE_KEY_FEED_PINNED, creatorId], update, {
       populateCache: (update: PostDto[]) => {
         return update
-      },
-      revalidate: false
+      }
     })
 
   const pinPost = async (post: PostDto) => {
