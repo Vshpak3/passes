@@ -1,6 +1,4 @@
-import { FollowApi } from "@passes/api-client"
 import { FC, useState } from "react"
-import { toast } from "react-toastify"
 
 import { Dropdown } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
