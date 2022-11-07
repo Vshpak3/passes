@@ -461,7 +461,7 @@ export class PassService {
         return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
           `${PassHolderEntity.table}.expires_at`,
           '>',
-          Date.now(),
+          new Date(),
         )
       })
     }

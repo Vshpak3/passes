@@ -352,7 +352,7 @@ export class MessagesService {
           return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
             `${PassHolderEntity.table}.expires_at`,
             '>',
-            Date.now(),
+            new Date(),
           )
         })
         .distinct('holder_id')
@@ -683,7 +683,7 @@ export class MessagesService {
         return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
           `${PassHolderEntity.table}.expires_at`,
           '>',
-          Date.now(),
+          new Date(),
         )
       })
       .select(
