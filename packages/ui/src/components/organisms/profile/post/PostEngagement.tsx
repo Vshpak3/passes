@@ -43,8 +43,8 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
   )
 
   return (
-    <div className="flex w-full flex-col items-center justify-end">
-      <div className="flex w-full items-center justify-between">
+    <div className="flex w-full flex-col items-center justify-end overflow-x-hidden">
+      <div className="flex w-full min-w-[340px] items-center justify-between overflow-x-hidden">
         <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
@@ -80,8 +80,10 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             </span>
           </div>
         ) : (
-          <div className="text-sm font-normal text-gray-500">
-            <span className="mr-4">Tipped: ${post.yourTips}</span>
+          <div className="flex flex-row flex-wrap text-sm font-normal text-gray-500">
+            <span className="mr-4 pt-1 text-center">
+              Tipped: ${post.yourTips}
+            </span>
             <TipButton post={post} />
           </div>
         )}

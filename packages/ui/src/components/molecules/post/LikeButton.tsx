@@ -1,4 +1,5 @@
 import { LikeApi, PostDto } from "@passes/api-client"
+import classNames from "classnames"
 import React, { FC, useCallback, useMemo, useState } from "react"
 
 import { errorMessage } from "src/helpers/error"
@@ -50,10 +51,15 @@ export const LikeButton: FC<LikeButtonProps> = ({
       type="button"
     >
       <HeartIcon
-        fill={isLiked ? "#FF60DC" : "none"}
-        strokeColor={isLiked ? "#FF60DC" : "#A09FA6"}
+        fill={isLiked ? "#F4245E" : "none"}
+        strokeColor={isLiked ? "#F4245E" : "#A09FA6"}
       />
-      <span className="text-[12px] leading-[15px] text-passes-gray-100">
+      <span
+        className={classNames(
+          "text-[12px] leading-[15px] text-passes-gray-100",
+          isLiked && "text-[#F4245E]"
+        )}
+      >
         {formattedNumLikes}
       </span>
     </button>
