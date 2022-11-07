@@ -2,17 +2,16 @@
 .swiper-button-next {
   color: #fff !important;
   transform: scale(0.6, 0.9);
-  mix-blend-mode: difference;
 }
 .swiper-slide {
   height: auto !important;
 }
 
-.swiper-button-next {
+.swiper-button-next .swiper-rtl .swiper-button-next {
   position: absolute;
   right: -11px !important;
 }
-.swiper-button-prev {
+.swiper-button-prev .swiper-rtl .swiper-button-prev {
   position: absolute;
   left: -11px !important;
 }
