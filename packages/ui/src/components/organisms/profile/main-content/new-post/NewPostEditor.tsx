@@ -186,9 +186,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       <div
         className={classNames(
           "flex flex-col items-start justify-start border-gray-600 p-5 md:px-7 md:py-5",
-          popup
-            ? "bg-[#1b141d]/75 backdrop-blur"
-            : "border-y-[0.5px] bg-[#1b141d]/50"
+          popup ? "bg-[#1b141d]/75 backdrop-blur" : "border-y-[0.5px]"
         )}
       >
         {extended && (

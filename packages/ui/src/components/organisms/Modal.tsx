@@ -19,7 +19,7 @@ export interface ModalProps {
   shouldCloseOnClickOutside?: boolean
   modalContainerClassname?: string
   childrenClassname?: string
-  isNewPost?: boolean
+  bare?: boolean
   isCloseOutside?: boolean
 }
 
@@ -31,7 +31,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   shouldCloseOnClickOutside = false,
   modalContainerClassname,
   childrenClassname,
-  isNewPost,
+  bare,
   isCloseOutside
 }) => {
   const modalContentRef = useRef(null)
@@ -77,7 +77,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         className={classNames(
           "m-auto w-full rounded p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
           modalContainerClassname,
-          isNewPost
+          bare
             ? "bg-transparent md:min-w-fit md:border-transparent"
             : "bg-[#1b141d]"
         )}
@@ -88,7 +88,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
             <button
               className={classNames(
                 "top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
-                isNewPost && "absolute right-[20px] top-[20px] z-[6]"
+                bare && "absolute right-[20px] top-[20px] z-[6]"
               )}
               data-modal-toggle="popup-modal"
               onClick={() => setOpen(false)}

@@ -32,9 +32,9 @@ export const MediaModal: FC<ModalProps> = ({
   carouselContent = undefined // deprecate content carousel for now
   return (
     <Modal
+      bare
       childrenClassname={childrenClassname}
       isCloseOutside
-      isNewPost
       isOpen={isOpen}
       modalContainerClassname={modalContainerClassname}
       setOpen={setOpen}
