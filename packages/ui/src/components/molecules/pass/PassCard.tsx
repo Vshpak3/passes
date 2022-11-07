@@ -1,11 +1,6 @@
-import {
-  PassDto,
-  PassDtoTypeEnum,
-  PassHolderDtoChainEnum
-} from "@passes/api-client"
+import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import { useRouter } from "next/router"
-import EthereumIcon from "public/icons/eth.svg"
-import SolanaIcon from "public/icons/sol.svg"
+import InfoIcon from "public/icons/pink-square-info.svg"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -64,28 +59,20 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
         <div className="flex w-full flex-row items-center justify-between">
           <div className="text-lg font-[500]">{pass.title}</div>
           <div className="flex flex-row items-center">
-            {pass.chain === PassHolderDtoChainEnum.Eth ? (
-              <>
-                <EthereumIcon /> <span className="ml-1 text-sm">Ethereum</span>
-              </>
-            ) : (
-              pass.chain === PassHolderDtoChainEnum.Sol && (
-                <>
-                  <SolanaIcon /> <span className="ml-1 text-sm">Solana</span>
-                </>
-              )
-            )}
+            <span className="py-2">
+              ${pass.price} / {getPassType(pass.type)}
+            </span>
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
           <div className="mt-2 flex w-full flex-row items-center justify-between">
             <div>
               {pass.totalMessages !== null && pass.totalMessages > 0 && (
-                <span className="flex flex-col text-sm text-white md:text-xs">
+                <span className="flex flex-row gap-1 text-sm text-white md:text-xs">
                   <span className="font-[700] text-white">
                     {pass.totalMessages}
                   </span>
-                  <span>free message(s)</span>
+                  <span className="text-gray-400">free message(s)</span>
                 </span>
               )}
               {pass.totalMessages === null && (
@@ -105,9 +92,18 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             {formatText(pass.description)}
           </p>
         </div>
-        <span className="py-2">
-          ${pass.price} / {getPassType(pass.type)}
-        </span>
+        <div className="flex w-full flex-row items-center justify-between py-2">
+          {pass.remainingSupply && pass.totalSupply ? (
+            <p className=" text-sm font-medium leading-[16px]">
+              <span className="text-xs font-normal leading-[23px] text-white/70">
+                {pass.remainingSupply}/{pass.totalSupply} left
+              </span>
+            </p>
+          ) : (
+            <div />
+          )}
+          <InfoIcon />
+        </div>
         <Button
           className="w-full rounded-full py-2 text-center"
           onClick={() => {
@@ -120,11 +116,6 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             ? `${isPinned ? "Unpin" : "Pin"} Membership`
             : "Buy Membership"}
         </Button>
-        <p className="mt-2 text-sm font-medium leading-[16px]">
-          <span className="text-xs font-normal leading-[23px] text-white/70">
-            {pass.remainingSupply}/{pass.totalSupply} left
-          </span>
-        </p>
       </div>
     </div>
   )

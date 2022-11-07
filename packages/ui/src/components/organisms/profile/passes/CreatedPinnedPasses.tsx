@@ -15,7 +15,7 @@ export const CreatorPinnedPasses: FC<CreatorPinnedPassesProps> = ({
 
   return (
     <div className="flex flex-col px-4">
-      <SectionTitle>Featured</SectionTitle>
+      <SectionTitle>Featured Memberships</SectionTitle>
       <div className=" w-full items-center px-4">
         {pinnedPasses?.map((pass) => (
           <div className="py-2" key={pass.passId}>
