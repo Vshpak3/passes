@@ -88,6 +88,7 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
             content={content}
             fixedHeight={fixedHeight}
             isActive={isActive}
+            messagesView={messagesView}
           />
         )
     }
