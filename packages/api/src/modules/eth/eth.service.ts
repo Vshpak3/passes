@@ -6,6 +6,7 @@ import {
   ServiceUnavailableException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import { Alchemy, AlchemyProvider, Network, Nft, OwnedNft } from 'alchemy-sdk'
 import { Contract, ContractFactory } from 'ethers'
 import ms from 'ms'
@@ -54,6 +55,7 @@ export class EthService {
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
     private readonly configService: ConfigService,
+    @InjectSentry() private readonly sentry: SentryService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -99,6 +101,7 @@ export class EthService {
         )
       } catch (err) {
         this.logger.error(`failed eth nft-pass refresh ${passes[i].id}`, err)
+        this.sentry.instance().captureException(err)
       }
     }
     const wallets = await this.dbReader<WalletEntity>(WalletEntity.table).where(
@@ -118,6 +121,7 @@ export class EthService {
         )
       } catch (err) {
         this.logger.error(`failed eth nft refresh ${wallets[i].id}`, err)
+        this.sentry.instance().captureException(err)
       }
     }
   }
@@ -377,8 +381,9 @@ export class EthService {
         value: 0,
         nonce,
       })
-    } catch (err2) {
-      this.logger.error(err2)
+    } catch (err) {
+      this.logger.error(err)
+      this.sentry.instance().captureException(err)
     }
   }
 

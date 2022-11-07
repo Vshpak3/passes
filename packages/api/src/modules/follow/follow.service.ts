@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
 } from '@nestjs/common'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -48,6 +49,7 @@ export class FollowService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    @InjectSentry() private readonly sentry: SentryService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -394,6 +396,7 @@ export class FollowService {
             `Error updating post counts for ${comment.post_id}`,
             err,
           )
+          this.sentry.instance().captureException(err)
         }
       }),
     )

@@ -1,6 +1,7 @@
 import { DataV2 } from '@metaplex-foundation/mpl-token-metadata'
 import { Inject, ServiceUnavailableException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import {
   ACCOUNT_SIZE,
   AccountLayout,
@@ -61,6 +62,7 @@ export class SolService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    @InjectSentry() private readonly sentry: SentryService,
     private readonly configService: ConfigService,
 
     @Database(DB_READER)
@@ -108,6 +110,7 @@ export class SolService {
         )
       } catch (err) {
         this.logger.error(`failed sol nft refresh ${passholders[i].id}`, err)
+        this.sentry.instance().captureException(err)
       }
     }
   }

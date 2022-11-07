@@ -2411,6 +2411,7 @@ export class PaymentService {
                 `Error paying subscription for ${subscription.id}`,
                 err,
               )
+              this.sentry.instance().captureException(err)
             }
           }
         } catch (err) {
@@ -2418,6 +2419,7 @@ export class PaymentService {
             `Error updating subscription for ${subscription.id}`,
             err,
           )
+          this.sentry.instance().captureException(err)
         }
       }),
     )

@@ -7,6 +7,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import CryptoJS from 'crypto-js'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { v4 } from 'uuid'
@@ -81,6 +82,7 @@ export class PostService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    @InjectSentry() private readonly sentry: SentryService,
 
     @Database(DB_READER)
     private readonly dbReader: DatabaseService['knex'],
@@ -766,6 +768,7 @@ export class PostService {
           await this.refreshPostCounts(post.id)
         } catch (err) {
           this.logger.error(`Error updating post counts for ${post.id}`, err)
+          this.sentry.instance().captureException(err)
         }
       }),
     )

@@ -5,6 +5,7 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import { differenceInYears } from 'date-fns'
 import { Response } from 'express'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -52,6 +53,7 @@ export class VerificationService {
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
+    @InjectSentry() private readonly sentry: SentryService,
     private readonly configService: ConfigService,
 
     @Database(DB_READER)
@@ -136,6 +138,7 @@ export class VerificationService {
           await this.refreshPersonaVerification(inquiry.id, inquiry.user_id)
         } catch (err) {
           this.logger.error(`Error updating inquiry ${inquiry.id}`, err)
+          this.sentry.instance().captureException(err)
         }
       }),
     )

@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { SENTRY_TOKEN } from '@ntegral/nestjs-sentry'
 
 import { getBaseProviders } from '../../util/providers.test'
 import { MessagesService } from '../messages/messages.service'
@@ -21,6 +22,10 @@ describe('FollowController', () => {
         },
         {
           provide: PostService,
+          useFactory: jest.fn(() => ({})),
+        },
+        {
+          provide: SENTRY_TOKEN,
           useFactory: jest.fn(() => ({})),
         },
       ],
