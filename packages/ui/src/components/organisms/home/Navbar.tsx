@@ -57,7 +57,7 @@ export const Navbar = () => {
               </li>
               <li>
                 <a
-                  className="block rounded-full bg-white px-4 py-2 text-black"
+                  className="block rounded-lg bg-white px-4 py-2 text-black"
                   href="/signup"
                 >
                   Sign Up
@@ -80,7 +80,7 @@ export const Navbar = () => {
                 Sign In
               </a>
             </li>
-            <li className="rounded-full bg-white p-4 text-center">
+            <li className="rounded-lg bg-white p-4 text-center">
               <a className="mx-auto w-full text-black" href="/signup">
                 Sign Up
               </a>
