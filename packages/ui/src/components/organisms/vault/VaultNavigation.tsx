@@ -7,9 +7,11 @@ import { useRouter } from "next/router"
 import ExitIcon from "public/icons/exit-icon.svg"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
+import { toast } from "react-toastify"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddButton } from "src/components/molecules/vault/VaultAddButton"
+import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
 import {
   SortDropdown,
@@ -57,7 +59,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
 }) => {
   const router = useRouter()
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const pushToMessages = () => {
     router.push(
       {
@@ -75,6 +76,12 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
     )
   }
 
+  const createNewPost = () => {
+    // TODO: connect with API to get selected items and add to new post
+    toast.error("Feature not supported")
+    return
+  }
+
   const deselectAll = () => {
     setSelectedItems([])
   }
@@ -88,7 +95,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   )
 
   const handleVaultDeleteItems = async () => {
-    // TODO: connect with API to get selected items and delete items
     const api = new ContentApi()
     await api.deleteContent({
       deleteContentRequestDto: {
@@ -139,14 +145,10 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
               >
                 <MdDelete size={23} />
               </div>
-              {/*
-              TODO: connect with API to get selected items and add to new
-              TODO: connect with API to get selected items and add to new post
               <VaultAddToDropdown
                 onAddToMessage={pushToMessages}
-                onAddToPost={() => undefined}
+                onAddToPost={createNewPost}
               />
-              */}
             </>
           )}
           <div className="mr-3">
