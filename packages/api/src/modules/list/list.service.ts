@@ -231,17 +231,29 @@ export class ListService {
           `${ListMemberEntity.table}.user_id`,
           `${UserEntity.table}.id`,
         )
+        .leftJoin(
+          FollowEntity.table,
+          `${ListMemberEntity.table}.user_id`,
+          `${FollowEntity.table}.follower_id`,
+        )
         .select([
           `${UserEntity.table}.id as user_id`,
           `${UserEntity.table}.username`,
           `${UserEntity.table}.display_name`,
+          `${FollowEntity.table}.id as follow`,
           `${ListMemberEntity.table}.id`,
           `${ListMemberEntity.table}.created_at`,
         ])
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,
-        ),
+        )
+        .andWhere(function () {
+          return this.whereNull(`${FollowEntity.table}.creator_id`).orWhere(
+            `${FollowEntity.table}.creator_id`,
+            userId,
+          )
+        }),
       getListMembersRequestDto,
       ListMemberEntity.table,
     ).limit(MAX_LIST_MEMBERS_PER_REQUEST)
