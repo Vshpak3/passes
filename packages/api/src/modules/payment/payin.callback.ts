@@ -21,7 +21,9 @@ import {
 } from './callback.types'
 import { PayinDto } from './dto/payin.dto'
 import { PayinEntity } from './entities/payin.entity'
+import { SubscriptionEntity } from './entities/subscription.entity'
 import { PayinCallbackEnum } from './enum/payin.callback.enum'
+import { SubscriptionStatusEnum } from './enum/subscription.status.enum'
 import { NoPayinMethodError } from './error/payin.error'
 import { PaymentService } from './payment.service'
 
@@ -190,6 +192,9 @@ async function renewNftPassSuccessCallback(
   db: DatabaseService['knex'],
 ): Promise<RenewNftPassPayinCallbackOutput> {
   const expiresAt = await payService.passService.renewPass(input.passHolderId)
+  await db<SubscriptionEntity>(SubscriptionEntity.table)
+    .update({ subscription_status: SubscriptionStatusEnum.ACTIVE })
+    .where({ user_id: payin.user_id, pass_holder_id: input.passHolderId })
   return {
     passHolderId: input.passHolderId,
     expiresAt,

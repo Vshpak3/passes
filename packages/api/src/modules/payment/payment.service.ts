@@ -2385,7 +2385,7 @@ export class PaymentService {
 
           // TODO: send email notifications
           // try to pay subscription if possible
-          if (subscription.expires_at - EXPIRING_DURATION_MS <= now) {
+          if (subscription.expires_at.valueOf() - EXPIRING_DURATION_MS <= now) {
             try {
               const method: PayinMethodDto = {
                 method: subscription.payin_method,
