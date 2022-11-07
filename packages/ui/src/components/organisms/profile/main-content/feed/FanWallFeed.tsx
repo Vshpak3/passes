@@ -23,7 +23,7 @@ const FallWallFeedLoader = (
 
 const FanWallFeedEnd = (
   <div className="my-[40px] flex justify-center">
-    <div className="bg-[#1b141d]/50 px-10 py-5" role="alert">
+    <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
       <span className="font-medium">There are no more fan wall comments.</span>
     </div>
   </div>

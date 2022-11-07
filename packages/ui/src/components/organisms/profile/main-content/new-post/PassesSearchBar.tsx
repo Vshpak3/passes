@@ -33,7 +33,7 @@ export const PassesSearchBar: FC<PassesSearchBarProps> = ({
           {({ active, disabled }) => (
             <span
               className={classNames("block cursor-pointer py-2 px-6", {
-                "bg-[#1b141d]/90 text-passes-primary-color": active,
+                "bg-[#12070E]/90 text-passes-primary-color": active,
                 "text-gray-500": disabled
               })}
             >

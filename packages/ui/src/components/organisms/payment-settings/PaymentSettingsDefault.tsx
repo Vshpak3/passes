@@ -80,7 +80,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
           hasDefaultPaymentMethod
             ? "flex-col items-start justify-start"
             : "items-center justify-between",
-          "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 py-6 px-6"
+          "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 py-6 px-6"
         )}
       >
         <span className="text-[15px] font-bold text-white">

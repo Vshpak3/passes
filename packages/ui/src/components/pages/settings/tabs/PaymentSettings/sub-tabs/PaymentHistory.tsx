@@ -98,7 +98,7 @@ const PaymentHistory = () => {
         )}
       </Popper>
       <div className="mb-5 flex w-full flex-col gap-4">
-        <div className="flex flex-row items-center justify-between rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-4">
+        <div className="flex flex-row items-center justify-between rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-4">
           <span className="text-[16px] font-[700]">
             Payments Transaction History
           </span>

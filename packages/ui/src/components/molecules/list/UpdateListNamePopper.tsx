@@ -45,7 +45,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
         }}
         classes={{
           paper:
-            "!bg-[#1B141D] p-[24px] border border-[#ffffff26] w-[273px] flex flex-col text-white !rounded-[25px] "
+            "!bg-[#12070E] p-[24px] border border-[#ffffff26] w-[273px] flex flex-col text-white !rounded-[25px] "
         }}
         id={id}
         onClose={handleClose}

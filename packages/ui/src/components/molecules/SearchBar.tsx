@@ -29,7 +29,7 @@ export const SearchBar = <T,>({
             <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2" />
             <Combobox.Input
               autoComplete="off"
-              className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#1b141d]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
+              className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#12070E]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
               id="search"
               name="search"
               onChange={onInputChange}
@@ -39,7 +39,7 @@ export const SearchBar = <T,>({
             />
           </div>
         </Combobox.Button>
-        <Combobox.Options className="absolute top-14 z-10 w-full overflow-y-hidden rounded-md border border-[#ffffff]/10 bg-[#1b141d]/80 outline-none">
+        <Combobox.Options className="absolute top-14 z-10 w-full overflow-y-hidden rounded-md border border-[#ffffff]/10 bg-[#12070E]/80 outline-none">
           {options.length ? (
             options
           ) : searchValue && loading ? (

@@ -47,7 +47,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
     onLoadingHandler()
   }, [isLoadingStart, setIsLoading, contents])
   return (
-    <div className="flex w-full flex-col items-start gap-3 rounded-[15px] border border-[#ffff]/20 bg-[#1b141d]/50 p-4 sm:max-w-[265px]">
+    <div className="flex w-full flex-col items-start gap-3 rounded-[15px] border border-[#ffff]/20 bg-[#12070E]/50 p-4 sm:max-w-[265px]">
       <div className="flex w-full items-center justify-between">
         <div className="flex cursor-pointer items-center justify-start gap-[6px]">
           <span className="text-[12px] font-medium leading-[22px] text-white">
@@ -122,7 +122,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
         <div className="relative w-full bg-transparent">
           <div
             className={classNames(
-              purchased ? "" : "bg-[#1B141D]/50 backdrop-blur-[50px]",
+              purchased ? "" : "bg-[#12070E]/50 backdrop-blur-[50px]",
               "absolute flex h-full w-full items-center justify-center rounded-[15px]"
             )}
           >

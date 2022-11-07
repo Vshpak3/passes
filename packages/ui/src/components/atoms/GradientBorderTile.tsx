@@ -18,7 +18,7 @@ export const GradientBorderTile: FC<
     >
       <div
         className={classNames(
-          "absolute inset-px rounded-[15px] bg-[#1B141D] backdrop-blur-[36px]",
+          "absolute inset-px rounded-[15px] bg-[#12070E] backdrop-blur-[36px]",
           innerClass
         )}
       >

@@ -79,7 +79,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           modalContainerClassname,
           bare
             ? "bg-transparent md:min-w-fit md:border-transparent"
-            : "bg-[#1b141d]"
+            : "bg-[#12070E]"
         )}
         id="popup-modal"
       >

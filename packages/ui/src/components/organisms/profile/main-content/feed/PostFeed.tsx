@@ -25,7 +25,7 @@ const PostFeedLoader = (
 
 const PostFeedEnd = (
   <div className="my-4 flex justify-center pb-16 lg:my-8">
-    <div className="bg-[#1b141d]/50 px-10 py-5" role="alert">
+    <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
       <span className="font-medium">
         No more posts are available at this time!
       </span>

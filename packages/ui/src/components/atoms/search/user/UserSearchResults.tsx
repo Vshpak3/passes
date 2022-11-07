@@ -21,9 +21,9 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
       className={classNames(
         "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90",
         disabled
-          ? "cursor-not-allowed bg-[#1b141d]/100"
-          : "hover:bg-[#1b141d]/90",
-        { "bg-[#1b141d]/90": active }
+          ? "cursor-not-allowed bg-[#12070E]/100"
+          : "hover:bg-[#12070E]/90",
+        { "bg-[#12070E]/90": active }
       )}
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">

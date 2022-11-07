@@ -84,7 +84,7 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
           <Fade {...TransitionProps} timeout={350}>
             <div>
               <RadioGroup
-                className="w-[254px] rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[#1B141D] p-[26px] backdrop-blur-[15px]"
+                className="w-[254px] rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[#12070E] p-[26px] backdrop-blur-[15px]"
                 onChange={onChange}
               >
                 <RadioGroup.Label className="mb-3 block">

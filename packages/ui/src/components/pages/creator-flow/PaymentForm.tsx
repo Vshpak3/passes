@@ -96,7 +96,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
     <div className="flex justify-center pb-20 text-white">
       <div className="flex w-4/5 max-w-[1110px] flex-col justify-between gap-6 sm:-mt-12 sm:flex-row">
         <div className="flex-[33]">
-          <div className="flex w-full flex-col gap-[10px] rounded-3xl px-4 py-10 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-8 sm:backdrop-blur-3xl">
+          <div className="flex w-full flex-col gap-[10px] rounded-3xl px-4 py-10 sm:border sm:border-gray-700 sm:bg-[#12070E80] sm:px-8 sm:backdrop-blur-3xl">
             <div className="flex flex-row items-center gap-2">
               <CheckCircleFilled />
               Your account has been approved
@@ -120,7 +120,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             })
           }}
         >
-          <div className="flex w-full flex-col gap-[12px] rounded-3xl px-4 py-8 sm:border sm:border-gray-700 sm:bg-[#1B141D80] sm:px-5 sm:backdrop-blur-3xl">
+          <div className="flex w-full flex-col gap-[12px] rounded-3xl px-4 py-8 sm:border sm:border-gray-700 sm:bg-[#12070E80] sm:px-5 sm:backdrop-blur-3xl">
             <div className="flex flex-col">
               <div className="text-lg font-bold">
                 Bank Account Data for Payouts

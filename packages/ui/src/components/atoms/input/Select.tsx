@@ -115,7 +115,7 @@ export const Select: FC<SelectProps> = ({
                 <Listbox.Option
                   className={({ active }) =>
                     classNames("p1-2 block cursor-pointer py-1 px-4", {
-                      "bg-[#1b141d]/90 text-passes-primary-color": active
+                      "bg-[#12070E]/90 text-passes-primary-color": active
                     })
                   }
                   key={isString ? option : option.value}

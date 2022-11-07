@@ -73,7 +73,7 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
     []
   )
   return (
-    <div className="flex flex-col items-start bg-[#1b141d]/50 backdrop-blur-[50px]">
+    <div className="flex flex-col items-start bg-[#12070E]/50 backdrop-blur-[50px]">
       <div className="flex min-h-[80px] w-full flex-row items-center gap-5 border-b border-[#fff]/10 px-5 py-4 pr-10">
         <span className="text-[16px] font-medium leading-[24px] text-white">
           Selected audience

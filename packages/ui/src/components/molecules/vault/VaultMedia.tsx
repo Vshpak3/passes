@@ -83,7 +83,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
               isSelected
                 ? "border-[#c943a8] bg-[#c943a8]"
                 : "border-white bg-transparent",
-              "hover:shadow-[0px_20px_20px_#1b141d]] ml-[8px] h-[21px] w-[21px] rounded-full border-2 hover:shadow"
+              "hover:shadow-[0px_20px_20px_#12070E]] ml-[8px] h-[21px] w-[21px] rounded-full border-2 hover:shadow"
             )}
           />
         </div>

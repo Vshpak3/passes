@@ -72,7 +72,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
 
   return (
     <Dialog className="z-10" onClose={() => setPost(null)} open>
-      <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[15px] border border-white/[0.15] bg-[#1B141D]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
+      <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[15px] border border-white/[0.15] bg-[#12070E]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
         <div className="relative flex flex-1">
           {!postUnlocked && imageToShow && (
             <div className="absolute h-[80%] w-[80%] translate-x-[10%] translate-y-[10%] [filter:blur(15px)]">

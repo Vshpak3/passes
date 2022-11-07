@@ -148,7 +148,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
       </div>
       <div className="w-full">
         <Line
-          className="rounded-[15px] border border-[#FFFFFF26] bg-[#1B141D80] p-4"
+          className="rounded-[15px] border border-[#FFFFFF26] bg-[#12070E80] p-4"
           data={{
             labels: eachDayOfInterval({
               start: startDate,

@@ -55,7 +55,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
       <div>
         {cards?.map((item) => (
           <div
-            className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#1B141D]/50 p-5"
+            className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-5"
             key={item.id}
           >
             <CreditCardEntry card={item} showName />

@@ -200,7 +200,7 @@ export class ListService {
     const type = await this.checkList(userId, listId, false)
     if (
       getListMembersRequestDto.orderType === ListMemberOrderTypeEnum.METADATA &&
-      !(type === ListTypeEnum.TOP_SPENDERS)
+      type !== ListTypeEnum.TOP_SPENDERS
     ) {
       throw new BadRequestException('invalid order type for list')
     }
@@ -231,24 +231,17 @@ export class ListService {
           `${ListMemberEntity.table}.user_id`,
           `${UserEntity.table}.id`,
         )
-        .leftJoin(
-          FollowEntity.table,
-          `${ListMemberEntity.table}.user_id`,
-          `${FollowEntity.table}.follower_id`,
-        )
         .select([
           `${UserEntity.table}.id as user_id`,
           `${UserEntity.table}.username`,
           `${UserEntity.table}.display_name`,
-          `${FollowEntity.table}.id as follow`,
           `${ListMemberEntity.table}.id`,
           `${ListMemberEntity.table}.created_at`,
         ])
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,
-        )
-        .andWhere(`${FollowEntity.table}.creator_id`, userId),
+        ),
       getListMembersRequestDto,
       ListMemberEntity.table,
     ).limit(MAX_LIST_MEMBERS_PER_REQUEST)

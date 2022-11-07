@@ -66,7 +66,7 @@ export const RequestPayouts = () => {
     <div className="flex w-full flex-col gap-[24px]">
       <div className="text-[24px] font-[700]">Request Payouts</div>
       <div className="flex flex-col gap-5 md:flex-row">
-        <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[15px] border border-passes-dark-200 bg-gradient-to-br from-[#1B141D]/50 to-[#441E25] p-5">
+        <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[15px] border border-passes-dark-200 bg-gradient-to-br from-[#12070E]/50 to-[#441E25] p-5">
           <div className="mb-4 text-[16px] opacity-[50%]">
             Balance Available
           </div>
@@ -142,7 +142,7 @@ export const RequestPayouts = () => {
 
       <div className="w-full text-[24px] font-[700]">Payout Destination</div>
       <div className="flex w-full flex-col gap-5 md:flex-row">
-        <div className="flex w-full flex-col gap-[20px] rounded-[15px] border border-passes-dark-200 bg-[#1b141d80] p-5">
+        <div className="flex w-full flex-col gap-[20px] rounded-[15px] border border-passes-dark-200 bg-[#12070E80] p-5">
           <div className="flex w-full flex-row items-center justify-between">
             <div className="flex flex-row items-center gap-[10px]">
               <span className="text-[14px] font-[700]">
