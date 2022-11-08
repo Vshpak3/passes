@@ -2,6 +2,7 @@ import { FanWallCommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { FormContainer } from "src/components/organisms/FormContainer"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
@@ -26,6 +27,8 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   const { deleteFanWallComment, hideFanWallComment, unhideFanWallComment } =
     useFanWall()
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
+
   const {
     fanWallCommentId,
     commenterId,
@@ -41,6 +44,11 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
 
   const [isHidden, setIsHidden] = useState(_isHidden)
 
+  const deleteComment = async () => {
+    await deleteFanWallComment(fanWallCommentId)
+    setRemoved(true)
+  }
+
   const dropdownItems: DropdownOption[] = [
     ...DropDownReport(!isOwner && !ownsProfile, {
       username: commenterUsername,
@@ -51,8 +59,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
       userId: commenterId
     }),
     ...DropDownGeneral("Delete", isOwner || ownsProfile, async () => {
-      await deleteFanWallComment(fanWallCommentId)
-      setRemoved(true)
+      setDeleteModalOpen(true)
     }),
     ...DropDownGeneral(
       "Hide",
@@ -77,7 +84,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
     <>
       {!removed && (
         <div className="mt-6 flex">
-          <FormContainer className="flex !min-h-[10px] w-full border border-white/10 px-5 pt-5">
+          <div className="flex !min-h-[10px] w-full grow flex-col items-stretch gap-4 border-y-[0.5px] border-gray-600 py-5 md:min-h-[400px] md:pt-5">
             <PostHeader
               createdAt={createdAt}
               displayName={commenterDisplayName}
@@ -87,22 +94,27 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               userId={commenterId}
               username={commenterUsername}
             />
-            <div className="flex flex-col items-start px-5 sm:px-10 md:px-10 lg:px-5">
-              <div className="passes-break text-start text-base font-medium text-white/90">
-                {!isHidden || showHidden ? (
-                  <FormattedText tags={tags} text={text} />
-                ) : (
-                  <p
-                    className="text-gray-500"
-                    onClick={() => setShowHidden(true)}
-                  >
-                    Click to reveal hidden comment
-                  </p>
-                )}
-              </div>
-            </div>
-          </FormContainer>
+            <p className="passes-break px-5 text-start text-base font-medium text-[#ffffff]/90 sm:px-10 md:px-10 lg:px-5">
+              {!isHidden || showHidden ? (
+                <FormattedText tags={tags} text={text} />
+              ) : (
+                <p
+                  className="text-gray-500"
+                  onClick={() => setShowHidden(true)}
+                >
+                  Click to reveal hidden comment
+                </p>
+              )}
+            </p>
+          </div>
         </div>
+      )}
+      {deleteModalOpen && (
+        <DeleteConfirmationModal
+          isOpen
+          onClose={() => setDeleteModalOpen(false)}
+          onDelete={deleteComment}
+        />
       )}
     </>
   )
