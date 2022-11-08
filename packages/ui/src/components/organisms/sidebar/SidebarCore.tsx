@@ -26,7 +26,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
           <div>
             <div className="flex shrink-0">
               <div>
-                <PassesLogoPink className="ml-8 mt-2 block h-[30x] w-[30px] fill-current" />
+                <PassesLogoPink className="mt-2 block h-[30x] w-[30px] fill-current" />
               </div>
             </div>
             <nav className="flex flex-col items-start gap-0 pt-10">

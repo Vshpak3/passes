@@ -1,4 +1,5 @@
 import { MessageDto, PayinMethodDto } from "@passes/api-client"
+import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import React, { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { SectionTitle } from "src/components/atoms/SectionTitle"
@@ -30,11 +31,16 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
       <SectionTitle>Buy Message</SectionTitle>
       <div>
         <div className="my-4 flex justify-between">
-          <span className="rounded border border-passes-dark-gray px-2 py-1 text-white">
-            {!!video && `${video} videos`} {!!images && plural("photo", images)}
+          <span className="flex items-center rounded border border-passes-dark-gray px-2 py-1 text-white">
+            {Boolean(video) && `${video} videos`}{" "}
+            {Boolean(images) && plural("photo", images)}
           </span>
-          <span className="text-white">
-            Unlock for ${message.price.toFixed(2)}
+          <span className="flex items-center text-white">
+            Unlock for
+            <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
+              <DollarIcon />
+              <span className="ml-1">${message.price?.toFixed(2)}</span>
+            </span>
           </span>
         </div>
         <span className="my-4 flex text-passes-dark-gray">

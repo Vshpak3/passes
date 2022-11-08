@@ -1,8 +1,10 @@
 import { PayinMethodDto, PostDto } from "@passes/api-client"
+import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
@@ -27,25 +29,30 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   }
 
   return (
-    <Modal isOpen setOpen={() => setPost(null)}>
-      <div className="mb-4 flex h-[115px] w-full flex-row items-end justify-between rounded bg-gradient-to-r from-[#66697B] to-[#9C9DA9] p-4">
-        <span className="max-w-[50%] self-center text-[28px] font-bold leading-8 text-white">
-          Buy Post
-        </span>
-        <span className="text-white">${post?.price?.toFixed(2) ?? "0.00"}</span>
-      </div>
+    <Modal
+      isOpen
+      modalContainerClassname="lg:max-w-[30%] p-4"
+      setOpen={() => setPost(null)}
+    >
+      <SectionTitle>Buy Post</SectionTitle>
       <div>
-        <div className="my-4">
-          <span className="text-[#ffff]/70">
-            {!!video && `${video} videos`} {!!images && plural("photo", images)}
+        <div className="my-4 flex justify-between">
+          <span className="flex items-center rounded border border-passes-dark-gray px-2 py-1 text-white">
+            {Boolean(video) && `${video} videos`}{" "}
+            {Boolean(images) && plural("photo", images)}
+          </span>
+          <span className="flex items-center text-white">
+            Unlock for
+            <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
+              <DollarIcon />
+              <span className="ml-1">${post?.price?.toFixed(2)}</span>
+            </span>
           </span>
         </div>
-        <div>
-          <span className="text-[#ffff]/90">
-            This content will be unlocked and available in the feed after
-            purchase.
-          </span>
-        </div>
+        <span className="my-4 flex text-passes-dark-gray">
+          This content will be unlocked and available in the feed after
+          purchase.
+        </span>
         {!!whitePasessList?.length && (
           <div>
             <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
