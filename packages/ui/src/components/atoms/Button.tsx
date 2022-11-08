@@ -13,15 +13,11 @@ export enum ButtonTypeEnum {
   RESET = "reset"
 }
 interface ButtonProps {
-  bigger?: boolean
   className?: string
   disabled?: boolean
   icon?: React.ReactNode
-  innerClassName?: string
   fontSize?: number
-  href?: string
   onClick?: () => void
-  tag?: keyof JSX.IntrinsicElements
   variant?: string
   active?: boolean
   type?: ButtonTypeEnum
@@ -38,15 +34,11 @@ interface GenericButtonProps {
 }
 
 export const Button: FC<PropsWithChildren<ButtonProps>> = ({
-  bigger = false,
   children,
   className = "",
   icon,
-  innerClassName = "",
   fontSize,
-  href,
   onClick,
-  tag = "a",
   variant,
   disabled,
   type,
@@ -124,13 +116,10 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       variantInnerClassName = ""
   }
 
-  const Tag = tag
-
   return (
-    <Tag
+    <button
       className={
         "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
-        (bigger ? " !px-4 !py-3" : " ") +
         (variantClassName && ` ${variantClassName}`) +
         (className && ` ${className} `) +
         (disabled &&
@@ -138,10 +127,9 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       }
       data-focus-ring=""
       disabled={disabled}
-      href={href}
       onClick={onClick}
-      role={tag === "a" ? "button" : undefined}
-      tabIndex={tag === "a" ? 0 : undefined}
+      role="button"
+      tabIndex={0}
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       type={type}
@@ -150,8 +138,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       <Text
         className={
           "flex items-center space-x-2" +
-          (variantInnerClassName && ` ${variantInnerClassName}`) +
-          innerClassName
+          (variantInnerClassName && ` ${variantInnerClassName}`)
         }
         fontSize={fontSize || 14}
         style={{ lineHeight: 1 }}
@@ -159,7 +146,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         {icon}
         {children}
       </Text>
-    </Tag>
+    </button>
   )
 }
 
@@ -173,9 +160,8 @@ export const PassesPinkButton: FC<GenericButtonProps> = ({
   return (
     <button
       className={classNames(
-        isDisabled
-          ? "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white opacity-[0.40]"
-          : "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
+        isDisabled && "opacity-[0.40]",
+        "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
         className
       )}
       disabled={isDisabled}

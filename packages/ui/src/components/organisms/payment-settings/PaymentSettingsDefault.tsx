@@ -95,7 +95,6 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
         <Button
           className="mt-5 rounded-md px-1.5 py-1 md:py-2 md:px-3"
           onClick={navigateToPaymentHistory}
-          tag="button"
           variant="pink-outline"
         >
           Payment History

@@ -24,7 +24,6 @@ const DeactivateAccount = () => {
       <Button
         className="mt-6 w-auto !px-[68px]"
         onClick={() => setShowDeactivateConfirmationModal(true)}
-        tag="button"
         variant="pink"
       >
         <span>Deactivate Account</span>

@@ -131,7 +131,6 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
                     onClick={async () =>
                       await setDefaultWallet(wallet.walletId, wallet.chain)
                     }
-                    tag="button"
                     variant="purple-light"
                   >
                     Set {wallet.chain.toUpperCase()} default
@@ -150,7 +149,6 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
             className="h-[36px] w-[36px] text-passes-primary-color"
             disabled={wallet.custodial}
             onClick={onDeleteHandler}
-            tag="button"
             variant="pink-outline"
           >
             {wallet.custodial ? (

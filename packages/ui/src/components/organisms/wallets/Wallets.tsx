@@ -155,7 +155,6 @@ export const Wallets = () => {
           <Button
             className="mt-1 rounded-md"
             onClick={() => setIsModalOpen(true)}
-            tag="button"
             variant="pink"
           >
             <div className="flex items-center justify-center">
@@ -210,7 +209,6 @@ export const Wallets = () => {
             <div className="mt-2 xl:ml-2">
               <Button
                 className="rounded-md"
-                tag="button"
                 type={ButtonTypeEnum.SUBMIT}
                 variant="pink"
               >

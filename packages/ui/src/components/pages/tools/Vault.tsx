@@ -99,7 +99,6 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
             />
             <Button
               className="my-[10px] w-fit"
-              tag="button"
               type={ButtonTypeEnum.SUBMIT}
               variant="pink"
             >

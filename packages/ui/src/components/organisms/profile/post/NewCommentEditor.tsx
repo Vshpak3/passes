@@ -107,7 +107,6 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       <Button
         className="h-[40px] w-full shrink-0 md:ml-4 md:w-[96px]"
         disabled={isButtonDisabled || isSubmitting}
-        tag="button"
         variant="pink"
       >
         Comment

@@ -28,7 +28,6 @@ export const BlockedUser: FC<BlockedUserProps> = ({ blockedUser }) => {
             await api.blockFollower({ followerId: blockedUser.userId })
           }
         }}
-        tag="button"
         variant="pink"
       >
         <span>{blocked ? "Unblock" : "Block"}</span>

@@ -159,7 +159,6 @@ const EmailNotifications = () => {
           className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
           disabled={_.isEqual(watch(), formattedNotificationSettings)}
           disabledClass="opacity-[0.5]"
-          tag="button"
           type={ButtonTypeEnum.SUBMIT}
           variant="pink"
         >

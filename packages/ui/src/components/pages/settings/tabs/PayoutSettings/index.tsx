@@ -109,7 +109,6 @@ const PayoutSettings = () => {
             className="w-auto"
             icon={<WalletIcon />}
             onClick={() => setActiveTab(TabsEnum.WalletSettings)}
-            tag="button"
             variant="pink"
           >
             Manage Wallets
@@ -179,7 +178,6 @@ const PayoutSettings = () => {
           className="w-auto"
           icon={<BankIcon />}
           onClick={() => addOrPopStackHandler(SubTabsEnum.AddBank)}
-          tag="button"
           variant="pink"
         >
           Add Bank

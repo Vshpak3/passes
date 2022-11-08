@@ -10,13 +10,11 @@ const ManagePasses = () => {
         <h1 className="text-xl font-bold">Manage Membership</h1>
         <div className="relative mr-10 flex items-center justify-end">
           <Link href="/tools/manage-passes/create">
-            <div>
-              <Button variant="purple">
-                <div className="flex items-center justify-center p-2 text-[16px]">
-                  Create New Membership
-                </div>
-              </Button>
-            </div>
+            <Button variant="purple">
+              <div className="flex items-center justify-center p-2 text-[16px]">
+                Create New Membership
+              </div>
+            </Button>
           </Link>
         </div>
       </div>
