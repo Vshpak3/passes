@@ -106,14 +106,13 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
         </RadioGroup.Option>
       </RadioGroup>
       <div className="flex justify-end gap-4">
-        <Button onClick={() => setReportData(null)} variant="">
+        <Button onClick={() => setReportData(null)}>
           <Text className="text-white">Cancel</Text>
         </Button>
         <Button
           disabled={!reportValue}
           disabledClass="opacity-[0.5]"
           onClick={onFanReport}
-          variant=""
         >
           <Text className="text-white">Report</Text>
         </Button>

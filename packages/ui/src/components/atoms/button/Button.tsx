@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import { FC, PropsWithChildren } from "react"
 
 import { Text } from "src/components/atoms/Text"
@@ -7,13 +8,24 @@ export enum ButtonTypeEnum {
   SUBMIT = "submit",
   RESET = "reset"
 }
+
+type ButtonVariant =
+  | "black"
+  | "gradient"
+  | "gray"
+  | "pink-outline"
+  | "pink"
+  | "primary"
+  | "purple-light"
+  | "purple"
+
 interface ButtonProps {
   className?: string
   disabled?: boolean
   icon?: React.ReactNode
   fontSize?: number
   onClick?: () => void
-  variant?: string
+  variant?: ButtonVariant
   active?: boolean
   type?: ButtonTypeEnum
   disabledClass?: string
@@ -23,7 +35,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   children,
   className = "",
   icon,
-  fontSize,
+  fontSize = 14,
   onClick,
   variant,
   disabled,
@@ -31,8 +43,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   disabledClass,
   ...restOfProps
 }) => {
-  let variantClassName
-  let variantInnerClassName
+  let variantClassName = ""
   switch (variant) {
     case "primary":
       variantClassName =
@@ -41,22 +52,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     case "gradient":
       variantClassName =
         "text-white bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
-      break
-    case "vertical-gradient":
-      variantClassName =
-        "text-white bg-gradient-to-b from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
-      break
-    case "inner-gradient":
-      variantClassName =
-        "bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9 active:bg-gradient-to-r active:from-black active:via-black active:to-black dark:active:from-white dark:active:via-white dark:active:to-white inline-block rounded-lg group cursor-pointer w-full !px-px !py-px hover:from-black hover:to-black hover:via-black dark:hover:to-white dark:hover:via-white dark:hover:from-white"
-      variantInnerClassName =
-        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-lg group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
-      break
-    case "inner-gradient-2":
-      variantClassName =
-        "bg-[linear-gradient(to_right_bottom,#F2BD6C_100%,#BD499B_100%,#A359D5_100%)]"
-      variantInnerClassName =
-        "text-base px-6 py-4 leading-4 font-medium tracking-wide inline-block whitespace-nowrap transition-color duration-200 w-full flex justify-center bg-mauve-mauve1 dark:bg-black rounded-lg group-hover:bg-black dark:group-hover:bg-white group-active:bg-mauve-mauve1 dark:group-active:bg-black"
       break
     case "pink":
       variantClassName =
@@ -70,24 +65,9 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       variantClassName =
         "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-passes-primary-color dark:border-passes-primary-color border"
       break
-    case "white":
-      variantClassName =
-        "bg-mauveDark-mauve12 text-black max-h-[49px] border border-mauveDark-mauve10 hover:bg-transparent hover:border-white hover:text-white"
-      break
-    case "white-outline":
-      variantClassName = "text-white max-h-[49px] border border-white "
-      break
     case "pink-outline":
       variantClassName =
         "text-passes-primary-color max-h-[49px] border border-passes-primary-color"
-      break
-    case "link-blue":
-      variantClassName =
-        "text-blue-blue10 transition-colors hover:text-[hsl(208,_100%,_52%)] active:text-[hsl(208,_100%,_45%)] p-1"
-      break
-    case "link-purple":
-      variantClassName =
-        "text-pink-pink10 transition-colors hover:text-[#C943A8] active:text-[#C943A8] p-1"
       break
     case "gray":
       variantClassName =
@@ -97,20 +77,17 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       variantClassName =
         "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-bold"
       break
-    default:
-      variantClassName = ""
-      variantInnerClassName = ""
   }
 
   return (
     <button
-      className={
-        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2" +
-        (variantClassName && ` ${variantClassName}`) +
-        (className && ` ${className} `) +
-        (disabled &&
-          `${disabledClass ?? " cursor-auto border-[#3333]/80 bg-[#3333]/80"}`)
-      }
+      className={classNames(
+        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2",
+        variantClassName,
+        className,
+        disabled && "cursor-auto border-[#3333]/80 bg-[#3333]/80",
+        disabled && disabledClass
+      )}
       data-focus-ring=""
       disabled={disabled}
       onClick={onClick}
@@ -122,11 +99,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       {...restOfProps}
     >
       <Text
-        className={
-          "flex items-center space-x-2" +
-          (variantInnerClassName && ` ${variantInnerClassName}`)
-        }
-        fontSize={fontSize || 14}
+        className="flex items-center space-x-2"
+        fontSize={fontSize}
         style={{ lineHeight: 1 }}
       >
         {icon}

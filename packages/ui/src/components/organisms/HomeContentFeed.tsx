@@ -102,7 +102,6 @@ export const HomeContentFeed: FC = () => {
               <FollowButton
                 className="min-w-[89px]"
                 creatorId={creator.userId}
-                followVariant="pink-outline"
                 unfollowText="Following"
               />
             </div>

@@ -91,14 +91,13 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
       </RadioGroup>
 
       <div className="mt-7 flex justify-end gap-4">
-        <Button onClick={() => setBlockData(null)} variant="">
+        <Button onClick={() => setBlockData(null)}>
           <Text className="text-white">Cancel</Text>
         </Button>
         <Button
           disabled={!blockValue}
           disabledClass="opacity-[0.5]"
           onClick={onFanBlock}
-          variant=""
         >
           <Text className="text-white">Confirm</Text>
         </Button>

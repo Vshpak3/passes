@@ -5,16 +5,12 @@ import { useFollow } from "src/hooks/profile/useFollow"
 
 interface FollowButtonProps {
   creatorId?: string
-  followVariant?: string
-  unfollowVariant?: string
   className?: string
   unfollowText?: string
 }
 
 export const FollowButton: FC<FollowButtonProps> = ({
   creatorId,
-  followVariant = "pink",
-  unfollowVariant = "pink-outline",
   className,
   unfollowText = "Unfollow"
 }) => {
@@ -24,7 +20,7 @@ export const FollowButton: FC<FollowButtonProps> = ({
       className={className}
       onClick={isFollowing ? unfollow : follow}
       type={ButtonTypeEnum.SUBMIT}
-      variant={isFollowing ? unfollowVariant : followVariant}
+      variant={isFollowing ? "pink-outline" : "pink"}
     >
       {isFollowing ? unfollowText : "Follow"}
     </Button>
