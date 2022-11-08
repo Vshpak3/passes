@@ -24,7 +24,7 @@ const ProfileUnmemo: FC = () => {
         </div>
       ) : profile ? (
         <div className="grid grid-cols-7">
-          <div className="col-span-7 pt-28 md:space-y-6 md:pt-0 lg:col-span-4">
+          <div className="col-span-7 pt-0 md:space-y-6 lg:col-span-4">
             <ProfileDetails />
             {!!profile.isCreator && (
               <ProfileContent

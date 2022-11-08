@@ -145,19 +145,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     >
       <Text
         className={
-          "flex items-center space-x-2 xs:hidden " +
-          (variantInnerClassName && ` ${variantInnerClassName}`) +
-          innerClassName
-        }
-        fontSize={fontSize || 16}
-        style={{ lineHeight: 1 }}
-      >
-        {icon}
-        {children}
-      </Text>
-      <Text
-        className={
-          "hidden items-center gap-2 space-x-2 xs:flex " +
+          "flex items-center space-x-2" +
           (variantInnerClassName && ` ${variantInnerClassName}`) +
           innerClassName
         }
