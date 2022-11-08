@@ -101,14 +101,14 @@ export const PaymentModalBody = ({
 
   return (
     <form>
-      Payment Method
+      <div className="mb-2">Payment Method</div>
       <Select
         changeOnDefault
         className="my-4"
         defaultValue={defaultSelected}
         name="method"
         onChange={(newValue: string) => setValue("method", newValue)}
-        selectOptions={options}
+        selectOptions={optionsg}
       />
       <div className="my-4 mr-1 text-passes-dark-gray">
         Want to update your default payment or add a new one?
