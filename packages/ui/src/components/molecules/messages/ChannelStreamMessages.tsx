@@ -35,7 +35,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           />
         )
       }}
-      // className="scale-y-[-1] "
+      // className="scale-y-[-1]"
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}

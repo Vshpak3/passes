@@ -72,7 +72,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             selectOptions={MetaMaskSelectOptions}
           />
         </div>
-        <div className="ml-auto mt-2 flex basis-full items-center md:mt-0  md:basis-auto">
+        <div className="ml-auto mt-2 flex basis-full items-center md:mt-0 md:basis-auto">
           {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
             <Button variant="gray">
               <span className="text-[14px] font-[700]">

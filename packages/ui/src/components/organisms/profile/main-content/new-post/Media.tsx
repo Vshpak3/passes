@@ -100,7 +100,7 @@ export const Media: FC<MediaProp> = ({
     video: (
       <>
         {noRender ? (
-          <div className="flex w-[200px]  flex-col items-center justify-center rounded-[6px] border border-white/20 bg-black ">
+          <div className="flex w-[200px] flex-col items-center justify-center rounded-[6px] border border-white/20 bg-black">
             <div />
             <PlayIcon />
             <span>

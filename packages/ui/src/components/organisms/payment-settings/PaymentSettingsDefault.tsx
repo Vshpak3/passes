@@ -31,7 +31,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
     </div>
   ) : null
   const defaultPaymentNone = (
-    <div className=" mt-3 mr-2 flex gap-6 rounded-full border-2 border-passes-dark-200 bg-[#18090E] py-2 px-4 font-[500]">
+    <div className="mt-3 mr-2 flex gap-6 rounded-full border-2 border-passes-dark-200 bg-[#18090E] py-2 px-4 font-[500]">
       None
     </div>
   )

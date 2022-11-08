@@ -48,7 +48,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
 
   return (
-    <div className={classNames("group mb-[20px]")}>
+    <div className="group mb-[20px]">
       <div
         className={classNames(
           selectedItems.length > 0 && !isSelected
@@ -73,7 +73,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           width={300}
         />
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
-          <div className="h-[23px] w-[50px] rounded-md bg-transparent ">
+          <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div className="text-center text-[12px] font-medium uppercase text-white opacity-50">
               {format(content.createdAt || new Date(), "LLL dd")}
             </div>

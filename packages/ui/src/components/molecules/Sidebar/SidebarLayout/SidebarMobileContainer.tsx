@@ -23,7 +23,7 @@ export const SidebarMobileContainer: FC<
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-transparent " />
+          <div className="fixed inset-0 bg-transparent" />
         </Transition.Child>
 
         <div className="fixed inset-0 z-40 flex">

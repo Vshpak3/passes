@@ -53,7 +53,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
             {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (
               <div className="mt-[12px]">
                 <span className="text-[12px] font-normal text-[#767676]">
-                  <span className=" text-[14px] font-medium text-white">
+                  <span className="text-[14px] font-medium text-white">
                     {passHolder.messages}
                   </span>{" "}
                   free messages left
@@ -63,7 +63,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
             {passHolder.totalMessages === null && (
               <div className="mt-[12px]">
                 <span className="text-[12px] font-normal text-[#767676]">
-                  <span className=" text-[14px] font-medium text-white">
+                  <span className="text-[14px] font-medium text-white">
                     Unlimited
                   </span>{" "}
                   free messages

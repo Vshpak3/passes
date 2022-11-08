@@ -59,9 +59,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
         fill={isLiked ? "#F4245E" : "none"}
         // strokeColor={isLiked ? "#F4245E" : "#A09FA6 "}
       />
-      <span className={classNames("text-[12px] leading-[15px]")}>
-        {formattedNumLikes}
-      </span>
+      <span className="text-[12px] leading-[15px]">{formattedNumLikes}</span>
     </button>
   )
 }

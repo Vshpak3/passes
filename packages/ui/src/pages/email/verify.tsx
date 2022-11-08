@@ -75,7 +75,7 @@ const VerifyEmailPage = () => {
         width={122}
       />
       <div className="z-10 my-auto flex justify-center">
-        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24  lg:py-16 lg:px-48">
+        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24 lg:py-16 lg:px-48">
           <div className="p-4">
             <PassesLogoFull />
           </div>

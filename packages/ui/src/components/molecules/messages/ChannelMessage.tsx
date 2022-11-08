@@ -66,7 +66,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}
-      <div className={classNames(" mx-2 flex flex-col items-end md:mx-4")}>
+      <div className="mx-2 flex flex-col items-end md:mx-4">
         <div
           className={classNames(
             "relative flex  w-full items-center gap-3 ",
@@ -78,7 +78,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           >
             <span className="passes-break">{formatText(text)}</span>
             {!!messageContent.length && (
-              <div className=" w-[260px] md:w-[403px]">
+              <div className="w-[260px] md:w-[403px]">
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}

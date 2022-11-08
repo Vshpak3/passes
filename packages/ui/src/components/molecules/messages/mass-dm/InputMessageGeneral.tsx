@@ -151,7 +151,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
           </div>
           {files.length > 1 && (
             <Button
-              className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px] "
+              className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px]"
               onClick={() => setReorderContent(!reorderContent)}
             >
               <Text className="font-bold text-[#FF51A8]" fontSize={16}>

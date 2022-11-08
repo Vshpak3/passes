@@ -50,7 +50,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
             aria-label="Toggle comments"
-            className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white "
+            className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white"
             onClick={() => setShowCommentSection((prev) => !prev)}
             type="button"
           >

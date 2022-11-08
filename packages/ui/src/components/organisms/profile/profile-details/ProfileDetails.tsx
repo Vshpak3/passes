@@ -50,7 +50,7 @@ export const ProfileDetails: FC = () => {
       <div className="flex pb-3 md:flex">
         {/* desktop */}
         <div className="hidden h-full w-full flex-row md:flex">
-          <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
+          <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px]">
             <ProfileImage
               onClick={() => setIsProfilePicModalOpen(true)}
               override={profileImageOverride}
@@ -88,7 +88,7 @@ export const ProfileDetails: FC = () => {
         {/* mobile */}
         <div className="flex h-full w-full flex-col md:hidden">
           <div className="flex flex-row">
-            <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
+            <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px]">
               <ProfileImage
                 onClick={() => setIsProfilePicModalOpen(true)}
                 override={profileImageOverride}

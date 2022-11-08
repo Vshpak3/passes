@@ -85,7 +85,7 @@ export const RequestPayouts = () => {
             </div>
 
             <div className="flex flex-col justify-center sm:flex-row sm:items-center sm:justify-between">
-              <div className="text-label relative inline-block " ref={menuEl}>
+              <div className="text-label relative inline-block" ref={menuEl}>
                 <div
                   className="flex cursor-pointer items-center justify-between rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
                   onClick={() => setShowOptions(true)}
@@ -131,7 +131,7 @@ export const RequestPayouts = () => {
                 )}
               </div>
               <PassesPinkButton
-                className="ml-2 flex w-[215px] "
+                className="ml-2 flex w-[215px]"
                 name="Request Payment"
                 onClick={onManualPayoutClick}
               />

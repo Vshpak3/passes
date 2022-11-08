@@ -30,7 +30,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
           onClick={onClick}
           variant="pink"
         >
-          <PlusSign className="h-4 w-4 " />
+          <PlusSign className="h-4 w-4" />
         </Button>
       </div>
       <div className={`${isMobile ? "" : "hidden"} px-6 lg:flex`}>

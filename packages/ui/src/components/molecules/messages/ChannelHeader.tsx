@@ -97,7 +97,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
         )}
         {!gallery && galleryAvailable && (
           <div
-            className="mr-24 flex cursor-pointer items-center gap-1 rounded-md bg-[#B52A6F40]/10 py-1 px-3 opacity-80 hover:opacity-100 "
+            className="mr-24 flex cursor-pointer items-center gap-1 rounded-md bg-[#B52A6F40]/10 py-1 px-3 opacity-80 hover:opacity-100"
             onClick={() => setGallery(!gallery)}
           >
             <PhotosIcon className="flex shrink-0" />

@@ -14,7 +14,7 @@ export const ProfileImage: FC<ProfileImageProps> = ({
   override
 }) => (
   <div
-    className="relative h-[116px] w-[116px] cursor-pointer select-none overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:h-[138px] md:w-[138px] "
+    className="relative h-[116px] w-[116px] cursor-pointer select-none overflow-hidden rounded-full border-2 border-black bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:h-[138px] md:w-[138px]"
     onClick={onClick}
   >
     <img

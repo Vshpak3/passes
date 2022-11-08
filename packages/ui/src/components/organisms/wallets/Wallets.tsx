@@ -219,7 +219,7 @@ export const Wallets = () => {
         )}
       </div>
       <div className="mt-8 overflow-x-scroll">
-        <table className="min-w-full  pb-6 md:overflow-x-auto">
+        <table className="min-w-full pb-6 md:overflow-x-auto">
           <thead>
             <th />
             <th className="min-w-[150px] pb-3">Wallet Type</th>
