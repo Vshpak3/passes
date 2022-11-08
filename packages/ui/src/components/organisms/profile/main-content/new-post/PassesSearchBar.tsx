@@ -14,13 +14,18 @@ interface PassesSearchBarProps {
 
 export const PassesSearchBar: FC<PassesSearchBarProps> = ({
   selectedPassIds,
-  onSelect
+  onSelect: _onSelect
 }) => {
   const { user } = useUser()
 
   const { results, setSearchValue, searchValue, loading } = usePassesSearch(
     user?.userId
   )
+
+  const onSelect = (pass: PassDto) => {
+    _onSelect(pass)
+    setSearchValue("")
+  }
 
   const searchOptions = useMemo(
     () =>
