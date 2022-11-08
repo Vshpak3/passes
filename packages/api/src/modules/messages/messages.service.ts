@@ -738,7 +738,7 @@ export class MessagesService {
       .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
       .select(`${PassHolderEntity.table}.id`)
       .first()
-    if (follow.length === 0 || !passHolder) {
+    if (follow.length === 0 && !passHolder) {
       return BlockedReasonEnum.DOES_NOT_FOLLOW
     }
     if (follow.length === 2 || follow[0].follower_id === otherUserId) {
