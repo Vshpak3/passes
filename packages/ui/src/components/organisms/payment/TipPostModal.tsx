@@ -52,6 +52,7 @@ interface TipPostModalProps {
 }
 
 const api = new PostApi()
+
 const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 

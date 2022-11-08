@@ -4,7 +4,6 @@ import React, { FC } from "react"
 import {
   FormErrors,
   FormName,
-  FormOptions,
   FormPlaceholder,
   FormRegister
 } from "src/components/atoms/input/InputTypes"
@@ -20,7 +19,6 @@ type NumberInputProps = {
   placeholder?: FormPlaceholder
   maxInput?: number
   allowNegative?: boolean
-  options?: FormOptions // TODO: remove and move to yup
   errors?: FormErrors
   className?: string
 }
@@ -33,8 +31,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   maxInput,
   allowNegative = false,
   errors = {},
-  className = "",
-  options = {}
+  className = ""
 }) => {
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -59,7 +56,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   return (
     <div>
       <input
-        {...register(name, options)}
+        {...register(name)}
         autoComplete="off"
         className={classNames(
           "block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",

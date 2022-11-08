@@ -1,5 +1,6 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CircleEncryptionKeyResponseDto, PaymentApi } from "@passes/api-client"
 import cardValidator from "card-validator"
 import { SHA256 } from "crypto-js"
@@ -11,6 +12,7 @@ import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
+import { object, string } from "yup"
 
 import { Button } from "src/components/atoms/button/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
@@ -33,8 +35,36 @@ interface AddCardProps {
 }
 
 interface CardForm {
-  [key: string]: string
+  "card-holder": string
+  "card-number": string // eslint-disable-line sonarjs/no-duplicate-string
+  "exp-month": string
+  "exp-year": string
+  "postal-code": string
+  address1: string
+  address2: string
+  city: string
+  country: string
+  cvv: string
+  district: string
 }
+
+const cardForm = object({
+  "card-holder": string().required("Name is required"),
+  "card-number": string().required("Card number is required"),
+  "exp-month": string().required("Month is required"),
+  "exp-year": string().required("Year is required"),
+  "postal-code": string()
+    .required("Postal code is required")
+    .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
+  address1: string().required("Address is required"),
+  address2: string().optional(),
+  city: string().required("City is required"),
+  country: string().required("Country is required"),
+  cvv: string()
+    .required("CVV is required")
+    .matches(/^\d{3}$/, "CVV number must be a 3 digit number"),
+  district: string().required("State is required")
+})
 
 const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
@@ -51,7 +81,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   } = useForm<CardForm>({
     defaultValues: {
       country: COUNTRIES[0]
-    }
+    },
+    resolver: yupResolver(cardForm)
   })
 
   const { addCard } = usePayinMethod()
@@ -91,8 +122,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           expYear: parseInt(values["exp-year"]),
           metadata: {
             sessionId: SHA256(accessToken).toString().substring(0, 50),
-            ipAddress: "",
-            phoneNumber: values["phone-number"]
+            ipAddress: ""
           }
         },
         cardNumber: values["card-number"]
@@ -139,7 +169,8 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         Card Info
       </span>
       <CreditCardInput
-        control={control}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        control={control as any}
         name="card-number"
         rules={{
           required: { message: "Card number is required", value: true },
@@ -158,9 +189,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         className="mt-4"
         errors={errors}
         name="card-holder"
-        options={{
-          required: { message: "Name is required", value: true }
-        }}
         placeholder="Card holder"
         register={register}
         type="text"
@@ -173,9 +201,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             name="exp-month"
             onChange={(month: string) => setValue("exp-month", month)}
-            options={{
-              required: { message: "Month is required", value: true }
-            }}
             register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
@@ -190,9 +215,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             name="exp-year"
             onChange={(year: string) => setValue("exp-year", year)}
-            options={{
-              required: { message: "Year is required", value: true }
-            }}
             placeholder=" "
             register={register}
             selectOptions={years}
@@ -206,13 +228,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             maxInput={999}
             name="cvv"
-            options={{
-              required: {
-                message: "CVV is required",
-                value: true
-              },
-              pattern: { message: "must be CVV number", value: /\d{3}/ }
-            }}
             register={register}
             type="integer"
           />
@@ -223,9 +238,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         className="mt-3"
         errors={errors}
         name="address1"
-        options={{
-          required: { message: "Address is required", value: true }
-        }}
         placeholder="Address 1"
         register={register}
         type="text"
@@ -252,9 +264,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         className="mt-3"
         errors={errors}
         name="city"
-        options={{
-          required: { message: "City is required", value: true }
-        }}
         placeholder="City"
         register={register}
         type="text"
@@ -266,9 +275,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             name="district"
             onChange={(newValue: string) => setValue("district", newValue)}
-            options={{
-              required: { message: "State is required", value: true }
-            }}
             placeholder="State"
             register={register}
             selectOptions={US_STATES}
@@ -298,9 +304,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
           className="mt-3"
           errors={errors}
           name="postal-code"
-          options={{
-            required: { message: "Postal code is required", value: true }
-          }}
           placeholder="Zip"
           register={register}
           type="text"
