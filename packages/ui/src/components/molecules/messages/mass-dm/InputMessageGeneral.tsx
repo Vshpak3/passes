@@ -117,7 +117,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
     setValue("scheduledAt", date, { shouldValidate: true })
   }
 
-  const options = {}
   const scheduledTime = watch("scheduledAt")
   return (
     <form
@@ -132,7 +131,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               errors={errors}
               label="Pay to View"
               name="isPaid"
-              options={options}
               register={register}
               type="toggle"
             />

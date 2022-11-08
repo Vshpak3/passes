@@ -5,7 +5,6 @@ import {
   FormErrors,
   FormLabel,
   FormName,
-  FormOptions,
   FormRegister
 } from "src/components/atoms/input/InputTypes"
 import { Label } from "src/components/atoms/Label"
@@ -19,7 +18,6 @@ type CheckBoxProps = {
   register?: FormRegister
   textPosition?: string
   label?: FormLabel
-  options?: FormOptions
   errors?: FormErrors
   className?: string
   labelClassName?: string
@@ -32,7 +30,6 @@ export const Checkbox: FC<CheckBoxProps> = ({
   label,
   register,
   textPosition,
-  options = {},
   errors = {},
   className = "",
   labelClassName = "",
@@ -54,7 +51,6 @@ export const Checkbox: FC<CheckBoxProps> = ({
               errors={errors}
               label={label}
               name={`${name}-${type}`}
-              options={options}
             />
           )}
         </div>
@@ -70,7 +66,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
           id={`${name}-${type}`}
           name={name}
           type="checkbox"
-          {...(register && register(name, options))}
+          {...(register && register(name))}
           {...rest}
           className={classNames(
             errors[name] ? "border-red-500" : "border-gray-300",
@@ -96,7 +92,6 @@ export const Checkbox: FC<CheckBoxProps> = ({
               errors={errors}
               label={label}
               name={`${name}-${type}`}
-              options={options}
             />
           )}
         </div>

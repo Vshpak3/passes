@@ -9,7 +9,7 @@ import {
   RegisterOptions
 } from "react-hook-form"
 
-export interface CreditCardInputProps {
+interface CreditCardInputProps {
   name: string
   control: Control<FieldValues>
   rules: RegisterOptions

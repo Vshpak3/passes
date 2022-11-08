@@ -226,7 +226,6 @@ export const InputMessage: FC<InputMessageProps> = ({
       fetch()
     }
   }, [channelId, submitData, tip])
-  const options = {}
 
   return (
     <form
@@ -242,7 +241,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                 errors={errors}
                 label="Pay to View"
                 name="isPaid"
-                options={options}
                 register={register}
                 type="toggle"
               />

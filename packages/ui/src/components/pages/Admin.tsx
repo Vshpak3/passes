@@ -124,9 +124,6 @@ const AdminPage = () => {
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="secret"
-                options={{
-                  required: true
-                }}
                 placeholder="Enter the admin secret"
                 register={register}
                 type="text"
@@ -138,9 +135,6 @@ const AdminPage = () => {
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="userId"
-                options={{
-                  required: false
-                }}
                 placeholder="Enter user id or username below"
                 register={register}
                 type="text"
@@ -154,9 +148,6 @@ const AdminPage = () => {
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="username"
-                options={{
-                  required: false
-                }}
                 placeholder="Enter username or user id above"
                 register={register}
                 type="text"
