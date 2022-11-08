@@ -29,7 +29,7 @@ export const NewPosts: FC<NewPostsProps> = ({
     }
 
     const res = await createPost(createPostDto)
-    if (!res?.postId) {
+    if (!res?.postId && !createPostDto.scheduledAt) {
       toast.error("There was an unexpected error; please try again")
       return
     }
@@ -39,7 +39,7 @@ export const NewPosts: FC<NewPostsProps> = ({
     }
 
     const post: PostDto = {
-      postId: res.postId,
+      postId: res.postId || "",
       purchasable: false,
       userId: profile.userId,
       username: profileUsername,
