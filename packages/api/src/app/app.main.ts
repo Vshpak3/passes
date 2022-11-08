@@ -9,11 +9,10 @@ import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import helmet from 'helmet'
-import { WinstonModule } from 'nest-winston'
 import passport from 'passport'
 
 import { AppModule } from '../app.module'
-import { loggingOptions } from '../monitoring/logging/logging.options'
+import { createLogger } from '../monitoring/logging/logging.custom'
 import { isEnv } from '../util/env'
 
 const APPLICATION_PORT = 3001
@@ -21,6 +20,16 @@ const APPLICATION_PORT = 3001
 export class App {
   public app: NestExpressApplication
   public document: OpenAPIObject
+
+  static async initStandalone(): Promise<INestApplicationContext> {
+    console.log('Starting application')
+    console.log(`Node version ${process.version}`)
+    const app = await NestFactory.createApplicationContext(AppModule, {
+      logger: await createLogger(),
+    })
+    app.enableShutdownHooks()
+    return app
+  }
 
   async init() {
     console.log('Starting application')
@@ -32,21 +41,15 @@ export class App {
     console.log('Successfully initialized application')
   }
 
-  static async initStandalone(): Promise<INestApplicationContext> {
-    console.log('Starting application')
-    console.log(`Node version ${process.version}`)
-    return await NestFactory.createApplicationContext(AppModule, {
-      // Use a custom logger here to format the bootstrap/startup logs
-      logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
-    })
-  }
-
   private async initApp() {
     this.app = await NestFactory.create<NestExpressApplication>(AppModule, {
-      // Use a custom logger here to format the bootstrap/startup logs
-      logger: WinstonModule.createLogger(await loggingOptions.useFactory()),
+      logger: await createLogger(),
     })
+
+    // Prefix all routes with /api
     this.app.setGlobalPrefix('api', { exclude: [''] })
+
+    // Enable class-validator and class-transformer globally
     this.app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
@@ -54,6 +57,7 @@ export class App {
       }),
     )
 
+    // Setup CORS
     const corsConfig: CorsOptions = {
       origin: [
         process.env.CLIENT_URL ?? '',
@@ -69,14 +73,16 @@ export class App {
     this.app.disable('x-powered-by')
     this.app.use(cookieParser())
 
-    // Adds protection against well-known web vulnerabilities by setting HTTP headers appropriately.
+    // Adds protection against well-known web vulnerabilities by setting HTTP headers appropriately
     this.app.use(helmet())
 
     // For Twitter OAuth 1.0
-    this.app.use(
-      session({ secret: process.env.OAUTH_TWITTER_COOKIE_SECRET as string }),
-    )
+    const secret = process.env.OAUTH_TWITTER_COOKIE_SECRET as string
+    this.app.use(session({ secret }))
     this.app.use(passport.session())
+
+    // https://docs.nestjs.com/fundamentals/lifecycle-events#application-shutdown
+    this.app.enableShutdownHooks()
   }
 
   private async initSwagger() {

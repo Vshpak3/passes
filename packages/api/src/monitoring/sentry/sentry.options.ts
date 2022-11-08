@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { SentryModuleOptions } from '@ntegral/nestjs-sentry'
+import ms from 'ms'
 
 export const sentryOptions = {
   useFactory: async (
@@ -19,6 +20,10 @@ export const sentryOptions = {
     environment: configService.get('infra.env'),
     tracesSampleRate: 1.0,
     debug: false,
+    close: {
+      enabled: true,
+      timeout: ms('2 seconds'),
+    },
   }),
   inject: [ConfigService],
 }
