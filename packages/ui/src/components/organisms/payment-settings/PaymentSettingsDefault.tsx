@@ -31,7 +31,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
     </div>
   ) : null
   const defaultPaymentNone = (
-    <div className="mr-2 rounded-full border-2 border-passes-dark-200 py-2 px-4 font-[500]">
+    <div className="mr-2 rounded-full border-2 border-passes-dark-200 bg-[#18090E] py-2 px-4 font-[500]">
       None
     </div>
   )
@@ -83,7 +83,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
           hasDefaultPaymentMethod
             ? "flex-col items-start justify-start"
             : "items-center justify-between",
-          "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 py-6 px-6"
+          "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] py-6 px-6 "
         )}
       >
         <span className="text-[15px] font-bold text-white">
@@ -98,7 +98,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
           tag="button"
           variant="pink-outline"
         >
-          Payment Transaction History
+          Payment History
         </Button>
       </div>
     </div>

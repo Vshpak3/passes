@@ -177,7 +177,7 @@ export const Wallets = () => {
             <div className="flex h-full w-full flex-row md:basis-1">
               <div className="mr-2 basis-4/5 md:basis-1">
                 <Input
-                  className="border-[#3A444C]/30 pl-[45px] md:w-[250px]"
+                  className="border-[#3A444C]/30 bg-[#18090E] pl-[45px] md:w-[250px]"
                   errors={errors}
                   icon={<Wallet />}
                   name="address"
@@ -194,7 +194,7 @@ export const Wallets = () => {
               </div>
               <div className="basis-1/5">
                 <Select
-                  className="mr-3 mt-0 w-[80px]"
+                  className="mr-3 mt-0 w-[80px] bg-[#18090E]"
                   defaultValue="SOL"
                   errors={errors}
                   name="chain"
@@ -220,28 +220,30 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div className="overflow-x-scroll pb-6 md:overflow-x-auto">
-        <div className="mt-6 flex w-[600px] gap-0 pt-1 text-center text-[#ffffffeb] md:w-full md:gap-[40px] md:pl-8">
-          <span className="flex basis-1/4 justify-center">Wallet Type</span>
-          <span className="flex basis-1/4 justify-center">Address</span>
-          <span className="flex basis-1/4 justify-center">Default For</span>
-          <span className="flex basis-1/4 justify-center">Delete</span>
-        </div>
-        {loading || !wallets ? (
-          <span className="mt-4">Loading...</span>
-        ) : (
-          <div className="mt-1 place-items-center justify-center text-center text-[#ffffffeb]">
-            {wallets.map((wallet) => {
-              return (
-                <WalletListItem
-                  deleteWalletHandler={setWalletIdDelete}
-                  key={wallet.walletId}
-                  wallet={wallet}
-                />
-              )
-            })}
+      <div>
+        <div className="overflow-x-scroll pb-6 md:overflow-x-auto">
+          <div className="mt-6 flex w-[900px] gap-0 pt-1 text-center text-[#ffffffeb] md:w-full md:gap-[40px] md:pl-8">
+            <span className="flex basis-1/4 justify-center">Wallet Type</span>
+            <span className="flex basis-1/4 justify-center">Address</span>
+            <span className="flex basis-1/4 justify-center">Default For</span>
+            <span className="flex basis-1/4 justify-center">Delete</span>
           </div>
-        )}
+          {loading || !wallets ? (
+            <span className="mt-4">Loading...</span>
+          ) : (
+            <div className="mt-1 w-full place-items-center justify-center text-center text-[#ffffffeb]">
+              {wallets.map((wallet) => {
+                return (
+                  <WalletListItem
+                    deleteWalletHandler={setWalletIdDelete}
+                    key={wallet.walletId}
+                    wallet={wallet}
+                  />
+                )
+              })}
+            </div>
+          )}
+        </div>
       </div>
       {!!walletIdDelete && (
         <DeleteConfirmationModal

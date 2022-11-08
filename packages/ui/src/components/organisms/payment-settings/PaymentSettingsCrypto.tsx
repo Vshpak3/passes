@@ -64,7 +64,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
         </div>
         <div className="basis-1/4">
           <Select
-            className="my-4 w-[145px]"
+            className="my-4 w-[145px] bg-[#18090E] "
             defaultValue={MetaMaskSelectOptions[0]}
             name="metamask"
             onChange={(newValue: string) => setValue("metamask", newValue)}
@@ -106,7 +106,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
         </div>
         <div className="basis-1/4">
           <Select
-            className="my-4 w-[145px]"
+            className="my-4 w-[145px] bg-[#18090E] "
             defaultValue={PhantomSelectOptions[0]}
             name="phantom"
             onChange={(newValue: "sol") => setValue("phantom", newValue)}

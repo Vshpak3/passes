@@ -86,7 +86,7 @@ const PayoutSettings = () => {
               defaultPayoutMethod.method !== PayoutMethodDtoMethodEnum.None
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
-            "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-4 md:p-6"
+            "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-4 md:p-6 "
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
@@ -185,13 +185,13 @@ const PayoutSettings = () => {
           Add Bank
         </Button>
         {(!banks || banks.length === 0) && (
-          <div className="mt-6 flex w-full items-center justify-center rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-7">
+          <div className="mt-6 flex w-full items-center justify-center rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7 ">
             <span>No Saved Bank Payout Methods</span>
           </div>
         )}
         {banks?.map((bank) => (
           <div
-            className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-7"
+            className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7 "
             key={bank.id}
           >
             <div className="flex basis-3/4 flex-col justify-between">
