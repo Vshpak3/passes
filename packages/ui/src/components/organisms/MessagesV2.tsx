@@ -62,7 +62,6 @@ const MessagesV2: FC<MessagesV2Props> = ({
   ])
 
   useEffect(() => {
-    // console.log(showTopNav)
     setShowTopNav(false)
   }, [setShowTopNav, showTopNav])
 

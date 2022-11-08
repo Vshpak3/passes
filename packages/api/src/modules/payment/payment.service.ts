@@ -1155,7 +1155,7 @@ export class PaymentService {
       .first()
     if (!payin) {
       throw new InvalidPayinStatusError(
-        'payin ' + entryDto.payinId + ' is not available for entry',
+        `payin ${entryDto.payinId} is not available for entry`,
       )
     }
     const payinDto = new PayinDto(payin)
