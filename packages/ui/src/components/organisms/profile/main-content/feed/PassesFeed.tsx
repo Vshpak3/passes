@@ -28,9 +28,9 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
       <SelectPassFilter onSelectedPassType={setSelectedPassType} />
       <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
-          return <PassCard pass={arg} />
+          return <PassCard className="w-[200px]" pass={arg} />
         }}
-        className="grid grid-cols-2 gap-3 pb-20 lg:grid-cols-3"
+        className="flex m-auto flex-row flex-wrap gap-3 pb-20"
         emptyElement={<span>No memberships available</span>}
         fetch={async (req: GetPassesRequestDto) => {
           const api = new PassApi()

@@ -156,7 +156,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   return (
     <InfiniteScroll
-      className={classNames("w-full", className)}
+      className={classNames(className)}
       dataLength={flattenedData.length}
       endMessage={size !== 1 && endElement}
       hasMore={hasMore}
@@ -166,7 +166,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       next={triggerFetch}
       pullDownToRefresh={pullDownToRefresh}
       scrollableTarget={scrollableTarget}
-      style={{ width: "100%", ...style }}
+      style={style}
     >
       {children}
       {data?.length === 1 &&

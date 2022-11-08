@@ -18,6 +18,7 @@ import { useUser } from "src/hooks/useUser"
 interface PassCardProps {
   pass: PassDto
   isPinnedPass?: boolean
+  className?: string
 }
 
 export const getPassType = (passType: PassDtoTypeEnum) => {
@@ -30,7 +31,11 @@ export const getPassType = (passType: PassDtoTypeEnum) => {
   return types[passType] ? types[passType] : ""
 }
 
-export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
+export const PassCard: FC<PassCardProps> = ({
+  pass,
+  isPinnedPass = false,
+  className
+}) => {
   const { setPass } = useBuyPassModal()
 
   const { user } = useUser()
@@ -55,7 +60,8 @@ export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
     <div
       className={classNames(
         isPinnedPass && "max-w-[350px] px-[24px]",
-        "flex min-h-[170px] flex-col rounded-[5px] bg-[#0E0A0F]/25 px-[12px] py-4"
+        "flex min-h-[170px] flex-col rounded-[5px] bg-[#0E0A0F]/25 px-[12px] py-4",
+        className
       )}
     >
       <PassMedia
@@ -96,7 +102,7 @@ export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
-          <div className="mt-2 flex w-full flex-row items-center justify-between">
+          <div className="flex mt-2 w-full flex-row items-center justify-between">
             <div className="flex flex-col">
               {pass.totalMessages !== null && pass.totalMessages > 0 && (
                 <span className="text-sm text-white md:text-xs">
@@ -135,7 +141,7 @@ export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
             {formatText(pass.description)}
           </p>
         </div>
-        <div className="mt-2 flex w-full items-center justify-between text-sm font-medium leading-[16px]">
+        <div className="flex mt-2 w-full items-center justify-between text-sm font-medium leading-[16px]">
           <span className="block text-xs font-normal leading-[23px] text-white/70">
             {pass.totalSupply ? (
               <p>
