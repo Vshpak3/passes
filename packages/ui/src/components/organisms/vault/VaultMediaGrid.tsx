@@ -33,6 +33,7 @@ interface VaultMediaGridProps {
   type?: VaultType
   deletedItems: ContentDto[]
   isMaxFileCountSelected: boolean
+  scrollableTarget?: string
 }
 
 export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
@@ -42,7 +43,8 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   type,
   order,
   deletedItems,
-  isMaxFileCountSelected
+  isMaxFileCountSelected,
+  scrollableTarget
 }) => {
   const [isViewMediaModal, setIsViewMediaModal] = useState(false)
   const [content, setContent] = useState<ContentDto>()
@@ -53,7 +55,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   }
 
   return (
-    <div className="max-h-[75vh] min-w-fit justify-center overflow-y-scroll">
+    <div className="min-w-fit justify-center">
       <MediaModal
         file={{ content }}
         isOpen={isViewMediaModal}
@@ -92,6 +94,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
           }}
           fetchProps={{ category, type, order }}
           keyValue="vault"
+          scrollableTarget={scrollableTarget}
         />
       </div>
     </div>

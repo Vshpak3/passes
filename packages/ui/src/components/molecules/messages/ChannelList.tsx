@@ -55,6 +55,11 @@ export const ChannelList: FC<ChannelListProps> = ({
     setChannelOrderType(option.orderType)
   }, [])
 
+  const [node, setNode] = useState<HTMLDivElement>()
+  const ref = useCallback((node: HTMLDivElement) => {
+    setNode(node)
+  }, [])
+
   return (
     <div
       className={classNames(
@@ -81,7 +86,7 @@ export const ChannelList: FC<ChannelListProps> = ({
             )}
           </div>
         </div>
-        <div className="max-h-full overflow-y-scroll" id="channelDiv">
+        <div className="max-h-full overflow-y-auto" id="channelDiv" ref={ref}>
           <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
             KeyedComponent={({
               arg: channel
@@ -106,6 +111,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               search
             }}
             keyValue="/channels"
+            node={node}
             options={{
               revalidateOnMount: true,
               revalidateAll: true,

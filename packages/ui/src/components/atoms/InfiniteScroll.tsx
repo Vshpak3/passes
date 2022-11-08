@@ -5,6 +5,7 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useState
 } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -46,6 +47,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   initialScrollY?: number
   mutateOnLoad?: boolean
   pullDownToRefresh?: boolean
+  node?: HTMLDivElement
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
@@ -79,6 +81,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   initialScrollY,
   mutateOnLoad = true,
   pullDownToRefresh,
+  node,
   children
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   options = { ...defaultOptions, ...options }
@@ -127,13 +130,36 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         .flat() ?? []
     )
   }, [data])
+  const hasMore = !data || !!data[data.length - 1].lastId
+
+  const [isScrollable, setIsScrollable] = useState<boolean>(true)
+  useEffect(() => {
+    if (!isScrollable && hasMore) {
+      triggerFetch()
+    }
+  }, [isScrollable, hasMore, flattenedData, triggerFetch])
+
+  useLayoutEffect(() => {
+    if (!node) {
+      return
+    }
+
+    const handleWindowResize = () => {
+      setIsScrollable(node.scrollHeight > node.clientHeight)
+    }
+    setIsScrollable(node.scrollHeight > node.clientHeight)
+
+    window.addEventListener("resize", handleWindowResize)
+
+    return () => window.removeEventListener("resize", handleWindowResize)
+  }, [node])
 
   return (
     <InfiniteScroll
       className={classNames("w-full", className)}
       dataLength={flattenedData.length}
       endMessage={size !== 1 && endElement}
-      hasMore={!data || !!data[data.length - 1].lastId}
+      hasMore={hasMore}
       initialScrollY={initialScrollY}
       inverse={inverse}
       loader={loadingElement}

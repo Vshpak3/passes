@@ -18,6 +18,7 @@ import { useMedia } from "src/hooks/useMedia"
 
 interface VaultProps {
   passSelectedItems?: (selectedItems: ContentDto[]) => void
+  scrollableTarget?: string
 }
 
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
@@ -27,7 +28,10 @@ interface VaultFormProps {
   "drag-drop": File[]
 }
 
-export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
+export const Vault: FC<VaultProps> = ({
+  passSelectedItems,
+  scrollableTarget
+}) => {
   const {
     handleSubmit,
     register,
@@ -111,6 +115,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
           deletedItems={deletedItems}
           isMaxFileCountSelected={isMaxFileCountSelected}
           order={order}
+          scrollableTarget={scrollableTarget}
           selectedItems={selectedItems}
           setSelectedItems={setItems}
           type={vaultType}
