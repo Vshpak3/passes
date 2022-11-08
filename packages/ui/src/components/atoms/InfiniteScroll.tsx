@@ -45,6 +45,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   hasInitialElement?: boolean
   initialScrollY?: number
   mutateOnLoad?: boolean
+  pullDownToRefresh?: boolean
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
@@ -77,6 +78,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   options = defaultOptions,
   initialScrollY,
   mutateOnLoad = true,
+  pullDownToRefresh,
   children
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   options = { ...defaultOptions, ...options }
@@ -136,6 +138,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       inverse={inverse}
       loader={loadingElement}
       next={triggerFetch}
+      pullDownToRefresh={pullDownToRefresh}
       scrollableTarget={scrollableTarget}
       style={{ width: "100%", ...style }}
     >

@@ -78,7 +78,7 @@ import {
   PaidMessageNotFoundException,
 } from './error/message.error'
 
-const MAX_CHANNELS_PER_REQUEST = 10
+const MAX_CHANNELS_PER_REQUEST = 20
 const MAX_MESSAGES_PER_REQUEST = 20
 const MAX_PENDING_MESSAGES = 10
 
@@ -1382,6 +1382,12 @@ export class MessagesService {
 
   async unsendPaidMessage(userId: string, paidMessageId: string) {
     let updated = 0
+    const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .whereNotNull('deleted_at')
+      .andWhere({
+        paid_message_id: paidMessageId,
+      })
+      .select('channel_id')
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId, creator_id: userId, unsent_at: null })
@@ -1396,12 +1402,6 @@ export class MessagesService {
           .update('deleted_at', new Date())
       }
     })
-    const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
-      .whereNotNull('deleted_at')
-      .andWhere({
-        paid_message_id: paidMessageId,
-      })
-      .select('channel_id')
     await Promise.all(
       channels.map(
         async (channel) => await this.updateChannel(channel.channel_id),

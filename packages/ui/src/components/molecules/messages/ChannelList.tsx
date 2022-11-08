@@ -69,10 +69,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           placeholder="Search ..."
         />
       </div>
-      <div
-        className={classNames("h-[calc(100%-120px)] p-3", "overflow-y-auto")}
-        id="channelDiv"
-      >
+      <div className={classNames("h-[calc(100%-120px)] p-3")}>
         <div className="flex justify-between">
           <div className="ml-auto mr-0">
             {!!user?.isCreator && (
@@ -84,42 +81,44 @@ export const ChannelList: FC<ChannelListProps> = ({
             )}
           </div>
         </div>
-        <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
-          KeyedComponent={({
-            arg: channel
-          }: ComponentArg<ChannelMemberDto>) => {
-            return (
-              <ChannelListItem
-                channel={channel}
-                isSelected={selectedChannel?.channelId === channel.channelId}
-                onClick={() => onChannelClicked(channel)}
-              />
-            )
-          }}
-          className="pt-2"
-          fetch={async (req: GetChannelsRequestDto) => {
-            const api = new MessagesApi()
-            return await api.getChannels({ getChannelsRequestDto: req })
-          }}
-          fetchProps={{
-            unreadOnly: false,
-            order: "desc",
-            orderType: channelOrderType,
-            search
-          }}
-          keyValue="/channels"
-          options={{
-            revalidateOnMount: true,
-            revalidateAll: true,
-            revalidateFirstPage: true,
-            revalidateOnFocus: true,
-            revalidateOnReconnect: true,
-            refreshInterval: 1000,
-            persistSize: true
-          }}
-          scrollableTarget="channelDiv"
-          style={{ overflowX: "hidden" }}
-        />
+        <div className={classNames("overflow-y-auto")} id="channelDiv">
+          <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
+            KeyedComponent={({
+              arg: channel
+            }: ComponentArg<ChannelMemberDto>) => {
+              return (
+                <ChannelListItem
+                  channel={channel}
+                  isSelected={selectedChannel?.channelId === channel.channelId}
+                  onClick={() => onChannelClicked(channel)}
+                />
+              )
+            }}
+            className="pt-2"
+            fetch={async (req: GetChannelsRequestDto) => {
+              const api = new MessagesApi()
+              return await api.getChannels({ getChannelsRequestDto: req })
+            }}
+            fetchProps={{
+              unreadOnly: false,
+              order: "desc",
+              orderType: channelOrderType,
+              search
+            }}
+            keyValue="/channels"
+            options={{
+              revalidateOnMount: true,
+              revalidateAll: true,
+              revalidateFirstPage: true,
+              revalidateOnFocus: true,
+              revalidateOnReconnect: true,
+              refreshInterval: 1000,
+              persistSize: true
+            }}
+            scrollableTarget="channelDiv"
+            style={{ overflowX: "hidden" }}
+          />
+        </div>
       </div>
     </div>
   )
