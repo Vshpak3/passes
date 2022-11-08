@@ -1,4 +1,3 @@
-import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC, useCallback, useMemo } from "react"
 
@@ -7,13 +6,7 @@ import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 
-interface CreatorSearchBarProps {
-  isDesktop?: boolean
-}
-
-export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
-  isDesktop = true
-}) => {
+export const CreatorSearchBar: FC = () => {
   const { push } = useRouter()
   const { results, loading, searchValue, onChangeInput, setSearchValue } =
     useCreatorSearch()
@@ -37,13 +30,8 @@ export const CreatorSearchBar: FC<CreatorSearchBarProps> = ({
 
   return (
     <AuthWrapper>
-      <div
-        className={classNames(
-          isDesktop ? "hidden md:flex" : "mr-2 flex-grow",
-          "items-center justify-end md:flex"
-        )}
-      >
-        <div className="mr-[40px] box-border w-full xs:min-w-[320px] xs:max-w-[360px] sm:min-w-[360px]">
+      <div className="flex items-center justify-end">
+        <div className="mr-[20px] box-border w-full xs:min-w-[320px] sm:min-w-[360px]">
           <SearchBar
             contentName="creators"
             loading={loading}

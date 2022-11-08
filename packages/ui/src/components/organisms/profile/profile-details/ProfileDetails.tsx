@@ -47,7 +47,6 @@ export const ProfileDetails: FC = () => {
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
       <div className="flex pb-3 md:flex">
-        {/* Desktop */}
         <div className="flex h-full w-full flex-row">
           <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
             <ProfileImage
@@ -86,7 +85,7 @@ export const ProfileDetails: FC = () => {
         </div>
       </div>
       {!ownsProfile && (
-        <div className="absolute top-5 right-5 items-center justify-between">
+        <div className="absolute top-4 right-5 items-center justify-between">
           <Dropdown
             items={[
               ...DropDownReport(true, {

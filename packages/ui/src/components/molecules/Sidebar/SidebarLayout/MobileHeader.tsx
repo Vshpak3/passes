@@ -30,7 +30,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
               </span>
             </Disclosure.Button>
           </Disclosure>
-          <CreatorSearchBar isDesktop={false} />
+          <CreatorSearchBar />
         </div>
       )}
     </>
