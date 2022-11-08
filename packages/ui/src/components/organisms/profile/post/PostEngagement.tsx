@@ -15,14 +15,15 @@ interface PostEngagementProps {
 
 export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
   const {
+    contentProcessed,
     isLiked,
     isOwner,
     numComments: initialNumComments,
     numLikes,
+    passIds,
     postId,
-    username,
     price,
-    passIds
+    username
   } = post
 
   const [numComments, setNumComments] = useState(initialNumComments)
@@ -58,13 +59,17 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
               {formattedNumComments}
             </span>
           </button>
-          <button
-            aria-label="Copy link to post"
-            className="flex cursor-pointer items-center gap-[5px] p-0"
-            type="button"
-          >
-            <ShareIcon onClick={() => copyLinkToClipboard(username, postId)} />
-          </button>
+          {contentProcessed && (
+            <button
+              aria-label="Copy link to post"
+              className="flex cursor-pointer items-center gap-[5px] p-0"
+              type="button"
+            >
+              <ShareIcon
+                onClick={() => copyLinkToClipboard(username, postId)}
+              />
+            </button>
+          )}
         </div>
 
         {isOwner ? (

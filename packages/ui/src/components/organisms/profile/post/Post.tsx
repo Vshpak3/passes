@@ -82,20 +82,28 @@ const PostUnmemo: FC<PostProps> = ({
     ...DropDownGeneral("Delete", post.isOwner, async () => {
       setDeletePostModelOpen(true)
     }),
-    ...DropDownGeneral("Pin", post.isOwner && !isPinned, async () => {
-      if (pinnedPosts.length === MAX_PINNED_POST) {
-        toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
-        return
+    ...DropDownGeneral(
+      "Pin",
+      post.isOwner && !isPinned && contentProcessed,
+      async () => {
+        if (pinnedPosts.length === MAX_PINNED_POST) {
+          toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
+          return
+        }
+        await pinPost(post)
+        toast.success("The post has been pinned")
+        setIsRemoved(true)
       }
-      await pinPost(post)
-      toast.success("The post has been pinned")
-      setIsRemoved(true)
-    }),
-    ...DropDownGeneral("Unpin", post.isOwner && isPinned, async () => {
-      await unpinPost(post)
-      toast.success("The post has been unpinned")
-      setIsRemoved(true)
-    }),
+    ),
+    ...DropDownGeneral(
+      "Unpin",
+      post.isOwner && isPinned && contentProcessed,
+      async () => {
+        await unpinPost(post)
+        toast.success("The post has been unpinned")
+        setIsRemoved(true)
+      }
+    ),
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
 
