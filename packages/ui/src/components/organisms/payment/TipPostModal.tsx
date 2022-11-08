@@ -12,7 +12,7 @@ import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
-import { MIN_TIP_POST_PRICE } from "src/config/post"
+import { MAX_TIP_POST_PRICE, MIN_TIP_POST_PRICE } from "src/config/post"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
@@ -78,6 +78,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         <NumberInput
           className="border-0 font-bold"
           errors={errors}
+          maxInput={MAX_TIP_POST_PRICE}
           name="tip-value"
           options={{
             required: { message: "Tip amount is required", value: true },
