@@ -40,7 +40,7 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
   const handleDelete = async () => {
     await deletePost()
     onDelete()
-    toast.error("Deleted the post.")
+    toast.success("Deleted the post.")
   }
 
   return (
