@@ -47,7 +47,7 @@ export const ProfileDetails: FC = () => {
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
       <div className="flex pb-3 md:flex">
-        <div className="flex h-full w-full flex-row">
+        <div className="hidden h-full w-full flex-row md:flex">
           <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
             <ProfileImage
               onClick={() => setIsProfilePicModalOpen(true)}
@@ -79,6 +79,41 @@ export const ProfileDetails: FC = () => {
             </div>
           </div>
           <div className="flex w-[calc(100%-138px)] flex-col px-5 pt-4">
+            <ProfileInformation />
+          </div>
+        </div>
+
+        <div className="flex h-full w-full flex-col md:hidden">
+          <div className="flex flex-row">
+            <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
+              <ProfileImage
+                onClick={() => setIsProfilePicModalOpen(true)}
+                override={profileImageOverride}
+                userId={profileUserId}
+              />
+            </div>
+            <div className="flex w-full flex-row items-start pt-5">
+              {ownsProfile ? (
+                <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+              ) : (
+                <>
+                  <FollowButton
+                    className="h-[36px] w-[98px]"
+                    creatorId={profileUserId}
+                  />
+
+                  {!!profile?.isCreator && (
+                    <Link className="h-[36px] w-[98px]" href={chatLink}>
+                      <Button className="h-full w-full" variant="pink-outline">
+                        <ChatIcon />
+                      </Button>
+                    </Link>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+          <div className="flex w-full flex-col px-5 pt-4">
             <ProfileInformation />
           </div>
         </div>
