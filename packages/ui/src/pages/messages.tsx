@@ -50,7 +50,7 @@ const MessagesPage = () => {
               </div>
             </div>
           ) : (
-            <div className="ml-4">
+            <div className="ml-4 flex flex-1">
               <SectionTitle>Messages</SectionTitle>
             </div>
           )}
