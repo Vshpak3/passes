@@ -40,7 +40,7 @@ export class CreatePassRequestDto {
   @DtoProperty({ type: 'boolean', optional: true })
   freetrial?: boolean
 
-  @DtoProperty({ type: 'number', optional: true })
+  @DtoProperty({ type: 'number', optional: true, nullable: true })
   messages?: number | null
 
   @DtoProperty({ custom_type: ChainEnum })

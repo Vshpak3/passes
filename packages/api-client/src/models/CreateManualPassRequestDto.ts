@@ -66,7 +66,7 @@ export interface CreateManualPassRequestDto {
      * @type {number}
      * @memberof CreateManualPassRequestDto
      */
-    messages?: number;
+    messages?: number | null;
     /**
      * 
      * @type {string}
