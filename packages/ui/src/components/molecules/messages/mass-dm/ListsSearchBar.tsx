@@ -14,13 +14,18 @@ interface ListsSearchBarProps {
 
 export const ListsSearchBar: FC<ListsSearchBarProps> = ({
   selectedListIds,
-  onSelect
+  onSelect: _onSelect
 }) => {
   const { user } = useUser()
 
   const { results, setSearchValue, loading, searchValue } = useListsSearch(
     user?.userId
   )
+
+  const onSelect = (list: ListDto) => {
+    _onSelect(list)
+    setSearchValue("")
+  }
 
   const searchOptions = useMemo(
     () =>
