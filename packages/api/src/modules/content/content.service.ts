@@ -50,7 +50,7 @@ import {
   w9UploadPath,
 } from './helpers/content-paths'
 
-const MAX_VAULT_CONTENT_PER_REQUEST = 9 // should be a multiple of 3
+const MAX_VAULT_CONTENT_PER_REQUEST = 12 // should be a multiple of 6
 
 @Injectable()
 export class ContentService {
