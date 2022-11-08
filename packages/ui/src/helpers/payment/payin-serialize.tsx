@@ -60,8 +60,7 @@ export const PhantomSelectOptions: SelectOption[] = [
   {
     label: PayinMethodDisplayNames[PayinMethodDtoChainEnum.Sol],
     value: serializePayinMethod({
-      method: PayinMethodDtoMethodEnum.PhantomCircleUsdc,
-      chain: PayinMethodDtoChainEnum.Sol
+      method: PayinMethodDtoMethodEnum.PhantomCircleUsdc
     })
   }
 ]
