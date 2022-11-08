@@ -99,7 +99,7 @@ export const Comment: FC<CommentProps> = ({
 
               <div className="flex gap-x-2">
                 <TimeAgo
-                  className="shrink-0 text-[12px] text-gray-300/60"
+                  className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                   date={comment.createdAt}
                   key={comment.commentId}
                   live={false}

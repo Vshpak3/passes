@@ -14,7 +14,7 @@ export const TipButton: FC<TipButtonProps> = ({ post }) => {
   return (
     <button
       aria-label="Tip post"
-      className="m-auto flex flex-row rounded-[5px] bg-[#B52A6F]/[0.25] py-[3px] px-[9px]"
+      className="m-auto flex flex-row rounded-[5px] bg-[#B52A6F]/[0.25] py-[3px] pl-[9px] pr-[12px]"
       onClick={() => setPost(post)}
     >
       <DollarIcon />{" "}

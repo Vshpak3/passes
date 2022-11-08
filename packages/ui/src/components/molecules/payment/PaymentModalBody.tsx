@@ -109,7 +109,7 @@ export const PaymentModalBody = ({
       <div className="my-4 mr-1 text-passes-dark-gray">
         Want to update your default payment or add a new one?
         <Link
-          className="ml-1 text-passes-primary-color underline"
+          className="ml-2 font-light text-passes-primary-color underline"
           href="/settings/payment"
           onClick={closeModal}
         >
