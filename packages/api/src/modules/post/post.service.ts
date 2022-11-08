@@ -273,6 +273,7 @@ export class PostService {
     const { lastId, createdAt } = getPostsRequestDto
     let query = this.dbReader<PostEntity>(PostEntity.table)
       .select([`${PostEntity.table}.*`])
+      .whereNull(`${PostEntity.table}.hidden_at`)
       .andWhere(`${PostEntity.table}.user_id`, userId)
     query = createPaginatedQuery(
       query,

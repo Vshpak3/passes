@@ -1289,6 +1289,7 @@ export class MessagesService {
     let query = this.dbReader<PaidMessageEntity>(PaidMessageEntity.table)
       .where('creator_id', userId)
       .select('*')
+      .whereNull(`${PaidMessageEntity.table}.hidden_at`)
       .limit(MAX_MESSAGES_PER_REQUEST)
     query = createPaginatedQuery(
       query,
@@ -1344,8 +1345,8 @@ export class MessagesService {
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
-        .where({ id: paidMessageId, creator_id: userId, unsent: false })
-        .update('unsent', true)
+        .where({ id: paidMessageId, creator_id: userId, unsent_at: null })
+        .update('unsent_at', new Date())
       if (updated) {
         await trx<MessageEntity>(MessageEntity.table)
           .where({

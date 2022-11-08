@@ -48,6 +48,9 @@ export class PostEntity extends BaseEntity {
   @Property({ length: 3 })
   deleted_at: Date | null
 
+  @Property({ length: 3 })
+  hidden_at: Date | null
+
   @Property({ columnType: USD_AMOUNT_TYPE, default: 0 })
   price: number
 

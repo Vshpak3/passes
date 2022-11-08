@@ -35,8 +35,11 @@ export class PaidMessageEntity extends BaseEntity {
   @Property({ default: 0 })
   sent_to: number
 
-  @Property({ default: false })
-  unsent: boolean
+  @Property({ length: 3 })
+  unsent_at: Date | null
+
+  @Property({ length: 3 })
+  hidden_at: Date | null
 
   @Property({ default: false })
   is_welcome_message: boolean
