@@ -852,6 +852,17 @@ export class PaymentService {
     await this.dbWriter<CircleCardEntity>(CircleCardEntity.table)
       .update({ status: cardDto.status as CircleAccountStatusEnum })
       .where({ circle_id: cardDto.id })
+    const card = await this.dbReader<CircleCardEntity>(CircleCardEntity.table)
+      .where({ circle_id: cardDto.id })
+      .select('id', 'user_id')
+      .first()
+    if (!card) {
+      throw new InternalServerErrorException('no card found for update')
+    }
+    await this.setDefaultPayinMethod(card?.user_id, {
+      cardId: card.id,
+      method: PayinMethodEnum.CIRCLE_CARD,
+    })
   }
 
   async processCirclePaymentUpdate(
