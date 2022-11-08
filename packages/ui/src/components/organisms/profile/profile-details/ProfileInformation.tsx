@@ -12,13 +12,13 @@ export const ProfileInformation: FC = () => {
 
   return (
     <div className="flex flex-col items-start gap-[6px]">
-      <div className="w-[85%] items-center justify-around truncate">
-        <span className="passes-break w-full truncate text-[32px] font-medium leading-9 text-passes-white-100">
+      <div className="w-full items-center justify-around truncate md:w-[85%]">
+        <span className="passes-break w-full truncate text-[20px] font-medium leading-9 text-passes-white-100 md:text-[32px]">
           {profile?.displayName}
         </span>
       </div>
       <div className="flex w-full justify-between">
-        <div className="my-2 flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
+        <div className="flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
           <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
             @{profileUsername}
           </span>

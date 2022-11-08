@@ -54,7 +54,6 @@ export const ProfileDetails: FC = () => {
               override={profileImageOverride}
               userId={profileUserId}
             />
-
             <div className="flex w-full flex-col items-center pt-5">
               {ownsProfile ? (
                 <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
