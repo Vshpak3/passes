@@ -27,7 +27,7 @@ export const usePayinMethod = (
       return await api.getDefaultPayinMethod()
     },
     {
-      revalidateOnFocus: true
+      refreshInterval
     }
   )
 

@@ -30,10 +30,10 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
   const [cardIdDelete, setCardIdDelete] = useState<string | null>(null)
 
   const { cards, defaultPayinMethod, getDefaultPayinMethod, deleteCard } =
-    usePayinMethod(true, ms("5 seconds"))
+    usePayinMethod(true, ms("1 second"))
 
   return (
-    <div className="mt-8 flex flex-col">
+    <div className="flex mt-8 flex-col">
       <h3 className="text-[18px] font-bold text-white">
         Add Card as a Payment Method
       </h3>
@@ -58,7 +58,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
       <div>
         {cards?.map((item) => (
           <div
-            className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-5"
+            className="flex my-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-5"
             key={item.id}
           >
             <CreditCardEntry card={item} showName />
