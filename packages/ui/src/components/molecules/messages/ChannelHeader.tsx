@@ -75,7 +75,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                     <div className="flex items-center justify-start gap-[10px]">
                       <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-1 px-3 text-sm font-normal text-[#ffff]">
-                          Total Tip Amount
+                          Total Tip
                         </span>
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
                           {selectedChannel.tipRecieved > 0
