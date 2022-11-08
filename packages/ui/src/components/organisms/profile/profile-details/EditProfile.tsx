@@ -102,7 +102,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex items-center" key={key}>
-      {!!input?.icon && <input.icon className="mr-3 h-[22px] w-[22px]" />}
+      {!!input?.icon && <input.icon className="mr-3" />}
       <input.type
         className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
         errors={errors}
