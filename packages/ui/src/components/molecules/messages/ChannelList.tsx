@@ -69,7 +69,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           placeholder="Search ..."
         />
       </div>
-      <div className={classNames("h-[calc(100%-120px)] p-3")}>
+      <div className="h-[calc(100%-120px)] p-3">
         <div className="flex justify-between">
           <div className="ml-auto mr-0">
             {!!user?.isCreator && (
@@ -81,7 +81,7 @@ export const ChannelList: FC<ChannelListProps> = ({
             )}
           </div>
         </div>
-        <div className={classNames("overflow-y-auto")} id="channelDiv">
+        <div className="max-h-full overflow-y-scroll" id="channelDiv">
           <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
             KeyedComponent={({
               arg: channel

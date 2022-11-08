@@ -278,7 +278,6 @@ export class MessagesService {
     }
 
     const channelMembers = await query.limit(MAX_CHANNELS_PER_REQUEST)
-
     return channelMembers.map(
       (channelMember) => new ChannelMemberDto(channelMember),
     )
@@ -1382,12 +1381,6 @@ export class MessagesService {
 
   async unsendPaidMessage(userId: string, paidMessageId: string) {
     let updated = 0
-    const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
-      .whereNotNull('deleted_at')
-      .andWhere({
-        paid_message_id: paidMessageId,
-      })
-      .select('channel_id')
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId, creator_id: userId, unsent_at: null })
@@ -1402,6 +1395,12 @@ export class MessagesService {
           .update('deleted_at', new Date())
       }
     })
+    const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .whereNotNull('deleted_at')
+      .andWhere({
+        paid_message_id: paidMessageId,
+      })
+      .select('channel_id')
     await Promise.all(
       channels.map(
         async (channel) => await this.updateChannel(channel.channel_id),
@@ -1413,7 +1412,7 @@ export class MessagesService {
   async updateChannel(channelId: string) {
     const message = await this.dbWriter<MessageEntity>(MessageEntity.table)
       .where({ channel_id: channelId, pending: false })
-      .whereNotNull('deleted_at')
+      .whereNull('deleted_at')
       .select('sent_at', 'text')
       .orderBy('sent_at', 'desc')
       .first()
