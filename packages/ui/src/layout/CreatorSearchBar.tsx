@@ -31,7 +31,7 @@ export const CreatorSearchBar: FC = () => {
   return (
     <AuthWrapper>
       <div className="flex items-center justify-end">
-        <div className="mr-[20px] box-border w-full xs:min-w-[320px] sm:min-w-[360px]">
+        <div className="mr-[20px] box-border w-full xs:min-w-[320px] xs:max-w-[360px] sm:min-w-[360px]">
           <SearchBar
             contentName="creators"
             loading={loading}

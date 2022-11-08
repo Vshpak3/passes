@@ -27,7 +27,7 @@ export const ProfileInformation: FC = () => {
       <span className="passes-break my-3 font-semibold leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
-      <div className="flex w-full flex-row flex-wrap items-center gap-y-[30px] gap-x-[68px]">
+      <div className="flex w-full flex-row flex-wrap items-center gap-y-[20px] gap-x-[60px]">
         <ProfileStats
           likes={creatorStats?.numLikes}
           numPosts={creatorStats?.numPosts}

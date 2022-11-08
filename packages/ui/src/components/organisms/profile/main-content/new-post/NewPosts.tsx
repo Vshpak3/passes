@@ -94,7 +94,6 @@ export const NewPosts: FC<NewPostsProps> = ({
         <Post
           key={post.postId}
           post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
-          updateProfileStats={mutateManualCreatorStats}
         />
       ))}
     </>

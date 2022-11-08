@@ -4,7 +4,7 @@ import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_CREATOR_STATS = "/creator/stats"
 
-export interface CreatorStatsUpdate {
+interface CreatorStatsUpdate {
   field: keyof Omit<GetCreatorStatsResponseDto, "userId">
   event: "increment" | "decrement"
 }

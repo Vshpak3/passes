@@ -14,7 +14,6 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { MAX_PINNED_POST } from "src/config/post"
 import { useBuyPostModal } from "src/hooks/context/useBuyPostModal"
-import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
 import { DeletePostModal } from "./DeletePostModal"
 import { PostEngagement } from "./PostEngagement"
@@ -27,15 +26,13 @@ interface PostProps {
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
-  updateProfileStats?: (update: CreatorStatsUpdate) => Promise<void>
 }
 
 const PostUnmemo: FC<PostProps> = ({
   post,
   inHomeFeed = false,
   postByUrl = false,
-  isPinned = false,
-  updateProfileStats
+  isPinned = false
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const { setPost } = useBuyPostModal()
@@ -159,7 +156,6 @@ const PostUnmemo: FC<PostProps> = ({
           onDelete={onDelete}
           post={post}
           setOpen={setDeletePostModelOpen}
-          updateProfileStats={updateProfileStats}
         />
       )}
     </>

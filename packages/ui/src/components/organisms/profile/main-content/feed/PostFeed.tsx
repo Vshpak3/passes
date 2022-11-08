@@ -13,7 +13,6 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { CreatorStatsUpdate } from "src/hooks/profile/useCreatorStats"
 import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 
@@ -36,14 +35,9 @@ const PostFeedEnd = (
 interface PostFeedProps {
   profileUserId: string
   ownsProfile: boolean
-  updateProfileStats?: (update: CreatorStatsUpdate) => Promise<void>
 }
 
-export const PostFeed: FC<PostFeedProps> = ({
-  profileUserId,
-  ownsProfile,
-  updateProfileStats
-}) => {
+export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
 
   const [isNewPostAdded, setIsNewPostAdded] = useState(false)
@@ -53,12 +47,7 @@ export const PostFeed: FC<PostFeedProps> = ({
   return (
     <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
       KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-        return (
-          <Post
-            post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-            updateProfileStats={updateProfileStats}
-          />
-        )
+        return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
       }}
       emptyElement={PostFeedEnd}
       endElement={PostFeedEnd}
@@ -80,7 +69,6 @@ export const PostFeed: FC<PostFeedProps> = ({
           isPinned
           key={post.postId}
           post={{ ...post, ...(posts[post.postId] ?? {}) }}
-          updateProfileStats={updateProfileStats}
         />
       ))}
     </InfiniteScrollPagination>

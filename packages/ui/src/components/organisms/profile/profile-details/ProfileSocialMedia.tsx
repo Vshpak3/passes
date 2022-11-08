@@ -74,7 +74,7 @@ type ProfileSocialMediaProps = Record<
 >
 
 export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = (props) => (
-  <div className="flex cursor-pointer items-center justify-center gap-3">
+  <div className="flex shrink-0 cursor-pointer items-center justify-center gap-2 md:gap-3">
     {Object.entries(props).map(([type, username]) => (
       <ProfileSocialMediaButton
         key={type}
