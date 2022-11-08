@@ -126,18 +126,20 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         <div className="absolute right-20 bottom-0 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
-              <div className="flex">
-                <div
-                  className="h-[18px] w-[18px] cursor-pointer justify-center text-[#000000]"
-                  onClick={deselectAll}
-                >
-                  <ExitIcon />
+              <div className="flex flex-col">
+                <div className="flex flex-row">
+                  <div
+                    className="h-[18px] w-[18px] cursor-pointer justify-center text-[#000000]"
+                    onClick={deselectAll}
+                  >
+                    <ExitIcon />
+                  </div>
+                  <div className="font-semibold text-white">
+                    {plural("item", selectedItems?.length)} selected
+                  </div>
                 </div>
-                <div className="font-semibold text-white">
-                  {plural("item", selectedItems?.length)} selected
-                </div>
+                <div>20 media files can be posted at a time</div>
               </div>
-              <div>20 media files can be posted at a time</div>
               <div
                 className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
                 onClick={() => setDeleteModalActive(true)}
