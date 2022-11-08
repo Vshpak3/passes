@@ -36,7 +36,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   const { user } = useUser()
   const { amount } = useUserSpending(
     user?.isCreator ?? false,
-    selectedChannel.userId
+    selectedChannel.otherUserId
   )
   if (isTablet === undefined) {
     return null
