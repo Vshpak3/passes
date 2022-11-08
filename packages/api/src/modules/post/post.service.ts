@@ -102,6 +102,9 @@ export class PostService {
     userId: string,
     createPostDto: CreatePostRequestDto,
   ) {
+    if (createPostDto.scheduledAt) {
+      checkScheduledAt(createPostDto.scheduledAt)
+    }
     const { text, tags, price, contentIds, passIds } = createPostDto
     if (!!price && price < MINIMUM_POST_PRICE && price > 0) {
       throw new BadRequestException(
@@ -200,7 +203,6 @@ export class PostService {
     if (createPostDto.scheduledAt) {
       await this.validateCreatePost(userId, createPostDto)
       const scheduledAt = createPostDto.scheduledAt
-      checkScheduledAt(scheduledAt)
       createPostDto.scheduledAt = undefined
       await this.dbWriter<ScheduledEventEntity>(
         ScheduledEventEntity.table,
