@@ -46,7 +46,9 @@ export const ProfileDetails: FC = () => {
         profileUserId={profileUserId}
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
       />
+
       <div className="flex pb-3 md:flex">
+        {/* desktop */}
         <div className="hidden h-full w-full flex-row md:flex">
           <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
             <ProfileImage
@@ -83,6 +85,7 @@ export const ProfileDetails: FC = () => {
           </div>
         </div>
 
+        {/* mobile */}
         <div className="flex h-full w-full flex-col md:hidden">
           <div className="flex flex-row">
             <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px] ">
@@ -99,6 +102,7 @@ export const ProfileDetails: FC = () => {
         </div>
       </div>
 
+      {/* mobile */}
       <div className="absolute top-4 right-10 flex-row items-start pr-3 md:hidden">
         {ownsProfile ? (
           <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
