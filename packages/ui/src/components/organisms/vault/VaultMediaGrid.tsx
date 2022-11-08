@@ -76,7 +76,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               </>
             )
           }}
-          className="mt-[25px] grid gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-[25px] grid grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8"
           emptyElement={
             <>
               <div className="col-span-1 w-[115px] md:w-[320px]" />
