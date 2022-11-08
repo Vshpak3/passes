@@ -1,10 +1,12 @@
 import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
+import classNames from "classnames"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/square-info-icon.svg"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/Button"
+import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"
 import { redirectUnauthedToLogin } from "src/helpers/authRouter"
@@ -15,6 +17,7 @@ import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {
   pass: PassDto
+  isPinnedPass?: boolean
 }
 
 export const getPassType = (passType: PassDtoTypeEnum) => {
@@ -27,7 +30,7 @@ export const getPassType = (passType: PassDtoTypeEnum) => {
   return types[passType] ? types[passType] : ""
 }
 
-export const PassCard: FC<PassCardProps> = ({ pass }) => {
+export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
   const { setPass } = useBuyPassModal()
 
   const { user } = useUser()
@@ -49,36 +52,66 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
   }
 
   return (
-    <div className="flex max-w-[300px] flex-col border border-passes-dark-200 bg-[#0E0A0F]/25 px-3 py-4">
+    <div
+      className={classNames(
+        isPinnedPass && "max-w-[350px] px-[24px]",
+        "flex min-h-[170px] flex-col rounded-[5px] bg-[#0E0A0F]/25 px-[12px] py-4"
+      )}
+    >
       <PassMedia
         animationType={pass.animationType}
         imageType={pass.imageType}
+        isPinnedPass={isPinnedPass}
         passId={pass.passId}
       />
-      <div className="flex h-full flex-col items-start pt-4 text-[#ffff]/90">
-        <div className="flex w-full flex-row items-center justify-between">
-          <div className="text-lg font-[500]">{pass.title}</div>
-          <div className="flex flex-row items-center">
-            <span className="py-2">
-              ${pass.price} / {getPassType(pass.type)}
-            </span>
+      <div
+        className={classNames(
+          "flex min-h-[300px] flex-col items-start pt-4 text-[#ffff]/90"
+        )}
+      >
+        <div
+          className={classNames(
+            isPinnedPass
+              ? "flex w-full flex-row justify-start"
+              : "flex w-full flex-col"
+          )}
+        >
+          <div
+            className={classNames(
+              isPinnedPass ? "justify-start" : "justify-center",
+              "flex w-full flex-row items-center"
+            )}
+          >
+            <div className="text-lg font-[500]">{pass.title}</div>
+          </div>
+          <div
+            className={classNames(
+              isPinnedPass
+                ? "justify-end text-right"
+                : "justify-center text-center",
+              "w-full py-2"
+            )}
+          >
+            ${pass.price} / {getPassType(pass.type)}
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
           <div className="mt-2 flex w-full flex-row items-center justify-between">
-            <div>
+            <div className="flex flex-col">
               {pass.totalMessages !== null && pass.totalMessages > 0 && (
-                <span className="flex flex-row gap-1 text-sm text-white md:text-xs">
+                <span className="text-sm text-white md:text-xs">
                   <span className="font-[700] text-white">
-                    {pass.totalMessages}
+                    {pass.totalMessages}{" "}
                   </span>
-                  <span className="text-gray-400">free message(s)</span>
+                  <span className="text-[#767676]">free messages</span>
                 </span>
               )}
               {pass.totalMessages === null && (
-                <span className="flex flex-col text-sm text-gray-400 md:text-xs">
-                  <span className="font-[700] text-white">Unlimited</span>
-                  <span>free messages</span>
+                <span className="flex text-sm text-gray-400 md:text-xs">
+                  <span className="mr-[3px] font-[700] text-white">
+                    Unlimited
+                  </span>{" "}
+                  <span className="text-[#767676]">free messages</span>
                 </span>
               )}
             </div>
@@ -87,34 +120,40 @@ export const PassCard: FC<PassCardProps> = ({ pass }) => {
             </div>
           </div>
         )}
-        <div className="mt-2 mb-auto w-full border-y border-y-[#2C282D]">
-          <p className="py-3 text-xs font-medium leading-[18px] text-white/70">
+        <div
+          className={classNames(
+            isPinnedPass ? "w-full" : "w-[90%]",
+            "mt-2 mb-auto border-y border-y-[#2C282D]"
+          )}
+        >
+          <p
+            className={classNames(
+              isPinnedPass ? "w-full" : "w-[110%]",
+              "py-3 text-xs font-medium leading-[18px] text-white/70"
+            )}
+          >
             {formatText(pass.description)}
           </p>
         </div>
-        <div className="flex w-full flex-row items-center justify-between py-2">
-          {pass.remainingSupply && pass.totalSupply ? (
-            <p className=" text-sm font-medium leading-[16px]">
-              <span className="text-xs font-normal leading-[23px] text-white/70">
-                {pass.remainingSupply}/{pass.totalSupply} left
-              </span>
-            </p>
-          ) : (
-            <div />
-          )}
-          <InfoIcon />
+        <div className="mt-2 flex w-full items-center justify-between text-sm font-medium leading-[16px]">
+          <span className="block text-xs font-normal leading-[23px] text-white/70">
+            ({pass.remainingSupply ?? 0} out of{pass.totalSupply ?? 0} left)
+          </span>
+          <IconTooltip
+            Icon={InfoIcon}
+            position="top"
+            tooltipText="Test tooltip text"
+          />
         </div>
         <Button
-          className="w-full rounded-full py-2 text-center"
+          className="mt-[12px] h-[44px] w-full rounded-full py-[10px] text-center"
           onClick={() => {
             redirectUnauthedToLogin(user, router) ||
               (isCreator ? pinOrUnpinPass() : setPass(pass))
           }}
           variant="pink"
         >
-          {isCreator
-            ? `${isPinned ? "Unpin" : "Pin"} Membership`
-            : "Buy Membership"}
+          {isCreator ? `${isPinned ? "Unpin" : "Pin"} Pass` : "Buy Membership"}
         </Button>
       </div>
     </div>

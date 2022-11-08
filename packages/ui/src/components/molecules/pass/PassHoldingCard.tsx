@@ -30,97 +30,96 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
 
   // const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
   return (
-    <div className="col-span-1 box-border w-full min-w-[400px] max-w-[400px] rounded border border-[#2C282D] py-[24px] px-[16px]">
+    <div className="col-span-1 box-border flex w-full min-w-[400px] max-w-[400px] flex-col justify-between rounded py-[24px] px-[16px]">
       <div className="max-w-[374px] rounded-[15px]">
         <PassMedia
           animationType={passHolder.animationType}
           imageType={passHolder.imageType}
+          isPinnedPass
           passId={passHolder.passId}
         />
       </div>
-      <div className=" grow cursor-pointer rounded-xl drop-shadow transition-colors">
-        <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
-          <div className="flex w-full flex-row items-center justify-between">
-            <div className="text-[16px] font-[700]">{passHolder.title}</div>
-          </div>
-          <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
-            <span className="w-full text-[12px] font-bold text-[#ffffff76]">
-              {passHolder.description}
-            </span>
-          </div>
-          {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (
-            <div className="mt-[12px]">
-              <span className="text-[12px] font-normal text-[#767676]">
-                <span className=" text-[14px] font-medium text-white">
-                  {passHolder.messages}
-                </span>{" "}
-                free messages left
+      <div className="h-full w-full">
+        <div className="flex min-h-[300px] grow cursor-pointer flex-col justify-between rounded-xl drop-shadow transition-colors">
+          <div className="flex h-full flex-col items-start justify-between pt-[20px] text-[#ffff]/90">
+            <div className="flex w-full flex-row items-center justify-between">
+              <div className="text-[16px] font-[700]">{passHolder.title}</div>
+            </div>
+            <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
+              <span className="w-full text-[12px] font-bold text-[#ffffff76]">
+                {passHolder.description}
               </span>
             </div>
-          )}
-          {passHolder.totalMessages === null && (
-            <div className="mt-[12px]">
-              <span className="text-[12px] font-normal text-[#767676]">
-                <span className=" text-[14px] font-medium text-white">
-                  Unlimited
-                </span>{" "}
-                free messages
-              </span>
-            </div>
-          )}
-          <div className="mt-[12px] w-full text-[16px]">
-            {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
-              <Link
-                href={
-                  "https://etherscan.io/nft/" +
-                  passHolder.address +
-                  "/" +
-                  parseInt(passHolder.tokenId ?? "0x0", 16).toString()
-                }
-              >
-                <Button
-                  className="w-full rounded-full py-2 text-center"
-                  variant="pink"
-                >
-                  View on Etherscan
-                </Button>
-              </Link>
-            ) : (
-              passHolder.chain === PassHolderDtoChainEnum.Sol && (
-                <Link href={"https://solscan.io/token/" + passHolder.address}>
-                  <Button
-                    className="w-full rounded-full py-[10px] text-center"
-                    variant="pink"
-                  >
-                    View on SolanaScan
-                  </Button>
-                </Link>
-              )
-            )}
-          </div>
-          <div className="flex w-full items-center justify-between">
-            {!!passHolder.expiresAt && (
-              <div className="mt-[12px] w-full">
-                <span className="text-[#767676]">
-                  {passHolder.expiresAt ? (
-                    <>
-                      {passHolder.expiresAt < new Date()
-                        ? "Expired on "
-                        : "Expires "}{" "}
-                      {passHolder.expiresAt.toLocaleDateString()}
-                    </>
-                  ) : (
-                    "Lifetime"
-                  )}
+            {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (
+              <div className="mt-[12px]">
+                <span className="text-[12px] font-normal text-[#767676]">
+                  <span className=" text-[14px] font-medium text-white">
+                    {passHolder.messages}
+                  </span>{" "}
+                  free messages left
                 </span>
               </div>
             )}
-            <div>
-              <IconTooltip
-                Icon={InfoIcon}
-                position="top"
-                tooltipText="Test tooltip text"
-              />
+            {passHolder.totalMessages === null && (
+              <div className="mt-[12px]">
+                <span className="text-[12px] font-normal text-[#767676]">
+                  <span className=" text-[14px] font-medium text-white">
+                    Unlimited
+                  </span>{" "}
+                  free messages
+                </span>
+              </div>
+            )}
+          </div>
+          <div className="w-full">
+            <div className="mt-[12px] w-full text-[16px]">
+              {passHolder.chain === PassHolderDtoChainEnum.Eth ? (
+                <Link
+                  href={
+                    "https://etherscan.io/nft/" +
+                    passHolder.address +
+                    "/" +
+                    parseInt(passHolder.tokenId ?? "0x0", 16).toString()
+                  }
+                >
+                  <Button
+                    className="h-[44px] w-full rounded-full py-2 text-center"
+                    variant="pink"
+                  >
+                    View on Etherscan
+                  </Button>
+                </Link>
+              ) : (
+                passHolder.chain === PassHolderDtoChainEnum.Sol && (
+                  <Link href={"https://solscan.io/token/" + passHolder.address}>
+                    <Button
+                      className="h-[44px] w-full rounded-full py-[10px] text-center"
+                      variant="pink"
+                    >
+                      View on SolanaScan
+                    </Button>
+                  </Link>
+                )
+              )}
+            </div>
+            <div className="flex w-full items-center justify-between">
+              {!!passHolder.expiresAt && (
+                <div className="mt-[12px] w-full">
+                  <span className="text-[#767676]">
+                    {passHolder.expiresAt < new Date()
+                      ? "Expired on "
+                      : "Expires "}
+                    {passHolder.expiresAt.toLocaleDateString()}
+                  </span>
+                </div>
+              )}
+              <div className="mt-[12px]">
+                <IconTooltip
+                  Icon={InfoIcon}
+                  position="top"
+                  tooltipText="Test tooltip text"
+                />
+              </div>
             </div>
           </div>
         </div>

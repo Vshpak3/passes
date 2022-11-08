@@ -40,7 +40,7 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
   expired
 }) => {
   return (
-    <div className="z-[1] mt-[10px] box-border flex w-fit gap-[30px] border-b border-b-[#2C282D]">
+    <div className="z-[1] mt-[10px] box-border flex w-fit gap-[30px]">
       {PASS_HOLDER_TAB_OPTIONS.map((option) => (
         <div
           className={classNames(

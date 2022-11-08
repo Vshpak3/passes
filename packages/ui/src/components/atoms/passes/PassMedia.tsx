@@ -2,6 +2,7 @@ import {
   PassDtoAnimationTypeEnum,
   PassDtoImageTypeEnum
 } from "@passes/api-client"
+import classNames from "classnames"
 import { FC, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
@@ -11,13 +12,15 @@ interface PassMediaProps {
   passId: string
   imageType: PassDtoImageTypeEnum
   animationType?: PassDtoAnimationTypeEnum
+  isPinnedPass?: boolean
 }
 
 export const PassMedia: FC<PassMediaProps> = ({
   passId,
   passHolderId,
   imageType,
-  animationType
+  animationType,
+  isPinnedPass = false
 }) => {
   const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(false)
 
@@ -27,7 +30,12 @@ export const PassMedia: FC<PassMediaProps> = ({
 
   if (shouldUsePlaceholder) {
     return (
-      <div className="h-[220px] w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]" />
+      <div
+        className={classNames(
+          isPinnedPass ? "h-[274px]" : "mx-auto h-[210px] max-w-[240px]",
+          "w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]"
+        )}
+      />
     )
   }
 
