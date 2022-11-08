@@ -20,7 +20,12 @@ export const ListMember: FC<ListMemberProps> = ({
     <>
       {!removed && (
         <div className="flex items-center justify-between py-3">
-          <ProfileWidget user={fanInfo} />
+          <div className="flex flex-row">
+            <ProfileWidget user={fanInfo} />
+            {!fanInfo.follow && (
+              <span className="text-red-500">Not a follower</span>
+            )}
+          </div>
           {removable && (
             <span
               className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
