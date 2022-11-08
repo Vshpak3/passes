@@ -64,4 +64,7 @@ export class MessageEntity extends BaseEntity {
 
   @Property({ length: 3 })
   deleted_at: Date | null
+
+  @Property({ default: false })
+  automatic: boolean
 }

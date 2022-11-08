@@ -24,7 +24,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
     }
   }
   const canUnsend =
-    !unsent && !paidMessage.unsent && !paidMessage.isWelcomeMesage
+    !unsent && !paidMessage.unsentAt && !paidMessage.isWelcomeMesage
   return (
     <div className="flex flex-row justify-between border-b border-passes-dark-200">
       <div className="flex h-[72px] flex-1 items-center justify-center">
