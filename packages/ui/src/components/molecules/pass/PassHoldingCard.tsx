@@ -11,24 +11,7 @@ interface PassHoldingCardProps {
   passHolder: PassHolderDto
 }
 
-// export const PassRenewalButton: FC<PassRenewalButtonProps> = ({
-//   onRenewal
-// }) => (
-//   <button
-//     className="flex w-full items-center justify-center gap-[10px] rounded-[50px] border-none bg-passes-pink-100 py-[10px] text-base font-semibold text-white shadow-sm"
-//     value="renew-pass"
-//     onClick={onRenewal}
-//   >
-//     <UnlockLockIcon className="flex h-6 w-6" />
-//     Renew
-//   </button>
-// )
-
 export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
-  // const [isRenewModalOpen, setIsRenewModalOpen] = useState(false)
-  // const now = Date.now()
-
-  // const toggleRenewModal = () => setIsRenewModalOpen((prevState) => !prevState)
   return (
     <div className="col-span-1 box-border flex w-full min-w-[400px] max-w-[400px] flex-col justify-between rounded py-[24px] px-[16px]">
       <div className="max-w-[374px] rounded-[15px]">

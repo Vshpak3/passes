@@ -88,10 +88,6 @@ export const sendAndGenerateEthereumTokenTransactionMessage = async (
     method: "eth_sendTransaction",
     params: [transactionParameters]
   })
-  // await provider.request({
-  //   method: "eth_sendTransaction",
-  //   params: [transactionParameters]
-  // })
 }
 
 export const sendAndGenerateEthereumTransactionMessage = async (

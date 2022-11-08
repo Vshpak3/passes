@@ -1,7 +1,7 @@
 import Image from "next/image"
 
-import { GradientBorderTile } from "src/components/atoms/GradientBorderTile"
-import { UserTile } from "src/components/atoms/UserTile"
+import { GradientBorderTile } from "src/components/atoms/signup/GradientBorderTile"
+import { UserTile } from "src/components/atoms/signup/UserTile"
 
 export const SignupTiles = () => {
   return (

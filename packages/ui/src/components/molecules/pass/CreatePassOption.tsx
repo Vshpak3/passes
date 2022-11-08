@@ -1,7 +1,7 @@
+import classNames from "classnames"
 import { FC, ReactElement } from "react"
 
 import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
-import { FormContainer } from "src/components/organisms/FormContainer"
 
 interface CreatePassOptionProps {
   icon: ReactElement
@@ -19,8 +19,10 @@ export const CreatePassOption: FC<CreatePassOptionProps> = ({
   colStyle
 }) => {
   return (
-    <div className={`col-span-12 space-y-6 ${colStyle} lg:max-w-[280px]`}>
-      <FormContainer>
+    <div
+      className={classNames("col-span-12 space-y-6 lg:max-w-[280px]", colStyle)}
+    >
+      <div className="flex grow flex-col items-stretch gap-4 border-y-[0.5px] border-gray-600 p-5 sm:px-10 md:min-h-[400px] md:px-10 md:pt-5 lg:px-5">
         <div className="mx-auto py-3">{icon}</div>
         <span className="mt-3 text-center text-[18px] font-bold text-white/90">
           {title}
@@ -31,7 +33,7 @@ export const CreatePassOption: FC<CreatePassOptionProps> = ({
         <div className="mt-auto">
           <PassesPinkButton name="Get Started" onClick={onGetStarted} />
         </div>
-      </FormContainer>
+      </div>
     </div>
   )
 }

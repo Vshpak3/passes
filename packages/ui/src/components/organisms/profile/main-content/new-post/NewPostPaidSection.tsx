@@ -3,11 +3,11 @@ import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { Tag } from "src/components/atoms/Tag"
 import { MAX_PAID_POST_PRICE } from "src/config/post"
 import { formatText } from "src/helpers/formatters"
 import { NewPostFormProps } from "./NewPostEditor"
 import { PassesSearchBar } from "./PassesSearchBar"
+import { SelectedPass } from "./SelectedPass"
 
 interface NewPostPaidSectionProps {
   register: UseFormRegister<NewPostFormProps>
@@ -74,7 +74,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
         </div>
         <div className="flex flex-wrap gap-[6px] transition-all">
           {selectedPasses.map((pass: PassDto) => (
-            <Tag
+            <SelectedPass
               key={pass.passId}
               onClick={() => removePass(pass.passId)}
               title={formatText(pass.title) as string}

@@ -2,12 +2,12 @@ import {
   GetCreatorVerificationStepResponseDtoStepEnum,
   VerificationApi
 } from "@passes/api-client"
+import classNames from "classnames"
 import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
 import VerificationLoading from "public/img/profile/creator-verification-loading.svg"
 import { useCallback, useEffect, useState } from "react"
 
-import { BulletItem } from "src/components/atoms/BulletItem"
 import { CreatorSteps } from "src/components/molecules/creator-flow/CreatorSteps"
 import { WelcomeToPasses } from "src/components/organisms/creator-flow/WelcomePasses"
 import { Modal } from "src/components/organisms/Modal"
@@ -146,11 +146,18 @@ const CreatorFlow = () => {
               <div className="hidden flex-row gap-1 sm:flex">
                 {Object.values(CREATOR_STEPS).map((step) => {
                   return (
-                    <BulletItem
-                      isSelected={selectedStep === step}
+                    <div
+                      className={classNames(
+                        "cursor-pointer",
+                        selectedStep === step
+                          ? "text-gray-500"
+                          : "text-gray-700"
+                      )}
                       key={`bullet-${step}`}
-                      setSelectedStep={() => setSelectedStep(step)}
-                    />
+                      onClick={() => setSelectedStep(step)}
+                    >
+                      &bull;
+                    </div>
                   )
                 })}
               </div>

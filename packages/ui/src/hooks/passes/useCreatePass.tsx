@@ -12,7 +12,6 @@ import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-// import { ContentService } from "src/helpers/content"
 import * as yup from "yup"
 
 const MB = 1048576

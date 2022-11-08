@@ -350,8 +350,8 @@ const PrivacyPolicy = () => {
         </ul>
         <br />
         <p>
-          See <span className="italic">“Your California Privacy Rights”</span>,
-          <span className="italic">“Your Nevada Privacy Rights”</span>, and
+          See <span className="italic">“Your California Privacy Rights”</span>,{" "}
+          <span className="italic">“Your Nevada Privacy Rights”</span>, and{" "}
           <span className="italic">
             “Your European Union and UK Privacy Rights”
           </span>

@@ -16,7 +16,6 @@ import { PassPrice } from "src/components/molecules/pass/create/PassPrice"
 import { PassRenewal } from "src/components/molecules/pass/create/PassRenewal"
 import { PassSupply } from "src/components/molecules/pass/create/PassSupply"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
-import { FormContainer } from "src/components/organisms/FormContainer"
 import { createPassSchema, useCreatePass } from "src/hooks/passes/useCreatePass"
 
 interface CreatePassFormProps {
@@ -30,7 +29,6 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
     fileUploadError,
     isLifetimePass,
     isSubscriptionPass,
-    // maximumLimit,
     onCreatePass,
     onDragDropChange,
     onRemoveFileUpload,
@@ -61,7 +59,7 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
         />
       )}
       <div className="col-span-12 mx-auto w-[100%] lg:col-span-10 lg:max-w-[680px]">
-        <FormContainer>
+        <div className="flex grow flex-col items-stretch gap-4 border-y-[0.5px] border-gray-600 p-5 sm:px-10 md:min-h-[400px] md:px-10 md:pt-5 lg:px-5">
           <PassNameInput errors={errors} register={register} />
           <PassFileUpload
             errors={errors}
@@ -71,7 +69,6 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
             onDragDropChange={onDragDropChange}
             onRemoveFileUpload={onRemoveFileUpload}
             register={register}
-            // maximumLimit={maximumLimit}
           />
           <PassDescriptionInput errors={errors} register={register} />
           <PassPrice errors={errors} register={register} />
@@ -83,8 +80,6 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
               register={register}
               suffix="%"
               title="Set royalties % on re-sales"
-              // errors={errors}
-              // infoIcon
             />
           )}
           {errors.royalties && (
@@ -126,7 +121,7 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
                 })
             }}
           />
-        </FormContainer>
+        </div>
       </div>
     </div>
   )

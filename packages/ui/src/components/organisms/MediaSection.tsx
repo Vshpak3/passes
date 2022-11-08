@@ -22,10 +22,8 @@ import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { MediaModal } from "src/components/organisms/MediaModal"
 import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
-// import { preventNegative } from "src/helpers/keyboard"
 import { ContentFile } from "src/hooks/useMedia"
 import { MediaSectionReorder } from "./MediaSectionReorder"
-// import { MediaSectionReorderPriced } from "./MediaSectionReorderPriced"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
 
 interface MediaSectionProps {

@@ -14,7 +14,6 @@ import {
 } from "src/helpers/payment/payin-serialize"
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
-// import { PayinMethodDisplay } from "./PayinMethodDisplay"
 import { ThreeDSInfo } from "./ThreeDSInfo"
 
 interface PaymentModalBodyProps {
