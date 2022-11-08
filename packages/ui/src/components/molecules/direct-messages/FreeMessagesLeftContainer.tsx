@@ -15,7 +15,9 @@ export const FreeMessagesLeftContainer: FC<FreeMessagesLeftContainerProps> = ({
           {freeMessages ?? "unlimited"} free
         </span>
         <span>messages left.</span>
-        {freeMessages === 0 && " You can only send messages with a tip now."}
+        <span className="hidden sm:block">
+          {freeMessages === 0 && " You can only send messages with a tip now."}
+        </span>
       </div>
     </div>
   )
