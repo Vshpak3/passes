@@ -30,20 +30,18 @@ const AccountInformation = () => {
           <ChevronRightIcon />
         </button>
 
-        {user?.isCreator ? (
-          <button
-            className="flex w-full items-center justify-between"
-            onClick={() => addTabToStackHandler(SubTabsEnum.DisplayName)}
-          >
-            <div className="text-start">
-              <p className="text-label">Display Name</p>
-              <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
-                {user?.displayName}
-              </p>
-            </div>
-            <ChevronRightIcon />
-          </button>
-        ) : null}
+        <button
+          className="flex w-full items-center justify-between"
+          onClick={() => addTabToStackHandler(SubTabsEnum.DisplayName)}
+        >
+          <div className="text-start">
+            <p className="text-label">Display Name</p>
+            <p className="text-xs font-medium text-white/50 sm:text-base md:text-base">
+              {user?.displayName}
+            </p>
+          </div>
+          <ChevronRightIcon />
+        </button>
 
         <button
           className="flex w-full items-center justify-between"
