@@ -6,7 +6,7 @@ import Clipboard from "public/icons/clipboard.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
 import { memo } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum, TabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"

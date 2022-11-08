@@ -3,7 +3,7 @@ import Link from "next/link"
 import InfoIcon from "public/icons/square-info-icon.svg"
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 

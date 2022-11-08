@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"

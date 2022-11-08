@@ -1,11 +1,6 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable react/no-unused-prop-types */
-import classNames from "classnames"
-import clsx from "clsx"
-import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC, PropsWithChildren } from "react"
 
-import { Text } from "./Text"
+import { Text } from "src/components/atoms/Text"
 
 export enum ButtonTypeEnum {
   BUTTON = "button",
@@ -22,15 +17,6 @@ interface ButtonProps {
   active?: boolean
   type?: ButtonTypeEnum
   disabledClass?: string
-}
-
-interface GenericButtonProps {
-  name: string
-  onClick?: () => void
-  value?: string
-  type?: ButtonTypeEnum
-  className?: string
-  isDisabled?: boolean
 }
 
 export const Button: FC<PropsWithChildren<ButtonProps>> = ({
@@ -149,81 +135,3 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     </button>
   )
 }
-
-export const PassesPinkButton: FC<GenericButtonProps> = ({
-  type,
-  name,
-  onClick,
-  className = "",
-  isDisabled = false
-}) => {
-  return (
-    <button
-      className={classNames(
-        isDisabled && "opacity-[0.40]",
-        "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
-        className
-      )}
-      disabled={isDisabled}
-      onClick={onClick}
-      type={type}
-    >
-      {name}
-    </button>
-  )
-}
-
-export const ContentUnlockButton: FC<GenericButtonProps> = ({
-  name,
-  onClick,
-  value,
-  className = "",
-  isDisabled
-}) => (
-  <button
-    className={classNames(
-      className,
-      "flex w-full items-center justify-center gap-[10px] rounded-[5px] border-none bg-[#B52A6F] py-[9px] text-base font-medium text-white shadow-sm"
-    )}
-    disabled={!!isDisabled}
-    onClick={onClick}
-    value={value}
-  >
-    <UnlockLockIcon className="flex h-6 w-6" />
-    {name}
-  </button>
-)
-
-export const RoundedIconButton: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  onClick,
-  className = ""
-}) => (
-  <button
-    className={classNames(
-      "flex h-[60px] w-[60px] cursor-pointer select-none items-center justify-center rounded-lg bg-white p-4",
-      className
-    )}
-    onClick={onClick}
-  >
-    {children}
-  </button>
-)
-
-export const TabButton: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  onClick,
-  active,
-  className
-}) => (
-  <button
-    className={clsx(
-      className,
-      "rounded-[56px] bg-[#191919] !py-[10px] !px-[30px] font-bold text-white",
-      { ["bg-[#EDEDED] !text-[#000]"]: active }
-    )}
-    onClick={onClick}
-  >
-    {children}
-  </button>
-)

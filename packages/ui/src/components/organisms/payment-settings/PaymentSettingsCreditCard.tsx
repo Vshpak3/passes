@@ -7,7 +7,7 @@ import DeleteIcon from "public/icons/delete-outline.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { SubTabsEnum } from "src/config/settings"
 import { usePayinMethod } from "src/hooks/usePayinMethod"

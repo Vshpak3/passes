@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormErrors, FormRegister } from "src/components/atoms/input/InputTypes"

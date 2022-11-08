@@ -2,7 +2,7 @@ import { PayinMethodDto, PostDto } from "@passes/api-client"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"

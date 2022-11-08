@@ -5,7 +5,7 @@ import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { boolean, mixed, number, object, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"

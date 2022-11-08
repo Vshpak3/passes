@@ -4,7 +4,7 @@ import classNames from "classnames"
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"

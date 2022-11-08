@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"

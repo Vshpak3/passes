@@ -2,7 +2,8 @@ import { useRouter } from "next/router"
 import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
 import SubscriptionIcon from "public/icons/subscription-pass.svg"
 
-import { ButtonTypeEnum, PassesPinkButton } from "src/components/atoms/Button"
+import { ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 
 export function WelcomeToPasses() {
   const router = useRouter()

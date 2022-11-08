@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"

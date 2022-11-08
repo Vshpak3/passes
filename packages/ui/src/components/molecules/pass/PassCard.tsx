@@ -5,7 +5,7 @@ import InfoIcon from "public/icons/square-info-icon.svg"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"

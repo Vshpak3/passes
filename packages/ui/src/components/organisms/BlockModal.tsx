@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
 import { Modal } from "./Modal"

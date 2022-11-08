@@ -5,11 +5,8 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
 
-import {
-  Button,
-  ButtonTypeEnum,
-  PassesPinkButton
-} from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"

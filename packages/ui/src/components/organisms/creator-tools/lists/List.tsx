@@ -3,7 +3,7 @@ import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { AlertIcon } from "src/icons/AlertIcon"
 import { DeleteIcon } from "src/icons/DeleteIcon"

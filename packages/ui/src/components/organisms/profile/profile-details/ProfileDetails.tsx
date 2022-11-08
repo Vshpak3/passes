@@ -2,7 +2,7 @@ import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
 import { FC, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
 import { Dropdown } from "src/components/organisms/profile/drop-down/Dropdown"
 import {

@@ -3,7 +3,7 @@ import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
 import { formatText } from "src/helpers/formatters"
 import { usePost } from "src/hooks/profile/usePost"

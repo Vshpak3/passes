@@ -2,7 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC } from "react"
 
-import { ContentUnlockButton } from "src/components/atoms/Button"
+import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"

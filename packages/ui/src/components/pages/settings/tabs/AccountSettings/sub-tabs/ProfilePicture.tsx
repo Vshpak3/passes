@@ -3,7 +3,7 @@ import { FC, memo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { FileInput } from "src/components/atoms/input/FileInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import { Tab } from "src/components/pages/settings/Tab"

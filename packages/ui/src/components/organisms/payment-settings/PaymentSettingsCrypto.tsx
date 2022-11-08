@@ -6,7 +6,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Select } from "src/components/atoms/input/Select"
 import {
   deserializePayinMethod,

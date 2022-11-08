@@ -2,7 +2,7 @@ import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"

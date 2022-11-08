@@ -2,7 +2,7 @@ import { CommentApi, CommentDto } from "@passes/api-client"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 import { errorMessage } from "src/helpers/error"

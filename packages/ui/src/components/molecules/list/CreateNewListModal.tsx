@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import React, { FC, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Modal, ModalProps } from "src/components/organisms/Modal"
 
 interface CreateNewListModalProps extends ModalProps {

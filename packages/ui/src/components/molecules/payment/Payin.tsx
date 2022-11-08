@@ -8,7 +8,7 @@ import {
 } from "@passes/api-client"
 import React, { useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 
 interface PayinProps {
   payin: PayinDto

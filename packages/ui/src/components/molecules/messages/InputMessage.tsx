@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { date, object } from "yup"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Text } from "src/components/atoms/Text"

@@ -14,7 +14,7 @@ import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { FC, useCallback, useEffect, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import {
   ComponentArg,
   InfiniteScrollPagination

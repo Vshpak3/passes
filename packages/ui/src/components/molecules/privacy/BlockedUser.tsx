@@ -1,7 +1,7 @@
 import { FollowApi, ListMemberDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 
 interface BlockedUserProps {

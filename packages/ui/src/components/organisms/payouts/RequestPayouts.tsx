@@ -9,7 +9,7 @@ import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { useCallback, useRef, useState } from "react"
 
-import { PassesPinkButton } from "src/components/atoms/Button"
+import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 import { errorMessage } from "src/helpers/error"
 import {
   PayoutFrequencyEnum,

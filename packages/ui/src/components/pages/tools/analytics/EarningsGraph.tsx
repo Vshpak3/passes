@@ -23,7 +23,7 @@ import React, { FC, useRef, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 
-import { TabButton } from "src/components/atoms/Button"
+import { TabButton } from "src/components/atoms/button/TabButton"
 import {
   formatCurrency,
   getFormattedDate,
@@ -136,11 +136,9 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
             active={activeTab === value}
             className="min-w-fit rounded-[5px] !px-[16px] !py-[9px] text-[14px]"
             key={id}
+            label={label}
             onClick={() => handleOnTabClick(value)}
-            variant="tab"
-          >
-            {label}
-          </TabButton>
+          />
         ))}
       </div>
       <div className="text-2xl font-bold">

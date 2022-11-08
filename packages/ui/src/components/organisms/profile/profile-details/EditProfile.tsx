@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, string } from "yup"
 
-import { PassesPinkButton } from "src/components/atoms/Button"
+import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormLabel } from "src/components/atoms/input/InputTypes"
 import { TextAreaInput } from "src/components/atoms/input/TextAreaInput"

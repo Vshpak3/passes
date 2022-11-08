@@ -8,7 +8,7 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { VaultMediaGrid } from "src/components/organisms/vault/VaultMediaGrid"
 import { VaultNavigation } from "src/components/organisms/vault/VaultNavigation"

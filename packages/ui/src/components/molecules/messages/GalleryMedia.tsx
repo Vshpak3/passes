@@ -4,7 +4,7 @@ import CostIcon from "public/icons/post-cost-icon.svg"
 import { FC, useEffect, useRef, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { ContentUnlockButton } from "src/components/atoms/Button"
+import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { PostVideo } from "src/components/molecules/post/PostVideo"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"

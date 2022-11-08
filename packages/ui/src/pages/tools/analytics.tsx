@@ -2,7 +2,7 @@ import { NextPage } from "next"
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 
-import { TabButton } from "src/components/atoms/Button"
+import { TabButton } from "src/components/atoms/button/TabButton"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
 import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
@@ -45,11 +45,9 @@ const Analytics: NextPage = () => {
             active={analyticsTab === tab.value}
             className="rounded-[5px] !px-[16px] !py-[9px] text-[14px] sm:!px-[30px] sm:!py-[10px] sm:text-[16px]"
             key={tab.value}
+            label={tab.label}
             onClick={() => handleAnalyticsTabClick(tab.value)}
-            variant="tab"
-          >
-            {tab.label}
-          </TabButton>
+          />
         ))}
       </div>
       {analyticsTab === AnalyticsNavigationOptions.EARNINGS && (

@@ -7,7 +7,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"

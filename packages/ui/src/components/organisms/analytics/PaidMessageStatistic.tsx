@@ -2,7 +2,7 @@ import { MessagesApi, PaidMessageDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { formatText } from "src/helpers/formatters"
 
 interface PaidMessageStatisticProps {

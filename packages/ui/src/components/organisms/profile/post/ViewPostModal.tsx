@@ -4,7 +4,7 @@ import MessageIcon from "public/icons/message-dots-square.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { ContentUnlockButton } from "src/components/atoms/Button"
+import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"

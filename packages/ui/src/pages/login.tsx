@@ -12,11 +12,8 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
-import {
-  Button,
-  ButtonTypeEnum,
-  RoundedIconButton
-} from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { RoundedIconButton } from "src/components/atoms/button/RoundedIconButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
@@ -167,15 +164,18 @@ const LoginPage: FC = () => {
           </form>
 
           <div className="z-10 flex gap-[17px]">
-            <RoundedIconButton onClick={handleLoginWithGoogle}>
-              <GoogleLogo />
-            </RoundedIconButton>
-            <RoundedIconButton onClick={handleLoginWithFacebook}>
-              <FacebookLogo />
-            </RoundedIconButton>
-            <RoundedIconButton onClick={handleLoginWithTwitter}>
-              <TwitterLogo />
-            </RoundedIconButton>
+            <RoundedIconButton
+              icon={GoogleLogo}
+              onClick={handleLoginWithGoogle}
+            />
+            <RoundedIconButton
+              icon={FacebookLogo}
+              onClick={handleLoginWithFacebook}
+            />
+            <RoundedIconButton
+              icon={TwitterLogo}
+              onClick={handleLoginWithTwitter}
+            />
           </div>
 
           <Text

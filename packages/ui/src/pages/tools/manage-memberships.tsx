@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const ManagePasses = () => {

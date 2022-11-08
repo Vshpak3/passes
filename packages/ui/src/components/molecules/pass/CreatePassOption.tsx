@@ -1,6 +1,6 @@
 import { FC, ReactElement } from "react"
 
-import { PassesPinkButton } from "src/components/atoms/Button"
+import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 import { FormContainer } from "src/components/organisms/FormContainer"
 
 interface CreatePassOptionProps {

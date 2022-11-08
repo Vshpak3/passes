@@ -4,7 +4,7 @@ import Image from "next/image"
 import EditIcon from "public/icons/edit-icon.svg"
 import React, { FC, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 
 interface UpdateListNamePopperProps {
   onSubmit(listName: string): Promise<void>

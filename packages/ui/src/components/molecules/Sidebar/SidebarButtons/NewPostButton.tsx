@@ -1,7 +1,7 @@
 import PlusSign from "public/icons/plus-sign.svg"
 import { FC, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { NewPostPopup } from "src/components/molecules/scheduler/NewPostPopup"
 
 interface NewPostButtonProps {

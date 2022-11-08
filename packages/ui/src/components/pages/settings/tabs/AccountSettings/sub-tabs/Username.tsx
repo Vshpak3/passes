@@ -3,7 +3,7 @@ import { FC, memo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/settings/Tab"

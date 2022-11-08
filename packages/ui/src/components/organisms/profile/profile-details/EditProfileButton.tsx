@@ -1,6 +1,6 @@
 import { Dispatch, FC, SetStateAction } from "react"
 
-import { Button } from "src/components/atoms/Button"
+import { Button } from "src/components/atoms/button/Button"
 
 interface EditProfileButtonProps {
   setEditProfile: Dispatch<SetStateAction<boolean>>

@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { useFollow } from "src/hooks/profile/useFollow"
 
 interface FollowButtonProps {

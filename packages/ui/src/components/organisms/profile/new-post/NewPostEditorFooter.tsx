@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material"
 import { ContentDto } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction } from "react"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { ScheduleAlert } from "src/components/atoms/ScheduleAlert"
 import { Text } from "src/components/atoms/Text"
