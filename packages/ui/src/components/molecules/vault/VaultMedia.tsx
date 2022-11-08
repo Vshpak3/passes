@@ -57,7 +57,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden rounded-[15px] border bg-black px-0"
+          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0"
         )}
         onClick={handleClick}
       >
