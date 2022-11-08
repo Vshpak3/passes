@@ -91,9 +91,6 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
           type="currency"
         />
       </div>
-      <span className="my-2 flex text-passes-dark-gray">
-        This message will be sent with your tip after purchase.
-      </span>
       <PaymentModalBody
         closeModal={() => setPost(null)}
         price={tipValue}

@@ -749,7 +749,13 @@ export class MessagesService {
     return BlockedReasonEnum.INSUFFICIENT_TIP
   }
 
-  // async sendAutomaticMessage("You have tipped ")
+  // async sendAutomaticMessage(
+  //   senderId: string,
+  //   receiverId: string,
+  //   message: string,
+  // ) {
+
+  // }
 
   async createMessage(
     userId: string,

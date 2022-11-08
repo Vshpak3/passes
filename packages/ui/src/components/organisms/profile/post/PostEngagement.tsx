@@ -6,7 +6,7 @@ import { FC, useCallback, useMemo, useState } from "react"
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
 import { copyLinkToClipboard } from "src/helpers/clipboard"
-import { compactNumberFormatter } from "src/helpers/formatters"
+import { compactNumberFormatter, formatCurrency } from "src/helpers/formatters"
 import { CommentSection } from "./CommentSection"
 
 interface PostEngagementProps {
@@ -73,7 +73,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
         </div>
 
         {isOwner ? (
-          <div className="text-sm font-normal text-gray-500">
+          <div className="flex flex-col text-sm font-normal text-gray-500">
             <span>
               {price && !passIds.length
                 ? `Viewable for $${price}`
@@ -83,6 +83,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
                 ? `Viewable for $${price} or with pass`
                 : "Free"}
             </span>
+            <span>Tips: {formatCurrency(post.totalTipAmount ?? 0)}</span>
           </div>
         ) : (
           <div className="flex flex-row flex-wrap text-sm font-normal text-gray-500">

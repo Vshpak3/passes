@@ -1,8 +1,10 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { InternalServerErrorException } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
 
 import { DatabaseService } from '../../database/database.service'
+import { PostEntity } from '../post/entities/post.entity'
 import {
   CreateNftPassPayinCallbackInput,
   CreateNftPassPayinCallbackOutput,
@@ -293,5 +295,21 @@ async function tipPostSuccessfulCallback(
     input.postId,
     input.amount,
   )
+  const post = await db<PostEntity>(PostEntity.table)
+    .where({
+      id: input.postId,
+    })
+    .select('user_id')
+    .first()
+
+  if (!post) {
+    throw new InternalServerErrorException('no post found')
+  }
+
+  // await payService.messagesService.sendAutomaticMessage(
+  //   input.userId,
+  //   post.user_id,
+  //   'You tipped ',
+  // )
   return { postId: input.postId, amount: input.amount }
 }
