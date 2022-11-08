@@ -38,6 +38,7 @@ type MediaSelectorProps = {
   options?: FormOptions
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   selectors: FileSelectorProps[]
+  otherUserIsCreator?: boolean
 }
 
 export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
@@ -47,7 +48,8 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
   onChange,
   activeMediaHeader,
   selectors,
-  children
+  children,
+  otherUserIsCreator
 }) => {
   return (
     <div>
@@ -68,9 +70,9 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                     <button
                       className={classNames(
                         activeMediaHeader === name
-                          ? " bg-[#FF51A8]/10 "
-                          : "hover:bg-[#FF51A8]/10",
-                        "group flex flex-shrink-0 items-center rounded-[56px] px-4 py-3 text-sm leading-4 text-[#FF51A8]"
+                          ? " md:bg-[#FF51A8]/10 "
+                          : "md:hover:bg-[#FF51A8]/10",
+                        "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-[#FF51A8] md:py-3 md:px-4"
                       )}
                       type="button"
                     >
@@ -78,9 +80,11 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                         <Icon className="flex shrink-0" />
                         <span
                           className={classNames(
-                            activeMediaHeader === name
+                            !otherUserIsCreator
+                              ? "block md:hidden md:group-hover:block"
+                              : "block" && activeMediaHeader === name
                               ? "block"
-                              : "hidden group-hover:block",
+                              : "hidden md:group-hover:block",
                             "block"
                           )}
                         >

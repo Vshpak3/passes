@@ -233,10 +233,10 @@ export const InputMessage: FC<InputMessageProps> = ({
       className="flex w-full border-t border-[#fff]/10"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full flex-col px-[30px] pt-2">
+      <div className="flex w-full flex-col px-[10px] pt-2 md:px-[30px]">
         {isCreator && (
           <div className="flex w-full items-center justify-between py-1">
-            <div className="flex h-[30px] items-center justify-start gap-4">
+            <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
               <Checkbox
                 className="group"
                 errors={errors}
@@ -277,7 +277,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          rows={4}
+          rows={3}
           {...register("text")}
           autoComplete="off"
           className={classNames(
@@ -318,7 +318,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             isCreator
               ? "items-center justify-between md:-ml-4 md:flex-nowrap"
               : "flex-nowrap justify-end",
-            "flex w-full flex-wrap md:flex-nowrap md:py-5",
+            "mb-5 flex w-full flex-wrap border-b border-[#fff]/10 py-4 md:mb-0 md:flex-nowrap md:border-0 md:pt-5",
             Object.values(errors)[0] && "!pt-0"
           )}
         >
@@ -327,24 +327,28 @@ export const InputMessage: FC<InputMessageProps> = ({
               activeMediaHeader={activeMediaHeader}
               errors={errors}
               onChange={onMediaChange}
+              otherUserIsCreator={otherUserIsCreator}
               register={register}
               selectors={[PhotoSelector, VideoSelector]}
             >
               <div>
-                <VaultSelector selectVaultContent={addContent} />
+                <VaultSelector
+                  otherUserIsCreator={otherUserIsCreator}
+                  selectVaultContent={addContent}
+                />
               </div>
             </MediaSelector>
           )}
-          <div className="flex justify-end gap-[10px]">
+          <div className="flex items-center justify-end gap-[10px]">
             {otherUserIsCreator && (
               <div
                 className={classNames(
                   errors.text && "border-b-red",
-                  "flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px]"
+                  "flex h-[37px] max-w-[125px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-[9px] py-[4px] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
                 )}
               >
                 <div className="flex w-3/5 flex-col items-start">
-                  <span className="text-[14px] font-medium leading-[14px] text-[#B52A6F]">
+                  <span className="text-[12px] font-medium leading-[14px] text-[#B52A6F] md:text-[14px]">
                     Tip:
                   </span>
                   {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
@@ -356,7 +360,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 <input
                   autoComplete="off"
                   // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-                  className="w-2/5 border-none bg-transparent p-0 pl-3 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0"
+                  className="w-2/5 border-none bg-transparent p-0 pl-1 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0 md:pl-3"
                   min="0"
                   onChange={handleChangeTip}
                   onKeyPress={preventNegative}
@@ -368,13 +372,13 @@ export const InputMessage: FC<InputMessageProps> = ({
             )}
             <div
               aria-roledescription="button"
-              className="flex h-[45px] flex-col !p-0"
+              className="flex h-[45px] flex-col content-center justify-center"
               role="button"
             >
               <button
                 className={classNames(
                   blocked ? " cursor-not-allowed opacity-50" : "",
-                  " min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
+                  " max-w-[119px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[6px] px-[9px] text-center text-[14px] leading-[25px] text-white md:max-w-[151px] md:py-[10px] md:px-[18px] md:text-[16px]"
                 )}
                 disabled={
                   !isNaN(tip) &&

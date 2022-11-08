@@ -57,7 +57,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   return (
     <div
       className={classNames(
-        "m-2.5 flex max-w-[90%] rounded md:max-w-[70%]",
+        "m-2.5 flex  max-w-[70%] rounded",
         ownsMessage && "flex-row-reverse self-end"
       )}
     >
@@ -66,7 +66,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           <ProfileThumbnail key={senderId} userId={senderId} />
         </div>
       )}
-      <div className={classNames("mx-4 flex flex-col items-end")}>
+      <div className={classNames(" mx-2 flex flex-col items-end md:mx-4")}>
         <div
           className={classNames(
             "relative flex  w-full items-center gap-3 ",
@@ -78,7 +78,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           >
             <span className="passes-break">{formatText(text)}</span>
             {!!messageContent.length && (
-              <div className=" w-[296px] md:w-[403px]">
+              <div className=" w-[260px] md:w-[403px]">
                 <MediaContent
                   contents={messageContent}
                   isProcessing={!contentProcessed}
@@ -93,9 +93,9 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               </div>
             )}
             {!pending && sentAt && (
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-end">
                 {!!senderId && !!price && (
-                  <div className="ml-10 flex flex-row items-center text-[11px]">
+                  <div className="flex flex-row items-center text-[11px]">
                     <div>
                       <DollarSymbol />
                     </div>
