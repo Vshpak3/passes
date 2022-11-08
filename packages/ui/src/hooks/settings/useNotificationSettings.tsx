@@ -11,12 +11,13 @@ const CACHE_KEY_NOTIFICATIONS = "/settings/notification/"
 export const useNotificationSettings = () => {
   const api = new NotificationsApi()
 
-  const { data: notificationSettings, mutate } = useSWR(
-    CACHE_KEY_NOTIFICATIONS,
-    async () => {
-      return await api.getNotificationSettings()
-    }
-  )
+  const {
+    data: notificationSettings,
+    mutate,
+    isValidating: loadingNotificationSettings
+  } = useSWR(CACHE_KEY_NOTIFICATIONS, async () => {
+    return await api.getNotificationSettings()
+  })
 
   useEffect(() => {
     if (!notificationSettings) {
@@ -44,8 +45,11 @@ export const useNotificationSettings = () => {
       updateNotificationSettingsRequestDto: updatedNotifications
     })
     mutateManual(updatedNotifications)
-    mutate()
   }
 
-  return { notificationSettings, updateNotificationSettings }
+  return {
+    notificationSettings,
+    loadingNotificationSettings,
+    updateNotificationSettings
+  }
 }

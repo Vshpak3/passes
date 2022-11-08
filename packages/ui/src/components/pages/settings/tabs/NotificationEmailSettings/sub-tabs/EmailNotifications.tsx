@@ -1,5 +1,6 @@
+import { GetNotificationSettingsResponseDto } from "@passes/api-client"
 import _ from "lodash"
-import { memo, useEffect, useState } from "react"
+import { ChangeEvent, memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 
@@ -9,21 +10,17 @@ import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"
 
-interface NotificationSettingsFormProps {
-  directMessageEmails: boolean
-  passesEmails: boolean
-  paymentEmails: boolean
-  postEmails: boolean
-  marketingEmails: boolean
-  mentionEmails: boolean
-}
+type NotificationSettingsFormProps = GetNotificationSettingsResponseDto
 
 const EmailNotifications = () => {
-  const { notificationSettings, updateNotificationSettings } =
-    useNotificationSettings()
+  const {
+    notificationSettings,
+    updateNotificationSettings,
+    loadingNotificationSettings
+  } = useNotificationSettings()
 
   const [formattedNotificationSettings, setFormattedNotificationSettings] =
-    useState(null)
+    useState<NotificationSettingsFormProps>()
 
   const { register, handleSubmit, reset, watch, setValue } =
     useForm<NotificationSettingsFormProps>()
@@ -38,43 +35,38 @@ const EmailNotifications = () => {
     try {
       await updateNotificationSettings(values)
       toast.success("Email notifications has been changed")
+      reset()
     } catch (error) {
       errorMessage(error, true)
     }
   }
 
-  const emailAllNotificationsHandler = (isEmailAll: boolean) => {
+  const emailAllNotificationsHandler = (e: ChangeEvent<HTMLInputElement>) => {
     Object.keys(allEmailNotifications).forEach((field) => {
-      setValue(field as keyof NotificationSettingsFormProps, isEmailAll)
+      setValue(field as keyof NotificationSettingsFormProps, e.target.checked)
     })
+    setIsEmailAll(e.target.checked)
   }
 
   useEffect(() => {
-    const isAllDisabled = Object.values(allEmailNotifications).every((n) => !n)
-    if (isAllDisabled) {
-      setIsEmailAll(false)
-    } else {
-      setIsEmailAll(true)
-    }
+    setIsEmailAll(Object.values(allEmailNotifications).some((n) => n))
   }, [allEmailNotifications])
-
-  useEffect(() => {
-    if (formattedNotificationSettings) {
-      reset(formattedNotificationSettings)
-    }
-  }, [formattedNotificationSettings, reset])
 
   useEffect(() => {
     if (notificationSettings) {
       // replacing all 0s and 1s with true and false
-      const notifications = JSON.parse(
-        JSON.stringify(notificationSettings)
-          .replaceAll("0", "false")
-          .replaceAll("1", "true")
+      const formatted = Object.keys(notificationSettings).reduce(
+        (result, key) => {
+          const k = key as keyof NotificationSettingsFormProps
+          result[k] = Boolean(notificationSettings[k])
+          return result
+        },
+        {} as NotificationSettingsFormProps
       )
-      setFormattedNotificationSettings(notifications)
+      setFormattedNotificationSettings(formatted)
+      reset(formatted)
     }
-  }, [notificationSettings])
+  }, [notificationSettings, reset])
 
   return (
     <Tab
@@ -88,10 +80,7 @@ const EmailNotifications = () => {
           <Checkbox
             checked={isEmailAll}
             name="emailAllNotifications"
-            onChange={(e) => {
-              emailAllNotificationsHandler(e.target.checked)
-              setIsEmailAll(e.target.checked)
-            }}
+            onChange={emailAllNotificationsHandler}
             type="toggle"
           />
         </label>
@@ -157,7 +146,10 @@ const EmailNotifications = () => {
 
         <Button
           className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-          disabled={_.isEqual(watch(), formattedNotificationSettings)}
+          disabled={
+            loadingNotificationSettings ||
+            _.isEqual(watch(), formattedNotificationSettings)
+          }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
           variant="pink"
