@@ -35,7 +35,7 @@ export const sentryInterceptorOptions = {
   filters: [
     {
       type: HttpException,
-      filter: (exception: any) => {
+      filter: (exception: unknown) => {
         // if thrown exception extends any of the ignored exception types return true
         // returning true suppresses sentry logs
         return !!ignoredExceptions.some((type) => exception instanceof type)

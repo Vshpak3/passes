@@ -2,7 +2,7 @@ import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 
 import { App } from '../app/app.main'
 import { TaskDirectory } from '../batch/batch.directory'
-
+import { closeSentry } from '../monitoring/sentry/sentry.helper'
 // eslint-disable-next-line import/newline-after-import
 ;(async () => {
   const args = process.argv.slice(2)
@@ -28,9 +28,11 @@ import { TaskDirectory } from '../batch/batch.directory'
     await new TaskDirectory[batchTaskName](app, logger).run(...batchTaskArgs)
   } catch (err) {
     logger.error(`Batch job '${batchTaskName}' failed`, err)
+    await closeSentry()
     throw err
   }
 
   logger.info('Completed running task')
-  process.exit(0)
+  await closeSentry()
+  await process.exit(0)
 })()
