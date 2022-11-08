@@ -4,7 +4,7 @@ import { formatText } from "src/helpers/formatters"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
-import { ProfileStatsDesktop } from "./ProfileStats"
+import { ProfileStats } from "./ProfileStats"
 
 export const ProfileInformation: FC = () => {
   const { profile, profileUsername, profileUserId } = useProfile()
@@ -28,7 +28,7 @@ export const ProfileInformation: FC = () => {
         {formatText(profile?.description)}
       </span>
       <div className="flex w-full flex-row flex-wrap items-center gap-y-[30px] gap-x-[68px]">
-        <ProfileStatsDesktop
+        <ProfileStats
           likes={creatorStats?.numLikes}
           numPosts={creatorStats?.numPosts}
         />
