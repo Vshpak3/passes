@@ -149,6 +149,8 @@ models/GetScheduledEventsResponseDto.ts
 models/GetSignedUrlResponseDto.ts
 models/GetSubscriptionsResponseDto.ts
 models/GetUserResponseDto.ts
+models/GetUserSpendingRequestDto.ts
+models/GetUserSpendingResponseDto.ts
 models/GetVaultQueryRequestDto.ts
 models/GetVaultQueryResponseDto.ts
 models/GetWalletResponseDto.ts

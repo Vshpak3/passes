@@ -35,7 +35,6 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
-  const [additionalTips, setAdditionalTips] = useState<number>(0)
 
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.1
@@ -51,7 +50,6 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   )
 
   useEffect(() => {
-    setAdditionalTips(0)
     if (selectedChannel?.channelId) {
       const fetch = async () => {
         if (otherUserIsCreator) {
@@ -74,7 +72,6 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
       {selectedChannel && (
         <>
           <ChannelHeader
-            additionalTips={additionalTips}
             gallery={gallery}
             isCreator={isCreator}
             onBack={onBack}
@@ -97,7 +94,6 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
                 freeMessages={freeMessages}
                 isBottomOfChatVisible={isBottomOfChatVisible}
                 minimumTip={minimumTip}
-                setAdditionalTips={setAdditionalTips}
               />
               {selectedChannel.channelId && (
                 <InputMessage

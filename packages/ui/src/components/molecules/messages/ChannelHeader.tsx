@@ -7,6 +7,8 @@ import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDi
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 import { formatCurrency } from "src/helpers/formatters"
+import { useUser } from "src/hooks/useUser"
+import { useUserSpending } from "src/hooks/useUserSpending"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface ChannelHeaderProps {
@@ -17,7 +19,6 @@ interface ChannelHeaderProps {
   setPaid: Dispatch<SetStateAction<boolean | undefined>>
   isCreator: boolean
   onBack?(): void
-  additionalTips: number
 }
 
 export const ChannelHeader: FC<ChannelHeaderProps> = ({
@@ -27,14 +28,20 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
   setPaid,
   selectedChannel,
   isCreator,
-  onBack,
-  additionalTips
+  onBack
 }) => {
   const { isTablet } = useWindowSize()
   const galleryAvailable = false
+
+  const { user } = useUser()
+  const { amount } = useUserSpending(
+    user?.isCreator ?? false,
+    selectedChannel.userId
+  )
   if (isTablet === undefined) {
     return null
   }
+
   return (
     <div className="flex h-24 flex-col items-start backdrop-blur-[50px]">
       <div className="flex w-full flex-row items-center justify-between border-b border-[#fff]/10 px-5 py-4">
@@ -75,14 +82,10 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                     <div className="flex items-center justify-start gap-[10px]">
                       <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-1 px-3 text-sm font-normal text-[#ffff]">
-                          Total Tip
+                          Total Spent
                         </span>
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
-                          {selectedChannel.tipRecieved > 0
-                            ? formatCurrency(
-                                selectedChannel.tipRecieved + additionalTips
-                              )
-                            : "$0.00"}
+                          {formatCurrency(amount ?? 0)}
                         </span>
                       </div>
                     </div>

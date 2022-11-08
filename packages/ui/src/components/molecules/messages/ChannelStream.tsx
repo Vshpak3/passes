@@ -1,10 +1,8 @@
 import { MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
-  Dispatch,
   FC,
   MutableRefObject,
-  SetStateAction,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -26,7 +24,6 @@ interface ChannelStreamProps {
   channelId?: string
   freeMessages?: number | null
   minimumTip?: number | null
-  setAdditionalTips: Dispatch<SetStateAction<number>>
   bottomOfChatRef: MutableRefObject<HTMLDivElement | null>
   isBottomOfChatVisible: boolean
 }
@@ -37,7 +34,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   channelId,
   freeMessages,
   minimumTip,
-  setAdditionalTips,
   bottomOfChatRef,
   isBottomOfChatVisible
 }) => {
@@ -119,9 +115,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   (message) => message.messageId !== newMessage.messageId
                 )
               )
-              if (newMessage.senderId !== user?.userId) {
-                setAdditionalTips((tips) => tips + (newMessage.tipAmount ?? 0))
-              }
               break
             case "pending":
               setPendingMessages((pendingMessages) => [
@@ -162,7 +155,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         socket.off("message")
       }
     }
-  }, [channelId, socket, setMessageUpdates, setAdditionalTips, user?.userId])
+  }, [channelId, socket, setMessageUpdates, user?.userId])
 
   useEffect(() => {
     if (!channelId) {

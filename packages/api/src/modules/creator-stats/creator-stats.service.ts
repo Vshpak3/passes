@@ -322,4 +322,14 @@ export class CreatorStatsService {
           .count(),
       )
   }
+
+  async getUserSpending(userId: string, creatorId: string) {
+    const ret = await this.dbReader<UserSpendingEntity>(
+      UserSpendingEntity.table,
+    )
+      .where({ user_id: userId, creator_id: creatorId })
+      .select('*')
+      .first()
+    return { amount: ret?.amount ?? 0 }
+  }
 }

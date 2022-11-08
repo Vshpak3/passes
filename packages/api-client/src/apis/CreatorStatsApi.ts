@@ -19,6 +19,8 @@ import type {
   GetCreatorEarningsHistoryRequestDto,
   GetCreatorEarningsResponseDto,
   GetCreatorStatsResponseDto,
+  GetUserSpendingRequestDto,
+  GetUserSpendingResponseDto,
 } from '../models';
 import {
     GetCreatorEarningResponseDtoFromJSON,
@@ -29,6 +31,10 @@ import {
     GetCreatorEarningsResponseDtoToJSON,
     GetCreatorStatsResponseDtoFromJSON,
     GetCreatorStatsResponseDtoToJSON,
+    GetUserSpendingRequestDtoFromJSON,
+    GetUserSpendingRequestDtoToJSON,
+    GetUserSpendingResponseDtoFromJSON,
+    GetUserSpendingResponseDtoToJSON,
 } from '../models';
 
 export interface GetCreatorStatsRequest {
@@ -37,6 +43,10 @@ export interface GetCreatorStatsRequest {
 
 export interface GetEarningsHistoryRequest {
     getCreatorEarningsHistoryRequestDto: GetCreatorEarningsHistoryRequestDto;
+}
+
+export interface GetUserSpendingRequest {
+    getUserSpendingRequestDto: GetUserSpendingRequestDto;
 }
 
 /**
@@ -146,6 +156,44 @@ export class CreatorStatsApi extends runtime.BaseAPI {
      */
     async getEarningsHistory(requestParameters: GetEarningsHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningsResponseDto> {
         const response = await this.getEarningsHistoryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get user spending
+     */
+    async getUserSpendingRaw(requestParameters: GetUserSpendingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetUserSpendingResponseDto>> {
+        if (requestParameters.getUserSpendingRequestDto === null || requestParameters.getUserSpendingRequestDto === undefined) {
+            throw new runtime.RequiredError('getUserSpendingRequestDto','Required parameter requestParameters.getUserSpendingRequestDto was null or undefined when calling getUserSpending.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/creator-stats/user-spending`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetUserSpendingRequestDtoToJSON(requestParameters.getUserSpendingRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetUserSpendingResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get user spending
+     */
+    async getUserSpending(requestParameters: GetUserSpendingRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetUserSpendingResponseDto> {
+        const response = await this.getUserSpendingRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

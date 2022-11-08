@@ -19,6 +19,10 @@ import {
 } from './dto/get-creator-earnings.dto'
 import { GetCreatorEarningsHistoryRequestDto } from './dto/get-creator-earnings-history.dto'
 import { GetCreatorStatsResponseDto } from './dto/get-creator-stats.dto'
+import {
+  GetUserSpendingRequestDto,
+  GetUserSpendingResponseDto,
+} from './dto/get-user-spending.entity.dto'
 import { EarningCategoryEnum } from './enum/earning.category.enum'
 
 @ApiTags('creator-stats')
@@ -92,6 +96,24 @@ export class CreatorStatsController {
   ): Promise<GetCreatorStatsResponseDto> {
     return await this.creatorStatsService.getCreatorStats(
       creatorId,
+      req.user?.id,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get user spending',
+    responseStatus: HttpStatus.OK,
+    responseType: GetUserSpendingResponseDto,
+    responseDesc: 'User spending returned',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('user-spending')
+  async getUserSpending(
+    @Req() req: RequestWithUser,
+    @Body() getUserSpendingRequestDto: GetUserSpendingRequestDto,
+  ): Promise<GetUserSpendingResponseDto> {
+    return await this.creatorStatsService.getUserSpending(
+      getUserSpendingRequestDto.userId,
       req.user?.id,
     )
   }

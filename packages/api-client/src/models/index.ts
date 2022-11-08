@@ -122,6 +122,8 @@ export * from './GetScheduledEventsResponseDto';
 export * from './GetSignedUrlResponseDto';
 export * from './GetSubscriptionsResponseDto';
 export * from './GetUserResponseDto';
+export * from './GetUserSpendingRequestDto';
+export * from './GetUserSpendingResponseDto';
 export * from './GetVaultQueryRequestDto';
 export * from './GetVaultQueryResponseDto';
 export * from './GetWalletResponseDto';
