@@ -91,9 +91,9 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
         </span>
         {renderDefaultPayment()}
       </div>
-      <div className="absolute right-5 top-1">
+      <div className="absolute right-1.5 top-1 md:right-5">
         <Button
-          className="mt-5 rounded-md"
+          className="mt-5 rounded-md px-1.5 py-1 md:py-2 md:px-3"
           onClick={navigateToPaymentHistory}
           tag="button"
           variant="pink-outline"

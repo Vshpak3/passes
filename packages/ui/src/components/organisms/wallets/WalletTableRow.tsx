@@ -19,7 +19,7 @@ interface WalletListItemProps {
   deleteWalletHandler: (value: string) => void
 }
 
-export const WalletListItem: FC<WalletListItemProps> = ({
+export const WalletTableRow: FC<WalletListItemProps> = ({
   wallet,
   deleteWalletHandler
 }) => {
@@ -66,12 +66,9 @@ export const WalletListItem: FC<WalletListItemProps> = ({
   }
 
   return (
-    <div
-      className="flex w-[900px] items-center justify-between gap-0 border-t border-[#2C282D] py-4 md:w-full md:gap-[40px] md:pl-8"
-      key={wallet.walletId}
-    >
-      <div className="relative flex basis-1/4 items-center justify-center md:ml-6 md:justify-start">
-        <div className="absolute left-3 md:-left-8">
+    <tr className="border-t border-[#2C282D]" key={wallet.walletId}>
+      <td className="min-w-[40px]">
+        <div className="flex items-center justify-center px-2">
           {!!wallet.custodial && (
             <IconTooltip
               Icon={InfoIcon}
@@ -79,8 +76,6 @@ export const WalletListItem: FC<WalletListItemProps> = ({
               tooltipText={CUSTODIAL_TOOLTIP_TEXT}
             />
           )}
-        </div>
-        <div className="absolute left-3 md:-left-7">
           {!wallet.authenticated && (
             <IconTooltip
               Icon={TooltipStar}
@@ -89,71 +84,83 @@ export const WalletListItem: FC<WalletListItemProps> = ({
             />
           )}
         </div>
-        <div className="flex items-center justify-center">
-          <div>{walletTypeIcon(wallet.chain, wallet.authenticated)}</div>
+      </td>
+      <td className="min-w-[160px] py-3">
+        <div className="flex items-center justify-center md:justify-start">
+          <div className="shrink-0">
+            {walletTypeIcon(wallet.chain, wallet.authenticated)}
+          </div>
           <span className="ml-[12px] hidden font-bold md:visible md:block">
             {walletTypeName(wallet.chain, wallet.authenticated)}
           </span>
         </div>
-      </div>
-      <span
-        className="group flex basis-1/4 cursor-pointer flex-row justify-center text-[#B8B8B8]"
-        onClick={() => copyWalletToClipboard(wallet.address)}
-      >
-        {formatWalletAddress(wallet.address, {
-          amountFirst: 6,
-          amountLast: 7
-        })}
-        <Clipboard
-          className="invisible ml-2 group-hover:visible md:block"
-          width="12px"
-        />
-      </span>
-      <div className="flex basis-1/4 justify-center">
-        {!!wallet.authenticated && (
-          <>
-            {defaultEthMinting && (
-              <Button className="cursor-default" variant="black">
-                ETH NFT Minting
-              </Button>
-            )}
-            {defaultSolMinting && (
-              <Button className="cursor-default" variant="black">
-                SOL NFT Minting
-              </Button>
-            )}
-            {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
-              <Button
-                onClick={async () =>
-                  await setDefaultWallet(wallet.walletId, wallet.chain)
-                }
-                tag="button"
-                variant="purple-light"
-              >
-                Set {wallet.chain.toUpperCase()} default
-              </Button>
-            )}
-            {!defaultEthMinting &&
-              !defaultSolMinting &&
-              !wallet.authenticated && <div>Unauthenticated</div>}
-          </>
-        )}
-      </div>
-      <div className="flex basis-1/4 justify-center">
-        <Button
-          className="h-[36px] w-[36px] text-passes-primary-color"
-          disabled={wallet.custodial}
-          onClick={onDeleteHandler}
-          tag="button"
-          variant="pink-outline"
+      </td>
+      <td className="min-w-[160px] py-3">
+        <div
+          className="group flex cursor-pointer justify-center text-[#B8B8B8]"
+          onClick={() => copyWalletToClipboard(wallet.address)}
         >
-          {wallet.custodial ? (
-            <LockOutlineIcon className="absolute z-10 -translate-x-1/2" />
-          ) : (
-            <DeleteOutlineIcon className="absolute z-10 -translate-x-1/2" />
+          {formatWalletAddress(wallet.address, {
+            amountFirst: 6,
+            amountLast: 7
+          })}
+          <Clipboard
+            className="invisible ml-2 group-hover:visible md:block"
+            width="12px"
+          />
+        </div>
+      </td>
+      <td className="min-w-[160px] py-3">
+        <div className="flex justify-center">
+          {!!wallet.authenticated && (
+            <>
+              {defaultEthMinting && (
+                <Button className="cursor-default" variant="black">
+                  ETH NFT Minting
+                </Button>
+              )}
+              {defaultSolMinting && (
+                <Button className="cursor-default" variant="black">
+                  SOL NFT Minting
+                </Button>
+              )}
+              {!defaultEthMinting &&
+                !defaultSolMinting &&
+                wallet.authenticated && (
+                  <Button
+                    onClick={async () =>
+                      await setDefaultWallet(wallet.walletId, wallet.chain)
+                    }
+                    tag="button"
+                    variant="purple-light"
+                  >
+                    Set {wallet.chain.toUpperCase()} default
+                  </Button>
+                )}
+              {!defaultEthMinting &&
+                !defaultSolMinting &&
+                !wallet.authenticated && <div>Unauthenticated</div>}
+            </>
           )}
-        </Button>
-      </div>
-    </div>
+        </div>
+      </td>
+      <td className="min-w-[160px] py-3">
+        <div className="flex justify-center">
+          <Button
+            className="h-[36px] w-[36px] text-passes-primary-color"
+            disabled={wallet.custodial}
+            onClick={onDeleteHandler}
+            tag="button"
+            variant="pink-outline"
+          >
+            {wallet.custodial ? (
+              <LockOutlineIcon className="absolute z-10 -translate-x-1/2" />
+            ) : (
+              <DeleteOutlineIcon className="absolute z-10 -translate-x-1/2" />
+            )}
+          </Button>
+        </div>
+      </td>
+    </tr>
   )
 }

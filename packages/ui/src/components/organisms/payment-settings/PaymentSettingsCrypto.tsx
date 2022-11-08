@@ -55,16 +55,16 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
       <h3 className="mb-3 text-[18px] font-bold text-white">
         Add Crypto Wallet as a Payment Method
       </h3>
-      <div className="flex">
-        <div className="flex basis-1/4 items-center">
-          <MetamaskIcon width="40px" />
+      <div className="flex w-full flex-wrap md:flex-nowrap">
+        <div className="mt-2 flex min-w-[140px] basis-full items-center md:mt-0 md:basis-1/4">
+          <MetamaskIcon className="shrink-0" width="40px" />
           <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
             Metamask
           </span>
         </div>
-        <div className="basis-1/4">
+        <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
           <Select
-            className="my-4 w-[145px] bg-[#18090E] "
+            className="my-4 bg-[#18090E] md:w-[145px]"
             defaultValue={MetaMaskSelectOptions[0]}
             name="metamask"
             onChange={(newValue: string) => setValue("metamask", newValue)}
@@ -72,7 +72,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             selectOptions={MetaMaskSelectOptions}
           />
         </div>
-        <div className="ml-auto flex items-center">
+        <div className="ml-auto mt-2 flex basis-full items-center md:mt-0  md:basis-auto">
           {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
             <Button tag="button" variant="gray">
               <span className="text-[14px] font-[700]">
@@ -95,18 +95,18 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           )}
         </div>
       </div>
-      <div className="flex">
-        <div className="flex basis-1/4 items-center ">
-          <div className="flex flex-1 flex-row items-center">
-            <PhantomIcon width="40px" />
+      <div className="mt-6 flex w-full flex-wrap md:mt-0 md:flex-nowrap">
+        <div className="mt-2 flex min-w-[140px] basis-full items-center md:mt-0 md:basis-1/4">
+          <div className="flex flex-row items-center">
+            <PhantomIcon className="shrink-0" width="40px" />
             <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
               Phantom
             </span>
           </div>
         </div>
-        <div className="basis-1/4">
+        <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
           <Select
-            className="my-4 w-[145px] bg-[#18090E] "
+            className="my-4 bg-[#18090E] md:w-[145px]"
             defaultValue={PhantomSelectOptions[0]}
             name="phantom"
             onChange={(newValue: "sol") => setValue("phantom", newValue)}
@@ -114,7 +114,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             selectOptions={PhantomSelectOptions}
           />
         </div>
-        <div className="ml-auto flex items-center">
+        <div className="mt-2 ml-auto flex basis-full items-center md:mt-0 md:basis-auto">
           {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
             <Button tag="button" variant="gray">
               <span className="text-[14px] font-[700]">

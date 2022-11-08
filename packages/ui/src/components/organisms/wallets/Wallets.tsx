@@ -15,7 +15,7 @@ import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
-import { WalletListItem } from "./WalletListItem"
+import { WalletTableRow } from "./WalletTableRow"
 
 export const Wallets = () => {
   const { user } = useUser()
@@ -150,7 +150,7 @@ export const Wallets = () => {
           </div>
         </div>
       </Modal>
-      <div className="mt-4 flex w-full flex-col items-start justify-start md:flex-row">
+      <div className="mt-4 flex w-full flex-col items-start justify-start xl:flex-row">
         <div>
           <Button
             className="mt-1 rounded-md"
@@ -168,10 +168,10 @@ export const Wallets = () => {
         </div>
         {!!user?.isCreator && (
           <form
-            className="flex h-[36px] w-full flex-col items-stretch md:flex-row"
+            className="flex w-full flex-col items-stretch xl:flex-row"
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
           >
-            <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-3">
+            <span className="m-2 mt-3 block text-[16px] font-bold md:my-3 xl:mx-4">
               or
             </span>
             <div className="flex h-full w-full flex-row md:basis-1">
@@ -207,7 +207,7 @@ export const Wallets = () => {
                 />
               </div>
             </div>
-            <div className="mt-2 ml-2">
+            <div className="mt-2 xl:ml-2">
               <Button
                 className="rounded-md"
                 tag="button"
@@ -220,30 +220,29 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div>
-        <div className="overflow-x-scroll pb-6 md:overflow-x-auto">
-          <div className="mt-6 flex w-[900px] gap-0 pt-1 text-center text-[#ffffffeb] md:w-full md:gap-[40px] md:pl-8">
-            <span className="flex basis-1/4 justify-center">Wallet Type</span>
-            <span className="flex basis-1/4 justify-center">Address</span>
-            <span className="flex basis-1/4 justify-center">Default For</span>
-            <span className="flex basis-1/4 justify-center">Delete</span>
-          </div>
-          {loading || !wallets ? (
-            <span className="mt-4">Loading...</span>
-          ) : (
-            <div className="mt-1 w-full place-items-center justify-center text-center text-[#ffffffeb]">
-              {wallets.map((wallet) => {
-                return (
-                  <WalletListItem
-                    deleteWalletHandler={setWalletIdDelete}
-                    key={wallet.walletId}
-                    wallet={wallet}
-                  />
-                )
-              })}
-            </div>
-          )}
-        </div>
+      <div className="mt-8 overflow-x-scroll">
+        <table className="min-w-full  pb-6 md:overflow-x-auto">
+          <thead>
+            <th />
+            <th className="min-w-[150px] pb-3">Wallet Type</th>
+            <th className="min-w-[150px] pb-3">Address</th>
+            <th className="min-w-[150px] pb-3">Default For</th>
+            <th className="min-w-[150px] pb-3">Delete</th>
+          </thead>
+          <tbody>
+            {loading || !wallets ? (
+              <span className="mt-4">Loading...</span>
+            ) : (
+              wallets.map((wallet) => (
+                <WalletTableRow
+                  deleteWalletHandler={setWalletIdDelete}
+                  key={wallet.walletId}
+                  wallet={wallet}
+                />
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
       {!!walletIdDelete && (
         <DeleteConfirmationModal
