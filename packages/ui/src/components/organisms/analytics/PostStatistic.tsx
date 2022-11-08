@@ -36,7 +36,9 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <Link href={`/${post.userId}/${post.postId}`}>
             <span className="text-[14px] font-[700]">
-              {post.createdAt.toLocaleString()}
+              {post.createdAt.toLocaleDateString()}
+              <br />
+              {post.createdAt.toLocaleTimeString()}
             </span>
           </Link>
         </div>
