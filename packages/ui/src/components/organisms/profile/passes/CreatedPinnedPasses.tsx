@@ -15,7 +15,7 @@ export const CreatorPinnedPasses: FC<CreatorPinnedPassesProps> = ({
 
   return (
     <div className="flex flex-col px-4">
-      <div className="pl-[52px]">
+      <div className="pl-2">
         <SectionTitle>Featured</SectionTitle>
       </div>
       <div className=" w-full items-center px-4">
