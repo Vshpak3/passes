@@ -57,7 +57,7 @@ export const HomeContentFeed: FC = () => {
 
   //sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600
   return (
-    <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
+    <div className="mt-10 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 lg:col-span-4">
         <SectionTitle className="ml-4">Home</SectionTitle>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>

@@ -52,7 +52,6 @@ const MessagesV2: FC<MessagesV2Props> = ({
 
   useEffect(() => {
     setShowBottomNav(!openChannelView)
-    setShowTopNav(false)
   }, [
     openChannelView,
     showBottomNav,
@@ -60,10 +59,6 @@ const MessagesV2: FC<MessagesV2Props> = ({
     setShowTopNav,
     showTopNav
   ])
-
-  useEffect(() => {
-    setShowTopNav(false)
-  }, [setShowTopNav, showTopNav])
 
   useEffect(() => {
     if (selectedChannel) {

@@ -164,7 +164,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     return null
   }
   return (
-    <div className="flex h-full min-h-screen w-full max-w-[1235px]">
+    <div className="flex h-full min-h-screen w-full max-w-[1235px] pt-20 md:pt-0">
       <div
         className={cn(
           "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",

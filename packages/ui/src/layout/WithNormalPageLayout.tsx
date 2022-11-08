@@ -34,16 +34,16 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           options.background ? "background-gradient" : "bg-passes-black",
-          "relative min-h-screen w-full"
+          "relative w-full "
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
-          <div className="relative grid min-h-screen w-full grid-cols-10">
+          <div className="relative w-full grid-cols-10 md:grid ">
             {options.sidebar && <Sidebar />}
             <main
               className={classNames(
                 options.sidebar ? "lg:col-span-7" : "lg:col-span-12",
-                "col-span-12 flex w-full flex-col"
+                "col-span-12 flex w-full flex-col "
               )}
             >
               {options.header && (
