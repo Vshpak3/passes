@@ -100,6 +100,8 @@ type SubAppProps = {
   getLayout: GetLayout
 }
 
+const navPaths = ["/messages"]
+
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
@@ -111,6 +113,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [reportData, setReportData] = useState<ReportModalData | null>(null)
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const [showBottomNav, setShowBottomNav] = useState<boolean>(true)
+  const [showTopNav, setShowTopNav] = useState<boolean>(true)
 
   const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
     null
@@ -137,8 +140,11 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   }, [router])
 
   useEffect(() => {
-    setShowBottomNav(true)
-  }, [router, router.route])
+    if (!navPaths.filter((path) => path === router.route).length) {
+      setShowBottomNav(true)
+      setShowTopNav(true)
+    }
+  }, [router.route])
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Array<[Provider<any>, Record<string, any>]> = [
@@ -160,7 +166,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
     [TipPostModalContext.Provider, { setPost: setTipPost }],
     [ThreeDSContext.Provider, { setPayin }],
-    [SidebarContext.Provider, { setShowBottomNav, showBottomNav }]
+    [
+      SidebarContext.Provider,
+      { setShowBottomNav, showBottomNav, showTopNav, setShowTopNav }
+    ]
   ]
 
   return (

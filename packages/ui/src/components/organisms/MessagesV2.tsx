@@ -47,11 +47,24 @@ const MessagesV2: FC<MessagesV2Props> = ({
     setOpenChannelView(true)
   }
 
-  const { showBottomNav, setShowBottomNav } = useSidebarContext()
+  const { showBottomNav, setShowBottomNav, setShowTopNav, showTopNav } =
+    useSidebarContext()
 
   useEffect(() => {
     setShowBottomNav(!openChannelView)
-  }, [openChannelView, showBottomNav, setShowBottomNav])
+    setShowTopNav(false)
+  }, [
+    openChannelView,
+    showBottomNav,
+    setShowBottomNav,
+    setShowTopNav,
+    showTopNav
+  ])
+
+  useEffect(() => {
+    // console.log(showTopNav)
+    setShowTopNav(false)
+  }, [setShowTopNav, showTopNav])
 
   useEffect(() => {
     if (selectedChannel) {
@@ -88,7 +101,7 @@ const MessagesV2: FC<MessagesV2Props> = ({
   }, [defaultUserId])
 
   return (
-    <div className="grid h-[calc(100vh-60px)] grid-cols-9 flex-row border border-r-0 border-[#fff]/10">
+    <div className="grid h-full grid-cols-9 flex-row border border-r-0 border-[#fff]/10 lg:h-[calc(100vh-60px)]">
       {massMessage ? (
         <>
           <ChannelMassDM
