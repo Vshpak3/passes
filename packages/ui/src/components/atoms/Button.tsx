@@ -22,7 +22,7 @@ interface ButtonProps {
   href?: string
   onClick?: () => void
   tag?: keyof JSX.IntrinsicElements
-  variant?: string | "tab"
+  variant?: string
   active?: boolean
   type?: ButtonTypeEnum
   disabledClass?: string
@@ -114,6 +114,10 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     case "gray":
       variantClassName =
         "text-white dark:text-white bg-white/[0.15] py-1.5 px-6 rounded-[56px]"
+      break
+    case "black":
+      variantClassName =
+        "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-bold"
       break
     default:
       variantClassName = ""

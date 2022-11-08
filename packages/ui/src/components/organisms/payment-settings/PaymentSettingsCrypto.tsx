@@ -52,15 +52,17 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
 
   return (
     <div className="flex flex-col">
-      <span className="mb-3 text-[18px] font-bold text-white">
-        Use Crypto as a Payment Method
-      </span>
-      <div className="flex items-center justify-start">
-        <div className="flex flex-1 flex-row items-center justify-start">
+      <h3 className="mb-3 text-[18px] font-bold text-white">
+        Add Crypto Wallet as a Payment Method
+      </h3>
+      <div className="flex">
+        <div className="flex basis-1/4 items-center">
           <MetamaskIcon width="40px" />
           <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
             Metamask
           </span>
+        </div>
+        <div className="basis-1/4">
           <Select
             className="my-4 w-[145px]"
             defaultValue={MetaMaskSelectOptions[0]}
@@ -70,33 +72,39 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             selectOptions={MetaMaskSelectOptions}
           />
         </div>
-        {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
-          <Button tag="button" variant="gray">
-            <span className="text-[14px] font-[700]">
-              {isEmbedded ? "Selected" : "Default"}
-            </span>
-          </Button>
-        ) : (
-          <Button
-            className="w-auto px-1 py-2 md:px-4"
-            onClick={async () =>
-              await handleSetDefaultPayinMethod(
-                deserializePayinMethod(getValues("metamask"))
-              )
-            }
-            tag="button"
-            variant="purple-light"
-          >
-            <span className="font-[700]">{buttonName(isEmbedded)}</span>
-          </Button>
-        )}
+        <div className="ml-auto flex items-center">
+          {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
+            <Button tag="button" variant="gray">
+              <span className="text-[14px] font-[700]">
+                {isEmbedded ? "Selected" : "Default"}
+              </span>
+            </Button>
+          ) : (
+            <Button
+              className="w-auto px-1 py-2 md:px-4"
+              onClick={async () =>
+                await handleSetDefaultPayinMethod(
+                  deserializePayinMethod(getValues("metamask"))
+                )
+              }
+              tag="button"
+              variant="pink"
+            >
+              <span className="font-[700]">{buttonName(isEmbedded)}</span>
+            </Button>
+          )}
+        </div>
       </div>
-      <div className="flex items-center justify-start">
-        <div className="flex flex-1 flex-row items-center">
-          <PhantomIcon width="40px" />
-          <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
-            Phantom
-          </span>
+      <div className="flex">
+        <div className="flex basis-1/4 items-center ">
+          <div className="flex flex-1 flex-row items-center">
+            <PhantomIcon width="40px" />
+            <span className="mx-2 basis-1/4 text-[16px] font-bold text-white md:mx-4">
+              Phantom
+            </span>
+          </div>
+        </div>
+        <div className="basis-1/4">
           <Select
             className="my-4 w-[145px]"
             defaultValue={PhantomSelectOptions[0]}
@@ -106,26 +114,28 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             selectOptions={PhantomSelectOptions}
           />
         </div>
-        {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
-          <Button tag="button" variant="gray">
-            <span className="text-[14px] font-[700]">
-              {isEmbedded ? "Selected" : "Default"}
-            </span>
-          </Button>
-        ) : (
-          <Button
-            className="w-auto px-1 py-2 md:px-4"
-            onClick={async () =>
-              await handleSetDefaultPayinMethod(
-                deserializePayinMethod(getValues("phantom"))
-              )
-            }
-            tag="button"
-            variant="purple-light"
-          >
-            <span className="font-[700]">{buttonName(isEmbedded)}</span>
-          </Button>
-        )}
+        <div className="ml-auto flex items-center">
+          {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
+            <Button tag="button" variant="gray">
+              <span className="text-[14px] font-[700]">
+                {isEmbedded ? "Selected" : "Default"}
+              </span>
+            </Button>
+          ) : (
+            <Button
+              className="w-auto px-1 py-2 md:px-4"
+              onClick={async () =>
+                await handleSetDefaultPayinMethod(
+                  deserializePayinMethod(getValues("phantom"))
+                )
+              }
+              tag="button"
+              variant="pink"
+            >
+              <span className="font-[700]">{buttonName(isEmbedded)}</span>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -3,7 +3,6 @@ import "react-date-range/dist/theme/default.css"
 import { PayinMethodDto } from "@passes/api-client"
 import { FC, memo, useState } from "react"
 
-import { Button } from "src/components/atoms/Button"
 import { Modal } from "src/components/organisms/Modal"
 import { PaymentSettingsCreditCard } from "src/components/organisms/payment-settings/PaymentSettingsCreditCard"
 import { PaymentSettingsCrypto } from "src/components/organisms/payment-settings/PaymentSettingsCrypto"
@@ -48,21 +47,17 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({ isEmbedded = false }) => {
           withBackMobile
         />
       )}
-      {!isEmbedded && (
-        <Button
-          className="mt-5"
-          onClick={() => addOrPopStackHandler(SubTabsEnum.PaymentHistory)}
-          tag="button"
-          variant="pink"
-        >
-          View Payment History
-        </Button>
-      )}
-      <PaymentSettingsDefault isEmbedded={isEmbedded} />
+      <PaymentSettingsDefault
+        isEmbedded={isEmbedded}
+        navigateToPaymentHistory={() =>
+          addOrPopStackHandler(SubTabsEnum.PaymentHistory)
+        }
+      />
       <PaymentSettingsCrypto
         handleSetDefaultPayinMethod={handleSetDefaultPayInMethod}
         isEmbedded={isEmbedded}
       />
+      <h3 className="mt-5 mb-3 text-[16px] font-bold text-white">or</h3>
       <PaymentSettingsCreditCard
         addOrPopStackHandler={addOrPopStackHandler}
         handleSetDefaultPayInMethod={handleSetDefaultPayInMethod}

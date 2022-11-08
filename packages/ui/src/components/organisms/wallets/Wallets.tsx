@@ -153,7 +153,7 @@ export const Wallets = () => {
       <div className="mt-4 flex w-full flex-col items-start justify-start md:flex-row">
         <div>
           <Button
-            className="mt-1"
+            className="mt-1 rounded-md"
             onClick={() => setIsModalOpen(true)}
             tag="button"
             variant="pink"
@@ -168,16 +168,16 @@ export const Wallets = () => {
         </div>
         {!!user?.isCreator && (
           <form
-            className="flex w-full flex-col items-start md:flex-row"
+            className="flex h-[36px] w-full flex-col items-stretch md:flex-row"
             onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
           >
             <span className="mx-4 my-2 mt-3 block text-[16px] font-bold md:my-3">
               or
             </span>
-            <div className="flex w-full flex-row md:basis-1">
+            <div className="flex h-full w-full flex-row md:basis-1">
               <div className="mr-2 basis-4/5 md:basis-1">
                 <Input
-                  className="mr-3 pl-[45px] md:w-[250px]"
+                  className="border-[#3A444C]/30 pl-[45px] md:w-[250px]"
                   errors={errors}
                   icon={<Wallet />}
                   name="address"
@@ -207,8 +207,13 @@ export const Wallets = () => {
                 />
               </div>
             </div>
-            <div className="mt-2">
-              <Button tag="button" type={ButtonTypeEnum.SUBMIT} variant="pink">
+            <div className="mt-2 ml-2">
+              <Button
+                className="rounded-md"
+                tag="button"
+                type={ButtonTypeEnum.SUBMIT}
+                variant="pink"
+              >
                 Confirm
               </Button>
             </div>

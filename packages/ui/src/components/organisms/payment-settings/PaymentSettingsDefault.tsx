@@ -6,16 +6,19 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
 
+import { Button } from "src/components/atoms/Button"
 import { PayinMethodDisplayNames } from "src/helpers/payment/payin-serialize"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
 
 interface PaymentSettingsDefaultProps {
   isEmbedded: boolean
+  navigateToPaymentHistory(): void
 }
 
 export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
-  isEmbedded
+  isEmbedded,
+  navigateToPaymentHistory
 }) => {
   const { defaultPayinMethod, defaultCard } = usePayinMethod(true)
 
@@ -74,7 +77,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
   }
 
   return (
-    <div className="my-8 flex flex-col gap-6 xl:flex-row">
+    <div className="relative my-8 flex flex-col gap-6 xl:flex-row">
       <div
         className={classNames(
           hasDefaultPaymentMethod
@@ -87,6 +90,16 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
           {isEmbedded ? "Select" : "Default"} Payment Method:
         </span>
         {renderDefaultPayment()}
+      </div>
+      <div className="absolute right-5 top-1">
+        <Button
+          className="mt-5 rounded-md"
+          onClick={navigateToPaymentHistory}
+          tag="button"
+          variant="pink-outline"
+        >
+          Payment Transaction History
+        </Button>
       </div>
     </div>
   )

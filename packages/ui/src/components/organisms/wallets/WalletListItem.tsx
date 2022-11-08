@@ -1,9 +1,11 @@
 import { WalletDto, WalletDtoChainEnum } from "@passes/api-client"
 import Clipboard from "public/icons/clipboard.svg"
-import DefaultIcon from "public/icons/defaultWalletTypeIcon.svg"
+import ColdWalletIcon from "public/icons/cold-wallet-icon.svg"
+import DeleteOutlineIcon from "public/icons/delete-outline-pink-icon.svg"
 import InfoIcon from "public/icons/infoIcon.svg"
-import Metamask from "public/icons/metamask-icon.svg"
-import Phantom from "public/icons/phantom-icon.svg"
+import LockOutlineIcon from "public/icons/lock-outline-pink-icon.svg"
+import MetamaskIcon from "public/icons/metamask-icon.svg"
+import PhantomIcon from "public/icons/phantom-icon.svg"
 import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import { FC } from "react"
 
@@ -36,12 +38,12 @@ export const WalletListItem: FC<WalletListItemProps> = ({
     if (isAuthWallet) {
       switch (value) {
         case WalletDtoChainEnum.Eth:
-          return <Metamask width="40px" />
+          return <MetamaskIcon height="36px" width="36px" />
         case WalletDtoChainEnum.Sol:
-          return <Phantom width="40px" />
+          return <PhantomIcon height="36px" width="36px" />
       }
     }
-    return <DefaultIcon />
+    return <ColdWalletIcon height="36px" width="36px" />
   }
 
   const walletTypeName = (value: WalletDtoChainEnum, isAuthWallet: boolean) => {
@@ -65,7 +67,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
 
   return (
     <div
-      className="flex w-[600px] items-center justify-between gap-0 border-t border-[#2C282D] py-3 md:w-full md:gap-[40px] md:pl-8"
+      className="flex w-[600px] items-center justify-between gap-0 border-t border-[#2C282D] py-4 md:w-full md:gap-[40px] md:pl-8"
       key={wallet.walletId}
     >
       <div className="relative flex basis-1/4 items-center justify-center md:ml-6 md:justify-start">
@@ -78,7 +80,7 @@ export const WalletListItem: FC<WalletListItemProps> = ({
             />
           )}
         </div>
-        <div className="absolute left-3 md:-left-8">
+        <div className="absolute left-3 md:-left-7">
           {!wallet.authenticated && (
             <IconTooltip
               Icon={TooltipStar}
@@ -94,8 +96,8 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           </span>
         </div>
       </div>
-      <div
-        className="group flex basis-1/4 cursor-pointer flex-row justify-center"
+      <span
+        className="group flex basis-1/4 cursor-pointer flex-row justify-center text-[#B8B8B8]"
         onClick={() => copyWalletToClipboard(wallet.address)}
       >
         {formatWalletAddress(wallet.address, {
@@ -106,43 +108,50 @@ export const WalletListItem: FC<WalletListItemProps> = ({
           className="invisible ml-2 group-hover:visible md:block"
           width="12px"
         />
+      </span>
+      <div className="flex basis-1/4 justify-center">
+        {!!wallet.authenticated && (
+          <>
+            {defaultEthMinting && (
+              <Button className="cursor-default" variant="black">
+                ETH NFT Minting
+              </Button>
+            )}
+            {defaultSolMinting && (
+              <Button className="cursor-default" variant="black">
+                SOL NFT Minting
+              </Button>
+            )}
+            {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
+              <Button
+                onClick={async () =>
+                  await setDefaultWallet(wallet.walletId, wallet.chain)
+                }
+                tag="button"
+                variant="purple-light"
+              >
+                Set {wallet.chain.toUpperCase()} default
+              </Button>
+            )}
+            {!defaultEthMinting &&
+              !defaultSolMinting &&
+              !wallet.authenticated && <div>Unauthenticated</div>}
+          </>
+        )}
       </div>
-      {!!wallet.authenticated && (
-        <div className="flex basis-1/4 justify-center">
-          {defaultEthMinting && (
-            <Button className="cursor-default" variant="gray">
-              ETH NFT Minting
-            </Button>
-          )}
-          {defaultSolMinting && (
-            <Button className="cursor-default" variant="gray">
-              SOL NFT Minting
-            </Button>
-          )}
-          {!defaultEthMinting && !defaultSolMinting && wallet.authenticated && (
-            <Button
-              onClick={async () =>
-                await setDefaultWallet(wallet.walletId, wallet.chain)
-              }
-              tag="button"
-              variant="purple-light"
-            >
-              Set {wallet.chain.toUpperCase()} default
-            </Button>
-          )}
-          {!defaultEthMinting &&
-            !defaultSolMinting &&
-            !wallet.authenticated && <div>Unauthenticated</div>}
-        </div>
-      )}
       <div className="flex basis-1/4 justify-center">
         <Button
+          className="h-[36px] w-[36px] text-passes-primary-color"
           disabled={wallet.custodial}
           onClick={onDeleteHandler}
           tag="button"
-          variant="link-purple"
+          variant="pink-outline"
         >
-          Delete
+          {wallet.custodial ? (
+            <LockOutlineIcon className="absolute z-10 -translate-x-1/2" />
+          ) : (
+            <DeleteOutlineIcon className="absolute z-10 -translate-x-1/2" />
+          )}
         </Button>
       </div>
     </div>
