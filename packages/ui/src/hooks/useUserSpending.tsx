@@ -13,7 +13,7 @@ export const useUserSpending = (isCreator: boolean, userId?: string) => {
         })
       ).amount
     },
-    { refreshInterval: 1000 }
+    { refreshInterval: 1000, revalidateOnMount: true }
   )
 
   return {

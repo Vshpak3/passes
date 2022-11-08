@@ -1,5 +1,6 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @next/next/no-html-link-for-pages */
+import Link from "next/link"
 import React, { useState } from "react"
 
 export const Navbar = () => {
@@ -47,22 +48,26 @@ export const Navbar = () => {
                   Features
                 </a>
               </li>
-              <li>
-                <a
-                  className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
-                  href="/login"
-                >
-                  Sign In
-                </a>
-              </li>
-              <li>
-                <a
-                  className="block rounded-lg bg-white px-4 py-2 text-black"
-                  href="/signup"
-                >
-                  Sign Up
-                </a>
-              </li>
+              <Link href="/login">
+                <li>
+                  <a
+                    className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
+                    href="/login"
+                  >
+                    Sign In
+                  </a>
+                </li>
+              </Link>
+              <Link href="/signup">
+                <li>
+                  <a
+                    className="block rounded-lg bg-white px-4 py-2 text-black"
+                    href="/signup"
+                  >
+                    Sign Up
+                  </a>
+                </li>
+              </Link>
             </ul>
           </div>
         </div>
@@ -75,16 +80,16 @@ export const Navbar = () => {
                 Features
               </a>
             </li>
-            <li>
-              <a className="text-white" href="/login">
-                Sign In
-              </a>
-            </li>
-            <li className="rounded-lg bg-white p-4 text-center">
-              <a className="mx-auto w-full text-black" href="/signup">
-                Sign Up
-              </a>
-            </li>
+            <Link href="/login">
+              <li>
+                <a className="text-white">Sign In</a>
+              </li>
+            </Link>
+            <Link href="/signup">
+              <li className="rounded-lg bg-white p-4 text-center">
+                <a className="mx-auto w-full text-black">Sign Up</a>
+              </li>
+            </Link>
           </ul>
         </div>
       )}
