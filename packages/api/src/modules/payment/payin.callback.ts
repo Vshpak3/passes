@@ -306,10 +306,10 @@ async function tipPostSuccessfulCallback(
     throw new InternalServerErrorException('no post found')
   }
 
-  // await payService.messagesService.sendAutomaticMessage(
-  //   input.userId,
-  //   post.user_id,
-  //   'You tipped ',
-  // )
+  await payService.messagesService.sendAutomaticMessage(
+    input.userId,
+    post.user_id,
+    `You tipped $${input.amount.toFixed()} on a post`,
+  )
   return { postId: input.postId, amount: input.amount }
 }

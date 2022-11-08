@@ -749,13 +749,28 @@ export class MessagesService {
     return BlockedReasonEnum.INSUFFICIENT_TIP
   }
 
-  // async sendAutomaticMessage(
-  //   senderId: string,
-  //   receiverId: string,
-  //   message: string,
-  // ) {
-
-  // }
+  async sendAutomaticMessage(
+    senderId: string,
+    receiverId: string,
+    message: string,
+  ) {
+    const channel = await this.createChannel(senderId, {
+      userId: receiverId,
+    })
+    await this.createMessage(
+      senderId,
+      message,
+      channel.channelId,
+      receiverId,
+      0,
+      false,
+      '[]',
+      0,
+      0,
+      undefined,
+      true,
+    )
+  }
 
   async createMessage(
     userId: string,
@@ -768,6 +783,7 @@ export class MessagesService {
     previewIndex: number,
     price?: number,
     paidMessageId?: string,
+    automatic?: boolean,
   ): Promise<string> {
     // eslint-disable-next-line no-magic-numbers
     const hasContent = contents.length > 8
@@ -786,6 +802,7 @@ export class MessagesService {
       has_content: hasContent,
       content_processed: !hasContent,
       sent_at: new Date(),
+      automatic,
     } as MessageEntity
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
