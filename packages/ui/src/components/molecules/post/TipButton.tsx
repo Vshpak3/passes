@@ -17,7 +17,8 @@ export const TipButton: FC<TipButtonProps> = ({ post }) => {
       className="m-auto flex flex-row rounded-[5px] bg-[#B52A6F]/[0.25] py-[3px] px-[9px]"
       onClick={() => setPost(post)}
     >
-      <DollarIcon /> <span className="pt-[2px] text-center">Send Tip</span>
+      <DollarIcon />{" "}
+      <span className="pt-[2px] text-center hover:text-white">Send Tip</span>
     </button>
   )
 }

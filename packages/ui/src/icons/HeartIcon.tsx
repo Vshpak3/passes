@@ -2,7 +2,7 @@ import React, { FC } from "react"
 
 type HeartIconProps = {
   fill: string
-  strokeColor: string
+  strokeColor?: string
 }
 
 export const HeartIcon: FC<HeartIconProps> = ({ fill, strokeColor }) => {
@@ -14,7 +14,7 @@ export const HeartIcon: FC<HeartIconProps> = ({ fill, strokeColor }) => {
         stroke={strokeColor}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="2"
+        strokeWidth="1"
       />
     </svg>
   )

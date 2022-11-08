@@ -46,20 +46,20 @@ export const LikeButton: FC<LikeButtonProps> = ({
   return (
     <button
       aria-label="Toggle like"
-      className="flex cursor-pointer items-center gap-[5px] p-0"
+      className={classNames(
+        "flex cursor-pointer items-center gap-[5px] p-0",
+        isLiked
+          ? " stroke-[#F4245E] text-[#F4245E]"
+          : "stroke-passes-gray-100 text-passes-gray-100 hover:stroke-white hover:text-white"
+      )}
       onClick={toggleLike}
       type="button"
     >
       <HeartIcon
         fill={isLiked ? "#F4245E" : "none"}
-        strokeColor={isLiked ? "#F4245E" : "#A09FA6"}
+        // strokeColor={isLiked ? "#F4245E" : "#A09FA6 "}
       />
-      <span
-        className={classNames(
-          "text-[12px] leading-[15px] text-passes-gray-100",
-          isLiked && "text-[#F4245E]"
-        )}
-      >
+      <span className={classNames("text-[12px] leading-[15px]")}>
         {formattedNumLikes}
       </span>
     </button>

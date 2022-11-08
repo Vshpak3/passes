@@ -50,19 +50,19 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
             aria-label="Toggle comments"
-            className="flex cursor-pointer items-center gap-[5px] p-0"
+            className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white "
             onClick={() => setShowCommentSection((prev) => !prev)}
             type="button"
           >
             <MessagesIcon />
-            <span className="text-[12px] leading-[15px] text-passes-gray-100">
+            <span className="text-[12px] leading-[15px]">
               {formattedNumComments}
             </span>
           </button>
           {contentProcessed && (
             <button
               aria-label="Copy link to post"
-              className="flex cursor-pointer items-center gap-[5px] p-0"
+              className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 hover:stroke-white"
               type="button"
             >
               <ShareIcon
