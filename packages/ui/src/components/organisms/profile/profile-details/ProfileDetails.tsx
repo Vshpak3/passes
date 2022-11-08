@@ -92,32 +92,34 @@ export const ProfileDetails: FC = () => {
                 userId={profileUserId}
               />
             </div>
-            <div className="flex w-full flex-row items-start pt-5">
-              {ownsProfile ? (
-                <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
-              ) : (
-                <>
-                  <FollowButton
-                    className="h-[36px] w-[98px]"
-                    creatorId={profileUserId}
-                  />
-
-                  {!!profile?.isCreator && (
-                    <Link className="h-[36px] w-[98px]" href={chatLink}>
-                      <Button className="h-full w-full" variant="pink-outline">
-                        <ChatIcon />
-                      </Button>
-                    </Link>
-                  )}
-                </>
-              )}
-            </div>
           </div>
           <div className="flex w-full flex-col px-5 pt-4">
             <ProfileInformation />
           </div>
         </div>
       </div>
+
+      <div className="absolute top-4 right-10 flex-row items-start pr-3 md:hidden">
+        {ownsProfile ? (
+          <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+        ) : (
+          <>
+            <FollowButton
+              className="h-[36px] w-[98px]"
+              creatorId={profileUserId}
+            />
+
+            {!!profile?.isCreator && (
+              <Link className="h-[36px] w-[98px]" href={chatLink}>
+                <Button className="h-[36px] w-[98px]" variant="pink-outline">
+                  <ChatIcon />
+                </Button>
+              </Link>
+            )}
+          </>
+        )}
+      </div>
+
       {!ownsProfile && (
         <div className="absolute top-4 right-5 items-center justify-between">
           <Dropdown

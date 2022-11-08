@@ -14,7 +14,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
   return (
     <>
       {showTopNav && (
-        <div className="fixed top-0 left-0 z-30 flex h-16 w-full flex-1 items-center justify-between backdrop-blur-lg">
+        <div className="fixed top-0 left-0 z-30 flex h-16 w-full flex-1 items-center justify-between pl-5 backdrop-blur-lg">
           <Disclosure>
             <Disclosure.Button>
               <span
