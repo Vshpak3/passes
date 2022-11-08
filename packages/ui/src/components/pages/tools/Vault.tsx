@@ -71,12 +71,12 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
     <div className="ml-4 w-full px-2 md:px-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VaultNavigation
+          addNewMedia={addNewMedia}
           deletedItems={deletedItems}
           embedded={!!passSelectedItems}
           order={order}
           selectedItems={selectedItems}
           setDeletedItems={setDeletedItems}
-          setFiles={setFiles}
           setOrder={setOrder}
           setSelectedItems={setItems}
           setVaultCategory={setVaultCategory}

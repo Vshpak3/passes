@@ -1,17 +1,16 @@
-import { ChangeEvent, Dispatch, FC, SetStateAction, useRef } from "react"
+import { ChangeEvent, FC, useRef } from "react"
 import { useForm } from "react-hook-form"
 import { MdAdd } from "react-icons/md"
 
 import { FileInput } from "src/components/atoms/input/FileInput"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
-import { ContentFile } from "src/hooks/useMedia"
 
 interface VaultAddItemProps {
-  onClick: Dispatch<SetStateAction<ContentFile[]>>
+  onClick: (newFiles: FileList | null) => void
 }
 
 interface InputChange {
-  files: File[] | FileList | null
+  files: FileList | null
 }
 
 export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
@@ -34,7 +33,7 @@ export const VaultAddButton: FC<VaultAddItemProps> = ({ onClick }) => {
         name="file"
         options={{
           onChange: <T extends InputChange>(e: ChangeEvent<T>) => {
-            e.target.files && onClick([{ file: e.target.files[0] }])
+            onClick(e.target.files)
           }
         }}
         register={register}

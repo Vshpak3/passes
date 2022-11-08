@@ -5,7 +5,7 @@ import {
 } from "@passes/api-client"
 import { useRouter } from "next/router"
 import ExitIcon from "public/icons/exit-icon.svg"
-import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
 import { toast } from "react-toastify"
 
@@ -19,7 +19,6 @@ import {
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 import { plural } from "src/helpers/plural"
-import { ContentFile } from "src/hooks/useMedia"
 
 type OrderType = "recent" | "oldest"
 
@@ -30,7 +29,7 @@ const sortOptions: SortOption<OrderType>[] = [
 
 interface VaultNavigationProps {
   selectedItems: ContentDto[]
-  setFiles: Dispatch<SetStateAction<ContentFile[]>>
+  addNewMedia: (newFilew: FileList | null) => void
   setSelectedItems: (items: ContentDto[]) => void
   setVaultType: (type: VaultType) => void
   setVaultCategory: (category: VaultCategory) => void
@@ -54,7 +53,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   order,
   deletedItems,
   setDeletedItems,
-  setFiles,
+  addNewMedia,
   embedded = false
 }) => {
   const router = useRouter()
@@ -153,7 +152,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
             </>
           )}
           <div className="mr-3">
-            <VaultAddButton onClick={setFiles} />
+            <VaultAddButton onClick={addNewMedia} />
           </div>
           <div>
             <SortDropdown
