@@ -1418,10 +1418,12 @@ export class MessagesService {
       .orderBy('sent_at', 'desc')
       .first()
 
-    await this.dbWriter<ChannelEntity>(ChannelEntity.table).update({
-      preview_text: message?.text ?? null,
-      recent: message?.sent_at ?? null,
-    })
+    await this.dbWriter<ChannelEntity>(ChannelEntity.table)
+      .update({
+        preview_text: message?.text ?? null,
+        recent: message?.sent_at ?? null,
+      })
+      .where({ id: channelId })
   }
 
   async checkRecentMessagesContentProcessed(checkProcessedUntil: number) {
