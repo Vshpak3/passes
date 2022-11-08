@@ -39,7 +39,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   onClick,
   variant,
   disabled,
-  type,
+  type = ButtonTypeEnum.BUTTON,
   disabledClass,
   ...restOfProps
 }) => {
