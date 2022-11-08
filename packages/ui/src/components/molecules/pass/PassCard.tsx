@@ -137,7 +137,13 @@ export const PassCard: FC<PassCardProps> = ({ pass, isPinnedPass = false }) => {
         </div>
         <div className="mt-2 flex w-full items-center justify-between text-sm font-medium leading-[16px]">
           <span className="block text-xs font-normal leading-[23px] text-white/70">
-            ({pass.remainingSupply ?? 0} out of{pass.totalSupply ?? 0} left)
+            {pass.totalSupply ? (
+              <p>
+                {pass.remainingSupply} out of {pass.totalSupply} left
+              </p>
+            ) : (
+              <p>Unlimted supply</p>
+            )}
           </span>
           <IconTooltip
             Icon={InfoIcon}
