@@ -87,7 +87,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               userId={commenterId}
               username={commenterUsername}
             />
-            <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start px-5 sm:px-10 md:px-10 lg:px-5">
               <div className="passes-break text-start text-base font-medium text-white/90">
                 {!isHidden || showHidden ? (
                   <FormattedText tags={tags} text={text} />
