@@ -44,6 +44,7 @@ export const useNotificationSettings = () => {
       updateNotificationSettingsRequestDto: updatedNotifications
     })
     mutateManual(updatedNotifications)
+    mutate()
   }
 
   return { notificationSettings, updateNotificationSettings }

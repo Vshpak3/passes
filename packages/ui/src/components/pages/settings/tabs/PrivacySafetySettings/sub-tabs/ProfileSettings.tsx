@@ -1,3 +1,4 @@
+import _ from "lodash"
 import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
@@ -16,7 +17,9 @@ const ProfileSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
 
-  const { register, handleSubmit, setValue } = useForm<typeof defaultValues>({
+  const { register, handleSubmit, setValue, watch } = useForm<
+    typeof defaultValues
+  >({
     defaultValues
   })
 
@@ -93,7 +96,7 @@ const ProfileSettings = () => {
 
           <Button
             className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-            disabled={isLoading}
+            disabled={_.isEqual(watch(), creatorSettings)}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
             variant="pink"

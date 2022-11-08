@@ -31,7 +31,6 @@ export const useCreatorSettings = () => {
   } = useSWR<CreatorSettingsDto>(CACHE_KEY_NOTIFICATIONS, async () => {
     return await api.getCreatorSettings()
   })
-
   const { mutate: _mutateManual } = useSWRConfig()
 
   const mutateManual = (update: UpdateCreatorSettingsRequestDto) =>
