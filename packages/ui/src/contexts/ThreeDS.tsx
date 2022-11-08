@@ -4,7 +4,6 @@ import { createContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { errorMessage } from "src/helpers/error"
-import { sleep } from "src/helpers/sleep"
 
 interface ThreeDSContextProps {
   readonly setPayin: (payinId: string | null) => void
@@ -68,10 +67,10 @@ export const useThreeDS = () => {
             `Payment failure: no three d verification link after ${THREE_DS_EXPIRATION_TIME}`
           )
         }
-        await sleep(THREE_DS_WAITING_TIME)
         setCount(count + 1)
       }
-      fetch()
+      const interval = setTimeout(() => fetch, ms(THREE_DS_WAITING_TIME))
+      return () => clearInterval(interval)
     }
   }, [count, payinId, waiting])
 
