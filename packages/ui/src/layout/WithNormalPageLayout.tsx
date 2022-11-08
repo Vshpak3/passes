@@ -38,7 +38,7 @@ export const WithNormalPageLayout = (
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
-          <div className="relative w-full grid-cols-10 md:grid ">
+          <div className="relative w-full grid-cols-10 md:grid">
             {options.sidebar && <Sidebar />}
             <main
               className={classNames(
