@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, AuthLocalApi } from "@passes/api-client"
-import NextLink from "next/link"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
@@ -248,12 +248,12 @@ const SignupInitialPage: FC = () => {
             fontSize={13}
           >
             Have an account?
-            <NextLink href="/login">
+            <Link href="/login">
               <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
                 Sign In
                 <EnterPurpleIcon />
               </div>
-            </NextLink>
+            </Link>
           </Text>
         </div>
       </div>

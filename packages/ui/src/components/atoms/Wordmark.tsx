@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import NextLink from "next/link"
+import Link from "next/link"
 import { FC } from "react"
 
 interface WordmarkProps {
@@ -15,14 +15,12 @@ export const Wordmark: FC<WordmarkProps> = ({
   width = 124,
   whiteOnly = false
 }) => (
-  <NextLink href="/home">
-    <a className={className}>
-      <h1
-        className={classNames(
-          `w-[${width}px] h-[${height}px] font-display text-center text-2xl`,
-          whiteOnly ? "text-white" : "text-black dark:text-white"
-        )}
-      />
-    </a>
-  </NextLink>
+  <Link className={className} href="/home">
+    <h1
+      className={classNames(
+        `w-[${width}px] h-[${height}px] font-display text-center text-2xl`,
+        whiteOnly ? "text-white" : "text-black dark:text-white"
+      )}
+    />
+  </Link>
 )

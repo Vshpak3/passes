@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthLocalApi } from "@passes/api-client"
-import NextLink from "next/link"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
@@ -146,7 +146,7 @@ const LoginPage: FC = () => {
                 type="checkbox"
               />
               <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
-                <NextLink href="/forgot-password">Forgot Password</NextLink>
+                <Link href="/forgot-password">Forgot Password</Link>
               </Text>
             </div>
 
@@ -183,12 +183,12 @@ const LoginPage: FC = () => {
             fontSize={13}
           >
             Don&apos;t have an account?
-            <NextLink href="/signup">
+            <Link href="/signup">
               <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
                 Sign up
                 <EnterPurpleIcon />
               </div>
-            </NextLink>
+            </Link>
           </Text>
         </div>
       </div>
