@@ -665,6 +665,7 @@ export class MessagesService {
         creator_id: userId,
       })
       .select('follower_id', 'creator_id')
+
     if (follow.length === 1) {
       return null
     }
@@ -724,7 +725,20 @@ export class MessagesService {
         creator_id: userId,
       })
       .select('follower_id', 'creator_id')
-    if (follow.length === 0) {
+
+    const passHolder = await this.dbReader<PassHolderEntity>(
+      PassHolderEntity.table,
+    )
+      .innerJoin(
+        PassEntity.table,
+        `${PassEntity.table}.id`,
+        `${PassHolderEntity.table}.pass_id`,
+      )
+      .where(`${PassEntity.table}.creator_id`, otherUserId)
+      .andWhere(`${PassHolderEntity.table}.holder_id`, userId)
+      .select(`${PassHolderEntity.table}.id`)
+      .first()
+    if (follow.length === 0 || !passHolder) {
       return BlockedReasonEnum.DOES_NOT_FOLLOW
     }
     if (follow.length === 2 || follow[0].follower_id === otherUserId) {
