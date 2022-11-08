@@ -2,7 +2,7 @@ import { CommentApi, CommentDto } from "@passes/api-client"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 import { errorMessage } from "src/helpers/error"
@@ -107,6 +107,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       <Button
         className="h-[40px] w-full shrink-0 md:ml-4 md:w-[96px]"
         disabled={isButtonDisabled || isSubmitting}
+        type={ButtonTypeEnum.SUBMIT}
         variant="pink"
       >
         Comment
