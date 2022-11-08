@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { Button } from "src/components/atoms/button/Button"
 import { useFollow } from "src/hooks/profile/useFollow"
 
 interface FollowButtonProps {
@@ -19,7 +19,6 @@ export const FollowButton: FC<FollowButtonProps> = ({
     <Button
       className={className}
       onClick={isFollowing ? unfollow : follow}
-      type={ButtonTypeEnum.SUBMIT}
       variant={isFollowing ? "pink-outline" : "pink"}
     >
       {isFollowing ? unfollowText : "Follow"}
