@@ -1,0 +1,23 @@
+.rdrDefinedRangesWrapper {
+  background-color: black !important;
+  border-right: 1px solid #d6409f !important;
+}
+.rdrDateDisplayWrapper,
+.rdrMonthAndYearWrapper,
+.rdrMonths,
+.rdrDays,
+.rdrDayDisabled {
+  background-color: black !important;
+}
+
+.rdrStaticRange {
+  background-color: black !important;
+  border-bottom: 1px solid black !important;
+}
+
+.rdrStaticRange:hover {
+  color: #d6409f;
+}
+.rdrStaticRangeSelected {
+  color: #d6409f !important;
+}
