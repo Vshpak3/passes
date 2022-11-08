@@ -1156,7 +1156,7 @@ export class PaymentService {
     userId: string,
     entryDto: PayinEntryRequestDto,
   ): Promise<PayinEntryResponseDto> {
-    const payin = await this.dbReader<PayinEntity>(PayinEntity.table)
+    const payin = await this.dbWriter<PayinEntity>(PayinEntity.table)
       .select('*')
       .where({
         id: entryDto.payinId,
