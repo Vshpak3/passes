@@ -68,7 +68,7 @@ export const Vault: FC<VaultProps> = ({ passSelectedItems }) => {
   }
 
   return (
-    <div className="ml-4 w-full px-2 md:px-5">
+    <div className="w-full px-2 md:px-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <VaultNavigation
           addNewMedia={addNewMedia}

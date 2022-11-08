@@ -104,7 +104,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   }
 
   return (
-    <div className="relative mt-[-175px] mb-[28px] flex w-full flex-col justify-between">
+    <div className="relative mt-4 flex w-full flex-col justify-between border-b border-passes-dark-gray pb-6">
       <div className="flex items-center justify-between">
         <div className="text-[24px] font-bold text-white">Creator Vault</div>
       </div>
@@ -122,7 +122,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         />
       )}
       {!embedded && (
-        <div className="absolute right-20 bottom-0 flex">
+        <div className="absolute right-20 bottom-5 flex">
           {selectedItems && selectedItems?.length > 0 && (
             <>
               <div className="flex flex-col">

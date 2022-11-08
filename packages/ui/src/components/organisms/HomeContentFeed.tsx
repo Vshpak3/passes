@@ -55,7 +55,6 @@ export const HomeContentFeed: FC = () => {
   const { posts } = usePostWebhook()
   const { featuredCreators } = useFeaturedCreators()
 
-  //sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600
   return (
     <div className="mt-10 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 lg:col-span-4">
