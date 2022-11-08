@@ -78,13 +78,16 @@ export const PaymentModalBody = ({
       }) ?? [],
     [cards]
   )
+
   useEffect(() => {
     setValue("method", serializePayinMethod(defaultPayinMethod))
   }, [defaultPayinMethod, setValue])
+
   useEffect(() => {
     setPayinMethod(payinMethod)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [methodSeralized])
+
   const options = [
     ...cardOptions,
     ...MetamMaskSelectOptionsWithImage,
@@ -95,9 +98,10 @@ export const PaymentModalBody = ({
         (option) => option.value === serializePayinMethod(payinMethod)
       )[0] ?? "None"
     : undefined
+
   return (
     <form>
-      Payment Method:
+      Payment Method
       <Select
         changeOnDefault
         className="my-4"

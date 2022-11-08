@@ -36,12 +36,12 @@ const tipPostForm = object({
     .required("Please enter a tip value")
     .test(
       "min",
-      `The minimum price of a tip is $${MIN_TIP_POST_PRICE}`,
+      `The minimum tip amount is $${MIN_TIP_POST_PRICE}`,
       (value) => parseFloat(value || "") >= MIN_TIP_POST_PRICE
     )
     .test(
       "max",
-      `The maximum price of a tip is $${MAX_TIP_POST_PRICE}`,
+      `The maximum tip amount is $${MAX_TIP_POST_PRICE}`,
       (value) => parseFloat(value || "") <= MAX_TIP_POST_PRICE
     )
 })
@@ -107,9 +107,9 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
     >
       <SectionTitle>Send Tip</SectionTitle>
       <div className="flex items-center rounded border border-passes-primary-color pl-4">
-        <div className="basis-2/3">
-          <span>Enter Tip Amount:</span>
-          <span className="ml-3 text-xs text-passes-dark-gray">Minimum $3</span>
+        <div className="basis-3/4">
+          <span>Enter Tip Amount</span>
+          <span className="ml-4 text-xs text-passes-dark-gray">Minimum $3</span>
         </div>
         <NumberInput
           className="border-0 font-bold"
@@ -124,6 +124,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
           {errors?.[TIP_VALUE].message}
         </span>
       )}
+      <div className="my-4" />
       <PaymentModalBody
         closeModal={() => setPost(null)}
         price={tipValue}
