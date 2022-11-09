@@ -28,22 +28,23 @@ export const sentryOptions = {
   inject: [ConfigService],
 }
 
-// list of exceptions to be ignored
+// List of exceptions to be ignored
 const ignoredExceptions = [
-  NotFoundException,
-  ForbiddenException,
-  UnauthorizedException,
   BadRequestException,
   ConflictException,
+  ForbiddenException,
+  NotFoundException,
+  UnauthorizedException,
 ]
 export const sentryInterceptorOptions = {
   filters: [
     {
       type: HttpException,
       filter: (exception: unknown) => {
-        // if thrown exception extends any of the ignored exception types return true
-        // returning true suppresses sentry logs
-        return !!ignoredExceptions.some((type) => exception instanceof type)
+        // If thrown exception extends one of the ignored exception types then we return true
+        // Returning true suppresses sentry logs:
+        // https://github.com/ntegral/nestjs-sentry/blob/f80c538/lib/sentry.interceptor.ts#L111
+        return ignoredExceptions.some((type) => exception instanceof type)
       },
     },
   ],
