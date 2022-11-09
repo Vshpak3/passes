@@ -1,6 +1,7 @@
 import { ContentDto } from "@passes/api-client"
 import React, { FC, useState } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { Dialog } from "src/components/organisms/Dialog"
 import { Vault } from "src/components/pages/tools/Vault"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
@@ -22,25 +23,17 @@ export const VaultDialog: FC<VaultDialogProps> = ({
   }
   return (
     <Dialog
-      className="flex h-full max-h-[90vh] flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:rounded-[15px]"
+      className="flex h-[90vh] flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:rounded-[15px]"
       footer={
         <div className="relative h-full pt-5">
-          <div className="flex flex-col items-start justify-start gap-3">
+          <div className="flex h-full flex-col items-start justify-start gap-3">
             <div className="flex w-full items-end justify-between gap-3">
-              <button
-                className="rounded-full bg-passes-secondary-color py-2 px-6"
-                onClick={closeVault}
-                type="button"
-              >
+              <Button onClick={closeVault} variant="pink">
                 Cancel
-              </button>
-              <button
-                className="rounded-full bg-passes-secondary-color py-2 px-6"
-                onClick={pushToMessages}
-                type="button"
-              >
+              </Button>
+              <Button onClick={pushToMessages} variant="pink">
                 Use selected media
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -49,9 +42,7 @@ export const VaultDialog: FC<VaultDialogProps> = ({
       open={isOpen}
     >
       <AuthWrapper creatorOnly isPage>
-        <div className="">
-          <Vault passSelectedItems={setSelectedItems} />
-        </div>
+        <Vault passSelectedItems={setSelectedItems} scroll />
       </AuthWrapper>
     </Dialog>
   )

@@ -18,7 +18,7 @@ import { useMedia } from "src/hooks/useMedia"
 
 interface VaultProps {
   passSelectedItems?: (selectedItems: ContentDto[]) => void
-  scrollableTarget?: string
+  scroll?: boolean
 }
 
 export type VaultType = GetVaultQueryRequestDtoTypeEnum | undefined
@@ -30,7 +30,7 @@ interface VaultFormProps {
 
 export const Vault: FC<VaultProps> = ({
   passSelectedItems,
-  scrollableTarget
+  scroll = false
 }) => {
   const {
     handleSubmit,
@@ -72,8 +72,8 @@ export const Vault: FC<VaultProps> = ({
   }
 
   return (
-    <div className="w-full px-2 md:px-5">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="h-full w-full px-2 md:px-5">
+      <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
         <VaultNavigation
           addNewMedia={addNewMedia}
           deletedItems={deletedItems}
@@ -115,7 +115,7 @@ export const Vault: FC<VaultProps> = ({
           deletedItems={deletedItems}
           isMaxFileCountSelected={isMaxFileCountSelected}
           order={order}
-          scrollableTarget={scrollableTarget}
+          scroll={scroll}
           selectedItems={selectedItems}
           setSelectedItems={setItems}
           type={vaultType}

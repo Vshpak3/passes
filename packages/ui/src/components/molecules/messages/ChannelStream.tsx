@@ -212,7 +212,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           )}
           <div
             className="relative flex h-full flex-col-reverse overflow-y-scroll"
-            id="scrollableDiv"
+            id="channelDiv"
             ref={ref}
           >
             {/*

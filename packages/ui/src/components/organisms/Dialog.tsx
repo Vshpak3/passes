@@ -92,7 +92,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                         {typeof title === "string" ? formatText(title) : title}
                       </HeadlessDialog.Title>
                     )}
-                    <div className="z-10 h-full w-full overflow-y-auto">
+                    <div className="z-10 h-full w-full overflow-y-hidden">
                       {children}
                     </div>
                     {footer && (
