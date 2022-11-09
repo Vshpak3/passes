@@ -100,52 +100,54 @@ const PaymentHistory = () => {
           </Fade>
         )}
       </Popper>
-      <div className="mb-5 flex w-full flex-col gap-4">
+      <div className="mb-5 flex w-full flex-col gap-4 overflow-x-auto">
         <div className="flex flex-row items-center justify-between rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 p-4">
           <span className="text-[16px] font-[700]">
             Payments Transaction History
           </span>
         </div>
-        <div className="flex flex-col">
-          <div className="flex flex-row justify-between border-b border-passes-dark-200">
-            <div className="mb-4 flex flex-1 justify-center">
-              <span className="text-[12px] font-[500]">Transaction</span>
+        <div className="w-full min-w-[600px] ">
+          <div className="flex flex-col">
+            <div className="flex flex-row justify-between border-b border-passes-dark-200">
+              <div className="mb-4 flex flex-1 justify-center">
+                <span className="text-[12px] font-[500]">Transaction</span>
+              </div>
+              <div className="mb-4 flex flex-1 justify-center">
+                <span className="text-[12px] font-[500]">Source</span>
+              </div>
+              <div className="mb-4 flex flex-1 items-center justify-center gap-2">
+                <span className="text-[12px] font-[500]">Date</span>
+              </div>
+              <div className="flex flex-1 justify-center">
+                <span className="mb-4 text-[12px] font-[500]">Amount</span>
+              </div>
+              <div className="flex flex-1 justify-center">
+                <span className="mb-4 text-[12px] font-[500]">
+                  Payment Method
+                </span>
+              </div>
+              <div className="flex flex-1 justify-center">
+                <span className="mb-4 text-[12px] font-[500]">Status</span>
+              </div>
+              <div className="flex flex-1 justify-center">
+                <span className="mb-4 text-[12px] font-[500]">Reason</span>
+              </div>
+              <div className="mb-4 flex flex-1 justify-center">
+                <span className="text-[12px] font-[500]">Cancel</span>
+              </div>
             </div>
-            <div className="mb-4 flex flex-1 justify-center">
-              <span className="text-[12px] font-[500]">Source</span>
-            </div>
-            <div className="mb-4 flex flex-1 items-center justify-center gap-2">
-              <span className="text-[12px] font-[500]">Date</span>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <span className="mb-4 text-[12px] font-[500]">Amount</span>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <span className="mb-4 text-[12px] font-[500]">
-                Payment Method
-              </span>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <span className="mb-4 text-[12px] font-[500]">Status</span>
-            </div>
-            <div className="flex flex-1 justify-center">
-              <span className="mb-4 text-[12px] font-[500]">Reason</span>
-            </div>
-            <div className="mb-4 flex flex-1 justify-center">
-              <span className="text-[12px] font-[500]">Cancel</span>
-            </div>
+            <InfiniteScrollPagination<PayinDto, GetPayinsResponseDto>
+              KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
+                return <Payin payin={arg} />
+              }}
+              fetch={async (req: GetPayinsRequestDto) => {
+                return await api.getPayins({ getPayinsRequestDto: req })
+              }}
+              fetchProps={fetchProps}
+              keyValue="/payins"
+              options={{ revalidateOnMount: true }}
+            />
           </div>
-          <InfiniteScrollPagination<PayinDto, GetPayinsResponseDto>
-            KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
-              return <Payin payin={arg} />
-            }}
-            fetch={async (req: GetPayinsRequestDto) => {
-              return await api.getPayins({ getPayinsRequestDto: req })
-            }}
-            fetchProps={fetchProps}
-            keyValue="/payins"
-            options={{ revalidateOnMount: true }}
-          />
         </div>
       </div>
     </>
