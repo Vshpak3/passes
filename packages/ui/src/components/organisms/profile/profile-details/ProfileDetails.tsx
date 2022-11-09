@@ -62,20 +62,21 @@ export const ProfileDetails: FC = () => {
                 <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
               ) : (
                 <>
-                  <FollowButton
-                    className="m-auto mt-3 h-[36px] w-[98px]"
-                    creatorId={profileUserId}
-                  />
-
                   {!!profile?.isCreator && (
-                    <Link
-                      className="m-auto h-[36px] w-[98px] pt-2"
-                      href={chatLink}
-                    >
-                      <Button className="w-full" variant="pink-outline">
-                        <ChatIcon />
-                      </Button>
-                    </Link>
+                    <>
+                      <FollowButton
+                        className="m-auto mt-3 h-[36px] w-[98px]"
+                        creatorId={profileUserId}
+                      />
+                      <Link
+                        className="m-auto h-[36px] w-[98px] pt-2"
+                        href={chatLink}
+                      >
+                        <Button className="w-full" variant="pink-outline">
+                          <ChatIcon />
+                        </Button>
+                      </Link>
+                    </>
                   )}
                 </>
               )}
@@ -111,17 +112,22 @@ export const ProfileDetails: FC = () => {
             <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
           ) : (
             <>
-              <FollowButton
-                className="mb-[3px] h-[25px] w-[80px]"
-                creatorId={profileUserId}
-              />
-
               {!!profile?.isCreator && (
-                <Link href={chatLink}>
-                  <Button className="h-[25px] w-[80px]" variant="pink-outline">
-                    <ChatIcon />
-                  </Button>
-                </Link>
+                <>
+                  <FollowButton
+                    className="mb-[3px] h-[25px] w-[80px]"
+                    creatorId={profileUserId}
+                  />
+
+                  <Link href={chatLink}>
+                    <Button
+                      className="h-[25px] w-[80px]"
+                      variant="pink-outline"
+                    >
+                      <ChatIcon />
+                    </Button>
+                  </Link>
+                </>
               )}
             </>
           )}
