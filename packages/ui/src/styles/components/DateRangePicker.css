@@ -9,6 +9,32 @@
 .rdrDayDisabled {
   background-color: black !important;
 }
+.rdrStartEdge,
+.rdrEndEdge,
+.rdrInRange {
+  color: #d6409f !important;
+}
+
+.rdrDayNumber span {
+  color: #fff !important;
+}
+.rdrDayToday .rdrDayNumber span:after {
+  background: #ffffff !important;
+}
+
+.rdrDayDisabled span {
+  color: #aaaaaa !important;
+}
+
+.rdrMonthPicker,
+.rdrYearPicker,
+select {
+  color: #fff !important;
+}
+
+.rdrDayPassive span {
+  color: #767677 !important;
+}
 
 .rdrStaticRange {
   background-color: black !important;
