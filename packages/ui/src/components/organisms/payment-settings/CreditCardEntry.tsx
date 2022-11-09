@@ -1,7 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { CircleCardDto } from "@passes/api-client"
-import { FC } from "react"
+import { PropsWithChildren } from "react"
 
 import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 
@@ -10,13 +10,19 @@ interface CreditCardEntryProps {
   showName: boolean
 }
 
-export const CreditCardEntry: FC<CreditCardEntryProps> = ({
+export const CreditCardEntry = ({
   card,
-  showName
-}) => {
+  showName,
+  children
+}: PropsWithChildren<CreditCardEntryProps>) => {
   return (
     <div className="flex-1 items-center">
-      {showName && <span className="text-[15px] font-[700]">{card.name}</span>}
+      <div className="flex flex-row justify-between">
+        {showName && (
+          <span className="text-[15px] font-[700]">{card.name}</span>
+        )}
+        {children}
+      </div>
       <div className="mt-4 flex flex-row">
         {displayCardIcon(card.firstDigit, 35, 35)}
         <span className="mx-6 text-[14px] font-[500]">

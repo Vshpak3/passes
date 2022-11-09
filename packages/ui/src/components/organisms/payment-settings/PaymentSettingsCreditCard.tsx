@@ -61,36 +61,39 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
             className="my-5 flex rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-5"
             key={item.id}
           >
-            <CreditCardEntry card={item} showName />
-            <div className="flex flex-row gap-2 md:gap-4">
-              <div>
-                {item.id === defaultPayinMethod?.cardId ? (
-                  <Button disabled variant="pink">
-                    <span className="text-[14px] font-[700]">
-                      {isEmbedded ? "Selected" : "Default"}
-                    </span>
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={async () =>
-                      handleSetDefaultPayInMethod({
-                        cardId: item.id,
-                        method: PayinMethodDtoMethodEnum.CircleCard
-                      })
-                    }
-                    variant="pink"
-                  >
-                    <span className="font-[700]">{buttonName(isEmbedded)}</span>
-                  </Button>
-                )}
+            <CreditCardEntry card={item} showName>
+              <div className="flex flex-row gap-2 md:gap-4">
+                <div>
+                  {item.id === defaultPayinMethod?.cardId ? (
+                    <Button disabled variant="pink">
+                      <span className="text-[14px] font-[700]">
+                        {isEmbedded ? "Selected" : "Default"}
+                      </span>
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={async () =>
+                        handleSetDefaultPayInMethod({
+                          cardId: item.id,
+                          method: PayinMethodDtoMethodEnum.CircleCard
+                        })
+                      }
+                      variant="pink"
+                    >
+                      <span className="font-[700]">
+                        {buttonName(isEmbedded)}
+                      </span>
+                    </Button>
+                  )}
+                </div>
+                <button
+                  className="flex h-[33px] w-[33px] items-center justify-center rounded-full bg-white/10"
+                  onClick={() => setCardIdDelete(item.id)}
+                >
+                  <DeleteIcon />
+                </button>
               </div>
-              <button
-                className="flex h-[38px] w-[38px] items-center justify-center rounded-full bg-white/10"
-                onClick={() => setCardIdDelete(item.id)}
-              >
-                <DeleteIcon />
-              </button>
-            </div>
+            </CreditCardEntry>
           </div>
         ))}
       </div>
