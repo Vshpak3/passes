@@ -15,6 +15,7 @@ type DialogProps = {
   media?: boolean
   onTriggerClick?: () => void
   transition?: boolean
+  innerScroll?: boolean
 }
 
 export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
@@ -28,7 +29,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   media,
   children,
   onTriggerClick,
-  transition = true
+  transition = true,
+  innerScroll = false
 }) => {
   const [isOpen, setIsOpen] = useState(open)
 
@@ -98,7 +100,12 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                         {typeof title === "string" ? formatText(title) : title}
                       </HeadlessDialog.Title>
                     )}
-                    <div className="z-10 h-full w-full overflow-y-hidden">
+                    <div
+                      className={classNames(
+                        "z-10 h-full w-full",
+                        innerScroll ? "overflow-y-hidden" : "overflow-y-scroll"
+                      )}
+                    >
                       {children}
                     </div>
                     {footer && (

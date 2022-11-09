@@ -38,6 +38,7 @@ export const VaultDialog: FC<VaultDialogProps> = ({
           </div>
         </div>
       }
+      innerScroll
       onClose={closeVault}
       open={isOpen}
     >
