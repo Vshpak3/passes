@@ -2,6 +2,7 @@ import CreatorToolsIcon from "public/icons/sidebar/creator-tools.svg"
 import HomeIcon from "public/icons/sidebar/home.svg"
 import MyPassesIcon from "public/icons/sidebar/membership.svg"
 import MessagesIcon from "public/icons/sidebar/messages.svg"
+import ProfileIcon from "public/icons/sidebar/profile.svg"
 import SettingsIcon from "public/icons/sidebar/settings.svg"
 
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
@@ -88,5 +89,12 @@ export const navigation: SidebarNavigation[] = [
     icon: CreatorToolsIcon,
     creatorOnly: true,
     children: creatorToolsItems
+  },
+  {
+    id: "profile",
+    name: "Profile",
+    href: "",
+    icon: ProfileIcon,
+    creatorOnly: false
   }
 ]

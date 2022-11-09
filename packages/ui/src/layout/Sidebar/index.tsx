@@ -1,8 +1,6 @@
 import { useRouter } from "next/router"
-import UserIcon from "public/icons/sidebar/profile.svg"
 import { useEffect, useState } from "react"
 
-import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { SidebarCore } from "src/components/organisms/sidebar/SidebarCore"
 import { SidebarMobileWrapper } from "src/components/organisms/sidebar/SidebarMobileWrapper"
 import { useUser } from "src/hooks/useUser"
@@ -12,7 +10,7 @@ export const Sidebar = () => {
   const router = useRouter()
   const { user } = useUser()
 
-  const [navigation, setNavigation] = useState<SidebarNavigation[]>([])
+  const [navigation, setNavigation] = useState(_navigation)
   const [active, setActive] = useState(router.asPath.split("/").pop() ?? "home")
 
   useEffect(() => {
@@ -32,18 +30,15 @@ export const Sidebar = () => {
   }, [router.asPath, user])
 
   useEffect(() => {
-    const extras = []
-    if (user) {
-      extras.push({
-        id: "profile",
-        name: "Profile",
-        href: `/${user?.username}`,
-        icon: UserIcon,
-        creatorOnly: false
+    // Update the profile href once the sidebar loads
+    setNavigation((nav) =>
+      nav.map((n) => {
+        if (n.id === "profile") {
+          n.href = `/${user?.username}`
+        }
+        return n
       })
-    }
-
-    setNavigation([..._navigation, ...extras])
+    )
   }, [user])
 
   return (
