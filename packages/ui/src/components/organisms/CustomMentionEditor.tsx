@@ -231,7 +231,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
         open={areSuggestionsOpen}
         popoverContainer={({ children, ...props }) => (
           <Popover {...props}>
-            <div className="z-50 border border-passes-dark-100 bg-black">
+            <div className="z-50 max-w-[300px] overflow-hidden border border-passes-dark-100 bg-black">
               {children}
             </div>
           </Popover>

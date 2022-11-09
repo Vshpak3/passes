@@ -45,7 +45,9 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
         ownsPost={ownsPost}
         postId={postId}
       />
-      <NewCommentEditor addComment={addNewComment} postId={postId} />
+      <div className="z-[50]">
+        <NewCommentEditor addComment={addNewComment} postId={postId} />
+      </div>
     </div>
   )
 }
