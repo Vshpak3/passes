@@ -53,7 +53,7 @@ export const WithNormalPageLayout = (
               {header && (
                 <div
                   className={classNames(
-                    "col-span-12 flex h-16 justify-between border-b-[0.5px] border-gray-600 pt-2 lg:col-span-7",
+                    "col-span-12 flex h-16 justify-between border-b-[0.5px] border-[#3A444C]/[0.64] pt-2 lg:col-span-7",
                     headerClassName
                   )}
                 >
