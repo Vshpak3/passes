@@ -88,7 +88,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   options = defaultOptions,
   initialScrollY,
   mutateOnLoad = true,
-  pullDownToRefresh,
+  pullDownToRefresh = false,
   node,
   children,
   keySelector,
@@ -152,7 +152,6 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
 
   const checkScroll = useCallback(() => {
-    // console.log(node?.scrollHeight, node?.clientHeight)
     setIsScrollable(
       node
         ? node.scrollHeight > node.clientHeight
