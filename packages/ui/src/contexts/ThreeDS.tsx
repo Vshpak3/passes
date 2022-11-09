@@ -31,7 +31,6 @@ export const useThreeDS = () => {
   }
   useEffect(() => {
     if (payinId && waiting) {
-      console.log("call")
       const fetch = async () => {
         const paymentApi = new PaymentApi()
         if (waiting.valueOf() + ms(THREE_DS_EXPIRATION_TIME) > Date.now()) {
@@ -68,9 +67,9 @@ export const useThreeDS = () => {
             `Payment failure: no three d verification link after ${THREE_DS_EXPIRATION_TIME}`
           )
         }
-        setCount(count + 1)
+        setCount((count) => count + 1)
       }
-      const interval = setTimeout(() => fetch, ms(THREE_DS_WAITING_TIME))
+      const interval = setTimeout(fetch, ms(THREE_DS_WAITING_TIME))
       return () => clearInterval(interval)
     }
   }, [count, payinId, waiting])
