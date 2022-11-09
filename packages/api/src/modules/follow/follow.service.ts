@@ -387,7 +387,7 @@ export class FollowService {
     const comments = await this.dbReader<CommentEntity>(CommentEntity.table)
       .whereIn('commenter_id', Array.from(users))
       .distinct('post_id')
-    await Promise.all(
+    await Promise.allSettled(
       comments.map(async (comment) => {
         try {
           await this.postService.refreshPostCounts(comment.post_id)

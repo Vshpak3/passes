@@ -18,7 +18,7 @@ export const FormattedText: FC<FormattedTextProps> = ({ text, tags }) => {
 
   const insertMentions = async (text: string, tags: TagDto[]) => {
     const tagMap: Record<number, string> = {}
-    await Promise.all(
+    await Promise.allSettled(
       tags.map(async (tag) => {
         const username =
           context.usernames[tag.userId] ??

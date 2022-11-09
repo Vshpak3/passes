@@ -1819,7 +1819,7 @@ export class PaymentService {
           `${CreatorAgencyEntity.table}.rate`,
         )
 
-      await Promise.all(
+      await Promise.allSettled(
         creatorShares.map(async (creatorShare) => {
           const rate = creatorShare.rate ?? 0
           await this.creatorStatsService.handlePayinSuccess(
@@ -2008,7 +2008,7 @@ export class PaymentService {
       .where({ is_creator: true })
       .andWhereNot('payout_frequency', PayoutFrequencyEnum.MANUAL)
       .select([`${UserEntity.table}.id`, 'payout_frequency'])
-    await Promise.all(
+    await Promise.allSettled(
       creators.map(async (creator) => {
         try {
           await this.payoutCreator(creator.id, creator.payout_frequency)
@@ -2377,7 +2377,7 @@ export class PaymentService {
         `${PassHolderEntity.table}.holder_id`,
       )
 
-    await Promise.all(
+    await Promise.allSettled(
       nftPassSubscriptions.map(async (subscription) => {
         try {
           // holder of pass changed

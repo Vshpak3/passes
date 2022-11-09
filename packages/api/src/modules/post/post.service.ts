@@ -773,7 +773,7 @@ export class PostService {
     const posts = await this.dbReader<PostEntity>(PostEntity.table)
       .whereNull('deleted_at')
       .select('id')
-    await Promise.all(
+    await Promise.allSettled(
       posts.map(async (post) => {
         try {
           await this.refreshPostCounts(post.id)
@@ -819,7 +819,7 @@ export class PostService {
         .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((post) => post.id)
-    await Promise.all(
+    await Promise.allSettled(
       postIds.map(async (postId) => {
         await this.checkPostContentProcessed(postId)
       }),

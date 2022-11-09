@@ -122,7 +122,7 @@ export class ListService {
   }
 
   async fillAutomatedLists(lists: any[]) {
-    await Promise.all(
+    await Promise.allSettled(
       lists.map(async (list) => {
         switch (list.type) {
           case ListTypeEnum.FOLLOWERS:
@@ -424,7 +424,7 @@ export class ListService {
     const lists = await this.dbReader<ListEntity>(ListEntity.table)
       .whereIn('type', [ListTypeEnum.TOP_SPENDERS])
       .select('*')
-    await Promise.all(
+    await Promise.allSettled(
       lists.map(async (list) => {
         await this.updateAsyncList(list)
       }),

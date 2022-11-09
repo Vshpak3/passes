@@ -277,7 +277,7 @@ export class CreatorStatsService {
     const creators = await this.dbReader<CreatorStatEntity>(
       CreatorStatEntity.table,
     ).select('user_id')
-    await Promise.all(
+    await Promise.allSettled(
       creators.map(async (creator) => {
         try {
           await this.refreshCreatorStats(creator.user_id)

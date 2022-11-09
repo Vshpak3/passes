@@ -83,7 +83,7 @@ export class UserService {
         `${WhitelistedUsersEntity.table}.email`,
       )
       .distinct(`${UserEntity.table}.id`, `${UserEntity.table}.email`)
-    await Promise.all(
+    await Promise.allSettled(
       users.map(async (user) => {
         await this.createWhitelistedPassesForUser(user.id, user.email)
       }),

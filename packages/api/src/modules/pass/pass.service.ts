@@ -866,7 +866,7 @@ export class PassService {
         .andWhere('created_at', '>=', newDate)
         .andWhere('created_at', '<=', oldDate)
         .select('id', 'pass_holder_ids', 'payin_id')
-      await Promise.all(
+      await Promise.allSettled(
         accesses.map(async (access) => {
           let ids: string[] = JSON.parse(access.pass_holder_ids)
           ids = ids.filter((id) => id !== passHolder.id)

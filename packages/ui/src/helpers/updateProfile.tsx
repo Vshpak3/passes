@@ -38,7 +38,7 @@ export async function updateProfile(
   const contentService = new ContentService()
   const profileApi = new ProfileApi()
 
-  await Promise.all([
+  await Promise.allSettled([
     username
       ? userApi.setUsername({
           updateUsernameRequestDto: { username }

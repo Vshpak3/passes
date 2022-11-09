@@ -132,7 +132,7 @@ export class VerificationService {
       query = query.andWhere({ user_id: userId })
     }
     const inquiries = await query
-    await Promise.all(
+    await Promise.allSettled(
       inquiries.map(async (inquiry) => {
         try {
           await this.refreshPersonaVerification(inquiry.id, inquiry.user_id)

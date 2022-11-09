@@ -392,7 +392,7 @@ export class MessagesService {
       previewIndex,
     )
 
-    await Promise.all(
+    await Promise.allSettled(
       finalUserIds.map(async (otherUserId) => {
         const channelId = (
           await this.createChannel(userId, {
@@ -1034,7 +1034,7 @@ export class MessagesService {
 
       const contents = JSON.parse(message.contents)
 
-      await Promise.all(
+      await Promise.allSettled(
         contents.map(async (content: ContentBareDto) => {
           await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
             .insert({ user_id: userId, content_id: content.contentId })
@@ -1404,7 +1404,7 @@ export class MessagesService {
         paid_message_id: paidMessageId,
       })
       .select('channel_id')
-    await Promise.all(
+    await Promise.allSettled(
       channels.map(
         async (channel) => await this.updateChannel(channel.channel_id),
       ),
@@ -1445,7 +1445,7 @@ export class MessagesService {
         .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((message) => message.id)
-    await Promise.all(
+    await Promise.allSettled(
       messageIds.map(async (messageId) => {
         await this.checkMessageContentProcessed(messageId)
       }),
