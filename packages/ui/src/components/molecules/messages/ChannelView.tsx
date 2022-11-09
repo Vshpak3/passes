@@ -94,6 +94,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
                 freeMessages={freeMessages}
                 isBottomOfChatVisible={isBottomOfChatVisible}
                 minimumTip={minimumTip}
+                readAt={selectedChannel?.readAt ?? undefined}
               />
               {selectedChannel.channelId && (
                 <InputMessage

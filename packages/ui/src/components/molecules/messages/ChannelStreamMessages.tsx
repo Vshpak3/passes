@@ -17,13 +17,15 @@ interface ChannelStreamMessagesProps {
   channelId?: string
   messageUpdates: Record<string, Partial<MessageDto>>
   node?: HTMLDivElement
+  readAt?: Date
 }
 
 const api = new MessagesApi()
 const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   channelId,
   messageUpdates,
-  node
+  node,
+  readAt = new Date()
 }) => {
   const { user } = useUser()
 
@@ -33,16 +35,18 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
 
   return (
     <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
-      KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
+      KeyedComponent={({ arg, nextArg }: ComponentArg<MessageDto>) => {
         return (
           <ChannelMessage
             message={arg}
             messageUpdate={messageUpdates[arg.messageId]}
             ownsMessage={arg.senderId === user?.userId}
+            showReadAt={
+              arg.sentAt > readAt && (nextArg?.sentAt ?? new Date()) < readAt
+            }
           />
         )
       }}
-      // className="scale-y-[-1]"
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}

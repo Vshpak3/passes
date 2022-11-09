@@ -26,6 +26,7 @@ interface ChannelStreamProps {
   minimumTip?: number | null
   bottomOfChatRef: MutableRefObject<HTMLDivElement | null>
   isBottomOfChatVisible: boolean
+  readAt?: Date
 }
 
 const api = new MessagesApi()
@@ -35,7 +36,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   freeMessages,
   minimumTip,
   bottomOfChatRef,
-  isBottomOfChatVisible
+  isBottomOfChatVisible,
+  readAt
 }) => {
   const { user } = useUser()
 
@@ -248,6 +250,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               channelId={channelId}
               messageUpdates={messageUpdates}
               node={node}
+              readAt={readAt}
             />
           </div>
           {unreadCount > 0 && (
