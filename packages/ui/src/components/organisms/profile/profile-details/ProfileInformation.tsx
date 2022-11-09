@@ -11,23 +11,19 @@ export const ProfileInformation: FC = () => {
   const { creatorStats } = useCreatorStats(profileUserId)
 
   return (
-    <div className="flex flex-col items-start gap-[6px]">
+    <div className="flex flex-col items-start">
       <div className="w-full items-center justify-around truncate md:w-[85%]">
-        <span className="passes-break w-full truncate text-[20px] font-medium leading-9 text-passes-white-100 md:text-[32px]">
+        <span className="passes-break ml-[90px] w-full truncate text-[16px] font-medium leading-9 text-passes-white-100 md:ml-0 md:text-[32px]">
           {profile?.displayName}
         </span>
       </div>
-      <div className="flex w-full justify-between">
-        <div className="flex cursor-pointer items-center justify-center rounded-[50px] bg-passes-white-100/[0.05] px-3 py-[6px]">
-          <span className="bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-sm font-normal leading-[14px] text-transparent">
-            @{profileUsername}
-          </span>
-        </div>
-      </div>
+      <span className="ml-[88px] -mt-1.5 text-sm font-normal leading-[14px] text-[#8899A6] md:-mt-0.5 md:ml-0 md:text-lg">
+        @{profileUsername}
+      </span>
       <span className="passes-break my-3 font-semibold leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
-      <div className="flex w-full flex-row flex-wrap items-center gap-y-[20px] gap-x-[60px]">
+      <div className="mt-1.5 flex w-full flex-row flex-wrap items-center gap-y-[20px] gap-x-[60px]">
         <ProfileStats
           likes={creatorStats?.numLikes}
           numPosts={creatorStats?.numPosts}

@@ -47,7 +47,7 @@ export const WithNormalPageLayout = (
               )}
             >
               {options.header && (
-                <div className="cover-image col-span-12 h-[200px] pr-10 pt-4">
+                <div className="cover-image col-span-12 h-[130px] pr-10 pt-4 md:h-[200px]">
                   <span className="hidden lg:block">
                     <CreatorSearchBar />
                   </span>

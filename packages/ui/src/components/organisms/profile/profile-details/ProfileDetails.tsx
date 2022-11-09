@@ -86,9 +86,9 @@ export const ProfileDetails: FC = () => {
         </div>
 
         {/* mobile */}
-        <div className="flex h-full w-full flex-col md:hidden">
-          <div className="flex flex-row">
-            <div className="flex h-full max-w-[138px] translate-y-[-65px] flex-col justify-center md:translate-y-[-75px]">
+        <div className="flex w-full flex-col md:hidden">
+          <div className="flex">
+            <div className="absolute -top-10 ml-1 flex max-w-[138px] flex-col justify-center md:ml-0">
               <ProfileImage
                 onClick={() => setIsProfilePicModalOpen(true)}
                 override={profileImageOverride}
@@ -96,14 +96,14 @@ export const ProfileDetails: FC = () => {
               />
             </div>
           </div>
-          <div className="flex w-full flex-col px-5 pt-4">
+          <div className="flex w-full flex-col px-1">
             <ProfileInformation />
           </div>
         </div>
       </div>
 
       {/* mobile */}
-      <div className="absolute top-4 right-10 flex-row items-start pr-3 md:hidden">
+      <div className="absolute top-2 right-1.5 flex-row items-start pr-3 md:hidden">
         {ownsProfile ? (
           <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
         ) : (
