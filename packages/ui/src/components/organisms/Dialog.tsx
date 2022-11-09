@@ -14,6 +14,7 @@ type DialogProps = {
   className?: string
   media?: boolean
   onTriggerClick?: () => void
+  transition?: boolean
 }
 
 export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
@@ -26,7 +27,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   className,
   media,
   children,
-  onTriggerClick
+  onTriggerClick,
+  transition = true
 }) => {
   const [isOpen, setIsOpen] = useState(open)
 
@@ -38,7 +40,12 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   useEffect(() => {
     setIsOpen(open)
   }, [open])
-
+  const transitionProps = transition
+    ? {
+        enterFrom: "opacity-0 scale-95",
+        enterTo: "opacity-100 scale-100"
+      }
+    : {}
   return (
     <>
       <button
@@ -79,11 +86,10 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
+                {...transitionProps}
               >
                 <HeadlessDialog.Panel className={className}>
                   <div className="relative flex h-full w-full flex-col justify-between">

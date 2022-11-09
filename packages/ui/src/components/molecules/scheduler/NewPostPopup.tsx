@@ -32,6 +32,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
       onClose={onCancel}
       onTriggerClick={onCancel}
       open={isOpen}
+      transition={false}
       triggerClassName="flex items-center justify-center self-center lg:pt-8"
     >
       <NewPostEditor
