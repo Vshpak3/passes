@@ -28,7 +28,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
 
   return (
     <Dialog
-      className="h-screen w-screen overflow-auto border-[1px] border-[#FFFFFF3b] transition-all md:max-h-[580px] md:max-w-[580px] lg:max-w-[680px]"
+      className="w-screen overflow-auto border-[0.5px] border-passes-gray-600 transition-all md:max-h-[70vh] md:max-w-[40%] lg:max-w-[40%]"
       onClose={onCancel}
       onTriggerClick={onCancel}
       open={isOpen}
