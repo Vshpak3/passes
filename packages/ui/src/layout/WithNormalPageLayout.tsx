@@ -64,7 +64,7 @@ export const WithNormalPageLayout = (
                       </SectionTitle>
                     )}
                   </div>
-                  <span className="hidden lg:block">
+                  <span className="mr-8 hidden lg:block">
                     <CreatorSearchBar />
                   </span>
                 </div>

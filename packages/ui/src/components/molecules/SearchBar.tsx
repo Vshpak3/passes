@@ -23,7 +23,7 @@ export const SearchBar = <T,>({
 }: PropsWithChildren<SearchBarProps<T>>) => {
   return (
     <Combobox<T> onChange={onSelect} value={searchValue as unknown as T}>
-      <div className="relative flex flex-col">
+      <div className="relative flex w-full flex-col">
         <Combobox.Button as="div">
           <div className="relative flex items-center gap-3">
             <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2" />

@@ -54,7 +54,7 @@ const MessagesPage = () => {
               <SectionTitle>Messages</SectionTitle>
             </div>
           )}
-          <div className="z-[1000] pt-2">
+          <div className="z-[1000] mr-8 pt-2">
             <CreatorSearchBar />
           </div>
         </div>

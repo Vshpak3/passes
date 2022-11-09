@@ -27,35 +27,29 @@ module.exports = {
       colors: {
         ...radixColors,
         passes: {
-          "primary-color": "#FF51A8",
-          "secondary-color": "#9C4DC1",
-          "tertiary-color": "#F65D02",
-          "dark-gray": "#999999",
-          "blue-100": "#598BF4",
-          "blue-200": "#b3bee799",
+          "primary-color": "#FF51A8", // rename to primary
+          "secondary-color": "#9C4DC1", // rename to secondary
+          "tertiary-color": "#F65D02", // rename to tertiary
+          "dark-gray": "#999999", // rename to gray
+          black: "#12070E",
+          "blue-100": "#598BF4", // rename to info
           "purple-100": "#B53BEC",
           "purple-200": "#1A131C",
-          "pink-50": "#FF60DC",
           "pink-100": "#B52A6F",
           "dark-100": "#28282C",
           "dark-200": "#2C282D",
-          "dark-500": "#191919",
           "dark-700": "#100C11",
           "gray-100": "#A09FA6",
           "gray-200": "#0E0A0F",
           "gray-300": "#322F33",
           "gray-400": "#767676",
-          "green-100": "#7AF086",
           "gray-200": "#767676",
           "gray-600": "#3E3E44",
           "gray-700": "#34343A",
           "gray-800": "#979797",
           "gray-900": "#D0D5DD",
           "white-100": "#ffffff",
-          green: "#71CB6F",
-          red: "#ED6B66",
-          yellow: "#C9BC43",
-          black: "#12070E"
+          green: "#71CB6F" // rename to success
         }
       },
       fontFamily: {
