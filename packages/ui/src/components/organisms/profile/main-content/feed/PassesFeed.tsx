@@ -30,7 +30,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
           return <PassCard className="w-[200px]" pass={arg} />
         }}
-        className="m-auto flex flex-row flex-wrap gap-3 pb-20"
+        className="flex m-auto flex-row flex-wrap gap-3 pb-20"
         emptyElement={<span>No memberships available</span>}
         fetch={async (req: GetPassesRequestDto) => {
           const api = new PassApi()

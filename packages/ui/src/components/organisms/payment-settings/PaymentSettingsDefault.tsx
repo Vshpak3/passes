@@ -26,19 +26,19 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
     defaultPayinMethod?.method !== PayinMethodDtoMethodEnum.None
 
   const defaultPaymentCard = defaultCard ? (
-    <div className="mt-3 flex gap-6">
+    <div className="flex mt-3 gap-6">
       <CreditCardEntry card={defaultCard} showName={false} />
     </div>
   ) : null
   const defaultPaymentNone = (
-    <div className="mt-3 mr-2 flex gap-6 rounded-full border-2 border-passes-dark-200 bg-[#18090E] py-2 px-4 font-[500]">
+    <div className="flex mt-3 mr-2 gap-6 rounded-full border-2 border-passes-dark-200 bg-[#18090E] py-2 px-4 font-[500]">
       None
     </div>
   )
   const defaultPaymentPhantom = () => {
     const payInMethodChain = defaultPayinMethod?.chain
     return (
-      <div className="mt-3 flex flex-row items-center">
+      <div className="flex mt-3 flex-row items-center">
         <PhantomIcon width="40px" />
         <span className="mx-3 font-[700]">Phantom Wallet</span>
         <span>
@@ -53,7 +53,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
     const payInMethodChain = defaultPayinMethod?.chain
     const coin = payInMethodChain ? `(${payInMethodChain})` : ""
     return (
-      <div className="mt-3 flex flex-row items-center">
+      <div className="flex mt-3 flex-row items-center">
         <MetamaskIcon width="40px" />
         <span className="mx-3 font-[700]">Metamask Wallet</span>
         <span>{`${type} ${coin.toUpperCase()}`}</span>
@@ -77,7 +77,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
   }
 
   return (
-    <div className="relative my-8 flex flex-col gap-6 xl:flex-row">
+    <div className="flex relative my-8 flex-col gap-6 xl:flex-row">
       <div
         className={classNames(
           hasDefaultPaymentMethod

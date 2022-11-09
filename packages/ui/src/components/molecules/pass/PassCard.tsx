@@ -102,7 +102,7 @@ export const PassCard: FC<PassCardProps> = ({
           </div>
         </div>
         {pass.type === PassDtoTypeEnum.Subscription && (
-          <div className="mt-2 flex w-full flex-row items-center justify-between">
+          <div className="flex mt-2 w-full flex-row items-center justify-between">
             <div className="flex flex-col">
               {pass.totalMessages !== null && pass.totalMessages > 0 && (
                 <span className="text-sm text-white md:text-xs">
@@ -141,7 +141,7 @@ export const PassCard: FC<PassCardProps> = ({
             {formatText(pass.description)}
           </p>
         </div>
-        <div className="mt-2 flex w-full items-center justify-between text-sm font-medium leading-[16px]">
+        <div className="flex mt-2 w-full items-center justify-between text-sm font-medium leading-[16px]">
           <span className="block text-xs font-normal leading-[23px] text-white/70">
             {pass.totalSupply ? (
               <p>

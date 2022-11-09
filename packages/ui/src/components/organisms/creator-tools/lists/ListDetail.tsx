@@ -144,7 +144,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
 
   return (
     <div className="text-white">
-      <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
+      <div className="flex absolute top-[160px] items-center justify-between gap-[10px] px-7">
         <div onClick={() => router.back()}>
           <ArrowLeft className="cursor-pointer" height="16" width="16" />
         </div>
@@ -227,7 +227,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             )
           }}
           emptyElement={
-            <div className="mt-[10px] flex h-[40px] w-full flex-row items-center justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
+            <div className="flex mt-[10px] h-[40px] w-full flex-row items-center justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
               <div className="flex flex-row items-center gap-[10px]">
                 <InfoIconOutlined />
                 <span>
