@@ -50,7 +50,7 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
         type="button"
       >
         <ChevronLeft
-          className={classNames({ "opacity-[0.5]": disablePast })}
+          className={classNames({ "opacity-[0.64]": disablePast })}
           height="24"
           width="24"
         />
@@ -67,7 +67,7 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
         type="button"
       >
         <ChevronRight
-          className={classNames({ "opacity-[0.5]": disableFuture })}
+          className={classNames({ "opacity-[0.64]": disableFuture })}
           height="24"
           width="24"
         />

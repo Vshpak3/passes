@@ -109,7 +109,7 @@ const ChangePassword = () => {
         <Button
           className="mt-6 w-auto !px-[52px]"
           disabled={isSubmitting}
-          disabledClass="opacity-[0.5]"
+          disabledClass="opacity-[0.64]"
           type={ButtonTypeEnum.SUBMIT}
           variant="pink"
         >

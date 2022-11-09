@@ -14,12 +14,12 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   username,
   displayName,
   linked = false,
-  displayNameClassName = "text-base md:text-lg"
+  displayNameClassName = "text-base"
 }) => {
   const text = (
     <div className="flex flex-row items-center truncate">
       <span className={displayNameClassName}>{displayName}</span>
-      <Text className="ml-2 text-gray-500 lg:block" fontSize={11}>
+      <Text className="ml-2 text-gray-500 lg:block" fontSize={14}>
         {" @" + username}
       </Text>
     </div>

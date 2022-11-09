@@ -111,7 +111,7 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
         </Button>
         <Button
           disabled={!reportValue}
-          disabledClass="opacity-[0.5]"
+          disabledClass="opacity-[0.64]"
           onClick={onFanReport}
         >
           <Text className="text-white">Report</Text>

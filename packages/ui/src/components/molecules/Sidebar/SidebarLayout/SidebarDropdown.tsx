@@ -27,10 +27,10 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
           <Disclosure.Button className="block">
             <span
               className={classNames(
-                "group flex cursor-pointer items-center py-3 pr-0 text-left text-base font-semibold tracking-[0.003em] hover:text-white",
+                "group flex cursor-pointer items-center py-3 pr-0 text-left text-base text-[19px] font-semibold tracking-[0.003em]",
                 isItemActive
                   ? "text-passes-primary-color"
-                  : "text-[#eeedef]/50 group-hover:text-white"
+                  : "text-white hover:text-[#ffffff]/50"
               )}
             >
               <item.icon
@@ -38,7 +38,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 className={classNames(
                   isItemActive
                     ? "fill-transparent stroke-passes-primary-color stroke-2"
-                    : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                    : "stroke-[#ffffff] group-hover:stroke-[#ffffff]/50",
                   "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
                 )}
               />

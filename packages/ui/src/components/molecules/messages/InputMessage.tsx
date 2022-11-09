@@ -229,7 +229,7 @@ export const InputMessage: FC<InputMessageProps> = ({
 
   return (
     <form
-      className="flex w-full border-t border-[#fff]/10"
+      className="flex w-full border-t border-[#3A444C]/[0.64]"
       onSubmit={handleSubmit(submitMessage)}
     >
       <div className="flex w-full flex-col px-[10px] pt-2 md:px-[30px]">
@@ -316,7 +316,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             isCreator
               ? "items-center justify-between md:-ml-4 md:flex-nowrap"
               : "flex-nowrap justify-end",
-            "mb-5 flex w-full flex-wrap border-b border-[#fff]/10 py-4 md:mb-0 md:flex-nowrap md:border-0 md:pt-5",
+            "mb-5 flex w-full flex-wrap border-b border-[#3A444C]/[0.64] py-4 md:mb-0 md:flex-nowrap md:border-0 md:pt-5",
             Object.values(errors)[0] && "!pt-0"
           )}
         >

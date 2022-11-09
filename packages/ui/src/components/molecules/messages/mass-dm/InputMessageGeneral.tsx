@@ -120,7 +120,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
   const scheduledTime = watch("scheduledAt")
   return (
     <form
-      className="flex w-full border-t border-[#fff]/10"
+      className="flex w-full border-t border-[#3A444C]/[0.64]"
       onSubmit={handleSubmit(submitMessage)}
     >
       <div className="flex w-full flex-col px-[30px] pt-2">

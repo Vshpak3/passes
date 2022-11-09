@@ -44,7 +44,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
 
   return (
     <div className="flex h-24 flex-col items-start backdrop-blur-[50px]">
-      <div className="flex w-full flex-row items-center justify-between border-b border-[#fff]/10 px-5 py-4">
+      <div className="flex w-full flex-row items-center justify-between border-b border-[#3A444C]/[0.64] px-5 py-4">
         {gallery ? (
           <MessagesChannelGalleryHeader
             gallery={gallery}
@@ -71,7 +71,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               </a>
             </div>
             <div className="flex flex-col">
-              <div className="flex flex-col items-start gap-2 pl-3">
+              <div className="flex flex-col items-start gap-[3px] pl-3">
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
                   linked
@@ -81,7 +81,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                   <div className="flex w-full items-center justify-between">
                     <div className="flex items-center justify-start gap-[10px]">
                       <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
-                        <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-1 px-3 text-sm font-normal text-[#ffff]">
+                        <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
                           Total Spent
                         </span>
                         <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">

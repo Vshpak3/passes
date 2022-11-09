@@ -75,7 +75,7 @@ export const RequestPayouts = () => {
           </div>
         </div>
         <div className="flex-1">
-          <div className="mb-[15px] text-[16px] font-[500] opacity-[0.5]">
+          <div className="mb-[15px] text-[16px] font-[500] opacity-[0.64]">
             Your earnings balance must be at least $50.00 to request a payout.
             Payouts are at most once every 5 days.
           </div>
@@ -93,7 +93,7 @@ export const RequestPayouts = () => {
                 >
                   <div className="flex items-center gap-[5px]">
                     <ClockIcon className="h-[20px] w-[20px] fill-white" />
-                    <span className="text-[16px] font-[400] opacity-[0.5]">
+                    <span className="text-[16px] font-[400] opacity-[0.64]">
                       {creatorSettings
                         ? PAYOUT_FREQUENCY_OPTIONS.filter(
                             (option) =>

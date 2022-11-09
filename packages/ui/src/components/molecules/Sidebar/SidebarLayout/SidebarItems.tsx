@@ -7,7 +7,7 @@ import { SidebarNavigation } from "./Types"
 interface SidebarItemProps {
   isActive: boolean
   item: SidebarNavigation
-  isDropdown: boolean
+  isDropdown?: boolean
 }
 
 export const SidebarItem: FC<SidebarItemProps> = ({
@@ -18,25 +18,22 @@ export const SidebarItem: FC<SidebarItemProps> = ({
   return (
     <Link
       as={item.href}
-      className={classNames(
-        isActive
-          ? "text-passes-primary-color"
-          : "text-[#eeedef]/50 group-hover:text-white",
-        "group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em] text-white"
-      )}
+      className="group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em]"
       href={item.href}
     >
       <span
         className={classNames(
           isDropdown ? "py-2" : "py-3",
-          "group-hover:stroke-[#ffffff]/8 group flex cursor-pointer items-center group-hover:text-white"
+          "group flex cursor-pointer items-center"
         )}
         key={item.id}
       >
         <span
           className={classNames(
-            isActive && "font-bold text-passes-primary-color",
-            "flex flex-row"
+            isActive
+              ? "font-bold text-passes-primary-color"
+              : "text-white group-hover:text-[#ffffff]/50",
+            "flex flex-row text-[19px]"
           )}
         >
           {item.icon && (
@@ -44,8 +41,8 @@ export const SidebarItem: FC<SidebarItemProps> = ({
               aria-hidden="true"
               className={classNames(
                 isActive
-                  ? "text- fill-transparent stroke-passes-primary-color stroke-2"
-                  : "stroke-[#ffffff]/50 group-hover:stroke-[#ffffff]/80",
+                  ? "text-fill-transparent stroke-passes-primary-color stroke-2"
+                  : " stroke-[#ffffff] group-hover:stroke-[#ffffff]/50",
                 "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
               )}
             />

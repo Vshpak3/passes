@@ -28,11 +28,12 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
       </Button>
       <div className={`${isMobile ? "" : "hidden"} lg:flex`}>
         <Button
-          className="mt-4 !px-4 !py-5"
+          className="mt-4 rounded-[5px]"
+          fontSize={16}
           onClick={() => setIsNewPostModalOpen(true)}
           variant="pink"
         >
-          Create New Post
+          <span className="px-[15px] py-[9px]">Create New Post</span>
         </Button>
       </div>
     </>

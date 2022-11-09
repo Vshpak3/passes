@@ -96,7 +96,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
         </Button>
         <Button
           disabled={!blockValue}
-          disabledClass="opacity-[0.5]"
+          disabledClass="opacity-[0.64]"
           onClick={onFanBlock}
         >
           <Text className="text-white">Confirm</Text>

@@ -83,7 +83,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
     <>
       {!removed && (
         <div className="mt-6 flex">
-          <div className="flex !min-h-[10px] w-full grow flex-col items-stretch gap-4 border-y-[0.5px] border-gray-600 py-5 md:min-h-[400px] md:pt-5">
+          <div className="flex !min-h-[10px] w-full grow flex-col items-stretch gap-4 border-y-[1px] border-[#3A444C]/[0.64] py-5 md:min-h-[400px] md:pt-5">
             <PostHeader
               createdAt={createdAt}
               displayName={commenterDisplayName}

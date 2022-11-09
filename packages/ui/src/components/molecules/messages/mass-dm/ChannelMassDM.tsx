@@ -44,9 +44,9 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
   )
 
   return (
-    <div className="col-span-9 overflow-y-hidden border-r border-[#fff]/10 p-4 backdrop-blur-[50px] lg:col-span-3">
+    <div className="col-span-9 overflow-y-hidden border-r border-[#3A444C]/[0.64] p-4 backdrop-blur-[50px] lg:col-span-3">
       <div className="flex flex-col gap-7">
-        <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
+        <div className="flex flex-col gap-7 border-b border-[#3A444C]/[0.64] pb-6">
           <span className="text-[16px] font-medium leading-[24px]">
             Include Lists
           </span>
@@ -55,7 +55,7 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
             selectedListIds={selectedLists.map((list) => list.listId)}
           />
         </div>
-        <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
+        <div className="flex flex-col gap-7 border-b border-[#3A444C]/[0.64] pb-6">
           <span className="text-[16px] font-medium leading-[24px]">
             Include Passes
           </span>
@@ -64,7 +64,7 @@ export const ChannelMassDM: FC<ChannelListsProps> = ({
             selectedPassIds={selectedPasses.map((pass) => pass.passId)}
           />
         </div>
-        <div className="flex flex-col gap-7 border-b border-[#fff]/10 pb-6">
+        <div className="flex flex-col gap-7 border-b border-[#3A444C]/[0.64] pb-6">
           <span className="text-[16px] font-medium leading-[24px]">
             Exclude Lists
           </span>

@@ -72,7 +72,7 @@ const Username: FC = () => {
             username === user?.username ||
             disableForm
           }
-          disabledClass="opacity-[0.5]"
+          disabledClass="opacity-[0.64]"
           type={ButtonTypeEnum.SUBMIT}
           variant="pink"
         >

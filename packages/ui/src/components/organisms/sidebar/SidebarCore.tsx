@@ -2,13 +2,11 @@ import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import LogoutIcon from "public/icons/sidebar/logout.svg"
 import { FC } from "react"
 
-import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
 import { SidebarDropdown } from "src/components/molecules/Sidebar/SidebarLayout/SidebarDropdown"
 import { SidebarItem } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
 interface SidebarProps {
@@ -20,7 +18,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { user } = useUser()
 
   return (
-    <header className="col-span-3 h-screen w-full items-end border-r-[0.5px] border-gray-600 md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
+    <header className="col-span-3 h-screen w-full items-end border-r-[1px] border-[#3A444C]/[0.64] md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
       <div className="flex h-full w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
           <div>
@@ -39,7 +37,6 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
                   {!item.children ? (
                     <SidebarItem
                       isActive={item.id === active}
-                      isDropdown={false}
                       item={item}
                       key={`sidebar-${item.id}`}
                     />
@@ -55,9 +52,9 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               <AuthWrapper>
                 {user?.isCreator ? (
                   <NewPostButton />
-                ) : isOver18(user) ? (
-                  <BecomeCreatorButton />
-                ) : null}
+                ) : //  isOver18(user) ? (
+                //   <BecomeCreatorButton />
+                null}
               </AuthWrapper>
             </nav>
           </div>
