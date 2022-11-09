@@ -10,7 +10,7 @@ import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
 import { MAX_PINNED_PASSES } from "src/config/pass"
 import { redirectUnauthedToLogin } from "src/helpers/authRouter"
-import { formatText } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
 import { useUser } from "src/hooks/useUser"
@@ -99,7 +99,7 @@ export const PassCard: FC<PassCardProps> = ({
                 "w-full py-2"
               )}
             >
-              ${pass.price} / {getPassType(pass.type)}
+              {formatCurrency(pass.price)} / {getPassType(pass.type)}
             </div>
           </div>
           {pass.type === PassDtoTypeEnum.Subscription && (

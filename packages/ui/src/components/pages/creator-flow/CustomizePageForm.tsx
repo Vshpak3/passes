@@ -335,7 +335,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
 
         <div className="mb-6 flex gap-[6px]">
           <Checkbox
-            className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-[#3A444C]/[0.64] dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             labelClassName="text-[#b3bee7] opacity-[0.6]"
             name="isAdult"
             register={register}

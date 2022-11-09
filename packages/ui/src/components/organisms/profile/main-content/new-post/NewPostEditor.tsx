@@ -185,7 +185,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     <form onSubmit={handleSubmit(onSubmit)}>
       <div
         className={classNames(
-          "flex flex-col items-start justify-start border-gray-600 p-5 md:px-7 md:py-5",
+          "flex flex-col items-start justify-start border-[#3A444C]/[0.64] p-5 md:px-7 md:py-5",
           popup ? "bg-[#12070E]/75 backdrop-blur" : "border-y-[0.5px]"
         )}
       >

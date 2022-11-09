@@ -33,7 +33,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
         {() => (
           <Checkbox
             checked={passValue === MessageTypesEnum.UNLIMITED}
-            className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-[#3A444C]/[0.64] dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             label="Unlimited free messages"
             labelClassName="text-left text-[16px] text-[#ffff]/90"
             name={MessageTypesEnum.UNLIMITED}
@@ -47,7 +47,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
           <div className="flex items-center">
             <Checkbox
               checked={passValue === MessageTypesEnum.NUMBER}
-              className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+              className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-[#3A444C]/[0.64] dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
               label="Set number of free messages per month"
               labelClassName="text-left text-[16px] text-[#ffff]/90"
               name={MessageTypesEnum.NUMBER}
@@ -69,7 +69,7 @@ export const PassDirectMessage: FC<PassDirectMessageProps> = ({
         {() => (
           <Checkbox
             checked={passValue === MessageTypesEnum.NO_FREE_MESSAGE}
-            className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            className="h-[14px] w-[14px] rounded-[50%] border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-[#3A444C]/[0.64] dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
             label="No free messages"
             labelClassName="text-left text-[16px] text-[#ffff]/90"
             name={MessageTypesEnum.NO_FREE_MESSAGE}

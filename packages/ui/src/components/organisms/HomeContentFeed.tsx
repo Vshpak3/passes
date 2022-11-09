@@ -16,7 +16,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { FollowButton } from "src/components/molecules/FollowButton"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { useFeaturedCreators } from "src/hooks/useFeaturedCreators"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
@@ -41,7 +41,7 @@ const ContentFeedLoading = (
 )
 
 const ContentFeedEnd = (
-  <div className="mt-[15px] flex justify-center">
+  <div className="mt-[15px] flex justify-center border-t-[1px] border-[#3A444C]/[0.64]">
     <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
       <span className="font-medium">
         No more posts are available at this time!
@@ -86,17 +86,11 @@ export const HomeContentFeed: FC = () => {
           <SectionTitle>Suggested</SectionTitle>
           {featuredCreators?.map((creator) => (
             <div
-              className="flex items-center border-y border-gray-600/25 py-4"
+              className="flex items-center border-y border-[#3A444C]/[0.64] py-4"
               key={creator.userId}
             >
               <Link className="flex flex-1" href={`/${creator.username}`}>
-                <ProfileThumbnail userId={creator.userId} />
-                <div className="ml-2 flex flex-col">
-                  <span>{creator.displayName}</span>
-                  <span className="text-passes-dark-gray">
-                    @{creator.username}
-                  </span>
-                </div>
+                <ProfileWidget isCreator user={creator} />
               </Link>
               <FollowButton
                 className="min-w-[89px]"

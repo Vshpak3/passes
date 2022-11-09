@@ -11,7 +11,7 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
 }) => {
   return (
     <Disclosure>
-      <div className="border-r-[0.5px] border-gray-600">
+      <div className="border-r-[0.5px] border-[#3A444C]/[0.64]">
         <Disclosure.Button>
           <span
             className="group my-4 mx-3 flex cursor-pointer items-center"

@@ -22,7 +22,7 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
           <span className="flex flex-row items-center text-lg font-medium leading-6 text-white">
             {user.displayName}
             {isCreator && (
-              <span className="ml-2">
+              <span className="ml-2 min-h-[18px] min-w-[18px]">
                 <CheckVerified height={18} width={18} />
               </span>
             )}

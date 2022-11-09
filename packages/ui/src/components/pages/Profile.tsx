@@ -33,7 +33,7 @@ const ProfileUnmemo: FC = () => {
             )}
           </div>
           {!isTablet && (
-            <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-gray-600">
+            <div className="sticky col-span-3 flex min-h-screen flex-col border-l-[0.5px] border-[#3A444C]/[0.64]">
               <PassesSidebar />
             </div>
           )}

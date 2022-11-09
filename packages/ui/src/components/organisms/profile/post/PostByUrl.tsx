@@ -20,7 +20,7 @@ export const PostByUrl: FC<PostByUrlProps> = ({ post }) => (
       <div className="col-span-7 w-full pt-20 lg:col-span-4">
         <Post post={post} postByUrl />
       </div>
-      <div className="col-span-3 hidden h-screen border-l-[0.5px] border-gray-600 lg:block" />
+      <div className="col-span-3 hidden h-screen border-l-[0.5px] border-[#3A444C]/[0.64] lg:block" />
     </div>
   </>
 )
