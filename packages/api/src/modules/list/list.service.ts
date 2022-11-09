@@ -14,6 +14,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { createPaginatedQuery } from '../../util/page.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
@@ -87,11 +88,16 @@ export class ListService {
     })
 
     await this.dbWriter.transaction(async (trx) => {
-      await trx<ListEntity>(ListEntity.table).insert({
-        id: listId,
-        user_id: userId,
-        name: createListDto.name,
-      })
+      await createOrThrowOnDuplicate(
+        () =>
+          trx<ListEntity>(ListEntity.table).insert({
+            id: listId,
+            user_id: userId,
+            name: createListDto.name,
+          }),
+        this.logger,
+        `List with name "${createListDto.name}" already exists`,
+      )
       if (listMemberRecords.length !== 0) {
         await trx<ListMemberEntity>(ListMemberEntity.table)
           .insert(listMemberRecords)

@@ -1,4 +1,11 @@
-import { Entity, Enum, Index, ManyToOne, Property } from '@mikro-orm/core'
+import {
+  Entity,
+  Enum,
+  Index,
+  ManyToOne,
+  Property,
+  Unique,
+} from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
 import { UserEntity } from '../../user/entities/user.entity'
@@ -7,6 +14,7 @@ import { ListTypeEnum } from '../enum/list.type.enum'
 
 @Entity()
 @Index({ properties: ['created_at'] })
+@Unique({ properties: ['name', 'user_id'] })
 export class ListEntity extends BaseEntity {
   static table = 'list'
 
