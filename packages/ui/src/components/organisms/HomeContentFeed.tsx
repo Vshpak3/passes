@@ -41,7 +41,7 @@ const ContentFeedLoading = (
 )
 
 const ContentFeedEnd = (
-  <div className="mt-[15px] flex justify-center border-t-[1px] border-[#3A444C]/[0.64]">
+  <div className="mt-[15px] flex justify-center border-t-[1px] border-passes-gray">
     <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
       <span className="font-medium">
         No more posts are available at this time!
@@ -78,7 +78,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="sticky col-span-3 hidden min-h-screen max-w-[500px] flex-col border-l-[1px] border-[#3A444C]/[0.64] lg:flex lg:px-2 lg:pr-8 xl:pl-8">
+      <div className="sticky col-span-3 hidden min-h-screen max-w-[500px] flex-col border-l-[1px] border-passes-gray lg:flex lg:px-2 lg:pr-8 xl:pl-8">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>
@@ -86,7 +86,7 @@ export const HomeContentFeed: FC = () => {
           <SectionTitle>Suggested</SectionTitle>
           {featuredCreators?.map((creator) => (
             <div
-              className="flex items-center border-t border-[#3A444C]/[0.64] py-4"
+              className="flex items-center border-t border-passes-gray py-4"
               key={creator.userId}
             >
               <Link className="flex flex-1" href={`/${creator.username}`}>

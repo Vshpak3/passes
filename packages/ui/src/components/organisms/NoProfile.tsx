@@ -21,7 +21,7 @@ export const NoProfile = () => {
           </span>
         </Link>
       </div>
-      <div className="col-span-3 h-screen border-[#3A444C]/[0.64] lg:border-l-[0.5px]" />
+      <div className="col-span-3 h-screen border-passes-gray lg:border-l-[0.5px]" />
     </div>
   )
 }

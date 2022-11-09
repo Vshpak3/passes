@@ -73,12 +73,12 @@ export const ChannelList: FC<ChannelListProps> = ({
   return (
     <div
       className={classNames(
-        "col-span-9 h-full overflow-y-hidden border-r border-[#3A444C]/[0.64] pt-20 lg:col-span-3 lg:pt-0",
+        "col-span-9 h-full overflow-y-hidden border-r border-passes-gray pt-20 lg:col-span-3 lg:pt-0",
         openChannelView ? "hidden" : "block",
         "lg:block"
       )}
     >
-      <div className="border-b border-[#3A444C]/[0.64] p-3">
+      <div className="border-b border-passes-gray p-3">
         <ChannelSearchInput
           handleSearch={handleChangeSearch}
           placeholder="Search ..."

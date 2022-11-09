@@ -59,7 +59,7 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
         />
       )}
       <div className="col-span-12 mx-auto w-[100%] lg:col-span-10 lg:max-w-[680px]">
-        <div className="flex grow flex-col items-stretch gap-4 border-y-[0.5px] border-[#3A444C]/[0.64] p-5 sm:px-10 md:min-h-[400px] md:px-10 md:pt-5 lg:px-5">
+        <div className="flex grow flex-col items-stretch gap-4 border-y-[0.5px] border-passes-gray p-5 sm:px-10 md:min-h-[400px] md:px-10 md:pt-5 lg:px-5">
           <PassNameInput errors={errors} register={register} />
           <PassFileUpload
             errors={errors}

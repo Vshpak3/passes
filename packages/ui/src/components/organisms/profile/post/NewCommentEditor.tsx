@@ -92,7 +92,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       className="flex w-full flex-col items-center gap-2 pt-5 md:flex-row md:gap-0"
       onSubmit={onSubmit}
     >
-      <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-[5px] border border-[#3A444C]/[0.64] bg-black/10 p-4">
+      <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-[5px] border border-passes-gray bg-black/10 p-4">
         <CustomComponentMentionEditor
           isReset={isReset}
           onInputChange={(params: NewPostTextFormProps) => {

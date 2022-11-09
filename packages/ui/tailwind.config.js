@@ -30,7 +30,8 @@ module.exports = {
           "primary-color": "#FF51A8", // rename to primary
           "secondary-color": "#9C4DC1", // rename to secondary
           "tertiary-color": "#F65D02", // rename to tertiary
-          "dark-gray": "#999999", // rename to gray
+          "dark-gray": "#999999",
+          gray: "#2C2E36",
           black: "#12070E",
           "blue-100": "#598BF4", // rename to info
           "purple-100": "#B53BEC",

@@ -126,7 +126,7 @@ const PostUnmemo: FC<PostProps> = ({
           <div
             className={classNames(
               isPinned && "bg-passes-pink-100/10",
-              "flex !min-h-[10px] w-full flex-grow flex-col items-stretch gap-4 border-t-[1px] border-[#3A444C]/[0.64] py-5 md:min-h-[400px] md:pt-5"
+              "flex !min-h-[10px] w-full flex-grow flex-col items-stretch gap-4 border-t-[1px] border-passes-gray py-5 md:min-h-[400px] md:pt-5"
             )}
           >
             <PostHeader

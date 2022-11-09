@@ -96,7 +96,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
 
   return (
     <div className="flex flex-col gap-[32px]">
-      <div className="relative flex w-fit flex-col gap-[8px] rounded-[6px] border border-solid border-[#3A444C]/[0.64] bg-[#100C11] p-[10px]">
+      <div className="relative flex w-fit flex-col gap-[8px] rounded-[6px] border border-solid border-passes-gray bg-[#100C11] p-[10px]">
         <h3 className="text-2xl font-bold">
           {dateDiff(startDate, endDate)} Days
         </h3>

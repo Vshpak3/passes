@@ -235,7 +235,7 @@ export const InputMessage: FC<InputMessageProps> = ({
 
   return (
     <form
-      className="flex w-full border-t border-[#3A444C]/[0.64]"
+      className="flex w-full border-t border-passes-gray"
       onSubmit={handleSubmit(submitMessage)}
     >
       <div className="flex w-full flex-col pt-2">
@@ -308,7 +308,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mb-5 flex w-full flex-row items-center justify-between border-b border-[#3A444C]/[0.64] py-4 md:mb-0 md:border-0 md:pt-5",
+            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-4 md:mb-0 md:border-0 md:pt-5",
             Object.values(errors)[0] && "!pt-0"
           )}
         >
