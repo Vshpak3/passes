@@ -43,6 +43,7 @@ export function mediaContentUploadPath(
 ) {
   return path.join(
     'upload',
+    contentType,
     userId,
     `${contentId}.${getContentTypeFormat(contentType)}`,
   )
@@ -69,6 +70,7 @@ export function profileImageUploadPath(
   return path.join(
     'profile',
     'upload',
+    type,
     userId,
     `profile-${type}.${ContentFormatEnum.IMAGE}`,
   )
