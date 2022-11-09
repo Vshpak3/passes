@@ -30,7 +30,8 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
           return <PassCard className="w-[200px]" pass={arg} />
         }}
-        className="m-auto flex flex-row flex-wrap gap-3 pb-20"
+        childrenEnd
+        className="m-auto flex flex-row flex-wrap justify-evenly gap-3 pb-20"
         emptyElement={<span>No memberships available</span>}
         fetch={async (req: GetPassesRequestDto) => {
           const api = new PassApi()
@@ -41,7 +42,16 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         fetchProps={{ creatorId, type: selectedPassType }}
         keyValue={`pass/creator-passes/${creatorId}`}
         style={{ overflow: "visible" }}
-      />
+      >
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+      </InfiniteScrollPagination>
     </div>
   )
 }

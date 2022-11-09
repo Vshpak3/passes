@@ -14,7 +14,7 @@ interface PassHoldingCardProps {
 
 export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
   return (
-    <div className="col-span-1 box-border flex w-full min-w-[400px] max-w-[400px] flex-col justify-between rounded py-[24px] px-[16px]">
+    <div className="col-span-1 box-border flex w-full min-w-[300px] max-w-[300px] flex-col justify-between rounded py-[24px] px-[16px]">
       <div className="max-w-[374px] rounded-[15px]">
         <PassMedia
           animationType={passHolder.animationType}
