@@ -170,12 +170,11 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   )
 
   return (
-    <div className="text-white">
-      <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
+    <div className="relative text-white">
+      <div className="absolute top-[38px] left-[-20px] flex items-center justify-between gap-[10px] px-7">
         <div onClick={() => router.back()}>
           <ArrowLeft className="cursor-pointer" height="16" width="16" />
         </div>
-        <h1 className="text-xl font-bold">{listName}</h1>
       </div>
       <ul className="px-7">
         <li className="flex items-center justify-between border-b-2 border-gray-500 py-5">
