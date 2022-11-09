@@ -20,6 +20,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
@@ -168,7 +169,11 @@ export class PassService {
           `can not create a pass on chain ${data.chain}`,
         )
     }
-    await this.dbWriter<PassEntity>(PassEntity.table).insert(data)
+    await createOrThrowOnDuplicate(
+      () => this.dbWriter<PassEntity>(PassEntity.table).insert(data),
+      this.logger,
+      "can't use same pass title",
+    )
     return new CreatePassResponseDto(data.id)
   }
 
@@ -237,7 +242,11 @@ export class PassService {
         `can not create a pass on chain ${createPassDto.chain}`,
       )
     }
-    await this.dbWriter<PassEntity>(PassEntity.table).insert(data)
+    await createOrThrowOnDuplicate(
+      () => this.dbWriter<PassEntity>(PassEntity.table).insert(data),
+      this.logger,
+      "can't use same pass title",
+    )
 
     return new CreatePassResponseDto(data.id)
   }

@@ -208,7 +208,7 @@ export class PaymentService {
     this.postService = this.moduleRef.get(PostService, {
       strict: false,
     })
-    this.followService = this.moduleRef.get(PostService, {
+    this.followService = this.moduleRef.get(FollowService, {
       strict: false,
     })
   }

@@ -5,6 +5,7 @@ import {
   ManyToOne,
   Property,
   types,
+  Unique,
 } from '@mikro-orm/core'
 
 import { BaseEntity } from '../../../database/base-entity'
@@ -26,6 +27,7 @@ import { PassAnimationEnum } from '../enum/pass-animation.enum'
 import { PassImageEnum } from '../enum/pass-image.enum'
 
 @Entity()
+@Unique({ properties: ['creator_id', 'title'] })
 export class PassEntity extends BaseEntity {
   static table = 'pass'
 
