@@ -1,7 +1,7 @@
 import { PayinMethodDto, PostApi } from "@passes/api-client"
-import classNames from "classnames"
 import React, { FC, useCallback } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
@@ -36,7 +36,7 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
     })
   }, [payinMethod, postId])
 
-  const { blocked, submitting, loading, submit } = usePay(
+  const { blocked, loading, submit } = usePay(
     register,
     registerData,
     onSuccess,
@@ -44,17 +44,15 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
   )
 
   return (
-    <button
-      className={classNames(
-        isDisabled
-          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white opacity-[0.40]"
-          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white"
-      )}
-      disabled={!!blocked || submitting || isDisabled}
+    <Button
+      big
+      className="mt-4"
+      disabled={!!blocked || loading || isDisabled}
+      fontSize={16}
       onClick={submit}
-      type="submit"
+      variant="pink"
     >
       {loading ? "Processing..." : "Buy post"}
-    </button>
+    </Button>
   )
 }

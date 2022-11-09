@@ -38,7 +38,6 @@ export const usePay = (
 ) => {
   const [submitting, setSubmitting] = useState(false)
   const [redirecting, setRedirecting] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [blocked, setBlocked] = useState<PayinDataDtoBlockedEnum | undefined>(
     undefined
   )
@@ -189,7 +188,6 @@ export const usePay = (
       return
     }
     setSubmitting(true)
-    setLoading(true)
     let checkFunding = false
     try {
       const registerResponse = await registerPaymentFunc()
@@ -248,7 +246,6 @@ export const usePay = (
       }
     } finally {
       setSubmitting(false)
-      setLoading(false)
     }
   }, [
     blocked,
@@ -266,8 +263,7 @@ export const usePay = (
   }
   return {
     blocked,
-    submitting: submitting || redirecting,
-    loading,
+    loading: submitting || redirecting,
     submit,
     submitData,
     waiting

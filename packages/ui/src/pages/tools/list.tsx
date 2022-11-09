@@ -166,11 +166,11 @@ const FanLists: NextPage = () => {
             return await listApi.getLists({ getListsRequestsDto: req })
           }}
           fetchProps={fetchProps}
-          keyValue="/lists"
           hasInitialElement={newLists.length > 0}
+          keyValue="/lists"
         >
           {newLists.map((list, index) => (
-            <List list={list} removable key={index} />
+            <List key={index} list={list} removable />
           ))}
         </InfiniteScrollPagination>
       </ul>

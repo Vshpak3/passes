@@ -128,10 +128,10 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
                 !defaultSolMinting &&
                 wallet.authenticated && (
                   <Button
+                    className="px-6 py-2"
                     onClick={async () =>
                       await setDefaultWallet(wallet.walletId, wallet.chain)
                     }
-                    className="px-6 py-2"
                     variant="pink"
                   >
                     Set {wallet.chain.toUpperCase()} default

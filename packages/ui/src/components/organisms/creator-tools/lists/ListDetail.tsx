@@ -45,7 +45,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
   const [order, setOrder] = useState<Order>(Order.Asc)
 
-  const [newListsMembers, setNewListMembers] = useState<ListMemberDto[]>([])
+  const [newListsMembers, setNewListsMembers] = useState<ListMemberDto[]>([])
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -75,6 +75,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     }
   }, [order, orderType, search, listId])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
@@ -91,32 +92,38 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     setOrder(order || "desc")
   }
 
-  const handleRemoveFan = useCallback(async (user_id: string) => {
-    try {
-      await listApi.removeListMembers({
-        removeListMembersRequestDto: {
-          listId,
-          userIds: [user_id]
-        }
-      })
-    } catch (error) {
-      errorMessage(error, true)
-    }
-  }, [])
+  const handleRemoveFan = useCallback(
+    async (user_id: string) => {
+      try {
+        await listApi.removeListMembers({
+          removeListMembersRequestDto: {
+            listId,
+            userIds: [user_id]
+          }
+        })
+      } catch (error) {
+        errorMessage(error, true)
+      }
+    },
+    [listId]
+  )
 
-  const handleAddFan = useCallback(async (user: ListMemberDto) => {
-    try {
-      await listApi.addListMembers({
-        addListMembersRequestDto: {
-          listId,
-          userIds: [user.userId]
-        }
-      })
-      setNewListMembers((listMembers) => [...listMembers, user])
-    } catch (error) {
-      errorMessage(error, true)
-    }
-  }, [])
+  const handleAddFan = useCallback(
+    async (user: ListMemberDto) => {
+      try {
+        await listApi.addListMembers({
+          addListMembersRequestDto: {
+            listId,
+            userIds: [user.userId]
+          }
+        })
+        setNewListsMembers((listMembers) => [...listMembers, user])
+      } catch (error) {
+        errorMessage(error, true)
+      }
+    },
+    [listId]
+  )
 
   const handleEditListName = useCallback(
     async (value: string) => {
@@ -145,7 +152,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
 
   const router = useRouter()
   useEffect(() => {
-    setNewListMembers([])
+    setNewListsMembers([])
   }, [fetchProps])
 
   const keyedComponent = useCallback(
@@ -153,14 +160,15 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
       return (
         <ListMember
           fanInfo={arg}
+          key={arg.listMemberId}
           onRemoveFan={handleRemoveFan}
           removable={listInfo?.type === ListDtoTypeEnum.Normal}
-          key={arg.listMemberId}
         />
       )
     },
-    [listInfo]
+    [handleRemoveFan, listInfo?.type]
   )
+
   return (
     <div className="text-white">
       <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
@@ -237,7 +245,6 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         </li>
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
           KeyedComponent={keyedComponent}
-          keySelector="userId"
           emptyElement={
             <div className="mt-[10px] flex h-[40px] w-full flex-row items-center justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
               <div className="flex flex-row items-center gap-[10px]">
@@ -260,15 +267,16 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             })
           }}
           fetchProps={fetchProps}
-          keyValue={`list/list-members/${listId}`}
           hasInitialElement={newListsMembers.length > 0}
+          keySelector="userId"
+          keyValue={`list/list-members/${listId}`}
         >
           {newListsMembers.map((listMember, index) => (
             <ListMember
               fanInfo={listMember}
-              removable
               key={index}
               onRemoveFan={handleRemoveFan}
+              removable
             />
           ))}
         </InfiniteScrollPagination>

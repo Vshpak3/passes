@@ -65,11 +65,11 @@ export const NumberInput: FC<NumberInputProps> = ({
           className,
           errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
         )}
+        onChange={onChange}
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
         step={type === "currency" ? "0.01" : "1"}
         type="number"
-        onChange={onChange}
       />
       {errors && errors[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>

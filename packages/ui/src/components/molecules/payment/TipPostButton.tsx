@@ -14,13 +14,17 @@ export const TipPostButton: FC<TipPostButton> = ({
   onClick
 }) => {
   return (
-    <Button
-      className="mt-4"
-      disabled={isDisabled}
-      onClick={onClick}
-      variant="pink"
-    >
-      {isLoading ? "Loading..." : "Send Tip"}
-    </Button>
+    <div className="flex w-full flex-row justify-end">
+      <Button
+        big
+        className="mt-4"
+        disabled={isDisabled}
+        fontSize={16}
+        onClick={onClick}
+        variant="pink"
+      >
+        {isLoading ? "Loading..." : "Send Tip"}
+      </Button>
+    </div>
   )
 }

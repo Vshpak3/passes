@@ -21,6 +21,7 @@ interface ButtonProps {
   active?: boolean
   type?: ButtonTypeEnum
   disabledClass?: string
+  big?: boolean
 }
 
 export const Button: FC<PropsWithChildren<ButtonProps>> = ({
@@ -33,6 +34,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   disabled,
   type = ButtonTypeEnum.BUTTON,
   disabledClass,
+  big = false,
   ...restOfProps
 }) => {
   let variantClassName = ""
@@ -58,6 +60,9 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-[500]"
       break
   }
+  if (big) {
+    fontSize = Math.max(16, fontSize)
+  }
 
   return (
     <button
@@ -66,7 +71,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         variantClassName,
         className,
         disabled && "cursor-auto border-[#3333]/80 bg-[#3333]/80",
-        disabled && disabledClass
+        disabled && disabledClass,
+        big && "py-4 px-8"
       )}
       data-focus-ring=""
       disabled={disabled}

@@ -203,7 +203,7 @@ export const InputMessage: FC<InputMessageProps> = ({
       handleSubmit(submitMessage)()
     }
   }
-  const { blocked, submitting, submit, submitData } = usePay(
+  const { blocked, loading, submit, submitData } = usePay(
     registerMessage,
     registerMessageData,
     onCallback
@@ -400,12 +400,12 @@ export const InputMessage: FC<InputMessageProps> = ({
                   !isNaN(tip) &&
                   !!blocked &&
                   blocked !== PayinDataDtoBlockedEnum.NoPayinMethod &&
-                  submitting
+                  loading
                 }
                 onClick={handleSubmit(submitMessage)}
                 type="button"
               >
-                {submitting
+                {loading
                   ? "Sending..."
                   : blocked ===
                     PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
