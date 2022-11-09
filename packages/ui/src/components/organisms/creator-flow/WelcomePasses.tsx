@@ -5,7 +5,7 @@ import SubscriptionIcon from "public/icons/subscription-pass.svg"
 import { ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 
-export function WelcomeToPasses() {
+export const WelcomeToPasses = () => {
   const router = useRouter()
 
   return (

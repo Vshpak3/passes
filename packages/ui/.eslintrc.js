@@ -19,6 +19,13 @@ module.exports = {
       "error",
       { allowSameFolder: true }
     ],
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: "arrow-function",
+        unnamedComponents: "arrow-function"
+      }
+    ],
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
     "react/no-unstable-nested-components": ["error", { allowAsProps: true }],
@@ -38,7 +45,6 @@ module.exports = {
     // Turned off since we currently don't follow these
     "react/button-has-type": "off",
     "react/forbid-component-props": "off",
-    "react/function-component-definition": "off",
     "react/jsx-max-depth": "off",
     "react/jsx-no-bind": "off",
     "react/jsx-no-literals": "off",
