@@ -14,7 +14,7 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { useComment } from "src/hooks/profile/useComment"
 
 interface CommentProps {
@@ -75,8 +75,9 @@ export const Comment: FC<CommentProps> = ({
         <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
           <div>
             <a href={`${window.location.origin}/${comment.commenterUsername}`}>
-              <ProfileThumbnail
+              <ProfileImage
                 key={comment.commenterId}
+                type="thumbnail"
                 userId={comment.commenterId}
               />
             </a>

@@ -5,7 +5,7 @@ import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 
 import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface ChannelListItemProps {
@@ -44,8 +44,9 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
     >
       <div className="flex">
         <div className="flex pr-[10px]">
-          <ProfileThumbnail
+          <ProfileImage
             key={channel.otherUserId}
+            type="thumbnail"
             userId={channel.otherUserId}
           />
         </div>

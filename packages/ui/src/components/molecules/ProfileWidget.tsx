@@ -2,7 +2,7 @@ import { ListMemberDto, UserDisplayInfoDto } from "@passes/api-client"
 import Link from "next/link"
 import React, { FC } from "react"
 
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { CheckVerified } from "src/icons/CheckVerified"
 
 type ProfileWidgetProps = {
@@ -17,7 +17,7 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
   return (
     <Link href={`/${user.username}`}>
       <div className="flex items-center">
-        <ProfileThumbnail key={user.userId} userId={user.userId} />
+        <ProfileImage key={user.userId} type="thumbnail" userId={user.userId} />
         <div className="ml-3 flex flex-col">
           <span className="flex flex-row items-center text-lg font-medium leading-6 text-white">
             {user.displayName}

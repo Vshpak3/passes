@@ -2,7 +2,7 @@ import { UserDisplayInfoDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC } from "react"
 
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 
 interface UserSearchResultProps extends UserDisplayInfoDto {
   active: boolean
@@ -28,7 +28,7 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
     >
       <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
         <div className="col-span-1 row-span-2 flex w-[75px] items-center justify-center">
-          <ProfileThumbnail key={userId} userId={userId} />
+          <ProfileImage key={userId} type="thumbnail" userId={userId} />
         </div>
       </div>
       <div className="col-start-2 row-span-2 w-full content-start">

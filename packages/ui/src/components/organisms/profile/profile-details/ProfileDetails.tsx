@@ -54,6 +54,7 @@ export const ProfileDetails: FC = () => {
             <ProfileImage
               onClick={() => setIsProfilePicModalOpen(true)}
               override={profileImageOverride}
+              type="image"
               userId={profileUserId}
             />
             <div className="flex w-full flex-col items-center pt-5">
@@ -92,6 +93,7 @@ export const ProfileDetails: FC = () => {
               <ProfileImage
                 onClick={() => setIsProfilePicModalOpen(true)}
                 override={profileImageOverride}
+                type="image"
                 userId={profileUserId}
               />
             </div>

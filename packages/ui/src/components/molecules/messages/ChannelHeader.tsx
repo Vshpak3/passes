@@ -5,7 +5,7 @@ import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { formatCurrency } from "src/helpers/formatters"
 import { useUser } from "src/hooks/useUser"
 import { useUserSpending } from "src/hooks/useUserSpending"
@@ -64,8 +64,9 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               <a
                 href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
               >
-                <ProfileThumbnail
+                <ProfileImage
                   key={selectedChannel.otherUserId}
+                  type="thumbnail"
                   userId={selectedChannel.otherUserId}
                 />
               </a>

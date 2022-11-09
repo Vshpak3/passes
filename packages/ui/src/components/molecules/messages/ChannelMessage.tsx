@@ -5,7 +5,7 @@ import { FC, memo } from "react"
 import TimeAgo from "react-timeago"
 
 import { MediaContent } from "src/components/molecules/content/MediaContent"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyMessageModal } from "src/hooks/context/useBuyMessageModal"
 import { DollarSymbol } from "src/icons/DollarSymbol"
@@ -65,7 +65,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
       >
         {!ownsMessage && (
           <div className="flex shrink-0 items-end">
-            <ProfileThumbnail key={senderId} userId={senderId} />
+            <ProfileImage key={senderId} type="thumbnail" userId={senderId} />
           </div>
         )}
         <div className="mx-2 flex flex-col items-end md:mx-4">
