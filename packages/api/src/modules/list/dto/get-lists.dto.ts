@@ -47,7 +47,7 @@ export class GetListsResponseDto
           this.updatedAt = lists[lists.length - 1].updatedAt
           break
         case ListOrderTypeEnum.NAME:
-          this.name = lists[lists.length - 1].name
+          this.name = lists[lists.length - 1].name ?? ''
           break
       }
     }

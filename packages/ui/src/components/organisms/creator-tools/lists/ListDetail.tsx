@@ -12,7 +12,7 @@ import {
 import { debounce } from "lodash"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
-import React, { FC, useCallback, useEffect, useState } from "react"
+import React, { FC, useCallback, useEffect, useMemo, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import {
@@ -40,11 +40,12 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [listName, setListName] = useState<string>("")
   const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
-  const [resets, setResets] = useState(0)
   const [search, setSearch] = useState<string>("")
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
   const [order, setOrder] = useState<Order>(Order.Asc)
+
+  const [newListsMembers, setNewListMembers] = useState<ListMemberDto[]>([])
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -53,7 +54,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         listId
       })
       setListInfo(listInfoRes)
-      setListName(listInfoRes.name)
+      setListName(listInfoRes.name ?? "")
     } catch (error) {
       errorMessage(error, true)
     }
@@ -65,14 +66,21 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchProps = useMemo(() => {
+    return {
+      order,
+      orderType,
+      search,
+      listId
+    }
+  }, [order, orderType, search, listId])
+
   const handleChangeSearch = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value.toLowerCase()
       setSearch(value)
-      setResets(resets + 1)
     }, DEBOUNCE_TIMEOUT),
-    [resets]
+    []
   )
 
   const onSortSelect = async ({
@@ -96,24 +104,19 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     }
   }, [])
 
-  const handleAddFan = useCallback(
-    async (user_id: string) => {
-      try {
-        await listApi.addListMembers({
-          addListMembersRequestDto: {
-            listId,
-            userIds: [user_id]
-          }
-        })
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        setResets(resets + 1)
-      } catch (error) {
-        errorMessage(error, true)
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [resets, setResets]
-  )
+  const handleAddFan = useCallback(async (user: ListMemberDto) => {
+    try {
+      await listApi.addListMembers({
+        addListMembersRequestDto: {
+          listId,
+          userIds: [user.userId]
+        }
+      })
+      setNewListMembers((listMembers) => [...listMembers, user])
+    } catch (error) {
+      errorMessage(error, true)
+    }
+  }, [])
 
   const handleEditListName = useCallback(
     async (value: string) => {
@@ -141,7 +144,23 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   )
 
   const router = useRouter()
+  useEffect(() => {
+    setNewListMembers([])
+  }, [fetchProps])
 
+  const keyedComponent = useCallback(
+    ({ arg }: ComponentArg<ListMemberDto>) => {
+      return (
+        <ListMember
+          fanInfo={arg}
+          onRemoveFan={handleRemoveFan}
+          removable={listInfo?.type === ListDtoTypeEnum.Normal}
+          key={arg.listMemberId}
+        />
+      )
+    },
+    [listInfo]
+  )
   return (
     <div className="text-white">
       <div className="absolute top-[160px] flex items-center justify-between gap-[10px] px-7">
@@ -217,15 +236,8 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           </div>
         </li>
         <InfiniteScrollPagination<ListMemberDto, GetListMembersResponseDto>
-          KeyedComponent={({ arg }: ComponentArg<ListMemberDto>) => {
-            return (
-              <ListMember
-                fanInfo={arg}
-                onRemoveFan={handleRemoveFan}
-                removable={listInfo?.type === ListDtoTypeEnum.Normal}
-              />
-            )
-          }}
+          KeyedComponent={keyedComponent}
+          keySelector="userId"
           emptyElement={
             <div className="mt-[10px] flex h-[40px] w-full flex-row items-center justify-between rounded-[6px] border border-[#2C282D] bg-gradient-to-r from-[#bf7af04d] to-[#000] px-[10px]">
               <div className="flex flex-row items-center gap-[10px]">
@@ -247,10 +259,19 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
               getListMembersRequestDto: req
             })
           }}
-          fetchProps={{ order, orderType, search, listId }}
+          fetchProps={fetchProps}
           keyValue={`list/list-members/${listId}`}
-          resets={resets}
-        />
+          hasInitialElement={newListsMembers.length > 0}
+        >
+          {newListsMembers.map((listMember, index) => (
+            <ListMember
+              fanInfo={listMember}
+              removable
+              key={index}
+              onRemoveFan={handleRemoveFan}
+            />
+          ))}
+        </InfiniteScrollPagination>
       </ul>
       <AddFollowerToListModal
         isOpen={addFollowerOpen}

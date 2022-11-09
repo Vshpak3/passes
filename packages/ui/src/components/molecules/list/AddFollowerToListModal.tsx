@@ -1,3 +1,4 @@
+import { ListMemberDto } from "@passes/api-client"
 import classNames from "classnames"
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
@@ -8,7 +9,7 @@ import { Modal, ModalProps } from "src/components/organisms/Modal"
 import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"
 
 interface AddFollowerToListModalProps extends ModalProps {
-  onSubmit(userId: string): void
+  onSubmit(user: ListMemberDto): void
   listId: string
 }
 
@@ -49,7 +50,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
             <span
               className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={() => {
-                onSubmit(user.userId)
+                onSubmit(user)
                 setSearchValue("")
               }}
             >

@@ -11,3 +11,12 @@ export class CreateListRequestDto {
   @DtoProperty({ type: 'uuid[]' })
   userIds: string[]
 }
+
+export class CreateListResponseDto {
+  @DtoProperty({ type: 'uuid' })
+  listId: string
+
+  constructor(listId: string) {
+    this.listId = listId
+  }
+}

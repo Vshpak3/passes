@@ -10,8 +10,8 @@ export class ListDto {
   listId: string
 
   @Length(1, LIST_NAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  name: string
+  @DtoProperty({ type: 'string', nullable: true })
+  name: string | null
 
   @DtoProperty({ custom_type: ListTypeEnum })
   type: ListTypeEnum

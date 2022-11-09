@@ -30,7 +30,7 @@ export interface ListDto {
      * @type {string}
      * @memberof ListDto
      */
-    name: string;
+    name: string | null;
     /**
      * 
      * @type {string}

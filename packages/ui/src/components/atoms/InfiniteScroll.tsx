@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState
 } from "react"
 import InfiniteScroll from "react-infinite-scroll-component"
@@ -48,6 +49,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   mutateOnLoad?: boolean
   pullDownToRefresh?: boolean
   node?: HTMLDivElement
+  keySelector?: keyof A
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
@@ -82,9 +84,12 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   mutateOnLoad = true,
   pullDownToRefresh,
   node,
-  children
+  children,
+  keySelector
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
-  options = { ...defaultOptions, ...options }
+  const newOptions = useMemo(() => {
+    return { ...defaultOptions, ...options }
+  }, [options])
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }
@@ -98,20 +103,18 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return await fetch(props as Omit<T, "data">)
   }
 
-  const { data, size, setSize, mutate } = useSWRInfinite<T>(
+  const { data, setSize, mutate, isValidating } = useSWRInfinite<T>(
     getKey,
     fetchData,
-    options
+    newOptions
   )
 
   useEffect(() => {
     if (mutateOnLoad) {
       mutate()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [fetchProps])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const triggerFetch = useCallback(
     debounce(async () => {
       setSize((size) => size + 1)
@@ -130,7 +133,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         .flat() ?? []
     )
   }, [data])
-  const hasMore = !data || !!data[data.length - 1].lastId
+  const hasMore = useMemo(() => !data || !!data[data.length - 1].lastId, [data])
 
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
 
@@ -144,11 +147,11 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [node])
 
   useEffect(() => {
-    if (!isScrollable && hasMore) {
+    if (!isScrollable && hasMore && !isValidating) {
       triggerFetch()
       checkScroll()
     }
-  }, [isScrollable, hasMore, flattenedData, triggerFetch, checkScroll])
+  }, [isScrollable, hasMore, triggerFetch, checkScroll, isValidating])
 
   useLayoutEffect(() => {
     checkScroll()
@@ -175,7 +178,11 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       {children}
       {flattenedData.length === 0 && !hasInitialElement && emptyElement}
       {flattenedData.map((data, index) => (
-        <KeyedComponent arg={data} index={index} key={index} />
+        <KeyedComponent
+          arg={data}
+          index={index}
+          key={keySelector ? (data[keySelector] as unknown as string) : index}
+        />
       ))}
     </InfiniteScroll>
   )

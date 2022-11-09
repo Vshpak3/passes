@@ -64,7 +64,7 @@ export class ListService {
   async createList(
     userId: string,
     createListDto: CreateListRequestDto,
-  ): Promise<void> {
+  ): Promise<string> {
     const count = await this.dbReader<ListEntity>(ListEntity.table)
       .where({ user_id: userId })
       .count()
@@ -106,6 +106,7 @@ export class ListService {
       }
     })
     await this.updateCount(listId)
+    return listId
   }
 
   async deleteList(userId: string, id: string): Promise<boolean> {
@@ -116,7 +117,7 @@ export class ListService {
         type: ListTypeEnum.NORMAL,
         deleted_at: null,
       })
-      .update({ deleted_at: new Date() })
+      .update({ deleted_at: new Date(), name: null })
     return dbResult === 1
   }
 

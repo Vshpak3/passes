@@ -18,6 +18,7 @@ import type {
   AddListMembersRequestDto,
   BooleanResponseDto,
   CreateListRequestDto,
+  CreateListResponseDto,
   EditListNameRequestDto,
   GetListMembersRequestDto,
   GetListMembersResponseDto,
@@ -33,6 +34,8 @@ import {
     BooleanResponseDtoToJSON,
     CreateListRequestDtoFromJSON,
     CreateListRequestDtoToJSON,
+    CreateListResponseDtoFromJSON,
+    CreateListResponseDtoToJSON,
     EditListNameRequestDtoFromJSON,
     EditListNameRequestDtoToJSON,
     GetListMembersRequestDtoFromJSON,
@@ -126,7 +129,7 @@ export class ListApi extends runtime.BaseAPI {
     /**
      * Creates List for a user
      */
-    async createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async createListRaw(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateListResponseDto>> {
         if (requestParameters.createListRequestDto === null || requestParameters.createListRequestDto === undefined) {
             throw new runtime.RequiredError('createListRequestDto','Required parameter requestParameters.createListRequestDto was null or undefined when calling createList.');
         }
@@ -150,14 +153,15 @@ export class ListApi extends runtime.BaseAPI {
             body: CreateListRequestDtoToJSON(requestParameters.createListRequestDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateListResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Creates List for a user
      */
-    async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.createListRaw(requestParameters, initOverrides);
+    async createList(requestParameters: CreateListRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateListResponseDto> {
+        const response = await this.createListRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

@@ -16,7 +16,10 @@ import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { AddListMembersRequestDto } from './dto/add-list-members.dto'
-import { CreateListRequestDto } from './dto/create-list.dto'
+import {
+  CreateListRequestDto,
+  CreateListResponseDto,
+} from './dto/create-list.dto'
 import { EditListNameRequestDto } from './dto/edit-list-name.dto'
 import { GetListResponseDto } from './dto/get-list.dto'
 import {
@@ -35,7 +38,7 @@ export class ListController {
   @ApiEndpoint({
     summary: 'Creates List for a user',
     responseStatus: HttpStatus.CREATED,
-    responseType: undefined,
+    responseType: CreateListResponseDto,
     responseDesc: 'List was created',
     role: RoleEnum.CREATOR_ONLY,
   })
@@ -43,8 +46,10 @@ export class ListController {
   async createList(
     @Req() req: RequestWithUser,
     @Body() createListDto: CreateListRequestDto,
-  ): Promise<void> {
-    await this.listService.createList(req.user.id, createListDto)
+  ): Promise<CreateListResponseDto> {
+    return new CreateListResponseDto(
+      await this.listService.createList(req.user.id, createListDto),
+    )
   }
 
   @ApiEndpoint({

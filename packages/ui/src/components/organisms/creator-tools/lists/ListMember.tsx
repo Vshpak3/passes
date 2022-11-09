@@ -15,6 +15,7 @@ const ListMemberUnmemo: FC<ListMemberProps> = ({
   removable
 }) => {
   const [removed, setRemoved] = useState<boolean>(false)
+  console.log(removed)
 
   return (
     <>

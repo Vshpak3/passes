@@ -3,13 +3,14 @@ import {
   GetListsRequestsDtoOrderEnum as Order,
   GetListsRequestsDtoOrderTypeEnum as OrderType,
   GetListsResponseDto,
-  ListDto
+  ListDto,
+  ListDtoTypeEnum
 } from "@passes/api-client"
 import { ListApi } from "@passes/api-client/apis"
 import { debounce } from "lodash"
 import { NextPage } from "next"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
-import React, { useCallback, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 
 import {
   ComponentArg,
@@ -29,12 +30,13 @@ const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
 const FanLists: NextPage = () => {
-  const [resets, setResets] = useState(0)
   const [newListModalState, setNewListModalState] = useState(false)
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.Name)
   const [order, setOrder] = useState<Order>(Order.Asc)
   const [search, setSearch] = useState<string>("")
+
+  const [newLists, setNewLists] = useState<ListDto[]>([])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
@@ -44,6 +46,14 @@ const FanLists: NextPage = () => {
     }, DEBOUNCE_TIMEOUT),
     [setSearch]
   )
+
+  const fetchProps = useMemo(() => {
+    return {
+      order,
+      orderType,
+      search
+    }
+  }, [order, orderType, search])
 
   const onSortSelect = async ({
     orderType,
@@ -59,20 +69,38 @@ const FanLists: NextPage = () => {
 
   const handleCreateNewList = async (listName: string) => {
     try {
-      await listApi.createList({
-        createListRequestDto: {
-          name: listName,
-          userIds: []
-        }
-      })
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      const listId = (
+        await listApi.createList({
+          createListRequestDto: {
+            name: listName,
+            userIds: []
+          }
+        })
+      ).listId
       setNewListModalState(false)
-      setResets(resets + 1)
+      setNewLists((newLists) => [
+        ...newLists,
+        {
+          listId,
+          name: listName,
+          count: 0,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          type: ListDtoTypeEnum.Normal
+        }
+      ])
     } catch (error) {
       errorMessage(error, true)
     }
   }
 
+  useEffect(() => {
+    setNewLists([])
+  }, [fetchProps])
+
+  const keyedComponent = useCallback(({ arg }: ComponentArg<ListDto>) => {
+    return <List list={arg} removable />
+  }, [])
   return (
     <div className="text-white">
       <div className="mt-4 flex items-center justify-between px-7">
@@ -133,16 +161,18 @@ const FanLists: NextPage = () => {
           </div>
         </li>
         <InfiniteScrollPagination<ListDto, GetListsResponseDto>
-          KeyedComponent={({ arg }: ComponentArg<ListDto>) => {
-            return <List list={arg} removable />
-          }}
+          KeyedComponent={keyedComponent}
           fetch={async (req: GetListsRequestsDto) => {
             return await listApi.getLists({ getListsRequestsDto: req })
           }}
-          fetchProps={{ order, orderType, search }}
+          fetchProps={fetchProps}
           keyValue="/lists"
-          resets={resets}
-        />
+          hasInitialElement={newLists.length > 0}
+        >
+          {newLists.map((list, index) => (
+            <List list={list} removable key={index} />
+          ))}
+        </InfiniteScrollPagination>
       </ul>
     </div>
   )

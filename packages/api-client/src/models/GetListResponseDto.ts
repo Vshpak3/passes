@@ -30,7 +30,7 @@ export interface GetListResponseDto {
      * @type {string}
      * @memberof GetListResponseDto
      */
-    name: string;
+    name: string | null;
     /**
      * 
      * @type {string}

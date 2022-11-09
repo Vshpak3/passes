@@ -22,7 +22,7 @@ export class ListEntity extends BaseEntity {
   user_id: string
 
   @Property({ length: LIST_NAME_LENGTH })
-  name: string
+  name: string | null
 
   @Enum({ default: ListTypeEnum.NORMAL })
   type: ListTypeEnum

@@ -1,6 +1,6 @@
 import { ListApi, ListDto, ListDtoTypeEnum } from "@passes/api-client"
 import Link from "next/link"
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -13,7 +13,7 @@ interface ListProps {
   removable?: boolean
 }
 
-export const List: FC<ListProps> = ({ list, removable }) => {
+const ListUnmemo: FC<ListProps> = ({ list, removable }) => {
   const [removed, setRemoved] = useState<boolean>(false)
   return (
     <>
@@ -61,3 +61,5 @@ export const List: FC<ListProps> = ({ list, removable }) => {
     </>
   )
 }
+
+export const List = memo(ListUnmemo)
