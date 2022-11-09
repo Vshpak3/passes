@@ -36,7 +36,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
         />
       )}
 
-      <div className="flex mt-4 justify-end gap-[10px]">
+      <div className="mt-4 flex justify-end gap-[10px]">
         {reorderButton && (
           <Button
             className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-6 py-2 pr-10 text-base font-bold sm:rounded-[5px] sm:py-2.5 sm:px-8"

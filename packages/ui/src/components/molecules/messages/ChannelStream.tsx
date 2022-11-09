@@ -201,12 +201,12 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       {isConnected ? (
         <div className="relative h-full overflow-y-hidden">
           {!!minimumTip && freeMessages !== undefined && (
-            <div className="flex absolute z-20 w-full justify-center bg-transparent pr-4">
+            <div className="absolute z-20 flex w-full justify-center bg-transparent pr-4">
               <FreeMessagesLeftContainer freeMessages={freeMessages} />
             </div>
           )}
           <div
-            className="flex relative h-full flex-col-reverse overflow-y-scroll"
+            className="relative flex h-full flex-col-reverse overflow-y-scroll"
             id="scrollableDiv"
           >
             {/*
@@ -244,9 +244,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             />
           </div>
           {unreadCount > 0 && (
-            <div className="flex absolute bottom-0 z-20 w-full items-center justify-center self-center">
+            <div className="absolute bottom-0 z-20 flex w-full items-center justify-center self-center">
               <button
-                className="flex z-20 items-center justify-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
+                className="z-20 flex items-center justify-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
                 onClick={handleScrollToBottom}
               >
                 <ArrowDownIcon />

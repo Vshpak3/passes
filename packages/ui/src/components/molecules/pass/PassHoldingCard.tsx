@@ -86,16 +86,16 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
               )}
             </div>
             <div className="flex w-full items-center justify-between">
-              {!!passHolder.expiresAt && (
-                <div className="mt-[12px] w-full">
+              <div className="mt-[12px] w-full">
+                {!!passHolder.expiresAt && (
                   <span className="text-[#767676]">
                     {passHolder.expiresAt < new Date()
                       ? "Expired on "
                       : "Expires "}
                     {passHolder.expiresAt.toLocaleDateString()}
                   </span>
-                </div>
-              )}
+                )}
+              </div>
               <div className="mt-[12px]">
                 <IconTooltip
                   Icon={InfoIcon}
