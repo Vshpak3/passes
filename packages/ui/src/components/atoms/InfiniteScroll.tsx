@@ -132,27 +132,30 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [data])
   const hasMore = !data || !!data[data.length - 1].lastId
 
+  const checkScroll = useCallback(() => {
+    return node
+      ? node.scrollHeight > node.clientHeight
+      : window.visualViewport.height < window.document.body.clientHeight
+  }, [node])
+
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
   useEffect(() => {
     if (!isScrollable && hasMore) {
       triggerFetch()
+      setIsScrollable(checkScroll)
     }
-  }, [isScrollable, hasMore, flattenedData, triggerFetch])
+  }, [isScrollable, hasMore, flattenedData, triggerFetch, checkScroll])
 
   useLayoutEffect(() => {
-    if (!node) {
-      return
-    }
-
     const handleWindowResize = () => {
-      setIsScrollable(node.scrollHeight > node.clientHeight)
+      setIsScrollable(checkScroll)
     }
-    setIsScrollable(node.scrollHeight > node.clientHeight)
+    setIsScrollable(checkScroll)
 
     window.addEventListener("resize", handleWindowResize)
 
     return () => window.removeEventListener("resize", handleWindowResize)
-  }, [node])
+  }, [checkScroll])
 
   return (
     <InfiniteScroll
