@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import Link from "next/link"
 import { FC } from "react"
 
@@ -17,9 +18,11 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
   displayNameClassName = "text-base"
 }) => {
   const text = (
-    <div className="flex flex-row items-center truncate">
-      <span className={displayNameClassName}>{displayName}</span>
-      <Text className="ml-2 text-gray-500 lg:block" fontSize={14}>
+    <div className="flex w-full flex-row items-center justify-around truncate">
+      <span className={classNames("w-full", displayNameClassName)}>
+        {displayName}
+      </span>
+      <Text className="ml-2 w-full text-gray-500 lg:block" fontSize={14}>
         {" @" + username}
       </Text>
     </div>

@@ -34,7 +34,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   return (
     <div
       className={classNames(
-        "relative mb-2 cursor-pointer items-center rounded-md p-1 hover:bg-[#ffffff]/10",
+        "relative mb-2 w-full cursor-pointer items-center rounded-md p-1 hover:bg-[#ffffff]/10",
         isSelected && "bg-[#ffffff]/10"
       )}
       onClick={() => {
@@ -42,7 +42,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         onClick()
       }}
     >
-      <div className="flex">
+      <div className="flex w-full items-start">
         <div className="flex pr-[10px]">
           <ProfileImage
             key={channel.otherUserId}
@@ -51,7 +51,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
           />
         </div>
         <div className="flex w-full justify-between">
-          <div className="flex flex-col items-start justify-center">
+          <div className="flex w-[60%] flex-col  items-start justify-center">
             <span className="text-[16px] font-medium leading-[24px] text-white">
               <MessagesNameDisplay
                 displayName={channel.otherUserDisplayName}
