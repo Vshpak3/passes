@@ -6,7 +6,7 @@ const MB = 1048576
 export const MAX_IMAGE_SIZE = 100 * MB
 export const MAX_IMAGE_SIZE_NAME = "100 megabytes"
 export const MAX_VIDEO_SIZE = 2000 * MB
-export const MAX_VIDEO_SIZE_NAME = "2000 megabytes"
+export const MAX_VIDEO_SIZE_NAME = "2 gigabytes"
 
 export const ACCEPTED_MEDIA_TYPES: FileAccept = [
   ".png",
