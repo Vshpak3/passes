@@ -186,8 +186,15 @@ async function createNftPassSuccessCallback(
     .where({ id: input.passId })
     .select('creator_id')
     .first()
-  if (pass?.creator_id) {
-    await payService.followService.followCreator(input.userId, pass.creator_id)
+  try {
+    if (pass?.creator_id) {
+      await payService.followService.followCreator(
+        input.userId,
+        pass.creator_id,
+      )
+    }
+  } catch (err) {
+    null
   }
   return {
     passHolderId: newPassHolder.id,

@@ -2,7 +2,7 @@ import { ContentDto, ListDto, MessagesApi, PassDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { ChannelHeaderMassDM } from "./ChannelHeaderMassDM"
-import { InputMessageMassDM } from "./InputMessageMassDM"
+import { InputMessageTool } from "./InputMessageTool"
 
 interface ChannelViewMassDMProps {
   vaultContent: ContentDto[]
@@ -70,7 +70,7 @@ export const ChannelViewMassDM: FC<ChannelViewMassDMProps> = ({
       />
       <div className="flex h-full flex-1 flex-col overflow-y-scroll" />
       {/* TODO:  after submit successful batch message the massMessage Components are disabled and redirected to messages as onlufans so there is no need for chat stream */}
-      <InputMessageMassDM
+      <InputMessageTool
         clear={clear}
         save={save}
         schedulable

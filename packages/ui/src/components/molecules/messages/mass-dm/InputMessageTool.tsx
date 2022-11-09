@@ -27,7 +27,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
-interface InputMessageMassDMProps {
+interface InputMessageToolProps {
   vaultContent: ContentDto[]
   clear: () => void
   save: (
@@ -40,7 +40,7 @@ interface InputMessageMassDMProps {
   schedulable: boolean
 }
 
-export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
+export const InputMessageTool: FC<InputMessageToolProps> = ({
   vaultContent,
   clear,
   save,
