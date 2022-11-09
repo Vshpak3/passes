@@ -74,14 +74,13 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
         </div>
         <div className="ml-auto mt-2 flex basis-full items-center md:mt-0 md:basis-auto">
           {watch("metamask") === serializePayinMethod(defaultPayinMethod) ? (
-            <Button variant="gray">
+            <Button variant="pink" disabled>
               <span className="text-[14px] font-[700]">
                 {isEmbedded ? "Selected" : "Default"}
               </span>
             </Button>
           ) : (
             <Button
-              className="w-auto px-1 py-2 md:px-4"
               onClick={async () =>
                 await handleSetDefaultPayinMethod(
                   deserializePayinMethod(getValues("metamask"))
@@ -115,7 +114,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
         </div>
         <div className="mt-2 ml-auto flex basis-full items-center md:mt-0 md:basis-auto">
           {watch("phantom") === serializePayinMethod(defaultPayinMethod) ? (
-            <Button variant="gray">
+            <Button variant="pink" disabled>
               <span className="text-[14px] font-[700]">
                 {isEmbedded ? "Selected" : "Default"}
               </span>

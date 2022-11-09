@@ -65,7 +65,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
             <div className="flex flex-row gap-2 md:gap-4">
               <div>
                 {item.id === defaultPayinMethod?.cardId ? (
-                  <Button variant="gray">
+                  <Button variant="pink" disabled>
                     <span className="text-[14px] font-[700]">
                       {isEmbedded ? "Selected" : "Default"}
                     </span>
@@ -78,7 +78,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
                         method: PayinMethodDtoMethodEnum.CircleCard
                       })
                     }
-                    variant="purple-light"
+                    variant="pink"
                   >
                     <span className="font-[700]">{buttonName(isEmbedded)}</span>
                   </Button>

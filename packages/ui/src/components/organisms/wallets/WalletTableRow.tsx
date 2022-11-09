@@ -131,7 +131,8 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
                     onClick={async () =>
                       await setDefaultWallet(wallet.walletId, wallet.chain)
                     }
-                    variant="purple-light"
+                    className="px-6 py-2"
+                    variant="pink"
                   >
                     Set {wallet.chain.toUpperCase()} default
                   </Button>

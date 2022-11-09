@@ -9,15 +9,7 @@ export enum ButtonTypeEnum {
   RESET = "reset"
 }
 
-type ButtonVariant =
-  | "black"
-  | "gradient"
-  | "gray"
-  | "pink-outline"
-  | "pink"
-  | "primary"
-  | "purple-light"
-  | "purple"
+type ButtonVariant = "black" | "gradient" | "pink-outline" | "pink" | "primary"
 
 interface ButtonProps {
   className?: string
@@ -55,27 +47,15 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       break
     case "pink":
       variantClassName =
-        "items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white"
-      break
-    case "purple":
-      variantClassName =
-        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-purpleDark-purple3 dark:hover:bg-purpleDark-purple4 dark:border-purpleDark-purple6 border-purple-purple6 border"
-      break
-    case "purple-light":
-      variantClassName =
-        "text-white dark:text-white border-passes-primary-color bg-passes-primary-color dark:bg-passes-primary-color dark:border-passes-primary-color border"
+        "items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-2 px-5 text-base font-[500] text-white"
       break
     case "pink-outline":
       variantClassName =
         "text-passes-primary-color max-h-[49px] border border-passes-primary-color py-[10px]"
       break
-    case "gray":
-      variantClassName =
-        "text-white dark:text-white bg-white/[0.15] py-1.5 px-6 rounded-[56px]"
-      break
     case "black":
       variantClassName =
-        "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-bold"
+        "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-[500]"
       break
   }
 

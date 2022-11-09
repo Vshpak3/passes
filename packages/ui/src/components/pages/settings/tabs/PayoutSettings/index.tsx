@@ -164,7 +164,7 @@ const PayoutSettings = () => {
                     >
                       {defaultWallet?.walletId === wallet.walletId
                         ? "Default"
-                        : "Set Payout Default"}
+                        : "Set Default"}
                     </Button>
                   </span>
                 </div>
@@ -189,13 +189,42 @@ const PayoutSettings = () => {
         )}
         {banks?.map((bank) => (
           <div
-            className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7"
+            className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7 w-full"
             key={bank.id}
           >
-            <div className="flex basis-3/4 flex-col justify-between">
-              <span className="mb-6 font-[700]">
-                {bank.description.split(",")[0]}
-              </span>
+            <div className="flex flex-col justify-between w-full">
+              <div className="flex gap-6 flex-row  justify-between ">
+                <span className="mb-6 font-[700]">
+                  {bank.description.split(",")[0]}
+                </span>
+                <div className="flex flex-col">
+                  <div className="flex flex-row gap-2  justify-between ">
+                    <Button
+                      className="w-auto"
+                      disabled={defaultBank?.id === bank.id}
+                      onClick={() =>
+                        setDefaultPayoutMethod({
+                          bankId: bank.id,
+                          method: PayoutMethodDtoMethodEnum.CircleWire
+                        })
+                      }
+                      variant={"pink"}
+                    >
+                      <span className="text-[16px] font-[500]">
+                        {defaultBank?.id === bank?.id
+                          ? "Default"
+                          : "Set Default"}
+                      </span>
+                    </Button>
+                    <button
+                      className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10"
+                      onClick={() => deleteBank(bank.id)}
+                    >
+                      <DeleteIcon height="25px" width="25px" />
+                    </button>
+                  </div>
+                </div>
+              </div>
               <div className="flex flex-row">
                 <span className="mr-6 font-[500]">
                   {bank.description.split(",")[1]}
@@ -213,38 +242,6 @@ const PayoutSettings = () => {
                     Bank country
                   </span>
                   <span className="text-[16px] font-[500]">{bank.country}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-6 xl:flex-row">
-              <div className="flex flex-col">
-                <div className="flex flex-row gap-2">
-                  <Button
-                    className="w-auto"
-                    disabled={defaultBank?.id === bank.id}
-                    onClick={() =>
-                      setDefaultPayoutMethod({
-                        bankId: bank.id,
-                        method: PayoutMethodDtoMethodEnum.CircleWire
-                      })
-                    }
-                    variant={
-                      defaultBank?.id === bank.id ? "pink" : "purple-light"
-                    }
-                  >
-                    <span className="text-[16px] font-[500]">
-                      {defaultBank?.id === bank?.id
-                        ? "Default"
-                        : "Set Payout Default"}
-                    </span>
-                  </Button>
-                  <button
-                    className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-white/10"
-                    onClick={() => deleteBank(bank.id)}
-                  >
-                    <DeleteIcon height="25px" width="25px" />
-                  </button>
                 </div>
               </div>
             </div>

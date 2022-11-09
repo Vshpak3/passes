@@ -60,7 +60,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
               <span className="my-[12px] block">Verify Whitelisted NFT</span>
             </span>
             <div>
-              <Button variant="purple">
+              <Button variant="pink">
                 <WalletIcon />
                 Verify your NFT
               </Button>
