@@ -1,7 +1,7 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { format } from "date-fns"
-import { FC, MouseEvent } from "react"
+import { FC, MouseEvent, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
 
@@ -13,6 +13,10 @@ interface VaultMediaItemProps {
   handleClickOnItem: (item: ContentDto) => void
 }
 
+interface ImgSize {
+  [key: string]: string | number
+}
+
 const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
@@ -20,6 +24,8 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
   isMaxFileCountSelected,
   handleClickOnItem
 }) => {
+  const [imgSize, setImgSize] = useState<ImgSize>({ width: 300, height: 300 })
+  const { width, height } = imgSize
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
   ).length
@@ -64,13 +70,14 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
         <img
           alt="Can't find image"
           className="object-cover"
-          height={300}
+          height={height}
           onError={({ currentTarget }) => {
+            setImgSize({ width: "fit-content", height: 300 })
             currentTarget.onerror = null
           }}
           // All content types have an image thumbnail
           src={ContentService.userContentThumbnailPath(content)}
-          width={300}
+          width={width}
         />
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
