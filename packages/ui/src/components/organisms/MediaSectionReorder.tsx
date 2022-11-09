@@ -202,16 +202,6 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   }
 
   useEffect(() => {
-    if (filesMap["Free"].length || filesMap["Paid"].length) {
-      setFiles([...filesMap["Free"], ...filesMap["Paid"]])
-    }
-
-    if (isPaid && setMediaPreviewIndex) {
-      setMediaPreviewIndex(filesMap["Free"].length)
-    }
-  }, [filesMap, isPaid, setFiles, setMediaPreviewIndex])
-
-  useEffect(() => {
     getContent()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaid])
@@ -250,8 +240,12 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
           if (!destination) {
             return
           }
-
-          setFilesMap(reorderContent(filesMap, source, destination))
+          const reorderedContent = reorderContent(filesMap, source, destination)
+          setFilesMap(reorderedContent)
+          setFiles([...reorderedContent["Free"], ...reorderedContent["Paid"]])
+          if (isPaid && setMediaPreviewIndex) {
+            setMediaPreviewIndex(reorderedContent["Free"].length)
+          }
         }}
       >
         <div
