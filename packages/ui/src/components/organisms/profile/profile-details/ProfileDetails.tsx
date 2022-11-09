@@ -103,25 +103,27 @@ export const ProfileDetails: FC = () => {
       </div>
 
       {/* mobile */}
-      <div className="absolute top-2 right-1.5 flex-row items-start pr-3 md:hidden">
-        {ownsProfile ? (
-          <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
-        ) : (
-          <>
-            <FollowButton
-              className="h-[36px] w-[98px]"
-              creatorId={profileUserId}
-            />
+      <div className="absolute top-2 right-10 flex-row items-start pr-3 md:hidden">
+        <div className="flex flex-row">
+          {ownsProfile ? (
+            <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
+          ) : (
+            <>
+              <FollowButton
+                className="mr-1 h-[36px] w-[80px]"
+                creatorId={profileUserId}
+              />
 
-            {!!profile?.isCreator && (
-              <Link className="h-[36px] w-[98px]" href={chatLink}>
-                <Button className="h-[36px] w-[98px]" variant="pink-outline">
-                  <ChatIcon />
-                </Button>
-              </Link>
-            )}
-          </>
-        )}
+              {!!profile?.isCreator && (
+                <Link href={chatLink}>
+                  <Button className="h-[36px] w-[80px]" variant="pink-outline">
+                    <ChatIcon />
+                  </Button>
+                </Link>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {!ownsProfile && (

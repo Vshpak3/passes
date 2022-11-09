@@ -107,7 +107,7 @@ export class EmailService {
     type: EmailType,
   ) {
     try {
-      const emails = await this.dbReader<UserEntity>(UserEntity.table)
+      const users = await this.dbReader<UserEntity>(UserEntity.table)
         .leftJoin(
           NotificationSettingsEntity.table,
           `${NotificationSettingsEntity.table}.user_id`,
@@ -115,10 +115,12 @@ export class EmailService {
         )
         .whereIn(`${UserEntity.table}.id`, userIds)
         .andWhere(`${NotificationSettingsEntity.table}.${type}`, true)
-        .select('email')
+        .select(`${UserEntity}.email`)
       await Promise.all(
-        emails.map(async (email) => {
-          await this.sendRenderedEmail(email, messageHtml, subject, { data })
+        users.map(async (user) => {
+          await this.sendRenderedEmail(user.email, messageHtml, subject, {
+            data,
+          })
         }),
       )
     } catch (err) {

@@ -1,4 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common'
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+} from '@nestjs/common'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -51,6 +56,7 @@ export class ListService {
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
 
+    @Inject(forwardRef(() => FollowService))
     private readonly followService: FollowService,
   ) {}
 

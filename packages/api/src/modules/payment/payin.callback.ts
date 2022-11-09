@@ -4,6 +4,7 @@ import { InternalServerErrorException } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
 
 import { DatabaseService } from '../../database/database.service'
+import { PassEntity } from '../pass/entities/pass.entity'
 import { PostEntity } from '../post/entities/post.entity'
 import {
   CreateNftPassPayinCallbackInput,
@@ -180,6 +181,13 @@ async function createNftPassSuccessCallback(
       ipAddress: payin.ip_address,
       sessionId: payin.session_id,
     })
+  }
+  const pass = await db<PassEntity>(PassEntity.table)
+    .where({ id: input.passId })
+    .select('creator_id')
+    .first()
+  if (pass?.creator_id) {
+    await payService.followService.followCreator(input.userId, pass.creator_id)
   }
   return {
     passHolderId: newPassHolder.id,

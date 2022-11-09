@@ -31,6 +31,7 @@ import { EarningCategoryEnum } from '../creator-stats/enum/earning.category.enum
 import { EmailService } from '../email/email.service'
 import { EVM_ADDRESS } from '../eth/eth.addresses'
 import { EthService } from '../eth/eth.service'
+import { FollowService } from '../follow/follow.service'
 import { MessagesService } from '../messages/messages.service'
 import { PassHolderDto } from '../pass/dto/pass-holder.dto'
 import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
@@ -172,6 +173,7 @@ export class PaymentService {
   public passService: PassService
   public messagesService: MessagesService
   public postService: PostService
+  public followService: FollowService
 
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
@@ -204,6 +206,9 @@ export class PaymentService {
       strict: false,
     })
     this.postService = this.moduleRef.get(PostService, {
+      strict: false,
+    })
+    this.followService = this.moduleRef.get(PostService, {
       strict: false,
     })
   }
