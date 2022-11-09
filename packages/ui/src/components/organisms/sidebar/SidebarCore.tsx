@@ -2,11 +2,13 @@ import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import LogoutIcon from "public/icons/sidebar/logout.svg"
 import { FC } from "react"
 
+import { BecomeCreatorButton } from "src/components/molecules/Sidebar/SidebarButtons/BecomeCreatorButton"
 import { NewPostButton } from "src/components/molecules/Sidebar/SidebarButtons/NewPostButton"
 import { SidebarDropdown } from "src/components/molecules/Sidebar/SidebarLayout/SidebarDropdown"
 import { SidebarItem } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
+import { isOver18 } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
 interface SidebarProps {
@@ -52,9 +54,9 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               <AuthWrapper>
                 {user?.isCreator ? (
                   <NewPostButton />
-                ) : //  isOver18(user) ? (
-                //   <BecomeCreatorButton />
-                null}
+                ) : isOver18(user) ? (
+                  <BecomeCreatorButton />
+                ) : null}
               </AuthWrapper>
             </nav>
           </div>

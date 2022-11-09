@@ -21,7 +21,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
     router.push("/creator-flow")
   }
   return (
-    <>
+    <div className="hidden">
       <div className="my-4 flex items-center justify-center lg:hidden">
         <Button
           className={`flex h-12 w-12 items-center justify-center rounded-[50%] ${
@@ -42,6 +42,6 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
           Become a Creator
         </Button>
       </div>
-    </>
+    </div>
   )
 }
