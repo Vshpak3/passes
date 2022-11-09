@@ -243,6 +243,9 @@ export class ContentService {
         const result = await this.uploadFile(url, file.file)
         return this.parseContentUrl(result).id
       })
-    )
+    ).then((r) => {
+      toast.dismiss()
+      return r
+    })
   }
 }
