@@ -21,14 +21,10 @@ module.exports = {
     ],
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
+    "react/no-unstable-nested-components": ["error", { allowAsProps: true }],
 
     // Turned off since we often want to use <img> tags
     "@next/next/no-img-element": "off",
-
-    // Consider turning on
-    "react/jsx-no-constructed-context-values": "off",
-    "react/no-array-index-key": "off",
-    "react/no-unstable-nested-components": "off",
 
     // Turned off since these conflict with prettier
     "react/jsx-curly-newline": "off",
@@ -40,13 +36,14 @@ module.exports = {
     "react/jsx-one-expression-per-line": "off",
 
     // Turned off since we currently don't follow these
+    "react/button-has-type": "off",
     "react/forbid-component-props": "off",
     "react/function-component-definition": "off",
     "react/jsx-max-depth": "off",
     "react/jsx-no-bind": "off",
     "react/jsx-no-literals": "off",
     "react/jsx-props-no-spreading": "off",
-    "react/button-has-type": "off",
+    "react/no-array-index-key": "off", // Consider turning on
     "react/no-multi-comp": "off",
     "react/require-default-props": "off",
     "sonarjs/cognitive-complexity": "off",

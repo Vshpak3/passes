@@ -4,8 +4,10 @@ import React, {
   createContext,
   FC,
   PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState
 } from "react"
 
@@ -36,26 +38,32 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [showSettingsTab, setShowSettingsTab] = useState(false)
   const router = useRouter()
 
-  const addTabToStackHandler = (tab: SubTabsEnum) => {
-    if (!subTabsStack.includes(tab)) {
-      setSubTabsStack((prevTabs) => [...prevTabs, tab])
-    }
-  }
+  const addTabToStackHandler = useCallback(
+    (tab: SubTabsEnum) => {
+      if (!subTabsStack.includes(tab)) {
+        setSubTabsStack((prevTabs) => [...prevTabs, tab])
+      }
+    },
+    [subTabsStack]
+  )
 
-  const popTabFromStackHandler = () => {
+  const popTabFromStackHandler = useCallback(() => {
     const updatedStack = subTabsStack.slice(0, -1)
     setSubTabsStack(updatedStack)
-  }
+  }, [subTabsStack])
 
-  const addOrPopStackHandler = (tab: SubTabsEnum) => {
-    const index = subTabsStack.indexOf(tab)
-    if (index > -1) {
-      const updatedStack = subTabsStack.slice(0, index + 1)
-      setSubTabsStack(updatedStack)
-    } else {
-      addTabToStackHandler(tab)
-    }
-  }
+  const addOrPopStackHandler = useCallback(
+    (tab: SubTabsEnum) => {
+      const index = subTabsStack.indexOf(tab)
+      if (index > -1) {
+        const updatedStack = subTabsStack.slice(0, index + 1)
+        setSubTabsStack(updatedStack)
+      } else {
+        addTabToStackHandler(tab)
+      }
+    },
+    [addTabToStackHandler, subTabsStack]
+  )
 
   useEffect(() => {
     if (activeTab) {
@@ -84,20 +92,30 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subTabsStack])
 
+  const contextValue = useMemo(
+    () => ({
+      showSettingsTab,
+      setShowSettingsTab,
+      activeTab,
+      subTabsStack,
+      setActiveTab,
+      setSubTabsStack,
+      addTabToStackHandler,
+      popTabFromStackHandler,
+      addOrPopStackHandler
+    }),
+    [
+      activeTab,
+      addOrPopStackHandler,
+      addTabToStackHandler,
+      popTabFromStackHandler,
+      showSettingsTab,
+      subTabsStack
+    ]
+  )
+
   return (
-    <SettingsContext.Provider
-      value={{
-        showSettingsTab,
-        setShowSettingsTab,
-        activeTab,
-        subTabsStack,
-        setActiveTab,
-        setSubTabsStack,
-        addTabToStackHandler,
-        popTabFromStackHandler,
-        addOrPopStackHandler
-      }}
-    >
+    <SettingsContext.Provider value={contextValue}>
       {children}
     </SettingsContext.Provider>
   )
