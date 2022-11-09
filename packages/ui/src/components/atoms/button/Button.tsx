@@ -67,7 +67,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       break
     case "pink-outline":
       variantClassName =
-        "text-passes-primary-color max-h-[49px] border border-passes-primary-color"
+        "text-passes-primary-color max-h-[49px] border border-passes-primary-color py-[10px]"
       break
     case "gray":
       variantClassName =

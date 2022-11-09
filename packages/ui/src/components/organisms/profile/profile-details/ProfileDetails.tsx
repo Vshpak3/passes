@@ -62,7 +62,7 @@ export const ProfileDetails: FC = () => {
               ) : (
                 <>
                   <FollowButton
-                    className="m-auto h-[36px] w-[98px] pt-5"
+                    className="m-auto mt-3 h-[36px] w-[98px]"
                     creatorId={profileUserId}
                   />
 
