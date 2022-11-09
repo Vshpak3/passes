@@ -140,10 +140,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
   const onSubmit = async () => {
     const values = getValues()
-
-    if (values.files.length > 0) {
-      toast.info("Please wait a moment as your content is uploaded")
-    }
     const contentIds = await new ContentService().uploadUserContent({
       files: values.files,
       inPost: true

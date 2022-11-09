@@ -213,15 +213,20 @@ export class ContentService {
     files,
     contentType: _contentType,
     inPost = false,
-    inMessage = false
+    inMessage = false,
+    showMessage = true
   }: {
     files: ContentFile[]
     contentType?: ContentDtoContentTypeEnum
     inPost?: boolean
     inMessage?: boolean
+    showMessage?: boolean
   }): Promise<string[]> {
     if (!files.length) {
       return await Promise.resolve([])
+    }
+    if (showMessage) {
+      toast.info("Please wait a moment as your content is uploaded")
     }
     return await Promise.all(
       files.map(async (file: ContentFile) => {
