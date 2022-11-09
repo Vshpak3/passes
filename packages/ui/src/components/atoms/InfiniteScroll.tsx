@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import { debounce } from "lodash"
+import ms from "ms"
 import React, {
   CSSProperties,
   PropsWithChildren,
@@ -50,6 +51,8 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   pullDownToRefresh?: boolean
   node?: HTMLDivElement
   keySelector?: keyof A
+  childrenEnd?: boolean
+  renderDebounce?: number
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
@@ -57,7 +60,8 @@ const defaultOptions: SWRInfiniteConfiguration = {
   revalidateAll: false,
   revalidateFirstPage: false,
   revalidateOnFocus: false,
-  revalidateOnReconnect: false
+  revalidateOnReconnect: false,
+  initialSize: 1
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -65,6 +69,7 @@ const defaultOptions: SWRInfiniteConfiguration = {
 // Deletes will hide the component
 // Inserts should reset the list
 //   unless inserts are at beginning, then just append
+const RENDER_DEBOUNCE = ms("2 seconds")
 export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   keyValue,
   fetch,
@@ -85,7 +90,9 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   pullDownToRefresh,
   node,
   children,
-  keySelector
+  keySelector,
+  childrenEnd = false,
+  renderDebounce = RENDER_DEBOUNCE
 }: PropsWithChildren<InfiniteScrollProps<A, T>>) => {
   const newOptions = useMemo(() => {
     return { ...defaultOptions, ...options }
@@ -103,7 +110,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return await fetch(props as Omit<T, "data">)
   }
 
-  const { data, setSize, mutate, isValidating } = useSWRInfinite<T>(
+  const { data, setSize, mutate } = useSWRInfinite<T>(
     getKey,
     fetchData,
     newOptions
@@ -135,11 +142,16 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         .flat() ?? []
     )
   }, [data])
-  const hasMore = useMemo(() => !data || !!data[data.length - 1].lastId, [data])
+
+  const hasMore = useMemo(
+    () => !data || !data.length || !!data[data.length - 1].lastId,
+    [data]
+  )
 
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
 
   const checkScroll = useCallback(() => {
+    // console.log(node?.scrollHeight, node?.clientHeight)
     setIsScrollable(
       node
         ? node.scrollHeight > node.clientHeight
@@ -149,11 +161,15 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [node])
 
   useEffect(() => {
-    if (!isScrollable && hasMore && !isValidating) {
-      triggerFetch()
-      checkScroll()
+    if (!isScrollable && hasMore) {
+      const interval = setTimeout(triggerFetch, renderDebounce)
+      return () => clearInterval(interval)
     }
-  }, [isScrollable, hasMore, triggerFetch, checkScroll, isValidating])
+  }, [isScrollable, hasMore, triggerFetch, data?.length, renderDebounce])
+
+  useEffect(() => {
+    checkScroll()
+  }, [checkScroll, data])
 
   useLayoutEffect(() => {
     checkScroll()
@@ -167,7 +183,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     <InfiniteScroll
       className={classNames(className)}
       dataLength={flattenedData.length}
-      endMessage={flattenedData.length === 0 && endElement}
+      endMessage={flattenedData.length > 0 && endElement}
       hasMore={hasMore}
       initialScrollY={initialScrollY}
       inverse={inverse}
@@ -177,7 +193,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       scrollableTarget={scrollableTarget}
       style={style}
     >
-      {children}
+      {!childrenEnd && children}
       {flattenedData.length === 0 && !hasInitialElement && emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent
@@ -186,6 +202,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
           key={keySelector ? (data[keySelector] as unknown as string) : index}
         />
       ))}
+      {childrenEnd && children}
     </InfiniteScroll>
   )
 }

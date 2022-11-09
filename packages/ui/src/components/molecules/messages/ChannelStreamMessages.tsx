@@ -16,12 +16,14 @@ import { ChannelMessage } from "./ChannelMessage"
 interface ChannelStreamMessagesProps {
   channelId?: string
   messageUpdates: Record<string, Partial<MessageDto>>
+  node?: HTMLDivElement
 }
 
 const api = new MessagesApi()
 const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   channelId,
-  messageUpdates
+  messageUpdates,
+  node
 }) => {
   const { user } = useUser()
 
@@ -56,6 +58,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           <span className="sr-only">Loading older messages...</span>
         </div>
       }
+      node={node}
       scrollableTarget="scrollableDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
     />

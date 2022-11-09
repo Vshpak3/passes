@@ -196,6 +196,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     }
   }, [isBottomOfChatVisible, unreadCount, onReadLastMessage])
 
+  const [node, setNode] = useState<HTMLDivElement>()
+  const ref = useCallback((node: HTMLDivElement) => {
+    setNode(node)
+  }, [])
+
   return (
     <>
       {isConnected ? (
@@ -208,6 +213,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <div
             className="relative flex h-full flex-col-reverse overflow-y-scroll"
             id="scrollableDiv"
+            ref={ref}
           >
             {/*
              Dummy ref to allow scrolling to bottom of chat.
@@ -241,6 +247,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             <ChannelStreamMessages
               channelId={channelId}
               messageUpdates={messageUpdates}
+              node={node}
             />
           </div>
           {unreadCount > 0 && (
