@@ -1,5 +1,3 @@
-import "react-date-range/dist/styles.css"
-import "react-date-range/dist/theme/default.css"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
 import { differenceInYears, format } from "date-fns"
@@ -10,13 +8,13 @@ import jwtDecode from "jwt-decode"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
-import { SelectDatepicker } from "react-select-datepicker"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
+import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
@@ -74,13 +72,10 @@ const SignupInfoPage: FC = () => {
     resolver: yupResolver(signupInfoPageSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [calendarDate, setCalendarDate] = useState(new Date())
 
-  const onDateChange = (date: Date | null) => {
-    if (date) {
-      setCalendarDate(date)
-      setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
-    }
+  const onDateChange = (date: Date) => {
+    console.log("HERE", date)
+    setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
   }
 
   const createNewUser = async (
@@ -228,22 +223,7 @@ const SignupInfoPage: FC = () => {
                 type="text"
               />
             </div>
-
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
-                Birthday
-              </Text>
-              <SelectDatepicker
-                onDateChange={onDateChange}
-                selectedDate={calendarDate}
-              />
-              {errors.birthday && (
-                <span className="mt-1 text-xs text-red-500">
-                  {errors.birthday?.message}
-                </span>
-              )}
-            </div>
-
+            <DateSelector onDateChange={onDateChange} />
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Country</Text>
               <Select
