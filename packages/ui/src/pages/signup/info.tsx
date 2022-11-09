@@ -2,15 +2,15 @@ import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
-import { differenceInYears, format, subYears } from "date-fns"
+import { differenceInYears, format } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import jwtDecode from "jwt-decode"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useState } from "react"
-import { Calendar } from "react-date-range"
 import { useForm } from "react-hook-form"
+import { SelectDatepicker } from "react-select-datepicker"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
@@ -69,14 +69,19 @@ const SignupInfoPage: FC = () => {
     handleSubmit,
     formState: { errors },
     setError,
-    setValue,
-    watch
+    setValue
   } = useForm<SignupInfoPageSchema>({
     resolver: yupResolver(signupInfoPageSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isCalendarVisible, setIsCalendarVisible] = useState(false)
   const [calendarDate, setCalendarDate] = useState(new Date())
+
+  const onDateChange = (date: Date | null) => {
+    if (date) {
+      setCalendarDate(date)
+      setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
+    }
+  }
 
   const createNewUser = async (
     name: string,
@@ -116,8 +121,8 @@ const SignupInfoPage: FC = () => {
           })
         },
         async (token) => {
-          // If we mutate immedately there might not be a user entry in the db reader
-          // so instead reader so we instead maually construct mutate the user.
+          // If we mutate immediately there might not be a user entry in the db reader
+          // so instead reader so we instead manually construct mutate the user.
           mutateManual({
             userId: jwtDecode<JWTUserClaims>(token).sub,
             email: "", // TODO: return this from the api or get elsewhere
@@ -228,44 +233,14 @@ const SignupInfoPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
                 Birthday
               </Text>
-              <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="birthday"
-                onFocus={() => {
-                  setIsCalendarVisible(true)
-                }}
-                options={{
-                  required: {
-                    value: true,
-                    message: "Birthday is required"
-                  }
-                }}
-                placeholder="Enter your birthday"
-                // onChange is handled by the calendar
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                register={() => {}}
-                type="text"
-                value={watch("birthday")}
+              <SelectDatepicker
+                onDateChange={onDateChange}
+                selectedDate={calendarDate}
               />
-              {isCalendarVisible && (
-                <>
-                  <Calendar
-                    date={calendarDate}
-                    maxDate={new Date()}
-                    minDate={subYears(new Date(), 100)}
-                    onChange={(e: Date) => {
-                      setCalendarDate(e)
-                      setValue("birthday", format(e, BIRTHDAY_DATE_FORMAT))
-                    }}
-                  />
-                  <button
-                    className="border-t-2 border-t-slate-300 bg-white py-2 text-black"
-                    onClick={() => setIsCalendarVisible(false)}
-                  >
-                    Done
-                  </button>
-                </>
+              {errors.birthday && (
+                <span className="mt-1 text-xs text-red-500">
+                  {errors.birthday?.message}
+                </span>
               )}
             </div>
 
