@@ -128,7 +128,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               revalidateOnReconnect: true,
               refreshInterval: 1000
             }}
-            scrollableTarget="channelDiv"
+            scrollableTarget="channelsDiv"
             style={{ overflowX: "hidden" }}
           />
         </div>

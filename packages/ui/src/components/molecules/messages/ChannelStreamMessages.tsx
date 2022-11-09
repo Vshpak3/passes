@@ -67,7 +67,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
         </div>
       }
       node={node}
-      scrollableTarget="channelDiv"
+      scrollableTarget="messagesDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
     />
   )
