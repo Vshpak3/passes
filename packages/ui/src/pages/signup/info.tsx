@@ -74,7 +74,6 @@ const SignupInfoPage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const onDateChange = (date: Date) => {
-    console.log("HERE", date)
     setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
   }
 
