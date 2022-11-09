@@ -114,12 +114,10 @@ export const ChannelList: FC<ChannelListProps> = ({
             node={node}
             options={{
               revalidateOnMount: true,
-              revalidateAll: true,
               revalidateFirstPage: true,
               revalidateOnFocus: true,
               revalidateOnReconnect: true,
-              refreshInterval: 1000,
-              persistSize: true
+              refreshInterval: 1000
             }}
             scrollableTarget="channelDiv"
             style={{ overflowX: "hidden" }}
