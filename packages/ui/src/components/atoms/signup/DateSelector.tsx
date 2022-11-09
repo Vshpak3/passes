@@ -23,21 +23,13 @@ export const DateSelector: FC<DateSelectorProps> = ({
   }, [])
 
   const selectMonths = useMemo(() => {
-    return [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ]
-  }, [])
+    if (day === 31) {
+      return MONTHS.filter(
+        (_label, month) => getDaysInMonth(new Date(2000, month)) === 31
+      )
+    }
+    return MONTHS
+  }, [day])
 
   const selectDays = useMemo(() => {
     return Array.from({ length: getDaysInMonth(month || 0) }, (_, i) =>
@@ -50,6 +42,16 @@ export const DateSelector: FC<DateSelectorProps> = ({
       onDateChange(new Date(year, month, day))
     }
   }, [year, month, day, onDateChange])
+
+  useEffect(() => {
+    if (
+      day === 31 &&
+      month !== undefined &&
+      getDaysInMonth(new Date(2000, month)) !== 31
+    ) {
+      setMonth(undefined)
+    }
+  }, [month, day, selectMonths])
 
   return (
     <>
@@ -64,7 +66,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
         <Select
           className="w-[90px]"
           name="day"
-          onChange={setDay}
+          onChange={(value) => setDay(Number(value))}
           placeholder="Day"
           selectOptions={selectDays}
         />
@@ -82,3 +84,18 @@ export const DateSelector: FC<DateSelectorProps> = ({
     </>
   )
 }
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+]
