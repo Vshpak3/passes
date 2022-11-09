@@ -49,8 +49,12 @@ EOT
 printf '{"ImageURI":"%s"}' ${docker_registry}:${image_tag} > imageDetail.json
 
 aws ecs describe-task-definition --task-definition ${task_family_name} \
-  | jq '.taskDefinition |
-        .containerDefinitions[].image = "<IMAGE1_NAME>" |
+  | jq --arg updateName ${task_family_name} \
+       --arg updateImage "<IMAGE1_NAME>" \
+       '.taskDefinition.containerDefinitions =
+          [.taskDefinition.containerDefinitions[] |
+           if (.name == $updateName)
+           then (.image = $updateImage) else . end] |
         .runtimePlatform={
           "operatingSystemFamily": "LINUX",
           "cpuArchitecture": "ARM64"
