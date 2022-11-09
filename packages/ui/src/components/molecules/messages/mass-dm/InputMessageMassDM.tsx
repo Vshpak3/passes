@@ -4,6 +4,7 @@ import classNames from "classnames"
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
@@ -26,7 +27,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
-interface InputMessageGeneralProps {
+interface InputMessageMassDMProps {
   vaultContent: ContentDto[]
   clear: () => void
   save: (
@@ -39,7 +40,7 @@ interface InputMessageGeneralProps {
   schedulable: boolean
 }
 
-export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
+export const InputMessageMassDM: FC<InputMessageMassDMProps> = ({
   vaultContent,
   clear,
   save,
@@ -47,7 +48,7 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
 }) => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
     watch,
@@ -212,12 +213,15 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
                 />
               )}
             </MediaSelector>
-            <button
-              className="min-w-[150px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[10px] px-[18px] text-center text-[16px] leading-[25px] text-white"
-              type="submit"
+            <Button
+              className="rounded-[5px] py-[15px] px-[20px]"
+              disabled={isSubmitting}
+              fontSize={16}
+              type={ButtonTypeEnum.SUBMIT}
+              variant="pink"
             >
               {scheduledTime ? "Schedule message" : "Send message"}
-            </button>
+            </Button>
           </div>
         </div>
 
