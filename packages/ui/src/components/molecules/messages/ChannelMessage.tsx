@@ -75,7 +75,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           <div
             className={classNames(
               `flex flex-col gap-1 rounded border border-[#363037] p-2.5`,
-              `bg-[#18090E]`
+              message.automatic ? `bg-[#B52A6F]/[0.32]` : `bg-[#18090E]`
             )}
           >
             <span className="passes-break">{formatText(text)}</span>

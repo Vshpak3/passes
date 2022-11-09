@@ -44,6 +44,9 @@ export class MessageDto {
   @DtoProperty({ type: 'boolean' })
   reverted: boolean
 
+  @DtoProperty({ type: 'boolean' })
+  automatic: boolean
+
   @DtoProperty({ type: 'date' })
   sentAt: Date
 
@@ -65,6 +68,7 @@ export class MessageDto {
       this.pending = message.pending
       this.previewIndex = message.preview_index
       this.contentProcessed = message.content_processed
+      this.automatic = message.automatic
     }
     this.contents = contents
   }

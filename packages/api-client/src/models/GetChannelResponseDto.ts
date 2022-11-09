@@ -75,6 +75,12 @@ export interface GetChannelResponseDto {
     tipRecieved: number;
     /**
      * 
+     * @type {Date}
+     * @memberof GetChannelResponseDto
+     */
+    readAt: Date | null;
+    /**
+     * 
      * @type {number}
      * @memberof GetChannelResponseDto
      */
@@ -106,6 +112,7 @@ export function instanceOfGetChannelResponseDto(value: object): boolean {
     isInstance = isInstance && "unlimitedMessages" in value;
     isInstance = isInstance && "tipSent" in value;
     isInstance = isInstance && "tipRecieved" in value;
+    isInstance = isInstance && "readAt" in value;
     isInstance = isInstance && "unreadTip" in value;
     isInstance = isInstance && "otherUserUsername" in value;
     isInstance = isInstance && "otherUserDisplayName" in value;
@@ -132,6 +139,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'unlimitedMessages': json['unlimitedMessages'],
         'tipSent': json['tipSent'],
         'tipRecieved': json['tipRecieved'],
+        'readAt': (json['readAt'] === null ? null : new Date(json['readAt'])),
         'unreadTip': json['unreadTip'],
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
@@ -156,6 +164,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         'unlimitedMessages': value.unlimitedMessages,
         'tipSent': value.tipSent,
         'tipRecieved': value.tipRecieved,
+        'readAt': (value.readAt === null ? null : value.readAt.toISOString()),
         'unreadTip': value.unreadTip,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,

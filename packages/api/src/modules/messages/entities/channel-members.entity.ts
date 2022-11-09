@@ -33,6 +33,9 @@ export class ChannelMemberEntity extends BaseEntity {
   @Property({ default: false })
   unread: boolean
 
+  @Property({ length: 3 })
+  read_at: Date | null
+
   @Property({ default: false })
   unlimited_messages: boolean
 }

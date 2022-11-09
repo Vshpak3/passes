@@ -1000,7 +1000,7 @@ export class MessagesService {
   async read(userId: string, channelId: string) {
     await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .where({ channel_id: channelId, user_id: userId })
-      .update({ unread: false, unread_tip: 0 })
+      .update({ unread: false, unread_tip: 0, read_at: new Date() })
   }
 
   async purchaseMessage(

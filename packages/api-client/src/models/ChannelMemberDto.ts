@@ -75,6 +75,12 @@ export interface ChannelMemberDto {
     tipRecieved: number;
     /**
      * 
+     * @type {Date}
+     * @memberof ChannelMemberDto
+     */
+    readAt: Date | null;
+    /**
+     * 
      * @type {number}
      * @memberof ChannelMemberDto
      */
@@ -106,6 +112,7 @@ export function instanceOfChannelMemberDto(value: object): boolean {
     isInstance = isInstance && "unlimitedMessages" in value;
     isInstance = isInstance && "tipSent" in value;
     isInstance = isInstance && "tipRecieved" in value;
+    isInstance = isInstance && "readAt" in value;
     isInstance = isInstance && "unreadTip" in value;
     isInstance = isInstance && "otherUserUsername" in value;
     isInstance = isInstance && "otherUserDisplayName" in value;
@@ -132,6 +139,7 @@ export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'unlimitedMessages': json['unlimitedMessages'],
         'tipSent': json['tipSent'],
         'tipRecieved': json['tipRecieved'],
+        'readAt': (json['readAt'] === null ? null : new Date(json['readAt'])),
         'unreadTip': json['unreadTip'],
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
@@ -156,6 +164,7 @@ export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
         'unlimitedMessages': value.unlimitedMessages,
         'tipSent': value.tipSent,
         'tipRecieved': value.tipRecieved,
+        'readAt': (value.readAt === null ? null : value.readAt.toISOString()),
         'unreadTip': value.unreadTip,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,

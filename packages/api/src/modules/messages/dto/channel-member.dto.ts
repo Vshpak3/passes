@@ -33,6 +33,9 @@ export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ type: 'currency' })
   tipRecieved: number
 
+  @DtoProperty({ type: 'date', nullable: true })
+  readAt: Date | null
+
   @Min(0)
   @DtoProperty({ type: 'currency' })
   unreadTip: number
@@ -61,6 +64,7 @@ export class ChannelMemberDto extends ChannelDto {
       this.tipRecieved = channelMember.tip_received
       this.unreadTip = channelMember.unread_tip
       this.otherUserId = channelMember.other_user_id
+      this.readAt = channelMember.read_at
 
       this.channelId = channelMember.channel_id
 
