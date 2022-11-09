@@ -86,11 +86,13 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             <span>Tips: {formatCurrency(post.totalTipAmount ?? 0)}</span>
           </div>
         ) : (
-          <div className="flex flex-row flex-wrap justify-center gap-3 text-sm font-normal text-gray-500">
-            <span className="pt-[0.35rem] text-center">
-              Tipped: ${post.yourTips}
-            </span>
-            <TipButton post={post} />
+          <div>
+            <div className="flex flex-row flex-wrap justify-end gap-3 text-sm font-normal text-gray-500">
+              <span className="pt-[0.35rem] text-center">
+                Tipped: {formatCurrency(post.yourTips)}
+              </span>
+              <TipButton post={post} />
+            </div>
           </div>
         )}
       </div>
