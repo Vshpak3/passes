@@ -99,7 +99,7 @@ export const InputMessageTool: FC<InputMessageToolProps> = ({
 
   const submitMessage = async () => {
     try {
-      onSubmit()
+      await onSubmit()
     } catch (error) {
       errorMessage(error, true)
     }
