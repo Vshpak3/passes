@@ -51,8 +51,9 @@ printf '{"ImageURI":"%s"}' ${docker_registry}:${image_tag} > imageDetail.json
 aws ecs describe-task-definition --task-definition ${task_family_name} \
   | jq --arg updateName ${task_family_name} \
        --arg updateImage "<IMAGE1_NAME>" \
-       '.taskDefinition.containerDefinitions =
-          [.taskDefinition.containerDefinitions[] |
+       '.taskDefinition |
+        .containerDefinitions =
+          [.containerDefinitions[] |
            if (.name == $updateName)
            then (.image = $updateImage) else . end] |
         .runtimePlatform={
