@@ -111,7 +111,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return await fetch(props as Omit<T, "data">)
   }
 
-  const { data, setSize, mutate } = useSWRInfinite<T>(
+  const { data, setSize, mutate, size } = useSWRInfinite<T>(
     getKey,
     fetchData,
     newOptions
@@ -152,28 +152,32 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
 
   const checkScroll = useCallback(() => {
-    setIsScrollable(
-      node
-        ? node.scrollHeight > node.clientHeight
-        : (window.visualViewport?.height ?? 0) <
-            (window.document?.body?.clientHeight ?? 1)
-    )
-  }, [node])
+    const scrollable = node
+      ? node.scrollHeight > node.clientHeight
+      : (window.visualViewport?.height ?? 0) <
+        (window.document?.body?.clientHeight ?? 1)
+    setIsScrollable(scrollable)
+    return scrollable
+  }, [node, setIsScrollable])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isScrollable && hasMore) {
-      const interval = setTimeout(triggerFetch, renderDebounce)
+      const interval = setTimeout(() => {
+        const scrollable = checkScroll()
+        if (!scrollable) {
+          triggerFetch()
+        }
+      }, renderDebounce)
       return () => clearInterval(interval)
     }
-  }, [isScrollable, hasMore, triggerFetch, data?.length, renderDebounce])
-
-  useEffect(() => {
-    checkScroll()
-  }, [checkScroll, data])
+    return () => null
+  }, [isScrollable, hasMore, triggerFetch, checkScroll, renderDebounce, node])
 
   useLayoutEffect(() => {
     checkScroll()
+  }, [checkScroll, data, size])
 
+  useLayoutEffect(() => {
     window.addEventListener("resize", checkScroll)
 
     return () => window.removeEventListener("resize", checkScroll)

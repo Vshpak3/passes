@@ -1,7 +1,6 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { PayinMethodDtoMethodEnum } from "@passes/api-client"
-import classNames from "classnames"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
