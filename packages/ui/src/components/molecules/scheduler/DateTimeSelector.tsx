@@ -55,7 +55,7 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
           width="24"
         />
       </button>
-      <button onClick={showDateYearModal} type="button">
+      <button className="mx-2" onClick={showDateYearModal} type="button">
         <span className="w-[100px] select-none">
           {format(new Date(year, month, 1), "MMMM yyyy")}
         </span>

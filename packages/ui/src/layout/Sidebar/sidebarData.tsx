@@ -21,7 +21,7 @@ const creatorToolsItems: SidebarNavigation[] = [
     : []),
   {
     id: "list",
-    name: "List",
+    name: "Lists",
     href: "/tools/list",
     creatorOnly: true
   },

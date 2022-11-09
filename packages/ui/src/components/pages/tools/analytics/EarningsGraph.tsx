@@ -130,7 +130,7 @@ const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           </label>
         </label>
       </div>
-      <div className="flex h-[39px] flex-row gap-[16px] overflow-x-auto">
+      <div className="flex flex-row flex-wrap gap-[16px] pb-2">
         {EARNINGS_GRAPH_TABS.map(({ id, value, label }) => (
           <TabButton
             active={activeTab === value}

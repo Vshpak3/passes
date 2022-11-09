@@ -164,17 +164,13 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     return null
   }
   return (
-    <div className="flex h-full min-h-screen w-full max-w-[1235px] pt-20 md:pt-0">
+    <div className="flex h-full min-h-screen w-full">
       <div
-        className={cn(
-          "flex-1 flex-shrink-0 pr-[25px] xs:px-8 md:block md:min-w-[330px] md:pr-0",
-          { hidden: showSettingsTab }
-        )}
+        className={cn("flex-1 flex-shrink-0 px-4 md:block md:min-w-[330px]", {
+          hidden: showSettingsTab
+        })}
       >
-        <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-6">
-          <div className="pr-[35px]">
-            <h2 className="text-label-lg">Settings</h2>
-          </div>
+        <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-2">
           <ul className="mt-6 -mr-px">
             {tabs
               .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
@@ -282,6 +278,7 @@ const renderSubTab = (tab: SubTabsEnum) => {
 }
 
 export default WithNormalPageLayout(SettingsWrapper, {
-  header: false,
+  header: true,
+  headerTitle: "Settings",
   background: false
 })

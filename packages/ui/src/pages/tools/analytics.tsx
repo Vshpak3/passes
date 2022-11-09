@@ -82,4 +82,7 @@ const ANALYTICS_OPTIONS = [
   }
 ]
 
-export default WithNormalPageLayout(Analytics, { creatorOnly: true })
+export default WithNormalPageLayout(Analytics, {
+  creatorOnly: true,
+  headerTitle: "Analytics"
+})

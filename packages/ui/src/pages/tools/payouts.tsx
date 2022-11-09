@@ -10,4 +10,7 @@ const Payouts = () => {
     </div>
   )
 }
-export default WithNormalPageLayout(Payouts, { creatorOnly: true })
+export default WithNormalPageLayout(Payouts, {
+  creatorOnly: true,
+  headerTitle: "Request Payouts"
+})

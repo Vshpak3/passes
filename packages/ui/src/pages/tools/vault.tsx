@@ -5,4 +5,7 @@ export const VaultPage = () => {
   return <Vault />
 }
 
-export default WithNormalPageLayout(VaultPage, { creatorOnly: true })
+export default WithNormalPageLayout(VaultPage, {
+  creatorOnly: true,
+  headerTitle: "Vault"
+})

@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import React, { FC, forwardRef, ReactElement } from "react"
 
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
 import { CreatorSearchBar } from "./CreatorSearchBar"
@@ -10,6 +11,8 @@ class WithNormalPageLayoutOptions {
   skipAuth?: boolean = false
   creatorOnly?: boolean = false
   header?: boolean = true
+  headerTitle?: string
+  headerClassName?: string
   sidebar?: boolean = true
   background?: boolean = true
 
@@ -27,6 +30,7 @@ export const WithNormalPageLayout = (
   const component = forwardRef((props, ref) => <Page {...props} ref={ref} />)
   component.displayName = `WithNormalPageLayout(${getComponentName(Page)})`
 
+  const { headerTitle, sidebar, header, headerClassName } = options
   return {
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
@@ -34,20 +38,32 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           options.background ? "background-gradient" : "bg-passes-black",
-          "relative w-full "
+          "relative w-full"
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
           <div className="relative min-h-screen w-full grid-cols-10 md:grid">
-            {options.sidebar && <Sidebar />}
+            {sidebar && <Sidebar />}
             <main
               className={classNames(
-                options.sidebar ? "lg:col-span-7" : "lg:col-span-12",
-                "col-span-12 flex w-full flex-col "
+                sidebar ? "lg:col-span-7" : "lg:col-span-12",
+                "col-span-12 flex h-full w-full flex-col"
               )}
             >
-              {options.header && (
-                <div className="cover-image col-span-12 h-[130px] pr-10 pt-4 md:h-[200px]">
+              {header && (
+                <div
+                  className={classNames(
+                    "col-span-12 flex h-16 justify-between border-b-[0.5px] border-gray-600 pt-2 pr-4 lg:col-span-7",
+                    headerClassName
+                  )}
+                >
+                  <div className="flex-1">
+                    {headerTitle && (
+                      <SectionTitle className="ml-4 mt-3 hidden lg:block">
+                        {headerTitle}
+                      </SectionTitle>
+                    )}
+                  </div>
                   <span className="hidden lg:block">
                     <CreatorSearchBar />
                   </span>
@@ -59,6 +75,9 @@ export const WithNormalPageLayout = (
                 isPage
                 skipAuth={!!options.skipAuth}
               >
+                <SectionTitle className="ml-4 mt-3 lg:hidden">
+                  {headerTitle}
+                </SectionTitle>
                 {page}
               </AuthWrapper>
             </main>

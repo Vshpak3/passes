@@ -32,7 +32,7 @@ const SchedulerPage: FC = () => {
 
   return (
     <SchedulerContext.Provider value={contextValue}>
-      <div className="bg-black">
+      <div className="px-4">
         <SchedulerHeader />
         {!hasInitialFetch && !data ? (
           <div className="pt-[100px]">
@@ -49,4 +49,7 @@ const SchedulerPage: FC = () => {
   )
 }
 
-export default WithNormalPageLayout(SchedulerPage, { creatorOnly: true })
+export default WithNormalPageLayout(SchedulerPage, {
+  creatorOnly: true,
+  headerTitle: "Scheduler"
+})

@@ -8,8 +8,8 @@ interface Props {
 
 export const SectionTitle = ({ children, className }: Props) => {
   return (
-    <span className={classNames("my-4 flex text-xl font-bold", className)}>
+    <h2 className={classNames("my-4 flex text-xl font-bold", className)}>
       {children}
-    </span>
+    </h2>
   )
 }

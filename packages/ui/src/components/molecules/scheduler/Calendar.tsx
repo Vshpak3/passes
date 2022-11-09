@@ -74,7 +74,7 @@ export const Calendar: FC = () => {
   }
 
   return (
-    <div className="mb-[52px] select-none px-[15px] md:px-[30px]">
+    <div className="mb-8 select-none">
       <div className="mb-[15px] flex items-center justify-evenly">
         {Array(DAYS_IN_WEEK)
           .fill(0)

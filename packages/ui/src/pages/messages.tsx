@@ -30,7 +30,7 @@ const MessagesPage = () => {
   return (
     <Suspense fallback={<CenterLoader />}>
       <div className="flex h-screen flex-col">
-        <div className="hidden items-center lg:flex">
+        <div className="hidden h-16 items-center pr-2 lg:flex">
           {user?.isCreator ? (
             <div className="flex flex-1 items-center">
               {massMessage ? (

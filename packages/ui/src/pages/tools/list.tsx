@@ -103,8 +103,7 @@ const FanLists: NextPage = () => {
   }, [])
   return (
     <div className="text-white">
-      <div className="mt-4 flex items-center justify-between px-7">
-        <h1 className="text-xl font-bold">My Lists</h1>
+      <div className="mt-4 flex items-center justify-between px-4">
         <div className="relative flex items-center justify-end">
           <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
           <input
@@ -178,4 +177,7 @@ const FanLists: NextPage = () => {
   )
 }
 
-export default WithNormalPageLayout(FanLists, { creatorOnly: true })
+export default WithNormalPageLayout(FanLists, {
+  creatorOnly: true,
+  headerTitle: "Lists"
+})

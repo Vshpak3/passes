@@ -55,7 +55,7 @@ export const EventTable: FC = () => {
   }
 
   return (
-    <div className="px-[30px] pb-[100px]">
+    <div className="pb-20">
       <div className="mb-9 text-base font-bold md:text-2xl">
         Scheduled Events In {format(new Date(year, month, 1), "LLLL")}
       </div>

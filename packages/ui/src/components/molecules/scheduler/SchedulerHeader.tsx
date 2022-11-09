@@ -88,10 +88,7 @@ export const SchedulerHeader: FC = () => {
         selectionDate={selectionDate as Date}
       />
 
-      <div className="flex items-center justify-between px-[15px] pb-[45px] md:px-[30px]">
-        <div className="select-none text-base font-bold md:text-2xl">
-          Scheduler
-        </div>
+      <div className="relative flex items-center justify-center pb-8">
         <div className="flex items-center justify-between text-base font-bold md:w-[300px] md:text-2xl">
           <div className="flex items-center gap-1">
             <div className="hidden md:flex">
@@ -99,21 +96,23 @@ export const SchedulerHeader: FC = () => {
             </div>
           </div>
         </div>
-        <CalendarPicker
-          onSave={async (date: Date | null) => {
-            if (!date) {
-              return
-            }
-            setSelectionDate(date)
-            setIsNewPostModalOpen(true)
-          }}
-          placement={isMobile ? "bottom" : "auto"}
-        >
-          <button className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]">
-            <PlusSquareIcon />
-            <span className="hidden md:block">Schedule</span>
-          </button>
-        </CalendarPicker>
+        <div className="absolute right-0">
+          <CalendarPicker
+            onSave={async (date: Date | null) => {
+              if (!date) {
+                return
+              }
+              setSelectionDate(date)
+              setIsNewPostModalOpen(true)
+            }}
+            placement={isMobile ? "bottom" : "auto"}
+          >
+            <button className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]">
+              <PlusSquareIcon />
+              <span className="hidden md:block">Schedule</span>
+            </button>
+          </CalendarPicker>
+        </div>
       </div>
       <div className="relative bottom-[35px] flex items-center justify-center md:hidden">
         <DateTimeSelected showDateYearModal={handleShowMonthYearPopper} />

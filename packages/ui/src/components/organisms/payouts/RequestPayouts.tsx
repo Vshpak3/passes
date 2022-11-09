@@ -64,7 +64,6 @@ export const RequestPayouts = () => {
 
   return (
     <div className="flex w-full flex-col gap-[24px]">
-      <div className="text-[24px] font-[700]">Request Payouts</div>
       <div className="flex flex-col gap-5 md:flex-row">
         <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[15px] border border-passes-dark-200 bg-gradient-to-br from-[#12070E]/50 to-[#441E25] p-5">
           <div className="mb-4 text-[16px] opacity-[50%]">

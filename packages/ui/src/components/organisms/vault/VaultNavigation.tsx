@@ -104,10 +104,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   }
 
   return (
-    <div className="relative mt-4 flex w-full flex-col justify-between border-b border-passes-dark-gray pb-6">
-      <div className="flex items-center justify-between">
-        <div className="text-[24px] font-bold text-white">Creator Vault</div>
-      </div>
+    <div className="relative mt-2 flex w-full flex-col justify-between border-b border-passes-gray-600 pb-6">
       <VaultFilterContainer
         setVaultCategory={setVaultCategory}
         setVaultType={setVaultType}
