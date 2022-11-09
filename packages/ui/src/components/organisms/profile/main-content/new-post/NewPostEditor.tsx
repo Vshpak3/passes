@@ -84,7 +84,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const [isReset, setIsReset] = useState(false)
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
-  const [reorderContent, setReorderContent] = useState(false)
   const {
     handleSubmit,
     register,
@@ -119,7 +118,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     setFiles([])
     setSelectedPasses([])
     setIsReset(true)
-    setReorderContent(false)
     if (onClose) {
       onClose()
     }
@@ -130,7 +128,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     setFiles([])
     setSelectedPasses([])
     setIsReset(true)
-    setReorderContent(false)
   }
 
   useEffect(() => {
@@ -233,7 +230,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               mediaPreviewIndex={mediaPreviewIndex}
               onRemove={onRemove}
               register={register}
-              reorderContent={reorderContent}
               setFiles={setFiles}
               setMediaPreviewIndex={setMediaPreviewIndex}
             />
@@ -251,10 +247,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
             <NewPostEditorFooter
               addContent={addContent}
               disableForm={disableForm}
-              reorderButton={files.length > 1}
-              reorderContent={reorderContent}
               scheduledTime={getValues()?.scheduledAt}
-              setReorderContent={setReorderContent}
               setScheduledTime={setScheduledTime}
             />
           </>

@@ -1,14 +1,27 @@
 import classNames from "classnames"
 import { uniqueId } from "lodash"
 import BoxIcon from "public/icons/cursor-box-icon.svg"
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
+import {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState
+} from "react"
 import {
   DragDropContext,
   Draggable,
   DraggableLocation,
   Droppable
 } from "react-beautiful-dnd"
+import { FieldErrorsImpl } from "react-hook-form"
 
+import { FormRegister } from "src/components/atoms/input/InputTypes"
+import { DragDropFile } from "src/components/molecules/DragDropFile"
+import { MediaModal } from "src/components/organisms/MediaModal"
+import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 import { Media, MediaFile } from "./profile/main-content/new-post/Media"
@@ -20,6 +33,12 @@ interface ContentsProps {
   listId: string
   internalScroll?: boolean
   isCombineEnabled?: boolean
+  onMediaFileSelect: (item: ContentFileWithId) => void
+  onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
+  renderPlusIcon?: boolean
+  register: FormRegister
+  errors: Partial<FieldErrorsImpl>
+  onFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 type Contents = {
@@ -29,9 +48,9 @@ type Contents = {
 const getMediaClassname = (contentType: string) => {
   switch (true) {
     case contentType.startsWith("image/"):
-      return "cursor-grab select-none rounded-[6px] object-contain"
+      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
     case contentType.startsWith("video/"):
-      return "cursor-grab select-none rounded-[6px]"
+      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
     case contentType.startsWith("audio/"):
       return "absolute inset-0 m-auto min-w-full max-w-full cursor-grab select-none rounded-[6px] object-cover"
     default:
@@ -39,7 +58,16 @@ const getMediaClassname = (contentType: string) => {
   }
 }
 
-const Contents: FC<ContentsProps> = ({ listId, items }) => {
+const Contents: FC<ContentsProps> = ({
+  listId,
+  items,
+  onMediaFileSelect,
+  onRemove,
+  renderPlusIcon,
+  onFileInputChange,
+  register,
+  errors
+}) => {
   return (
     <Droppable
       direction="horizontal"
@@ -53,13 +81,13 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
           className="h-full w-full overflow-x-hidden"
         >
           <div
-            className="flex min-h-[175px] min-w-[175px] gap-[12px] overflow-x-auto"
+            className="flex min-h-[85px] min-w-[85px] gap-[12px] overflow-x-auto md:min-h-[175px] md:min-w-[175px]"
             ref={dropProvided.innerRef}
           >
             {listId === "Free" && items.length === 0 ? (
-              <div className="flex h-[175px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-[#FF51A8] bg-[#0F0C10] px-6">
+              <div className="flex h-[85px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-[#FF51A8] bg-[#0F0C10] px-0 md:h-[175px]  md:px-6">
                 <BoxIcon />
-                <p className="text-center text-[12px] font-normal leading-[16px] text-[#888689]">
+                <p className="text-center text-[9px] font-normal text-[#888689] md:text-[12px] md:leading-[16px]">
                   Reorder and drag content here to post as free preview
                 </p>
               </div>
@@ -68,7 +96,7 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                 <Draggable draggableId={item._id} index={index} key={item._id}>
                   {(dragProvided, snapshot) => (
                     <div
-                      className="flex shrink-0"
+                      className="relative z-[2] flex w-[85px] min-w-[85px] shrink-0 md:w-[175px] md:min-w-[175px]"
                       {...dragProvided.dragHandleProps}
                       {...dragProvided.draggableProps}
                       ref={dragProvided.innerRef}
@@ -77,15 +105,17 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                         <Media
                           className={classNames(
                             snapshot.isDragging
-                              ? "!cursor-grabbing select-none"
+                              ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
                               : getMediaClassname(item.content.contentType)
                           )}
-                          contentHeight={175}
-                          contentWidth={175}
-                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
                           noRender
                           noRenderString={`Vault Video content #${index}`}
-                          preview
+                          objectFit="cover"
+                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                            onRemove(index, e)
+                          }
+                          onSelect={() => onMediaFileSelect(item)}
                           src={ContentService.userContentMediaPath(
                             item.content
                           )}
@@ -95,16 +125,18 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
                         <MediaFile
                           className={classNames(
                             snapshot.isDragging
-                              ? "!cursor-grabbing select-none"
+                              ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
                               : getMediaClassname(item.file.type)
                           )}
-                          contentHeight={175}
-                          contentWidth={175}
                           file={item.file}
-                          iconClassName="absolute top-[10px] right-[10px] mix-blend-difference"
+                          iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
                           noRender
                           noRenderString={item.file.name}
-                          preview
+                          objectFit="cover"
+                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                            onRemove(index, e)
+                          }
+                          onSelect={() => onMediaFileSelect(item)}
                         />
                       ) : null}
                     </div>
@@ -113,6 +145,17 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
               ))
             )}
             {dropProvided.placeholder}
+            {renderPlusIcon && (
+              <DragDropFile
+                accept={ACCEPTED_MEDIA_TYPES}
+                className="flex max-h-[85px] min-w-[85px] items-center md:min-h-[175px] md:min-w-[175px] "
+                errors={errors}
+                multiple
+                name="drag-drop"
+                options={{ onChange: onFileInputChange }}
+                register={register}
+              />
+            )}
           </div>
         </div>
       )}
@@ -122,20 +165,41 @@ const Contents: FC<ContentsProps> = ({ listId, items }) => {
 
 interface MediaSectionReorderPops {
   files: ContentFile[]
+  register: FormRegister
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
+  addNewMedia: (newFiles: FileList | null) => void
   mediaPreviewIndex: number
   setMediaPreviewIndex: Dispatch<SetStateAction<number>> | undefined
   isPaid: boolean
+  onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
+  errors: Partial<FieldErrorsImpl>
 }
 
 export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   files,
+  register,
   setFiles,
+  addNewMedia,
   mediaPreviewIndex = 0,
   setMediaPreviewIndex,
-  isPaid
+  isPaid,
+  onRemove,
+  errors
 }) => {
   const [filesMap, setFilesMap] = useState<Contents>({ Free: [], Paid: [] })
+
+  const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
+
+  const onMediaFileSelect = (file: ContentFile) => {
+    setSelectedMedia(file)
+    setIsNewPostModalOpen(true)
+  }
+
+  const onFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    addNewMedia(event.target.files)
+    event.target.value = ""
+  }
 
   useEffect(() => {
     if (filesMap["Free"].length || filesMap["Paid"].length) {
@@ -151,6 +215,12 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
     getContent()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPaid])
+
+  useEffect(() => {
+    // This code only fires on length change
+    getContent()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [files.length])
 
   const setId = (file: ContentFile) => {
     const _file = file as ContentFileWithId
@@ -173,21 +243,23 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   }
 
   return (
-    <DragDropContext
-      onDragEnd={({ destination, source }) => {
-        // // dropped outside the list
-        if (!destination) {
-          return
-        }
+    <div className="flex h-full w-full">
+      <DragDropContext
+        onDragEnd={({ destination, source }) => {
+          // // dropped outside the list
+          if (!destination) {
+            return
+          }
 
-        setFilesMap(reorderContent(filesMap, source, destination))
-      }}
-    >
-      <div className="flex h-full w-full items-end">
+          setFilesMap(reorderContent(filesMap, source, destination))
+        }}
+      >
         <div
           className={classNames(
-            "flex min-h-[175px] flex-col overflow-hidden",
-            isPaid ? "min-w-[35%] max-w-[50%]" : "w-full"
+            "flex  min-h-[85px] flex-col overflow-hidden md:min-h-[175px]",
+            isPaid
+              ? " min-w-[40%] max-w-[40%] md:min-w-[35%] md:max-w-[50%]"
+              : "w-full"
           )}
         >
           {isPaid && (
@@ -197,33 +269,55 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
           )}
           <div className="flex overflow-x-auto">
             <Contents
+              errors={errors}
               internalScroll
               items={filesMap["Free"]}
               key="Free"
               listId="Free"
+              onFileInputChange={onFileInputChange}
+              onMediaFileSelect={onMediaFileSelect}
+              onRemove={onRemove}
+              register={register}
+              renderPlusIcon={!isPaid && files.length !== MAX_FILE_COUNT}
             />
           </div>
         </div>
         {isPaid && (
           <>
-            <div className="mx-3 h-full min-h-[175px] border-r border-[#FF51A8]" />
-            <div className="flex w-full min-w-[65%] flex-col overflow-hidden">
+            <div className="mx-3 h-[85px] self-end border-r border-[#FF51A8] md:h-[175px]" />
+            <div className="flex w-full min-w-[50%] max-w-[40%] flex-col overflow-hidden md:min-w-[60%]">
               <div className="text-[12px] font-medium leading-[24px] text-[#FF51A8]">
                 Pay to View
               </div>
               <div className="flex items-center overflow-x-auto">
                 <Contents
+                  errors={errors}
                   internalScroll
                   items={filesMap["Paid"]}
                   key="Paid"
                   listId="Paid"
+                  onFileInputChange={onFileInputChange}
+                  onMediaFileSelect={onMediaFileSelect}
+                  onRemove={onRemove}
+                  register={register}
+                  renderPlusIcon={isPaid && files.length !== MAX_FILE_COUNT}
                 />
               </div>
             </div>
           </>
         )}
-      </div>
-    </DragDropContext>
+      </DragDropContext>
+
+      {!!selectedMedia?.file && (
+        <MediaModal
+          childrenClassname="p-0"
+          file={selectedMedia}
+          isOpen={isNewPostModalOpen}
+          modalContainerClassname="p-0"
+          setOpen={setIsNewPostModalOpen}
+        />
+      )}
+    </div>
   )
 }
 // a little function to help us with reordering the result

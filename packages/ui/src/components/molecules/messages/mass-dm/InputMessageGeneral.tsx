@@ -4,7 +4,6 @@ import classNames from "classnames"
 import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/button/Button"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
@@ -16,7 +15,7 @@ import {
   InputMessageFormProps,
   newMessageFormSchema
 } from "src/components/molecules/messages/InputMessage"
-import { MediaSection } from "src/components/organisms/MediaSection"
+import { MediaSectionReorder } from "src/components/organisms/MediaSectionReorder"
 import {
   MediaSelector,
   PhotoSelector,
@@ -68,7 +67,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
-  const [reorderContent, setReorderContent] = useState(false)
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
     addNewMedia(event.target.files)
@@ -149,16 +147,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               </div>
             ) : null}
           </div>
-          {files.length > 1 && (
-            <Button
-              className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px]"
-              onClick={() => setReorderContent(!reorderContent)}
-            >
-              <Text className="font-bold text-[#FF51A8]" fontSize={16}>
-                {reorderContent ? "Reorder Done" : "Reorder"}
-              </Text>
-            </Button>
-          )}
         </div>
 
         <textarea
@@ -179,8 +167,8 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
           onKeyDown={submitOnEnter}
         />
         {files.length > 0 && (
-          <div className="relative max-w-[390px] sm:max-w-[590px]">
-            <MediaSection
+          <div className="flex">
+            <MediaSectionReorder
               addNewMedia={addNewMedia}
               errors={errors}
               files={files}
@@ -188,7 +176,6 @@ export const InputMessageGeneral: FC<InputMessageGeneralProps> = ({
               mediaPreviewIndex={mediaPreviewIndex}
               onRemove={onRemove}
               register={register}
-              reorderContent={reorderContent}
               setFiles={setFiles}
               setMediaPreviewIndex={setMediaPreviewIndex}
             />

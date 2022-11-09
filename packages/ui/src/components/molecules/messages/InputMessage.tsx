@@ -26,7 +26,7 @@ import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Text } from "src/components/atoms/Text"
 import { VaultSelector } from "src/components/atoms/VaultSelector"
-import { MediaSection } from "src/components/organisms/MediaSection"
+import { MediaSectionReorder } from "src/components/organisms/MediaSectionReorder"
 import {
   MediaSelector,
   PhotoSelector,
@@ -114,7 +114,6 @@ export const InputMessage: FC<InputMessageProps> = ({
     setValue("files", files, { shouldValidate: true })
   }, [files, setValue])
 
-  const [reorderContent, setReorderContent] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
@@ -266,16 +265,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                 </div>
               ) : null}
             </div>
-            {files.length > 1 && (
-              <Button
-                className="flex items-center justify-center rounded-[5px] border border-[#FF51A8] bg-transparent px-4 text-base font-bold sm:rounded-[5px]"
-                onClick={() => setReorderContent(!reorderContent)}
-              >
-                <Text className="font-bold text-[#FF51A8]" fontSize={16}>
-                  {reorderContent ? "Reorder Done" : "Reorder"}
-                </Text>
-              </Button>
-            )}
           </div>
         )}
 
@@ -298,8 +287,8 @@ export const InputMessage: FC<InputMessageProps> = ({
           onKeyDown={submitOnEnter}
         />
         {files.length > 0 && (
-          <div className="relative max-w-[390px] sm:max-w-[590px]">
-            <MediaSection
+          <div className="flex px-2 md:px-5">
+            <MediaSectionReorder
               addNewMedia={addNewMedia}
               errors={errors}
               files={files}
@@ -307,7 +296,6 @@ export const InputMessage: FC<InputMessageProps> = ({
               mediaPreviewIndex={mediaPreviewIndex}
               onRemove={onRemove}
               register={register}
-              reorderContent={reorderContent}
               setFiles={setFiles}
               setMediaPreviewIndex={setMediaPreviewIndex}
             />

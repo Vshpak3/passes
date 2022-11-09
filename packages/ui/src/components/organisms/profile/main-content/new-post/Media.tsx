@@ -135,6 +135,7 @@ export const Media: FC<MediaProp> = ({
         <img
           alt=""
           className={className}
+          onClick={onSelect}
           src={src}
           style={{
             objectFit,
