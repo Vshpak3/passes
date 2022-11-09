@@ -38,7 +38,6 @@ type MediaSelectorProps = {
   options?: FormOptions
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
   selectors: FileSelectorProps[]
-  otherUserIsCreator?: boolean
 }
 
 export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
@@ -48,14 +47,13 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
   onChange,
   activeMediaHeader,
   selectors,
-  children,
-  otherUserIsCreator
+  children
 }) => {
   return (
     <div>
       <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
         <div className="flex items-center">
-          <div className="flex w-full flex-wrap justify-between gap-1">
+          <div className="flex w-full justify-between gap-1">
             {selectors.map(({ name, Icon, accept, multiple }) => {
               return (
                 <FileInput
@@ -70,8 +68,8 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                     <button
                       className={classNames(
                         activeMediaHeader === name
-                          ? " md:bg-[#FF51A8]/10 "
-                          : "md:hover:bg-[#FF51A8]/10",
+                          ? " bg-[#FF51A8]/10 "
+                          : "hover:bg-[#FF51A8]/10",
                         "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-[#FF51A8] md:py-3 md:px-4"
                       )}
                       type="button"
@@ -80,9 +78,7 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                         <Icon className="flex shrink-0" />
                         <span
                           className={classNames(
-                            !otherUserIsCreator
-                              ? "block md:hidden md:group-hover:block"
-                              : "block" && activeMediaHeader === name
+                            activeMediaHeader === name
                               ? "block"
                               : "hidden md:group-hover:block",
                             "block"

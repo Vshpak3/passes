@@ -232,9 +232,9 @@ export const InputMessage: FC<InputMessageProps> = ({
       className="flex w-full border-t border-[#3A444C]/[0.64]"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full flex-col px-[10px] pt-2 md:px-[30px]">
+      <div className="flex w-full flex-col pt-2">
         {isCreator && (
-          <div className="flex w-full items-center justify-between py-1">
+          <div className="flex w-full items-center justify-between px-[10px] py-1 md:px-[30px]">
             <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
               <Checkbox
                 className="group"
@@ -282,7 +282,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             files.length
               ? "focus:border-b-transparent"
               : errors.text && "border-b-red",
-            "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 pt-3 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
+            "w-full resize-none  border-x-0 border-b border-transparent bg-transparent p-2 px-[10px] pt-3 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
           )}
           name="text"
           // onFocus={() => {
@@ -307,16 +307,13 @@ export const InputMessage: FC<InputMessageProps> = ({
           </div>
         )}
         {Object.values(errors)[0] && (
-          <Text className="mt-1 block text-[red]" fontSize={12}>
+          <Text className="mx-5 mt-1 block text-[red]" fontSize={12}>
             {Object.values(errors)[0]?.message}
           </Text>
         )}
         <div
           className={classNames(
-            isCreator
-              ? "items-center justify-between md:-ml-4 md:flex-nowrap"
-              : "flex-nowrap justify-end",
-            "mb-5 flex w-full flex-wrap border-b border-[#3A444C]/[0.64] py-4 md:mb-0 md:flex-nowrap md:border-0 md:pt-5",
+            "mb-5 flex w-full flex-row items-center justify-between border-b border-[#3A444C]/[0.64] py-4 md:mb-0 md:border-0 md:pt-5",
             Object.values(errors)[0] && "!pt-0"
           )}
         >
@@ -325,35 +322,20 @@ export const InputMessage: FC<InputMessageProps> = ({
               activeMediaHeader={activeMediaHeader}
               errors={errors}
               onChange={onMediaChange}
-              otherUserIsCreator={otherUserIsCreator}
               register={register}
               selectors={[PhotoSelector, VideoSelector]}
             >
               <div>
-                <VaultSelector
-                  otherUserIsCreator={otherUserIsCreator}
-                  selectVaultContent={addContent}
-                />
+                <VaultSelector selectVaultContent={addContent} />
               </div>
             </MediaSelector>
           )}
-          <div className="flex items-center justify-end gap-[10px]">
+          <div className="flex flex-row items-center justify-end gap-[10px] px-[5px] py-1 md:px-[20px]">
             {otherUserIsCreator && (
               <div className="relative">
-                {/* <div className="flex w-3/5 flex-col items-start">
-                  <span className="text-[12px] font-medium leading-[14px] text-[#B52A6F] md:text-[14px]">
-                    Tip:
-                  </span>
-                  {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                    <span className="whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                      minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
-                    </span>
-                  ) : null}
-                </div> */}
-
                 <div
                   className={classNames(
-                    "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F]",
+                    "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F] ",
                     blocked === PayinDataDtoBlockedEnum.InsufficientTip
                       ? "top-0.5 md:top-1"
                       : "top-1.5 md:top-2.5"
@@ -362,28 +344,18 @@ export const InputMessage: FC<InputMessageProps> = ({
                   Tip
                 </div>
                 {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                  <span className="absolute left-4 top-5 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500 md:top-6">
+                  <span className="absolute left-4 top-6 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
                     minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
                   </span>
                 ) : null}
                 <NumberInput
-                  className="flex h-[37px] max-w-[125px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-[9px] py-[4px]  text-right focus:border-[#B52A6F] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
+                  className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px] text-right focus:border-[#B52A6F]"
                   maxInput={MAX_TIP_MESSAGE_PRICE}
                   name="tip"
                   onChange={handleChangeTip}
                   register={register}
                   type="currency"
                 />
-                {/* <input
-                  autoComplete="off"
-                  className="border-none bg-transparent p-0 pl-1 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0 "
-                  min="0"
-                  onChange={handleChangeTip}
-                  onKeyPress={preventNegative}
-                  placeholder="0.00"
-                  step=".01"
-                  type="number"
-                /> */}
               </div>
             )}
             <div
@@ -391,19 +363,13 @@ export const InputMessage: FC<InputMessageProps> = ({
               className="flex h-[45px] flex-col content-center justify-center"
               role="button"
             >
-              <button
-                className={classNames(
-                  blocked ? " cursor-not-allowed opacity-50" : "",
-                  " max-w-[119px] cursor-pointer items-center justify-center rounded-[5px] bg-[#B52A6F] py-[6px] px-[9px] text-center text-[14px] leading-[25px] text-white md:max-w-[151px] md:py-[10px] md:px-[18px] md:text-[16px]"
-                )}
-                disabled={
-                  !isNaN(tip) &&
-                  !!blocked &&
-                  blocked !== PayinDataDtoBlockedEnum.NoPayinMethod &&
-                  loading
-                }
+              <Button
+                big
+                className="w-[130px]"
+                disabled={isNaN(tip) || !!blocked || loading}
+                disabledClass="cursor-not-allowed"
                 onClick={handleSubmit(submitMessage)}
-                type="button"
+                variant="pink"
               >
                 {loading
                   ? "Sending..."
@@ -417,7 +383,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                   : // : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
                     // ? "No Payment Method (go to settings)"
                     ` Send Message`}
-              </button>
+              </Button>
             </div>
           </div>
         </div>
