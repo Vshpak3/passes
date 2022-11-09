@@ -121,7 +121,6 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
       <div className="flex items-center rounded border border-passes-primary-color pl-4">
         <div className="basis-3/4">
           <span>Enter Tip Amount</span>
-          <span className="ml-4 text-xs text-passes-dark-gray">Minimum $3</span>
         </div>
         <NumberInput
           className="border-0 font-bold"
