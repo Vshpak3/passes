@@ -98,7 +98,7 @@ export const ChannelList: FC<ChannelListProps> = ({
         </div>
         <div
           className="max-h-full overflow-y-auto scrollbar-hide"
-          id="channelDiv"
+          id="channelsDiv"
           ref={ref}
         >
           <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
