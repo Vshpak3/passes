@@ -12,7 +12,7 @@ export const ProfileInformation: FC = () => {
 
   return (
     <div className="flex flex-col items-start">
-      <div className="ml-[90px] flex w-[calc(100%-300px)] flex-col items-center justify-around truncate md:ml-0 md:w-[85%]">
+      <div className="ml-[90px] flex w-[calc(100%-200px)] flex-col items-center justify-around truncate md:ml-0 md:w-[85%]">
         <span className="passes-break  w-full truncate text-[16px] font-medium leading-9 text-passes-white-100 md:text-[32px]">
           {profile?.displayName}
         </span>

@@ -104,19 +104,19 @@ export const ProfileDetails: FC = () => {
 
       {/* mobile */}
       <div className="absolute top-2 right-10 flex-row items-start pr-3 md:hidden">
-        <div className="flex flex-row">
+        <div className="flex flex-col">
           {ownsProfile ? (
             <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
           ) : (
             <>
               <FollowButton
-                className="mr-1 h-[36px] w-[80px]"
+                className="mb-[3px] h-[25px] w-[80px]"
                 creatorId={profileUserId}
               />
 
               {!!profile?.isCreator && (
                 <Link href={chatLink}>
-                  <Button className="h-[36px] w-[80px]" variant="pink-outline">
+                  <Button className="h-[25px] w-[80px]" variant="pink-outline">
                     <ChatIcon />
                   </Button>
                 </Link>
@@ -127,7 +127,7 @@ export const ProfileDetails: FC = () => {
       </div>
 
       {!ownsProfile && (
-        <div className="absolute top-4 right-5 items-center justify-between">
+        <div className="absolute top-2 right-5 items-center justify-between">
           <Dropdown
             items={[
               ...DropDownReport(true, {
