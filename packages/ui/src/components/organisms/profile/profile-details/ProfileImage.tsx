@@ -5,7 +5,7 @@ import { useGlobalCache } from "src/contexts/GlobalCache"
 import { ContentService } from "src/helpers/content"
 
 type ProfileImageType = "image" | "thumbnail"
-export interface ProfileImageProps {
+interface ProfileImageProps {
   userId: string
   onClick?: () => void
   override?: string
