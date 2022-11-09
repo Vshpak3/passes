@@ -58,6 +58,9 @@ export const Vault: FC<VaultProps> = ({
   }
 
   const onSubmit = async () => {
+    toast.info(
+      "Please wait as we upload your content. Don't leave this screen!"
+    )
     await new ContentService()
       .uploadUserContent({ files })
       .then(() =>
