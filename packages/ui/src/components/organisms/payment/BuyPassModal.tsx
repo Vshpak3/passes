@@ -1,11 +1,13 @@
 import { PassDto, PassDtoTypeEnum, PayinMethodDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction, useState } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { getPassType } from "src/components/molecules/pass/PassCard"
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
+import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
 
 interface BuyPassModalProps {
   pass: PassDto
@@ -15,19 +17,37 @@ interface BuyPassModalProps {
 const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
-  const { description, title, totalMessages, price, type } = pass
+  const {
+    description,
+    title,
+    totalMessages,
+    price,
+    type,
+    creatorDisplayName,
+    creatorId,
+    creatorUsername,
+    passId
+  } = pass
 
   return (
     <Modal
+      closable={false}
       isOpen
-      modalContainerClassname="max-w-[500px] lg:max-w-[30%]"
+      modalContainerClassname="lg:max-w-[30%]"
       setOpen={() => setPass(null)}
     >
       <div className="mb-4">
         <SectionTitle className="mt-0">
-          Buy {pass?.type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly"}{" "}
+          Buy {type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly"}{" "}
           Membership
         </SectionTitle>
+        <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
+          {creatorId && <ProfileThumbnail userId={creatorId} />}
+          <div className="ml-4 flex flex-col">
+            <span>{creatorDisplayName}</span>
+            <span className="text-passes-dark-gray">@{creatorUsername}</span>
+          </div>
+        </div>
         <div className="flex justify-center rounded bg-gradient-to-r from-[#46165E] to-passes-tertiary-color py-2 font-bold">
           {title}
         </div>
@@ -48,18 +68,24 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
       </div>
       <PaymentModalBody
         closeModal={() => setPass(null)}
-        price={pass?.price ?? 0}
+        price={price ?? 0}
         setPayinMethod={setPayinMethod}
       />
-
-      <BuyPassButton
-        onSuccess={() => {
-          // toast.success("Please wait as we mint your membership card")
-          setPass(null)
-        }}
-        passId={pass?.passId ?? ""}
-        payinMethod={payinMethod}
-      />
+      <div className="flex w-full items-center justify-end">
+        <Button
+          className="mr-8 font-bold text-passes-primary-color"
+          onClick={() => setPass(null)}
+        >
+          Cancel
+        </Button>
+        <BuyPassButton
+          onSuccess={() => {
+            setPass(null)
+          }}
+          passId={passId ?? ""}
+          payinMethod={payinMethod}
+        />
+      </div>
     </Modal>
   )
 }

@@ -2,6 +2,7 @@ import { MessageDto, PayinMethodDto } from "@passes/api-client"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import React, { Dispatch, FC, SetStateAction, useState } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyMessageButton } from "src/components/molecules/payment/BuyMessageButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
@@ -21,11 +22,13 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
   const { images, video } = contentTypeCounter(message.contents)
+  const { price } = message
 
   return (
     <Modal
+      closable={false}
       isOpen
-      modalContainerClassname="max-w-[500px] lg:max-w-[30%] p-4"
+      modalContainerClassname="lg:max-w-[30%] p-4"
       setOpen={() => setMessage(null)}
     >
       <SectionTitle>Buy Message</SectionTitle>
@@ -39,7 +42,7 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
             Unlock for
             <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
               <DollarIcon />
-              <span className="ml-1">${message.price?.toFixed(2)}</span>
+              <span className="ml-1">${price?.toFixed(2)}</span>
             </span>
           </span>
         </div>
@@ -53,11 +56,19 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           setPayinMethod={setPayinMethod}
         />
       </div>
-      <BuyMessageButton
-        messageId={message.messageId}
-        onSuccess={() => setMessage(null)}
-        payinMethod={payinMethod}
-      />
+      <div className="flex w-full items-center justify-end">
+        <Button
+          className="mr-8 font-bold text-passes-primary-color"
+          onClick={() => setMessage(null)}
+        >
+          Cancel
+        </Button>
+        <BuyMessageButton
+          messageId={message.messageId}
+          onSuccess={() => setMessage(null)}
+          payinMethod={payinMethod}
+        />
+      </div>
     </Modal>
   )
 }

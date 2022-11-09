@@ -3,9 +3,9 @@ import {
   PayinDataDtoBlockedEnum,
   PayinMethodDto
 } from "@passes/api-client"
-import classNames from "classnames"
 import React, { FC, useCallback, useEffect } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
@@ -66,17 +66,14 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
     }
   }, [blocked, owns])
   return (
-    <button
-      className={classNames(
-        !!blocked || loading || isDisabled
-          ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white opacity-[0.40]"
-          : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white"
-      )}
+    <Button
+      big
       disabled={waiting || !!blocked || loading || isDisabled}
+      fontSize={16}
       onClick={submit}
-      type="submit"
+      variant="pink"
     >
       {waiting ? "Processing..." : loading ? "Loading" : "Buy pass"}
-    </button>
+    </Button>
   )
 }

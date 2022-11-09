@@ -46,7 +46,6 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
   return (
     <Button
       big
-      className="mt-4"
       disabled={!!blocked || loading || isDisabled}
       fontSize={16}
       onClick={submit}
