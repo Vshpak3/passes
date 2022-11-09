@@ -4,15 +4,12 @@ import {
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
-import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { getPassType } from "src/components/molecules/pass/PassCard"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { RenewPassButton } from "src/components/molecules/payment/RenewPassButton"
 import { Modal } from "src/components/organisms/Modal"
-import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface RenewPassModalProps {

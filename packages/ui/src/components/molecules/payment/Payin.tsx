@@ -6,7 +6,7 @@ import {
   PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
-import React, { useState, FC } from "react"
+import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 

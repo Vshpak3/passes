@@ -1,15 +1,12 @@
 import { PassDto, PassDtoTypeEnum, PayinMethodDto } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
-import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { getPassType } from "src/components/molecules/pass/PassCard"
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
-import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 
 interface BuyPassModalProps {
   pass: PassDto

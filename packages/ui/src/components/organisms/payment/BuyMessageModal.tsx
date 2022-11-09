@@ -4,10 +4,8 @@ import {
   PayinMethodDto
 } from "@passes/api-client"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
-import React, { Dispatch, FC, SetStateAction, useState } from "react"
+import { Dispatch, FC, SetStateAction, useState } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
-import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyMessageButton } from "src/components/molecules/payment/BuyMessageButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"

@@ -5,7 +5,6 @@ import {
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
