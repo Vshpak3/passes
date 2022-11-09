@@ -1,5 +1,6 @@
 import { PostDto } from "@passes/api-client"
-import PinIcon from "public/icons/pin.svg"
+import PinIcon from "public/icons/new-pin-icon.svg"
+import SingleDot from "public/icons/single-dot.svg"
 import { FC } from "react"
 import TimeAgo from "react-timeago"
 
@@ -34,21 +35,23 @@ export const PostHeader: FC<PostHeaderProps> = ({
       <div className="flex items-center space-x-4 overflow-x-hidden">
         <ProfileWidget isCreator={isCreator} user={user} />
       </div>
-      <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-col-reverse items-center justify-end md:flex-row md:gap-2">
-        <div className="text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
+      <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-row items-center justify-end ">
+        {isPinned && (
+          <div className="flex items-center rounded-lg py-1">
+            <PinIcon />
+            <SingleDot className="ml-[4px]" />
+          </div>
+        )}
+        <div className=" flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
-            className="uppercase text-gray-300/60"
+            className="mx-[4px] uppercase text-gray-300/60"
             date={createdAt}
             key={id}
             minPeriod={30}
           />
+          <SingleDot className="mr-[6px]" />
         </div>
-        {isPinned && (
-          <div className="flex items-center rounded-lg bg-white/10 px-2 py-1">
-            <PinIcon />
-          </div>
-        )}
-        <div className="mt-[5px] flex items-center">
+        <div className="mt-[7px] flex items-center">
           <Dropdown items={dropdownOptions} />
         </div>
       </div>
