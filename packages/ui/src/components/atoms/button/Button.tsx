@@ -82,7 +82,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   return (
     <button
       className={classNames(
-        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg px-4 py-3 no-underline transition-colors disabled:opacity-75 xs:px-3 xs:py-2",
+        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg no-underline transition-colors disabled:opacity-75",
         variantClassName,
         className,
         disabled && "cursor-auto border-[#3333]/80 bg-[#3333]/80",

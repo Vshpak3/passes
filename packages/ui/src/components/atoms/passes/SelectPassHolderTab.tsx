@@ -40,13 +40,13 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
   expired
 }) => {
   return (
-    <div className="z-[1] mt-[10px] box-border flex w-fit gap-[30px]">
+    <div className="z-[1] mt-[10px] box-border flex w-full">
       {PASS_HOLDER_TAB_OPTIONS.map((option) => (
         <div
           className={classNames(
             option.passType === passType && expired === option.expired
-              ? "border-b-[3px] border-passes-pink-100 text-white"
-              : "px-[10px] text-grayDark-gray8",
+              ? "border-b-[3px] border-passes-primary-color text-white"
+              : "border-b-[3px] border-b-transparent px-[10px] text-grayDark-gray8 hover:border-passes-primary-color hover:text-white/80",
             "flex cursor-pointer flex-row justify-between px-[30px] pb-[10px] text-[16px] font-bold"
           )}
           key={option.label}

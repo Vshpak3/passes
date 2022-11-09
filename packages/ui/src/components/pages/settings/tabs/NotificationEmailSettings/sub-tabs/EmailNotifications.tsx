@@ -150,7 +150,7 @@ const EmailNotifications = () => {
             loadingNotificationSettings ||
             _.isEqual(watch(), formattedNotificationSettings)
           }
-          disabledClass="opacity-[0.64]"
+          disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
           variant="pink"
         >

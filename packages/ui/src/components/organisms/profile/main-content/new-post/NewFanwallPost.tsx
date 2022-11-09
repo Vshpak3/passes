@@ -5,6 +5,7 @@ import CloseIcon from "public/icons/sidebar/close.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { NewPostTextFormProps } from "./NewPostEditor"
@@ -94,13 +95,14 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
           </div>
         </div>
         {extended && (
-          <button
-            className="mt-4 ml-auto flex items-center justify-center rounded-[50px] bg-passes-pink-100 px-[30px] py-[10px] text-base font-bold text-[#ffffff]/90"
+          <Button
+            className="mt-4 ml-auto flex items-center justify-center bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-[#ffffff]/90"
             disabled={disableForm}
-            type="submit"
+            fontSize={16}
+            type={ButtonTypeEnum.SUBMIT}
           >
             Post
-          </button>
+          </Button>
         )}
       </div>
     </form>

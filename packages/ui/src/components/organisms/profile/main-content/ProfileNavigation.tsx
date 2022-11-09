@@ -39,7 +39,7 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
             activeTab === item.id
               ? "border-b-[3px] border-passes-primary-color"
               : "border-b-[3px] border-b-transparent hover:border-passes-primary-color",
-            "group mx-2 box-border flex w-full max-w-[300px] cursor-pointer justify-center py-[10px]"
+            "group box-border flex w-full max-w-[300px] cursor-pointer justify-center py-[10px]"
           )}
           key={index}
           onClick={() => setActiveTab(item.id)}

@@ -4,6 +4,7 @@ import { PayoutMethodDtoMethodEnum } from "@passes/api-client"
 import classNames from "classnames"
 import Clipboard from "public/icons/clipboard.svg"
 import DeleteIcon from "public/icons/delete-outline.svg"
+import Wallet from "public/icons/wallet-manage.svg"
 import { memo } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -13,7 +14,6 @@ import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { BankIcon } from "src/icons/BankIcon"
-import { WalletIcon } from "src/icons/WalletIcon"
 
 const PayoutSettings = () => {
   const { setActiveTab, addOrPopStackHandler } =
@@ -107,7 +107,7 @@ const PayoutSettings = () => {
         <div>
           <Button
             className="w-auto"
-            icon={<WalletIcon />}
+            icon={<Wallet />}
             onClick={() => setActiveTab(TabsEnum.WalletSettings)}
             variant="pink"
           >
