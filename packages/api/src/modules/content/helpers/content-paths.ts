@@ -1,5 +1,6 @@
 import path from 'path'
 
+import { isEnv } from '../../../util/env'
 import { ContentFormatEnum } from '../enums/content-format.enum'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
@@ -43,7 +44,7 @@ export function mediaContentUploadPath(
 ) {
   return path.join(
     'upload',
-    contentType,
+    !isEnv('dev') ? contentType : '',
     userId,
     `${contentId}.${getContentTypeFormat(contentType)}`,
   )
@@ -70,7 +71,7 @@ export function profileImageUploadPath(
   return path.join(
     'profile',
     'upload',
-    type,
+    !isEnv('dev') ? type : '',
     userId,
     `profile-${type}.${ContentFormatEnum.IMAGE}`,
   )

@@ -102,14 +102,6 @@ export const DragDropFile: FC<DragDropFileProps> = ({
           {helperText && (
             <p className="self-stretch text-center font-normal">{helperText}</p>
           )}
-          {/* {name === "passFile" ?? (
-            <p className="self-stretch text-center font-normal">
-              If no media is selected,{" "}
-              <span className="cursor-pointer font-medium">
-                Passes will provide a default art piece.
-              </span>
-            </p>
-          )} */}
         </div>
       </div>
     </div>

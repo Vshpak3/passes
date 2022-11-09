@@ -35,7 +35,7 @@ export const Vault: FC<VaultProps> = ({
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     setValue,
     reset
   } = useForm<VaultFormProps>()
@@ -103,6 +103,7 @@ export const Vault: FC<VaultProps> = ({
             />
             <Button
               className="my-[10px] w-fit"
+              disabled={isSubmitting}
               type={ButtonTypeEnum.SUBMIT}
               variant="pink"
             >

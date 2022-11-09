@@ -1,7 +1,7 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { format } from "date-fns"
-import { FC, MouseEvent, useState } from "react"
+import { FC, MouseEvent } from "react"
 
 import { ContentService } from "src/helpers/content"
 
@@ -13,10 +13,6 @@ interface VaultMediaItemProps {
   handleClickOnItem: (item: ContentDto) => void
 }
 
-interface ImgSize {
-  [key: string]: string | number
-}
-
 const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
@@ -24,8 +20,6 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
   isMaxFileCountSelected,
   handleClickOnItem
 }) => {
-  const [imgSize, setImgSize] = useState<ImgSize>({ width: 300, height: 300 })
-  const { width, height } = imgSize
   const isSelected = !!selectedItems.filter(
     (c) => c.contentId === content.contentId
   ).length
@@ -63,21 +57,16 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-fit cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0"
+          "container flex w-full cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0"
         )}
         onClick={handleClick}
       >
         <img
           alt="Can't find image"
           className="object-cover"
-          height={height}
-          onError={({ currentTarget }) => {
-            setImgSize({ width: "fit-content", height: 300 })
-            currentTarget.onerror = null
-          }}
-          // All content types have an image thumbnail
+          height={300}
           src={ContentService.userContentThumbnailPath(content)}
-          width={width}
+          width={300}
         />
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
