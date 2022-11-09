@@ -1,6 +1,7 @@
 import "react-date-range/dist/styles.css"
 import "react-date-range/dist/theme/default.css"
 import { PayinMethodDtoMethodEnum } from "@passes/api-client"
+import classNames from "classnames"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
@@ -74,7 +75,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
 
   return (
     <div className="relative my-8 flex flex-col gap-6 xl:flex-row">
-      <div className="flex w-full items-center justify-between gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-6">
+      <div className="flex w-full flex-col items-start justify-start gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-6">
         <span className="text-[15px] font-bold text-white">
           {isEmbedded ? "Select" : "Default"} Payment Method:
         </span>
