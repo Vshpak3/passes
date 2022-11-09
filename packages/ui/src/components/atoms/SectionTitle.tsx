@@ -1,12 +1,14 @@
 import classNames from "classnames"
-import React, { ReactNode } from "react"
+import { FC, PropsWithChildren } from "react"
 
-interface Props {
-  children: ReactNode
+interface SectionTitleProps {
   className?: string
 }
 
-export const SectionTitle = ({ children, className }: Props) => {
+export const SectionTitle: FC<PropsWithChildren<SectionTitleProps>> = ({
+  children,
+  className
+}) => {
   return (
     <h2 className={classNames("my-4 flex text-xl font-bold", className)}>
       {children}

@@ -2,7 +2,7 @@ import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import Link from "next/link"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { useEffect, useMemo } from "react"
+import { FC, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 
 import { Select } from "src/components/atoms/input/Select"
@@ -16,7 +16,7 @@ import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { ThreeDSInfo } from "./ThreeDSInfo"
 
-export interface PaymentModalBodyProps {
+interface PaymentModalBodyProps {
   price: number
   closeModal: () => void
   setPayinMethod: (method: PayinMethodDto) => void
@@ -45,11 +45,11 @@ const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
   return newOption
 })
 
-export const PaymentModalBody = ({
+export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
   price,
   setPayinMethod,
   closeModal
-}: PaymentModalBodyProps) => {
+}) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
 
   const { setValue, watch } = useForm<PaymentModalBodyFromProps>({

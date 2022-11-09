@@ -21,7 +21,7 @@ interface PassFileProps {
   gridLayout: "col-span-12" | "md:col-span-6" | "md:col-span-4"
 }
 
-const PassFile = ({ onRemove, file, gridLayout }: PassFileProps) => (
+const PassFile: FC<PassFileProps> = ({ onRemove, file, gridLayout }) => (
   <div className={`col-span-12 ${gridLayout}`}>
     <MediaFile
       className="ml-[30px]"

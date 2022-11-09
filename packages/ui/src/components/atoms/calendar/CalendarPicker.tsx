@@ -3,7 +3,7 @@ import "react-day-picker/dist/style.css"
 import Fade from "@mui/material/Fade"
 import Popper, { PopperPlacementType } from "@mui/material/Popper"
 import { addMinutes, addMonths, format } from "date-fns"
-import { FC, useEffect, useRef, useState } from "react"
+import { FC, PropsWithChildren, useEffect, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { toast } from "react-toastify"
 
@@ -36,12 +36,11 @@ export interface CalendarPickerProps {
   minuteLimit?: number
   maxDate?: Date
   scheduledTime?: Date | null
-  children: React.ReactNode
   placement: PopperPlacementType
   setOpen?: (open: boolean) => void
 }
 
-export const CalendarPicker: FC<CalendarPickerProps> = ({
+export const CalendarPicker: FC<PropsWithChildren<CalendarPickerProps>> = ({
   onSave,
   minuteLimit = SCHEDULE_MINUTE_LIMIT,
   maxDate = addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS),

@@ -10,9 +10,7 @@ interface ProfileContentProps {
   tab: ProfileNavigationOptions
 }
 
-const UnMemoizedProfileContent: FC<ProfileContentProps> = ({
-  tab
-}: ProfileContentProps) => {
+const UnMemoizedProfileContent: FC<ProfileContentProps> = ({ tab }) => {
   if (!Object.values(ProfileNavigationOptions).includes(tab)) {
     tab = ProfileNavigationOptions.POST
   }

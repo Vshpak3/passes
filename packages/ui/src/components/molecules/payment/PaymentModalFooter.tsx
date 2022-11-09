@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from "react"
 
-export interface PaymenetModalFooterProps {
+interface PaymenetModalFooterProps {
   onClose: () => void
 }
 

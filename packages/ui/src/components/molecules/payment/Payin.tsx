@@ -6,7 +6,7 @@ import {
   PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
-import React, { useState } from "react"
+import React, { useState, FC } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 
@@ -14,7 +14,7 @@ interface PayinProps {
   payin: PayinDto
 }
 
-export const Payin = ({ payin }: PayinProps) => {
+export const Payin: FC<PayinProps> = ({ payin }) => {
   let payinInfo: JSX.Element | null = null
   let method = ""
   let status = ""

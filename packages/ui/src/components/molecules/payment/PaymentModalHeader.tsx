@@ -4,7 +4,7 @@ import { FC } from "react"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 
-export interface PaymenetModalHeaderProps {
+interface PaymenetModalHeaderProps {
   title: string
   user?: UserDisplayInfoDto
 }

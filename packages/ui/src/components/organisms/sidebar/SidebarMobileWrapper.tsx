@@ -1,16 +1,17 @@
 import Router from "next/router"
-import { ReactNode, useState } from "react"
+import { FC, PropsWithChildren, useState } from "react"
 
 import { MobileHeader } from "src/components/molecules/Sidebar/SidebarLayout/MobileHeader"
 import { SidebarMobileContainer } from "src/components/molecules/Sidebar/SidebarLayout/SidebarMobileContainer"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { MobileNavBar } from "./MobileNavBar"
 
-interface Props {
-  children: ReactNode
+interface SidebarMobileWrapperProps {
   activeRoute: string
 }
-export const SidebarMobileWrapper = ({ children, activeRoute }: Props) => {
+export const SidebarMobileWrapper: FC<
+  PropsWithChildren<SidebarMobileWrapperProps>
+> = ({ children, activeRoute }) => {
   const { isTablet } = useWindowSize()
 
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)

@@ -4,7 +4,7 @@ import HomeIcon from "public/icons/sidebar/home.svg"
 import MyPassesIcon from "public/icons/sidebar/membership.svg"
 import MessagesIcon from "public/icons/sidebar/messages.svg"
 import SettingsIcon from "public/icons/sidebar/settings.svg"
-import React from "react"
+import React, { FC } from "react"
 
 import { useSidebarContext } from "src/hooks/context/useSidebarContext"
 
@@ -41,11 +41,13 @@ const mobileLinks = [
   }
 ]
 
-interface Props {
+interface MobileNavBarProps {
   activeRoute: string
 }
 
-export const MobileNavBar = ({ activeRoute }: Props) => {
+export const MobileNavBar: FC<MobileNavBarProps> = ({
+  activeRoute
+}: MobileNavBarProps) => {
   const { showBottomNav } = useSidebarContext()
   return (
     <>
