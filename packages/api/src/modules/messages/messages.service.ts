@@ -278,10 +278,9 @@ export class MessagesService {
     }
 
     const channelMembers = await query.limit(MAX_CHANNELS_PER_REQUEST)
-    const res = channelMembers.map(
+    return channelMembers.map(
       (channelMember) => new ChannelMemberDto(channelMember),
     )
-    return [...res, ...res, ...res, ...res, ...res, ...res, ...res]
   }
 
   async createPaidMessage(

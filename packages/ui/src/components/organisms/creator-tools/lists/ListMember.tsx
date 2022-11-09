@@ -1,5 +1,5 @@
 import { ListMemberDto } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 
@@ -9,7 +9,7 @@ type ListMemberProps = {
   removable: boolean
 }
 
-export const ListMember: FC<ListMemberProps> = ({
+const ListMemberUnmemo: FC<ListMemberProps> = ({
   fanInfo,
   onRemoveFan,
   removable
@@ -42,3 +42,5 @@ export const ListMember: FC<ListMemberProps> = ({
     </>
   )
 }
+
+export const ListMember = memo(ListMemberUnmemo)

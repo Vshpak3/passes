@@ -21,6 +21,7 @@ type NumberInputProps = {
   allowNegative?: boolean
   errors?: FormErrors
   className?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export const NumberInput: FC<NumberInputProps> = ({
@@ -31,7 +32,8 @@ export const NumberInput: FC<NumberInputProps> = ({
   maxInput,
   allowNegative = false,
   errors = {},
-  className = ""
+  className = "",
+  onChange
 }) => {
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -67,6 +69,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         placeholder={_placeholder}
         step={type === "currency" ? "0.01" : "1"}
         type="number"
+        onChange={onChange}
       />
       {errors && errors[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>

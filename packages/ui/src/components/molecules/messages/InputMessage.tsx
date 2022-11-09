@@ -30,6 +30,7 @@ import {
 } from "src/components/organisms/MediaSelector"
 import {
   MAX_PAID_MESSAGE_PRICE,
+  MAX_TIP_MESSAGE_PRICE,
   MIN_PAID_MESSAGE_PRICE
 } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
@@ -339,13 +340,8 @@ export const InputMessage: FC<InputMessageProps> = ({
           )}
           <div className="flex items-center justify-end gap-[10px]">
             {otherUserIsCreator && (
-              <div
-                className={classNames(
-                  errors.text && "border-b-red",
-                  "flex h-[37px] max-w-[125px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-[9px] py-[4px] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
-                )}
-              >
-                <div className="flex w-3/5 flex-col items-start">
+              <div className="relative">
+                {/* <div className="flex w-3/5 flex-col items-start">
                   <span className="text-[12px] font-medium leading-[14px] text-[#B52A6F] md:text-[14px]">
                     Tip:
                   </span>
@@ -354,18 +350,41 @@ export const InputMessage: FC<InputMessageProps> = ({
                       minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
                     </span>
                   ) : null}
+                </div> */}
+
+                <div
+                  className={classNames(
+                    "absolute left-4 text-[14px] text-[#B52A6F] font-medium leading-[25px]",
+                    blocked === PayinDataDtoBlockedEnum.InsufficientTip
+                      ? "top-0.5 md:top-1"
+                      : "top-1.5 md:top-2.5"
+                  )}
+                >
+                  Tip
                 </div>
-                <input
+                {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
+                  <span className=" left-4 top-5 md:top-6 absolute whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                    minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
+                  </span>
+                ) : null}
+                <NumberInput
+                  className="flex h-[37px] max-w-[125px] text-right items-center justify-between rounded-[6px] border border-[#B52A6F] focus:border-[#B52A6F]  px-[9px] py-[4px] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
+                  maxInput={MAX_TIP_MESSAGE_PRICE}
+                  name="tip"
+                  register={register}
+                  type="currency"
+                  onChange={handleChangeTip}
+                />
+                {/* <input
                   autoComplete="off"
-                  // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
-                  className="w-2/5 border-none bg-transparent p-0 pl-1 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0 md:pl-3"
+                  className="border-none bg-transparent p-0 pl-1 text-center text-[16px] font-bold leading-[25px] text-white placeholder-[#888689] outline-0 ring-0 focus:outline-0 focus:ring-0 "
                   min="0"
                   onChange={handleChangeTip}
                   onKeyPress={preventNegative}
                   placeholder="0.00"
                   step=".01"
                   type="number"
-                />
+                /> */}
               </div>
             )}
             <div

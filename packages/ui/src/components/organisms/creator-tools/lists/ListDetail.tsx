@@ -83,7 +83,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     setOrder(order || "desc")
   }
 
-  const handleRemoveFan = async (user_id: string) => {
+  const handleRemoveFan = useCallback(async (user_id: string) => {
     try {
       await listApi.removeListMembers({
         removeListMembersRequestDto: {
@@ -94,7 +94,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     } catch (error) {
       errorMessage(error, true)
     }
-  }
+  }, [])
 
   const handleAddFan = useCallback(
     async (user_id: string) => {
@@ -235,6 +235,8 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                     ? "You have no followers yet."
                     : listInfo?.type === ListDtoTypeEnum.Following
                     ? "You are not following anyone yet."
+                    : listInfo?.type === ListDtoTypeEnum.TopSpenders
+                    ? "No spenders yet."
                     : "Users you add to the list will be shown here:"}
                 </span>
               </div>
