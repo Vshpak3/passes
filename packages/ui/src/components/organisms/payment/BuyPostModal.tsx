@@ -7,6 +7,8 @@ import { Button } from "src/components/atoms/button/Button"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
@@ -38,14 +40,10 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
-      <SectionTitle>Buy Post</SectionTitle>
-      <div className="flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-        <ProfileImage type="thumbnail" userId={userId} />
-        <div className="ml-4 flex flex-col">
-          <span>{displayName}</span>
-          <span className="text-passes-dark-gray">@{username}</span>
-        </div>
-      </div>
+      <PaymenetModalHeader
+        title="Buy Post"
+        user={{ userId, username, displayName }}
+      />
       <div>
         <div className="my-4 flex justify-between">
           <span className="flex items-center rounded border border-passes-gray-600 px-2 py-1 text-white">
@@ -84,19 +82,13 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
         price={price ?? 0}
         setPayinMethod={setPayinMethod}
       />
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setPost(null)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setPost(null)}>
         <BuyPostButton
           onSuccess={onSuccessHandler}
           payinMethod={payinMethod}
           postId={postId || ""}
         />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }

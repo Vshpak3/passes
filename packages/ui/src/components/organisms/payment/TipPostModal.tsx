@@ -20,7 +20,10 @@ import { Button } from "src/components/atoms/button/Button"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
+import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { Modal } from "src/components/organisms/Modal"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { MAX_TIP_POST_PRICE, MIN_TIP_POST_PRICE } from "src/config/post"
@@ -110,14 +113,10 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
-      <SectionTitle>Send Tip</SectionTitle>
-      <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-        <ProfileImage type="thumbnail" userId={userId} />
-        <div className="ml-4 flex flex-col">
-          <span>{displayName}</span>
-          <span className="text-passes-dark-gray">@{username}</span>
-        </div>
-      </div>
+      <PaymenetModalHeader
+        title="Send Tip"
+        user={{ userId, username, displayName }}
+      />
       <div className="flex items-center rounded border border-passes-primary-color pl-4">
         <div className="basis-3/4">
           <span>Enter Tip Amount</span>
@@ -141,15 +140,9 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         price={tipValue}
         setPayinMethod={setPayinMethod}
       />
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setPost(null)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setPost(null)}>
         <TipPostButton isLoading={loading} onClick={onSubmit} />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }

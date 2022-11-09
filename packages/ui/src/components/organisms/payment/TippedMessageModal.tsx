@@ -7,6 +7,7 @@ import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
 import { Modal } from "src/components/organisms/Modal"
 
@@ -45,18 +46,12 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
         price={messageRequest?.price ?? 0}
         setPayinMethod={setPayinMethod}
       />
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setMessageRequest(null)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setMessageRequest(null)}>
         <TippedMessageButton
           messageRequest={{ ...messageRequest, payinMethod }}
           onSuccess={onSuccessHandler}
         />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }

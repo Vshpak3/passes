@@ -8,6 +8,8 @@ import { Button } from "src/components/atoms/button/Button"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { getPassType } from "src/components/molecules/pass/PassCard"
 import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethodDisplay"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { RenewPassButton } from "src/components/molecules/payment/RenewPassButton"
 import { Modal } from "src/components/organisms/Modal"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
@@ -48,14 +50,14 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
       setOpen={setOpen}
     >
       <div className="mb-4">
-        <SectionTitle className="mt-0">Renew Pass</SectionTitle>
-        <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-          {creatorId && <ProfileImage type="thumbnail" userId={creatorId} />}
-          <div className="ml-4 flex flex-col">
-            <span>{creatorDisplayName}</span>
-            <span className="text-passes-dark-gray">@{creatorUsername}</span>
-          </div>
-        </div>
+        <PaymenetModalHeader
+          title="Renew Pass"
+          user={{
+            userId: creatorId ?? "",
+            username: creatorUsername ?? "",
+            displayName: creatorDisplayName ?? ""
+          }}
+        />
         <div className="flex justify-center rounded bg-gradient-to-r from-[#46165E] to-passes-tertiary-color py-2 font-bold">
           {title}
         </div>
@@ -83,13 +85,7 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
           />
         )}
       </div>
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setOpen(false)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setOpen(false)}>
         <RenewPassButton
           isDisabled={
             !defaultPayinMethod ||
@@ -99,7 +95,7 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
           onSuccess={() => setOpen(false)}
           passHolderId={passHolderId}
         />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }

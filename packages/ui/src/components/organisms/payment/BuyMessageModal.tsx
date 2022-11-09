@@ -10,6 +10,8 @@ import { Button } from "src/components/atoms/button/Button"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyMessageButton } from "src/components/molecules/payment/BuyMessageButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
@@ -38,7 +40,10 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessage(null)}
     >
-      <SectionTitle>Buy Message</SectionTitle>
+      <PaymenetModalHeader
+        title="Buy Message"
+        // user={{ userId, username, displayName }}
+      />
       <div>
         <div className="my-4 flex justify-between">
           <span className="flex items-center rounded border border-passes-dark-gray px-2 py-1 text-white">
@@ -63,19 +68,13 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           setPayinMethod={setPayinMethod}
         />
       </div>
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setMessage(null)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setMessage(null)}>
         <BuyMessageButton
           messageId={message.messageId}
           onSuccess={() => setMessage(null)}
           payinMethod={payinMethod}
         />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }

@@ -16,7 +16,7 @@ import { displayCardIcon } from "src/helpers/payment/paymentMethod"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { ThreeDSInfo } from "./ThreeDSInfo"
 
-interface PaymentModalBodyProps {
+export interface PaymentModalBodyProps {
   price: number
   closeModal: () => void
   setPayinMethod: (method: PayinMethodDto) => void

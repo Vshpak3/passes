@@ -6,6 +6,8 @@ import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { getPassType } from "src/components/molecules/pass/PassCard"
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
+import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 
@@ -37,17 +39,18 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
       setOpen={() => setPass(null)}
     >
       <div className="mb-4">
-        <SectionTitle className="mt-0">
-          Buy {type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly"}{" "}
-          Membership
-        </SectionTitle>
-        <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-          {creatorId && <ProfileImage type="thumbnail" userId={creatorId} />}
-          <div className="ml-4 flex flex-col">
-            <span>{creatorDisplayName}</span>
-            <span className="text-passes-dark-gray">@{creatorUsername}</span>
-          </div>
-        </div>
+        <PaymenetModalHeader
+          title={
+            "Buy" +
+            (type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly") +
+            " Membership"
+          }
+          user={{
+            userId: creatorId ?? "",
+            username: creatorUsername ?? "",
+            displayName: creatorDisplayName ?? ""
+          }}
+        />
         <div className="flex justify-center rounded bg-gradient-to-r from-[#46165E] to-passes-tertiary-color py-2 font-bold">
           {title}
         </div>
@@ -71,13 +74,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
         price={price ?? 0}
         setPayinMethod={setPayinMethod}
       />
-      <div className="flex w-full items-center justify-end">
-        <Button
-          className="mr-8 font-bold text-passes-primary-color"
-          onClick={() => setPass(null)}
-        >
-          Cancel
-        </Button>
+      <PaymenetModalFooter onClose={() => setPass(null)}>
         <BuyPassButton
           onSuccess={() => {
             setPass(null)
@@ -85,7 +82,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           passId={passId ?? ""}
           payinMethod={payinMethod}
         />
-      </div>
+      </PaymenetModalFooter>
     </Modal>
   )
 }
