@@ -740,7 +740,10 @@ export class MessagesService {
     if (follow.length === 0 && !passHolder) {
       return BlockedReasonEnum.DOES_NOT_FOLLOW
     }
-    if (follow.length === 2 || follow[0].follower_id === otherUserId) {
+    if (
+      follow.length === 2 ||
+      (follow.length === 1 && follow[0].follower_id === otherUserId)
+    ) {
       return undefined
     }
 
