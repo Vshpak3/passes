@@ -48,7 +48,7 @@ type Contents = {
 const getMediaClassname = (contentType: string) => {
   switch (true) {
     case contentType.startsWith("image/"):
-      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
+      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:!h-[175px] md:max-w-[175px] md:!min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
     case contentType.startsWith("video/"):
       return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
     case contentType.startsWith("audio/"):
