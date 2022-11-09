@@ -86,7 +86,7 @@ export const HomeContentFeed: FC = () => {
           <SectionTitle>Suggested</SectionTitle>
           {featuredCreators?.map((creator) => (
             <div
-              className="flex items-center border-y border-[#3A444C]/[0.64] py-4"
+              className="flex items-center border-t border-[#3A444C]/[0.64] py-4"
               key={creator.userId}
             >
               <Link className="flex flex-1" href={`/${creator.username}`}>
