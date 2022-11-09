@@ -22,7 +22,7 @@ export const PassesPinkButton: FC<GenericButtonProps> = ({
     <button
       className={classNames(
         isDisabled && "opacity-[0.40]",
-        "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white",
+        "flex w-full items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white",
         className
       )}
       disabled={isDisabled}

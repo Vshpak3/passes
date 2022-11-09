@@ -75,7 +75,7 @@ export const Hero = () => {
                 value={emailAddress}
               />
               <button
-                className="rounded-lg bg-[#CF42A4] px-6 py-4 font-semibold"
+                className="rounded-lg bg-[#CF42A4] px-6 py-4 font-[500]"
                 onClick={handleSubmitEmail}
                 type="submit"
               >
@@ -83,7 +83,7 @@ export const Hero = () => {
               </button>
             </div>
             {emailFeedback && (
-              <p className="pt-6 text-center font-semibold">{emailFeedback}</p>
+              <p className="pt-6 text-center font-[500]">{emailFeedback}</p>
             )}
           </div>
         </div>

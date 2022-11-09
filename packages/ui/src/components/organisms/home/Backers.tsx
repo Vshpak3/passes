@@ -58,7 +58,7 @@ export const Backers = () => {
             />
             <div className="flex flex-col text-center">
               <p className="text-lg font-bold">{backer.name}</p>
-              <p className="font-semibold text-gray-500">{backer.subtitle}</p>
+              <p className="font-[500] text-gray-500">{backer.subtitle}</p>
             </div>
           </div>
         ))}

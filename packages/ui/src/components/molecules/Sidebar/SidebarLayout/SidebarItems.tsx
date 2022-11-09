@@ -18,7 +18,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
   return (
     <Link
       as={item.href}
-      className="group flex cursor-pointer items-center text-base font-semibold tracking-[0.003em]"
+      className="group flex cursor-pointer items-center text-base font-[500] tracking-[0.003em]"
       href={item.href}
     >
       <span

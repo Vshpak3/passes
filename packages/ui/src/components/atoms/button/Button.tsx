@@ -55,7 +55,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       break
     case "pink":
       variantClassName =
-        "items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-semibold text-white"
+        "items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white"
       break
     case "purple":
       variantClassName =

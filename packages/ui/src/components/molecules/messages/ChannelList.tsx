@@ -86,7 +86,11 @@ export const ChannelList: FC<ChannelListProps> = ({
             )}
           </div>
         </div>
-        <div className="max-h-full overflow-y-auto" id="channelDiv" ref={ref}>
+        <div
+          className="scrollbar-hide max-h-full overflow-y-auto"
+          id="channelDiv"
+          ref={ref}
+        >
           <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>
             KeyedComponent={({
               arg: channel

@@ -94,6 +94,7 @@ module.exports = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/line-clamp"),
+    require("tailwind-scrollbar-hide"),
     function ({ addVariant }) {
       addVariant("child", "& :first-child")
       addVariant("child-hover", "& :first-child:hover")

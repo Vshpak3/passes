@@ -102,7 +102,7 @@ const LoginPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-center gap-y-5">
-          <Text className="mb-4 font-semibold text-white" fontSize={36}>
+          <Text className="mb-4 font-[500] text-white" fontSize={36}>
             Sign In
           </Text>
           <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">

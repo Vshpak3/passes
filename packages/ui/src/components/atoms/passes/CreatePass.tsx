@@ -15,9 +15,7 @@ interface PassFormErrorProps {
 export const PassFormError: FC<PassFormErrorProps> = ({
   message,
   className = ""
-}) => (
-  <div className={`font-semibold text-[#ba3333] ${className}`}>{message}</div>
-)
+}) => <div className={`font-[500] text-[#ba3333] ${className}`}>{message}</div>
 
 interface PassFormCheckboxProps {
   label: string

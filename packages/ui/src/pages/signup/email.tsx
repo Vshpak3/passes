@@ -104,7 +104,7 @@ const SignupEmailPage: FC = () => {
           {hasSentEmail ? (
             <>
               <Text
-                className="mb-4 w-[360px] text-center font-semibold text-white"
+                className="mb-4 w-[360px] text-center font-[500] text-white"
                 fontSize={36}
               >
                 Email sent!
@@ -134,7 +134,7 @@ const SignupEmailPage: FC = () => {
           ) : (
             <>
               <Text
-                className="mb-4 w-[360px] text-center font-semibold text-white"
+                className="mb-4 w-[360px] text-center font-[500] text-white"
                 fontSize={36}
               >
                 Let&apos;s get to know each other

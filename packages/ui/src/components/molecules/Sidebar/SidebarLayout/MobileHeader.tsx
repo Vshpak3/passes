@@ -21,7 +21,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
                 className="group flex cursor-pointer items-center px-[10px]"
                 onClick={openSidebar}
               >
-                <div className="group flex cursor-pointer items-center text-[26px] font-semibold text-white">
+                <div className="group flex cursor-pointer items-center text-[26px] font-[500] text-white">
                   <MenuIcon
                     aria-hidden="true"
                     className="cursor-pointer fill-transparent stroke-[#ffffff]/30 stroke-2"

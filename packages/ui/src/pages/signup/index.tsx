@@ -143,7 +143,7 @@ const SignupInitialPage: FC = () => {
         </div>
 
         <div className="mb-8 flex flex-col items-center gap-y-5">
-          <Text className="mb-4 font-semibold text-white" fontSize={36}>
+          <Text className="mb-4 font-[500] text-white" fontSize={36}>
             Create an account
           </Text>
           <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">

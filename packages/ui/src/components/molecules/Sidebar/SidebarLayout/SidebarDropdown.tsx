@@ -27,7 +27,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
           <Disclosure.Button className="block">
             <span
               className={classNames(
-                "group flex cursor-pointer items-center py-3 pr-0 text-left text-base text-[19px] font-semibold tracking-[0.003em]",
+                "group flex cursor-pointer items-center py-3 pr-0 text-left text-base text-[19px] font-[500] tracking-[0.003em]",
                 isItemActive
                   ? "text-passes-primary-color"
                   : "text-white hover:text-[#ffffff]/50"

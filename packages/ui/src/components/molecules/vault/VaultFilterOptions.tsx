@@ -20,7 +20,7 @@ export const VaultFilterOption: FC<VaultFilterOptionProps> = ({
   )
   const labelClass = classNames(
     isActive ? "text-[#000000]" : "text-white group-hover:text-[#000000]",
-    "group cursor-pointer items-center text-center text-xs font-semibold text-white"
+    "group cursor-pointer items-center text-center text-xs font-[500] text-white"
   )
   return (
     <span className={buttonClass} onClick={onClick}>

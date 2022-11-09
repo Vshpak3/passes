@@ -133,7 +133,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
                   >
                     <ExitIcon />
                   </div>
-                  <div className="font-semibold text-white">
+                  <div className="font-[500] text-white">
                     {plural("item", selectedItems?.length)} selected
                   </div>
                 </div>

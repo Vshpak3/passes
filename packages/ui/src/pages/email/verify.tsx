@@ -82,7 +82,7 @@ const VerifyEmailPage = () => {
           {isLoading ? (
             <>
               <Text
-                className="mb-4 w-[360px] text-center font-semibold text-white"
+                className="mb-4 w-[360px] text-center font-[500] text-white"
                 fontSize={36}
               >
                 Verifying...
@@ -94,7 +94,7 @@ const VerifyEmailPage = () => {
           ) : error ? (
             <>
               <Text
-                className="mb-4 w-[360px] text-center font-semibold text-white"
+                className="mb-4 w-[360px] text-center font-[500] text-white"
                 fontSize={36}
               >
                 Verification Failed.
@@ -104,7 +104,7 @@ const VerifyEmailPage = () => {
           ) : (
             <>
               <Text
-                className="mb-4 w-[420px] text-center font-semibold text-white"
+                className="mb-4 w-[420px] text-center font-[500] text-white"
                 fontSize={36}
               >
                 Thank you for verifying!

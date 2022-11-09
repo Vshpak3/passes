@@ -48,7 +48,7 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
     <form onSubmit={handleSubmit(uploadW9FormHandler)}>
       {form && form[0] ? (
         <button
-          className="w-full rounded-full bg-passes-green py-1 font-semibold text-black"
+          className="w-full rounded-full bg-passes-green py-1 font-[500] text-black"
           disabled={isSubmitSuccessful}
           type="submit"
         >

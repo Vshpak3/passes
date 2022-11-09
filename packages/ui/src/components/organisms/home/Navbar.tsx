@@ -39,7 +39,7 @@ export const Navbar = () => {
             </svg>
           </button>
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="mt-4 flex flex-col items-center rounded-lg border p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:font-semibold">
+            <ul className="mt-4 flex flex-col items-center rounded-lg border p-4 md:mt-0 md:flex-row md:space-x-8 md:border-0 md:font-[500]">
               <li>
                 <a
                   className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
@@ -74,7 +74,7 @@ export const Navbar = () => {
       </nav>
       {isMobileMenuOpen && (
         <div className="absolute w-full bg-black md:hidden" id="navbar-default">
-          <ul className="mt-4 flex flex-col space-y-6 rounded-lg p-4 py-8 font-semibold">
+          <ul className="mt-4 flex flex-col space-y-6 rounded-lg p-4 py-8 font-[500]">
             <li>
               <a className="text-white" href="#features">
                 Features

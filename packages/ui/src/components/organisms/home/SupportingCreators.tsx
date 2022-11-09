@@ -121,7 +121,7 @@ export const SupportingCreators = () => {
             key={v.name}
           >
             {v.icon}
-            <span className="ml-2 text-sm font-semibold">{v.name}</span>
+            <span className="ml-2 text-sm font-[500]">{v.name}</span>
           </div>
         ))}
       </div>
