@@ -16,11 +16,13 @@ import {
 import { useForm } from "react-hook-form"
 import { object, string } from "yup"
 
+import { Button } from "src/components/atoms/button/Button"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { MAX_TIP_POST_PRICE, MIN_TIP_POST_PRICE } from "src/config/post"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
@@ -93,6 +95,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   const onSubmit = async () => {
     await handleSubmit(submit)()
   }
+  const { displayName, userId, username } = post
 
   useEffect(() => {
     if (isSubmitSuccessful) {
@@ -102,11 +105,19 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
 
   return (
     <Modal
+      closable={false}
       isOpen
-      modalContainerClassname="lg:max-w-[30%] max-w-[500px]"
+      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
       <SectionTitle>Send Tip</SectionTitle>
+      <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
+        <ProfileImage type="thumbnail" userId={userId} />
+        <div className="ml-4 flex flex-col">
+          <span>{displayName}</span>
+          <span className="text-passes-dark-gray">@{username}</span>
+        </div>
+      </div>
       <div className="flex items-center rounded border border-passes-primary-color pl-4">
         <div className="basis-3/4">
           <span>Enter Tip Amount</span>
@@ -131,7 +142,15 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         price={tipValue}
         setPayinMethod={setPayinMethod}
       />
-      <TipPostButton isLoading={loading} onClick={onSubmit} />
+      <div className="flex w-full items-center justify-end">
+        <Button
+          className="mr-8 font-bold text-passes-primary-color"
+          onClick={() => setPost(null)}
+        >
+          Cancel
+        </Button>
+        <TipPostButton isLoading={loading} onClick={onSubmit} />
+      </div>
     </Modal>
   )
 }

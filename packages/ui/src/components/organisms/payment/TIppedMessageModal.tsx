@@ -5,6 +5,7 @@ import {
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
 import { Modal } from "src/components/organisms/Modal"
@@ -34,8 +35,9 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
 
   return (
     <Modal
+      closable={false}
       isOpen
-      modalContainerClassname="max-w-[500px]"
+      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessageRequest(null)}
     >
       <PaymentModalBody
@@ -43,10 +45,18 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
         price={messageRequest?.price ?? 0}
         setPayinMethod={setPayinMethod}
       />
-      <TippedMessageButton
-        messageRequest={{ ...messageRequest, payinMethod }}
-        onSuccess={onSuccessHandler}
-      />
+      <div className="flex w-full items-center justify-end">
+        <Button
+          className="mr-8 font-bold text-passes-primary-color"
+          onClick={() => setMessageRequest(null)}
+        >
+          Cancel
+        </Button>
+        <TippedMessageButton
+          messageRequest={{ ...messageRequest, payinMethod }}
+          onSuccess={onSuccessHandler}
+        />
+      </div>
     </Modal>
   )
 }

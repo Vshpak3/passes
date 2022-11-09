@@ -33,7 +33,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
     <Modal
       closable={false}
       isOpen
-      modalContainerClassname="lg:max-w-[30%]"
+      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPass(null)}
     >
       <div className="mb-4">
