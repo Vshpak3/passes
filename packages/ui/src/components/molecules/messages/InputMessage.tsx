@@ -1,5 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { ContentDto, PayinDataDtoBlockedEnum } from "@passes/api-client"
+import {
+  ChannelMemberDto,
+  ContentDto,
+  PayinDataDtoBlockedEnum
+} from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
 import classNames from "classnames"
 import { debounce } from "lodash"
@@ -48,7 +52,7 @@ export interface InputMessageFormProps {
 }
 
 interface InputMessageProps {
-  channelId: string
+  selectedChannel: ChannelMemberDto
   minimumTip?: number | null
   isCreator: boolean
   otherUserIsCreator?: boolean
@@ -81,7 +85,7 @@ export const newMessageFormSchema = object(
 )
 
 export const InputMessage: FC<InputMessageProps> = ({
-  channelId,
+  selectedChannel,
   minimumTip,
   isCreator,
   vaultContent,
@@ -89,6 +93,7 @@ export const InputMessage: FC<InputMessageProps> = ({
   otherUserIsCreator,
   removeFree
 }) => {
+  const channelId = selectedChannel.channelId ?? ""
   const {
     register,
     formState: { errors },
@@ -120,7 +125,8 @@ export const InputMessage: FC<InputMessageProps> = ({
     event.target.value = ""
   }
 
-  const { setTippedMessage, setOnModalCallback } = useTippedMessageModal()
+  const { setTippedMessage, setOnModalCallback, setSelectedChannel } =
+    useTippedMessageModal()
 
   const clear = () => {
     setFiles([])
@@ -180,6 +186,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         // submit()
         if (tip > 0) {
           setOnModalCallback(() => clear)
+          setSelectedChannel(selectedChannel)
           setTippedMessage(await getRequest())
         } else {
           await submit()

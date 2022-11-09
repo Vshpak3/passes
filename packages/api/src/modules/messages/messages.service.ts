@@ -1387,7 +1387,7 @@ export class MessagesService {
     await this.dbWriter.transaction(async (trx) => {
       updated = await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId, creator_id: userId, unsent_at: null })
-        .update('unsent_at', new Date())
+        .update({ unsent_at: new Date() })
       if (updated) {
         await trx<MessageEntity>(MessageEntity.table)
           .where({
@@ -1395,7 +1395,7 @@ export class MessagesService {
             paid_at: null,
             paying: false,
           })
-          .update('deleted_at', new Date())
+          .update({ deleted_at: new Date() })
       }
     })
     const channels = await this.dbWriter<MessageEntity>(MessageEntity.table)
@@ -1426,6 +1426,16 @@ export class MessagesService {
         recent: message?.sent_at ?? null,
       })
       .where({ id: channelId })
+  }
+
+  async hidePaidMessage(userId: string, paidMessageId: string) {
+    const updated = await this.dbWriter<PaidMessageEntity>(
+      PaidMessageEntity.table,
+    )
+      .whereNotNull('unsent_at')
+      .andWhere({ id: paidMessageId, creator_id: userId })
+      .update({ hidden_at: new Date() })
+    return updated === 1
   }
 
   async checkRecentMessagesContentProcessed(checkProcessedUntil: number) {

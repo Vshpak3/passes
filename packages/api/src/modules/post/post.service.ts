@@ -379,6 +379,14 @@ export class PostService {
     return updated === 1
   }
 
+  async hidePost(userId: string, postId: string) {
+    const updated = await this.dbWriter<PostEntity>(PostEntity.table)
+      .whereNotNull('deleted_at')
+      .andWhere({ id: postId, user_id: userId })
+      .update({ hidden_at: new Date() })
+    return updated === 1
+  }
+
   async purchasingPost(userId: string, postId: string, payinId: string) {
     await this.dbWriter<PostUserAccessEntity>(PostUserAccessEntity.table)
       .insert({

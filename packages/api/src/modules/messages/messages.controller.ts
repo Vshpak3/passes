@@ -400,4 +400,21 @@ export class MessagesController {
       await this.messagesService.unsendPaidMessage(req.user.id, paidMessageId),
     )
   }
+
+  @ApiEndpoint({
+    summary: 'Hide unsent paid message',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'Paid message was hidden',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('hide/:paidMessageId')
+  async hidePaidMessage(
+    @Req() req: RequestWithUser,
+    @Param('paidMessageId') paidMessageId: string,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.messagesService.hidePaidMessage(req.user.id, paidMessageId),
+    )
+  }
 }

@@ -98,11 +98,11 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
               />
               {selectedChannel.channelId && (
                 <InputMessage
-                  channelId={selectedChannel.channelId}
                   isCreator={isCreator}
                   minimumTip={minimumTip}
                   otherUserIsCreator={otherUserIsCreator}
                   removeFree={removeFree}
+                  selectedChannel={selectedChannel}
                   setVaultContent={setVaultContent}
                   vaultContent={vaultContent}
                 />

@@ -97,21 +97,19 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                   />
                 </div>
               )}
-              {!pending && sentAt && (
+              {!pending && sentAt && !!price && (
                 <div className="flex items-center justify-end">
-                  {!!senderId && !!price && (
-                    <div className="flex flex-row items-center text-[11px]">
-                      <div>
-                        <DollarSymbol />
-                      </div>
-                      <span className="ml-[5px] opacity-50">{price}</span>
-                      {price && !!paidAt ? (
-                        <span className="opacity-50">{`, paid ${paidAt.toLocaleDateString()}`}</span>
-                      ) : (
-                        <span className="opacity-50">, not paid yet</span>
-                      )}
+                  <div className="flex flex-row items-center text-[11px]">
+                    <div>
+                      <DollarSymbol />
                     </div>
-                  )}
+                    <span className="ml-[5px] opacity-50">{price}</span>
+                    {price && !!paidAt ? (
+                      <span className="opacity-50">{`, paid ${paidAt.toLocaleDateString()}`}</span>
+                    ) : (
+                      <span className="opacity-50">, not paid yet</span>
+                    )}
+                  </div>
                 </div>
               )}
             </div>

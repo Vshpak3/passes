@@ -1,4 +1,8 @@
-import { MessageDto, PayinMethodDto } from "@passes/api-client"
+import {
+  ChannelMemberDto,
+  MessageDto,
+  PayinMethodDto
+} from "@passes/api-client"
 import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import React, { Dispatch, FC, SetStateAction, useState } from "react"
 
@@ -12,11 +16,14 @@ import { plural } from "src/helpers/plural"
 
 interface BuyMessageModalProps {
   message: MessageDto
+  selectedChannel: ChannelMemberDto
   setMessage: Dispatch<SetStateAction<MessageDto | null>>
 }
 
 export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   message,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  selectedChannel,
   setMessage
 }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()

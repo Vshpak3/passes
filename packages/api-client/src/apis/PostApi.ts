@@ -74,6 +74,10 @@ export interface GetPostsRequest {
     getPostsRequestDto: GetPostsRequestDto;
 }
 
+export interface HidePostRequest {
+    postId: string;
+}
+
 export interface PinPostRequest {
     postId: string;
 }
@@ -258,6 +262,40 @@ export class PostApi extends runtime.BaseAPI {
     }
 
     /**
+     * Hide a deleted post
+     */
+    async hidePostRaw(requestParameters: HidePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.postId === null || requestParameters.postId === undefined) {
+            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling hidePost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/hide/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Hide a deleted post
+     */
+    async hidePost(requestParameters: HidePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.hidePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Pin a post
      */
     async pinPostRaw(requestParameters: PinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
@@ -424,7 +462,7 @@ export class PostApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
+            path: `/api/post/remove/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
             method: 'DELETE',
             headers: headerParameters,
             query: queryParameters,

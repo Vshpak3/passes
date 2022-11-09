@@ -1,4 +1,8 @@
-import { PayinMethodDto, SendMessageRequestDto } from "@passes/api-client"
+import {
+  ChannelMemberDto,
+  PayinMethodDto,
+  SendMessageRequestDto
+} from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
@@ -7,12 +11,15 @@ import { Modal } from "src/components/organisms/Modal"
 
 interface TippedMessageModalProps {
   messageRequest: SendMessageRequestDto
+  selectedChannel: ChannelMemberDto
   setMessageRequest: Dispatch<SetStateAction<SendMessageRequestDto | null>>
   onSuccess: (() => void) | null
 }
 
 const TippedMessageModal: FC<TippedMessageModalProps> = ({
   messageRequest,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  selectedChannel,
   setMessageRequest,
   onSuccess
 }) => {

@@ -1,6 +1,7 @@
 import "react-toastify/dist/ReactToastify.css"
 import "src/styles/global/main.css"
 import {
+  ChannelMemberDto,
   MessageDto,
   PassDto,
   PostDto,
@@ -106,6 +107,8 @@ const navPaths = ["/messages"]
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
   const [buyMessage, setBuyMessage] = useState<MessageDto | null>(null)
+  const [selectedChannel, setSelectedChannel] =
+    useState<ChannelMemberDto | null>(null)
   const [tippedMessage, setTippedMessage] =
     useState<SendMessageRequestDto | null>(null)
   const [tipPost, setTipPost] = useState<PostDto | null>(null)
@@ -153,12 +156,16 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
       { usernames: {}, profileImages: new Set<string>() }
     ],
     [BuyPostModalContext.Provider, { setPost: setBuyPost }],
-    [BuyMessageModalContext.Provider, { setMessage: setBuyMessage }],
+    [
+      BuyMessageModalContext.Provider,
+      { setMessage: setBuyMessage, setSelectedChannel }
+    ],
     [
       TippedMessageModalContext.Provider,
       {
         setTippedMessage: setTippedMessage,
-        setOnModalCallback: setOnModalCallback
+        setOnModalCallback: setOnModalCallback,
+        setSelectedChannel
       }
     ],
     [BlockModalContext.Provider, { setBlockData }],
@@ -178,13 +185,18 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
         <>
           <Component {...pageProps} />
           {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
-          {buyMessage && (
-            <BuyMessageModal message={buyMessage} setMessage={setBuyMessage} />
+          {buyMessage && selectedChannel && (
+            <BuyMessageModal
+              message={buyMessage}
+              selectedChannel={selectedChannel}
+              setMessage={setBuyMessage}
+            />
           )}
-          {tippedMessage && (
+          {tippedMessage && selectedChannel && (
             <TippedMessageModal
               messageRequest={tippedMessage}
               onSuccess={onModalCallback}
+              selectedChannel={selectedChannel}
               setMessageRequest={setTippedMessage}
             />
           )}

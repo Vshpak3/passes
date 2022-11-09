@@ -118,6 +118,10 @@ export interface GetPaidMessagesHistoryRequest {
     getPaidMessageHistoryRequestDto: GetPaidMessageHistoryRequestDto;
 }
 
+export interface HidePaidMessageRequest {
+    paidMessageId: string;
+}
+
 export interface MassSendRequest {
     createBatchMessageRequestDto: CreateBatchMessageRequestDto;
 }
@@ -519,6 +523,41 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getWelcomeMessage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetWelcomeMessageResponseDto> {
         const response = await this.getWelcomeMessageRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Hide unsent paid message
+     */
+    async hidePaidMessageRaw(requestParameters: HidePaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.paidMessageId === null || requestParameters.paidMessageId === undefined) {
+            throw new runtime.RequiredError('paidMessageId','Required parameter requestParameters.paidMessageId was null or undefined when calling hidePaidMessage.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/messages/hide/{paidMessageId}`.replace(`{${"paidMessageId"}}`, encodeURIComponent(String(requestParameters.paidMessageId))),
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Hide unsent paid message
+     */
+    async hidePaidMessage(requestParameters: HidePaidMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.hidePaidMessageRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

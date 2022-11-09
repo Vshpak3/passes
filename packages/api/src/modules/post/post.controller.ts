@@ -92,12 +92,27 @@ export class PostController {
     responseDesc: 'A post was deleted',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Delete(':postId')
+  @Delete('remove/:postId')
   async removePost(
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
   ): Promise<void> {
     await this.postService.removePost(req.user.id, postId)
+  }
+
+  @ApiEndpoint({
+    summary: 'Hide a deleted post',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'A post was hidden',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Delete('hide/:postId')
+  async hidePost(
+    @Req() req: RequestWithUser,
+    @Param('postId') postId: string,
+  ): Promise<void> {
+    await this.postService.hidePost(req.user.id, postId)
   }
 
   @ApiEndpoint({
