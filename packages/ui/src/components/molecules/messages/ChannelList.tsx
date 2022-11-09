@@ -84,7 +84,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           placeholder="Search ..."
         />
       </div>
-      <div className="h-[calc(100%-120px)] p-3">
+      <div className="h-[calc(100%-100px)] p-3">
         <div className="flex justify-between">
           <div className="ml-auto mr-0">
             {!!user?.isCreator && (
