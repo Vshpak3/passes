@@ -124,7 +124,9 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
 
   return (
     <div
-      className="h-[75%] min-w-fit justify-center overflow-y-hidden"
+      className={classNames(
+        scroll ? "h-[75%] min-w-fit justify-center overflow-y-hidden" : ""
+      )}
       id="scrollableDiv"
       ref={ref}
     >
