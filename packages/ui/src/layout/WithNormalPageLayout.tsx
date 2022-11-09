@@ -75,9 +75,11 @@ export const WithNormalPageLayout = (
                 isPage
                 skipAuth={!!options.skipAuth}
               >
-                <SectionTitle className="ml-4 mt-3 lg:hidden">
-                  {headerTitle}
-                </SectionTitle>
+                {headerTitle && (
+                  <SectionTitle className="ml-4 mt-3 lg:hidden">
+                    {headerTitle}
+                  </SectionTitle>
+                )}
                 {page}
               </AuthWrapper>
             </main>
