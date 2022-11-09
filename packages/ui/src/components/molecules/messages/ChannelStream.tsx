@@ -1,4 +1,4 @@
-import { MessageDto, MessagesApi } from "@passes/api-client"
+import { ChannelMemberDto, MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
 import {
   FC,
@@ -21,7 +21,7 @@ import { ChannelMessage } from "./ChannelMessage"
 import { ChannelStreamMessages } from "./ChannelStreamMessages"
 
 interface ChannelStreamProps {
-  channelId?: string
+  selectedChannel: ChannelMemberDto
   freeMessages?: number | null
   minimumTip?: number | null
   bottomOfChatRef: MutableRefObject<HTMLDivElement | null>
@@ -32,7 +32,7 @@ interface ChannelStreamProps {
 const api = new MessagesApi()
 
 export const ChannelStream: FC<ChannelStreamProps> = ({
-  channelId,
+  selectedChannel,
   freeMessages,
   minimumTip,
   bottomOfChatRef,
@@ -40,6 +40,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   readAt
 }) => {
   const { user } = useUser()
+  const { channelId } = selectedChannel
 
   const [messages, setMessages] = useState<MessageDto[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
@@ -233,6 +234,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   message={m}
                   messageUpdate={messageUpdates[m.messageId]}
                   ownsMessage={m.senderId === user?.userId}
+                  selectedChannel={selectedChannel}
                 />
               )
             })}
@@ -243,6 +245,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                   message={m}
                   messageUpdate={messageUpdates[m.messageId]}
                   ownsMessage={m.senderId === user?.userId}
+                  selectedChannel={selectedChannel}
                 />
               )
             })}
@@ -251,6 +254,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               messageUpdates={messageUpdates}
               node={node}
               readAt={readAt}
+              selectedChannel={selectedChannel}
             />
           </div>
           {unreadCount > 0 && (

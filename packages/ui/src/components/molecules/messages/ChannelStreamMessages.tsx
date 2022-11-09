@@ -1,4 +1,5 @@
 import {
+  ChannelMemberDto,
   GetMessagesRequestDto,
   GetMessagesResponseDto,
   MessageDto,
@@ -18,6 +19,7 @@ interface ChannelStreamMessagesProps {
   messageUpdates: Record<string, Partial<MessageDto>>
   node?: HTMLDivElement
   readAt?: Date
+  selectedChannel: ChannelMemberDto
 }
 
 const api = new MessagesApi()
@@ -25,7 +27,8 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   channelId,
   messageUpdates,
   node,
-  readAt = new Date()
+  readAt = new Date(),
+  selectedChannel
 }) => {
   const { user } = useUser()
 
@@ -41,6 +44,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
             message={arg}
             messageUpdate={messageUpdates[arg.messageId]}
             ownsMessage={arg.senderId === user?.userId}
+            selectedChannel={selectedChannel}
             showReadAt={
               arg.sentAt > readAt && (nextArg?.sentAt ?? new Date()) < readAt
             }

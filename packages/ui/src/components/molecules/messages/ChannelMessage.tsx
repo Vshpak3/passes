@@ -1,4 +1,4 @@
-import { MessageDto } from "@passes/api-client"
+import { ChannelMemberDto, MessageDto } from "@passes/api-client"
 import classNames from "classnames"
 import { isAfter, subDays } from "date-fns"
 import { FC, memo } from "react"
@@ -16,12 +16,14 @@ interface ChannelMessageProps {
   message: MessageDto
   messageUpdate?: Partial<MessageDto>
   showReadAt?: boolean
+  selectedChannel: ChannelMemberDto
 }
 const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   message,
   messageUpdate = {},
   ownsMessage = false,
-  showReadAt = false
+  showReadAt = false,
+  selectedChannel
 }) => {
   const {
     messageId,
@@ -40,7 +42,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
 
   const messageContent = contents ?? []
 
-  const { setMessage } = useBuyMessageModal()
+  const { setMessage, setSelectedChannel } = useBuyMessageModal()
   const tipComponent = (
     <div
       className={classNames(
@@ -89,7 +91,10 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                     isProcessing={!contentProcessed}
                     key={messageId}
                     messagesView
-                    openBuyModal={() => setMessage(message)}
+                    openBuyModal={() => {
+                      setSelectedChannel(selectedChannel)
+                      setMessage(message)
+                    }}
                     paid={!!paidAt || !!ownsMessage}
                     paying={paying}
                     previewIndex={previewIndex}
