@@ -103,7 +103,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   return (
     <Modal
       isOpen
-      modalContainerClassname="lg:max-w-[30%]"
+      modalContainerClassname="lg:max-w-[30%] max-w-[500px]"
       setOpen={() => setPost(null)}
     >
       <SectionTitle>Send Tip</SectionTitle>

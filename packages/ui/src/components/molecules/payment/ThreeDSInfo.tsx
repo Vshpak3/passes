@@ -11,7 +11,7 @@ interface ThreeDSInfoProps {
 
 export const ThreeDSInfo: FC<ThreeDSInfoProps> = ({ price, payinMethod }) => {
   return (
-    <>
+    <div className="">
       {payinMethod?.cardId && price > MIN_THREE_DS_LIMIT && (
         <span>
           A credit card purchase above{" "}
@@ -20,6 +20,6 @@ export const ThreeDSInfo: FC<ThreeDSInfoProps> = ({ price, payinMethod }) => {
           paying to confirm the transaction.
         </span>
       )}
-    </>
+    </div>
   )
 }

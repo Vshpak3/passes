@@ -26,7 +26,11 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
   }, [onSuccess, setMessageRequest])
 
   return (
-    <Modal isOpen setOpen={() => setMessageRequest(null)}>
+    <Modal
+      isOpen
+      modalContainerClassname="max-w-[500px]"
+      setOpen={() => setMessageRequest(null)}
+    >
       <PaymentModalBody
         closeModal={() => setMessageRequest(null)}
         price={messageRequest?.price ?? 0}

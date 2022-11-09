@@ -31,6 +31,7 @@ export const useThreeDS = () => {
   }
   useEffect(() => {
     if (payinId && waiting) {
+      console.log("call")
       const fetch = async () => {
         const paymentApi = new PaymentApi()
         if (waiting.valueOf() + ms(THREE_DS_EXPIRATION_TIME) > Date.now()) {

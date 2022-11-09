@@ -25,7 +25,7 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   return (
     <Modal
       isOpen
-      modalContainerClassname="lg:max-w-[30%] p-4"
+      modalContainerClassname="max-w-[500px] lg:max-w-[30%] p-4"
       setOpen={() => setMessage(null)}
     >
       <SectionTitle>Buy Message</SectionTitle>

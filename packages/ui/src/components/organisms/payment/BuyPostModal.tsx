@@ -31,7 +31,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   return (
     <Modal
       isOpen
-      modalContainerClassname="lg:max-w-[30%] p-4"
+      modalContainerClassname="max-w-[500px] lg:max-w-[30%] p-4"
       setOpen={() => setPost(null)}
     >
       <SectionTitle>Buy Post</SectionTitle>
