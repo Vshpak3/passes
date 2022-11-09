@@ -13,6 +13,7 @@ import { redirectUnauthedToLogin } from "src/helpers/authRouter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
+import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
 
 interface PassCardProps {
@@ -37,6 +38,8 @@ export const PassCard: FC<PassCardProps> = ({
   className
 }) => {
   const { setPass } = useBuyPassModal()
+
+  const { profileUsername, profile } = useProfile()
 
   const { user } = useUser()
   const router = useRouter()
@@ -165,7 +168,13 @@ export const PassCard: FC<PassCardProps> = ({
           className="mt-[12px] h-[44px] w-full rounded-full py-[10px] text-center"
           onClick={() => {
             redirectUnauthedToLogin(user, router) ||
-              (isCreator ? pinOrUnpinPass() : setPass(pass))
+              (isCreator
+                ? pinOrUnpinPass()
+                : setPass({
+                    ...pass,
+                    creatorDisplayName: profile?.displayName ?? undefined,
+                    creatorUsername: profileUsername
+                  }))
           }}
           variant="pink"
         >
