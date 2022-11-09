@@ -6,7 +6,7 @@ import {
   GetVaultQueryResponseDto
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
-import { FC, useState } from "react"
+import { FC, useMemo, useState } from "react"
 
 import {
   ComponentArg,
@@ -54,6 +54,14 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
     setContent(item)
   }
 
+  const fetchProps = useMemo(() => {
+    return {
+      type,
+      order,
+      category
+    }
+  }, [category, type, order])
+
   return (
     <div className="min-w-fit justify-center">
       <MediaModal
@@ -92,7 +100,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
               getVaultQueryRequestDto: req
             })
           }}
-          fetchProps={{ category, type, order }}
+          fetchProps={fetchProps}
           keyValue="vault"
           scrollableTarget={scrollableTarget}
         />

@@ -8,7 +8,7 @@ import {
   PaymentApi
 } from "@passes/api-client"
 import { format } from "date-fns"
-import { memo, useCallback, useRef, useState } from "react"
+import { memo, useCallback, useMemo, useRef, useState } from "react"
 
 import {
   ComponentArg,
@@ -52,6 +52,9 @@ const PaymentHistory = () => {
 
   const api = new PaymentApi()
 
+  const fetchProps = useMemo(() => {
+    return { startDate, endDate }
+  }, [startDate, endDate])
   return (
     <>
       <Tab title="Payment History" withBack />
@@ -139,10 +142,7 @@ const PaymentHistory = () => {
             fetch={async (req: GetPayinsRequestDto) => {
               return await api.getPayins({ getPayinsRequestDto: req })
             }}
-            fetchProps={{
-              startDate,
-              endDate
-            }}
+            fetchProps={fetchProps}
             keyValue="/payins"
             options={{ revalidateOnMount: true }}
           />

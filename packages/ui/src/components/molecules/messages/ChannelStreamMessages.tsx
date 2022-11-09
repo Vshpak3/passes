@@ -4,7 +4,7 @@ import {
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
-import { FC, memo } from "react"
+import { FC, memo, useMemo } from "react"
 
 import {
   ComponentArg,
@@ -24,6 +24,11 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
   messageUpdates
 }) => {
   const { user } = useUser()
+
+  const fetchProps = useMemo(() => {
+    return { channelId, pending: false, contentOnly: false }
+  }, [channelId])
+
   return (
     <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
       KeyedComponent={({ arg }: ComponentArg<MessageDto>) => {
@@ -39,7 +44,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}
-      fetchProps={{ channelId, pending: false, contentOnly: false }}
+      fetchProps={fetchProps}
       inverse
       keyValue={`messages/${channelId}`}
       loadingElement={

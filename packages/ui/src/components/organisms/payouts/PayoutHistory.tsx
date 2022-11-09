@@ -9,7 +9,7 @@ import {
 } from "@passes/api-client"
 import { format } from "date-fns"
 import ms from "ms"
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 
 import {
   ComponentArg,
@@ -52,6 +52,9 @@ export const PayoutHistory = () => {
 
   const api = new PaymentApi()
 
+  const fetchProps = useMemo(() => {
+    return { startDate, endDate }
+  }, [startDate, endDate])
   return (
     <div className="mb-5 flex w-full flex-col gap-4">
       <div className="flex flex-row items-center justify-between rounded-[15px] p-4">
@@ -132,10 +135,7 @@ export const PayoutHistory = () => {
           fetch={async (req: GetPayoutsRequestDto) => {
             return await api.getPayouts({ getPayoutsRequestDto: req })
           }}
-          fetchProps={{
-            startDate,
-            endDate
-          }}
+          fetchProps={fetchProps}
           keyValue="/payouts"
           options={{
             revalidateOnMount: true,

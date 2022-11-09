@@ -2,12 +2,14 @@ import { MessagesApi } from "@passes/api-client"
 import {
   ChannelMemberDto,
   GetChannelsRequestDto,
+  GetChannelsRequestDtoOrderEnum,
+  GetChannelsRequestDtoOrderTypeEnum,
   GetChannelsRequestDtoOrderTypeEnum as OrderType,
   GetChannelsResponseDto
 } from "@passes/api-client/models"
 import classNames from "classnames"
 import { debounce } from "lodash"
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 
 import {
   ComponentArg,
@@ -60,6 +62,15 @@ export const ChannelList: FC<ChannelListProps> = ({
     setNode(node)
   }, [])
 
+  const fetchProps = useMemo(() => {
+    return {
+      unreadOnly: false,
+      order: GetChannelsRequestDtoOrderEnum.Desc,
+      orderType: channelOrderType,
+      search
+    }
+  }, [channelOrderType, search])
+
   return (
     <div
       className={classNames(
@@ -108,16 +119,11 @@ export const ChannelList: FC<ChannelListProps> = ({
               const api = new MessagesApi()
               return await api.getChannels({ getChannelsRequestDto: req })
             }}
-            fetchProps={{
-              unreadOnly: false,
-              order: "desc",
-              orderType: channelOrderType,
-              search
-            }}
+            fetchProps={fetchProps}
             keyValue="/channels"
             node={node}
             options={{
-              revalidateOnMount: true,
+              revalidateOnMount: false,
               revalidateFirstPage: true,
               revalidateOnFocus: true,
               revalidateOnReconnect: true,

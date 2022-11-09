@@ -1,11 +1,12 @@
 import {
   GetPassHoldingsRequestDto,
+  GetPassHoldingsRequestDtoOrderEnum,
   GetPassHoldingsResponseDto,
   PassApi,
   PassDtoTypeEnum,
   PassHolderDto
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, useMemo, useState } from "react"
 
 import {
   ComponentArg,
@@ -19,6 +20,15 @@ export const PassHoldings: FC = () => {
     PassDtoTypeEnum.Subscription
   )
   const [expired, setExpired] = useState<boolean | undefined>(false)
+
+  const fetchProps = useMemo(() => {
+    return {
+      unreadOnly: false,
+      order: GetPassHoldingsRequestDtoOrderEnum.Desc,
+      orderType: passType,
+      expired
+    }
+  }, [passType, expired])
 
   return (
     <div className="w-full px-2">
@@ -43,11 +53,7 @@ export const PassHoldings: FC = () => {
           const api = new PassApi()
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
         }}
-        fetchProps={{
-          passType,
-          expired,
-          order: "desc"
-        }}
+        fetchProps={fetchProps}
         keyValue="/passholdings"
         options={{ revalidateOnMount: true }}
       />
