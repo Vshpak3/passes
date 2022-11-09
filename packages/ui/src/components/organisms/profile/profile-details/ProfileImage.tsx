@@ -31,13 +31,13 @@ export const ProfileImage: FC<ProfileImageProps> = ({
       onClick={onClick}
     >
       <img
-        alt="user profile thumbnail"
+        alt=""
         className="h-full w-full object-cover object-center"
         src="/img/profile/default-profile-img.svg"
         style={loaded || override ? { display: "none" } : {}}
       />
       <img
-        alt="user profile thumbnail"
+        alt=""
         className="h-full w-full object-cover object-center"
         onLoad={() => {
           profileImages.add(userId)
