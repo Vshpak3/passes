@@ -61,7 +61,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
             </nav>
           </div>
           <AuthWrapper>
-            <div className="mb-8 mr-5 flex flex-col items-start gap-0">
+            <div className="mb-20 mr-5 flex flex-col items-start gap-0">
               <SidebarItem
                 isActive={false}
                 isDropdown={false}
