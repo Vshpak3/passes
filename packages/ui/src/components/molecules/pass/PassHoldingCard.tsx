@@ -6,6 +6,7 @@ import { FC } from "react"
 import { Button } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { PassMedia } from "src/components/atoms/passes/PassMedia"
+import { formatText } from "src/helpers/formatters"
 
 interface PassHoldingCardProps {
   passHolder: PassHolderDto
@@ -30,7 +31,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
             </div>
             <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
               <span className="w-full text-[12px] font-bold text-[#ffffff76]">
-                {passHolder.description}
+                {formatText(passHolder.description)}
               </span>
             </div>
             {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (

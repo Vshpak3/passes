@@ -83,7 +83,7 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
             <SelectedBadge
               id={list.listId}
               key={list.listId}
-              name={list.name}
+              name={list.name ?? ""}
               removeProp={removeList}
               type="list"
             />
@@ -108,7 +108,7 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
             <SelectedBadge
               id={list.listId}
               key={list.listId}
-              name={list.name}
+              name={list.name ?? ""}
               removeProp={removeExcludedList}
               type="list"
             />

@@ -3,7 +3,6 @@ import {
   ChannelMemberDto,
   GetChannelsRequestDto,
   GetChannelsRequestDtoOrderEnum,
-  GetChannelsRequestDtoOrderTypeEnum,
   GetChannelsRequestDtoOrderTypeEnum as OrderType,
   GetChannelsResponseDto
 } from "@passes/api-client/models"
@@ -98,7 +97,7 @@ export const ChannelList: FC<ChannelListProps> = ({
           </div>
         </div>
         <div
-          className="scrollbar-hide max-h-full overflow-y-auto"
+          className="max-h-full overflow-y-auto scrollbar-hide"
           id="channelDiv"
           ref={ref}
         >

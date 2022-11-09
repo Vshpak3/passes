@@ -22,7 +22,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   return (
     <header className="col-span-3 h-screen w-full items-end border-r-[1px] border-[#3A444C]/[0.64] md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
       <div className="flex h-full w-full flex-1 flex-col bg-passes-black px-6 lg:px-2">
-        <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto scrollbar-hidden py-6 pr-6 lg:pr-8">
+        <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 scrollbar-hide lg:pr-8">
           <div>
             <div className="flex shrink-0">
               <div>

@@ -34,7 +34,6 @@ import {
   MIN_PAID_MESSAGE_PRICE
 } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
-import { preventNegative } from "src/helpers/keyboard"
 import { yupPaid } from "src/helpers/yup"
 import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
@@ -354,7 +353,7 @@ export const InputMessage: FC<InputMessageProps> = ({
 
                 <div
                   className={classNames(
-                    "absolute left-4 text-[14px] text-[#B52A6F] font-medium leading-[25px]",
+                    "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F]",
                     blocked === PayinDataDtoBlockedEnum.InsufficientTip
                       ? "top-0.5 md:top-1"
                       : "top-1.5 md:top-2.5"
@@ -363,17 +362,17 @@ export const InputMessage: FC<InputMessageProps> = ({
                   Tip
                 </div>
                 {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                  <span className=" left-4 top-5 md:top-6 absolute whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                  <span className="absolute left-4 top-5 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500 md:top-6">
                     minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
                   </span>
                 ) : null}
                 <NumberInput
-                  className="flex h-[37px] max-w-[125px] text-right items-center justify-between rounded-[6px] border border-[#B52A6F] focus:border-[#B52A6F]  px-[9px] py-[4px] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
+                  className="flex h-[37px] max-w-[125px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-[9px] py-[4px]  text-right focus:border-[#B52A6F] md:h-[45px] md:min-w-[150px] md:max-w-[150px] md:px-3 md:py-[6px]"
                   maxInput={MAX_TIP_MESSAGE_PRICE}
                   name="tip"
+                  onChange={handleChangeTip}
                   register={register}
                   type="currency"
-                  onChange={handleChangeTip}
                 />
                 {/* <input
                   autoComplete="off"

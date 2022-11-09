@@ -189,16 +189,16 @@ const PayoutSettings = () => {
         )}
         {banks?.map((bank) => (
           <div
-            className="my-6 flex flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7 w-full"
+            className="my-6 flex w-full flex-row gap-5 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-7"
             key={bank.id}
           >
-            <div className="flex flex-col justify-between w-full">
-              <div className="flex gap-6 flex-row  justify-between ">
+            <div className="flex w-full flex-col justify-between">
+              <div className="flex flex-row justify-between  gap-6 ">
                 <span className="mb-6 font-[700]">
                   {bank.description.split(",")[0]}
                 </span>
                 <div className="flex flex-col">
-                  <div className="flex flex-row gap-2  justify-between ">
+                  <div className="flex flex-row justify-between  gap-2 ">
                     <Button
                       className="w-auto"
                       disabled={defaultBank?.id === bank.id}
@@ -208,7 +208,7 @@ const PayoutSettings = () => {
                           method: PayoutMethodDtoMethodEnum.CircleWire
                         })
                       }
-                      variant={"pink"}
+                      variant="pink"
                     >
                       <span className="text-[16px] font-[500]">
                         {defaultBank?.id === bank?.id
