@@ -28,7 +28,7 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
     })
   }, [messageRequest])
 
-  const { blocked, submitting, loading, submit } = usePay(
+  const { blocked, loading, submit } = usePay(
     register,
     registerData,
     onSuccess,
@@ -42,7 +42,7 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
           ? "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white opacity-[0.40]"
           : "flex w-full items-center justify-center rounded-full border border-solid border-passes-pink-100 bg-passes-pink-100 py-[10px] text-base font-[500] text-white"
       )}
-      disabled={!!blocked || submitting || isDisabled}
+      disabled={!!blocked || loading || isDisabled}
       onClick={submit}
       type="submit"
     >

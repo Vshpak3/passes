@@ -37,7 +37,7 @@ export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
     })
   }, [messageId, payinMethod])
 
-  const { blocked, submitting, loading, submit } = usePay(
+  const { blocked, loading, submit } = usePay(
     register,
     registerData,
     onSuccess,
@@ -46,7 +46,7 @@ export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
 
   return (
     <Button
-      disabled={!!blocked || submitting || isDisabled}
+      disabled={!!blocked || loading || isDisabled}
       onClick={submit}
       variant="pink"
     >

@@ -37,7 +37,7 @@ export const RenewPassButton: FC<RenewPassButtonProps> = ({
     })
   }, [passHolderId, payinMethod])
 
-  const { blocked, submitting, loading, submit } = usePay(
+  const { blocked, loading, submit } = usePay(
     register,
     registerData,
     onSuccess,
@@ -53,7 +53,7 @@ export const RenewPassButton: FC<RenewPassButtonProps> = ({
       )}
       onClick={submit}
       type="submit"
-      {...(blocked || submitting ? { disabled: isDisabled || true } : {})}
+      {...(blocked || loading ? { disabled: isDisabled || true } : {})}
     >
       {loading ? "Loading" : "Renew pass"}
     </button>
