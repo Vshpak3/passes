@@ -73,8 +73,10 @@ const SignupInfoPage: FC = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const onDateChange = (date: Date) => {
-    setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
+  const onDateChange = (date: Date | undefined) => {
+    if (date) {
+      setValue("birthday", format(date, BIRTHDAY_DATE_FORMAT))
+    }
   }
 
   const createNewUser = async (
@@ -222,7 +224,15 @@ const SignupInfoPage: FC = () => {
                 type="text"
               />
             </div>
-            <DateSelector onDateChange={onDateChange} />
+            <div className="flex flex-col">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                Birthday
+              </Text>
+              <DateSelector
+                errors={errors.birthday}
+                onDateChange={onDateChange}
+              />
+            </div>
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Country</Text>
               <Select

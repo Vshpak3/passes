@@ -1,17 +1,21 @@
+import { getDaysInMonth } from "date-fns"
 import { FC, useEffect, useMemo, useState } from "react"
+import { FieldError } from "react-hook-form"
 
 import { Select } from "src/components/atoms/input/Select"
 
 interface DateSelectorProps {
   onDateChange: (d: Date) => void
+  errors: FieldError | undefined
 }
 
-export const DateSelector: FC<DateSelectorProps> = ({ onDateChange }) => {
-  const [date, setDate] = useState(new Date())
-
-  const [year, setYear] = useState(date.getFullYear())
-  const [month, setMonth] = useState(date.getMonth())
-  const [day, setDay] = useState(date.getDate())
+export const DateSelector: FC<DateSelectorProps> = ({
+  onDateChange,
+  errors
+}) => {
+  const [year, setYear] = useState<number>()
+  const [month, setMonth] = useState<number>()
+  const [day, setDay] = useState<number>()
 
   const selectYears = useMemo(() => {
     const currentYear = new Date().getFullYear()
@@ -36,38 +40,45 @@ export const DateSelector: FC<DateSelectorProps> = ({ onDateChange }) => {
   }, [])
 
   const selectDays = useMemo(() => {
-    return Array.from({ length: 31 }, (_, i) => (i + 1).toString())
-  }, [])
+    return Array.from({ length: getDaysInMonth(month || 0) }, (_, i) =>
+      (i + 1).toString()
+    )
+  }, [month])
 
   useEffect(() => {
-    const _date = new Date(year, month, day)
-    setDate(_date)
-    onDateChange(_date)
+    if (year !== undefined && month !== undefined && day !== undefined) {
+      onDateChange(new Date(year, month, day))
+    }
   }, [year, month, day, onDateChange])
 
   return (
-    <div className="flex justify-between">
-      <Select
-        className="w-[140px]"
-        defaultValue=""
-        name="month"
-        onChange={(m) => setMonth(selectMonths.indexOf(m))}
-        selectOptions={selectMonths}
-      />
-      <Select
-        className="w-[90px]"
-        defaultValue=""
-        name="day"
-        onChange={setDay}
-        selectOptions={selectDays}
-      />
-      <Select
-        className="w-[100px]"
-        defaultValue=""
-        name="year"
-        onChange={setYear}
-        selectOptions={selectYears}
-      />
-    </div>
+    <>
+      <div className="flex justify-between">
+        <Select
+          className="w-[140px]"
+          name="month"
+          onChange={(m) => setMonth(selectMonths.indexOf(m))}
+          placeholder="Month"
+          selectOptions={selectMonths}
+        />
+        <Select
+          className="w-[90px]"
+          name="day"
+          onChange={setDay}
+          placeholder="Day"
+          selectOptions={selectDays}
+        />
+        <Select
+          className="w-[100px]"
+          name="year"
+          onChange={setYear}
+          placeholder="Year"
+          selectOptions={selectYears}
+        />
+      </div>
+      {errors && (
+        <span className="mt-1 text-xs text-red-500">{errors?.message}</span>
+      )}
+    </>
   )
 }
