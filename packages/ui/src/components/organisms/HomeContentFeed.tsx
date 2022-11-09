@@ -78,7 +78,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={ContentFeedLoading}
         />
       </div>
-      <div className="sticky col-span-3 hidden min-h-screen max-w-[500px] flex-col border-l-[0.5px] border-gray-600 lg:flex lg:pl-6 lg:pr-10 xl:pl-8">
+      <div className="sticky col-span-3 hidden min-h-screen max-w-[500px] flex-col border-l-[1px] border-[#3A444C]/[0.64] lg:flex lg:px-2 xl:pl-8">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>
