@@ -57,6 +57,7 @@ export const Select: FC<SelectProps> = ({
   const isString = typeof defaultValue === "string"
   const defaultDisplay = isString ? defaultValue : defaultValue.label
   const [displayedValue, setDisplayedValue] = useState(defaultDisplay)
+
   useEffect(() => {
     if (changeOnDefault) {
       setDisplayedValue(defaultDisplay)
@@ -108,23 +109,22 @@ export const Select: FC<SelectProps> = ({
               { "bottom-full": showOnTop }
             )}
           >
-            {selectOptions?.map((option) => {
-              const isString = typeof option === "string"
-
-              return (
-                <Listbox.Option
-                  className={({ active }) =>
-                    classNames("p1-2 block cursor-pointer py-1 px-4", {
-                      "bg-[#12070E]/90 text-passes-primary-color": active
-                    })
-                  }
-                  key={isString ? option : option.value}
-                  value={option}
-                >
-                  <span>{isString ? option : option.label}</span>
-                </Listbox.Option>
-              )
-            })}
+            <div className="my-1" />
+            {selectOptions?.map((option) => (
+              <Listbox.Option
+                className={({ active }) =>
+                  classNames("p1-2 block cursor-pointer py-1 px-4", {
+                    "bg-[#12070E]/90 text-passes-primary-color": active
+                  })
+                }
+                key={typeof option === "string" ? option : option.value}
+                value={option}
+              >
+                <span>
+                  {typeof option === "string" ? option : option.label}
+                </span>
+              </Listbox.Option>
+            ))}
           </Listbox.Options>
         </Transition>
       </Listbox>
