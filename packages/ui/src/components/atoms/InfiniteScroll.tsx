@@ -138,8 +138,8 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     setIsScrollable(
       node
         ? node.scrollHeight > node.clientHeight
-        : window !== null
-        ? window.visualViewport.height < window.document.body.clientHeight
+        : window
+        ? window?.visualViewport?.height < window?.document?.body?.clientHeight
         : true
     )
   }, [node])
