@@ -8,7 +8,7 @@ import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
@@ -40,7 +40,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
     >
       <SectionTitle>Buy Post</SectionTitle>
       <div className="flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-        <ProfileThumbnail userId={userId} />
+        <ProfileImage type="thumbnail" userId={userId} />
         <div className="ml-4 flex flex-col">
           <span>{displayName}</span>
           <span className="text-passes-dark-gray">@{username}</span>

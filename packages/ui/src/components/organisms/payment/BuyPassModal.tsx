@@ -7,7 +7,7 @@ import { getPassType } from "src/components/molecules/pass/PassCard"
 import { BuyPassButton } from "src/components/molecules/payment/BuyPassButton"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { Modal } from "src/components/organisms/Modal"
-import { ProfileThumbnail } from "src/components/organisms/profile/profile-details/ProfileThumbnail"
+import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 
 interface BuyPassModalProps {
   pass: PassDto
@@ -42,7 +42,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           Membership
         </SectionTitle>
         <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-          {creatorId && <ProfileThumbnail userId={creatorId} />}
+          {creatorId && <ProfileImage type="thumbnail" userId={creatorId} />}
           <div className="ml-4 flex flex-col">
             <span>{creatorDisplayName}</span>
             <span className="text-passes-dark-gray">@{creatorUsername}</span>
