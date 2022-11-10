@@ -131,7 +131,7 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
             {renderPlusIcon && (
               <FileInput
                 accept={ACCEPTED_MEDIA_TYPES}
-                className="flex cursor-pointer items-center"
+                className="flex min-w-[50px] cursor-pointer items-center"
                 errors={errors}
                 multiple
                 name="files"
