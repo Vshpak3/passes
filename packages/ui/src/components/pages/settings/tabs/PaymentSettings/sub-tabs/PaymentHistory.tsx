@@ -108,31 +108,29 @@ const PaymentHistory = () => {
         </div>
         <div className="w-full min-w-[600px] ">
           <div className="flex flex-col">
-            <div className="flex flex-row justify-between border-b border-passes-dark-200">
-              <div className="mb-4 flex flex-1 justify-center">
+            <div className="flex flex-row justify-between border-b border-passes-dark-200 pb-4">
+              <div className="flex flex-1 justify-center">
                 <span className="text-[12px] font-[500]">Transaction</span>
               </div>
-              <div className="mb-4 flex flex-1 justify-center">
+              <div className="flex flex-1 justify-center">
                 <span className="text-[12px] font-[500]">Source</span>
               </div>
-              <div className="mb-4 flex flex-1 items-center justify-center gap-2">
+              <div className="flex flex-1 justify-center">
                 <span className="text-[12px] font-[500]">Date</span>
               </div>
               <div className="flex flex-1 justify-center">
-                <span className="mb-4 text-[12px] font-[500]">Amount</span>
+                <span className="text-[12px] font-[500]">Amount</span>
               </div>
               <div className="flex flex-1 justify-center">
-                <span className="mb-4 text-[12px] font-[500]">
-                  Payment Method
-                </span>
+                <span className="text-[12px] font-[500]">Payment Method</span>
               </div>
               <div className="flex flex-1 justify-center">
-                <span className="mb-4 text-[12px] font-[500]">Status</span>
+                <span className="text-[12px] font-[500]">Status</span>
               </div>
               <div className="flex flex-1 justify-center">
-                <span className="mb-4 text-[12px] font-[500]">Reason</span>
+                <span className="text-[12px] font-[500]">Reason</span>
               </div>
-              <div className="mb-4 flex flex-1 justify-center">
+              <div className="flex flex-1 justify-center">
                 <span className="text-[12px] font-[500]">Cancel</span>
               </div>
             </div>
