@@ -224,7 +224,6 @@ export const EditProfile: FC<EditProfileProps> = ({
           inputUI={
             <div className="z-10 flex w-full flex-col">
               <div className="relative w-full">
-                <CameraIcon className="absolute right-1 top-1 z-30 cursor-pointer" />
                 <img
                   alt=""
                   className="h-[115px] w-full cursor-pointer rounded-[15px] object-cover object-center"
