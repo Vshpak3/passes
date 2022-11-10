@@ -3,7 +3,6 @@ import {
   NotificationsApi,
   UpdateNotificationSettingsRequestDto
 } from "@passes/api-client"
-import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_NOTIFICATIONS = "/settings/notification/"
@@ -13,7 +12,6 @@ export const useNotificationSettings = () => {
 
   const {
     data: notificationSettings,
-    mutate,
     isValidating: loadingNotificationSettings
   } = useSWR(
     CACHE_KEY_NOTIFICATIONS,
