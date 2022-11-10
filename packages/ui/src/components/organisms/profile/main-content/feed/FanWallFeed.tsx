@@ -54,8 +54,8 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
         })
       }}
       fetchProps={{ creatorId: profileUserId }}
-      keyValue={`/fanwall/${profileUserId}`}
       keySelector="fanWallCommentId"
+      keyValue={`/fanwall/${profileUserId}`}
       loadingElement={FallWallFeedLoader}
     >
       {!!accessToken.length && (

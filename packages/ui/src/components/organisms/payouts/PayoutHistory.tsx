@@ -136,8 +136,8 @@ export const PayoutHistory = () => {
             return await api.getPayouts({ getPayoutsRequestDto: req })
           }}
           fetchProps={fetchProps}
-          keyValue="/payouts"
           keySelector="payoutId"
+          keyValue="/payouts"
           options={{
             revalidateOnMount: true,
             refreshInterval: ms("3 seconds")

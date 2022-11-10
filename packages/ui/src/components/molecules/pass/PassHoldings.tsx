@@ -54,9 +54,9 @@ export const PassHoldings: FC = () => {
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
         }}
         fetchProps={fetchProps}
+        keySelector="passHolderId"
         keyValue="/passholdings"
         options={{ revalidateOnMount: true }}
-        keySelector="passHolderId"
       />
     </div>
   )

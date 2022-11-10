@@ -58,8 +58,8 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       }}
       fetchProps={{ creatorId: profileUserId, pinned: false }}
       hasInitialElement={isNewPostAdded}
-      keyValue={`/feed/creator/${profileUserId}`}
       keySelector="postId"
+      keyValue={`/feed/creator/${profileUserId}`}
       loadingElement={PostFeedLoader}
     >
       {ownsProfile && (

@@ -45,8 +45,8 @@ const PostStatistics = () => {
         emptyElement={<span>No posts to show</span>}
         fetch={getPosts}
         fetchProps={{}}
-        keyValue="posts"
         keySelector="postId"
+        keyValue="posts"
         options={{ revalidateOnMount: true }}
       />
     </div>

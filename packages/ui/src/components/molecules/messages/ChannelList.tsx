@@ -123,8 +123,8 @@ export const ChannelList: FC<ChannelListProps> = ({
               return await api.getChannels({ getChannelsRequestDto: req })
             }}
             fetchProps={fetchProps}
-            keyValue="/channels"
             keySelector="channelMemberId"
+            keyValue="/channels"
             node={node}
             options={{
               revalidateOnMount: false,

@@ -74,8 +74,8 @@ export const HomeContentFeed: FC = () => {
             return await api.getFeed({ getFeedRequestDto: req })
           }}
           fetchProps={{}}
-          keyValue="/feed"
           keySelector="postId"
+          keyValue="/feed"
           loadingElement={ContentFeedLoading}
         />
       </div>

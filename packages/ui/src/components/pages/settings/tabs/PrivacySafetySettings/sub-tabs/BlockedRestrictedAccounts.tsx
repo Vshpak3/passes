@@ -43,8 +43,8 @@ const BlockedRestrictedAccounts = () => {
             orderType: SearchFollowingResponseDtoOrderTypeEnum.CreatedAt,
             order: SearchFollowRequestDtoOrderEnum.Desc
           }}
-          keyValue="blocked"
           keySelector="userId"
+          keyValue="blocked"
           options={{ revalidateOnMount: true }}
         />
       </div>

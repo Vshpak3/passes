@@ -56,8 +56,8 @@ const MessageStatistics = () => {
           })
         }}
         fetchProps={{}}
-        keyValue="paid-messages"
         keySelector="paidMessageId"
+        keyValue="paid-messages"
         options={{ revalidateOnMount: true }}
       />
     </div>

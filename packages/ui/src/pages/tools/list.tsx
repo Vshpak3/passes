@@ -167,8 +167,8 @@ const FanLists: NextPage = () => {
           }}
           fetchProps={fetchProps}
           hasInitialElement={newLists.length > 0}
-          keyValue="/lists"
           keySelector="listId"
+          keyValue="/lists"
         >
           {newLists.map((list, index) => (
             <List key={index} list={list} removable />

@@ -142,8 +142,8 @@ const PaymentHistory = () => {
                 return await api.getPayins({ getPayinsRequestDto: req })
               }}
               fetchProps={fetchProps}
-              keyValue="/payins"
               keySelector="payinId"
+              keyValue="/payins"
               options={{ revalidateOnMount: true }}
             />
           </div>
