@@ -92,7 +92,7 @@ export const Input: FC<InputProps> = ({
               icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3"
             }`,
             className,
-            errors[name] !== undefined ? "!border-red-500" : "border-gray-300"
+            errors[name] !== undefined && "border-red-500"
           )}
         />
         {errors && errors[name] && (
