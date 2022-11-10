@@ -35,23 +35,23 @@ export const PostHeader: FC<PostHeaderProps> = ({
       <div className="flex items-center space-x-4 overflow-x-hidden">
         <ProfileWidget isCreator={isCreator} user={user} />
       </div>
-      <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-row items-center justify-end ">
+      <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-row items-center justify-end gap-2">
         {isPinned && (
-          <div className="flex items-center rounded-lg py-1">
+          <div className="flex items-center rounded-lg">
             <PinIcon />
-            <SingleDot className="ml-[4px]" />
           </div>
         )}
-        <div className=" flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
+        <SingleDot className="flex items-center" />
+        <div className="flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
-            className="mx-[4px] uppercase text-gray-300/60"
+            className="uppercase text-gray-300/60"
             date={createdAt}
             key={id}
             minPeriod={30}
           />
-          <SingleDot className="mr-[6px]" />
         </div>
-        <div className="mt-[6px] flex items-center">
+        <SingleDot className="flex items-center" />
+        <div className="mt-[5px] flex items-center">
           <Dropdown items={dropdownOptions} />
         </div>
       </div>
