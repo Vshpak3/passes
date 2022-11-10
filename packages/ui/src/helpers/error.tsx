@@ -5,12 +5,12 @@ export class HasMessage {
   message = ""
 }
 export async function errorMessage(err: unknown, withToast = false) {
-  let errorMessage: string | string[] = "Something went wrong"
+  let errorMessage: string | string[] = "There was an unexpected error"
 
   if (err instanceof ResponseError) {
     const error = await err.response.json()
 
-    if (error.message) {
+    if (error.statusCode < 500 && error.message) {
       errorMessage = error.message
     }
   } else if (err instanceof Error) {
