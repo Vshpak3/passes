@@ -49,7 +49,9 @@ interface CardForm {
 }
 
 const cardForm = object({
-  "card-holder": string().required("Name is required"),
+  "card-holder": string()
+    .required("Name is required")
+    .matches(/^(.*)(\S)(\s+)(\S)(.*)$/, "Must include first and last name"),
   "card-number": string().required("Card number is required"),
   "exp-month": string().required("Month is required"),
   "exp-year": string().required("Year is required"),
