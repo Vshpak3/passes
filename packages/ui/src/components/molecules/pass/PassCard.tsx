@@ -63,7 +63,7 @@ export const PassCard: FC<PassCardProps> = ({
     <div
       className={classNames(
         isPinnedPass && "max-w-[350px] px-[24px]",
-        "flex min-h-[170px] flex-col justify-between rounded-[5px] bg-[#0E0A0F]/25 px-[12px] py-4",
+        "flex flex-col justify-between rounded-[5px] bg-[#0E0A0F]/25 px-[12px] py-4",
         className
       )}
     >
@@ -76,7 +76,7 @@ export const PassCard: FC<PassCardProps> = ({
         />
         <div
           className={classNames(
-            "flex min-h-[300px] flex-col items-start pt-4 text-[#ffff]/90"
+            "flex flex-col items-start pt-4 text-[#ffff]/90"
           )}
         >
           <div
