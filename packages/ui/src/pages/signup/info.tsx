@@ -263,7 +263,7 @@ const SignupInfoPage: FC = () => {
               <EnterIcon />
             </Button>
           </form>
-          <SignupFooter cancellable={!isSubmitting} />
+          <SignupFooter disabled={isSubmitting} />
         </div>
       </div>
     </div>

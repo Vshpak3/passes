@@ -1,11 +1,9 @@
 import { ScheduledEventDto } from "@passes/api-client"
 import classNames from "classnames"
-import { format } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { flatten } from "lodash"
 import { FC, Fragment, useContext, useEffect, useState } from "react"
 
-import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 import { CalendarEntry } from "./CalendarEntry"
