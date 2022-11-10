@@ -33,7 +33,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
             isActive
               ? "font-bold text-passes-primary-color"
               : "text-white group-hover:text-[#ffffff]/50",
-            "flex flex-row text-[19px]"
+            "flex flex-row text-[17px]"
           )}
         >
           {item.icon && (
