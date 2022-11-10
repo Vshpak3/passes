@@ -15,16 +15,13 @@ export const useNotificationSettings = () => {
     data: notificationSettings,
     mutate,
     isValidating: loadingNotificationSettings
-  } = useSWR(CACHE_KEY_NOTIFICATIONS, async () => {
-    return await api.getNotificationSettings()
-  })
-
-  useEffect(() => {
-    if (!notificationSettings) {
-      mutate()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mutate])
+  } = useSWR(
+    CACHE_KEY_NOTIFICATIONS,
+    async () => {
+      return await api.getNotificationSettings()
+    },
+    { revalidateOnMount: true }
+  )
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: UpdateNotificationSettingsRequestDto) =>
