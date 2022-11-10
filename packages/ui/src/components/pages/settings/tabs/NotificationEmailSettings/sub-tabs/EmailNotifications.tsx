@@ -18,9 +18,7 @@ const EmailNotifications = () => {
     updateNotificationSettings,
     loadingNotificationSettings
   } = useNotificationSettings()
-
-  const [formattedNotificationSettings, setFormattedNotificationSettings] =
-    useState<NotificationSettingsFormProps>()
+  const [disable, setDisable] = useState(true)
 
   const { register, handleSubmit, reset, watch, setValue } =
     useForm<NotificationSettingsFormProps>()
@@ -49,24 +47,19 @@ const EmailNotifications = () => {
   }
 
   useEffect(() => {
+    if (loadingNotificationSettings) {
+      return
+    }
+    reset(notificationSettings)
+  }, [loadingNotificationSettings, notificationSettings, reset])
+
+  useEffect(() => {
     setIsEmailAll(Object.values(allEmailNotifications).some((n) => n))
   }, [allEmailNotifications])
 
   useEffect(() => {
-    if (notificationSettings) {
-      // replacing all 0s and 1s with true and false
-      const formatted = Object.keys(notificationSettings).reduce(
-        (result, key) => {
-          const k = key as keyof NotificationSettingsFormProps
-          result[k] = Boolean(notificationSettings[k])
-          return result
-        },
-        {} as NotificationSettingsFormProps
-      )
-      setFormattedNotificationSettings(formatted)
-      reset(formatted)
-    }
-  }, [notificationSettings, reset])
+    setDisable(_.isEqual(allEmailNotifications, notificationSettings))
+  }, [allEmailNotifications, notificationSettings])
 
   return (
     <Tab
@@ -146,10 +139,7 @@ const EmailNotifications = () => {
 
         <Button
           className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-          disabled={
-            loadingNotificationSettings ||
-            _.isEqual(watch(), formattedNotificationSettings)
-          }
+          disabled={disable}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >

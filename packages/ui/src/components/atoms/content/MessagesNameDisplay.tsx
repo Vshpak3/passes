@@ -28,7 +28,7 @@ export const MessagesNameDisplay: FC<MessagesNameDisplayProps> = ({
       <Text className="ml-2 w-full text-gray-500 lg:block" fontSize={14}>
         {" @" + username}
       </Text>
-      {!!isCreator && (
+      {isCreator && (
         <span className="ml-2 min-h-[18px] min-w-[18px]">
           <CheckVerified height={18} width={18} />
         </span>

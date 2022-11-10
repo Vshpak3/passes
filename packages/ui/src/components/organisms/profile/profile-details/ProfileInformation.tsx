@@ -16,7 +16,7 @@ export const ProfileInformation: FC = () => {
       <div className="ml-[90px] flex w-[calc(100%-200px)] flex-col items-center justify-around truncate md:ml-0 md:w-[85%]">
         <span className="passes-break flex w-full flex-row items-center gap-2 truncate whitespace-pre-wrap text-[16px] font-medium leading-9 text-white md:text-[32px]">
           {profile?.displayName}
-          {Boolean(profile?.isCreator) && (
+          {!!profile?.isCreator && (
             <CheckVerified className="shrink-0" height={22} width={22} />
           )}
         </span>
