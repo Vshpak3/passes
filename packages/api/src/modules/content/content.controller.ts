@@ -97,6 +97,18 @@ export class ContentController {
   }
 
   @ApiEndpoint({
+    summary: 'Delete profile banner',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Profile banner was deleted',
+    role: RoleEnum.GENERAL,
+  })
+  @Delete('profile-banner')
+  async deleteProfileBanner(@Req() req: RequestWithUser): Promise<void> {
+    await this.contentService.deleteProfileBanner(req.user.id)
+  }
+
+  @ApiEndpoint({
     summary: 'Get pre signed url for profile image',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
@@ -176,7 +188,7 @@ export class ContentController {
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
     responseDesc: 'W-9 url was signed',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.CREATOR_ONLY,
   })
   @Get('sign/w9')
   async preSignW9(

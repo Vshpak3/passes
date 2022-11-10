@@ -45,6 +45,7 @@ import {
   mediaContentPath,
   mediaContentThumbnailPath,
   mediaContentUploadPath,
+  PROFILE_CONTENT_TYPES,
   profileImagePath,
   profileImageUploadPath,
   w9UploadPath,
@@ -105,16 +106,25 @@ export class ContentService {
     markProcessedDto: MarkProcessedProfileImageRequestDto,
   ): Promise<void> {
     const userId = markProcessedDto.userId
+    let paths: (PROFILE_CONTENT_TYPES | 'thumbnail')[]
+    switch (markProcessedDto.type) {
+      case 'image':
+        paths = ['image', 'thumbnail']
+        break
+      case 'banner':
+        paths = ['banner']
+        break
+      default:
+        paths = ['image', 'thumbnail', 'banner']
+        break
+    }
     await this.client.send(
       new CreateInvalidationCommand({
         DistributionId: this.distribution,
         InvalidationBatch: {
           Paths: {
-            Quantity: 2,
-            Items: [
-              '/' + profileImagePath(userId, 'image'),
-              '/' + profileImagePath(userId, 'thumbnail'),
-            ],
+            Quantity: paths.length,
+            Items: paths.map((p) => '/' + profileImagePath(userId, p)),
           },
           CallerReference: `profile-image-${userId}-${new Date().getTime()}`,
         },
@@ -139,6 +149,13 @@ export class ContentService {
       }
     })
     return true
+  }
+
+  async deleteProfileBanner(userId: string): Promise<void> {
+    await this.s3contentService.deleteObject(
+      profileImageUploadPath(userId, 'banner'),
+    )
+    await this.markProfileImageProcessed({ userId, type: 'banner', secret: '' })
   }
 
   async isAllProcessed(contents: ContentBareDto[]): Promise<boolean> {
@@ -268,7 +285,7 @@ export class ContentService {
     )
   }
 
-  preSignProfileImage(userId: string, type: 'image' | 'banner') {
+  preSignProfileImage(userId: string, type: PROFILE_CONTENT_TYPES) {
     return this.s3contentService.signUrlForContentUpload(
       profileImageUploadPath(userId, type),
     )

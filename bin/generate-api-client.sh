@@ -15,7 +15,7 @@ readonly root="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"/..
 
 readonly api_client_path=packages/api-client
 readonly spec_filename=packages/api/src/openapi/specs/openapi.json
-readonly openapi_gen_version=6.1.0
+readonly openapi_gen_version=6.2.1
 readonly openapi_gen_generator=typescript-fetch
 
 readonly out_path="${root}/${api_client_path}"

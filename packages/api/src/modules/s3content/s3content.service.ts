@@ -1,6 +1,7 @@
 import {
   CopyObjectCommand,
   CopyObjectCommandInput,
+  DeleteObjectCommand,
   HeadObjectCommand,
   PutObjectCommand,
   PutObjectCommandInput,
@@ -205,6 +206,15 @@ export class S3ContentService {
    */
   putObject(input: PutObjectCommandInput) {
     return this.s3Client.send(new PutObjectCommand(input))
+  }
+
+  /**
+   * S3Client DeleteObject function. Deletes an object from a bucket
+   * @param path Path of the object to delete
+   */
+  deleteObject(path: string) {
+    const [Bucket, Key] = this.getBucketKeyFromPath(path)
+    return this.s3Client.send(new DeleteObjectCommand({ Bucket, Key }))
   }
 
   /**

@@ -114,6 +114,36 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
+     * Delete profile banner
+     */
+    async deleteProfileBannerRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/content/profile-banner`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete profile banner
+     */
+    async deleteProfileBanner(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deleteProfileBannerRaw(initOverrides);
+    }
+
+    /**
      * Gets all content associated with the current authenticated user
      */
     async getVaultContentRaw(requestParameters: GetVaultContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetVaultQueryResponseDto>> {

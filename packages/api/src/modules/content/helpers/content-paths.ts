@@ -4,6 +4,8 @@ import { isEnv } from '../../../util/env'
 import { ContentFormatEnum } from '../enums/content-format.enum'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
+export type PROFILE_CONTENT_TYPES = 'image' | 'banner'
+
 const contentTypeFormatMap = {
   [ContentTypeEnum.IMAGE]: ContentFormatEnum.IMAGE,
   [ContentTypeEnum.VIDEO]: ContentFormatEnum.VIDEO,
@@ -54,7 +56,7 @@ export function mediaContentUploadPath(
 
 export function profileImagePath(
   userId: string,
-  type: 'image' | 'banner' | 'thumbnail',
+  type: PROFILE_CONTENT_TYPES | 'thumbnail',
 ) {
   return path.join(
     'profile',
@@ -66,7 +68,7 @@ export function profileImagePath(
 
 export function profileImageUploadPath(
   userId: string,
-  type: 'image' | 'banner',
+  type: PROFILE_CONTENT_TYPES,
 ) {
   return path.join(
     'profile',
