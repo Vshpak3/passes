@@ -20,8 +20,8 @@ const ListMemberUnmemo: FC<ListMemberProps> = ({
   return (
     <>
       {!removed && (
-        <div className="flex items-center justify-between gap-[50px] py-3">
-          <div className="flex flex-row">
+        <div className="flex items-center justify-between py-3">
+          <div className="flex flex-row gap-[50px]">
             <ProfileWidget user={fanInfo} />
             {fanInfo.metaNumber && (
               <span>Spent {formatCurrency(fanInfo.metaNumber)}</span>

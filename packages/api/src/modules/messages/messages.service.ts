@@ -214,6 +214,7 @@ export class MessagesService {
     userId: string,
     getChannelsRequestDto: GetChannelsRequestDto,
   ) {
+    // console.log(getChannelsRequestDto)
     const { lastId, search, order, recent, tip, orderType, unreadOnly } =
       getChannelsRequestDto
     let query = this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)

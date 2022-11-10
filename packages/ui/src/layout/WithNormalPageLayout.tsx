@@ -15,6 +15,7 @@ class WithNormalPageLayoutOptions {
   headerClassName?: string
   sidebar?: boolean = true
   background?: boolean = true
+  consistent?: boolean = true
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -80,7 +81,7 @@ export const WithNormalPageLayout = (
                     {headerTitle}
                   </SectionTitle>
                 )}
-                <div className="my-2" />
+                {options.consistent ?? <div className="my-2" />}
                 {page}
               </AuthWrapper>
             </main>

@@ -29,7 +29,7 @@ const MessagesPage = () => {
 
   return (
     <Suspense fallback={<CenterLoader />}>
-      <div className="flex h-screen flex-col">
+      <div className="flex h-[calc(100vh-16px)] flex-col">
         <div className="hidden h-16 lg:flex">
           {user?.isCreator ? (
             <div className="flex flex-1 items-center">
@@ -72,5 +72,6 @@ const MessagesPage = () => {
 
 export default WithNormalPageLayout(memo(MessagesPage), {
   header: false,
-  sidebar: true
+  sidebar: true,
+  consistent: false
 })

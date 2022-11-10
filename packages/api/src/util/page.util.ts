@@ -27,7 +27,7 @@ export function createPaginatedQuery(
     { column: `${valueTable}.${column}`, order },
     { column: `${idTable}.id`, order },
   ])
-  if (value) {
+  if (value !== null && value !== undefined) {
     query = query.andWhere(function () {
       let subQuery = this.where(
         `${valueTable}.${column}`,
