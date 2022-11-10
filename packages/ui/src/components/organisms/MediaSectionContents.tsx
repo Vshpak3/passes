@@ -1,11 +1,12 @@
 import classNames from "classnames"
+import UploadPlusIcon from "public/icons/content-upload-icon.svg"
 import BoxIcon from "public/icons/cursor-box-icon.svg"
 import { ChangeEvent, FC, MouseEvent } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 import { FieldErrorsImpl } from "react-hook-form"
 
+import { FileInput } from "src/components/atoms/input/FileInput"
 import { FormRegister } from "src/components/atoms/input/InputTypes"
-import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
@@ -128,14 +129,15 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
             )}
             {dropProvided.placeholder}
             {renderPlusIcon && (
-              <DragDropFile
+              <FileInput
                 accept={ACCEPTED_MEDIA_TYPES}
-                className="flex max-h-[85px] min-w-[85px] items-center md:min-h-[175px] md:min-w-[175px] "
+                className="flex cursor-pointer items-center"
                 errors={errors}
                 multiple
-                name="drag-drop"
+                name="files"
                 options={{ onChange: onFileInputChange }}
                 register={register}
+                trigger={<UploadPlusIcon />}
               />
             )}
           </div>
