@@ -79,6 +79,22 @@ export const ProfileDetails: FC = () => {
           <div className="flex w-[calc(100%-138px)] flex-col px-5 pt-4">
             <ProfileInformation />
           </div>
+          {!ownsProfile && (
+            <div className="mt-2 flex-col">
+              <Dropdown
+                items={[
+                  ...DropDownReport(true, {
+                    username: profileUsername ?? "",
+                    userId: profileUserId
+                  }),
+                  ...DropDownBlock(true, {
+                    username: profileUsername ?? "",
+                    userId: profileUserId
+                  })
+                ]}
+              />
+            </div>
+          )}
         </div>
 
         {/* mobile */}
@@ -100,7 +116,7 @@ export const ProfileDetails: FC = () => {
       </div>
 
       {/* mobile */}
-      <div className="absolute top-2 right-10 flex-row items-start pr-3 md:hidden">
+      <div className="absolute top-2 right-2 flex-row items-start pr-3 md:hidden">
         <div className="absolute right-0 flex flex-col">
           {ownsProfile ? (
             <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
@@ -109,7 +125,7 @@ export const ProfileDetails: FC = () => {
               {!!profile?.isCreator && (
                 <>
                   <FollowButton
-                    className="mb-[3px] h-[25px] w-[80px]"
+                    className="mb-2 h-[25px] w-[80px]"
                     creatorId={profileUserId}
                   />
 
@@ -123,27 +139,27 @@ export const ProfileDetails: FC = () => {
                   </Link>
                 </>
               )}
+              {!ownsProfile && (
+                <div className="mr-0 ml-auto">
+                  <Dropdown
+                    items={[
+                      ...DropDownReport(true, {
+                        username: profileUsername ?? "",
+                        userId: profileUserId
+                      }),
+                      ...DropDownBlock(true, {
+                        username: profileUsername ?? "",
+                        userId: profileUserId
+                      })
+                    ]}
+                  />
+                </div>
+              )}
             </>
           )}
         </div>
       </div>
 
-      {!ownsProfile && (
-        <div className="absolute top-2 right-5 items-center justify-between">
-          <Dropdown
-            items={[
-              ...DropDownReport(true, {
-                username: profileUsername ?? "",
-                userId: profileUserId
-              }),
-              ...DropDownBlock(true, {
-                username: profileUsername ?? "",
-                userId: profileUserId
-              })
-            ]}
-          />
-        </div>
-      )}
       {!!isEditProfileModalOpen && (
         <EditProfile
           setEditProfileModalOpen={setIsEditProfileModalOpen}
