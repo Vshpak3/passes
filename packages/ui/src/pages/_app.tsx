@@ -122,8 +122,17 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     null
   )
 
-  const { hasRefreshed, router } = useTokenRefresh()
+  const { hasRefreshed, router, user } = useTokenRefresh()
   const { setPayin } = useThreeDS()
+
+  useEffect(() => {
+    if (
+      !user &&
+      (tipPost || buyPass || buyPost || selectedChannel || tippedMessage)
+    ) {
+      router.push("/login")
+    }
+  }, [user, tipPost, buyPass, buyPost, selectedChannel, tippedMessage, router])
 
   useEffect(() => {
     if (router.isReady) {
