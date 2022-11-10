@@ -55,7 +55,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
             type="button"
           >
             <MessagesIcon />
-            <span className="text-[12px] leading-[15px]">
+            <span className="min-w-[15px] text-[12px] leading-[15px]">
               {formattedNumComments}
             </span>
           </button>

@@ -1,3 +1,4 @@
+import Link from "next/link"
 import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import LogoutIcon from "public/icons/sidebar/logout.svg"
 import { FC } from "react"
@@ -25,9 +26,9 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 lg:pr-8">
           <div>
             <div className="flex shrink-0">
-              <div>
+              <Link href="/home">
                 <PassesLogoPink className="mt-2 block h-[30x] w-[30px] fill-current" />
-              </div>
+              </Link>
             </div>
             <nav className="flex flex-col items-start gap-0 pt-10">
               {navigation.map((item: SidebarNavigation) => (

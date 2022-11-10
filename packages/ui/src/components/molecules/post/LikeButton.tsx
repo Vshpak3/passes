@@ -56,7 +56,9 @@ export const LikeButton: FC<LikeButtonProps> = ({
       type="button"
     >
       <HeartIcon fill={isLiked ? "#F4245E" : "none"} />
-      <span className="text-[12px] leading-[15px]">{formattedNumLikes}</span>
+      <span className="min-w-[15px] text-[12px] leading-[15px]">
+        {formattedNumLikes}
+      </span>
     </button>
   )
 }

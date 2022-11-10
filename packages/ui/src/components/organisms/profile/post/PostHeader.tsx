@@ -51,7 +51,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
           />
           <SingleDot className="mr-[6px]" />
         </div>
-        <div className="mt-[7px] flex items-center">
+        <div className="mt-[6px] flex items-center">
           <Dropdown items={dropdownOptions} />
         </div>
       </div>
