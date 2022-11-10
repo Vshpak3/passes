@@ -29,7 +29,7 @@ export class AuthEntity extends BaseEntity {
   email: string | null
 
   @Property({ default: false })
-  is_email_verified = false
+  is_email_verified: boolean
 
   @ManyToOne({ entity: () => UserEntity })
   user_id: string | null
