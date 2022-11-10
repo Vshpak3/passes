@@ -119,6 +119,7 @@ const SignupEmailPage: FC = () => {
                   Resend Verification Email
                 </Text>
               </Button>
+              <SignupFooter cancellable={!isSubmitting} />
               {hasResentEmail && (
                 <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                   We have resent an email to you to verify your email address.
