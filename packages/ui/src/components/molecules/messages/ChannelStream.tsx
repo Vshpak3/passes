@@ -214,7 +214,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             </div>
           )}
           <div
-            className="relative flex h-full flex-col-reverse overflow-y-scroll"
+            className="relative flex h-full flex-col-reverse overflow-y-scroll pt-[50px]"
             id="messagesDiv"
             ref={ref}
           >
