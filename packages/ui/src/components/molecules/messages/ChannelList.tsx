@@ -91,7 +91,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               placeholder="Search ..."
             />
           </div>
-          <div className="flex justify-between pt-5 pb-3">
+          <div className="flex justify-between py-3 pr-3">
             <div className="ml-auto mr-0">
               {!!user?.isCreator && (
                 <div className="flex items-start gap-[5px]">
@@ -118,7 +118,6 @@ export const ChannelList: FC<ChannelListProps> = ({
                 />
               )
             }}
-            className="pt-2"
             fetch={async (req: GetChannelsRequestDto) => {
               const api = new MessagesApi()
               return await api.getChannels({ getChannelsRequestDto: req })
