@@ -1,4 +1,4 @@
-import { FC, memo } from "react"
+import { FC, memo, useCallback, useEffect } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
@@ -6,11 +6,36 @@ import { ProfileContent } from "src/components/organisms/profile/main-content/Pr
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { PassesSidebar } from "src/components/organisms/profile/passes/PassesSidebar"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
+import { ContentService } from "src/helpers/content"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const ProfileUnmemo: FC = () => {
   const { profile, loadingProfile, hasInitialFetch } = useProfile()
+  const updateProfileBanner = useCallback(async () => {
+    if (!profile) {
+      return
+    }
+    const profileBanner = ContentService.profileBanner(profile?.profileId)
+    if (!profileBanner) {
+      return
+    }
+    const res = await fetch(profileBanner)
+    if (res.status === 404) {
+      return
+    }
+    const cover = document
+      .getElementsByClassName("cover-image")
+      .item(0) as HTMLDivElement
+    if (!cover) {
+      return
+    }
+    cover.style.backgroundImage = `url('${profileBanner}')`
+  }, [profile])
+
+  useEffect(() => {
+    updateProfileBanner()
+  }, [updateProfileBanner])
 
   const { isTablet } = useWindowSize()
   if (isTablet === undefined) {

@@ -1,9 +1,10 @@
 import classNames from "classnames"
-import React, { FC, forwardRef, ReactElement } from "react"
+import React, { FC, forwardRef, ReactElement, ReactNode } from "react"
 
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
+import { useProfile } from "src/hooks/profile/useProfile"
 import { CreatorSearchBar } from "./CreatorSearchBar"
 import { Sidebar } from "./Sidebar"
 
@@ -16,6 +17,9 @@ class WithNormalPageLayoutOptions {
   sidebar?: boolean = true
   background?: boolean = true
   consistent?: boolean = true
+  // TODO: Update Type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  customHeader?: any
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -31,7 +35,8 @@ export const WithNormalPageLayout = (
   const component = forwardRef((props, ref) => <Page {...props} ref={ref} />)
   component.displayName = `WithNormalPageLayout(${getComponentName(Page)})`
 
-  const { headerTitle, sidebar, header, headerClassName } = options
+  const { headerTitle, sidebar, header, headerClassName, customHeader } =
+    options
   return {
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
@@ -52,7 +57,7 @@ export const WithNormalPageLayout = (
                 "col-span-12 flex h-full w-full flex-col"
               )}
             >
-              {header && (
+              {header && !customHeader && (
                 <div
                   className={classNames(
                     "col-span-12 flex h-16 justify-between border-b-[0.5px] border-passes-gray pt-2 lg:col-span-7",
@@ -71,6 +76,9 @@ export const WithNormalPageLayout = (
                   </span>
                 </div>
               )}
+
+              {customHeader && { customHeader }}
+
               <AuthWrapper
                 creatorOnly={!!options.creatorOnly}
                 hasRefreshed={hasRefreshed}
