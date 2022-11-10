@@ -18,6 +18,7 @@ import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
 import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
+import { FULL_NAME_REGEX } from "src/config/regex"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { checkUsername } from "src/helpers/username"
@@ -34,8 +35,6 @@ export type SignupInfoPageSchema = {
   birthday: string
   displayName: string
 }
-
-const FULL_NAME_REGEX = /^[A-Za-z-,'\s]+$/
 
 const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
   legalFullName: string()

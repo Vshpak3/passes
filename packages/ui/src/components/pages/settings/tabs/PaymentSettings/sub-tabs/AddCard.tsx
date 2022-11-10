@@ -20,6 +20,7 @@ import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Select } from "src/components/atoms/input/Select"
 import { Tab } from "src/components/pages/settings/Tab"
+import { FULL_NAME_REGEX } from "src/config/regex"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
@@ -51,7 +52,7 @@ interface CardForm {
 const cardForm = object({
   "card-holder": string()
     .required("Name is required")
-    .matches(/^(.*)(\S)(\s+)(\S)(.*)$/, "Must include first and last name"),
+    .matches(FULL_NAME_REGEX, "Must include first and last name"),
   "card-number": string().required("Card number is required"),
   "exp-month": string().required("Month is required"),
   "exp-year": string().required("Year is required"),
