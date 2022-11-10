@@ -30,7 +30,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
               <div className="text-[16px] font-[700]">{passHolder.title}</div>
             </div>
             <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
-              <span className="w-full text-[12px] font-bold text-[#ffffff76]">
+              <span className="w-full whitespace-pre-wrap text-[12px] font-bold text-[#ffffff76]">
                 {formatText(passHolder.description)}
               </span>
             </div>

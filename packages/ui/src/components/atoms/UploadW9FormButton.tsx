@@ -62,7 +62,7 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
           register={register}
           trigger={
             <Button
-              className="passes-break w-full bg-gray-100 font-bold"
+              className="passes-break w-full whitespace-pre-wrap bg-gray-100 font-bold"
               variant="primary"
             >
               {icon && <EditIcon />}

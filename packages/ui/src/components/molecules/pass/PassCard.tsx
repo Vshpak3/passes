@@ -139,7 +139,7 @@ export const PassCard: FC<PassCardProps> = ({
             <p
               className={classNames(
                 isPinnedPass ? "w-full" : "w-[110%]",
-                "py-3 text-xs font-medium leading-[18px] text-white/70"
+                "whitespace-pre-wrap py-3 text-xs font-medium leading-[18px] text-white/70"
               )}
             >
               {formatText(pass.description)}

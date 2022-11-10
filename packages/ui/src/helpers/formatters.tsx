@@ -41,18 +41,18 @@ export function getNYearsAgoDate(years: number) {
   return new Date(new Date().setFullYear(new Date().getFullYear() - years))
 }
 
-const HTML_CHARACTERS_ORDER = ["&", " ", "<", ">", "€", "£", '"', "'", "\n"]
+const HTML_CHARACTERS_ORDER = ["&", "<", ">", "€", "£", '"', "'"]
 
 const HTML_CHARACTERS: Record<string, string> = {
   "&": "&amp;",
-  " ": "&#32;&#8203;",
+  // " ": "&#32;&#8203;",
   "<": "&lt;",
   ">": "&gt",
   "€": "&euro;",
   "£": "&pound;",
   '"': "&quot;",
-  "'": "&apos;",
-  "\n": "<br/>"
+  "'": "&apos;"
+  // "\n": "<br/>"
 }
 
 export function formatTextToString(text?: string | null) {

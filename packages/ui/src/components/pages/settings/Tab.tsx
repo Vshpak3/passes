@@ -41,7 +41,9 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
                 <ArrowRightIcon />
               </button>
             )}
-            <h3 className="text-label-lg passes-break">{formatText(title)}</h3>
+            <h3 className="text-label-lg passes-break whitespace-pre-wrap">
+              {formatText(title)}
+            </h3>
           </div>
           {TitleBtn}
         </div>

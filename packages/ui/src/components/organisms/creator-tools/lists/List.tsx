@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
+import { formatText } from "src/helpers/formatters"
 import { AlertIcon } from "src/icons/AlertIcon"
 import { DeleteIcon } from "src/icons/DeleteIcon"
 
@@ -25,7 +26,9 @@ const ListUnmemo: FC<ListProps> = ({ list, removable }) => {
             key={list.listId}
           >
             <div className="flex flex-1 flex-col gap-[10px]">
-              <h1 className="text-xl font-bold">{list.name || list.listId}</h1>
+              <h1 className="whitespace-pre-wrap text-xl font-bold">
+                {formatText(list.name || list.listId)}
+              </h1>
               <span className="text-base font-bold text-gray-500">
                 &nbsp; {list.count} members
               </span>

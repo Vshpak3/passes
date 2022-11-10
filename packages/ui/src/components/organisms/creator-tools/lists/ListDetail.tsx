@@ -22,6 +22,7 @@ import {
 import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowerToListModal"
 import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
 import { errorMessage } from "src/helpers/error"
+import { formatText } from "src/helpers/formatters"
 import { AddIcon } from "src/icons/AddIcon"
 import { ArrowLeft } from "src/icons/ArrowLeft"
 import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
@@ -193,7 +194,9 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                   : "")
               }
             >
-              <h2 className="pr-[10px] text-2xl font-bold">{listName}</h2>
+              <h2 className="whitespace-pre-wrap pr-[10px] text-2xl font-bold">
+                {formatText(listName)}
+              </h2>
             </div>
             {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
               <UpdateListNamePopper

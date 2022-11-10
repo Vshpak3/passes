@@ -155,7 +155,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
           <div className="mt-[50px] flex space-x-4 overflow-x-hidden">
             <ProfileWidget user={user} />
           </div>
-          <p className="passes-break mt-7 text-justify text-base font-medium">
+          <p className="passes-break mt-7 whitespace-pre-wrap text-justify text-base font-medium">
             {formatText(post.text)}
           </p>
           <div className="mt-8 flex items-center justify-start space-x-1.5 border-b border-[#727272] pb-2 text-xs font-medium text-passes-gray-100">
