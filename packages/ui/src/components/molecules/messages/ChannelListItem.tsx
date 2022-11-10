@@ -72,8 +72,8 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         </div>
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
-        {channel?.unreadTip !== 0 && (
-          <span className="absolute top-0 right-0 items-center self-end rounded-md border border-[#FF51A8] p-0.5 text-center text-[11px] font-bold text-[#FF51A8]">
+        {channel?.unreadTip === 0 && (
+          <span className="absolute top-0 right-[7px] items-center self-end rounded-md border border-[#FF51A8] p-0.5 text-center text-[11px] font-bold text-[#FF51A8]">
             Tip: {formatCurrency(channel?.unreadTip)}
           </span>
         )}
