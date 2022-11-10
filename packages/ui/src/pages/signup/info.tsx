@@ -17,7 +17,6 @@ import { Select } from "src/components/atoms/input/Select"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
-import { Wordmark } from "src/components/atoms/Wordmark"
 import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
@@ -147,12 +146,6 @@ const SignupInfoPage: FC = () => {
 
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 md:pt-6 lg:px-20">
-      <Wordmark
-        className="z-10 self-center lg:self-start"
-        height={28}
-        whiteOnly
-        width={122}
-      />
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#12070E] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
       <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
         <div className="flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] pt-8 opacity-[60] md:border md:py-[3%]">

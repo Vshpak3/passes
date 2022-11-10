@@ -4,7 +4,6 @@ import PassesLogoFull from "public/icons/passes-logo-full.svg"
 import { useEffect, useState } from "react"
 
 import { Text } from "src/components/atoms/Text"
-import { Wordmark } from "src/components/atoms/Wordmark"
 import {
   authRouter,
   authStateMachine,
@@ -68,12 +67,6 @@ const VerifyEmailPage = () => {
 
   return (
     <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
-      <Wordmark
-        className="z-10 self-center lg:self-start"
-        height={28}
-        whiteOnly
-        width={122}
-      />
       <div className="z-10 my-auto flex justify-center">
         <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24 lg:py-16 lg:px-48">
           <div className="p-4">
