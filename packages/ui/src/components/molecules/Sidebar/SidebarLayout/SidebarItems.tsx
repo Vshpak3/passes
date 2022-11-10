@@ -23,7 +23,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
     >
       <span
         className={classNames(
-          isDropdown ? "py-2" : "py-3",
+          isDropdown ? "py-3" : "py-4",
           "group flex cursor-pointer items-center"
         )}
         key={item.id}
