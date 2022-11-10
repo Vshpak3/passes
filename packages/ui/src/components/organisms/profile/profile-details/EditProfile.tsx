@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { GetProfileResponseDto } from "@passes/api-client"
+import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
 import {
@@ -224,18 +225,24 @@ export const EditProfile: FC<EditProfileProps> = ({
           cropWidth={1500}
           imgData={profileBannerImage}
           inputUI={
-            <div className="z-10 flex w-full flex-col">
-              <div className="relative w-full">
-                <img
-                  alt=""
-                  className="h-[115px] w-full cursor-pointer rounded-[15px] object-cover object-center"
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null
-                    currentTarget.src = "/img/profile/select-banner-img.png"
-                  }}
-                  src={profileBannerImageUrl}
-                />
-              </div>
+            <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
+              <CameraIcon
+                className={classNames("absolute z-30", {
+                  hidden: !!profileBannerImage?.length
+                })}
+              />
+              <img
+                alt=""
+                className={classNames(
+                  "h-[115px] w-full rounded-[15px] object-cover object-center",
+                  { "opacity-30": !profileBannerImage?.length }
+                )}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null
+                  currentTarget.src = "/img/profile/select-banner-img.png"
+                }}
+                src={profileBannerImageUrl}
+              />
             </div>
           }
           name="profileBannerImage"
@@ -247,11 +254,18 @@ export const EditProfile: FC<EditProfileProps> = ({
           cropWidth={400}
           imgData={profileImage}
           inputUI={
-            <div className="relative -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] items-center justify-center rounded-full bg-black">
-              <CameraIcon className="absolute z-30 cursor-pointer" />
+            <div className="relative z-20 -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer items-center justify-center rounded-full bg-black">
+              <CameraIcon
+                className={classNames("absolute z-30", {
+                  hidden: !!profileImage?.length
+                })}
+              />
               <img
                 alt=""
-                className="z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer rounded-full border-transparent object-cover opacity-30 drop-shadow-profile-photo"
+                className={classNames(
+                  "z-20 max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] rounded-full border-transparent object-cover",
+                  { "opacity-30": !profileImage?.length }
+                )}
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null
                   currentTarget.src = "/img/profile/default-profile-img.svg"
