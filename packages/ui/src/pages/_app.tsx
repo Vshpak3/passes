@@ -128,11 +128,34 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   useEffect(() => {
     if (
       !user &&
-      (tipPost || buyPass || buyPost || selectedChannel || tippedMessage)
+      (tipPost ||
+        buyPass ||
+        buyPost ||
+        selectedChannel ||
+        tippedMessage ||
+        reportData ||
+        blockData)
     ) {
       router.push("/login")
+      setTipPost(null)
+      setBuyPass(null)
+      setBuyPost(null)
+      setSelectedChannel(null)
+      setTippedMessage(null)
+      setBlockData(null)
+      setReportData(null)
     }
-  }, [user, tipPost, buyPass, buyPost, selectedChannel, tippedMessage, router])
+  }, [
+    user,
+    tipPost,
+    buyPass,
+    buyPost,
+    selectedChannel,
+    tippedMessage,
+    router,
+    reportData,
+    blockData
+  ])
 
   useEffect(() => {
     if (router.isReady) {
