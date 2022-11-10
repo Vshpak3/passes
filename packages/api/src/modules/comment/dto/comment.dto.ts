@@ -37,6 +37,9 @@ export class CommentDto {
   @DtoProperty({ type: 'string' })
   commenterDisplayName: string
 
+  @DtoProperty({ type: 'boolean' })
+  commenterIsCreator: boolean
+
   @DtoProperty({ type: 'date' })
   createdAt: Date
 
@@ -50,6 +53,7 @@ export class CommentDto {
     comment: CommentEntity & {
       commenter_username: string
       commenter_display_name: string
+      commenter_is_creator: boolean
     },
     isOwner?: boolean,
   ) {
@@ -59,6 +63,7 @@ export class CommentDto {
     this.text = comment.text
     this.commenterUsername = comment.commenter_username
     this.commenterDisplayName = comment.commenter_display_name
+    this.commenterIsCreator = comment.commenter_is_creator
     this.createdAt = comment.created_at
     this.tags = JSON.parse(comment.tags)
     this.isOwner = !!isOwner

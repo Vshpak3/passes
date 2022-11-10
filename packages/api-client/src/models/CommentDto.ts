@@ -70,6 +70,12 @@ export interface CommentDto {
     commenterDisplayName: string;
     /**
      * 
+     * @type {boolean}
+     * @memberof CommentDto
+     */
+    commenterIsCreator: boolean;
+    /**
+     * 
      * @type {Date}
      * @memberof CommentDto
      */
@@ -100,6 +106,7 @@ export function instanceOfCommentDto(value: object): boolean {
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "commenterUsername" in value;
     isInstance = isInstance && "commenterDisplayName" in value;
+    isInstance = isInstance && "commenterIsCreator" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isOwner" in value;
     isInstance = isInstance && "isHidden" in value;
@@ -124,6 +131,7 @@ export function CommentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'commenterUsername': json['commenterUsername'],
         'commenterDisplayName': json['commenterDisplayName'],
+        'commenterIsCreator': json['commenterIsCreator'],
         'createdAt': (new Date(json['createdAt'])),
         'isOwner': json['isOwner'],
         'isHidden': json['isHidden'],
@@ -146,6 +154,7 @@ export function CommentDtoToJSON(value?: CommentDto | null): any {
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'commenterUsername': value.commenterUsername,
         'commenterDisplayName': value.commenterDisplayName,
+        'commenterIsCreator': value.commenterIsCreator,
         'createdAt': (value.createdAt.toISOString()),
         'isOwner': value.isOwner,
         'isHidden': value.isHidden,

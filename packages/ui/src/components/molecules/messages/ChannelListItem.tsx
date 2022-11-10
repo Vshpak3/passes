@@ -62,7 +62,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
             <span className="text-[16px] font-medium leading-[24px] text-white">
               <MessagesNameDisplay
                 displayName={channel.otherUserDisplayName}
-                userId={channel.otherUserId}
+                isCreator={false} // TODO
                 username={channel.otherUserUsername}
               />
             </span>

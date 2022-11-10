@@ -39,6 +39,7 @@ export const Comment: FC<CommentProps> = ({
     postId,
     commenterId,
     commenterDisplayName,
+    commenterIsCreator,
     isHidden: _isHidden
   } = comment
   const [isHidden, setIsHidden] = useState(_isHidden)
@@ -87,8 +88,8 @@ export const Comment: FC<CommentProps> = ({
                 <MessagesNameDisplay
                   displayName={commenterDisplayName}
                   displayNameClassName="text-base"
+                  isCreator={commenterIsCreator}
                   linked
-                  userId={comment.commenterId}
                   username={commenterUsername}
                 />
                 {!!isHidden && (
