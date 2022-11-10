@@ -6,14 +6,14 @@
   "sideEffects": false,
   "scripts": {
     "prebuild": "node scripts/generate-robots-txt.js",
-    "build": "next build",
+    "build": "next build --no-lint",
     "dev": "next dev",
     "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix .",
     "prettier:check": "prettier --check . || { echo; echo 'run prettier:fix to fix this issue'; exit 1; }",
     "prettier:fix": "prettier --write .",
     "ts:check": "tsc --noEmit --project tsconfig.json",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build --no-lint"
   },
   "dependencies": {
     "@emotion/react": "11.10.5",
