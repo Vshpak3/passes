@@ -103,7 +103,7 @@ const SignupEmailPage: FC = () => {
               >
                 Email sent!
               </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 We have sent an email to you to verify your email address.{" "}
                 <br />
                 Please click in the link your email to continue.
@@ -120,7 +120,7 @@ const SignupEmailPage: FC = () => {
                 </Text>
               </Button>
               {hasResentEmail && (
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                   We have resent an email to you to verify your email address.
                 </Text>
               )}
@@ -138,7 +138,7 @@ const SignupEmailPage: FC = () => {
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <div className="flex flex-col">
-                  <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                  <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                     Email address
                   </Text>
                   <Input

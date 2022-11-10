@@ -196,7 +196,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
 
         <div className="mb-6 flex flex-col gap-6">
           <div className="flex flex-col gap-[6px]">
-            <div className="text-[#b3bee7] opacity-[0.6]">Display Name</div>
+            <div className="text-[#b3bee7] opacity-[0.75]">Display Name</div>
             <Input
               className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
               errors={errors}
@@ -208,7 +208,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
           </div>
 
           <div className="flex flex-col gap-[6px]">
-            <div className="text-[#b3bee7] opacity-[0.6]">
+            <div className="text-[#b3bee7] opacity-[0.75]">
               Profile Description
             </div>
             <Input
@@ -222,7 +222,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
           </div>
 
           <div className="flex flex-col gap-[6px]">
-            <div className="text-[#b3bee7] opacity-[0.6]">
+            <div className="text-[#b3bee7] opacity-[0.75]">
               Social Media Accounts
             </div>
             <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px]">
@@ -336,12 +336,12 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
         <div className="mb-6 flex gap-[6px]">
           <Checkbox
             className="rounded border-gray-300 bg-gray-100 text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:border-passes-gray dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-            labelClassName="text-[#b3bee7] opacity-[0.6]"
+            labelClassName="text-[#b3bee7] opacity-[0.75]"
             name="isAdult"
             register={register}
             type="checkbox"
           />
-          <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px] text-[#b3bee7] opacity-[0.6]">
+          <div className="flex flex-row items-center gap-[20px] rounded-md border border-[#34343ACC] py-[10px] px-[14px] text-[#b3bee7] opacity-[0.75]">
             My work contains audio or visual creations depicting explicit sexual
             situations, including nudity in sexual contexts.
           </div>

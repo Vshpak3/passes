@@ -105,7 +105,7 @@ const LoginPage: FC = () => {
           <Text className="mb-4 font-[500] text-white" fontSize={36}>
             Sign In
           </Text>
-          <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">
+          <Text className="-mt-8 text-[#b3bee7] opacity-[0.75]">
             Welcome back!
           </Text>
           <form
@@ -113,7 +113,7 @@ const LoginPage: FC = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
               <Input
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -125,7 +125,7 @@ const LoginPage: FC = () => {
             </div>
 
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Password
               </Text>
               <PasswordInput
@@ -179,7 +179,7 @@ const LoginPage: FC = () => {
           </div>
 
           <Text
-            className="z-10 flex w-[360px] justify-center text-[#b3bee7] opacity-[0.6]"
+            className="z-10 flex w-[360px] justify-center text-[#b3bee7] opacity-[0.75]"
             fontSize={13}
           >
             Don&apos;t have an account?

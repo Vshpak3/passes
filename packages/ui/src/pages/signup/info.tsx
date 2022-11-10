@@ -160,7 +160,7 @@ const SignupInfoPage: FC = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Your name
               </Text>
               <Input
@@ -180,7 +180,7 @@ const SignupInfoPage: FC = () => {
             </div>
 
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Username
               </Text>
               <Input
@@ -200,7 +200,7 @@ const SignupInfoPage: FC = () => {
             </div>
 
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Display Name
               </Text>
               <Input
@@ -219,7 +219,7 @@ const SignupInfoPage: FC = () => {
               />
             </div>
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Birthday
               </Text>
               <DateSelector
@@ -228,7 +228,9 @@ const SignupInfoPage: FC = () => {
               />
             </div>
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Country</Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                Country
+              </Text>
               <Select
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}

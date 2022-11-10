@@ -92,10 +92,10 @@ const ResetPassword = () => {
           </Text>
           {passwordReset ? (
             <>
-              <Text className="-mt-6 flex flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+              <Text className="-mt-6 flex flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
                 Success! Your password has been changed.
               </Text>
-              <Text className="flex flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+              <Text className="flex flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
                 We will automatically log you in. Alternatively, click here to
                 log in.
               </Text>
@@ -110,7 +110,7 @@ const ResetPassword = () => {
               </button>
             </>
           ) : (
-            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
               Please enter your new password and confirm it.
             </Text>
           )}
@@ -120,7 +120,7 @@ const ResetPassword = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col">
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                   Password
                 </Text>
                 <PasswordInput
@@ -133,7 +133,7 @@ const ResetPassword = () => {
               </div>
 
               <div className="flex flex-col">
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                   Confirm Password
                 </Text>
                 <PasswordInput

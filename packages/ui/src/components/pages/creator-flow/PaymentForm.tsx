@@ -101,7 +101,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="font-bold">
               Provide your W9 form for tax and payout purposes to get paid.
             </div>
-            <div className="text-[#b3bee7] opacity-[0.6]">
+            <div className="text-[#b3bee7] opacity-[0.75]">
               You will be able to edit it in the settings later.
             </div>
             <DownloadW9FormButton />
@@ -122,13 +122,15 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div className="text-lg font-bold">
                 Bank Account Data for Payouts
               </div>
-              <div className="text-xs font-medium leading-[22px] text-[#b3bee7] opacity-[0.6]">
+              <div className="text-xs font-medium leading-[22px] text-[#b3bee7] opacity-[0.75]">
                 You will be able to edit it in the settings later.
               </div>
             </div>
 
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Routing Number</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">
+                Routing Number
+              </div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -142,7 +144,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Account Number</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">
+                Account Number
+              </div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -156,7 +160,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">
+              <div className="text-[#b3bee7] opacity-[0.75]">
                 Type of Bank Account
               </div>
               <Select
@@ -175,7 +179,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Country</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">Country</div>
               <Select
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -192,7 +196,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">First Name</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">First Name</div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -206,7 +210,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Last Name</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">Last Name</div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -220,7 +224,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Business Name</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">Business Name</div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -231,7 +235,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
             </div>
             <div className="flex flex-col gap-[6px]">
-              <div className="text-[#b3bee7] opacity-[0.6]">Email</div>
+              <div className="text-[#b3bee7] opacity-[0.75]">Email</div>
               <Input
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}

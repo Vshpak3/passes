@@ -72,12 +72,12 @@ const ForgotPassword = () => {
             Forgot Password
           </Text>
           {emailSent ? (
-            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
               Check your email for a link to reset your password. If it doesn’t
               appear within a few minutes, check your spam folder.
             </Text>
           ) : (
-            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.6]">
+            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
               Enter your email address and we will send you a link to reset your
               password.
             </Text>
@@ -88,7 +88,9 @@ const ForgotPassword = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col">
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
+                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                  Email
+                </Text>
                 <Input
                   className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}

@@ -146,7 +146,7 @@ const SignupInitialPage: FC = () => {
           <Text className="mb-4 font-[500] text-white" fontSize={36}>
             Create an account
           </Text>
-          <Text className="-mt-8 text-[#b3bee7] opacity-[0.6]">
+          <Text className="-mt-8 text-[#b3bee7] opacity-[0.75]">
             Please enter your details.
           </Text>
           <form
@@ -154,7 +154,7 @@ const SignupInitialPage: FC = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">Email</Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
               <Input
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 errors={errors}
@@ -166,7 +166,7 @@ const SignupInitialPage: FC = () => {
             </div>
 
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Password
               </Text>
               <PasswordInput
@@ -179,7 +179,7 @@ const SignupInitialPage: FC = () => {
             </div>
 
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Confirm Password
               </Text>
               <PasswordInput
@@ -219,7 +219,7 @@ const SignupInitialPage: FC = () => {
           </div>
 
           <Text
-            className="z-10 w-[340px] text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
+            className="z-10 w-[340px] text-[#b3bee7] opacity-[0.75] xs:w-[360px]"
             fontSize={13}
           >
             By signing up, you agree to Passes&apos;{" "}
@@ -244,7 +244,7 @@ const SignupInitialPage: FC = () => {
           </Text>
 
           <Text
-            className="z-10 flex w-[340px] justify-center text-[#b3bee7] opacity-[0.6] xs:w-[360px]"
+            className="z-10 flex w-[340px] justify-center text-[#b3bee7] opacity-[0.75] xs:w-[360px]"
             fontSize={13}
           >
             Have an account?

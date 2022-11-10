@@ -80,7 +80,7 @@ const VerifyEmailPage = () => {
               >
                 Verifying...
               </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Please wait, while we verify your email address.
               </Text>
             </>
@@ -92,7 +92,9 @@ const VerifyEmailPage = () => {
               >
                 Verification Failed.
               </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">{error}</Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                {error}
+              </Text>
             </>
           ) : (
             <>
@@ -102,7 +104,7 @@ const VerifyEmailPage = () => {
               >
                 Thank you for verifying!
               </Text>
-              <Text className="mb-1 w-[420px] text-center text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 w-[420px] text-center text-[#b3bee7] opacity-[0.75]">
                 Your email address has been successfully verified. You may now
                 proceed to the website.
               </Text>

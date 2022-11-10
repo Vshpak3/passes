@@ -110,7 +110,7 @@ const AdminPage = () => {
             onSubmit={handleSubmit((d) => onSubmit("impersonateUser", d))}
           >
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Admin Secret
               </Text>
               <Input
@@ -123,7 +123,9 @@ const AdminPage = () => {
               />
             </div>
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">User ID</Text>
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                User ID
+              </Text>
               <Input
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
@@ -134,7 +136,7 @@ const AdminPage = () => {
               />
             </div>
             <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.6]">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Username
               </Text>
               <Input
