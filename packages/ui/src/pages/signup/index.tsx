@@ -2,8 +2,8 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, AuthLocalApi } from "@passes/api-client"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import EnterIcon from "public/icons/enter-icon.svg"
 import EnterPurpleIcon from "public/icons/enter-icon-purple.svg"
+import EnterIcon from "public/icons/enter-icon.svg"
 import FacebookLogo from "public/icons/facebook-logo.svg"
 import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
@@ -42,27 +42,27 @@ export const emailFormSchema = {
 export const passwordFormSchema = {
   password: string()
     .required("Enter a password")
-    .min(8, "Password should be at least 8 characters")
+    .min(
+      PASSWORD_MIN_LENGTH,
+      `Password should be at least ${PASSWORD_MIN_LENGTH} characters`
+    )
     .matches(
       PASSWORD_REGEX,
       "Password must contain at least one letter and number"
     ),
-  _confirmPassword: string()
+  confirmPassword: string()
     .required("Enter a password")
-    .min(PASSWORD_MIN_LENGTH, "Password should be at least 8 characters")
+    .min(
+      PASSWORD_MIN_LENGTH,
+      `Password should be at least ${PASSWORD_MIN_LENGTH} characters`
+    )
     .matches(
       PASSWORD_REGEX,
       "Password must contain at least one letter and number"
     )
     .test("match", "Passwords do not match", function (confirmPassword) {
       return confirmPassword === this?.parent?.password
-    }),
-  get confirmPassword() {
-    return this._confirmPassword
-  },
-  set confirmPassword(value) {
-    this._confirmPassword = value
-  }
+    })
 }
 
 const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
