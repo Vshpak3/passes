@@ -10,6 +10,7 @@ import { debounce } from "lodash"
 import React, {
   ChangeEvent,
   Dispatch,
+  DragEvent,
   FC,
   KeyboardEvent,
   SetStateAction,
@@ -107,6 +108,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     resolver: yupResolver(newMessageFormSchema)
   })
   const [tip, setTip] = useState(0)
+  const [dragActive, setDragActive] = useState(false)
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
@@ -233,12 +235,48 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }, [channelId, submitData, tip])
 
+  const handleDrag = function (event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    if (event.type === "dragenter" || event.type === "dragover") {
+      setDragActive(true)
+    } else if (event.type === "dragleave") {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = function (event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragActive(false)
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      const files = event.dataTransfer.files
+      if (files) {
+        addNewMedia(files)
+      }
+    }
+  }
   return (
     <form
       className="flex w-full border-t border-passes-gray"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full flex-col pt-2">
+      <div
+        className={classNames(
+          dragActive
+            ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
+            : "sm:border sm:border-transparent",
+          "flex w-full flex-col pt-2"
+        )}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input className="hidden" multiple name="files" type="file" />
+
         {isCreator && (
           <div className="flex w-full items-center justify-between px-[10px] py-1 md:px-[30px]">
             <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
