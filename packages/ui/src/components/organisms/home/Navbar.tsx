@@ -1,10 +1,7 @@
 import Link from "next/link"
 import { useState } from "react"
-import { useIntercom } from "react-use-intercom"
 
 export const Navbar = () => {
-  const { hide } = useIntercom()
-
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
@@ -49,14 +46,14 @@ export const Navbar = () => {
                   Features
                 </a>
               </li>
-              <Link href="/login" onClick={() => hide()}>
+              <Link href="/login">
                 <li>
                   <p className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
                     Sign In
                   </p>
                 </li>
               </Link>
-              <Link href="/signup" onClick={() => hide()}>
+              <Link href="/signup">
                 <li>
                   <p className="block rounded-lg bg-white px-4 py-2 text-black">
                     Sign Up
@@ -75,12 +72,12 @@ export const Navbar = () => {
                 Features
               </a>
             </li>
-            <Link href="/login" onClick={() => hide()}>
+            <Link href="/login">
               <li>
                 <p className="text-white">Sign In</p>
               </li>
             </Link>
-            <Link href="/signup" onClick={() => hide()}>
+            <Link href="/signup">
               <li className="rounded-lg bg-white p-4 text-center">
                 <p className="mx-auto w-full text-black">Sign Up</p>
               </li>

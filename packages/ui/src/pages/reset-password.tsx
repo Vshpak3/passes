@@ -101,7 +101,7 @@ const ResetPassword = () => {
               </Text>
               <button
                 className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                onClick={() => router.push("/login")}
+                onClick={() => safePush("/login")}
               >
                 <Text className="font-medium" fontSize={16}>
                   Log in

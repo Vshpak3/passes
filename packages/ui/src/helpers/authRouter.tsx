@@ -25,7 +25,7 @@ export function authStateMachine(jwt?: JWTUserClaims | null): AuthStates {
   }
 }
 
-function authStateToRoute(state: AuthStates) {
+export function authStateToRoute(state: AuthStates) {
   switch (state) {
     case AuthStates.LOGIN:
       return "/login"
