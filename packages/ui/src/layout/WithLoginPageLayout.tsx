@@ -1,12 +1,7 @@
 import { useRouter } from "next/router"
 import { FC, forwardRef, PropsWithChildren, useEffect, useState } from "react"
-import { IntercomProvider, useIntercom } from "react-use-intercom"
 
-import {
-  authRouter,
-  AuthStates,
-  authStateToRoute
-} from "src/helpers/authRouter"
+import { authRouter } from "src/helpers/authRouter"
 import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
@@ -44,14 +39,9 @@ export const WithLoginPageLayout = (
   // eslint-disable-next-line react/no-multi-comp
   const WithLoginPageLayout = forwardRef((props, ref) => (
     <LoginWrapper routeOnlyIfAuth={options.routeOnlyIfAuth}>
-      <IntercomProvider
-        appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID ?? ""}
-        autoBoot
-      >
-        <IntercomWrapper>
-          <Page {...props} ref={ref} />
-        </IntercomWrapper>
-      </IntercomProvider>
+      <IntercomWrapper>
+        <Page {...props} ref={ref} />
+      </IntercomWrapper>
     </LoginWrapper>
   ))
 
