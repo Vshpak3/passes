@@ -1585,7 +1585,7 @@ export class PaymentService {
         ? request.payinMethod
         : await this.getDefaultPayinMethod(request.userId)
     if (!(await this.validatePayinMethod(request.userId, payinMethod))) {
-      throw new InvalidPayinRequestError('invalid payin method')
+      throw new NoPayinMethodError('invalid payin method')
     }
 
     const data = {
@@ -2427,7 +2427,9 @@ export class PaymentService {
                 `Error paying subscription for ${subscription.id}`,
                 err,
               )
-              this.sentry.instance().captureException(err)
+              if (!(err instanceof NoPayinMethodError)) {
+                this.sentry.instance().captureException(err)
+              }
             }
           }
         } catch (err) {

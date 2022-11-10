@@ -35,12 +35,6 @@ export const ProfileDetails: FC = () => {
 
   return (
     <div className="relative px-4">
-      {isEditProfileModalOpen && (
-        <EditProfile
-          setEditProfileModalOpen={setIsEditProfileModalOpen}
-          setProfileImageOverride={setProfileImageOverride}
-        />
-      )}
       <ProfileImageModal
         isProfilePicModalOpen={isProfilePicModalOpen}
         profileUserId={profileUserId}
@@ -149,6 +143,12 @@ export const ProfileDetails: FC = () => {
             ]}
           />
         </div>
+      )}
+      {!!isEditProfileModalOpen && (
+        <EditProfile
+          setEditProfileModalOpen={setIsEditProfileModalOpen}
+          setProfileImageOverride={setProfileImageOverride}
+        />
       )}
     </div>
   )

@@ -46,11 +46,11 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
   return (
     <div className="flex w-full flex-col items-center justify-end overflow-x-hidden px-5 sm:px-10 md:px-10 lg:px-5">
       <div className="flex w-full min-w-[340px] items-center justify-between overflow-x-hidden">
-        <div className="flex items-start gap-[25px] p-0 md:gap-[45px]">
+        <div className="flex items-start gap-[20px] p-0 md:gap-[45px]">
           <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
           <button
             aria-label="Toggle comments"
-            className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white"
+            className="flex min-w-[48px] cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white"
             onClick={() => setShowCommentSection((prev) => !prev)}
             type="button"
           >
@@ -62,7 +62,7 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           {contentProcessed && (
             <button
               aria-label="Copy link to post"
-              className="flex cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 hover:stroke-white"
+              className="flex min-w-[48px] cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 hover:stroke-white"
               type="button"
             >
               <ShareIcon

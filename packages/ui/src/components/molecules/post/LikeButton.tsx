@@ -47,7 +47,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
     <button
       aria-label="Toggle like"
       className={classNames(
-        "flex cursor-pointer items-center gap-[5px] p-0",
+        "flex min-w-[48px] cursor-pointer items-center gap-[5px] p-0",
         isLiked
           ? "stroke-[#F4245E] text-[#F4245E]"
           : "stroke-passes-gray-100 text-passes-gray-100 hover:stroke-white hover:text-white"
