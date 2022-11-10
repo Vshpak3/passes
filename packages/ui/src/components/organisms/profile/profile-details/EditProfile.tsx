@@ -2,7 +2,14 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { GetProfileResponseDto } from "@passes/api-client"
 import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
-import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState
+} from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, string } from "yup"
@@ -101,6 +108,26 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   const profileImage: File[] = watch("profileImage")
   const profileBannerImage: File[] = watch("profileBannerImage")
+
+  const [profileImageUrl, setProfileImageUrl] = useState<string>()
+  const [profileBannerImageUrl, setProfileBannerImageUrl] = useState<string>()
+
+  useEffect(() => {
+    if (!profileImage?.length) {
+      if (profileUserId) {
+        setProfileImageUrl(ContentService.profileThumbnailPath(profileUserId))
+      }
+    } else {
+      setProfileImageUrl(URL.createObjectURL(profileImage[0]))
+    }
+    if (!profileBannerImage?.length) {
+      if (profileUserId) {
+        setProfileBannerImageUrl(ContentService.profileBanner(profileUserId))
+      }
+    } else {
+      setProfileBannerImageUrl(URL.createObjectURL(profileBannerImage[0]))
+    }
+  }, [profileBannerImage, profileImage, profileUserId])
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex items-center" key={key}>
@@ -205,11 +232,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                     currentTarget.onerror = null
                     currentTarget.src = "/img/profile/select-banner-img.png"
                   }}
-                  src={
-                    profileBannerImage?.length
-                      ? URL.createObjectURL(profileBannerImage[0])
-                      : ContentService.profileBanner(profileUserId || "")
-                  }
+                  src={profileBannerImageUrl}
                 />
               </div>
             </div>
@@ -232,11 +255,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                   currentTarget.onerror = null
                   currentTarget.src = "/img/profile/default-profile-img.svg"
                 }}
-                src={
-                  profileImage?.length
-                    ? URL.createObjectURL(profileImage[0])
-                    : ContentService.profileThumbnailPath(profileUserId || "")
-                }
+                src={profileImageUrl}
               />
             </div>
           }

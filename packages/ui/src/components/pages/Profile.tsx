@@ -19,9 +19,6 @@ const ProfileUnmemo: FC = () => {
       return
     }
     const profileBanner = ContentService.profileBanner(profileUserId)
-    if (!profileBanner) {
-      return
-    }
     const res = await fetch(profileBanner)
     if (res.status === 404) {
       return
@@ -43,6 +40,7 @@ const ProfileUnmemo: FC = () => {
   if (isTablet === undefined) {
     return null
   }
+
   return (
     <>
       {!profile && loadingProfile ? (

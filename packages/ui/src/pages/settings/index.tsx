@@ -1,4 +1,4 @@
-import cn from "classnames"
+import classNames from "classnames"
 import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { FC, useEffect } from "react"
@@ -166,9 +166,12 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   return (
     <div className="flex h-full min-h-screen w-full">
       <div
-        className={cn("flex-1 flex-shrink-0 px-4 md:block md:min-w-[330px]", {
-          hidden: showSettingsTab
-        })}
+        className={classNames(
+          "flex-1 flex-shrink-0 px-4 md:block md:min-w-[330px]",
+          {
+            hidden: showSettingsTab
+          }
+        )}
       >
         <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-2">
           <ul className="mt-6 -mr-px">
@@ -176,7 +179,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
               .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
               .map(({ name, id }) => (
                 <li
-                  className={cn(
+                  className={classNames(
                     "rounded-l-[4px] border-r p-2.5 pr-[13px]",
                     id === activeTab
                       ? "border-passes-primary-color bg-passes-primary-color/25"
@@ -202,7 +205,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
       </div>
 
       <div
-        className={cn(
+        className={classNames(
           "w-full overflow-x-hidden px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
           { hidden: !showSettingsTab }
         )}
