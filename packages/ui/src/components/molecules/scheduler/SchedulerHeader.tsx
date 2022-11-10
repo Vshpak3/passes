@@ -3,6 +3,7 @@ import Popper from "@mui/material/Popper"
 import PlusSquareIcon from "public/icons/plus-square.svg"
 import { FC, useContext, useRef, useState } from "react"
 
+import { Button } from "src/components/atoms/button/Button"
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
 import {
   SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
@@ -106,10 +107,10 @@ export const SchedulerHeader: FC = () => {
             }}
             placement={isMobile ? "bottom" : "auto"}
           >
-            <button className="flex h-[44px] w-[44px] appearance-none items-center gap-2 rounded-full bg-passes-primary-color py-[10px] pl-[10px] text-white md:w-[165px] md:px-[30px]">
+            <Button variant="pink">
               <PlusSquareIcon />
               <span className="hidden md:block">Schedule</span>
-            </button>
+            </Button>
           </CalendarPicker>
         </div>
       </div>
