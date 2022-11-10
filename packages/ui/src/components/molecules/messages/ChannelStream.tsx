@@ -214,7 +214,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
             </div>
           )}
           <div
-            className="relative flex h-full flex-col-reverse overflow-y-scroll pt-[50px]"
+            className="relative flex h-full flex-col-reverse overflow-y-scroll"
             id="messagesDiv"
             ref={ref}
           >
@@ -255,7 +255,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               node={node}
               readAt={readAt}
               selectedChannel={selectedChannel}
-            />
+            >
+              <div className="w-full py-[15px]" />
+            </ChannelStreamMessages>
           </div>
           {unreadCount > 0 && (
             <div className="absolute bottom-0 z-20 flex w-full items-center justify-center self-center">

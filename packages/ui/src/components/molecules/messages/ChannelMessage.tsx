@@ -70,7 +70,12 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
             <ProfileImage key={senderId} type="thumbnail" userId={senderId} />
           </div>
         )}
-        <div className="mx-2 flex flex-col items-end md:mx-4">
+        <div
+          className={classNames(
+            "mx-2 flex flex-col md:mx-4",
+            ownsMessage ? "items-end" : "items-start"
+          )}
+        >
           <div
             className={classNames(
               "relative flex  w-full items-center gap-3 ",

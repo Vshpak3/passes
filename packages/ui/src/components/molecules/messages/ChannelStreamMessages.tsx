@@ -5,7 +5,7 @@ import {
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
-import { FC, memo, useMemo } from "react"
+import { memo, PropsWithChildren, useMemo } from "react"
 
 import {
   ComponentArg,
@@ -23,13 +23,14 @@ interface ChannelStreamMessagesProps {
 }
 
 const api = new MessagesApi()
-const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
+const ChannelStreamMessagesUnmemo = ({
   channelId,
   messageUpdates,
   node,
   readAt = new Date(),
-  selectedChannel
-}) => {
+  selectedChannel,
+  children
+}: PropsWithChildren<ChannelStreamMessagesProps>) => {
   const { user } = useUser()
 
   const fetchProps = useMemo(() => {
@@ -51,6 +52,7 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
           />
         )
       }}
+      childrenEnd
       fetch={async (req: GetMessagesRequestDto) => {
         return await api.getMessages({ getMessagesRequestDto: req })
       }}
@@ -58,9 +60,9 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       inverse
       keyValue={`messages/${channelId}`}
       loadingElement={
-        <div className="sticky top-0 left-0 z-50 h-0.5 w-full">
+        <div className="sticky top-[0px] left-0 z-50 h-0.5 w-full">
           <div
-            className="h-full w-24 animate-slide-in rounded-full bg-passes-pink-100"
+            className="top-[-30px] h-full w-24 animate-slide-in rounded-full bg-passes-pink-100"
             role="status"
           />
           <span className="sr-only">Loading older messages...</span>
@@ -69,7 +71,9 @@ const ChannelStreamMessagesUnmemo: FC<ChannelStreamMessagesProps> = ({
       node={node}
       scrollableTarget="messagesDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
-    />
+    >
+      {children}
+    </InfiniteScrollPagination>
   )
 }
 
