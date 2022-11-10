@@ -28,7 +28,11 @@ const BlockedRestrictedAccounts = () => {
             return <BlockedUser blockedUser={arg} />
           }}
           className="mt-[25px] grid grid-cols-2 gap-[25px] pb-20 lg:grid-cols-3"
-          emptyElement={<span>No blocked users to show</span>}
+          emptyElement={
+            <span className="grid grid-cols-2 lg:grid-cols-3">
+              No blocked users to show
+            </span>
+          }
           fetch={async (req: SearchFollowRequestDto) => {
             const api = new FollowApi()
             return await api.getBlocked({

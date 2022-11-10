@@ -169,7 +169,7 @@ export const PassCard: FC<PassCardProps> = ({
           disabled={pass.remainingSupply === 0}
           onClick={() => {
             redirectUnauthedToLogin(user, router) ||
-              (isCreator
+              (!isCreator
                 ? pinOrUnpinPass()
                 : setPass({
                     ...pass,

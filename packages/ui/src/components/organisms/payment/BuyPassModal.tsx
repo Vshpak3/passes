@@ -7,6 +7,7 @@ import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalB
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
+import { useOwnsPass } from "src/hooks/useOwnsPass"
 
 interface BuyPassModalProps {
   pass: PassDto
@@ -27,6 +28,8 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
     creatorUsername,
     passId
   } = pass
+
+  const { ownsPass, loading } = useOwnsPass(pass.passId)
 
   return (
     <Modal
@@ -66,6 +69,11 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           </span>
         </div>
       </div>
+      {ownsPass && (
+        <div className="my-[12px] w-full rounded-[5px] border-[1px] border-[#FF51AB] py-[3px] text-center font-[14px] text-[#FF51AB]">
+          You already own this membership.
+        </div>
+      )}
       <PaymentModalBody
         closeModal={() => setPass(null)}
         price={price ?? 0}
@@ -73,6 +81,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
       />
       <PaymenetModalFooter onClose={() => setPass(null)}>
         <BuyPassButton
+          isDisabled={loading}
           onSuccess={() => {
             setPass(null)
           }}

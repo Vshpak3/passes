@@ -83,13 +83,9 @@ const ChatSettings = () => {
   useEffect(() => {
     // inject already saved values in fields
 
-    if (creatorSettings?.welcomeMessage) {
-      setValue("showWelcomeMessageInput", true)
-    }
+    setValue("showWelcomeMessageInput", !!creatorSettings?.welcomeMessage)
 
-    if (creatorSettings?.minimumTipAmount) {
-      setValue("isWithoutTip", false)
-    }
+    setValue("isWithoutTip", !creatorSettings?.minimumTipAmount)
 
     setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`)
     setValue("welcomeMessage", "")
