@@ -13,7 +13,7 @@ import {
 interface CreditCardInputProps {
   name: string
   control: Control<FieldValues>
-  rules: RegisterOptions
+  rules?: RegisterOptions
 }
 
 export const CreditCardInput: FC<CreditCardInputProps> = ({

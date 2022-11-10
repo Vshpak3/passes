@@ -53,7 +53,13 @@ const cardForm = object({
   "card-holder": string()
     .required("Name is required")
     .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
-  "card-number": string().required("Card number is required"),
+  "card-number": string()
+    .test("is-credit-card-valid", "Card number is invalid", function (value) {
+      const numberValidation = cardValidator.number(value)
+
+      return numberValidation.isValid
+    })
+    .required("Card number is required"),
   "exp-month": string().required("Month is required"),
   "exp-year": string().required("Year is required"),
   "postal-code": string()
@@ -175,18 +181,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         control={control as any}
         name="card-number"
-        rules={{
-          required: { message: "Card number is required", value: true },
-          validate: {
-            value: (value) => {
-              const numberValidation = cardValidator.number(value)
-
-              return numberValidation.isValid
-                ? true
-                : "Credit card number is invalid"
-            }
-          }
-        }}
       />
       <Input
         className="mt-4"
