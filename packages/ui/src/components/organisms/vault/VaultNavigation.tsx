@@ -119,13 +119,13 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         />
       )}
       {!embedded && (
-        <div className="absolute right-20 bottom-5 flex">
+        <div className="absolute right-20 bottom-5 flex h-[45px]">
           {selectedItems && selectedItems?.length > 0 && (
             <>
               <div className="flex flex-col">
-                <div className="flex flex-row">
+                <div className="flex flex-row items-center gap-2">
                   <div
-                    className="h-[18px] w-[18px] cursor-pointer justify-center text-[#000000]"
+                    className="h-[18px] w-[18px] cursor-pointer items-center justify-center text-[#000000]"
                     onClick={deselectAll}
                   >
                     <ExitIcon />
@@ -137,7 +137,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
                 <div>20 media files can be posted at a time</div>
               </div>
               <div
-                className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3"
+                className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3 "
                 onClick={() => setDeleteModalActive(true)}
               >
                 <MdDelete size={23} />
@@ -148,10 +148,10 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
               />
             </>
           )}
-          <div className="mr-3">
+          <div className="px-2 md:px-3">
             <VaultAddButton onClick={addNewMedia} />
           </div>
-          <div>
+          <div className="pl-2 md:pl-3">
             <SortDropdown
               onSelect={onSortSelect}
               options={sortOptions}
