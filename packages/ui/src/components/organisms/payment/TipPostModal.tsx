@@ -2,6 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import {
   PayinDataDto,
   PayinMethodDto,
+  PayinMethodDtoMethodEnum,
   PostApi,
   PostDto
 } from "@passes/api-client"
@@ -137,7 +138,13 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         setPayinMethod={setPayinMethod}
       />
       <PaymenetModalFooter onClose={() => setPost(null)}>
-        <TipPostButton isLoading={loading} onClick={onSubmit} />
+        <TipPostButton
+          isDisabled={
+            !payinMethod || payinMethod.method === PayinMethodDtoMethodEnum.None
+          }
+          isLoading={loading}
+          onClick={onSubmit}
+        />
       </PaymenetModalFooter>
     </Modal>
   )

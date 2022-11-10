@@ -16,7 +16,7 @@ export const TipPostButton: FC<TipPostButton> = ({
   return (
     <Button
       big
-      disabled={isDisabled}
+      disabled={isDisabled || isLoading}
       fontSize={16}
       onClick={onClick}
       variant="pink"
