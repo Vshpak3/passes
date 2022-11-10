@@ -13,8 +13,8 @@ export async function errorMessage(err: unknown, withToast = false) {
     if (error.statusCode < 500 && error.message) {
       errorMessage = error.message
     }
-  } else if (err instanceof Error) {
-    errorMessage = err.message
+  } else if (err instanceof Error || (err as HasMessage).message) {
+    errorMessage = (err as HasMessage).message
   }
 
   const messageStr = Array.isArray(errorMessage)

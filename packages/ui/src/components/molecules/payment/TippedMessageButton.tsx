@@ -22,6 +22,7 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
       sendMessageRequestDto: messageRequest
     })
   }, [messageRequest])
+
   const registerData = useCallback(async () => {
     return await api.sendMessageData({
       sendMessageRequestDto: messageRequest

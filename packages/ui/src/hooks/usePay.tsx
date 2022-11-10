@@ -16,7 +16,7 @@ import {
   EthereumProvider,
   PhantomProvider
 } from "src/helpers/crypto/types"
-import { errorMessage, HasMessage } from "src/helpers/error"
+import { errorMessage } from "src/helpers/error"
 import { LandingStatusEnum } from "src/helpers/landing-messages"
 import {
   connectMetamask,
@@ -94,7 +94,7 @@ export const usePay = (
         }
       } catch (error: unknown) {
         await cancelPayinCallback()
-        errorMessage(error, true)
+        throw error
       }
       return true
     },
@@ -230,12 +230,8 @@ export const usePay = (
       } else {
         setWaiting(true)
       }
-    } catch (error: unknown | HasMessage) {
-      if ((error as HasMessage).message) {
-        errorMessage(new Error((error as HasMessage).message), true)
-      } else {
-        errorMessage(error, true)
-      }
+    } catch (error: unknown) {
+      errorMessage(error, true)
       if (checkFunding) {
         errorMessage(
           new Error(
