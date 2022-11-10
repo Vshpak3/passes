@@ -87,6 +87,12 @@ export interface ChannelMemberDto {
     unreadTip: number;
     /**
      * 
+     * @type {boolean}
+     * @memberof ChannelMemberDto
+     */
+    unread: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof ChannelMemberDto
      */
@@ -114,6 +120,7 @@ export function instanceOfChannelMemberDto(value: object): boolean {
     isInstance = isInstance && "tipRecieved" in value;
     isInstance = isInstance && "readAt" in value;
     isInstance = isInstance && "unreadTip" in value;
+    isInstance = isInstance && "unread" in value;
     isInstance = isInstance && "otherUserUsername" in value;
     isInstance = isInstance && "otherUserDisplayName" in value;
 
@@ -141,6 +148,7 @@ export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'tipRecieved': json['tipRecieved'],
         'readAt': (json['readAt'] === null ? null : new Date(json['readAt'])),
         'unreadTip': json['unreadTip'],
+        'unread': json['unread'],
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
     };
@@ -166,6 +174,7 @@ export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
         'tipRecieved': value.tipRecieved,
         'readAt': (value.readAt === null ? null : value.readAt.toISOString()),
         'unreadTip': value.unreadTip,
+        'unread': value.unread,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
     };

@@ -6,6 +6,7 @@ import {
   WalletDto
 } from "@passes/api-client"
 import { useEffect } from "react"
+import { toast } from "react-toastify"
 import useSWR, { useSWRConfig } from "swr"
 
 import { errorMessage } from "src/helpers/error"
@@ -37,16 +38,20 @@ export const useUserConnectedWallets = () => {
 
   const addWallet = async (request: CreateWalletRequestDto) => {
     const { id } = await api.createWallet({ createWalletRequestDto: request })
-    const _wallets = wallets || []
-    _wallets?.push({
-      walletId: id,
-      userId: user?.userId ?? null,
-      address: request.walletAddress,
-      chain: request.chain,
-      custodial: false,
-      authenticated: true
-    })
-    mutateManual(_wallets)
+    if (id) {
+      const _wallets = wallets || []
+      _wallets?.push({
+        walletId: id,
+        userId: user?.userId ?? null,
+        address: request.walletAddress,
+        chain: request.chain,
+        custodial: false,
+        authenticated: true
+      })
+      mutateManual(_wallets)
+    } else {
+      toast.error("Address is already used")
+    }
   }
 
   const addUnauthenticatedWallet = async (

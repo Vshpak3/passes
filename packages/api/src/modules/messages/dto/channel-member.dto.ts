@@ -40,6 +40,10 @@ export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ type: 'currency' })
   unreadTip: number
 
+  @Min(0)
+  @DtoProperty({ type: 'boolean' })
+  unread: boolean
+
   @Length(1, USER_USERNAME_LENGTH)
   @DtoProperty({ type: 'string' })
   otherUserUsername: string
@@ -65,6 +69,7 @@ export class ChannelMemberDto extends ChannelDto {
       this.unreadTip = channelMember.unread_tip
       this.otherUserId = channelMember.other_user_id
       this.readAt = channelMember.read_at
+      this.unread = channelMember.unread
 
       this.channelId = channelMember.channel_id
 
