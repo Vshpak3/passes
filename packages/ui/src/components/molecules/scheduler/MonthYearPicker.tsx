@@ -71,7 +71,7 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
   }
 
   return (
-    <div className="w-[400px]">
+    <div className="w-full sm:w-[400px]">
       <div className="relative mb-5">
         <span className="block text-center text-[25px] font-bold text-passes-primary-color">
           {currentYear}
@@ -109,7 +109,7 @@ export const MonthYearPicker: FC<MonthYearPickerProps> = ({
           .map((_, i) => (
             <button
               className={classNames(
-                "flex h-[55px] items-center justify-center rounded-lg bg-passes-dark-200 font-bold text-white transition-all duration-100",
+                "flex h-[55px] min-w-[50px] items-center justify-center rounded-lg bg-passes-dark-200 font-bold text-white transition-all duration-100",
                 isDisabledBtn(i) ? "text-gray-600" : "hover:bg-[#4f4d4f]",
                 {
                   "!bg-passes-primary-color":
