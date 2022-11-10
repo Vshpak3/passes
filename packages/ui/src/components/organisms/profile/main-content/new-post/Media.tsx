@@ -2,24 +2,9 @@ import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
 import PlayIcon from "public/icons/media-play-circle-icon.svg"
-import React, { FC, MouseEventHandler } from "react"
+import { FC, MouseEventHandler } from "react"
 
 import { Cross } from "src/icons/CrossIcon"
-
-type MediaFileProp = {
-  file: File
-  className?: string
-  iconClassName?: string
-  onRemove?: MouseEventHandler
-  onSelect?: MouseEventHandler
-  preview?: boolean
-  contentHeight?: number
-  contentWidth?: number
-  isPassUpload?: boolean
-  objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
-  noRender?: boolean
-  noRenderString?: string
-}
 
 type MediaProp = {
   src: string
@@ -35,50 +20,6 @@ type MediaProp = {
   objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
   noRender?: boolean
   noRenderString?: string
-}
-
-export const MediaFile: FC<MediaFileProp> = ({
-  file,
-  className,
-  iconClassName,
-  onRemove,
-  onSelect,
-  preview,
-  contentHeight,
-  contentWidth,
-  isPassUpload,
-  objectFit,
-  noRender,
-  noRenderString
-}) => {
-  const src = URL.createObjectURL(file)
-  let type!: ContentDtoContentTypeEnum
-  if (file.type.startsWith("image/")) {
-    type = "image"
-  }
-  if (file.type.startsWith("video/")) {
-    type = "video"
-  }
-  if (file.type.startsWith("audio/")) {
-    type = "audio"
-  }
-  return (
-    <Media
-      className={className}
-      contentHeight={contentHeight}
-      contentWidth={contentWidth}
-      iconClassName={iconClassName}
-      isPassUpload={isPassUpload}
-      noRender={noRender}
-      noRenderString={noRenderString}
-      objectFit={objectFit}
-      onRemove={onRemove}
-      onSelect={onSelect}
-      preview={preview}
-      src={src}
-      type={type}
-    />
-  )
 }
 
 export const Media: FC<MediaProp> = ({

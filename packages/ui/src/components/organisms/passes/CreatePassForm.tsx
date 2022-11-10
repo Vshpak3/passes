@@ -9,7 +9,7 @@ import {
   PassNumberInput
 } from "src/components/atoms/passes/CreatePass"
 import { PassDirectMessage } from "src/components/molecules/pass/create/PassDirectMessage"
-import { PassFileUpload } from "src/components/molecules/pass/create/PassFile"
+import { PassFileUpload } from "src/components/molecules/pass/create/PassFileUpload"
 import { PassFreeTrial } from "src/components/molecules/pass/create/PassFreeTrial"
 import { PassLifetimeOptions } from "src/components/molecules/pass/create/PassLifetimeOptions"
 import { PassPrice } from "src/components/molecules/pass/create/PassPrice"

@@ -3,10 +3,8 @@ import React, { Dispatch, FC, SetStateAction } from "react"
 
 import { ContentCarousel } from "src/components/organisms/content/ContentCarousel"
 import { Modal } from "src/components/organisms/Modal"
-import {
-  Media,
-  MediaFile
-} from "src/components/organisms/profile/main-content/new-post/Media"
+import { Media } from "src/components/organisms/profile/main-content/new-post/Media"
+import { MediaFile } from "src/components/organisms/profile/main-content/new-post/MediaFile"
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 

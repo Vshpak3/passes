@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import { uniqueId } from "lodash"
-import BoxIcon from "public/icons/cursor-box-icon.svg"
 import {
   ChangeEvent,
   Dispatch,
@@ -10,160 +9,22 @@ import {
   useEffect,
   useState
 } from "react"
-import {
-  DragDropContext,
-  Draggable,
-  DraggableLocation,
-  Droppable
-} from "react-beautiful-dnd"
+import { DragDropContext, DraggableLocation } from "react-beautiful-dnd"
 import { FieldErrorsImpl } from "react-hook-form"
 
 import { FormRegister } from "src/components/atoms/input/InputTypes"
-import { DragDropFile } from "src/components/molecules/DragDropFile"
 import { MediaModal } from "src/components/organisms/MediaModal"
-import { ACCEPTED_MEDIA_TYPES, MAX_FILE_COUNT } from "src/config/media-limits"
-import { ContentService } from "src/helpers/content"
+import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { ContentFile } from "src/hooks/useMedia"
-import { Media, MediaFile } from "./profile/main-content/new-post/Media"
+import { MediaSectionContents } from "./MediaSectionContents"
 
 type ContentFileWithId = ContentFile & { _id: string }
 
-interface ContentsProps {
-  items: ContentFileWithId[]
-  listId: string
-  internalScroll?: boolean
-  isCombineEnabled?: boolean
-  onMediaFileSelect: (item: ContentFileWithId) => void
-  onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
-  renderPlusIcon?: boolean
-  register: FormRegister
-  errors: Partial<FieldErrorsImpl>
-  onFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void
-}
-
-type Contents = {
+type MediaSectionContents = {
   [key: string]: ContentFileWithId[]
 }
 
-const getMediaClassname = (contentType: string) => {
-  switch (true) {
-    case contentType.startsWith("image"):
-      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
-    case contentType.startsWith("video"):
-      return "cursor-grab select-none rounded-[6px] object-cover min-h-[85px] h-[85px] md:h-[175px] md:max-w-[175px] md:min-w-[175px] max-w-[85px] min-w-[85px] z-[2]"
-    case contentType.startsWith("audio"):
-      return "absolute inset-0 m-auto min-w-full max-w-full cursor-grab select-none rounded-[6px] object-cover"
-    default:
-      return ""
-  }
-}
-
-const Contents: FC<ContentsProps> = ({
-  listId,
-  items,
-  onMediaFileSelect,
-  onRemove,
-  renderPlusIcon,
-  onFileInputChange,
-  register,
-  errors
-}) => {
-  return (
-    <Droppable
-      direction="horizontal"
-      droppableId={listId}
-      isCombineEnabled={false}
-      type="CARD"
-    >
-      {(dropProvided) => (
-        <div
-          {...dropProvided.droppableProps}
-          className="h-full w-full overflow-x-hidden"
-        >
-          <div
-            className="flex min-h-[85px] min-w-[85px] gap-[12px] overflow-x-auto md:min-h-[175px] md:min-w-[175px]"
-            ref={dropProvided.innerRef}
-          >
-            {listId === "Free" && items.length === 0 ? (
-              <div className="flex h-[85px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-[#FF51A8] bg-[#0F0C10] px-0 md:h-[175px]  md:px-6">
-                <BoxIcon />
-                <p className="text-center text-[9px] font-normal text-[#888689] md:text-[12px] md:leading-[16px]">
-                  Reorder and drag content here to post as free preview
-                </p>
-              </div>
-            ) : (
-              items.map((item, index) => (
-                <Draggable draggableId={item._id} index={index} key={item._id}>
-                  {(dragProvided, snapshot) => (
-                    <div
-                      className="relative z-[2] flex w-[85px] min-w-[85px] shrink-0 md:w-[175px] md:min-w-[175px]"
-                      {...dragProvided.dragHandleProps}
-                      {...dragProvided.draggableProps}
-                      ref={dragProvided.innerRef}
-                    >
-                      {item.content ? (
-                        <Media
-                          className={classNames(
-                            snapshot.isDragging
-                              ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                              : getMediaClassname(item.content.contentType)
-                          )}
-                          iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
-                          noRender
-                          noRenderString={`Vault Video content #${index}`}
-                          objectFit="cover"
-                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                            onRemove(index, e)
-                          }
-                          onSelect={() => onMediaFileSelect(item)}
-                          src={ContentService.userContentMediaPath(
-                            item.content
-                          )}
-                          type={item.content.contentType}
-                        />
-                      ) : item.file ? (
-                        <MediaFile
-                          className={classNames(
-                            snapshot.isDragging
-                              ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                              : getMediaClassname(item.file.type)
-                          )}
-                          file={item.file}
-                          iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
-                          noRender
-                          noRenderString={item.file.name}
-                          objectFit="cover"
-                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                            onRemove(index, e)
-                          }
-                          onSelect={() => onMediaFileSelect(item)}
-                        />
-                      ) : null}
-                    </div>
-                  )}
-                </Draggable>
-              ))
-            )}
-            {dropProvided.placeholder}
-            {renderPlusIcon && (
-              <DragDropFile
-                accept={ACCEPTED_MEDIA_TYPES}
-                className="flex max-h-[85px] min-w-[85px] items-center md:min-h-[175px] md:min-w-[175px] "
-                errors={errors}
-                multiple
-                name="drag-drop"
-                options={{ onChange: onFileInputChange }}
-                register={register}
-              />
-            )}
-          </div>
-        </div>
-      )}
-    </Droppable>
-  )
-}
-
-interface MediaSectionReorderPops {
+interface MediaSectionReorderProps {
   files: ContentFile[]
   register: FormRegister
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
@@ -175,7 +36,7 @@ interface MediaSectionReorderPops {
   errors: Partial<FieldErrorsImpl>
 }
 
-export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
+export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
   files,
   register,
   setFiles,
@@ -186,7 +47,10 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
   onRemove,
   errors
 }) => {
-  const [filesMap, setFilesMap] = useState<Contents>({ Free: [], Paid: [] })
+  const [filesMap, setFilesMap] = useState<MediaSectionContents>({
+    Free: [],
+    Paid: []
+  })
 
   const [selectedMedia, setSelectedMedia] = useState<ContentFile>()
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
@@ -262,7 +126,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
             </div>
           )}
           <div className="flex overflow-x-auto">
-            <Contents
+            <MediaSectionContents
               errors={errors}
               internalScroll
               items={filesMap["Free"]}
@@ -284,7 +148,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
                 Pay to View
               </div>
               <div className="flex items-center overflow-x-auto">
-                <Contents
+                <MediaSectionContents
                   errors={errors}
                   internalScroll
                   items={filesMap["Paid"]}
@@ -314,6 +178,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderPops> = ({
     </div>
   )
 }
+
 // a little function to help us with reordering the result
 const reorder = (
   list: ContentFileWithId[],
@@ -328,7 +193,7 @@ const reorder = (
 }
 
 const reorderContent = (
-  fileMap: Contents,
+  fileMap: MediaSectionContents,
   source: DraggableLocation,
   destination: DraggableLocation
 ) => {

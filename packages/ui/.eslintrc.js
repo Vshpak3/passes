@@ -54,7 +54,6 @@ module.exports = {
     "react/jsx-no-literals": "off",
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off", // Consider turning on
-    "react/no-multi-comp": "off",
     "jsx-a11y/media-has-caption": "off",
     "react/require-default-props": "off",
     "sonarjs/cognitive-complexity": "off",

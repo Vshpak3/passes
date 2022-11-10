@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable react/no-multi-comp */
 import classNames from "classnames"
 import { FC } from "react"
 

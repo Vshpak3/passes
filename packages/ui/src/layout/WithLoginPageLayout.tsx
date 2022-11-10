@@ -42,6 +42,7 @@ export const WithLoginPageLayout = (
   Page: any,
   options: LoginWrapperProps = {}
 ) => {
+  // eslint-disable-next-line react/no-multi-comp
   const WithLoginPageLayout = forwardRef((props, ref) => (
     <LoginWrapper routeOnlyIfAuth={options.routeOnlyIfAuth}>
       <Page {...props} ref={ref} />

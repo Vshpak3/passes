@@ -1,32 +1,7 @@
 import { ListDto, PassDto } from "@passes/api-client"
-import DeleteIcon from "public/icons/badge-delete-icon.svg"
-import ListIcon from "public/icons/messages-list-icon.svg"
-import PassIcon from "public/icons/messages-pass-icon.svg"
-import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
+import { Dispatch, FC, SetStateAction, useCallback } from "react"
 
-interface SelectedBadgeProps {
-  type: string
-  name: string
-  removeProp: (id: string) => void
-  id: string
-}
-
-const SelectedBadge: FC<SelectedBadgeProps> = ({
-  type,
-  name,
-  removeProp,
-  id
-}) => {
-  return (
-    <div className="flex items-start gap-[10px] rounded-md border border-[#2C282D] p-[10px]">
-      {type === "pass" ? <PassIcon /> : <ListIcon />}
-      <span className="text-[16px] font-medium leading-[24px] text-white">
-        {name}
-      </span>
-      <DeleteIcon onClick={() => removeProp(id)} />
-    </div>
-  )
-}
+import { SelectedBadge } from "./SelectedBadge"
 
 interface ChannelHeaderProps {
   selectedLists: ListDto[]

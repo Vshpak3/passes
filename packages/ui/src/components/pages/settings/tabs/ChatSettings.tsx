@@ -107,7 +107,7 @@ const ChatSettings = () => {
   }, [values, creatorSettings])
 
   return (
-    <>
+    <AuthWrapper creatorOnly isPage>
       <Tab
         description="Setup auto welcome message, and manage messages without tips."
         title="Chat Settings"
@@ -179,16 +179,8 @@ const ChatSettings = () => {
           </Button>
         </form>
       )}
-    </>
-  )
-}
-
-const ChatSettingsCreatorWrapper = () => {
-  return (
-    <AuthWrapper creatorOnly isPage>
-      <ChatSettings />
     </AuthWrapper>
   )
 }
 
-export default memo(ChatSettingsCreatorWrapper) // eslint-disable-line import/no-default-export
+export default memo(ChatSettings) // eslint-disable-line import/no-default-export

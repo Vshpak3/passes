@@ -263,6 +263,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   )
 }
 
+// eslint-disable-next-line react/no-multi-comp
 const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   useMessageToDevelopers([
     "Hey developers! We're hiring: https://jobs.lever.co/Passes",

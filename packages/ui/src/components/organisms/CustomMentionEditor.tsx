@@ -75,6 +75,7 @@ const emptyContentState = (text: string) =>
     ]
   })
 
+// eslint-disable-next-line react/no-multi-comp
 const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
   placeholder,
   onInputChange,

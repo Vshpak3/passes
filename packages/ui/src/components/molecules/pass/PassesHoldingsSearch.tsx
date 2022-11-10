@@ -1,17 +1,14 @@
-// TODO: fix any types in this file
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
-interface MyPassSearchBarProps {
+interface PassSearchBarProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   passSearchTerm: any
 }
 
-// Might be used in the future
-
-const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
+export const PassSearchBar: FC<PassSearchBarProps> = ({
   onChange,
   passSearchTerm
 }) => (
@@ -31,27 +28,3 @@ const MyPassSearchBar: FC<MyPassSearchBarProps> = ({
     </div>
   </div>
 )
-
-interface MyPassSearchHeaderProps {
-  onSearchPass: any
-  passSearchTerm: any
-  headerTitle?: string
-}
-
-// Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const MyPassSearchHeader: FC<MyPassSearchHeaderProps> = ({
-  onSearchPass,
-  passSearchTerm,
-  headerTitle = "My Passes"
-}) => {
-  return (
-    <div className="mx-auto mb-[70px] mt-[-180px] flex w-full items-center justify-center px-2 md:px-5 lg:mt-[-150px]">
-      <div className="text-[24px] font-bold text-white">{headerTitle}</div>
-      <MyPassSearchBar
-        onChange={onSearchPass}
-        passSearchTerm={passSearchTerm}
-      />
-    </div>
-  )
-}

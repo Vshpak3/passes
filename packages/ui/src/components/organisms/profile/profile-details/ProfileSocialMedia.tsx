@@ -73,6 +73,7 @@ type ProfileSocialMediaProps = Record<
   string | undefined | null
 >
 
+// eslint-disable-next-line react/no-multi-comp
 export const ProfileSocialMedia: FC<ProfileSocialMediaProps> = (props) => (
   <div className="flex shrink-0 cursor-pointer items-center justify-center gap-2 md:gap-3">
     {Object.entries(props).map(([type, username]) => (
