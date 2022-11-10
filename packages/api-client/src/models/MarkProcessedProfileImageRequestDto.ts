@@ -31,6 +31,12 @@ export interface MarkProcessedProfileImageRequestDto {
      * @memberof MarkProcessedProfileImageRequestDto
      */
     secret: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MarkProcessedProfileImageRequestDto
+     */
+    type?: string;
 }
 
 /**
@@ -56,6 +62,7 @@ export function MarkProcessedProfileImageRequestDtoFromJSONTyped(json: any, igno
         
         'userId': json['userId'],
         'secret': json['secret'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
     };
 }
 
@@ -70,6 +77,7 @@ export function MarkProcessedProfileImageRequestDtoToJSON(value?: MarkProcessedP
         
         'userId': value.userId,
         'secret': value.secret,
+        'type': value.type,
     };
 }
 

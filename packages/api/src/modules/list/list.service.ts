@@ -261,6 +261,7 @@ export class ListService {
           `${FollowEntity.table}.id as follow`,
           `${ListMemberEntity.table}.id`,
           `${ListMemberEntity.table}.created_at`,
+          `${ListMemberEntity.table}.meta_number`,
         ])
         .where(
           `${ListMemberEntity.table}.list_id`,

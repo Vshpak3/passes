@@ -2,6 +2,7 @@ import { ListMemberDto } from "@passes/api-client"
 import { FC, memo, useState } from "react"
 
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
+import { formatCurrency } from "src/helpers/formatters"
 
 type ListMemberProps = {
   fanInfo: ListMemberDto
@@ -19,9 +20,12 @@ const ListMemberUnmemo: FC<ListMemberProps> = ({
   return (
     <>
       {!removed && (
-        <div className="flex items-center justify-between py-3">
+        <div className="flex items-center justify-between gap-[50px] py-3">
           <div className="flex flex-row">
             <ProfileWidget user={fanInfo} />
+            {fanInfo.metaNumber && (
+              <span>Spent {formatCurrency(fanInfo.metaNumber)}</span>
+            )}
             {!fanInfo.follow && (
               <span className="text-red-500">Not a follower</span>
             )}

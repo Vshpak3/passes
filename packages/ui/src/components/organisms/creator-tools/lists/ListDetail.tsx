@@ -43,7 +43,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [search, setSearch] = useState<string>("")
 
   const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
-  const [order, setOrder] = useState<Order>(Order.Asc)
+  const [order, setOrder] = useState<Order>(Order.Desc)
 
   const [newListsMembers, setNewListsMembers] = useState<ListMemberDto[]>([])
 
@@ -169,6 +169,12 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     [handleRemoveFan, listInfo?.type]
   )
 
+  useEffect(() => {
+    if (listInfo?.type === ListDtoTypeEnum.TopSpenders) {
+      setOrderType(OrderType.Metadata)
+    }
+  }, [listInfo])
+
   return (
     <div className="relative text-white">
       <div className="absolute top-[38px] left-[-20px] flex items-center justify-between gap-[10px] px-7">
@@ -206,28 +212,33 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                 type="text"
               />
             </span>
-            <SortDropdown
-              onSelect={onSortSelect}
-              options={[
-                {
-                  orderType: OrderType.Username,
-                  order: "asc"
-                },
-                {
-                  orderType: OrderType.Username,
-                  order: "desc"
-                },
-                {
-                  orderType: OrderType.CreatedAt,
-                  order: "asc"
-                },
-                {
-                  orderType: OrderType.CreatedAt,
-                  order: "desc"
-                }
-              ]}
-              selection={{ orderType, order }}
-            />
+            {listInfo &&
+            listInfo.type === GetListResponseDtoTypeEnum.TopSpenders ? (
+              <SortDropdown
+                onSelect={onSortSelect}
+                options={[
+                  {
+                    orderType: OrderType.Username,
+                    order: "asc"
+                  },
+                  {
+                    orderType: OrderType.Username,
+                    order: "desc"
+                  },
+                  {
+                    orderType: OrderType.CreatedAt,
+                    order: "asc"
+                  },
+                  {
+                    orderType: OrderType.CreatedAt,
+                    order: "desc"
+                  }
+                ]}
+                selection={{ orderType, order }}
+              />
+            ) : (
+              <div />
+            )}
           </div>
 
           <div className="flex items-center justify-center gap-3">
