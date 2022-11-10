@@ -11,12 +11,14 @@ import { useProfile } from "src/hooks/profile/useProfile"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const ProfileUnmemo: FC = () => {
-  const { profile, loadingProfile, hasInitialFetch } = useProfile()
+  const { profile, profileUserId, loadingProfile, hasInitialFetch } =
+    useProfile()
+
   const updateProfileBanner = useCallback(async () => {
-    if (!profile) {
+    if (!profileUserId) {
       return
     }
-    const profileBanner = ContentService.profileBanner(profile?.profileId)
+    const profileBanner = ContentService.profileBanner(profileUserId)
     if (!profileBanner) {
       return
     }
@@ -31,11 +33,11 @@ const ProfileUnmemo: FC = () => {
       return
     }
     cover.style.backgroundImage = `url('${profileBanner}')`
-  }, [profile])
+  }, [profileUserId])
 
   useEffect(() => {
     updateProfileBanner()
-  }, [updateProfileBanner])
+  }, [profileUserId, updateProfileBanner])
 
   const { isTablet } = useWindowSize()
   if (isTablet === undefined) {
