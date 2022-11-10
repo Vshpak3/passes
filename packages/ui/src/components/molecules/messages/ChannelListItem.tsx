@@ -34,7 +34,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   return (
     <div
       className={classNames(
-        "relative mb-2 w-full cursor-pointer items-center rounded-md p-1 hover:bg-[#ffffff]/10",
+        "relative my-2 mx-[4px] w-full cursor-pointer items-center rounded-md p-1 px-3 hover:bg-[#ffffff]/10",
         isSelected && "bg-[#ffffff]/10"
       )}
       onClick={() => {
@@ -42,6 +42,9 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         onClick()
       }}
     >
+      {channel.readAt && channel.readAt > new Date() && !isSelected && (
+        <div className="absolute left-[1px] top-[calc(50%-4px)] z-50 h-[8px] w-[8px] rounded-[4px] bg-[#FF51A8]" />
+      )}
       <div className="flex w-full items-start">
         <div className="flex pr-[10px]">
           <ProfileImage
@@ -72,7 +75,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         )}
       </div>
       <TimeAgo
-        className="absolute right-1 bottom-1 self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
+        className="absolute right-4 bottom-1 self-end text-[11px] font-medium leading-[17px] text-[#fff]/30"
         date={channel?.recent ? channel.recent : ""}
         key={channel.channelId}
         minPeriod={30}

@@ -73,7 +73,7 @@ export interface SearchFollowingResponseDto {
      * @type {number}
      * @memberof SearchFollowingResponseDto
      */
-    metadataNumber?: number;
+    metadataNumber?: number | null;
     /**
      * 
      * @type {string}

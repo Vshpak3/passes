@@ -27,8 +27,8 @@ export class GetListMembersRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'string', optional: true, nullable: true })
   displayName?: string | null
 
-  @DtoProperty({ type: 'number', optional: true })
-  metadataNumber?: number
+  @DtoProperty({ type: 'number', optional: true, nullable: true })
+  metadataNumber?: number | null
 
   @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
   orderType: ListMemberOrderTypeEnum
@@ -66,6 +66,9 @@ export class GetListMembersResponseDto
           break
         case ListMemberOrderTypeEnum.DISPLAY_NAME:
           this.displayName = listMembers[listMembers.length - 1].displayName
+          break
+        case ListMemberOrderTypeEnum.METADATA:
+          this.metadataNumber = listMembers[listMembers.length - 1].metaNumber
           break
       }
     }

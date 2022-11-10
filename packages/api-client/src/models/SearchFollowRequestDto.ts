@@ -60,7 +60,7 @@ export interface SearchFollowRequestDto {
      * @type {number}
      * @memberof SearchFollowRequestDto
      */
-    metadataNumber?: number;
+    metadataNumber?: number | null;
     /**
      * 
      * @type {string}

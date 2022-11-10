@@ -73,7 +73,7 @@ export interface SearchFansResponseDto {
      * @type {number}
      * @memberof SearchFansResponseDto
      */
-    metadataNumber?: number;
+    metadataNumber?: number | null;
     /**
      * 
      * @type {string}

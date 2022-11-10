@@ -79,13 +79,13 @@ export const ChannelList: FC<ChannelListProps> = ({
         "lg:block"
       )}
     >
-      <div className="h-full p-3">
+      <div className="h-full">
         <div
           className="max-h-full overflow-y-auto scrollbar-hide"
           id="channelsDiv"
           ref={ref}
         >
-          <div className="border-b border-passes-gray p-3">
+          <div className="border-b border-passes-gray p-3 px-6">
             <ChannelSearchInput
               handleSearch={handleChangeSearch}
               placeholder="Search ..."

@@ -73,7 +73,7 @@ export interface GetListMembersResponseDto {
      * @type {number}
      * @memberof GetListMembersResponseDto
      */
-    metadataNumber?: number;
+    metadataNumber?: number | null;
     /**
      * 
      * @type {string}

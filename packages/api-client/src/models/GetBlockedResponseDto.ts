@@ -73,7 +73,7 @@ export interface GetBlockedResponseDto {
      * @type {number}
      * @memberof GetBlockedResponseDto
      */
-    metadataNumber?: number;
+    metadataNumber?: number | null;
     /**
      * 
      * @type {string}
