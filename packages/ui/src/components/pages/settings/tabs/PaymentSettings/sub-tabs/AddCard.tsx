@@ -316,7 +316,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
         className="mt-4 mb-8 w-full text-[16px] font-[500]"
         disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
-        variant="pink"
       >
         {isSubmitting ? "Submitting ..." : "Confirm and Continue"}
       </Button>

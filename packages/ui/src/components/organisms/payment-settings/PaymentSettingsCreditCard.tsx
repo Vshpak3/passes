@@ -50,7 +50,6 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
               ? () => setOpen(true)
               : () => addOrPopStackHandler(SubTabsEnum.AddCard)
           }
-          variant="pink"
         >
           Add Card
         </Button>
@@ -65,7 +64,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
               <div className="flex flex-row gap-2 md:gap-4">
                 <div>
                   {item.id === defaultPayinMethod?.cardId ? (
-                    <Button disabled variant="pink">
+                    <Button disabled>
                       <span className="text-[14px] font-[700]">
                         {isEmbedded ? "Selected" : "Default"}
                       </span>
@@ -78,7 +77,6 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
                           method: PayinMethodDtoMethodEnum.CircleCard
                         })
                       }
-                      variant="pink"
                     >
                       <span className="font-[700]">
                         {buttonName(isEmbedded)}

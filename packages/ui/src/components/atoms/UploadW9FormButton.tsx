@@ -2,7 +2,7 @@ import EditIcon from "public/icons/edit.svg"
 import React, { FC } from "react"
 import { useForm } from "react-hook-form"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { formatText } from "src/helpers/formatters"
@@ -63,7 +63,7 @@ export const UploadW9FormButton: FC<W9ButtonProps> = ({ text, icon }) => {
           trigger={
             <Button
               className="passes-break w-full whitespace-pre-wrap bg-gray-100 font-bold"
-              variant="primary"
+              variant={ButtonVariant.PRIMARY}
             >
               {icon && <EditIcon />}
               {formatText(text)}

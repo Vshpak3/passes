@@ -2,7 +2,7 @@ import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
 import { FC, useContext, useState } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
 import { Dropdown } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
@@ -71,7 +71,10 @@ export const ProfileDetails: FC = () => {
                         className="m-auto h-[36px] w-[98px] pt-2"
                         href={chatLink}
                       >
-                        <Button className="w-full" variant="pink-outline">
+                        <Button
+                          className="w-full"
+                          variant={ButtonVariant.PINK_OUTLINE}
+                        >
                           <ChatIcon />
                         </Button>
                       </Link>
@@ -137,7 +140,7 @@ export const ProfileDetails: FC = () => {
                   <Link href={chatLink}>
                     <Button
                       className="h-[25px] w-[80px]"
-                      variant="pink-outline"
+                      variant={ButtonVariant.PINK_OUTLINE}
                     >
                       <ChatIcon />
                     </Button>

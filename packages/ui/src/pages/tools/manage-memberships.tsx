@@ -14,7 +14,7 @@ const ManagePasses = () => {
       <div className="flex items-center justify-between p-4">
         <div className="relative mr-10 flex items-center justify-end">
           <Link href="/tools/manage-passes/create">
-            <Button variant="pink">
+            <Button>
               <div className="flex items-center justify-center p-2 text-[16px]">
                 Create New Membership
               </div>

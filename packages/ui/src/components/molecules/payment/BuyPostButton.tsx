@@ -49,7 +49,6 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
       disabled={!!blocked || loading || isDisabled}
       fontSize={16}
       onClick={submit}
-      variant="pink"
     >
       {loading ? "Processing..." : "Buy post"}
     </Button>

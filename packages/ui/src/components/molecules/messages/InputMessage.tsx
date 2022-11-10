@@ -366,7 +366,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                 disabled={isNaN(tip) || !!blocked || loading}
                 disabledClass="cursor-not-allowed"
                 onClick={handleSubmit(submitMessage)}
-                variant="pink"
               >
                 {loading
                   ? "Sending..."

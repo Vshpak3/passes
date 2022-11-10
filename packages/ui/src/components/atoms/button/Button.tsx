@@ -9,7 +9,13 @@ export enum ButtonTypeEnum {
   RESET = "reset"
 }
 
-type ButtonVariant = "black" | "gradient" | "pink-outline" | "pink" | "primary"
+export enum ButtonVariant {
+  BLACK = "black",
+  GRADIENT = "gradient",
+  PINK_OUTLINE = "pink-outline",
+  PINK = "pink",
+  PRIMARY = "primary"
+}
 
 interface ButtonProps {
   className?: string
@@ -30,7 +36,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   icon,
   fontSize = 14,
   onClick,
-  variant,
+  variant = ButtonVariant.PINK,
   disabled,
   type = ButtonTypeEnum.BUTTON,
   disabledClass,
@@ -39,23 +45,23 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
 }) => {
   let variantClassName = ""
   switch (variant) {
-    case "primary":
+    case ButtonVariant.PRIMARY:
       variantClassName =
         "bg-mauve-mauve12 text-white transition-all active:bg-mauve-mauve1 active:text-mauve-mauve12 border border-transparent active:border-mauve-mauve11 dark:bg-mauveDark-mauve12 dark:text-black dark:active:bg-black dark:active:text-mauveDark-mauve12 dark:border-mauveDark-mauve11"
       break
-    case "gradient":
+    case ButtonVariant.GRADIENT:
       variantClassName =
         "text-white bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9 shadow-md transition-all active:shadow-sm shadow-purple-purple9/30 active:bg-purple-purple9/90"
       break
-    case "pink":
+    case ButtonVariant.PINK:
       variantClassName =
         "items-center justify-center rounded-lg border border-solid border-passes-pink-100 bg-passes-pink-100 py-2 px-5 text-base font-[500] text-white"
       break
-    case "pink-outline":
+    case ButtonVariant.PINK_OUTLINE:
       variantClassName =
         "text-passes-primary-color max-h-[49px] border border-passes-primary-color py-[10px]"
       break
-    case "black":
+    case ButtonVariant.BLACK:
       variantClassName =
         "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-[500]"
       break

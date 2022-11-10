@@ -152,7 +152,6 @@ const EmailNotifications = () => {
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
-          variant="pink"
         >
           <span>Save</span>
         </Button>

@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
@@ -378,7 +382,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <Button
                 className="w-full bg-transparent"
                 onClick={onFinishPaymentForm}
-                variant="primary"
+                variant={ButtonVariant.PRIMARY}
               >
                 Skip for now
               </Button>

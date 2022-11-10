@@ -66,20 +66,14 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                     parseInt(passHolder.tokenId ?? "0x0", 16).toString()
                   }
                 >
-                  <Button
-                    className="h-[44px] w-full rounded-full py-2 text-center"
-                    variant="pink"
-                  >
+                  <Button className="h-[44px] w-full rounded-full py-2 text-center">
                     View on Etherscan
                   </Button>
                 </Link>
               ) : (
                 passHolder.chain === PassHolderDtoChainEnum.Sol && (
                   <Link href={"https://solscan.io/token/" + passHolder.address}>
-                    <Button
-                      className="h-[44px] w-full rounded-full py-[10px] text-center"
-                      variant="pink"
-                    >
+                    <Button className="h-[44px] w-full rounded-full py-[10px] text-center">
                       View on SolanaScan
                     </Button>
                   </Link>

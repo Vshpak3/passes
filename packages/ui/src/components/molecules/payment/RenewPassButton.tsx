@@ -48,7 +48,6 @@ export const RenewPassButton: FC<RenewPassButtonProps> = ({
     <Button
       big
       onClick={submit}
-      variant="pink"
       {...(blocked || loading ? { disabled: isDisabled || true } : {})}
     >
       {loading ? "Loading" : "Renew pass"}

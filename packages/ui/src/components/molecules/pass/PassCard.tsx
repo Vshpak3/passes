@@ -177,7 +177,6 @@ export const PassCard: FC<PassCardProps> = ({
                     creatorUsername: profileUsername
                   }))
           }}
-          variant="pink"
         >
           {isCreator
             ? `${isPinned ? "Unpin" : "Pin"} Pass`

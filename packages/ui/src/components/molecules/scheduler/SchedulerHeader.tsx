@@ -107,7 +107,7 @@ export const SchedulerHeader: FC = () => {
             }}
             placement={isMobile ? "bottom" : "auto"}
           >
-            <Button variant="pink">
+            <Button>
               <PlusSquareIcon />
               <span className="hidden md:block">Schedule</span>
             </Button>

@@ -9,7 +9,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import TooltipStar from "public/icons/tooltip-star-icon.svg"
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { useUserDefaultMintingWallets } from "src/hooks/useUserDefaultMintingWallet"
@@ -115,12 +115,18 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
           {!!wallet.authenticated && (
             <>
               {defaultEthMinting && (
-                <Button className="cursor-default" variant="black">
+                <Button
+                  className="cursor-default"
+                  variant={ButtonVariant.BLACK}
+                >
                   ETH NFT Minting
                 </Button>
               )}
               {defaultSolMinting && (
-                <Button className="cursor-default" variant="black">
+                <Button
+                  className="cursor-default"
+                  variant={ButtonVariant.BLACK}
+                >
                   SOL NFT Minting
                 </Button>
               )}
@@ -132,7 +138,6 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
                     onClick={async () =>
                       await setDefaultWallet(wallet.walletId, wallet.chain)
                     }
-                    variant="pink"
                   >
                     Set {wallet.chain.toUpperCase()} default
                   </Button>
@@ -150,7 +155,7 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
             className="h-[36px] w-[36px] text-passes-primary-color"
             disabled={wallet.custodial}
             onClick={onDeleteHandler}
-            variant="pink-outline"
+            variant={ButtonVariant.PINK_OUTLINE}
           >
             {wallet.custodial ? (
               <LockOutlineIcon className="absolute z-10 -translate-x-1/2" />

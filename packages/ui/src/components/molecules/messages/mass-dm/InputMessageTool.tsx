@@ -218,7 +218,6 @@ export const InputMessageTool: FC<InputMessageToolProps> = ({
               disabled={isSubmitting}
               fontSize={16}
               type={ButtonTypeEnum.SUBMIT}
-              variant="pink"
             >
               {scheduledTime ? "Schedule message" : "Send message"}
             </Button>

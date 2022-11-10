@@ -200,7 +200,6 @@ export const EditProfile: FC<EditProfileProps> = ({
             disabled={isSubmitting}
             fontSize={16}
             onClick={handleSubmit(onSubmit)}
-            variant="pink"
           >
             Save Profile
           </Button>

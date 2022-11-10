@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { Dispatch, FC, SetStateAction } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 
 interface EditProfileButtonProps {
   setEditProfile: Dispatch<SetStateAction<boolean>>
@@ -16,7 +16,7 @@ export const EditProfileButton: FC<EditProfileButtonProps> = ({
       "h-[25px] w-[88px] md:h-[36px] md:w-[98px]"
     )}
     onClick={() => setEditProfile(true)}
-    variant="pink-outline"
+    variant={ButtonVariant.PINK_OUTLINE}
   >
     Edit profile
   </Button>

@@ -28,7 +28,6 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
             isMobile ? "hidden" : "lg:hidden"
           }`}
           onClick={onClick}
-          variant="pink"
         >
           <PlusSign className="h-4 w-4" />
         </Button>
@@ -37,7 +36,6 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
         <Button
           className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
           onClick={onClick}
-          variant="pink"
         >
           Become a Creator
         </Button>

@@ -107,7 +107,6 @@ export const CreatePassButton: FC<CreatePassButtonProps> = ({
       disabled={isDisabled}
       fontSize={16}
       onClick={onCreateHandler}
-      variant="pink"
     >
       Create Pass
     </Button>

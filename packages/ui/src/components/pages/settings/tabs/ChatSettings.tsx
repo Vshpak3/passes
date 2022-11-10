@@ -173,7 +173,6 @@ const ChatSettings = () => {
             disabled={!!isDisableBtn || isLoading}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
-            variant="pink"
           >
             <span>Save</span>
           </Button>

@@ -132,7 +132,6 @@ export const RequestPayouts = () => {
               <Button
                 className="ml-2 flex w-[239px]"
                 onClick={onManualPayoutClick}
-                variant="pink"
               >
                 Request Payment
               </Button>
@@ -158,10 +157,7 @@ export const RequestPayouts = () => {
             </div>
             <div>
               <Link href="/settings/payout">
-                <Button
-                  className="ml-2 flex w-[239px] px-[18px]"
-                  variant="pink"
-                >
+                <Button className="ml-2 flex w-[239px] px-[18px]">
                   Manage Payment Method
                 </Button>
               </Link>

@@ -111,7 +111,6 @@ const ChangePassword = () => {
           disabled={isSubmitting}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
-          variant="pink"
         >
           <span>Save</span>
         </Button>

@@ -5,7 +5,7 @@ import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { PayinMethodDisplayNames } from "src/helpers/payment/payin-serialize"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 import { CreditCardEntry } from "./CreditCardEntry"
@@ -84,7 +84,7 @@ export const PaymentSettingsDefault: FC<PaymentSettingsDefaultProps> = ({
         <Button
           className="mt-5 rounded-md px-1.5 py-1 md:py-2 md:px-3"
           onClick={navigateToPaymentHistory}
-          variant="pink-outline"
+          variant={ButtonVariant.PINK_OUTLINE}
         >
           Payment History
         </Button>

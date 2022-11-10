@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { useFollow } from "src/hooks/profile/useFollow"
 
 interface FollowButtonProps {
@@ -19,7 +19,7 @@ export const FollowButton: FC<FollowButtonProps> = ({
     <Button
       className={className}
       onClick={isFollowing ? unfollow : follow}
-      variant={isFollowing ? "pink-outline" : "pink"}
+      variant={isFollowing ? ButtonVariant.PINK_OUTLINE : ButtonVariant.PINK}
     >
       {isFollowing ? unfollowText : "Follow"}
     </Button>

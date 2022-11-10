@@ -45,11 +45,7 @@ export const BuyMessageButton: FC<BuyMessageButtonProps> = ({
   )
 
   return (
-    <Button
-      disabled={!!blocked || loading || isDisabled}
-      onClick={submit}
-      variant="pink"
-    >
+    <Button disabled={!!blocked || loading || isDisabled} onClick={submit}>
       {loading ? "Loading" : "Buy message"}
     </Button>
   )

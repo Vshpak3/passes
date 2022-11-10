@@ -109,7 +109,6 @@ const PayoutSettings = () => {
             className="w-auto"
             icon={<Wallet />}
             onClick={() => setActiveTab(TabsEnum.WalletSettings)}
-            variant="pink"
           >
             Manage Wallets
           </Button>
@@ -160,7 +159,6 @@ const PayoutSettings = () => {
                           method: PayoutMethodDtoMethodEnum.CircleUsdc
                         })
                       }}
-                      variant="pink"
                     >
                       {defaultWallet?.walletId === wallet.walletId
                         ? "Default"
@@ -178,7 +176,6 @@ const PayoutSettings = () => {
           className="w-auto"
           icon={<BankIcon />}
           onClick={() => addOrPopStackHandler(SubTabsEnum.AddBank)}
-          variant="pink"
         >
           Add Bank
         </Button>
@@ -208,7 +205,6 @@ const PayoutSettings = () => {
                           method: PayoutMethodDtoMethodEnum.CircleWire
                         })
                       }
-                      variant="pink"
                     >
                       <span className="text-[16px] font-[500]">
                         {defaultBank?.id === bank?.id

@@ -37,12 +37,7 @@ export const TippedMessageButton: FC<TippedMessageButtonProps> = ({
   )
 
   return (
-    <Button
-      big
-      disabled={!!blocked || loading || isDisabled}
-      onClick={submit}
-      variant="pink"
-    >
+    <Button big disabled={!!blocked || loading || isDisabled} onClick={submit}>
       {loading ? "Loading" : "Send message"}
     </Button>
   )

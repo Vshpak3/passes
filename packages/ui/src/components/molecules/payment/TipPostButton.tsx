@@ -19,7 +19,6 @@ export const TipPostButton: FC<TipPostButton> = ({
       disabled={isDisabled || isLoading}
       fontSize={16}
       onClick={onClick}
-      variant="pink"
     >
       {isLoading ? "Loading..." : "Send Tip"}
     </Button>

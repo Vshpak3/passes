@@ -2,7 +2,7 @@ import { FC, useCallback, useState } from "react"
 import Cropper, { Area } from "react-easy-crop"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { Dialog } from "./Dialog"
 
 type CroppedArea = {
@@ -128,7 +128,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
             className="!px-6 !py-4 font-medium sm:!px-12"
             fontSize={15}
             onClick={onClose}
-            variant="primary"
+            variant={ButtonVariant.PRIMARY}
           >
             Back
           </Button>
@@ -136,7 +136,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
             className="!px-6 !py-5 font-medium sm:!px-12 sm:!py-4"
             fontSize={15}
             onClick={showCroppedImage}
-            variant="gradient"
+            variant={ButtonVariant.GRADIENT}
           >
             Save
           </Button>

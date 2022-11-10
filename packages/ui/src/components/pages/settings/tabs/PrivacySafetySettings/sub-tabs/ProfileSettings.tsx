@@ -99,7 +99,6 @@ const ProfileSettings = () => {
             disabled={_.isEqual(watch(), creatorSettings)}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
-            variant="pink"
           >
             <span>Save</span>
           </Button>

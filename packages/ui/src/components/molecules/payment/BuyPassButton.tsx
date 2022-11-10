@@ -71,7 +71,6 @@ export const BuyPassButton: FC<BuyPassButtonProps> = ({
       disabled={waiting || !!blocked || loading || isDisabled}
       fontSize={16}
       onClick={submit}
-      variant="pink"
     >
       {waiting ? "Processing..." : loading ? "Loading" : "Buy pass"}
     </Button>

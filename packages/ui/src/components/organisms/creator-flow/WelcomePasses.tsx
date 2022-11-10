@@ -2,7 +2,7 @@ import { useRouter } from "next/router"
 import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
 import SubscriptionIcon from "public/icons/subscription-pass.svg"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { Button } from "src/components/atoms/button/Button"
 
 export const WelcomeToPasses = () => {
   const router = useRouter()
@@ -27,12 +27,10 @@ export const WelcomeToPasses = () => {
             </div>
           </div>
           <Button
-            className="mt-6 font-normal"
+            className="mt-6"
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=subscription")
             }
-            type={ButtonTypeEnum.BUTTON}
-            variant="pink"
           >
             Get Started
           </Button>
@@ -54,8 +52,6 @@ export const WelcomeToPasses = () => {
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=lifetime")
             }
-            type={ButtonTypeEnum.BUTTON}
-            variant="pink"
           >
             Get Started
           </Button>

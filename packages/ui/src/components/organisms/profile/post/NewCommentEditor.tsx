@@ -109,7 +109,6 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
         className="h-[40px] w-full shrink-0 md:ml-4 md:w-[96px]"
         disabled={isButtonDisabled || isSubmitting}
         type={ButtonTypeEnum.SUBMIT}
-        variant="pink"
       >
         Comment
       </Button>

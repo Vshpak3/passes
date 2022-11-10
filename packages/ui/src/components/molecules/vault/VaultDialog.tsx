@@ -28,12 +28,8 @@ export const VaultDialog: FC<VaultDialogProps> = ({
         <div className="relative h-full pt-5">
           <div className="flex h-full flex-col items-start justify-start gap-3">
             <div className="flex w-full items-end justify-between gap-3">
-              <Button onClick={closeVault} variant="pink">
-                Cancel
-              </Button>
-              <Button onClick={pushToMessages} variant="pink">
-                Use selected media
-              </Button>
+              <Button onClick={closeVault}>Cancel</Button>
+              <Button onClick={pushToMessages}>Use selected media</Button>
             </div>
           </div>
         </div>

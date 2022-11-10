@@ -65,7 +65,6 @@ export const VaultMediaUpload: FC<VaultMediaUploadProps> = ({
             className="my-[10px] w-fit"
             disabled={isSubmitting}
             type={ButtonTypeEnum.SUBMIT}
-            variant="pink"
           >
             Save to Vault
           </Button>
