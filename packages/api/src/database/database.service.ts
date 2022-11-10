@@ -19,6 +19,12 @@ export class DatabaseService {
         bigNumberStrings: false,
         decimalNumbers: true,
         timezone: '+00:00',
+        typeCast: (field, next) => {
+          if (field.type === 'TINY' && field.length === 1) {
+            return field.string() === '1'
+          }
+          return next()
+        },
       },
       pool: {
         min: 2,
