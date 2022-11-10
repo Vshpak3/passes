@@ -26,6 +26,10 @@ export const ProfileDetails: FC = () => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
     useState<boolean>(false)
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
+  // TOOD: add in
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [profileBannerImageOverride, setProfileBannerImageOverride] =
+    useState<string>()
 
   const chatLink = user ? `/messages?user=${profileUserId}` : "/login"
 
@@ -163,6 +167,7 @@ export const ProfileDetails: FC = () => {
       {!!isEditProfileModalOpen && (
         <EditProfile
           setEditProfileModalOpen={setIsEditProfileModalOpen}
+          setProfileBannerImageOverride={setProfileBannerImageOverride}
           setProfileImageOverride={setProfileImageOverride}
         />
       )}

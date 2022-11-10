@@ -63,11 +63,13 @@ const socialMediaForm: Record<string, RenderInputProps> = Object.fromEntries(
 interface EditProfileProps {
   setEditProfileModalOpen: Dispatch<SetStateAction<boolean>>
   setProfileImageOverride: Dispatch<SetStateAction<string | undefined>>
+  setProfileBannerImageOverride: Dispatch<SetStateAction<string | undefined>>
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
   setEditProfileModalOpen,
-  setProfileImageOverride
+  setProfileImageOverride,
+  setProfileBannerImageOverride
 }) => {
   const { profile, profileUserId, mutateManualProfile } = useProfile()
 
@@ -125,7 +127,15 @@ export const EditProfile: FC<EditProfileProps> = ({
     if (values.profileImage?.[0]) {
       setProfileImageOverride(URL.createObjectURL(values.profileImage[0]))
       toast.info(
-        "Please wait up to 10 minutes to see profile picture changes propogate throughout the site"
+        "Please wait up to 10 minutes to see your profile picture change throughout the site"
+      )
+    }
+    if (values.profileBannerImage?.[0]) {
+      setProfileBannerImageOverride(
+        URL.createObjectURL(values.profileBannerImage[0])
+      )
+      toast.info(
+        "Please wait up to 10 minutes to see your profile banner change throughout the site"
       )
     }
   }
