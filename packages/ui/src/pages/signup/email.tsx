@@ -45,7 +45,7 @@ const SignupEmailPage: FC = () => {
     if (!router.isReady) {
       return
     }
-    setHasSentEmail(router.query.hasEmail === "true")
+    setHasSentEmail(!!router.query.email)
   }, [router])
 
   const verifyEmail = async (email: string) => {
@@ -63,7 +63,6 @@ const SignupEmailPage: FC = () => {
       })
     }
 
-    router.query.hasEmail = "true"
     router.query.email = email
     router.push(router)
   }
@@ -71,11 +70,10 @@ const SignupEmailPage: FC = () => {
   const resendEmail = async () => {
     setHasResentEmail(false)
 
-    const email = router.query.email as string
     const api = new AuthApi()
     try {
       await api.setUserEmail({
-        setEmailRequestDto: { email }
+        setEmailRequestDto: { email: router.query.email as string }
       })
       setHasResentEmail(true)
     } catch (err) {

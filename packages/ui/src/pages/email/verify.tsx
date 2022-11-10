@@ -59,7 +59,7 @@ const VerifyEmailPage = () => {
         },
         async (token) => {
           // Route manually so we can show the confirmation screen before routing
-          await sleep("3 seconds")
+          await sleep("4 seconds")
           authRouter(safePush, token)
         },
         false

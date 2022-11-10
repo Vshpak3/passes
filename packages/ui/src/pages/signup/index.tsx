@@ -94,7 +94,7 @@ const SignupInitialPage: FC = () => {
       },
       async (token) => {
         if (!isDev) {
-          authRouter(safePush, token, false, [["hasEmail", "true"]])
+          authRouter(safePush, token, false, [["email", email]])
         }
       },
       false
