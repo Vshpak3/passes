@@ -73,11 +73,14 @@ const SignupEmailPage: FC = () => {
 
     const email = router.query.email as string
     const api = new AuthApi()
-    await api.setUserEmail({
-      setEmailRequestDto: { email }
-    })
-
-    setHasResentEmail(true)
+    try {
+      await api.setUserEmail({
+        setEmailRequestDto: { email }
+      })
+      setHasResentEmail(true)
+    } catch (err) {
+      errorMessage(err)
+    }
   }
 
   const onSubmit = (data: SignupEmailPageSchema) => {
