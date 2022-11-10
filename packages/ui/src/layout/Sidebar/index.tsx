@@ -35,6 +35,10 @@ export const Sidebar = () => {
       nav.map((n) => {
         if (n.id === "profile") {
           n.href = `/${user?.username}`
+        } else if (n.id === "home") {
+          n.name = user ? "Home" : "Login"
+          n.href = user ? "/home" : "/login"
+          // TODO: update icon as well
         }
         return n
       })
