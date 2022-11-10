@@ -166,6 +166,7 @@ export const PassCard: FC<PassCardProps> = ({
         </div>
         <Button
           className="mt-[12px] h-[44px] w-full rounded-full py-[10px] text-center"
+          disabled={pass.remainingSupply === 0}
           onClick={() => {
             redirectUnauthedToLogin(user, router) ||
               (isCreator
@@ -178,7 +179,11 @@ export const PassCard: FC<PassCardProps> = ({
           }}
           variant="pink"
         >
-          {isCreator ? `${isPinned ? "Unpin" : "Pin"} Pass` : "Buy Membership"}
+          {isCreator
+            ? `${isPinned ? "Unpin" : "Pin"} Pass`
+            : pass.remainingSupply === 0
+            ? "Sold out"
+            : "Buy Membership"}
         </Button>
       </div>
     </div>
