@@ -1,9 +1,10 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @next/next/no-html-link-for-pages */
 import Link from "next/link"
-import React, { useState } from "react"
+import { useState } from "react"
+import { useIntercom } from "react-use-intercom"
 
 export const Navbar = () => {
+  const { hide } = useIntercom()
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
@@ -48,24 +49,18 @@ export const Navbar = () => {
                   Features
                 </a>
               </li>
-              <Link href="/login">
+              <Link href="/login" onClick={() => hide()}>
                 <li>
-                  <a
-                    className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white"
-                    href="/login"
-                  >
+                  <p className="block rounded py-2 pr-4 pl-3 text-gray-400 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent md:dark:hover:bg-transparent md:dark:hover:text-white">
                     Sign In
-                  </a>
+                  </p>
                 </li>
               </Link>
-              <Link href="/signup">
+              <Link href="/signup" onClick={() => hide()}>
                 <li>
-                  <a
-                    className="block rounded-lg bg-white px-4 py-2 text-black"
-                    href="/signup"
-                  >
+                  <p className="block rounded-lg bg-white px-4 py-2 text-black">
                     Sign Up
-                  </a>
+                  </p>
                 </li>
               </Link>
             </ul>
@@ -80,12 +75,12 @@ export const Navbar = () => {
                 Features
               </a>
             </li>
-            <Link href="/login">
+            <Link href="/login" onClick={() => hide()}>
               <li>
                 <p className="text-white">Sign In</p>
               </li>
             </Link>
-            <Link href="/signup">
+            <Link href="/signup" onClick={() => hide()}>
               <li className="rounded-lg bg-white p-4 text-center">
                 <p className="mx-auto w-full text-black">Sign Up</p>
               </li>
