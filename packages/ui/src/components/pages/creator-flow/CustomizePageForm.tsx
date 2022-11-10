@@ -11,8 +11,7 @@ import ProfileYoutubeIcon from "public/icons/social/youtube.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 
-import { ButtonTypeEnum } from "src/components/atoms/button/Button"
-import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormImage } from "src/components/organisms/FormImage"
@@ -348,12 +347,13 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
         </div>
 
         <div className="mb-6 flex flex-col">
-          <PassesPinkButton
+          <Button
             className="rounded-xl font-normal"
-            isDisabled={isSubmitting}
-            name="Continue"
+            disabled={isSubmitting}
             type={ButtonTypeEnum.SUBMIT}
-          />
+          >
+            Continue
+          </Button>
         </div>
       </form>
     </div>

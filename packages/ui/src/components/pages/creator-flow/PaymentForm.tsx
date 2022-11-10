@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 import { v4 } from "uuid"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
-import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
@@ -369,12 +368,13 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               </div>
             </div>
             <div className="mt-4 flex flex-col gap-3">
-              <PassesPinkButton
+              <Button
                 className="font-normal"
-                isDisabled={isSubmitSuccessful}
-                name="Confirm and Save"
+                disabled={isSubmitSuccessful}
                 type={ButtonTypeEnum.SUBMIT}
-              />
+              >
+                Confirm and Save
+              </Button>
               <Button
                 className="w-full bg-transparent"
                 onClick={onFinishPaymentForm}

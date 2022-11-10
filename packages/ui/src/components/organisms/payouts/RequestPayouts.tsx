@@ -9,7 +9,7 @@ import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { useCallback, useRef, useState } from "react"
 
-import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
+import { Button } from "src/components/atoms/button/Button"
 import { errorMessage } from "src/helpers/error"
 import {
   PayoutFrequencyEnum,
@@ -128,11 +128,13 @@ export const RequestPayouts = () => {
                   </ul>
                 )}
               </div>
-              <PassesPinkButton
+              <Button
                 className="ml-2 flex w-[239px]"
-                name="Request Payment"
                 onClick={onManualPayoutClick}
-              />
+                variant="pink"
+              >
+                Request Payment
+              </Button>
             </div>
           </div>
         </div>
@@ -155,10 +157,12 @@ export const RequestPayouts = () => {
             </div>
             <div>
               <Link href="/settings/payout">
-                <PassesPinkButton
+                <Button
                   className="ml-2 flex w-[239px] px-[18px]"
-                  name="Manage Payment Method"
-                />
+                  variant="pink"
+                >
+                  Manage Payment Method
+                </Button>
               </Link>
             </div>
           </div>

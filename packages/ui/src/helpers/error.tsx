@@ -1,9 +1,10 @@
 import { ResponseError } from "@passes/api-client"
 import { toast } from "react-toastify"
 
-export class HasMessage {
+class HasMessage {
   message = ""
 }
+
 export async function errorMessage(err: unknown, withToast = false) {
   let errorMessage: string | string[] = "There was an unexpected error"
 

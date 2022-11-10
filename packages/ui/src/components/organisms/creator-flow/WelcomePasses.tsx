@@ -2,8 +2,7 @@ import { useRouter } from "next/router"
 import LimitedEditionIcon from "public/icons/limited-edition-pass.svg"
 import SubscriptionIcon from "public/icons/subscription-pass.svg"
 
-import { ButtonTypeEnum } from "src/components/atoms/button/Button"
-import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 
 export const WelcomeToPasses = () => {
   const router = useRouter()
@@ -27,14 +26,16 @@ export const WelcomeToPasses = () => {
               year, or lifetime. They are unlimited in amount
             </div>
           </div>
-          <PassesPinkButton
+          <Button
             className="mt-6 font-normal"
-            name="Get Started"
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=subscription")
             }
             type={ButtonTypeEnum.BUTTON}
-          />
+            variant="pink"
+          >
+            Get Started
+          </Button>
         </div>
         <div className="flex min-w-[330px] flex-1 flex-col items-center justify-between rounded-md border border-[#624256] bg-black px-10 py-8">
           <div className="flex flex-col items-center">
@@ -48,14 +49,16 @@ export const WelcomeToPasses = () => {
               every time it resales.
             </div>
           </div>
-          <PassesPinkButton
+          <Button
             className="mt-6 font-normal"
-            name="Get Started"
             onClick={() =>
               router.push("/tools/manage-passes/create?passType=lifetime")
             }
             type={ButtonTypeEnum.BUTTON}
-          />
+            variant="pink"
+          >
+            Get Started
+          </Button>
         </div>
       </div>
     </div>

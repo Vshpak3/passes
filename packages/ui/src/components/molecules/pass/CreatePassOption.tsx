@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { FC, ReactElement } from "react"
 
-import { PassesPinkButton } from "src/components/atoms/button/PassesPinkButton"
+import { Button } from "src/components/atoms/button/Button"
 
 interface CreatePassOptionProps {
   icon: ReactElement
@@ -31,7 +31,9 @@ export const CreatePassOption: FC<CreatePassOptionProps> = ({
           {subtitle}
         </span>
         <div className="mt-auto">
-          <PassesPinkButton name="Get Started" onClick={onGetStarted} />
+          <Button onClick={onGetStarted} variant="pink">
+            Get Started
+          </Button>
         </div>
       </div>
     </div>
