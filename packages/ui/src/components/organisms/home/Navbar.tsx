@@ -10,11 +10,11 @@ export const Navbar = () => {
     <>
       <nav className="mx-auto max-w-7xl py-2.5 px-4">
         <div className="mx-auto flex w-full items-center justify-between">
-          <a className="flex items-center">
+          <div className="flex items-center">
             <span className="self-center whitespace-nowrap text-2xl font-bold text-white">
               Passes
             </span>
-          </a>
+          </div>
           <button
             aria-controls="navbar-default"
             aria-expanded="false"
@@ -82,12 +82,12 @@ export const Navbar = () => {
             </li>
             <Link href="/login">
               <li>
-                <a className="text-white">Sign In</a>
+                <p className="text-white">Sign In</p>
               </li>
             </Link>
             <Link href="/signup">
               <li className="rounded-lg bg-white p-4 text-center">
-                <a className="mx-auto w-full text-black">Sign Up</a>
+                <p className="mx-auto w-full text-black">Sign Up</p>
               </li>
             </Link>
           </ul>

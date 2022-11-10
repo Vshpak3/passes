@@ -1,5 +1,3 @@
-import { Wordmark } from "src/components/atoms/Wordmark"
-
 const PrivacyPolicy = () => {
   return (
     <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">

@@ -88,7 +88,6 @@ export const RequestPayouts = () => {
                 <div
                   className="flex cursor-pointer items-center justify-between space-x-14 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100"
                   onClick={() => setShowOptions(true)}
-                  role="button"
                 >
                   <div className="flex items-center gap-[5px]">
                     <ClockIcon className="h-[20px] w-[20px] fill-white" />

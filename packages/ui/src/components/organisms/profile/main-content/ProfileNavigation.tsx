@@ -44,7 +44,7 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
           key={index}
           onClick={() => setActiveTab(item.id)}
         >
-          <a
+          <p
             className={classNames(
               item.id === activeTab
                 ? "border-b-2 text-base font-bold opacity-100"
@@ -53,7 +53,7 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
             )}
           >
             {item.name}
-          </a>
+          </p>
         </span>
       ))}
     </nav>

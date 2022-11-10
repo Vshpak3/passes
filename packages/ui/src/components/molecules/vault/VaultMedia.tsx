@@ -62,7 +62,7 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
         onClick={handleClick}
       >
         <img
-          alt="Can't find image"
+          alt="Can't find media"
           className="object-cover"
           height={300}
           src={ContentService.userContentThumbnailPath(content)}

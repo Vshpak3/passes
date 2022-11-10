@@ -45,7 +45,6 @@ export const TimePicker: FC<TimePickerProps> = ({
         <button
           className="w-[98px] rounded-lg border border-white bg-[#0E0A0F] px-5 py-2 text-lg leading-6 text-white focus:border-2 focus:border-blue-700"
           onClick={() => setShowDropdown(true)}
-          tabIndex={0}
           type="button"
         >
           {padTime(time.hours + 1)}:{padTime(time.minutes)}
@@ -60,7 +59,6 @@ export const TimePicker: FC<TimePickerProps> = ({
               }
             )}
             onClick={() => setTime({ timeShift: TimeShiftEnum.AM })}
-            tabIndex={1}
           >
             AM
           </button>
@@ -73,7 +71,6 @@ export const TimePicker: FC<TimePickerProps> = ({
               }
             )}
             onClick={() => setTime({ timeShift: TimeShiftEnum.PM })}
-            tabIndex={1}
           >
             PM
           </button>
@@ -94,8 +91,6 @@ export const TimePicker: FC<TimePickerProps> = ({
                 )}
                 key={i}
                 onClick={() => setTime({ hours: i })}
-                role="button"
-                tabIndex={0}
               >
                 {padTime(i + 1)}
               </li>
@@ -110,8 +105,6 @@ export const TimePicker: FC<TimePickerProps> = ({
                 )}
                 key={i}
                 onClick={() => setTime({ minutes: i })}
-                role="button"
-                tabIndex={0}
               >
                 {padTime(i)}
               </li>

@@ -77,10 +77,6 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       data-focus-ring=""
       disabled={disabled}
       onClick={onClick}
-      role="button"
-      tabIndex={0}
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       type={type}
       {...restOfProps}
     >

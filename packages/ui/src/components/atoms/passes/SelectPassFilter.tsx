@@ -49,7 +49,6 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
       <div
         className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
         onClick={() => setShowOptions(!showOptions)}
-        role="button"
       >
         <span>
           {

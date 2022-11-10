@@ -6,7 +6,7 @@ module.exports = {
   plugins: ["no-relative-import-paths", "tailwindcss"],
   extends: [
     "next/core-web-vitals",
-    // 'plugin:jsx-a11y/recommended',
+    "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/all",
     "plugin:tailwindcss/recommended"
@@ -43,6 +43,10 @@ module.exports = {
     "react/jsx-one-expression-per-line": "off",
 
     // Turned off since we currently don't follow these
+    "jsx-a11y/click-events-have-key-events": "off", // Consider turning on
+    "jsx-a11y/label-has-associated-control": "off", // Consider turning on
+    "jsx-a11y/no-noninteractive-element-interactions": "off", // Consider turning on
+    "jsx-a11y/no-static-element-interactions": "off", // Consider turning on
     "react/button-has-type": "off",
     "react/forbid-component-props": "off",
     "react/jsx-max-depth": "off",
@@ -51,6 +55,7 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     "react/no-array-index-key": "off", // Consider turning on
     "react/no-multi-comp": "off",
+    "jsx-a11y/media-has-caption": "off",
     "react/require-default-props": "off",
     "sonarjs/cognitive-complexity": "off",
 
