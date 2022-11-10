@@ -49,8 +49,7 @@ module.exports = {
           "gray-700": "#34343A",
           "gray-800": "#979797",
           "gray-900": "#D0D5DD",
-          "white-100": "#ffffff",
-          green: "#71CB6F" // rename to success
+          success: "#71CB6F"
         }
       },
       fontFamily: {

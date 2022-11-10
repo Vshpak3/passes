@@ -55,7 +55,7 @@ export const PostStatisticsMenu: FC<PostStatisticsMenuProps> = ({
       </div>
       <div className="mt-3 flex items-center space-x-3">
         <h4 className="text-2xl font-bold leading-6">${numPurchases}</h4>
-        <div className="text-label flex items-center space-x-[3px] rounded-[56px] bg-passes-green/[0.17] py-1.5 px-3 text-passes-green">
+        <div className="text-label flex items-center space-x-[3px] rounded-[56px] bg-passes-success/[0.17] py-1.5 px-3 text-passes-success">
           <span>
             {purchasesPercentCounter(numPurchases, earningsPurchases)}%
           </span>
