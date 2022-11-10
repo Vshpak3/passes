@@ -12,7 +12,7 @@ interface ThreeDSInfoProps {
 export const ThreeDSInfo: FC<ThreeDSInfoProps> = ({ price, payinMethod }) => {
   return (
     <div className="">
-      {payinMethod?.cardId && price > MIN_THREE_DS_LIMIT && (
+      {!!payinMethod?.cardId && price > MIN_THREE_DS_LIMIT && (
         <span>
           A credit card purchase above{" "}
           <span className="mx-1">{formatCurrency(MIN_THREE_DS_LIMIT)}</span>

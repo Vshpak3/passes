@@ -71,7 +71,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         step={type === "currency" ? "0.01" : "1"}
         type="number"
       />
-      {errors && errors[name] && (
+      {errors && !!errors[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
     </div>

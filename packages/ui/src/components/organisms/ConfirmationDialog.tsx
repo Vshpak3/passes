@@ -29,7 +29,7 @@ export const ConfirmationDialog: FC<ConfirmationDialogProps> = ({
         </button>
         <div className="border-b border-passes-dark-200 pb-2.5">
           <h5 className="text-base font-bold leading-4">{title}</h5>
-          {desc && (
+          {!!desc && (
             <p className="mt-1.5 text-xs font-medium leading-6 text-passes-gray-200">
               {desc}
             </p>

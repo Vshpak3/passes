@@ -76,7 +76,7 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <div className="relative">
-      {label && (
+      {!!label && (
         <Label errors={errors} label={label} name={name} options={options} />
       )}
       <Listbox
@@ -128,7 +128,7 @@ export const Select: FC<SelectProps> = ({
           </Listbox.Options>
         </Transition>
       </Listbox>
-      {errors?.[name] && (
+      {!!errors?.[name] && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
     </div>

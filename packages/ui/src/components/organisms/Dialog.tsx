@@ -81,7 +81,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
             >
               <HeadlessDialog.Panel className={className}>
                 <div className="relative flex h-full w-full flex-col justify-between">
-                  {title && (
+                  {!!title && (
                     <HeadlessDialog.Title className="z-20">
                       {typeof title === "string" ? formatText(title) : title}
                     </HeadlessDialog.Title>
@@ -94,7 +94,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                   >
                     {children}
                   </div>
-                  {footer && (
+                  {!!footer && (
                     <div className="relative z-20 w-full self-end">
                       {typeof footer === "string" ? formatText(footer) : footer}
                     </div>

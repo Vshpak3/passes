@@ -33,7 +33,7 @@ export const Label: FC<LabelProps> = ({
       )}
       htmlFor={name}
     >
-      {formatText(label)} {options.required && "*"}
+      {formatText(label)} {!!options.required && "*"}
     </label>
   )
 }

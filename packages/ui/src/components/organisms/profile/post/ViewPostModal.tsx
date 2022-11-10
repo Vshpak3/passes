@@ -74,7 +74,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
     <Dialog className="z-10" onClose={() => setPost(null)} open>
       <div className="relative flex max-h-screen min-h-[85vh] w-[90vw] max-w-[1285px] flex-col overflow-auto rounded-[15px] border border-white/[0.15] bg-[#12070E]/40 p-6 pl-5 backdrop-blur-3xl lg:flex-row">
         <div className="relative flex flex-1">
-          {!postUnlocked && imageToShow && (
+          {!postUnlocked && !!imageToShow && (
             <div className="absolute h-[80%] w-[80%] translate-x-[10%] translate-y-[10%] [filter:blur(15px)]">
               <img alt="post" src={imageToShow} />
             </div>
@@ -84,7 +84,7 @@ const ViewPostModal: FC<ViewPostModalProps> = ({ post, setPost }) => {
               {postUnlocked &&
                 post.contents &&
                 post.contents.length === 1 &&
-                imageToShow && <img alt="post" src={imageToShow} />}
+                !!imageToShow && <img alt="post" src={imageToShow} />}
               <div className="relative mt-3 flex h-[500px] w-[600px] flex-row items-center justify-center bg-transparent">
                 {/* {postUnlocked && post.contents && post.contents.length > 1 && (
                   <ContentCarousel

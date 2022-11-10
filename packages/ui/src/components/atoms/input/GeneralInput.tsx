@@ -60,7 +60,7 @@ export const Input: FC<InputProps> = ({
 }) => {
   return (
     <>
-      {label && (
+      {!!label && (
         <Label errors={errors} label={label} name={name} options={options} />
       )}
 
@@ -95,7 +95,7 @@ export const Input: FC<InputProps> = ({
             errors[name] !== undefined && "border-red-500"
           )}
         />
-        {errors && errors[name] && (
+        {errors && !!errors[name] && (
           <span className="text-xs text-red-500">{errors[name].message}</span>
         )}
       </div>

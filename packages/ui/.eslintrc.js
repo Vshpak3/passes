@@ -3,7 +3,11 @@ module.exports = {
   parserOptions: {
     project: "./tsconfig.json"
   },
-  plugins: ["no-relative-import-paths", "tailwindcss"],
+  plugins: [
+    "eslint-plugin-jsx-expressions",
+    "no-relative-import-paths",
+    "tailwindcss"
+  ],
   extends: [
     "next/core-web-vitals",
     "plugin:jsx-a11y/recommended",
@@ -14,6 +18,7 @@ module.exports = {
   rules: {
     // Opt in / adjust these rules
     "@typescript-eslint/no-explicit-any": "error",
+    "jsx-expressions/strict-logical-expressions": "error", // instead of react/jsx-no-leaked-render
     "no-console": ["error", { allow: ["error"] }],
     "no-relative-import-paths/no-relative-import-paths": [
       "error",
@@ -29,9 +34,6 @@ module.exports = {
     "react/jsx-filename-extension": ["error", { extensions: [".tsx"] }],
     "react/jsx-no-useless-fragment": ["error", { allowExpressions: "off" }],
     "react/no-unstable-nested-components": ["error", { allowAsProps: true }],
-
-    // Turned off since we often want to use <img> tags
-    "@next/next/no-img-element": "off",
 
     // Turned off since these conflict with prettier
     "react/jsx-curly-newline": "off",
@@ -58,7 +60,8 @@ module.exports = {
     "react/require-default-props": "off",
     "sonarjs/cognitive-complexity": "off",
 
-    // Turned off for a necessary issue
+    // Turned off for a specific reason
+    "@next/next/no-img-element": "off", // We often want to use <img> tags
     "react/jsx-no-leaked-render": "off", // Does not respect boolean types
     "react/react-in-jsx-scope": "off" // Not needed for Next.js
   },

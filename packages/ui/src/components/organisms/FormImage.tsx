@@ -34,7 +34,7 @@ export const FormImage: FC<FormImageProps> = ({
 
   return (
     <>
-      {imageCropOpen && imgData?.length && (
+      {imageCropOpen && !!imgData?.length && (
         <ImageCropDialog
           height={cropHeight}
           onClose={() => setImageCropOpen(false)}

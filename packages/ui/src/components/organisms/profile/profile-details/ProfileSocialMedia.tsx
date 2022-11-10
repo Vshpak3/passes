@@ -55,7 +55,7 @@ const ProfileSocialMediaButton: FC<ProfileSocialMediaButtonProps> = ({
   const Icon = socialUsernameToIcon[type]
   return (
     <>
-      {username && (
+      {!!username && (
         <a
           href={formatTextToString(socialUsernameToUrl[type](username))}
           rel="noopener noreferrer"

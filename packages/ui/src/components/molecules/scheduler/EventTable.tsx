@@ -68,7 +68,7 @@ export const EventTable: FC = () => {
         </div>
       ) : (
         <div className="mb-[30px] w-full overflow-auto rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[rgba(27,20,29,0.5)] py-5 backdrop-blur-[50px]">
-          {selectEventIdDelete && (
+          {!!selectEventIdDelete && (
             <DeleteConfirmationModal
               isOpen
               onClose={() => setSelectEventIdDelete(null)}

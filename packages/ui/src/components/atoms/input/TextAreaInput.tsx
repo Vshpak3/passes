@@ -65,7 +65,7 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
 
   return (
     <>
-      {label && (
+      {!!label && (
         <Label errors={errors} label={label} name={name} options={options} />
       )}
       <textarea

@@ -74,7 +74,7 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
           register={register}
           type="integer"
         />
-        {suffix && (
+        {!!suffix && (
           <span className="absolute top-1/2 right-[40px] -translate-y-1/2 text-[#ffff]/90">
             {suffix}
           </span>

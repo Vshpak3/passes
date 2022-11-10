@@ -60,7 +60,7 @@ export const WithNormalPageLayout = (
                   )}
                 >
                   <div className="flex-1">
-                    {headerTitle && (
+                    {!!headerTitle && (
                       <SectionTitle className="ml-4 mt-3 hidden lg:block">
                         {headerTitle}
                       </SectionTitle>
@@ -77,7 +77,7 @@ export const WithNormalPageLayout = (
                 isPage
                 skipAuth={!!options.skipAuth}
               >
-                {headerTitle && (
+                {!!headerTitle && (
                   <SectionTitle className="ml-4 mt-3 lg:hidden">
                     {headerTitle}
                   </SectionTitle>

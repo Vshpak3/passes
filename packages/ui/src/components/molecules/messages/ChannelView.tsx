@@ -96,7 +96,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
                 readAt={selectedChannel?.readAt ?? undefined}
                 selectedChannel={selectedChannel}
               />
-              {selectedChannel.channelId && (
+              {!!selectedChannel.channelId && (
                 <InputMessage
                   isCreator={isCreator}
                   minimumTip={minimumTip}

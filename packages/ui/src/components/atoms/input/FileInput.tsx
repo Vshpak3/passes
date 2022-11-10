@@ -63,7 +63,7 @@ export const FileInput: FC<FileInputProps> = ({
   }
   return (
     <>
-      {label && (
+      {!!label && (
         <Label errors={errors} label={label} name={name} options={options} />
       )}
       <div className={className}>

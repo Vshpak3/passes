@@ -23,7 +23,7 @@ const ListMemberUnmemo: FC<ListMemberProps> = ({
         <div className="flex items-center justify-between py-3">
           <div className="flex flex-row gap-[50px]">
             <ProfileWidget user={fanInfo} />
-            {fanInfo.metaNumber && (
+            {!!fanInfo.metaNumber && (
               <span>Spent {formatCurrency(fanInfo.metaNumber)}</span>
             )}
             {!fanInfo.follow && (

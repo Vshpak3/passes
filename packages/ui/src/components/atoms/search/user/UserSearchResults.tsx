@@ -32,7 +32,7 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
         </div>
       </div>
       <div className="col-start-2 row-span-2 w-full content-start">
-        {displayName && (
+        {!!displayName && (
           <div className="text-[16px] font-medium">{displayName}</div>
         )}
         <div className="text-[12px] text-[#ffffff]/60">@{username}</div>

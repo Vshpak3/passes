@@ -99,7 +99,7 @@ export const DragDropFile: FC<DragDropFileProps> = ({
             />
             <span className="font-normal">or drag and drop</span>
           </div>
-          {helperText && (
+          {!!helperText && (
             <p className="self-stretch text-center font-normal">{helperText}</p>
           )}
         </div>

@@ -45,7 +45,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
     >
       {!!textPosition && (
         <div className="mr-3 text-sm">
-          {label && (
+          {!!label && (
             <Label
               className={labelClassName}
               errors={errors}
@@ -86,7 +86,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
       </label>
       {!textPosition && (
         <div className="ml-3 text-sm">
-          {label && (
+          {!!label && (
             <Label
               className={labelClassName}
               errors={errors}

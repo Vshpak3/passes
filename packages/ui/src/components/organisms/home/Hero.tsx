@@ -82,7 +82,7 @@ export const Hero = () => {
                 Join Waitlist
               </button>
             </div>
-            {emailFeedback && (
+            {!!emailFeedback && (
               <p className="pt-6 text-center font-[500]">{emailFeedback}</p>
             )}
           </div>
