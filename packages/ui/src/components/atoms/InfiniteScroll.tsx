@@ -98,6 +98,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   const newOptions = useMemo(() => {
     return { ...defaultOptions, ...options }
   }, [options])
+  // console.log(fetchProps)
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }
