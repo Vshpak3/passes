@@ -30,7 +30,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
               </span>
             </Disclosure.Button>
           </Disclosure>
-          <div className="mx-2 w-full">
+          <div className="mx-2 w-full md:max-w-[50%]">
             <CreatorSearchBar />
           </div>
         </div>

@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import DiscoverCardIcon from "public/icons/discover-icon.svg"
 import MasterCardIcon from "public/icons/mastercard-icon.svg"
 import VisaIcon from "public/icons/visa-icon.svg"
@@ -47,7 +48,10 @@ export const CreditCardInput: FC<CreditCardInputProps> = ({
               <MasterCardIcon />
             </span>
             <input
-              className="block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className={classNames(
+                "block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500",
+                error && "border-red-500"
+              )}
               maxLength={19}
               onChange={(event) => handleChange(event, onChange)}
               placeholder="Card number"

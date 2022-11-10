@@ -7,6 +7,7 @@ import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
 import { Modal } from "src/components/organisms/Modal"
 
@@ -19,7 +20,7 @@ interface TippedMessageModalProps {
 
 const TippedMessageModal: FC<TippedMessageModalProps> = ({
   messageRequest,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   selectedChannel,
   setMessageRequest,
   onSuccess
@@ -33,6 +34,9 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
     }
   }, [onSuccess, setMessageRequest])
 
+  const { otherUserId, otherUserUsername, otherUserDisplayName } =
+    selectedChannel
+
   return (
     <Modal
       closable={false}
@@ -40,6 +44,14 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessageRequest(null)}
     >
+      <PaymenetModalHeader
+        title="Tip Message"
+        user={{
+          userId: otherUserId,
+          username: otherUserUsername,
+          displayName: otherUserDisplayName
+        }}
+      />
       <PaymentModalBody
         closeModal={() => setMessageRequest(null)}
         price={messageRequest?.price ?? 0}

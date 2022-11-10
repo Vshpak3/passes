@@ -22,7 +22,7 @@ interface BuyMessageModalProps {
 
 export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   message,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   selectedChannel,
   setMessage
 }) => {
@@ -30,6 +30,8 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
 
   const { images, video } = contentTypeCounter(message.contents)
   const { price } = message
+  const { otherUserId, otherUserUsername, otherUserDisplayName } =
+    selectedChannel
 
   return (
     <Modal
@@ -40,7 +42,11 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
     >
       <PaymenetModalHeader
         title="Buy Message"
-        // user={{ userId, username, displayName }}
+        user={{
+          userId: otherUserId,
+          username: otherUserUsername,
+          displayName: otherUserDisplayName
+        }}
       />
       <div>
         <div className="my-4 flex justify-between">
