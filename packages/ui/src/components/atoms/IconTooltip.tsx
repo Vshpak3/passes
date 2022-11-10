@@ -5,7 +5,6 @@ interface IconTooltipProps {
   icon?: FC<SVGProps<SVGSVGElement>>
   position: "top" | "right" | "bottom" | "left"
   tooltipText: string | null
-  className?: string
   tooltipClassName?: string
 }
 
@@ -13,7 +12,6 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
   icon: Icon,
   position,
   tooltipText,
-  className,
   tooltipClassName,
   children
 }) => {
@@ -22,7 +20,7 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
   const tooltipPositionDefinition = (position: string) => {
     switch (position) {
       case "top":
-        return "bottom-[100%] left-[50%] translate-x-[-50%]"
+        return "bottom-[100%] left-[50%] translate-x-[-50%] mb-2"
       case "right":
         return "right-[-15px] bottom-[-50%] translate-x-[100%] translate-y-[30%]"
       case "bottom":
@@ -51,7 +49,7 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
 
   return (
     <div
-      className={classNames("relative", className)}
+      className="relative"
       onMouseEnter={() => setTooltipStatus(true)}
       onMouseLeave={() => setTooltipStatus(false)}
     >
@@ -60,7 +58,7 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
       {tooltipStatus && (
         <div
           className={classNames(
-            "absolute z-20 w-[200px] rounded bg-[#2A242B] p-4 px-[8px] py-[12px] text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
+            "absolute z-10 w-[200px] rounded bg-passes-pink-100 p-3 text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
             tooltipPositionDefinition(position),
             tooltipClassName
           )}
@@ -69,7 +67,7 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
           {tooltipText}
           <span
             className={classNames(
-              "absolute z-20 before:block before:h-[12px] before:w-[12px] before:rotate-45 before:bg-[#2A242B] before:content-['']",
+              "absolute z-10 before:block before:h-[12px] before:w-[12px] before:rotate-45 before:bg-passes-pink-100 before:content-['']",
               arrowPositionDefinition(position)
             )}
           />

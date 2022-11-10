@@ -25,7 +25,7 @@ export const CalendarEntry: FC<CalendarEntry> = ({
         >
           <IconTooltip
             position="top"
-            tooltipClassName="mb-[11px] pl-5 w-[100px]"
+            tooltipClassName="mb-[9px] pl-5 w-[100px] opacity-100"
             tooltipText={scheduledData
               .map((p) => format(p.scheduledAt, "hh:mm a"))
               .join("\n")}
