@@ -614,7 +614,7 @@ export class MessagesService {
       .where({ user_id: creatorId })
       .select('minimum_tip_amount')
       .first()
-    return creatorSettings?.minimum_tip_amount ?? MINIMUM_MESSAGE_TIP_AMOUNT
+    return creatorSettings?.minimum_tip_amount
   }
 
   async getChannelMessageInfo(userId: string, channelId: string) {
@@ -627,21 +627,23 @@ export class MessagesService {
     if (!channelMember) {
       throw new BadRequestException('channel not found')
     }
+    const minimumTip = await this.getMinimumTip(channelMember.other_user_id)
     return new GetChannelMesssageInfoResponseDto(
-      await this.checkFreeMessages(userId, channelMember.other_user_id),
-      await this.getMinimumTip(channelMember.other_user_id),
+      await this.checkFreeMessages(
+        userId,
+        channelMember.other_user_id,
+        false,
+        minimumTip,
+      ),
+      minimumTip ?? MINIMUM_MESSAGE_TIP_AMOUNT,
     )
   }
 
   async checkFreeMessages(
     userId: string,
     creatorId: string,
-    // channelId: string,
-    // channelMember?: Pick<
-    //   ChannelMemberEntity,
-    //   'unlimited_messages' | 'other_user_id'
-    // >,
     remove = false,
+    minimumTip?: number | null,
   ): Promise<number | null> {
     // TODO - per channel settings feature
     // if (!channelMember) {
@@ -661,6 +663,12 @@ export class MessagesService {
     // if (channelMember.unlimited_messages) {
     //   return null
     // }
+    if (minimumTip === undefined) {
+      minimumTip = await this.getMinimumTip(creatorId)
+      if (!minimumTip) {
+        return null
+      }
+    }
     const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
       .where({
         follower_id: creatorId,
@@ -717,6 +725,10 @@ export class MessagesService {
     otherUserId: string,
     tipAmount: number,
   ): Promise<BlockedReasonEnum | undefined> {
+    if (tipAmount > 0 && tipAmount < MINIMUM_MESSAGE_TIP_AMOUNT) {
+      return BlockedReasonEnum.INSUFFICIENT_TIP
+    }
+
     const follow = await this.dbReader<FollowEntity>(FollowEntity.table)
       .where({
         follower_id: userId,
@@ -756,7 +768,12 @@ export class MessagesService {
     }
 
     const minimum = await this.getMinimumTip(otherUserId)
-    const freeMessages = await this.checkFreeMessages(userId, otherUserId)
+    const freeMessages = await this.checkFreeMessages(
+      userId,
+      otherUserId,
+      false,
+      minimum,
+    )
     if (
       !minimum ||
       tipAmount >= minimum ||
