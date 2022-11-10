@@ -312,7 +312,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             Object.values(errors)[0] && "!pt-0"
           )}
         >
-          {isCreator && (
+          {isCreator ? (
             <MediaSelector
               activeMediaHeader={activeMediaHeader}
               errors={errors}
@@ -324,6 +324,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                 <VaultSelector selectVaultContent={addContent} />
               </div>
             </MediaSelector>
+          ) : (
+            <div />
           )}
           <div className="flex flex-row items-center justify-end gap-[10px] px-[5px] py-1 md:px-[20px]">
             {otherUserIsCreator && (
