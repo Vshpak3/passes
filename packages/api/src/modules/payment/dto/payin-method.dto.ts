@@ -16,7 +16,7 @@ export class PayinMethodDto {
   @DtoProperty({ type: 'number', nullable: true, optional: true })
   chainId?: number | null
 
-  @DtoProperty({ custom_type: ChainEnum, optional: true })
+  @DtoProperty({ custom_type: ChainEnum, optional: true, nullable: true })
   chain?: ChainEnum | null
 
   constructor(payinMethod: DefaultPayinMethodEntity | undefined) {

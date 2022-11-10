@@ -25,7 +25,7 @@ export const PassHoldings: FC = () => {
     return {
       unreadOnly: false,
       order: GetPassHoldingsRequestDtoOrderEnum.Desc,
-      orderType: passType,
+      passType,
       expired
     }
   }, [passType, expired])
@@ -51,7 +51,6 @@ export const PassHoldings: FC = () => {
         className="gap-3 md:flex md:flex-wrap"
         fetch={(req: GetPassHoldingsRequestDto) => {
           const api = new PassApi()
-          // console.log(req)
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
         }}
         fetchProps={fetchProps}

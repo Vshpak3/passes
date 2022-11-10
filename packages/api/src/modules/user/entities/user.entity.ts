@@ -47,16 +47,16 @@ export class UserEntity extends BaseEntity {
   phone_number: string | null
 
   @Property({ default: false })
-  is_kyc_verified = false
+  is_kyc_verified: boolean
 
   @Property({ default: false })
-  is_creator = false
+  is_creator: boolean
 
   @Property({ default: true })
-  is_active = true
+  is_active: boolean
 
   @Property({ default: false })
-  is_adult = false
+  is_adult: boolean
 
   @Property({ default: 0 })
   num_following: number
