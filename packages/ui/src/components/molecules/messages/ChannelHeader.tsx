@@ -76,6 +76,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
                   linked
+                  userId={selectedChannel.otherUserId}
                   username={selectedChannel.otherUserUsername}
                 />
                 {isCreator && (

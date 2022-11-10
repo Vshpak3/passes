@@ -41,7 +41,6 @@ export const Comment: FC<CommentProps> = ({
     commenterDisplayName,
     isHidden: _isHidden
   } = comment
-
   const [isHidden, setIsHidden] = useState(_isHidden)
 
   const dropdownOptions: DropdownOption[] = [
@@ -89,6 +88,7 @@ export const Comment: FC<CommentProps> = ({
                   displayName={commenterDisplayName}
                   displayNameClassName="text-base"
                   linked
+                  userId={comment.commenterId}
                   username={commenterUsername}
                 />
                 {!!isHidden && (
