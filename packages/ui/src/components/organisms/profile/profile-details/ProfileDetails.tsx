@@ -101,7 +101,7 @@ export const ProfileDetails: FC = () => {
 
       {/* mobile */}
       <div className="absolute top-2 right-10 flex-row items-start pr-3 md:hidden">
-        <div className="absolute right-3 flex flex-col">
+        <div className="absolute right-0 flex flex-col">
           {ownsProfile ? (
             <EditProfileButton setEditProfile={setIsEditProfileModalOpen} />
           ) : (
