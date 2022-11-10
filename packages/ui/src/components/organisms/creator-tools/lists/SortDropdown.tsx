@@ -64,6 +64,7 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
         aria-describedby={sortPopperId}
         aria-label="Sort"
         onClick={handleOpenPopper}
+        onMouseDown={(e) => e.stopPropagation()}
         ref={ref}
         type="button"
       >
