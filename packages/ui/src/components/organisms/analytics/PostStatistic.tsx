@@ -5,7 +5,7 @@ import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
-import { formatText } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 import { usePost } from "src/hooks/profile/usePost"
 
 interface PostStatisticProps {
@@ -67,11 +67,13 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
           <span className="text-[12px] font-[500]">{post.numPurchases}</span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
-          <span className="text-[12px] font-[500]">{post.totalTipAmount}</span>
+          <span className="text-[12px] font-[500]">
+            {formatCurrency(post.totalTipAmount ?? 0)}
+          </span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <span className="text-[12px] font-[500]">
-            {post.earningsPurchases}
+            {formatCurrency(post.earningsPurchases)}
           </span>
         </div>
 

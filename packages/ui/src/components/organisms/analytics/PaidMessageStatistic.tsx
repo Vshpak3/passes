@@ -3,7 +3,7 @@ import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
-import { formatText } from "src/helpers/formatters"
+import { formatCurrency, formatText } from "src/helpers/formatters"
 
 interface PaidMessageStatisticProps {
   paidMessage: PaidMessageDto
@@ -44,7 +44,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
-          {"$" + (paidMessage.price ?? 0).toFixed(2)}
+          {formatCurrency(paidMessage.price)}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
@@ -57,7 +57,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[12px] font-[500]">
-          {paidMessage.earningsPurchases}
+          {formatCurrency(paidMessage.earningsPurchases)}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
