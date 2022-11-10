@@ -179,7 +179,7 @@ const LoginPage: FC = () => {
           </div>
 
           <Text
-            className="z-10 flex w-[360px] justify-center text-[#b3bee7] opacity-[0.75]"
+            className="z-10 flex w-[360px] justify-center text-[#b3bee7]"
             fontSize={13}
           >
             Don&apos;t have an account?
