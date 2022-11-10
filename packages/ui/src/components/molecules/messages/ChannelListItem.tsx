@@ -42,12 +42,9 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         onClick()
       }}
     >
-      {!!channel.readAt &&
-        !!channel.recent &&
-        !!channel.unread &&
-        !isSelected && (
-          <div className="absolute left-[1px] top-[calc(50%-4px)] z-50 h-[8px] w-[8px] rounded-[4px] bg-[#FF51A8]" />
-        )}
+      {!!channel.recent && !!channel.unread && !isSelected && (
+        <div className="absolute left-[1px] top-[calc(50%-4px)] z-50 h-[8px] w-[8px] rounded-[4px] bg-[#FF51A8]" />
+      )}
       <div className="flex w-full items-start">
         <div className="flex pr-[10px]">
           <ProfileImage
