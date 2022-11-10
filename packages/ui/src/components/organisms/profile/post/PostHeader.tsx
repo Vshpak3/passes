@@ -37,11 +37,13 @@ export const PostHeader: FC<PostHeaderProps> = ({
       </div>
       <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-row items-center justify-end gap-2">
         {isPinned && (
-          <div className="flex items-center rounded-lg">
-            <PinIcon />
-          </div>
+          <>
+            <div className="flex items-center rounded-lg">
+              <PinIcon />
+            </div>
+            <SingleDot className="flex items-center" />
+          </>
         )}
-        <SingleDot className="flex items-center" />
         <div className="flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
             className="uppercase text-gray-300/60"
