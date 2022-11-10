@@ -71,14 +71,14 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
         <div className="flex items-center justify-center px-2">
           {!!wallet.custodial && (
             <IconTooltip
-              Icon={InfoIcon}
+              icon={InfoIcon}
               position="right"
               tooltipText={CUSTODIAL_TOOLTIP_TEXT}
             />
           )}
           {!wallet.authenticated && (
             <IconTooltip
-              Icon={TooltipStar}
+              icon={TooltipStar}
               position="right"
               tooltipText={AUTH_TOOLTIP_TEXT}
             />

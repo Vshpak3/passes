@@ -1,11 +1,14 @@
 import { ScheduledEventDto } from "@passes/api-client"
 import classNames from "classnames"
+import { format } from "date-fns"
 import { enUS } from "date-fns/locale"
 import { flatten } from "lodash"
 import { FC, Fragment, useContext, useEffect, useState } from "react"
 
+import { IconTooltip } from "src/components/atoms/IconTooltip"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { SchedulerContext } from "src/pages/tools/scheduler"
+import { CalendarEntry } from "./CalendarEntry"
 
 const DAYS_IN_WEEK = 7
 
@@ -60,7 +63,9 @@ export const Calendar: FC = () => {
     setMatrixDate(flatten(getCalendarMatrix(month, year)))
   }, [month, year, setMonthYear])
 
-  const countEventsInDate = (date: Date): [number, number] => {
+  const getEventsInDate = (
+    date: Date
+  ): [ScheduledEventDto[], ScheduledEventDto[]] => {
     const onDate = data?.filter(
       (event: ScheduledEventDto) =>
         event.scheduledAt &&
@@ -68,8 +73,8 @@ export const Calendar: FC = () => {
         event.scheduledAt.getDate() === date.getDate()
     )
     return [
-      onDate?.filter((e) => e.processed).length || 0,
-      onDate?.filter((e) => !e.processed).length || 0
+      onDate?.filter((e) => e.processed) || [],
+      onDate?.filter((e) => !e.processed) || []
     ]
   }
 
@@ -91,8 +96,9 @@ export const Calendar: FC = () => {
       </div>
       <div className="flex flex-wrap">
         {matrixDate.map((date: CalendarDate, index) => {
-          const [numberProcessedPostInDate, numberPendingPostInDate] =
-            countEventsInDate(date.date)
+          const [processedPostInDate, pendingPostInDate] = getEventsInDate(
+            date.date
+          )
           return (
             <div
               className={classNames({
@@ -110,16 +116,14 @@ export const Calendar: FC = () => {
                 {date.date.getDate()}
               </span>
               <div className="mt-7 w-full">
-                {numberProcessedPostInDate > 0 && (
-                  <div className="mb-2 w-full rounded bg-gray-400 px-2 py-[2px] text-left font-bold leading-6 text-white opacity-[0.40]">
-                    {numberProcessedPostInDate}
-                  </div>
-                )}
-                {numberPendingPostInDate > 0 && (
-                  <div className="w-full rounded bg-passes-primary-color px-2 py-[2px] text-left font-bold leading-6 text-white">
-                    {numberPendingPostInDate}
-                  </div>
-                )}
+                <CalendarEntry
+                  className="mb-2 bg-gray-400 opacity-[0.40]"
+                  scheduledData={processedPostInDate}
+                />
+                <CalendarEntry
+                  className="bg-passes-primary-color"
+                  scheduledData={pendingPostInDate}
+                />
               </div>
             </div>
           )

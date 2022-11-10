@@ -52,7 +52,7 @@ const ListUnmemo: FC<ListProps> = ({ list, removable }) => {
           ) : (
             <div className="flex h-[45px] w-[45px] items-center justify-center">
               <IconTooltip
-                Icon={AlertIcon}
+                icon={AlertIcon}
                 position="top"
                 tooltipClassName="w-[100px]"
                 tooltipText="Automatic list"

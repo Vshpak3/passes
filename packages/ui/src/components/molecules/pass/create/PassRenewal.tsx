@@ -7,7 +7,7 @@ export const PassRenewal = () => (
     <hr className="border-passes-dark-200" />
     <div className="my-4 flex items-center gap-4">
       <IconTooltip
-        Icon={InfoIcon}
+        icon={InfoIcon}
         position="top"
         tooltipText="Renewal time can not be changed"
       />

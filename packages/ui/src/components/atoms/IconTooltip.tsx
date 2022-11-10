@@ -1,20 +1,21 @@
 import classNames from "classnames"
-import { FC, SVGProps, useState } from "react"
+import { FC, PropsWithChildren, SVGProps, useState } from "react"
 
 interface IconTooltipProps {
-  Icon: FC<SVGProps<SVGSVGElement>>
+  icon?: FC<SVGProps<SVGSVGElement>>
   position: "top" | "right" | "bottom" | "left"
   tooltipText: string | null
   className?: string
   tooltipClassName?: string
 }
 
-export const IconTooltip: FC<IconTooltipProps> = ({
-  Icon,
+export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
+  icon: Icon,
   position,
   tooltipText,
   className,
-  tooltipClassName
+  tooltipClassName,
+  children
 }) => {
   const [tooltipStatus, setTooltipStatus] = useState<boolean>(false)
 
@@ -54,7 +55,8 @@ export const IconTooltip: FC<IconTooltipProps> = ({
       onMouseEnter={() => setTooltipStatus(true)}
       onMouseLeave={() => setTooltipStatus(false)}
     >
-      <Icon />
+      {Icon && <Icon />}
+      {children}
       {tooltipStatus && (
         <div
           className={classNames(

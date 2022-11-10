@@ -159,7 +159,7 @@ export const PassCard: FC<PassCardProps> = ({
             )}
           </span>
           <IconTooltip
-            Icon={InfoIcon}
+            icon={InfoIcon}
             position="top"
             tooltipText="Test tooltip text"
           />

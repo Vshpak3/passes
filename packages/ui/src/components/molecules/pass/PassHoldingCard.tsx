@@ -99,7 +99,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
               </div>
               <div className="mt-[12px]">
                 <IconTooltip
-                  Icon={InfoIcon}
+                  icon={InfoIcon}
                   position="top"
                   tooltipText="Test tooltip text"
                 />
