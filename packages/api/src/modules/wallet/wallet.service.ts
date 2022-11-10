@@ -317,7 +317,7 @@ export class WalletService {
         throw new BadRequestException('invalid chain specified')
     }
 
-    let id: string | null = null
+    let id: string | undefined = undefined
     await this.dbWriter.transaction(async (trx) => {
       const wallet = await trx<WalletEntity>(WalletEntity.table)
         .where({ address: walletAddress, chain: createWalletDto.chain })
@@ -348,7 +348,7 @@ export class WalletService {
       }
     })
 
-    return new CreateWalletResponseDto(id)
+    return new CreateWalletResponseDto(id || null)
   }
 
   async createUnauthenticatedWallet(
