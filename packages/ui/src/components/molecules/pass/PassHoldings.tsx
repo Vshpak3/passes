@@ -56,6 +56,7 @@ export const PassHoldings: FC = () => {
         fetchProps={fetchProps}
         keyValue="/passholdings"
         options={{ revalidateOnMount: true }}
+        keySelector="passHolderId"
       />
     </div>
   )

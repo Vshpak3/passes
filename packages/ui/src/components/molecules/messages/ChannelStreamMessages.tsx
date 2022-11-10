@@ -59,6 +59,7 @@ const ChannelStreamMessagesUnmemo = ({
       fetchProps={fetchProps}
       inverse
       keyValue={`messages/${channelId}`}
+      keySelector="messageId"
       loadingElement={
         <div className="sticky top-[0px] left-0 z-50 h-0.5 w-full">
           <div

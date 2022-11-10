@@ -107,6 +107,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
         }}
         fetchProps={fetchProps}
         keyValue="vault"
+        keySelector="contentId"
         node={node}
         scrollableTarget={scroll ? "scrollableDiv" : undefined}
         style={{ height: "100%" }}

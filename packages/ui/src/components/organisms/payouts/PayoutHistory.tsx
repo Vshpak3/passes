@@ -137,6 +137,7 @@ export const PayoutHistory = () => {
           }}
           fetchProps={fetchProps}
           keyValue="/payouts"
+          keySelector="payoutId"
           options={{
             revalidateOnMount: true,
             refreshInterval: ms("3 seconds")

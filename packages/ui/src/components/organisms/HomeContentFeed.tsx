@@ -75,6 +75,7 @@ export const HomeContentFeed: FC = () => {
           }}
           fetchProps={{}}
           keyValue="/feed"
+          keySelector="postId"
           loadingElement={ContentFeedLoading}
         />
       </div>

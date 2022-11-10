@@ -124,6 +124,7 @@ export const ChannelList: FC<ChannelListProps> = ({
             }}
             fetchProps={fetchProps}
             keyValue="/channels"
+            keySelector="channelMemberId"
             node={node}
             options={{
               revalidateOnMount: false,

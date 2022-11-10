@@ -143,6 +143,7 @@ const PaymentHistory = () => {
               }}
               fetchProps={fetchProps}
               keyValue="/payins"
+              keySelector="payinId"
               options={{ revalidateOnMount: true }}
             />
           </div>

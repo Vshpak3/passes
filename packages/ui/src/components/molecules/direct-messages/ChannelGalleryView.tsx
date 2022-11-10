@@ -53,6 +53,7 @@ export const ChannelGalleryView: FC<ChannelGalleryViewProps> = ({
           paid
         }}
         keyValue="messages"
+        keySelector="messageId"
       />
     </div>
   )

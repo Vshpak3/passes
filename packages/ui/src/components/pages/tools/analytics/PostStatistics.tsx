@@ -46,6 +46,7 @@ const PostStatistics = () => {
         fetch={getPosts}
         fetchProps={{}}
         keyValue="posts"
+        keySelector="postId"
         options={{ revalidateOnMount: true }}
       />
     </div>
