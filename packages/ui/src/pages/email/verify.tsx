@@ -10,6 +10,7 @@ import {
   AuthStates
 } from "src/helpers/authRouter"
 import { queryParam } from "src/helpers/query"
+import { sleep } from "src/helpers/sleep"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
@@ -49,12 +50,20 @@ const VerifyEmailPage = () => {
         return
       }
 
-      await auth(async () => {
-        const api = new AuthApi()
-        return await api.verifyUserEmail({
-          verifyEmailDto: { verificationToken: id }
-        })
-      })
+      await auth(
+        async () => {
+          const api = new AuthApi()
+          return await api.verifyUserEmail({
+            verifyEmailDto: { verificationToken: id }
+          })
+        },
+        async (token) => {
+          // Route manually so we can show the confirmation screen before routing
+          await sleep("3 seconds")
+          authRouter(safePush, token)
+        },
+        false
+      )
     } catch (error: unknown) {
       console.error(error)
       setError(

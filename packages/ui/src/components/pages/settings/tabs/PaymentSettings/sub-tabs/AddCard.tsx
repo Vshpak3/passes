@@ -52,7 +52,7 @@ interface CardForm {
 const cardForm = object({
   "card-holder": string()
     .required("Name is required")
-    .matches(FULL_NAME_REGEX, "Must include first and last name"),
+    .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
   "card-number": string().required("Card number is required"),
   "exp-month": string().required("Month is required"),
   "exp-year": string().required("Year is required"),
