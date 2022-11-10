@@ -256,7 +256,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                     Price
                   </div>
                   <NumberInput
-                    className="h-[40px] w-full rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                    className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
                     maxInput={MAX_PAID_MESSAGE_PRICE}
                     name="price"
                     register={register}
