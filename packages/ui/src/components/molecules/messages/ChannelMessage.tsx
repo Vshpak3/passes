@@ -121,28 +121,27 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
             {!!tipAmount && tipComponent}
           </div>
 
-          {ownsMessage &&
-            (pending ? (
-              <span className="mt-2 flex flex-row items-center gap-1 text-[11px] text-[#767676]">
-                <SpinnerIcon />
-                Pending...
-              </span>
-            ) : (
-              <>
-                {isAfter(sentAt, subDays(new Date(), 1)) ? (
-                  <TimeAgo
-                    className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
-                    date={sentAt ?? ""}
-                    key={messageId}
-                    minPeriod={30}
-                  />
-                ) : (
-                  <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
-                    {sentAt?.toLocaleDateString()}
-                  </span>
-                )}
-              </>
-            ))}
+          {pending ? (
+            <span className="mt-2 flex flex-row items-center gap-1 text-[11px] text-[#767676]">
+              <SpinnerIcon />
+              Pending...
+            </span>
+          ) : (
+            <>
+              {isAfter(sentAt, subDays(new Date(), 1)) ? (
+                <TimeAgo
+                  className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
+                  date={sentAt ?? ""}
+                  key={messageId}
+                  minPeriod={30}
+                />
+              ) : (
+                <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
+                  {sentAt?.toLocaleDateString()}
+                </span>
+              )}
+            </>
+          )}
         </div>
       </div>
       {showReadAt && (
