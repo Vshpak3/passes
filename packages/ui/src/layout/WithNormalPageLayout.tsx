@@ -38,7 +38,7 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           options.background ? "background-gradient" : "bg-passes-black",
-          "relative w-full"
+          "relative w-full pb-16 lg:pb-0"
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
