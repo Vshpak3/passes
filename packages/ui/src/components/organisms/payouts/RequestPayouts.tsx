@@ -11,6 +11,7 @@ import { useCallback, useRef, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { errorMessage } from "src/helpers/error"
+import { formatCurrency } from "src/helpers/formatters"
 import {
   PayoutFrequencyEnum,
   useCreatorSettings
@@ -70,7 +71,7 @@ export const RequestPayouts = () => {
             Balance Available
           </div>
           <div className="text-[28px] font-[700]">
-            ${userBalance?.amount.toFixed(2)}
+            {formatCurrency(userBalance?.amount ?? 0)}
           </div>
         </div>
         <div className="flex-1">
