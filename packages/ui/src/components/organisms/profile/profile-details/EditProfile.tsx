@@ -196,8 +196,9 @@ export const EditProfile: FC<EditProfileProps> = ({
       footer={
         <div className="left-20 mx-0 my-5 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
           <Button
-            className="flex w-full items-center justify-center self-center py-[10px] text-center"
+            className="flex w-full items-center justify-center self-center text-center"
             disabled={isSubmitting}
+            fontSize={16}
             onClick={handleSubmit(onSubmit)}
             variant="pink"
           >
