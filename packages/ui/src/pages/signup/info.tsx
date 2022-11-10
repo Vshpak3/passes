@@ -15,6 +15,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
+import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
 import { Wordmark } from "src/components/atoms/Wordmark"
 import { MIN_USER_AGE_IN_YEARS } from "src/config/age"
@@ -267,6 +268,7 @@ const SignupInfoPage: FC = () => {
               <EnterIcon />
             </Button>
           </form>
+          <SignupFooter />
         </div>
       </div>
     </div>
