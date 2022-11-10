@@ -4,6 +4,8 @@ import CheckIcon from "public/icons/check.svg"
 import FilterIcon from "public/icons/three-lines-icon.svg"
 import { useCallback, useRef, useState } from "react"
 
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+
 const orderTypeDisplayNames: Record<string, string> = {
   name: "Name",
   username: "Username",
@@ -40,6 +42,8 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
 }: SortListPopupProps<OrderType, Order>) => {
   const [isPopperOpen, setIsPopperOpen] = useState(false)
   const ref = useRef(null)
+  const radioGroupRef = useRef(null)
+  useOnClickOutside(radioGroupRef, () => setIsPopperOpen(false))
 
   const handleOpenPopper = useCallback(
     () => setIsPopperOpen((state) => !state),
@@ -82,7 +86,7 @@ export const SortDropdown = <OrderType extends string, Order = "desc">({
       >
         {({ TransitionProps }) => (
           <Fade {...TransitionProps} timeout={350}>
-            <div>
+            <div ref={radioGroupRef}>
               <RadioGroup
                 className="w-[254px] rounded-[15px] border border-[rgba(255,255,255,0.15)] bg-[#12070E] p-[26px] backdrop-blur-[15px]"
                 onChange={onChange}
