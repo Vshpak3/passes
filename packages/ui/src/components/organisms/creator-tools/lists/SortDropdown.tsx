@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react"
 
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
-const orderTypeDisplayNames: Record<string, string> = {
+export const orderTypeDisplayNames: Record<string, string> = {
   name: "Name",
   username: "Username",
   "updated at": "Updated At",

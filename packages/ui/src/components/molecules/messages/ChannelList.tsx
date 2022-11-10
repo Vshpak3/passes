@@ -15,6 +15,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import {
+  orderTypeDisplayNames,
   SortDropdown,
   SortOption
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
@@ -90,14 +91,17 @@ export const ChannelList: FC<ChannelListProps> = ({
               placeholder="Search ..."
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between pt-5 pb-3">
             <div className="ml-auto mr-0">
               {!!user?.isCreator && (
-                <SortDropdown
-                  onSelect={onSortSelect}
-                  options={sortOptions}
-                  selection={{ orderType: channelOrderType }}
-                />
+                <div className="flex items-start gap-[5px]">
+                  <SortDropdown
+                    onSelect={onSortSelect}
+                    options={sortOptions}
+                    selection={{ orderType: channelOrderType }}
+                  />
+                  {orderTypeDisplayNames[channelOrderType]}
+                </div>
               )}
             </div>
           </div>
