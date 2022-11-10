@@ -75,7 +75,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               <div className="flex flex-col items-start gap-[3px] pl-3">
                 <MessagesNameDisplay
                   displayName={selectedChannel.otherUserDisplayName}
-                  isCreator={false} // TODO
+                  isCreator={selectedChannel.otherUserIsCreator}
                   linked
                   username={selectedChannel.otherUserUsername}
                 />

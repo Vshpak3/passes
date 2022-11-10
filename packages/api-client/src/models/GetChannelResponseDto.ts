@@ -103,6 +103,12 @@ export interface GetChannelResponseDto {
      * @memberof GetChannelResponseDto
      */
     otherUserDisplayName: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetChannelResponseDto
+     */
+    otherUserIsCreator: boolean;
 }
 
 /**
@@ -123,6 +129,7 @@ export function instanceOfGetChannelResponseDto(value: object): boolean {
     isInstance = isInstance && "unread" in value;
     isInstance = isInstance && "otherUserUsername" in value;
     isInstance = isInstance && "otherUserDisplayName" in value;
+    isInstance = isInstance && "otherUserIsCreator" in value;
 
     return isInstance;
 }
@@ -151,6 +158,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'unread': json['unread'],
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
+        'otherUserIsCreator': json['otherUserIsCreator'],
     };
 }
 
@@ -177,6 +185,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         'unread': value.unread,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
+        'otherUserIsCreator': value.otherUserIsCreator,
     };
 }
 

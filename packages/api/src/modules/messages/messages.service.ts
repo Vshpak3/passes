@@ -175,6 +175,7 @@ export class MessagesService {
         `${ChannelEntity.table}.id as channel_id`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
+        `${UserEntity.table}.is_creator as other_user_is_creator`,
       ])
       .first()
 
@@ -204,6 +205,7 @@ export class MessagesService {
         `${ChannelEntity.table}.id as channel_id`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
+        `${UserEntity.table}.is_creator as other_user_is_creator`,
       ])
       .first()
 
@@ -236,6 +238,7 @@ export class MessagesService {
         `${ChannelEntity.table}.preview_text`,
         `${UserEntity.table}.username as other_user_username`,
         `${UserEntity.table}.display_name as other_user_display_name`,
+        `${UserEntity.table}.is_creator as other_user_is_creator`,
       ])
 
     switch (orderType) {

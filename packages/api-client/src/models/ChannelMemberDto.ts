@@ -103,6 +103,12 @@ export interface ChannelMemberDto {
      * @memberof ChannelMemberDto
      */
     otherUserDisplayName: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChannelMemberDto
+     */
+    otherUserIsCreator: boolean;
 }
 
 /**
@@ -123,6 +129,7 @@ export function instanceOfChannelMemberDto(value: object): boolean {
     isInstance = isInstance && "unread" in value;
     isInstance = isInstance && "otherUserUsername" in value;
     isInstance = isInstance && "otherUserDisplayName" in value;
+    isInstance = isInstance && "otherUserIsCreator" in value;
 
     return isInstance;
 }
@@ -151,6 +158,7 @@ export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'unread': json['unread'],
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
+        'otherUserIsCreator': json['otherUserIsCreator'],
     };
 }
 
@@ -177,6 +185,7 @@ export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
         'unread': value.unread,
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
+        'otherUserIsCreator': value.otherUserIsCreator,
     };
 }
 
