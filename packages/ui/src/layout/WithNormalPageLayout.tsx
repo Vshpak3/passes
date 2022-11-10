@@ -80,6 +80,7 @@ export const WithNormalPageLayout = (
                     {headerTitle}
                   </SectionTitle>
                 )}
+                <div className="my-2" />
                 {page}
               </AuthWrapper>
             </main>

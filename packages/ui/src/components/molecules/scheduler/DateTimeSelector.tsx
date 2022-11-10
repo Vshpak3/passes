@@ -11,11 +11,11 @@ import { ChevronRight } from "src/icons/ChevronRight"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 
 interface DateTimeSelectedProps {
-  showDateYearModal: (event: React.MouseEvent<HTMLElement>) => void
+  toggleMonthYearPopper: (event: React.MouseEvent<HTMLElement>) => void
 }
 
 export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
-  showDateYearModal
+  toggleMonthYearPopper
 }) => {
   const { month, year, setMonth, setYear } = useContext(SchedulerContext)
 
@@ -55,7 +55,12 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
           width="24"
         />
       </button>
-      <button className="mx-2" onClick={showDateYearModal} type="button">
+      <button
+        className="mx-2"
+        onClick={toggleMonthYearPopper}
+        onMouseDown={(e) => e.stopPropagation()}
+        type="button"
+      >
         <span className="w-[100px] select-none">
           {format(new Date(year, month, 1), "MMMM yyyy")}
         </span>

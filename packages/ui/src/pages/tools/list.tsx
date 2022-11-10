@@ -101,9 +101,10 @@ const FanLists: NextPage = () => {
   const keyedComponent = useCallback(({ arg }: ComponentArg<ListDto>) => {
     return <List list={arg} removable />
   }, [])
+
   return (
     <div className="text-white">
-      <div className="mt-4 flex items-center justify-between px-4">
+      <div className="flex items-center justify-between px-4">
         <div className="relative flex items-center justify-end">
           <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
           <input

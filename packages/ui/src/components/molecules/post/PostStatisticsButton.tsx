@@ -1,5 +1,5 @@
 import GraphIcon from "public/icons/graph.svg"
-import React, { FC, useState } from "react"
+import { FC, useState } from "react"
 
 import {
   PostStatisticsMenu,
@@ -13,8 +13,6 @@ type PostStatisticsButtonProps = Omit<PostStatisticsMenuProps, "onClose">
 const PostStatisticsButton: FC<PostStatisticsButtonProps> = (menuProps) => {
   const [showPostStatisticsMenu, setShowPostStatisticsMenu] = useState(false)
 
-  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation()
-
   const toggleMenu = () => setShowPostStatisticsMenu(!showPostStatisticsMenu)
 
   return (
@@ -22,7 +20,7 @@ const PostStatisticsButton: FC<PostStatisticsButtonProps> = (menuProps) => {
       <button
         className="flex items-center rounded-lg bg-white/10 py-[5px] px-2.5"
         onClick={toggleMenu}
-        onMouseDown={stopPropagation}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <span className="hidden whitespace-nowrap text-xs font-medium leading-[22px] md:block">
           Post Statistics

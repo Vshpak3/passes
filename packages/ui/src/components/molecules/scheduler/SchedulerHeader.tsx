@@ -27,9 +27,11 @@ export const SchedulerHeader: FC = () => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   const [selectionDate, setSelectionDate] = useState<Date | null>(null)
 
-  const handleShowMonthYearPopper = (event: React.MouseEvent<HTMLElement>) => {
+  const handleToggleMonthYearPopper = (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
     setAnchorEl(event.currentTarget)
-    setMonthYearPopperOpen(true)
+    setMonthYearPopperOpen(!monthYearPopperOpen)
   }
 
   const canBeMonthYearPopperOpen = monthYearPopperOpen && Boolean(anchorEl)
@@ -41,13 +43,9 @@ export const SchedulerHeader: FC = () => {
     setMonthYearPopperOpen(false)
   })
 
-  if (isMobile === undefined) {
-    return null
-  }
-
   return (
     <>
-      {/* month year picker */}
+      {/* Month-Year Picker */}
       <Popper
         anchorEl={anchorEl}
         id={monthYearPopperId}
@@ -88,12 +86,13 @@ export const SchedulerHeader: FC = () => {
         selectionDate={selectionDate as Date}
       />
 
-      <div className="relative flex items-center justify-center pb-8">
+      {/* Schedule new post */}
+      <div className="relative flex items-center justify-center pb-6">
         <div className="flex items-center justify-between text-base font-bold md:w-[300px] md:text-2xl">
           <div className="flex items-center gap-1">
-            <div className="hidden md:flex">
-              <DateTimeSelected showDateYearModal={handleShowMonthYearPopper} />
-            </div>
+            <DateTimeSelected
+              toggleMonthYearPopper={handleToggleMonthYearPopper}
+            />
           </div>
         </div>
         <div className="absolute right-0">
@@ -113,9 +112,6 @@ export const SchedulerHeader: FC = () => {
             </button>
           </CalendarPicker>
         </div>
-      </div>
-      <div className="relative bottom-[35px] flex items-center justify-center md:hidden">
-        <DateTimeSelected showDateYearModal={handleShowMonthYearPopper} />
       </div>
     </>
   )

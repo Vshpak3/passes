@@ -92,8 +92,6 @@ export const CalendarPicker: FC<PropsWithChildren<CalendarPickerProps>> = ({
     setAnchorEl(null)
   }
 
-  const stopPropagation = (e: React.MouseEvent) => e.stopPropagation()
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget)
   }
@@ -116,7 +114,7 @@ export const CalendarPicker: FC<PropsWithChildren<CalendarPickerProps>> = ({
       <div
         aria-describedby={id}
         onClick={handleClick}
-        onMouseDown={stopPropagation}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         {children}
       </div>

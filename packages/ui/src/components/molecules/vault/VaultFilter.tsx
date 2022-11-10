@@ -43,34 +43,32 @@ export const VaultFilterContainer: FC<VaultFilterContainerProps> = ({
   setVaultCategory
 }) => {
   return (
-    <div className="flex">
-      <div className="mt-5 flex w-full flex-col justify-start">
-        <div className="mb-[15px] flex items-start">
-          {VAULT_CATEGORY_OPTIONS.map((category, index) => {
-            return (
-              <VaultFilterOption
-                buttonStyle={filterStyles.button}
-                isActive={category.id === vaultCategory}
-                key={index}
-                label={category.label}
-                onClick={() => setVaultCategory(category.id)}
-              />
-            )
-          })}
-        </div>
-        <div className="flex items-center">
-          {VAULT_TYPE_OPTIONS.map((type, index) => {
-            return (
-              <VaultFilterOption
-                buttonStyle={filterStyles.media}
-                isActive={type.id === vaultType}
-                key={index}
-                label={type.label}
-                onClick={() => setVaultType(type.id)}
-              />
-            )
-          })}
-        </div>
+    <div className="flex w-full flex-col justify-start">
+      <div className="mb-[15px] flex items-start">
+        {VAULT_CATEGORY_OPTIONS.map((category, index) => {
+          return (
+            <VaultFilterOption
+              buttonStyle={filterStyles.button}
+              isActive={category.id === vaultCategory}
+              key={index}
+              label={category.label}
+              onClick={() => setVaultCategory(category.id)}
+            />
+          )
+        })}
+      </div>
+      <div className="flex items-center">
+        {VAULT_TYPE_OPTIONS.map((type, index) => {
+          return (
+            <VaultFilterOption
+              buttonStyle={filterStyles.media}
+              isActive={type.id === vaultType}
+              key={index}
+              label={type.label}
+              onClick={() => setVaultType(type.id)}
+            />
+          )
+        })}
       </div>
     </div>
   )

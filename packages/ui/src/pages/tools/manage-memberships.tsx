@@ -6,6 +6,11 @@ import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 const ManagePasses = () => {
   return (
     <div className="text-white">
+      <div className="ml-4 flex items-center justify-between py-16">
+        <div className="text-xl">
+          This page is for dev and staging. Do not review.
+        </div>
+      </div>
       <div className="flex items-center justify-between p-4">
         <div className="relative mr-10 flex items-center justify-end">
           <Link href="/tools/manage-passes/create">
@@ -15,11 +20,6 @@ const ManagePasses = () => {
               </div>
             </Button>
           </Link>
-        </div>
-      </div>
-      <div className="ml-4 flex items-center justify-between py-16">
-        <div className="text-xl">
-          This page is for dev and staging. Do not review.
         </div>
       </div>
     </div>
