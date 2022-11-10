@@ -9,7 +9,7 @@ import { SidebarDropdown } from "src/components/molecules/Sidebar/SidebarLayout/
 import { SidebarItem } from "src/components/molecules/Sidebar/SidebarLayout/SidebarItems"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import { isOver18 } from "src/helpers/isOver18"
+import { isOverMinCreatorAge } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
 
 interface SidebarProps {
@@ -55,7 +55,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               <AuthWrapper>
                 {user?.isCreator ? (
                   <NewPostButton />
-                ) : isOver18(user) ? (
+                ) : isOverMinCreatorAge(user) ? (
                   <BecomeCreatorButton />
                 ) : null}
               </AuthWrapper>

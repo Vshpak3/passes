@@ -17,15 +17,13 @@ import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
+import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX } from "src/config/signup"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-
-export const PASSWORD_MIN_LENGTH = 8
-export const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-zA-Z])(?=\S+$).{8,}$/
 
 export interface SignupInitialPageSchema {
   email: string
@@ -49,7 +47,7 @@ export const passwordFormSchema = {
       PASSWORD_REGEX,
       "Password must contain at least one letter and number"
     ),
-  confirmPassword: string()
+  _confirmPassword: string()
     .required("Enter a password")
     .min(PASSWORD_MIN_LENGTH, "Password should be at least 8 characters")
     .matches(
@@ -58,7 +56,13 @@ export const passwordFormSchema = {
     )
     .test("match", "Passwords do not match", function (confirmPassword) {
       return confirmPassword === this?.parent?.password
-    })
+    }),
+  get confirmPassword() {
+    return this._confirmPassword
+  },
+  set confirmPassword(value) {
+    this._confirmPassword = value
+  }
 }
 
 const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({

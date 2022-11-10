@@ -19,12 +19,12 @@ import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
+import { PASSWORD_MIN_LENGTH } from "src/config/signup"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { deleteAllCookies } from "./logout"
-import { PASSWORD_MIN_LENGTH } from "./signup"
 
 export interface LoginPageSchema {
   email: string
