@@ -10,6 +10,7 @@ import {
 import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
+import { IntercomWrapper } from "./IntercomWrapper"
 
 interface LoginWrapperProps {
   routeOnlyIfAuth?: boolean
@@ -34,20 +35,6 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   }, [router])
 
   return <>{ready ? children : <div className="h-screen bg-black" />}</>
-}
-
-// eslint-disable-next-line react/no-multi-comp
-const IntercomWrapper: FC<PropsWithChildren> = ({ children }) => {
-  const router = useRouter()
-  const { hardShutdown } = useIntercom()
-
-  router.events.on("routeChangeStart", (path: string) => {
-    if (path === authStateToRoute(AuthStates.AUTHED)) {
-      hardShutdown()
-    }
-  })
-
-  return <>{children}</>
 }
 
 export const WithLoginPageLayout = (

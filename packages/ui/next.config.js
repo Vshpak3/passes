@@ -5,8 +5,8 @@ const ContentSecurityPolicy = [
   `default-src 'self';`,
   // Allows connections to https or wss on all domains
   `connect-src 'self' https: wss:;`,
-  // Allows fonts to be loaded from embedded data
-  `font-src 'self' data:;`,
+  // Allows fonts to be loaded from embedded data and Intercom
+  `font-src 'self' data: js.intercomcdn.com;`,
   // Necessary to load Persona
   `frame-src 'self' withpersona.com;`,
   // Allows images to be loaded from embedded data, blobs (for upload), and the CDN

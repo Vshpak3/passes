@@ -12,6 +12,7 @@ import { MonthlyMemberships } from "src/components/organisms/home/MonthlyMembers
 import { Navbar } from "src/components/organisms/home/Navbar"
 import { SupportingCreators } from "src/components/organisms/home/SupportingCreators"
 import { TrackStats } from "src/components/organisms/home/TrackStats"
+import { IntercomWrapper } from "../../layout/IntercomWrapper"
 
 const HomePage: NextPage = () => {
   const hidden = true
@@ -20,23 +21,25 @@ const HomePage: NextPage = () => {
       appId={process.env.NEXT_PUBLIC_INTERCOM_APP_ID ?? ""}
       autoBoot
     >
-      <div className="mx-auto bg-black">
-        <Navbar />
-        <Hero />
-        {!hidden && (
-          <>
-            <CreatorCarousel />
-            <MonthlyMemberships />
-            <ConnectWithFans />
-            <TrackStats />
-            <FanTips />
-            <FAQ /> {/* eslint-disable-line react/jsx-pascal-case */}
-            <SupportingCreators />
-          </>
-        )}
-        <Backers />
-        <Footer />
-      </div>
+      <IntercomWrapper>
+        <div className="mx-auto bg-black">
+          <Navbar />
+          <Hero />
+          {!hidden && (
+            <>
+              <CreatorCarousel />
+              <MonthlyMemberships />
+              <ConnectWithFans />
+              <TrackStats />
+              <FanTips />
+              <FAQ /> {/* eslint-disable-line react/jsx-pascal-case */}
+              <SupportingCreators />
+            </>
+          )}
+          <Backers />
+          <Footer />
+        </div>
+      </IntercomWrapper>
     </IntercomProvider>
   )
 }
