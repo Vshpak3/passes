@@ -17,7 +17,7 @@ const AccountInformation = () => {
       withBack
     >
       <div className="mt-6 space-y-5 border-b border-passes-dark-200 pl-2.5 pb-2.5">
-        <button
+        {/* <button
           className="flex w-full items-center justify-between"
           onClick={() => addTabToStackHandler(SubTabsEnum.ProfilePicture)}
         >
@@ -28,7 +28,7 @@ const AccountInformation = () => {
             </p>
           </div>
           <ChevronRightIcon />
-        </button>
+        </button> */}
 
         <button
           className="flex w-full items-center justify-between"
