@@ -166,7 +166,7 @@ const SignupEmailPage: FC = () => {
                   <EnterIcon />
                 </Button>
               </form>
-              <SignupFooter />
+              <SignupFooter cancellable={!isSubmitting} />
             </>
           )}
         </div>
