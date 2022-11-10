@@ -4,7 +4,7 @@ import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Payouts = () => {
   return (
-    <div className="flex flex-col gap-[24px] overflow-hidden px-6">
+    <div className="my-4 flex flex-col gap-[24px] overflow-hidden px-6">
       <RequestPayouts />
       <PayoutHistory />
     </div>

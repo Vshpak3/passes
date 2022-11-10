@@ -103,7 +103,7 @@ const FanLists: NextPage = () => {
   }, [])
 
   return (
-    <div className="pt-3 text-white">
+    <div className="my-4 text-white">
       <div className="flex items-center justify-between px-4">
         <div className="relative flex items-center justify-end">
           <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />

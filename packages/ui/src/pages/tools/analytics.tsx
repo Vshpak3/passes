@@ -37,7 +37,7 @@ const Analytics: NextPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-[24px] overflow-hidden px-6">
+    <div className="my-4 flex flex-col gap-[24px] overflow-hidden px-6">
       <AnalyticsHeader balance={userBalance?.amount} />
       <div className="flex flex-row gap-[16px] overflow-hidden">
         {ANALYTICS_OPTIONS.map((tab) => (

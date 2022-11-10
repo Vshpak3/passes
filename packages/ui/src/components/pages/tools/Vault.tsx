@@ -43,7 +43,7 @@ export const Vault: FC<VaultProps> = ({
   }
 
   return (
-    <div className="h-full w-full px-2 md:px-5">
+    <div className="my-4 h-full w-full px-2 md:px-5">
       <VaultNavigation
         addNewMedia={addNewMedia}
         deletedItems={deletedItems}

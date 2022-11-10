@@ -32,7 +32,7 @@ const SchedulerPage: FC = () => {
 
   return (
     <SchedulerContext.Provider value={contextValue}>
-      <div className="px-4 pt-5">
+      <div className="my-5 px-4">
         <SchedulerHeader />
         {!hasInitialFetch && !data ? (
           <div className="pt-[100px]">

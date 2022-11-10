@@ -82,7 +82,6 @@ export const WithNormalPageLayout = (
                     {headerTitle}
                   </SectionTitle>
                 )}
-                {options.consistent ?? <div className="my-2" />}
                 {page}
               </AuthWrapper>
             </main>
