@@ -30,10 +30,8 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
     <Dialog
       className="w-screen overflow-auto border-[0.5px] border-passes-gray-600 transition-all md:max-h-[70vh] md:max-w-[40%] lg:max-w-[40%]"
       onClose={onCancel}
-      onTriggerClick={onCancel}
       open={isOpen}
       transition={false}
-      triggerClassName="flex items-center justify-center self-center lg:pt-8"
     >
       <NewPostEditor
         handleSavePost={handleSavePost}
