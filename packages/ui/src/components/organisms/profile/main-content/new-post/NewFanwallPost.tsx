@@ -2,12 +2,12 @@ import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar/close.svg"
-import { FC, useState } from "react"
+import { FC, useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
-import { useProfile } from "src/hooks/profile/useProfile"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
+import { ProfileContext } from "src/pages/[username]"
 import { NewPostTextFormProps } from "./NewPostEditor"
 
 const CustomMentionEditor = dynamic(
@@ -27,7 +27,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   createPost,
   creatorId
 }) => {
-  const { profile } = useProfile()
+  const { profile } = useContext(ProfileContext)
   const [extended, setExtended] = useState(false)
   const [isReset, setIsReset] = useState(false)
 

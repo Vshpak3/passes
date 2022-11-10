@@ -1,6 +1,6 @@
 import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
-import { FC, useState } from "react"
+import { FC, useContext, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
@@ -9,8 +9,8 @@ import {
   DropDownBlock,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
-import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
+import { ProfileContext } from "src/pages/[username]"
 import { EditProfile } from "./EditProfile"
 import { EditProfileButton } from "./EditProfileButton"
 import { ProfileImage } from "./ProfileImage"
@@ -21,7 +21,8 @@ export const ProfileDetails: FC = () => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
   const { user } = useUser()
-  const { ownsProfile, profileUserId, profileUsername, profile } = useProfile()
+  const { ownsProfile, profileUserId, profileUsername, profile } =
+    useContext(ProfileContext)
 
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
     useState<boolean>(false)

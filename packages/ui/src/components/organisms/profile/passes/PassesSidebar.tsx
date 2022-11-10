@@ -1,9 +1,11 @@
+import { useContext } from "react"
+
 import { Loader } from "src/components/atoms/Loader"
-import { useProfile } from "src/hooks/profile/useProfile"
+import { ProfileContext } from "src/pages/[username]"
 import { CreatorPinnedPasses } from "./CreatedPinnedPasses"
 
 export const PassesSidebar = () => {
-  const { profile, profileUserId, loadingProfile } = useProfile()
+  const { profile, profileUserId, loadingProfile } = useContext(ProfileContext)
 
   return (
     <>

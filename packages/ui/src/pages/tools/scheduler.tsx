@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from "react"
+import { createContext, FC, useMemo, useState } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { Calendar } from "src/components/molecules/scheduler/Calendar"
@@ -7,7 +7,7 @@ import { SchedulerHeader } from "src/components/molecules/scheduler/SchedulerHea
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-export const SchedulerContext = React.createContext({
+export const SchedulerContext = createContext({
   month: 0,
   year: 0,
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars

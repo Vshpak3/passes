@@ -1,11 +1,11 @@
 import { ContentDto, CreatePostRequestDto, PostDto } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, useContext, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Post } from "src/components/organisms/profile/post/Post"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { usePost } from "src/hooks/profile/usePost"
-import { useProfile } from "src/hooks/profile/useProfile"
+import { ProfileContext } from "src/pages/[username]"
 import { NewPostEditor } from "./NewPostEditor"
 
 interface NewPostsProps {
@@ -18,7 +18,7 @@ export const NewPosts: FC<NewPostsProps> = ({
   postUpdates
 }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
-  const { profile, profileUsername, profileUserId } = useProfile()
+  const { profile, profileUsername, profileUserId } = useContext(ProfileContext)
   const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
   const { createPost } = usePost()
 

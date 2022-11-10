@@ -1,13 +1,13 @@
-import { FC } from "react"
+import { FC, useContext } from "react"
 
 import { formatText } from "src/helpers/formatters"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
-import { useProfile } from "src/hooks/profile/useProfile"
+import { ProfileContext } from "src/pages/[username]"
 import { ProfileSocialMedia } from "./ProfileSocialMedia"
 import { ProfileStats } from "./ProfileStats"
 
 export const ProfileInformation: FC = () => {
-  const { profile, profileUsername, profileUserId } = useProfile()
+  const { profile, profileUsername, profileUserId } = useContext(ProfileContext)
   const { creatorStats } = useCreatorStats(profileUserId)
 
   return (

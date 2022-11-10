@@ -1,4 +1,4 @@
-import { FC, memo, useCallback, useEffect } from "react"
+import { FC, memo, useCallback, useContext, useEffect } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
@@ -7,12 +7,12 @@ import { ProfileNavigationOptions } from "src/components/organisms/profile/main-
 import { PassesSidebar } from "src/components/organisms/profile/passes/PassesSidebar"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { ContentService } from "src/helpers/content"
-import { useProfile } from "src/hooks/profile/useProfile"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
+import { ProfileContext } from "src/pages/[username]"
 
 const ProfileUnmemo: FC = () => {
   const { profile, profileUserId, loadingProfile, hasInitialFetch } =
-    useProfile()
+    useContext(ProfileContext)
 
   const updateProfileBanner = useCallback(async () => {
     if (!profileUserId) {

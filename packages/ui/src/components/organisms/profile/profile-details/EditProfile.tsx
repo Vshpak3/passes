@@ -6,6 +6,7 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useContext,
   useEffect,
   useMemo,
   useState
@@ -24,7 +25,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
-import { useProfile } from "src/hooks/profile/useProfile"
+import { ProfileContext } from "src/pages/[username]"
 import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
@@ -78,7 +79,8 @@ export const EditProfile: FC<EditProfileProps> = ({
   setProfileImageOverride,
   setProfileBannerImageOverride
 }) => {
-  const { profile, profileUserId, mutateManualProfile } = useProfile()
+  const { profile, profileUserId, mutateManualProfile } =
+    useContext(ProfileContext)
 
   const {
     handleSubmit,

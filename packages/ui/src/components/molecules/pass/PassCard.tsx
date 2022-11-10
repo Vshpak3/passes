@@ -2,7 +2,7 @@ import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/square-info-icon.svg"
-import { FC, useState } from "react"
+import { FC, useContext, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -13,8 +13,8 @@ import { redirectUnauthedToLogin } from "src/helpers/authRouter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
-import { useProfile } from "src/hooks/profile/useProfile"
 import { useUser } from "src/hooks/useUser"
+import { ProfileContext } from "src/pages/[username]"
 
 interface PassCardProps {
   pass: PassDto
@@ -39,7 +39,7 @@ export const PassCard: FC<PassCardProps> = ({
 }) => {
   const { setPass } = useBuyPassModal()
 
-  const { profileUsername, profile } = useProfile()
+  const { profileUsername, profile } = useContext(ProfileContext)
 
   const { user } = useUser()
   const router = useRouter()
