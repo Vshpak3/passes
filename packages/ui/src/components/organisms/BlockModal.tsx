@@ -72,7 +72,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
             </div>
           )}
         </RadioGroup.Option>
-        <RadioGroup.Option value="restrict">
+        {/* <RadioGroup.Option value="restrict">
           {({ checked }) => (
             <div className="flex cursor-pointer items-center gap-2">
               <input
@@ -87,7 +87,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
               </Text>
             </div>
           )}
-        </RadioGroup.Option>
+        </RadioGroup.Option> */}
       </RadioGroup>
 
       <div className="mt-7 flex justify-end gap-4">

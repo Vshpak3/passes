@@ -16,7 +16,7 @@ export const ProfileWidget: FC<ProfileWidgetProps> = ({
 }) => {
   return (
     <Link className="w-full" href={`/${user.username}`}>
-      <div className="flex w-full items-center">
+      <div className="flex w-full items-center gap-[10px]">
         <ProfileImage key={user.userId} type="thumbnail" userId={user.userId} />
         <NameDisplay
           displayName={user.displayName}

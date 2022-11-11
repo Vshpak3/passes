@@ -50,18 +50,18 @@ export const NameDisplay: FC<NameDisplayProps> = ({
     <div className="flex w-full flex-col items-center justify-around truncate">
       <div
         className={classNames(
-          "flex w-full flex-row truncate",
+          "flex w-full flex-row gap-x-[4px] truncate",
           displayNameClassName
         )}
       >
         <div className="truncate">{displayName}</div>
         {isCreator && (
-          <span className="ml-2 flex min-h-[18px] min-w-[18px] flex-col justify-center pb-[10px]">
+          <span className="flex min-h-[18px] min-w-[18px] flex-col justify-center pb-[10px]">
             <CheckVerified height={18} width={18} />
           </span>
         )}
       </div>
-      <Text className="ml-2 w-full text-gray-500 lg:block" fontSize={14}>
+      <Text className="w-full text-gray-500 lg:block" fontSize={14}>
         {" @" + username}
       </Text>
     </div>
