@@ -205,10 +205,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     setNode(node)
   }, [])
 
-  const paddingDiv = useMemo(() => {
-    return <div className="w-full py-[15px]" />
-  }, [])
-
   return (
     <>
       {isConnected ? (
@@ -260,9 +256,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               node={node}
               readAt={readAt}
               selectedChannel={selectedChannel}
-            >
-              {paddingDiv}
-            </ChannelStreamMessages>
+            />
           </div>
           {unreadCount > 0 && (
             <div className="absolute bottom-0 z-20 flex w-full items-center justify-center self-center">

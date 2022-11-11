@@ -28,9 +28,8 @@ const ChannelStreamMessagesUnmemo = ({
   messageUpdates,
   node,
   readAt = new Date(),
-  selectedChannel,
-  children
-}: PropsWithChildren<ChannelStreamMessagesProps>) => {
+  selectedChannel
+}: ChannelStreamMessagesProps) => {
   const { user } = useUser()
   const fetchProps = useMemo(() => {
     return { channelId, pending: false, contentOnly: false }
@@ -72,7 +71,7 @@ const ChannelStreamMessagesUnmemo = ({
       scrollableTarget="messagesDiv"
       style={{ display: "flex", flexDirection: "column-reverse" }}
     >
-      {children}
+      <div className="w-full py-[15px]" />
     </InfiniteScrollPagination>
   )
 }
