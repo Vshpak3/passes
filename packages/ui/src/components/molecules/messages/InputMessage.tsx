@@ -43,6 +43,7 @@ import { yupPaid } from "src/helpers/yup"
 import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
+import { formatCurrency } from "../../../helpers/formatters"
 
 export interface InputMessageFormProps {
   text: string
@@ -380,7 +381,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 </div>
                 {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
                   <span className="absolute left-4 top-6 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                    minimum ${minimumTip ? minimumTip.toFixed(2) : "0.00"}
+                    minimum {formatCurrency(minimumTip ?? 0)}
                   </span>
                 ) : null}
                 <NumberInput

@@ -9,6 +9,7 @@ import {
 import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
+import { formatCurrency } from "../../../helpers/formatters"
 
 interface PayinProps {
   payin: PayinDto
@@ -155,7 +156,7 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
-          {"$" + payin.amount.toFixed(2)}
+          {formatCurrency(payin.amount)}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">

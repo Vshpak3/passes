@@ -59,7 +59,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
           <Link href={`/${post.userId}/${post.postId}`}>
             <span className="text-[12px] font-[500]">
-              {"$" + (post.price ?? 0).toFixed(2)}
+              {formatCurrency(post.price ?? 0)}
             </span>
           </Link>
         </div>

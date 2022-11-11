@@ -13,6 +13,7 @@ import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentMod
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { plural } from "src/helpers/plural"
+import { formatCurrency } from "../../../helpers/formatters"
 
 interface BuyMessageModalProps {
   message: MessageDto
@@ -58,7 +59,7 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
             Unlock for
             <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
               <DollarIcon />
-              <span className="ml-1">${price?.toFixed(2)}</span>
+              <span className="ml-1">{formatCurrency(price)}</span>
             </span>
           </span>
         </div>

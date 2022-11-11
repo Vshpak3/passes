@@ -5,6 +5,7 @@ import {
   PayoutMethodDtoMethodEnum
 } from "@passes/api-client"
 import React, { FC } from "react"
+import { formatCurrency } from "../../../helpers/formatters"
 
 interface PayoutProps {
   payout: PayoutDto
@@ -73,7 +74,7 @@ export const Payout: FC<PayoutProps> = ({ payout }) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
-          {"$" + payout.amount.toFixed(2)}
+          {formatCurrency(payout.amount)}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">

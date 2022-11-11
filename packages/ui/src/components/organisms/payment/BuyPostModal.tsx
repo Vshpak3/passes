@@ -13,6 +13,7 @@ import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
 import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
+import { formatCurrency } from "../../../helpers/formatters"
 
 interface BuyPostModalProps {
   post: PostDto
@@ -52,7 +53,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
             Unlock for
             <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
               <DollarIcon />
-              <span className="ml-1">${price?.toFixed(2)}</span>
+              <span className="ml-1">{formatCurrency(post.price ?? 0)}</span>
             </span>
           </span>
         </div>
