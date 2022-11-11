@@ -67,7 +67,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
                 type="radio"
               />
               <Text className="text-white">
-                Block user from accessing your profile.
+                Block user from accessing your profile or sending messages.
               </Text>
             </div>
           )}

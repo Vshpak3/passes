@@ -298,7 +298,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         <input className="hidden" multiple name="files" type="file" />
 
         {isCreator && (
-          <div className="flex w-full items-center justify-between px-[10px] py-1 md:px-[30px]">
+          <div className="flex w-full items-center justify-between px-[10px] py-1 pb-[10px] md:px-[30px]">
             <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
               <Checkbox
                 className="group"

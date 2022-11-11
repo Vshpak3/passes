@@ -191,7 +191,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
         onDrop={handleDrop}
       >
         <input className="hidden" multiple name="files" type="file" />
-        <div className="flex w-full items-center justify-between py-1">
+        <div className="flex w-full items-center justify-between py-1 pb-[10px]">
           <div className="flex h-[30px] items-center justify-start gap-4">
             <Checkbox
               className="group"
