@@ -19,7 +19,7 @@ export interface ProfileUpdate
   > {
   username?: string
   profileImage: File[]
-  profileBannerImage: File[]
+  profileBanner: File[]
 }
 
 export async function updateProfile(
@@ -27,7 +27,7 @@ export async function updateProfile(
 ): Promise<void> {
   const {
     profileImage,
-    profileBannerImage,
+    profileBanner,
     username,
     displayName,
     isAdult,
@@ -57,8 +57,8 @@ export async function updateProfile(
       ? contentService.uploadProfileImage(profileImage[0])
       : undefined,
 
-    profileBannerImage?.length === 1
-      ? contentService.uploadProfileBanner(profileBannerImage[0])
+    profileBanner?.length === 1
+      ? contentService.uploadProfileBanner(profileBanner[0])
       : undefined,
 
     Object.values(rest).some((x) => x?.trim())

@@ -5,9 +5,8 @@ export const GlobalCacheContext = createContext({
   profileImages: new Set<string>()
 })
 
-// a hook to use whenever we need to consume data from `GlobalStateProvider`.
-// So, We don't need React.useContext everywhere we need data from GlobalStateContext.
-
+// A hook to use whenever we need to consume data from GlobalStateProvider so we
+// don't need React.useContext everywhere we need data from GlobalStateContext.
 export function useGlobalCache() {
   const context = useContext(GlobalCacheContext)
 

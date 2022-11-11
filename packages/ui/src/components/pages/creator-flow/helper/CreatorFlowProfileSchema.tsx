@@ -10,6 +10,6 @@ export const creatorFlowProfileSchema = object({
     .transform((name) => name.trim())
     .required("Please enter a bio"),
   profileImage: array().min(1, "Please upload a profile image"),
-  profileBannerImage: array().optional(),
+  profileBanner: array().optional(),
   ...socialMediaUsernameSchema
 })

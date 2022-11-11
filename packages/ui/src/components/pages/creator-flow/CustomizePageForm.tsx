@@ -25,7 +25,7 @@ interface CreatorFlowCustomizeFormProps {
   description: string
 
   profileImage: File[]
-  profileBannerImage: File[]
+  profileBanner: File[]
 
   discordUsername: string
   facebookUsername: string
@@ -78,21 +78,21 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
       displayName: user?.displayName || "",
       // TODO: the profile image might already be set
       profileImage: [],
-      profileBannerImage: []
+      profileBanner: []
     },
     resolver: yupResolver(creatorFlowProfileSchema)
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const profileImage = watch("profileImage")
-  const profileBannerImage = watch("profileBannerImage")
+  const profileBanner = watch("profileBanner")
 
   const saveProfileHandler = async (data: CreatorFlowCustomizeFormProps) => {
     const {
       displayName,
       description,
       profileImage,
-      profileBannerImage,
+      profileBanner,
       isAdult,
       ...socialAccounts
     } = data
@@ -101,7 +101,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
       displayName,
       description,
       profileImage: profileImage,
-      profileBannerImage: profileBannerImage,
+      profileBanner: profileBanner,
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })
@@ -141,28 +141,28 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
           <FormImage
             cropHeight={300}
             cropWidth={1500}
-            imgData={profileBannerImage}
+            imgData={profileBanner}
             inputUI={
               <div className="z-10 flex w-full flex-col">
                 <div className="relative w-full">
                   <img
                     alt=""
                     className={classNames(
-                      errors.profileBannerImage
+                      errors.profileBanner
                         ? "border-2 !border-red-500"
                         : "",
                       "h-[115px] w-full cursor-pointer rounded-[15px] object-cover object-center"
                     )}
                     src={
-                      profileBannerImage?.length
-                        ? URL.createObjectURL(profileBannerImage[0])
+                      profileBanner?.length
+                        ? URL.createObjectURL(profileBanner[0])
                         : "/img/profile/select-banner-img.png"
                     }
                   />
                 </div>
               </div>
             }
-            name="profileBannerImage"
+            name="profileBanner"
             register={register}
             setValue={setValue}
           />

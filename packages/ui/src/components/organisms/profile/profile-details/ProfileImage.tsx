@@ -28,12 +28,12 @@ export const ProfileImage: FC<ProfileImageProps> = ({
 
   return (
     <div
-      className={classNames(
-        type === "thumbnail" &&
-          "h-[50px] w-[50px] shrink-0 select-none overflow-hidden rounded-full bg-gray-900",
-        type === "image" &&
-          "relative h-[80px] w-[80px] cursor-pointer select-none overflow-hidden rounded-full bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:h-[138px] md:w-[138px] md:border-2 md:border-black"
-      )}
+      className={classNames({
+        "h-[50px] w-[50px] shrink-0 select-none overflow-hidden rounded-full bg-gray-900":
+          type === "thumbnail",
+        "relative h-[80px] w-[80px] cursor-pointer select-none overflow-hidden rounded-full bg-gray-900 drop-shadow-profile-photo md:col-span-1 md:h-[138px] md:w-[138px] md:border-2 md:border-black":
+          type === "image"
+      })}
       onClick={onClick}
     >
       <img

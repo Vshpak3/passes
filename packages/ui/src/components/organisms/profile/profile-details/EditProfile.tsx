@@ -72,13 +72,13 @@ const socialMediaForm: Record<string, RenderInputProps> = Object.fromEntries(
 interface EditProfileProps {
   setEditProfileModalOpen: Dispatch<SetStateAction<boolean>>
   setProfileImageOverride: Dispatch<SetStateAction<string | undefined>>
-  setProfileBannerImageOverride: Dispatch<SetStateAction<string | undefined>>
+  setProfileBannerOverride: Dispatch<SetStateAction<string | undefined>>
 }
 
 export const EditProfile: FC<EditProfileProps> = ({
   setEditProfileModalOpen,
   setProfileImageOverride,
-  setProfileBannerImageOverride
+  setProfileBannerOverride
 }) => {
   const { profile, profileUserId, mutateManualProfile } =
     useContext(ProfileContext)
@@ -99,7 +99,7 @@ export const EditProfile: FC<EditProfileProps> = ({
           )
         ),
         profileImage: [],
-        profileBannerImage: []
+        profileBanner: []
       }
     }, [profile]),
     resolver: yupResolver(editProfileSchema)
@@ -110,10 +110,10 @@ export const EditProfile: FC<EditProfileProps> = ({
   }, [profile, reset])
 
   const profileImage: File[] = watch("profileImage")
-  const profileBannerImage: File[] = watch("profileBannerImage")
+  const profileBanner: File[] = watch("profileBanner")
 
   const [profileImageUrl, setProfileImageUrl] = useState<string>()
-  const [profileBannerImageUrl, setProfileBannerImageUrl] = useState<string>()
+  const [profileBannerUrl, setProfileBannerUrl] = useState<string>()
 
   useEffect(() => {
     if (!profileImage?.length) {
@@ -123,14 +123,14 @@ export const EditProfile: FC<EditProfileProps> = ({
     } else {
       setProfileImageUrl(URL.createObjectURL(profileImage[0]))
     }
-    if (!profileBannerImage?.length) {
+    if (!profileBanner?.length) {
       if (profileUserId) {
-        setProfileBannerImageUrl(ContentService.profileBanner(profileUserId))
+        setProfileBannerUrl(ContentService.profileBanner(profileUserId))
       }
     } else {
-      setProfileBannerImageUrl(URL.createObjectURL(profileBannerImage[0]))
+      setProfileBannerUrl(URL.createObjectURL(profileBanner[0]))
     }
-  }, [profileBannerImage, profileImage, profileUserId])
+  }, [profileBanner, profileImage, profileUserId])
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex items-center" key={key}>
@@ -160,10 +160,9 @@ export const EditProfile: FC<EditProfileProps> = ({
         "Please wait up to 10 minutes to see your profile picture change throughout the site"
       )
     }
-    if (values.profileBannerImage?.[0]) {
-      setProfileBannerImageOverride(
-        URL.createObjectURL(values.profileBannerImage[0])
-      )
+
+    if (values.profileBanner?.[0]) {
+      setProfileBannerOverride(URL.createObjectURL(values.profileBanner[0]))
       toast.info(
         "Please wait up to 10 minutes to see your profile banner change throughout the site"
       )
@@ -225,29 +224,29 @@ export const EditProfile: FC<EditProfileProps> = ({
         <FormImage
           cropHeight={300}
           cropWidth={1500}
-          imgData={profileBannerImage}
+          imgData={profileBanner}
           inputUI={
             <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
               <CameraIcon
                 className={classNames("absolute z-30", {
-                  hidden: !!profileBannerImage?.length
+                  hidden: !!profileBanner?.length
                 })}
               />
               <img
                 alt=""
                 className={classNames(
                   "h-[115px] w-full rounded-[15px] object-cover object-center",
-                  { "opacity-30": !profileBannerImage?.length }
+                  { "opacity-30": !profileBanner?.length }
                 )}
                 onError={({ currentTarget }) => {
                   currentTarget.onerror = null
                   currentTarget.src = "/img/profile/select-banner-img.png"
                 }}
-                src={profileBannerImageUrl}
+                src={profileBannerUrl}
               />
             </div>
           }
-          name="profileBannerImage"
+          name="profileBanner"
           register={register}
           setValue={setValue}
         />

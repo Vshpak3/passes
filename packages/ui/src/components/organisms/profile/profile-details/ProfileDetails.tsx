@@ -1,6 +1,6 @@
 import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
-import { FC, useContext, useState } from "react"
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
@@ -17,7 +17,13 @@ import { ProfileImage } from "./ProfileImage"
 import { ProfileImageModal } from "./ProfileImageModal"
 import { ProfileInformation } from "./ProfileInformation"
 
-export const ProfileDetails: FC = () => {
+interface ProfileDetailsProps {
+  setProfileBannerOverride: Dispatch<SetStateAction<string | undefined>>
+}
+
+export const ProfileDetails: FC<ProfileDetailsProps> = ({
+  setProfileBannerOverride
+}) => {
   const [isProfilePicModalOpen, setIsProfilePicModalOpen] = useState(false)
 
   const { user } = useUser()
@@ -27,10 +33,6 @@ export const ProfileDetails: FC = () => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] =
     useState<boolean>(false)
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
-  // TOOD: add in
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [profileBannerImageOverride, setProfileBannerImageOverride] =
-    useState<string>()
 
   const chatLink = user ? `/messages?user=${profileUserId}` : "/login"
 
@@ -171,7 +173,7 @@ export const ProfileDetails: FC = () => {
       {!!isEditProfileModalOpen && (
         <EditProfile
           setEditProfileModalOpen={setIsEditProfileModalOpen}
-          setProfileBannerImageOverride={setProfileBannerImageOverride}
+          setProfileBannerOverride={setProfileBannerOverride}
           setProfileImageOverride={setProfileImageOverride}
         />
       )}

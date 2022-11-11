@@ -16,7 +16,10 @@ const ProfileUnmemo: FC = () => {
   const { profile, profileUserId, loadingProfile, hasInitialFetch } =
     useContext(ProfileContext)
 
-  const updateProfileBanner = useCallback(async () => {
+  const [hasBanner, setHasBanner] = useState<boolean>(false)
+  const [profileBannerOverride, setProfileBannerOverride] = useState<string>()
+
+  const getProfileBanner = useCallback(async () => {
     if (!profileUserId) {
       return false
     }
@@ -25,14 +28,13 @@ const ProfileUnmemo: FC = () => {
     return Math.floor(res.status / 100) === 2
   }, [profileUserId])
 
-  const [hasBanner, setHasBanner] = useState<boolean>(false)
   useEffect(() => {
     setHasBanner(false)
     const fetch = async () => {
-      setHasBanner(await updateProfileBanner())
+      setHasBanner(await getProfileBanner())
     }
     fetch()
-  }, [profileUserId, updateProfileBanner])
+  }, [profileUserId, getProfileBanner])
 
   const { isTablet } = useWindowSize()
   if (isTablet === undefined) {
@@ -46,9 +48,10 @@ const ProfileUnmemo: FC = () => {
         style={
           hasBanner && !!profileUserId
             ? {
-                backgroundImage: `url(${ContentService.profileBanner(
-                  profileUserId
-                )})`
+                backgroundImage: `url(${
+                  profileBannerOverride ||
+                  ContentService.profileBanner(profileUserId)
+                })`
               }
             : undefined
         }
@@ -60,7 +63,9 @@ const ProfileUnmemo: FC = () => {
       ) : profile ? (
         <div className="grid grid-cols-7">
           <div className="col-span-7 pt-0 md:space-y-6 lg:col-span-4">
-            <ProfileDetails />
+            <ProfileDetails
+              setProfileBannerOverride={setProfileBannerOverride}
+            />
             {!!profile.isCreator && (
               <ProfileContent
                 tab={window.location.hash.slice(1) as ProfileNavigationOptions}
