@@ -3,6 +3,7 @@ import {
   ContentDto,
   GetVaultQueryRequestDtoOrderEnum
 } from "@passes/api-client"
+import classNames from "classnames"
 import { useRouter } from "next/router"
 import ExitIcon from "public/icons/exit-icon.svg"
 import { FC, useCallback, useState } from "react"
@@ -119,7 +120,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         />
       )}
       {!embedded && (
-        <div className="absolute right-20 bottom-5 flex h-[45px]">
+        <div className="absolute right-2 top-0 flex flex-col items-end gap-3 md:h-[45px] md:flex-row md:items-start">
           {selectedItems && selectedItems?.length > 0 && (
             <>
               <div className="flex flex-col">
@@ -136,29 +137,40 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
                 </div>
                 <div>20 media files can be posted at a time</div>
               </div>
-              <div
-                className="cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3 "
-                onClick={() => setDeleteModalActive(true)}
-              >
-                <MdDelete size={23} />
-              </div>
+            </>
+          )}
+          <div className="order-first flex flex-row md:order-1">
+            <div
+              className={classNames(
+                "cursor-pointer px-2 text-white opacity-70 hover:opacity-100 md:px-3 ",
+                { hidden: selectedItems?.length === 0 }
+              )}
+              onClick={() => setDeleteModalActive(true)}
+            >
+              <MdDelete size={23} />
+            </div>
+            <div
+              className={classNames({
+                ["hidden"]: selectedItems?.length === 0
+              })}
+            >
               <VaultAddToDropdown
                 onAddToMessage={pushToMessages}
                 onAddToPost={createNewPost}
               />
-            </>
-          )}
-          <div className="px-2 md:px-3">
-            <VaultAddButton onClick={addNewMedia} />
-          </div>
-          <div className="pl-2 md:pl-3">
-            <SortDropdown
-              onSelect={onSortSelect}
-              options={sortOptions}
-              selection={{
-                orderType: order === "desc" ? "recent" : "oldest"
-              }}
-            />
+            </div>
+            <div className="px-2 md:px-3">
+              <VaultAddButton onClick={addNewMedia} />
+            </div>
+            <div className="pl-2 md:pl-3">
+              <SortDropdown
+                onSelect={onSortSelect}
+                options={sortOptions}
+                selection={{
+                  orderType: order === "desc" ? "recent" : "oldest"
+                }}
+              />
+            </div>
           </div>
         </div>
       )}
