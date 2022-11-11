@@ -5,7 +5,7 @@ import {
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
-import { memo, PropsWithChildren, useMemo } from "react"
+import { memo, PropsWithChildren, useEffect, useMemo } from "react"
 
 import {
   ComponentArg,
@@ -32,7 +32,6 @@ const ChannelStreamMessagesUnmemo = ({
   children
 }: PropsWithChildren<ChannelStreamMessagesProps>) => {
   const { user } = useUser()
-
   const fetchProps = useMemo(() => {
     return { channelId, pending: false, contentOnly: false }
   }, [channelId])

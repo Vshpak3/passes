@@ -164,7 +164,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     if (!cover) {
       return
     }
-    console.log("asdf")
     cover.style.backgroundImage = ""
   }, [router.route])
 

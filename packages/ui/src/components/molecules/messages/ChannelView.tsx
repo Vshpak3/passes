@@ -4,7 +4,6 @@ import { Dispatch, FC, memo, SetStateAction, useEffect, useState } from "react"
 
 import { ChannelGalleryView } from "src/components/molecules/direct-messages/ChannelGalleryView"
 import { useIsCreator } from "src/hooks/useIsCreator"
-import { useOnScreen } from "src/hooks/useOnScreen"
 import { ChannelHeader } from "./ChannelHeader"
 import { ChannelStream } from "./ChannelStream"
 import { InputMessage } from "./InputMessage"
@@ -35,10 +34,6 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
-
-  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
-    threshold: 0.1
-  })
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
       freeMessages ? freeMessages - 1 : freeMessages
@@ -89,9 +84,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
           ) : (
             <>
               <ChannelStream
-                bottomOfChatRef={bottomOfChatRef}
                 freeMessages={freeMessages}
-                isBottomOfChatVisible={isBottomOfChatVisible}
                 minimumTip={minimumTip}
                 readAt={selectedChannel?.readAt ?? undefined}
                 selectedChannel={selectedChannel}

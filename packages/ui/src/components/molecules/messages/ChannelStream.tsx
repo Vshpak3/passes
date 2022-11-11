@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useState
 } from "react"
 import { toast } from "react-toastify"
@@ -17,6 +18,7 @@ import {
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
 import { useUser } from "src/hooks/useUser"
+import { useOnScreen } from "../../../hooks/useOnScreen"
 import { ChannelMessage } from "./ChannelMessage"
 import { ChannelStreamMessages } from "./ChannelStreamMessages"
 
@@ -24,8 +26,6 @@ interface ChannelStreamProps {
   selectedChannel: ChannelMemberDto
   freeMessages?: number | null
   minimumTip?: number | null
-  bottomOfChatRef: MutableRefObject<HTMLDivElement | null>
-  isBottomOfChatVisible: boolean
   readAt?: Date
 }
 
@@ -35,10 +35,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   selectedChannel,
   freeMessages,
   minimumTip,
-  bottomOfChatRef,
-  isBottomOfChatVisible,
   readAt
 }) => {
+  const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
+    threshold: 0.1
+  })
   const { user } = useUser()
   const { channelId } = selectedChannel
 
@@ -204,6 +205,10 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     setNode(node)
   }, [])
 
+  const paddingDiv = useMemo(() => {
+    return <div className="w-full py-[15px]" />
+  }, [])
+
   return (
     <>
       {isConnected ? (
@@ -256,7 +261,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
               readAt={readAt}
               selectedChannel={selectedChannel}
             >
-              <div className="w-full py-[15px]" />
+              {paddingDiv}
             </ChannelStreamMessages>
           </div>
           {unreadCount > 0 && (
