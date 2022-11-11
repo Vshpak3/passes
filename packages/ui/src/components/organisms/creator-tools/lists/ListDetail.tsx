@@ -184,8 +184,8 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         </div>
       </div>
       <ul className="px-7">
-        <li className="flex items-center justify-between border-b-2 border-gray-500 py-5">
-          <div className="flex items-center gap-[10px]">
+        <li className="flex flex-wrap items-center justify-between gap-[20px] border-b-2 border-gray-500 py-5">
+          <div className="flex flex-wrap items-center gap-[10px]">
             <div
               className={
                 "flex items-center" +
