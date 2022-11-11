@@ -97,11 +97,11 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                   position="top"
                   tooltipText={
                     <>
-                      Chain:
+                      {/* Chain: */}
                       {passHolder.chain === PassHolderDtoChainEnum.Sol
                         ? " Solana"
                         : " Ethereum"}
-                      <br />
+                      {/* <br />
                       <br />
                       {passHolder.chain === PassHolderDtoChainEnum.Sol && (
                         <>
@@ -116,10 +116,10 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                           <br /> <br />
                           TokenId: {parseInt(passHolder.tokenId, 16)} <br />
                         </>
-                      )}
+                      )} */}
                     </>
                   }
-                  tooltipClassName="w-[380px]"
+                  tooltipClassName="w-[80px] text-center"
                 />
               </div>
             </div>

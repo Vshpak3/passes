@@ -163,16 +163,16 @@ export const PassCard: FC<PassCardProps> = ({
             position="top"
             tooltipText={
               <>
-                Chain:
+                {/* Chain: */}
                 {pass.chain === PassDtoChainEnum.Sol ? " Solana" : " Ethereum"}
-                <br />
+                {/* <br />
                 <br />
                 {pass.chain === PassDtoChainEnum.Sol && (
                   <>Collection Address: {pass.collectionAddress}</>
-                )}
+                )} */}
               </>
             }
-            tooltipClassName="w-[380px]"
+            tooltipClassName="w-[80px] text-center"
           />
         </div>
         <Button
