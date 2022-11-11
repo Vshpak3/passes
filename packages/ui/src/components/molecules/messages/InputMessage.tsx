@@ -150,7 +150,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     setTextAreaRows(
       Math.max(
         Math.min(
-          Math.max(text.split("\n").length, text.length / 80),
+          text ? Math.max(text.split("\n").length, text.length / 80) : 0,
           MAX_TEXT_AREA_ROWS
         ),
         MIN_TEXT_AREA_ROWS
