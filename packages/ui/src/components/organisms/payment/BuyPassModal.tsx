@@ -41,7 +41,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
       <div className="mb-4">
         <PaymenetModalHeader
           title={
-            "Buy" +
+            "Buy " +
             (type === PassDtoTypeEnum.Lifetime ? "Lifetime" : "Monthly") +
             " Membership"
           }
@@ -54,7 +54,9 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
         <div className="flex justify-center rounded bg-gradient-to-r from-[#46165E] to-passes-tertiary-color py-2 font-bold">
           {title}
         </div>
-        <div className="my-4 text-passes-dark-gray">{description}</div>
+        <div className="passes-break my-4 whitespace-pre-wrap text-passes-dark-gray">
+          {formatText(pass.description)}
+        </div>
         <div className="flex flex-row justify-between">
           <span>
             <span className="mr-1 font-bold">

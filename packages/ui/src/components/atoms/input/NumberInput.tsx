@@ -48,6 +48,13 @@ export const NumberInput: FC<NumberInputProps> = ({
       e.preventDefault()
     }
 
+    const decimal = value.split(".")[1]
+    // console.log(e)
+    if (decimal && decimal.length > 1) {
+      e.preventDefault()
+    }
+    // console.log(e)
+
     if (!allowNegative) {
       preventNegative(e)
     }
@@ -68,7 +75,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         onChange={onChange}
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
-        step={type === "currency" ? "0.01" : "1"}
+        step={type === "currency" ? ".01" : "1"}
         type="number"
       />
       {errors && !!errors[name] && (
