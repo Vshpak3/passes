@@ -54,6 +54,7 @@ export const PassMedia: FC<PassMediaProps> = ({
           <img
             alt="no media exists"
             className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+            onLoad={handleLoadingAsset}
             src={ContentService.passHolderImagePath(
               passId,
               passHolderId,
