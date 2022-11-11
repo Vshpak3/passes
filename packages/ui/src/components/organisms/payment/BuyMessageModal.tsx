@@ -3,7 +3,6 @@ import {
   MessageDto,
   PayinMethodDto
 } from "@passes/api-client"
-import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { BuyMessageButton } from "src/components/molecules/payment/BuyMessageButton"
@@ -58,7 +57,7 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           <span className="flex items-center text-white">
             Unlock for
             <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
-              <DollarIcon />
+              {/* <DollarIcon /> */}
               <span className="ml-1">{formatCurrency(price)}</span>
             </span>
           </span>

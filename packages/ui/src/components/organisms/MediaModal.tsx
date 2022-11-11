@@ -1,5 +1,5 @@
 import { ContentDto } from "@passes/api-client"
-import React, { Dispatch, FC, SetStateAction } from "react"
+import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
 import { ContentCarousel } from "src/components/organisms/content/ContentCarousel"
 import { Modal } from "src/components/organisms/Modal"
@@ -28,6 +28,18 @@ export const MediaModal: FC<ModalProps> = ({
   activeIndex = 0
 }) => {
   carouselContent = undefined // deprecate content carousel for now
+  // const width = window.innerWidth - 100
+  // const height = window.innerHeight - 100
+  const [width, setWidth] = useState<number>(window.innerWidth - 100)
+  const [height, setHeight] = useState<number>(window.innerHeight - 100)
+  useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth - 100)
+      setHeight(window.innerHeight - 100)
+    }
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
   return (
     <Modal
       bare
@@ -48,8 +60,8 @@ export const MediaModal: FC<ModalProps> = ({
       {file.file && !carouselContent && (
         <MediaFile
           className="m-0 rounded-[6px] p-0"
-          contentHeight={800}
-          contentWidth={800}
+          contentHeight={height}
+          contentWidth={width}
           file={file.file}
           objectFit="contain"
           preview
@@ -58,8 +70,8 @@ export const MediaModal: FC<ModalProps> = ({
       {file.content && !carouselContent && (
         <Media
           className="m-0 rounded-[6px] p-0"
-          contentHeight={800}
-          contentWidth={800}
+          contentHeight={height}
+          contentWidth={width}
           objectFit="contain"
           preview
           src={ContentService.userContentMediaPath(file.content)}

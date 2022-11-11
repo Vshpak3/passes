@@ -1,5 +1,4 @@
 import { PayinMethodDto, PostDto } from "@passes/api-client"
-import DollarIcon from "public/icons/dollar-rounded-pink.svg"
 import WalletIcon from "public/icons/wallet.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
@@ -52,7 +51,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           <span className="flex items-center text-white">
             Unlock for
             <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
-              <DollarIcon />
+              {/* <DollarIcon /> */}
               <span className="ml-1">{formatCurrency(post.price ?? 0)}</span>
             </span>
           </span>
