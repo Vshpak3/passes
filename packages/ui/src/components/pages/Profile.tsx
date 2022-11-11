@@ -18,18 +18,19 @@ const ProfileUnmemo: FC = () => {
 
   const updateProfileBanner = useCallback(async () => {
     if (!profileUserId) {
-      return
+      return false
     }
     const profileBanner = ContentService.profileBanner(profileUserId)
     const res = await fetch(profileBanner)
-    return Math.floor(res.status / 100) !== 2
+    return Math.floor(res.status / 100) === 2
   }, [profileUserId])
 
   const [hasBanner, setHasBanner] = useState<boolean>(false)
   useEffect(() => {
     setHasBanner(false)
     const fetch = async () => {
-      setHasBanner((await updateProfileBanner()) ?? false)
+      console.log("asdf")
+      setHasBanner(await updateProfileBanner())
     }
     fetch()
   }, [profileUserId, updateProfileBanner])
