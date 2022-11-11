@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
+import ms from "ms"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
 import { FC, useEffect, useState } from "react"
@@ -14,6 +15,8 @@ import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
+
+const RESEND_WAIT_TIME = 60
 
 export interface SignupEmailPageSchema {
   email: string
@@ -40,6 +43,7 @@ const SignupEmailPage: FC = () => {
 
   const [hasSentEmail, setHasSentEmail] = useState(true)
   const [hasResentEmail, setHasResentEmail] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(RESEND_WAIT_TIME)
 
   useEffect(() => {
     if (!router.isReady) {
@@ -47,6 +51,22 @@ const SignupEmailPage: FC = () => {
     }
     setHasSentEmail(!!router.query.email)
   }, [router])
+
+  useEffect(() => {
+    if (!hasResentEmail) {
+      return
+    }
+
+    if (timeLeft !== 0) {
+      const timer = setInterval(() => {
+        setTimeLeft(timeLeft - 1)
+      }, ms("1 second"))
+      return () => clearInterval(timer)
+    } else {
+      setHasResentEmail(false)
+      setTimeLeft(RESEND_WAIT_TIME)
+    }
+  }, [hasResentEmail, timeLeft])
 
   const verifyEmail = async (email: string) => {
     const api = new AuthApi()
@@ -111,13 +131,17 @@ const SignupEmailPage: FC = () => {
               </Text>
               <Button
                 className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                disabled={isSubmitting}
+                disabled={isSubmitting || hasResentEmail}
                 disabledClass="opacity-[0.5]"
                 onClick={resendEmail}
                 type={ButtonTypeEnum.SUBMIT}
               >
                 <Text className="font-medium" fontSize={16}>
-                  Resend Verification Email
+                  {!hasResentEmail ? (
+                    <>Resend Verification Email</>
+                  ) : (
+                    <>Please wait {timeLeft} seconds to resend</>
+                  )}
                 </Text>
               </Button>
               {hasResentEmail && (
