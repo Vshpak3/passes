@@ -19,6 +19,7 @@ import {
   SortOption
 } from "src/components/organisms/creator-tools/lists/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
+import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { plural } from "src/helpers/plural"
 
 type OrderType = "recent" | "oldest"
@@ -122,22 +123,20 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
       {!embedded && (
         <div className="absolute right-2 top-0 flex flex-col items-end gap-3 md:h-[45px] md:flex-row md:items-start">
           {selectedItems && selectedItems?.length > 0 && (
-            <>
-              <div className="flex flex-col">
-                <div className="flex flex-row items-center gap-2">
-                  <div
-                    className="h-[18px] w-[18px] cursor-pointer items-center justify-center text-[#000000]"
-                    onClick={deselectAll}
-                  >
-                    <ExitIcon />
-                  </div>
-                  <div className="font-[500] text-white">
-                    {plural("item", selectedItems?.length)} selected
-                  </div>
+            <div className="flex flex-col">
+              <div className="flex flex-row items-center gap-2">
+                <div
+                  className="h-[18px] w-[18px] cursor-pointer items-center justify-center text-[#000000]"
+                  onClick={deselectAll}
+                >
+                  <ExitIcon />
                 </div>
-                <div>20 media files can be posted at a time</div>
+                <div className="font-[500] text-white">
+                  {plural("item", selectedItems?.length)} selected
+                </div>
               </div>
-            </>
+              <div>{MAX_FILE_COUNT} media files can be posted at a time</div>
+            </div>
           )}
           <div className="order-first flex flex-row md:order-1">
             <div

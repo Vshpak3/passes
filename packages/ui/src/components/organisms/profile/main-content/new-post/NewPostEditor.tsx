@@ -11,7 +11,6 @@ import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
 import {
-  MAX_MENTION_LIMIT,
   MAX_PAID_POST_PRICE,
   MAX_PASSES_LIMIT,
   MAX_POST_TEXT_LENGTH,
@@ -159,8 +158,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     })
 
     closeEditor()
-
-    console.log(errors, values.tags)
 
     // Ensure to check isPaid so if the drop down is closed we clear the values
     const post: CreatePostRequestDto = {
