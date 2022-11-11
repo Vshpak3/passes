@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 import { useGlobalCache } from "src/contexts/GlobalCache"
 import { ContentService } from "src/helpers/content"
@@ -20,6 +20,9 @@ export const ProfileImage: FC<ProfileImageProps> = ({
 }) => {
   const { profileImages } = useGlobalCache()
   const [loaded, setLoaded] = useState<boolean>(profileImages.has(userId))
+  useEffect(() => {
+    setLoaded(profileImages.has(userId))
+  }, [userId])
   return (
     <div
       className={classNames(
