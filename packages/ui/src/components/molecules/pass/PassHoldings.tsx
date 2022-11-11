@@ -48,7 +48,8 @@ export const PassHoldings: FC = () => {
         KeyedComponent={({ arg }: ComponentArg<PassHolderDto>) => {
           return <PassHoldingCard passHolder={arg} />
         }}
-        className="gap-3 md:flex md:flex-wrap"
+        childrenEnd
+        className="m-auto flex flex-row flex-wrap gap-3 md:justify-evenly"
         fetch={(req: GetPassHoldingsRequestDto) => {
           const api = new PassApi()
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
@@ -57,7 +58,16 @@ export const PassHoldings: FC = () => {
         keySelector="passHolderId"
         keyValue="/passholdings"
         options={{ revalidateOnMount: true }}
-      />
+      >
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+        <div className="w-[200px]" />
+      </InfiniteScrollPagination>
     </div>
   )
 }
