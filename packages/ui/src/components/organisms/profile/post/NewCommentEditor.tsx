@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { CommentApi, CommentDto } from "@passes/api-client"
-import React, { FC, useCallback, useEffect, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
 import { object } from "yup"
 
@@ -30,6 +30,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isReset, setIsReset] = useState(false)
   const {
+    handleSubmit,
     getValues,
     setValue,
     formState: { isSubmitting }
@@ -70,34 +71,15 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
     }
   }, [getValues, postId, addComment, user])
 
-  const onSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement> | globalThis.KeyboardEvent) => {
-      e.preventDefault()
-      postComment()
-      setIsReset(true)
-    },
-    [postComment]
-  )
-
-  // Enable user to publish comment via ctrl + enter
-  useEffect(() => {
-    const keyDownHandler = (event: globalThis.KeyboardEvent) => {
-      if (event.ctrlKey && event.key === "Enter") {
-        onSubmit(event)
-      }
-    }
-
-    document.addEventListener("keydown", keyDownHandler)
-
-    return () => {
-      document.removeEventListener("keydown", keyDownHandler)
-    }
-  }, [onSubmit])
+  const onSubmit = () => {
+    postComment()
+    setIsReset(true)
+  }
 
   return (
     <form
       className="flex w-full flex-col items-center gap-2 pt-5 md:flex-row md:gap-0"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-[5px] border border-passes-gray bg-black/10 p-4">
         <CustomComponentMentionEditor
