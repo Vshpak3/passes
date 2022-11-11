@@ -1,6 +1,13 @@
 import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
-import { Dispatch, FC, SetStateAction, useContext, useState } from "react"
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState
+} from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
@@ -35,6 +42,17 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
   const [profileImageOverride, setProfileImageOverride] = useState<string>()
 
   const chatLink = user ? `/messages?user=${profileUserId}` : "/login"
+
+  const dropdownOptions = [
+    ...DropDownReport(true, {
+      username: profileUsername ?? "",
+      userId: profileUserId ?? ""
+    }),
+    ...DropDownBlock(!!user?.isCreator, {
+      username: profileUsername ?? "",
+      userId: profileUserId ?? ""
+    })
+  ]
 
   if (!profileUserId) {
     return null
@@ -91,18 +109,7 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
           </div>
           {!ownsProfile && (
             <div className="mt-2 flex-col">
-              <Dropdown
-                items={[
-                  ...DropDownReport(true, {
-                    username: profileUsername ?? "",
-                    userId: profileUserId
-                  }),
-                  ...DropDownBlock(!!user?.isCreator, {
-                    username: profileUsername ?? "",
-                    userId: profileUserId
-                  })
-                ]}
-              />
+              <Dropdown items={dropdownOptions} />
             </div>
           )}
         </div>
@@ -151,18 +158,7 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
               )}
               {!ownsProfile && (
                 <div className="mr-0 ml-auto">
-                  <Dropdown
-                    items={[
-                      ...DropDownReport(true, {
-                        username: profileUsername ?? "",
-                        userId: profileUserId
-                      }),
-                      ...DropDownBlock(true, {
-                        username: profileUsername ?? "",
-                        userId: profileUserId
-                      })
-                    ]}
-                  />
+                  <Dropdown items={dropdownOptions} />
                 </div>
               )}
             </>
