@@ -54,12 +54,14 @@ export const NameDisplay: FC<NameDisplayProps> = ({
           displayNameClassName
         )}
       >
-        <div className="truncate">{displayName}</div>
-        {isCreator && (
-          <span className="flex min-h-[18px] min-w-[18px] flex-col justify-center pb-[10px]">
-            <CheckVerified height={18} width={18} />
-          </span>
-        )}
+        <div className="mb-1 flex truncate">
+          <div className="truncate">{displayName}</div>
+          {isCreator && (
+            <span className="ml-2 flex min-h-[18px] min-w-[18px] flex-col justify-center">
+              <CheckVerified height={18} width={18} />
+            </span>
+          )}
+        </div>
       </div>
       <Text className="w-full text-gray-500 lg:block" fontSize={14}>
         {" @" + username}
