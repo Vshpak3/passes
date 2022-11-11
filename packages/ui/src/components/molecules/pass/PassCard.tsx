@@ -71,7 +71,6 @@ export const PassCard: FC<PassCardProps> = ({
         <PassMedia
           animationType={pass.animationType}
           imageType={pass.imageType}
-          isPinnedPass={isPinnedPass}
           passId={pass.passId}
         />
         <div

@@ -12,15 +12,13 @@ interface PassMediaProps {
   passId: string
   imageType: PassDtoImageTypeEnum
   animationType?: PassDtoAnimationTypeEnum
-  isPinnedPass?: boolean
 }
 
 export const PassMedia: FC<PassMediaProps> = ({
   passId,
   passHolderId,
   imageType,
-  animationType,
-  isPinnedPass = false
+  animationType
 }) => {
   const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(true)
 
@@ -28,53 +26,70 @@ export const PassMedia: FC<PassMediaProps> = ({
     setShouldUsePlaceholder(false)
   }
 
-  if (shouldUsePlaceholder) {
-    return (
-      <div
-        className={classNames(
-          isPinnedPass ? "w-[274px]" : "mx-auto max-w-[240px]",
-          "h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103] pt-[100%]"
-        )}
-      />
-    )
-  }
+  const placeHolder = (
+    <div className="h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103] pt-[100%]" />
+  )
 
   if (passHolderId) {
-    return animationType ? (
-      <video autoPlay loop muted onLoadedData={handleLoadingAsset}>
-        <source
-          src={ContentService.passHolderAnimationPath(
-            passId,
-            passHolderId,
-            animationType
-          )}
-          type="video/mp4"
-        />
-      </video>
-    ) : (
-      <img
-        alt="no media exists"
-        src={ContentService.passHolderImagePath(
-          passId,
-          passHolderId,
-          imageType
+    return (
+      <>
+        {animationType ? (
+          <video
+            autoPlay
+            className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+            loop
+            muted
+            onLoadedData={handleLoadingAsset}
+          >
+            <source
+              src={ContentService.passHolderAnimationPath(
+                passId,
+                passHolderId,
+                animationType
+              )}
+              type="video/mp4"
+            />
+          </video>
+        ) : (
+          <img
+            alt="no media exists"
+            className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+            src={ContentService.passHolderImagePath(
+              passId,
+              passHolderId,
+              imageType
+            )}
+          />
         )}
-      />
+        {shouldUsePlaceholder && placeHolder}
+      </>
     )
   } else {
-    return animationType ? (
-      <video autoPlay loop muted onLoadedData={handleLoadingAsset}>
-        <source
-          src={ContentService.passAnimationPath(passId, animationType)}
-          type="video/mp4"
-        />
-      </video>
-    ) : (
-      <img
-        alt="no media exists"
-        onLoad={handleLoadingAsset}
-        src={ContentService.passImagePath(passId, imageType)}
-      />
+    return (
+      <>
+        {animationType ? (
+          <video
+            autoPlay
+            className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+            loop
+            muted
+            onLoadedData={handleLoadingAsset}
+          >
+            <source
+              src={ContentService.passAnimationPath(passId, animationType)}
+              type="video/mp4"
+            />
+          </video>
+        ) : (
+          <img
+            alt="no media exists"
+            className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+            onLoad={handleLoadingAsset}
+            src={ContentService.passImagePath(passId, imageType)}
+          />
+        )}
+        {shouldUsePlaceholder && placeHolder}
+      </>
     )
   }
 }
