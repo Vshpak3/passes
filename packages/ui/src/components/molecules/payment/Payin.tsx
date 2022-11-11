@@ -145,7 +145,7 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[14px] font-[700] text-passes-pink-100">
           {payin.fourDigits
-            ? payin.fourDigits
+            ? "**** " + payin.fourDigits
             : payin.address.slice(0, 8) + "..."}
         </span>
       </div>

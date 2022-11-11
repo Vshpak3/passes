@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
-import { memo, useEffect, useState } from "react"
+import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { boolean, mixed, number, object } from "yup"
 
@@ -60,34 +60,32 @@ const ChatSettings = () => {
     useWelcomeMessage()
 
   const isLoading = isCreatorSettingsLoading ?? isWelcomeMessageLoading
-
   const {
     register,
-    watch,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors },
+    getValues,
+    watch
   } = useForm<typeof defaultValues>({
+    mode: "all",
+    reValidateMode: "onChange",
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
   })
-  const [isDisableBtn, setIsDisableBtn] = useState(false)
-  const values = watch()
 
+  const isWithoutTip = watch("isWithoutTip")
+  const showWelcomeMessageInput = watch("showWelcomeMessageInput")
   const saveChatSettingsHandler = async () => {
     const data: UpdateCreatorSettingsRequestDto = {}
-
+    const values = getValues()
     if (!values.isWithoutTip) {
       data.minimumTipAmount = +values.minimumTipAmount
     } else {
       data.minimumTipAmount = null
     }
 
-    if (values.showWelcomeMessageInput) {
-      data.welcomeMessage = true
-    } else {
-      data.welcomeMessage = false
-    }
+    data.welcomeMessage = !!values.showWelcomeMessageInput
 
     await updateCreatorSettings(
       data,
@@ -98,23 +96,18 @@ const ChatSettings = () => {
   useEffect(() => {
     // inject already saved values in fields
 
-    setValue("showWelcomeMessageInput", !!creatorSettings?.welcomeMessage)
+    setValue("showWelcomeMessageInput", !!creatorSettings?.welcomeMessage, {
+      shouldValidate: true
+    })
 
-    setValue("isWithoutTip", !creatorSettings?.minimumTipAmount)
+    setValue("isWithoutTip", !creatorSettings?.minimumTipAmount, {
+      shouldValidate: true
+    })
 
-    setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`)
+    setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`, {
+      shouldValidate: true
+    })
   }, [creatorSettings, setValue])
-
-  useEffect(() => {
-    chatSettingsSchema
-      .validate(values)
-      .then(() => {
-        return setIsDisableBtn(false)
-      })
-      .catch(() => {
-        setIsDisableBtn(true)
-      })
-  }, [values, creatorSettings])
 
   return (
     <AuthWrapper creatorOnly isPage>
@@ -128,7 +121,7 @@ const ChatSettings = () => {
           <div
             className={classNames(
               "border-b border-passes-dark-200",
-              values.isWithoutTip ? "pb-[22px]" : "pb-3"
+              isWithoutTip ? "pb-[22px]" : "pb-3"
             )}
           >
             <label className="flex cursor-pointer items-center justify-between">
@@ -136,22 +129,20 @@ const ChatSettings = () => {
               <Checkbox name="isWithoutTip" register={register} type="toggle" />
             </label>
 
-            {!values.isWithoutTip && (
-              <div className="relative">
-                <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
-                  Minimum ${MIN_TIP_MESSAGE_PRICE}
-                </span>
-                <NumberInput
-                  className="mt-[22px] min-h-[50px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-                  errors={errors}
-                  maxInput={MAX_TIP_MESSAGE_PRICE}
-                  name="minimumTipAmount"
-                  placeholder="Enter Minimum Tip Amount"
-                  register={register}
-                  type="currency"
-                />
-              </div>
-            )}
+            <div className={classNames("relative", isWithoutTip && "hidden")}>
+              <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
+                Minimum ${MIN_TIP_MESSAGE_PRICE}
+              </span>
+              <NumberInput
+                className="mt-[22px] min-h-[50px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+                errors={errors}
+                maxInput={MAX_TIP_MESSAGE_PRICE}
+                name="minimumTipAmount"
+                placeholder="Enter Minimum Tip Amount"
+                register={register}
+                type="currency"
+              />
+            </div>
           </div>
 
           <div className="mt-[22px]">
@@ -166,7 +157,7 @@ const ChatSettings = () => {
               />
             </label>
 
-            {values.showWelcomeMessageInput && (
+            {showWelcomeMessageInput && (
               <div className="relative mt-[22px] rounded-md border border-passes-gray-700/80 !py-4 !px-3 focus:border-passes-secondary-color focus:ring-0">
                 <input
                   className="w-full border-none bg-transparent text-[#ffff]/90"
@@ -217,7 +208,7 @@ const ChatSettings = () => {
 
           <Button
             className="mt-6 w-auto !px-[52px]"
-            disabled={!!isDisableBtn || isLoading}
+            disabled={isLoading}
             disabledClass="opacity-[0.5]"
             type={ButtonTypeEnum.SUBMIT}
           >
