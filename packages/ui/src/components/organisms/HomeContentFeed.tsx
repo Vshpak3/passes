@@ -5,7 +5,6 @@ import {
   PostDto
 } from "@passes/api-client"
 import dynamic from "next/dynamic"
-import Link from "next/link"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 
