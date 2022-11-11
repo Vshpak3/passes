@@ -284,5 +284,6 @@ const renderSubTab = (tab: SubTabsEnum) => {
 export default WithNormalPageLayout(SettingsWrapper, {
   header: true,
   headerTitle: "Settings",
-  background: false
+  background: false,
+  headerClassName: ""
 })
