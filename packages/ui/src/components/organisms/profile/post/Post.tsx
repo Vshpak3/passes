@@ -1,7 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
-import { FC, memo, useEffect, useState } from "react"
+import { FC, memo, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
@@ -14,7 +14,7 @@ import {
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { MAX_PINNED_POST } from "src/config/post"
 import { useBuyPostModal } from "src/hooks/context/useBuyPostModal"
-import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
+import { ProfileContext } from "src/pages/[username]"
 import { DeletePostModal } from "./DeletePostModal"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
@@ -37,7 +37,7 @@ const PostUnmemo: FC<PostProps> = ({
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const { setPost } = useBuyPostModal()
   const router = useRouter()
-  const { pinPost, unpinPost, pinnedPosts } = usePinnedPosts(post.userId)
+  const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
 
   const {
     contents,
@@ -84,9 +84,9 @@ const PostUnmemo: FC<PostProps> = ({
     }),
     ...DropDownGeneral(
       "Pin",
-      post.isOwner && !isPinned && contentProcessed,
+      post.isOwner && !isPinned && contentProcessed && !!pinPost,
       async () => {
-        if (pinnedPosts.length === MAX_PINNED_POST) {
+        if (pinnedPosts && pinnedPosts.length === MAX_PINNED_POST) {
           toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
           return
         }
@@ -97,7 +97,7 @@ const PostUnmemo: FC<PostProps> = ({
     ),
     ...DropDownGeneral(
       "Unpin",
-      post.isOwner && isPinned && contentProcessed,
+      post.isOwner && isPinned && contentProcessed && !!unpinPost,
       async () => {
         await unpinPost(post)
         toast.success("The post has been unpinned")
@@ -111,12 +111,11 @@ const PostUnmemo: FC<PostProps> = ({
   // We need this useEffect to ensure the posts are properly removed from their
   // respective section.
   useEffect(() => {
-    if (
+    setIsRemoved(
       !isPinned &&
-      pinnedPosts.some(({ postId: pinnedPostId }) => pinnedPostId === postId)
-    ) {
-      setIsRemoved(true)
-    }
+        pinnedPosts &&
+        pinnedPosts.some(({ postId: pinnedPostId }) => pinnedPostId === postId)
+    )
   }, [isPinned, pinnedPosts, postId])
 
   return (

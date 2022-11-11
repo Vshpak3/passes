@@ -4,7 +4,9 @@ import { useEffect, useState } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 import { ProfileUpdate } from "src/helpers/updateProfile"
+import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
 import { useUser } from "src/hooks/useUser"
+import { usePinnedPosts } from "./usePinnedPosts"
 
 const CACHE_KEY_PROFILE = "/profile/info"
 
@@ -66,6 +68,8 @@ export const useProfile = () => {
     })
 
   const ownsProfile = loggedInUsername === profileUsername
+  const pinnedPassesHook = useCreatorPinnedPasses(profile?.userId)
+  const pinnedPostsHook = usePinnedPosts(profile?.userId)
 
   return {
     profile,
@@ -76,6 +80,8 @@ export const useProfile = () => {
     profileUsername,
     profileUserId: profile?.userId,
     ownsProfile,
-    hasInitialFetch
+    hasInitialFetch,
+    ...pinnedPassesHook,
+    ...pinnedPostsHook
   }
 }

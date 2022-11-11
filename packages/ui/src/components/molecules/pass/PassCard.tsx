@@ -2,7 +2,7 @@ import { PassDto, PassDtoChainEnum, PassDtoTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/square-info-icon.svg"
-import { FC, useContext, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -12,7 +12,6 @@ import { MAX_PINNED_PASSES } from "src/config/pass"
 import { redirectUnauthedToLogin } from "src/helpers/authRouter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
-import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
 import { useUser } from "src/hooks/useUser"
 import { ProfileContext } from "src/pages/[username]"
 
@@ -39,15 +38,13 @@ export const PassCard: FC<PassCardProps> = ({
 }) => {
   const { setPass } = useBuyPassModal()
 
-  const { profileUsername, profile } = useContext(ProfileContext)
+  const { profileUsername, profile, pinnedPasses, unpinPass, pinPass } =
+    useContext(ProfileContext)
 
   const { user } = useUser()
   const router = useRouter()
   const isCreator = pass.creatorId === user?.userId
 
-  const { pinnedPasses, pinPass, unpinPass } = useCreatorPinnedPasses(
-    pass.creatorId || ""
-  )
   const [isPinned, setIsPinned] = useState<boolean>(!!pass.pinnedAt)
 
   const pinOrUnpinPass = async () => {
@@ -56,8 +53,13 @@ export const PassCard: FC<PassCardProps> = ({
       return
     }
     isPinned ? await unpinPass(pass) : await pinPass(pass)
-    setIsPinned(!isPinned)
   }
+
+  useEffect(() => {
+    setIsPinned(
+      pinnedPasses.some((pinnedPass) => pinnedPass.passId === pass.passId)
+    )
+  }, [pinnedPasses, pass])
 
   return (
     <div

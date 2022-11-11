@@ -1,18 +1,11 @@
-import { FC } from "react"
+import { FC, useContext } from "react"
 
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { PassCard } from "src/components/molecules/pass/PassCard"
-import { useCreatorPinnedPasses } from "src/hooks/passes/useCreatorPasses"
+import { ProfileContext } from "src/pages/[username]"
 
-interface CreatorPinnedPassesProps {
-  userId: string
-}
-
-export const CreatorPinnedPasses: FC<CreatorPinnedPassesProps> = ({
-  userId
-}) => {
-  const { pinnedPasses } = useCreatorPinnedPasses(userId)
-
+export const CreatorPinnedPasses: FC = () => {
+  const { pinnedPasses } = useContext(ProfileContext)
   return (
     <div className="flex flex-col px-4">
       <div className="pl-2">

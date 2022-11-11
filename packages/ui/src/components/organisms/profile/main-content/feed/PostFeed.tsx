@@ -4,7 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, memo } from "react"
+import { FC, memo, useContext } from "react"
 
 import {
   ComponentArg,
@@ -13,8 +13,8 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { Post } from "src/components/organisms/profile/post/Post"
-import { usePinnedPosts } from "src/hooks/profile/usePinnedPosts"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
+import { ProfileContext } from "src/pages/[username]"
 
 const PostFeedLoader = (
   <div className="my-[40px] flex justify-center">
@@ -40,7 +40,7 @@ interface PostFeedProps {
 const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
 
-  const { pinnedPosts } = usePinnedPosts(profileUserId)
+  const { pinnedPosts } = useContext(ProfileContext)
   const { posts } = usePostWebhook()
 
   return (

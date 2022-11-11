@@ -1,4 +1,4 @@
-import { GetProfileResponseDto } from "@passes/api-client"
+import { GetProfileResponseDto, PassDto, PostDto } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { createContext, memo, Suspense } from "react"
 import { KeyedMutator } from "swr"
@@ -23,6 +23,15 @@ interface ProfileProps {
   profileUserId: string | undefined
   ownsProfile: boolean
   hasInitialFetch: boolean
+
+  pinnedPasses: PassDto[]
+  pinPass: (pass: PassDto) => Promise<void>
+  unpinPass: (pass: PassDto) => Promise<void>
+
+  pinnedPosts: PostDto[]
+  mutatePinnedPosts: KeyedMutator<PostDto[] | undefined>
+  pinPost: (post: PostDto) => Promise<void>
+  unpinPost: (post: PostDto) => Promise<void>
 }
 
 export const ProfileContext = createContext({} as ProfileProps)

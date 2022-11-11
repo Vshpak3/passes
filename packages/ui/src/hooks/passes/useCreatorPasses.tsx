@@ -4,29 +4,34 @@ import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_CREATOR_PINNED_PASSES = "/pass/creator-passes/pinned"
 
-export const useCreatorPinnedPasses = (creatorId: string) => {
+export const useCreatorPinnedPasses = (creatorId?: string) => {
   const api = new PassApi()
 
   const { data: pinnedPasses, mutate: mutatePinnedPasses } = useSWR(
-    [CACHE_KEY_CREATOR_PINNED_PASSES, creatorId],
+    creatorId ? [CACHE_KEY_CREATOR_PINNED_PASSES, creatorId] : null,
     async () => {
       return (
         await api.getCreatorPasses({
           getPassesRequestDto: { creatorId, pinned: true }
         })
       ).data
-    }
+    },
+    { revalidateOnMount: true }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: PassDto[]) =>
-    _mutateManual([CACHE_KEY_CREATOR_PINNED_PASSES, creatorId], update, {
-      populateCache: (update: PassDto[]) => {
-        return update
-      },
-      // Set true to force passes feed component to render
-      revalidate: true
-    })
+    _mutateManual(
+      creatorId ? [CACHE_KEY_CREATOR_PINNED_PASSES, creatorId] : null,
+      update,
+      {
+        populateCache: (update: PassDto[]) => {
+          return update
+        },
+        // Set true to force passes feed component to render
+        revalidate: true
+      }
+    )
 
   const pinPass = async (pass: PassDto) => {
     await api.pinPass({ passId: pass.passId })

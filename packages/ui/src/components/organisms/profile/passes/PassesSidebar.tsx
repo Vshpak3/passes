@@ -5,7 +5,7 @@ import { ProfileContext } from "src/pages/[username]"
 import { CreatorPinnedPasses } from "./CreatedPinnedPasses"
 
 export const PassesSidebar = () => {
-  const { profile, profileUserId, loadingProfile } = useContext(ProfileContext)
+  const { profile, loadingProfile } = useContext(ProfileContext)
 
   return (
     <>
@@ -14,10 +14,7 @@ export const PassesSidebar = () => {
           <Loader />
         </div>
       ) : (
-        profile &&
-        !!profile?.isCreator && (
-          <CreatorPinnedPasses userId={profileUserId || ""} />
-        )
+        profile && !!profile?.isCreator && <CreatorPinnedPasses />
       )}
     </>
   )

@@ -1,22 +1,25 @@
 import { FeedApi, PostApi, PostDto } from "@passes/api-client"
-import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_FEED_PINNED = "/profile/feed/pinned"
 
-export const usePinnedPosts = (creatorId: string) => {
+export const usePinnedPosts = (creatorId?: string) => {
   const feedApi = new FeedApi()
   const postApi = new PostApi()
 
   const { data: pinnedPosts, mutate: mutatePinnedPosts } = useSWR(
-    [CACHE_KEY_FEED_PINNED, creatorId],
+    creatorId ? [CACHE_KEY_FEED_PINNED, creatorId] : null,
     async () => {
+      if (!creatorId) {
+        return
+      }
       return (
         await feedApi.getFeedForCreator({
           getProfileFeedRequestDto: { creatorId, pinned: true }
         })
       ).data
-    }
+    },
+    { revalidateOnMount: true }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
@@ -47,13 +50,6 @@ export const usePinnedPosts = (creatorId: string) => {
       mutateManual(pinnedPosts.filter((p) => p.postId !== post.postId))
     }
   }
-
-  useEffect(() => {
-    if (!pinnedPosts) {
-      mutatePinnedPosts()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return {
     pinnedPosts: pinnedPosts || [],
