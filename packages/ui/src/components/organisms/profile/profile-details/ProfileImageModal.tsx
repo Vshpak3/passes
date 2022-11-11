@@ -1,7 +1,8 @@
-import { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction, useRef } from "react"
 
 import { Modal } from "src/components/organisms/Modal"
 import { ContentService } from "src/helpers/content"
+import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface ProfileImageModalProps {
   profileUserId: string
@@ -14,16 +15,20 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
   isProfilePicModalOpen,
   setIsProfilePicModalOpen
 }) => {
+  const containerEl = useRef(null)
+  useOnClickOutside(containerEl, () => {
+    setIsProfilePicModalOpen(false)
+  })
   return (
     <Modal
       isOpen={isProfilePicModalOpen}
       setOpen={setIsProfilePicModalOpen}
       shouldCloseOnClickOutside
     >
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center" ref={containerEl}>
         <img
           alt=""
-          className="min-w-[500px] max-w-[500px] object-cover drop-shadow-profile-photo"
+          className="w-[300px] object-cover drop-shadow-profile-photo md:min-w-[500px] md:max-w-[500px]"
           onError={({ currentTarget }) => {
             currentTarget.onerror = null
             currentTarget.src = "/img/profile/default-profile-img.svg"
