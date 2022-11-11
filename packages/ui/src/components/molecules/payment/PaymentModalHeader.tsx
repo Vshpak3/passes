@@ -18,7 +18,7 @@ export const PaymenetModalHeader: FC<PaymenetModalHeaderProps> = ({
       <SectionTitle>{title}</SectionTitle>
       {!!user && (
         <div className="mb-4 flex items-center border-b border-passes-gray-600 pt-2 pb-6">
-          <ProfileWidget user={user} />
+          <ProfileWidget linked={false} user={user} />
         </div>
       )}
     </>

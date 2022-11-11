@@ -14,7 +14,7 @@ type ProfileWidgetProps = {
 export const ProfileWidget: FC<ProfileWidgetProps> = ({
   user,
   isCreator = true,
-  linked = false
+  linked = true
 }) => {
   const component = (
     <div className="flex w-full items-center gap-[10px]">
