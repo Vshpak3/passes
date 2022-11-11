@@ -9,8 +9,8 @@ const ContentSecurityPolicy = [
   `font-src 'self' data: js.intercomcdn.com;`,
   // Necessary to load Persona
   `frame-src 'self' withpersona.com;`,
-  // Allows images to be loaded from embedded data, blobs (for upload), and the CDN
-  `img-src 'self' blob: data: ${process.env.NEXT_PUBLIC_CDN_URL};`,
+  // Allows images to be loaded from embedded data, blobs (for upload), the CDN, and Intercom
+  `img-src 'self' blob: data: ${process.env.NEXT_PUBLIC_CDN_URL} downloads.intercomcdn.com;`,
   // Allows videos to be loaded from blobs (for upload) and the CDN
   `media-src 'self' blob: ${process.env.NEXT_PUBLIC_CDN_URL};`,
   // Allows scripts to be loaded from Segment, Intercom, and Persona
