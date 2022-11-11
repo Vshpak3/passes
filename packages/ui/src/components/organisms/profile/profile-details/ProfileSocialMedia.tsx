@@ -29,7 +29,7 @@ const socialUsernameToUrl: Record<
   tiktokUsername: (u: string) => `https://www.tiktok.com/${u}?lang=en`,
   twitchUsername: (u: string) => `https://www.twitch.com/${u}`,
   twitterUsername: (u: string) => `https://www.twitter.com/${u}`,
-  youtubeUsername: (u: string) => `https://www.youtube.com/c/${u}`
+  youtubeUsername: (u: string) => `https://www.youtube.com/user/${u}`
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
