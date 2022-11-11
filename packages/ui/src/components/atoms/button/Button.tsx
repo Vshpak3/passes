@@ -10,11 +10,12 @@ export enum ButtonTypeEnum {
 }
 
 export enum ButtonVariant {
-  BLACK = "black",
-  GRADIENT = "gradient",
-  PINK_OUTLINE = "pink-outline",
-  PINK = "pink",
-  PRIMARY = "primary"
+  BLACK,
+  GRADIENT,
+  NONE,
+  PINK,
+  PINK_OUTLINE,
+  PRIMARY
 }
 
 interface ButtonProps {
@@ -64,6 +65,9 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
     case ButtonVariant.BLACK:
       variantClassName =
         "text-white dark:text-white bg-black rounded px-6 py-2 border border-[#3A444C]/30 font-[500]"
+      break
+    case ButtonVariant.NONE:
+      variantClassName = ""
       break
   }
   if (big) {
