@@ -1,4 +1,5 @@
 import { CreateWelcomeMessageRequestDto } from "@passes/api-client"
+import classNames from "classnames"
 import { memo, useCallback } from "react"
 
 import { InputMessageTool } from "src/components/molecules/messages/mass-dm/InputMessageTool"
@@ -36,26 +37,24 @@ const WelcomeMessage = () => {
   return (
     <>
       <Tab title="Edit Welcome Message" withBack />
-      {!isLoading && (
-        <div>
-          <InputMessageTool
-            clear={() => null}
-            customButtonText="Save message"
-            initialData={{
-              text: welcomeMessage?.text,
-              files: welcomeMessage?.bareContents?.map((bare) => {
-                return { content: { ...bare, userId: user?.userId ?? "" } }
-              }),
-              isPaid: !!welcomeMessage?.price,
-              price: welcomeMessage?.price.toFixed(0)
-            }}
-            previewIndex={welcomeMessage?.previewIndex}
-            save={fetch}
-            schedulable={false}
-            vaultContent={[]}
-          />
-        </div>
-      )}
+      <div className={classNames(isLoading && "hidden")}>
+        <InputMessageTool
+          clear={() => null}
+          customButtonText="Save message"
+          initialData={{
+            text: welcomeMessage?.text,
+            files: welcomeMessage?.bareContents?.map((bare) => {
+              return { content: { ...bare, userId: user?.userId ?? "" } }
+            }),
+            isPaid: !!welcomeMessage?.price,
+            price: welcomeMessage?.price.toFixed(0)
+          }}
+          previewIndex={welcomeMessage?.previewIndex}
+          save={fetch}
+          schedulable={false}
+          vaultContent={[]}
+        />
+      </div>
     </>
   )
 }
