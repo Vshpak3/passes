@@ -42,6 +42,10 @@ const chatSettingsSchema = object({
         MIN_TIP_MESSAGE_PRICE,
         `Minimum tip amount is $${MIN_TIP_MESSAGE_PRICE}`
       )
+      .min(
+        MAX_TIP_MESSAGE_PRICE,
+        `Maximum tip amount is $${MAX_TIP_MESSAGE_PRICE}`
+      )
       .required("Please enter tip amount")
   })
 })
