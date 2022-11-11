@@ -1,12 +1,18 @@
 import React from "react"
 
-export const DeleteIcon = () => (
+type DeleteIconProps = {
+  className?: string
+  onClick?(): void
+}
+
+export const DeleteIcon = ({ ...props }: DeleteIconProps) => (
   <svg
     fill="none"
     height="25"
     viewBox="0 0 24 25"
     width="24"
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
   >
     <path
       clipRule="evenodd"

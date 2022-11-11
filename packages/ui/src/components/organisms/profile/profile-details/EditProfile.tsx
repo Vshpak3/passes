@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { GetProfileResponseDto } from "@passes/api-client"
+import { ContentApi, GetProfileResponseDto } from "@passes/api-client"
 import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
@@ -26,8 +26,11 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
+import { DeleteIcon } from "src/icons/DeleteIcon"
 import { ProfileContext } from "src/pages/[username]"
 import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
+
+const content = new ContentApi()
 
 const editProfileSchema = object({
   displayName: string()
@@ -189,6 +192,11 @@ export const EditProfile: FC<EditProfileProps> = ({
     }
   }
 
+  const deleteProfileBanner = async () => {
+    await content.deleteProfileBanner()
+    setProfileBannerUrl("")
+  }
+
   return (
     <Dialog
       className="flex h-[90vh] w-screen flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
@@ -243,6 +251,15 @@ export const EditProfile: FC<EditProfileProps> = ({
                   currentTarget.src = "/img/profile/select-banner-img.png"
                 }}
                 src={profileBannerUrl}
+              />
+              <DeleteIcon
+                className={classNames(
+                  "absolute bottom-[-30px] right-3 z-30 h-[12px] w-[12px]",
+                  {
+                    hidden: !!profileImage?.length
+                  }
+                )}
+                onClick={deleteProfileBanner}
               />
             </div>
           }
