@@ -95,6 +95,7 @@ async function tippedMessageCreationCallback(
   db: DatabaseService['knex'],
 ): Promise<TippedMessagePayinCallbackOutput> {
   const messageId = await payService.messagesService.createMessage(
+    true,
     input.userId,
     input.text,
     input.channelId,

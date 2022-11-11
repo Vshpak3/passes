@@ -185,7 +185,6 @@ export const InputMessage: FC<InputMessageProps> = ({
     try {
       await submitData(tip)
       if (!blocked) {
-        // submit()
         if (tip > 0) {
           setOnModalCallback(() => clear)
           setSelectedChannel(selectedChannel)

@@ -404,6 +404,7 @@ export class MessagesService {
         ).channelId
         try {
           await this.createMessage(
+            false,
             userId,
             text,
             channelId,
@@ -544,6 +545,7 @@ export class MessagesService {
         previewIndex,
       )
       await this.createMessage(
+        true,
         userId,
         text,
         channelId,
@@ -794,6 +796,7 @@ export class MessagesService {
       userId: receiverId,
     })
     await this.createMessage(
+      false,
       senderId,
       message,
       channel.channelId,
@@ -809,6 +812,7 @@ export class MessagesService {
   }
 
   async createMessage(
+    read: boolean,
     userId: string,
     text: string,
     channelId: string,
@@ -843,6 +847,9 @@ export class MessagesService {
     await this.dbWriter<MessageEntity>(MessageEntity.table).insert(data)
     if (!pending) {
       await this.updateStatus(userId, channelId, text)
+    }
+    if (read) {
+      await this.read(userId, channelId)
     }
     await this.redisService.publish(
       'message',

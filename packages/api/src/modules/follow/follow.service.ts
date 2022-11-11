@@ -150,6 +150,7 @@ export class FollowService {
             userId: creatorId,
           })
           await this.messagesService.createMessage(
+            false,
             creatorId,
             welcomeMessage.text,
             channel.channelId,
