@@ -1,13 +1,6 @@
 import Link from "next/link"
 import ChatIcon from "public/icons/mail-icon.svg"
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState
-} from "react"
+import { Dispatch, FC, SetStateAction, useContext, useState } from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { FollowButton } from "src/components/molecules/FollowButton"
