@@ -45,7 +45,7 @@ export const Comment: FC<CommentProps> = ({
   const [isHidden, setIsHidden] = useState(_isHidden)
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!isOwner && !ownsPost, {
+    ...DropDownReport(!isOwner, {
       username: commenterUsername,
       userId: commenterId
     }),

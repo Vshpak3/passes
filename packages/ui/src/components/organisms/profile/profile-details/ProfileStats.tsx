@@ -8,15 +8,21 @@ interface ProfileStatsProps {
   likes?: number
 }
 
-export const ProfileStats: FC<ProfileStatsProps> = ({ numPosts, likes }) => (
-  <div className="flex items-center">
-    {numPosts !== undefined && (
-      <ProfileStatItem label="POSTS" stat={compactNumberFormatter(numPosts)} />
-    )}
-    {numPosts !== undefined && likes !== undefined}
-    <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
-    {likes !== undefined && (
-      <ProfileStatItem label="LIKES" stat={compactNumberFormatter(likes)} />
-    )}
-  </div>
-)
+export const ProfileStats: FC<ProfileStatsProps> = ({ numPosts, likes }) => {
+  return numPosts !== undefined || likes !== undefined ? (
+    <div className="flex items-center">
+      {numPosts !== undefined && (
+        <ProfileStatItem
+          label="POSTS"
+          stat={compactNumberFormatter(numPosts)}
+        />
+      )}
+      {numPosts !== undefined && likes !== undefined && (
+        <div className="mx-[30px] h-[18px] w-[1px] bg-passes-dark-200" />
+      )}
+      {likes !== undefined && (
+        <ProfileStatItem label="LIKES" stat={compactNumberFormatter(likes)} />
+      )}
+    </div>
+  ) : null
+}

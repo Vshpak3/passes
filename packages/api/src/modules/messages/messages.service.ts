@@ -294,6 +294,7 @@ export class MessagesService {
     sentTo: number,
     previewIndex: number,
     isWelcomeMessage?: boolean,
+    override = false,
   ): Promise<{ paidMessageId?: string; contents: string }> {
     const contents = await this.contentService.validateContentIds(
       userId,
@@ -309,7 +310,7 @@ export class MessagesService {
       preview_index: previewIndex,
       is_welcome_message: isWelcomeMessage,
     }
-    if (price) {
+    if (price || override) {
       await this.dbWriter.transaction(async (trx) => {
         await trx<PaidMessageEntity>(PaidMessageEntity.table).insert(data)
         await trx<ContentEntity>(ContentEntity.table)
@@ -1404,6 +1405,7 @@ export class MessagesService {
       price ?? 0,
       0,
       previewIndex,
+      true,
       true,
     )
     return true

@@ -49,7 +49,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
   }
 
   const dropdownItems: DropdownOption[] = [
-    ...DropDownReport(!isOwner && !ownsProfile, {
+    ...DropDownReport(!isOwner, {
       username: commenterUsername,
       userId: commenterId
     }),

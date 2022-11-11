@@ -97,7 +97,7 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
                     username: profileUsername ?? "",
                     userId: profileUserId
                   }),
-                  ...DropDownBlock(true, {
+                  ...DropDownBlock(!!user?.isCreator, {
                     username: profileUsername ?? "",
                     userId: profileUserId
                   })
