@@ -61,6 +61,12 @@ const Username = dynamic(
 const ChatSettings = dynamic(
   () => import("src/components/pages/settings/tabs/ChatSettings")
 )
+const WelcomeMessage = dynamic(
+  () =>
+    import(
+      "src/components/pages/settings/tabs/ChatSettings/sub-tabs/WelcomeMessage"
+    )
+)
 const NotificationEmailSettings = dynamic(
   () => import("src/components/pages/settings/tabs/NotificationEmailSettings")
 )
@@ -163,6 +169,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   if (isMobile === undefined) {
     return null
   }
+
   return (
     <div className="flex h-full min-h-screen w-full">
       <div
@@ -264,6 +271,8 @@ const renderSubTab = (tab: SubTabsEnum) => {
       return <DisplayName />
     case SubTabsEnum.Username:
       return <Username />
+    case SubTabsEnum.WelcomeMessage:
+      return <WelcomeMessage />
     case SubTabsEnum.EmailNotifications:
       return <EmailNotifications />
     case SubTabsEnum.ProfileSettings:

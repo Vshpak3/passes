@@ -16,7 +16,7 @@ interface ChannelMessageProps {
   message: MessageDto
   messageUpdate?: Partial<MessageDto>
   showReadAt?: boolean
-  selectedChannel: ChannelMemberDto
+  selectedChannel?: ChannelMemberDto
 }
 const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   message,
@@ -98,10 +98,14 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                     isProcessing={!contentProcessed}
                     key={messageId}
                     messagesView
-                    openBuyModal={() => {
-                      setSelectedChannel(selectedChannel)
-                      setMessage(message)
-                    }}
+                    openBuyModal={
+                      selectedChannel
+                        ? () => {
+                            setSelectedChannel(selectedChannel)
+                            setMessage(message)
+                          }
+                        : () => null
+                    }
                     paid={!!paidAt || !!ownsMessage}
                     paying={paying}
                     previewIndex={previewIndex}

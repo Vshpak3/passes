@@ -3,25 +3,32 @@ import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import { memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { boolean, mixed, number, object, string } from "yup"
+import { boolean, mixed, number, object } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
-import { Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
+import { ChannelMessage } from "src/components/molecules/messages/ChannelMessage"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import {
   MAX_TIP_MESSAGE_PRICE,
   MIN_TIP_MESSAGE_PRICE
 } from "src/config/messaging"
+import { SubTabsEnum } from "src/config/settings"
+import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
+import { useWelcomeMessage } from "src/hooks/settings/useWelcomeMessage"
+import { useUser } from "src/hooks/useUser"
 
 const defaultValues = {
   isWithoutTip: false,
   showWelcomeMessageInput: false,
-  minimumTipAmount: "",
-  welcomeMessage: ""
+  minimumTipAmount: ""
 }
 
 const chatSettingsSchema = object({
@@ -36,16 +43,24 @@ const chatSettingsSchema = object({
         `Minimum tip amount is $${MIN_TIP_MESSAGE_PRICE}`
       )
       .required("Please enter tip amount")
-  }),
-  welcomeMessage: string().when("showWelcomeMessageInput", {
-    is: true,
-    then: string().required("Please enter welcome message")
   })
 })
 
 const ChatSettings = () => {
-  const { creatorSettings, isLoading, updateCreatorSettings } =
-    useCreatorSettings()
+  const { addTabToStackHandler } = useSettings() as SettingsContextProps
+  const { user } = useUser()
+
+  const {
+    creatorSettings,
+    isLoading: isCreatorSettingsLoading,
+    updateCreatorSettings
+  } = useCreatorSettings()
+
+  const { welcomeMessage, isLoading: isWelcomeMessageLoading } =
+    useWelcomeMessage()
+
+  const isLoading = isCreatorSettingsLoading ?? isWelcomeMessageLoading
+
   const {
     register,
     watch,
@@ -88,7 +103,6 @@ const ChatSettings = () => {
     setValue("isWithoutTip", !creatorSettings?.minimumTipAmount)
 
     setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`)
-    setValue("welcomeMessage", "")
   }, [creatorSettings, setValue])
 
   useEffect(() => {
@@ -153,14 +167,51 @@ const ChatSettings = () => {
             </label>
 
             {values.showWelcomeMessageInput && (
-              <Input
-                className="mt-[22px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
-                errors={errors}
-                name="welcomeMessage"
-                placeholder="Type a message..."
-                register={register}
-                type="text"
-              />
+              <div className="relative mt-[22px] rounded-md border border-passes-gray-700/80 !py-4 !px-3 focus:border-passes-secondary-color focus:ring-0">
+                <input
+                  className="w-full border-none bg-transparent text-[#ffff]/90"
+                  placeholder={
+                    welcomeMessage
+                      ? "Default Welcome Message: "
+                      : "No welcome message selected."
+                  }
+                  readOnly
+                  type="text"
+                />
+                <div className="absolute top-1/4 right-0 pr-5">
+                  <Button
+                    className="w-20 rounded-md py-1.5 text-center font-bold"
+                    onClick={() =>
+                      addTabToStackHandler(SubTabsEnum.WelcomeMessage)
+                    }
+                    variant={ButtonVariant.PINK_OUTLINE}
+                  >
+                    Edit
+                  </Button>
+                </div>
+                {welcomeMessage && (
+                  <ChannelMessage
+                    message={{
+                      text: welcomeMessage.text ?? "",
+                      channelId: "",
+                      contentProcessed: true,
+                      contents: welcomeMessage.bareContents.map((content) => {
+                        return { ...content, userId: user?.userId ?? "" }
+                      }),
+                      messageId: "",
+                      paying: false,
+                      pending: false,
+                      previewIndex: welcomeMessage.previewIndex,
+                      price: welcomeMessage.price ?? 0,
+                      reverted: false,
+                      senderId: user?.userId ?? "",
+                      sentAt: new Date(),
+                      automatic: false
+                    }}
+                    ownsMessage
+                  />
+                )}
+              </div>
             )}
           </div>
 

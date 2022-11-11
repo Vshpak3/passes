@@ -16,5 +16,6 @@ const SettingPageWithParam = () => {
 }
 
 export default WithNormalPageLayout(SettingPageWithParam, {
-  background: false
+  background: false,
+  headerTitle: "Settings"
 })

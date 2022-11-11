@@ -1,7 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useState } from "react"
+import {
+  ChangeEvent,
+  FC,
+  KeyboardEvent,
+  memo,
+  useEffect,
+  useState
+} from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
@@ -38,13 +45,19 @@ interface InputMessageToolProps {
     scheduledAt?: Date
   ) => Promise<void>
   schedulable: boolean
+  customButtonText?: string
+  initialData?: Partial<InputMessageFormProps>
+  previewIndex?: number
 }
 
-export const InputMessageTool: FC<InputMessageToolProps> = ({
+const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   vaultContent,
   clear,
   save,
-  schedulable = true
+  schedulable = true,
+  customButtonText,
+  initialData,
+  previewIndex = 0
 }) => {
   const {
     register,
@@ -55,19 +68,20 @@ export const InputMessageTool: FC<InputMessageToolProps> = ({
     getValues,
     setValue
   } = useForm<InputMessageFormProps>({
-    defaultValues: { ...InputMessageFormDefaults },
+    defaultValues: { ...InputMessageFormDefaults, ...initialData },
     resolver: yupResolver(newMessageFormSchema)
   })
-  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
-    vaultContent.map((content) => new ContentFile(undefined, content))
-  )
+  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia([
+    ...vaultContent.map((content) => new ContentFile(undefined, content)),
+    ...(initialData?.files ?? [])
+  ])
   useEffect(() => {
     setValue("files", files, { shouldValidate: true })
   }, [files, setValue])
 
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
-  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
+  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(previewIndex)
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
     addNewMedia(event.target.files)
@@ -219,7 +233,8 @@ export const InputMessageTool: FC<InputMessageToolProps> = ({
               fontSize={16}
               type={ButtonTypeEnum.SUBMIT}
             >
-              {scheduledTime ? "Schedule message" : "Send message"}
+              {customButtonText ??
+                (scheduledTime ? "Schedule message" : "Send message")}
             </Button>
           </div>
         </div>
@@ -234,3 +249,5 @@ export const InputMessageTool: FC<InputMessageToolProps> = ({
     </form>
   )
 }
+
+export const InputMessageTool = memo(InputMessageToolUnmemo)

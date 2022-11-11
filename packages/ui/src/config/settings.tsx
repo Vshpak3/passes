@@ -65,6 +65,9 @@ export enum SubTabsEnum {
   "DisplayName",
   "Username",
 
+  // Chat
+  "WelcomeMessage",
+
   // Notification
   "EmailNotifications",
 
@@ -90,6 +93,9 @@ export const subTabToPath: Record<SubTabsEnum, string> = {
   [SubTabsEnum.ProfilePicture]: "picture",
   [SubTabsEnum.DisplayName]: "display",
   [SubTabsEnum.Username]: "username",
+
+  // Chat
+  [SubTabsEnum.WelcomeMessage]: "welcome-message",
 
   // Notification
   [SubTabsEnum.EmailNotifications]: "email",
