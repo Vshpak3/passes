@@ -12,6 +12,7 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CommentsBlockedError } from '../creator-settings/error/creator-settings.error'
+import { EmailService } from '../email/email.service'
 import { COMMENTS_DISABLED, FOLLOWER_BLOCKED } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { POST_DELETED, POST_NOT_EXIST } from '../post/constants/errors'
@@ -31,6 +32,7 @@ export class CommentService {
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
+    private readonly emailService: EmailService,
   ) {}
 
   async createComment(
@@ -63,6 +65,10 @@ export class CommentService {
         .where({ id: data.id })
         .update({ blocked: true })
     }
+    await this.emailService.sendTaggedUserEmails(
+      createCommentDto.tags,
+      'comment',
+    )
     return data.id
   }
 

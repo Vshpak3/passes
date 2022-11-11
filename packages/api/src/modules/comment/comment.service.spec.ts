@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
+import { EmailService } from '../email/email.service'
 import { CommentService } from './comment.service'
 
 describe('CommentService', () => {
@@ -8,7 +9,14 @@ describe('CommentService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CommentService, ...getBaseProviders()],
+      providers: [
+        CommentService,
+        ...getBaseProviders(),
+        {
+          provide: EmailService,
+          useFactory: jest.fn(() => ({})),
+        },
+      ],
     }).compile()
 
     service = module.get<CommentService>(CommentService)

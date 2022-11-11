@@ -141,12 +141,12 @@ export class EmailService {
     return this.sendEmailToUsers([userId], messageHtml, subject, data, type)
   }
 
-  async sendTaggedUserEmails(tags: TagDto[]) {
+  async sendTaggedUserEmails(tags: TagDto[], item: string) {
     await this.sendEmailToUsers(
       tags.map((u) => u.userId),
       POST_NEW_MENTION_EMAIL_SUBJECT,
       POST_NEW_MENTION,
-      {},
+      { item },
       'mention_emails',
     )
   }

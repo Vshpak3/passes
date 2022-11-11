@@ -10,6 +10,7 @@ import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
 import { verifyTaggedText } from '../../util/text.util'
+import { EmailService } from '../email/email.service'
 import { CREATOR_NOT_EXIST } from '../follow/constants/errors'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { UserEntity } from '../user/entities/user.entity'
@@ -27,6 +28,7 @@ export class FanWallService {
     private readonly dbReader: DatabaseService['knex'],
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
+    private readonly emailService: EmailService,
   ) {}
 
   async createFanWallComment(
@@ -55,6 +57,10 @@ export class FanWallService {
     await this.dbWriter<FanWallCommentEntity>(
       FanWallCommentEntity.table,
     ).insert(data)
+    await this.emailService.sendTaggedUserEmails(
+      createFanWallCommentDto.tags,
+      'fanwall post',
+    )
 
     return data.id
   }

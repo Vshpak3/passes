@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
 
 import { getBaseProviders } from '../../util/providers.test'
+import { EmailService } from '../email/email.service'
 import { CommentController } from './comment.controller'
 import { CommentService } from './comment.service'
 
@@ -10,7 +11,14 @@ describe('CommentController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentController],
-      providers: [CommentService, ...getBaseProviders()],
+      providers: [
+        CommentService,
+        ...getBaseProviders(),
+        {
+          provide: EmailService,
+          useFactory: jest.fn(() => ({})),
+        },
+      ],
     }).compile()
 
     controller = module.get<CommentController>(CommentController)

@@ -191,7 +191,7 @@ export class PostService {
         this.logger.error(err)
         throw err
       })
-    await this.emailService.sendTaggedUserEmails(createPostDto.tags)
+    await this.emailService.sendTaggedUserEmails(createPostDto.tags, 'post')
 
     return postId
   }

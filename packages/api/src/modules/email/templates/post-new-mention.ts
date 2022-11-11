@@ -3,8 +3,9 @@ import { SUPPORT } from '../components/support'
 
 export const POST_NEW_MENTION_EMAIL_SUBJECT = 'You have a new mention!'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PostNewMentionTemplateVariables {}
+export interface PostNewMentionTemplateVariables {
+  item: string
+}
 
 export const POST_NEW_MENTION = `---
 title: You were mentioned in a recent post!
@@ -26,7 +27,7 @@ preheader: You were mentioned in a recent post!
                 </div>
 
                 <p class="mt-0 mb-4 text-[21px] leading-7 text-gray-900">
-                  You were mentioned in a recent post!
+                  You were mentioned in a recent {{ page.item }}!
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
