@@ -8,5 +8,5 @@
 }
 
 #nprogress .bar {
-  @apply fixed top-0 left-0 z-[2000] h-1 w-full bg-purple-purple9 dark:bg-purpleDark-purple9;
+  @apply fixed top-0 left-0 z-[2000] h-1 w-full bg-passes-pink-100 dark:bg-passes-pink-100;
 }
