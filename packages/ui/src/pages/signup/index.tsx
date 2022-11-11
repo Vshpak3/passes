@@ -11,7 +11,11 @@ import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { object, SchemaOf, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { RoundedIconButton } from "src/components/atoms/button/RoundedIconButton"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
@@ -200,6 +204,7 @@ const SignupInitialPage: FC = () => {
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
               type={ButtonTypeEnum.SUBMIT}
+              variant={ButtonVariant.NONE}
             >
               <Text className="font-medium" fontSize={16}>
                 Register account

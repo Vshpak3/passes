@@ -54,7 +54,7 @@ export const HomeContentFeed: FC = () => {
   const { featuredCreators } = useFeaturedCreators()
 
   return (
-    <div className="mt-10 grid w-full grid-cols-7 lg:mt-0">
+    <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 lg:col-span-4">
         <SectionTitle className="mt-6 ml-4 lg:mt-4">Home</SectionTitle>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>

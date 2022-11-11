@@ -12,7 +12,11 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { RoundedIconButton } from "src/components/atoms/button/RoundedIconButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
@@ -155,6 +159,7 @@ const LoginPage: FC = () => {
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
               type={ButtonTypeEnum.SUBMIT}
+              variant={ButtonVariant.NONE}
             >
               <Text className="font-medium" fontSize={16}>
                 Login

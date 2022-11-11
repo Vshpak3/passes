@@ -7,7 +7,11 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { object, SchemaOf, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
@@ -135,6 +139,7 @@ const SignupEmailPage: FC = () => {
                 disabledClass="opacity-[0.5]"
                 onClick={resendEmail}
                 type={ButtonTypeEnum.SUBMIT}
+                variant={ButtonVariant.NONE}
               >
                 <Text className="font-medium" fontSize={16}>
                   {!hasResentEmail ? (

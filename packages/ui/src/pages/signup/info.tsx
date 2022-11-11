@@ -11,7 +11,11 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
-import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import {
+  Button,
+  ButtonTypeEnum,
+  ButtonVariant
+} from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
@@ -252,6 +256,7 @@ const SignupInfoPage: FC = () => {
               disabled={isSubmitting}
               disabledClass="opacity-[0.5]"
               type={ButtonTypeEnum.SUBMIT}
+              variant={ButtonVariant.NONE}
             >
               <Text className="font-medium" fontSize={16}>
                 Register account
