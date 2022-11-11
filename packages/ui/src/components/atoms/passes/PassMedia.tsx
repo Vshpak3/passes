@@ -4,6 +4,7 @@ import {
 } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useState } from "react"
+import { MdSource } from "react-icons/md"
 
 import { ContentService } from "src/helpers/content"
 
@@ -22,18 +23,18 @@ export const PassMedia: FC<PassMediaProps> = ({
   animationType,
   isPinnedPass = false
 }) => {
-  const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(false)
+  const [shouldUsePlaceholder, setShouldUsePlaceholder] = useState(true)
 
-  const handleErrorLoadingAsset = () => {
-    setShouldUsePlaceholder(true)
+  const handleLoadingAsset = () => {
+    setShouldUsePlaceholder(false)
   }
 
   if (shouldUsePlaceholder) {
     return (
       <div
         className={classNames(
-          isPinnedPass ? "h-[274px]" : "mx-auto h-[210px] max-w-[240px]",
-          "w-full rounded-lg bg-gradient-to-br from-passes-purple-100 via-[#F03368] to-[#F6B103]"
+          isPinnedPass ? "w-[274px]" : "mx-auto max-w-[240px]",
+          "pt-[100%] h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103]"
         )}
       />
     )
@@ -43,7 +44,7 @@ export const PassMedia: FC<PassMediaProps> = ({
     return animationType ? (
       <video autoPlay loop muted>
         <source
-          onError={handleErrorLoadingAsset}
+          onLoad={handleLoadingAsset}
           src={ContentService.passHolderAnimationPath(
             passId,
             passHolderId,
@@ -66,7 +67,7 @@ export const PassMedia: FC<PassMediaProps> = ({
     return animationType ? (
       <video autoPlay loop muted>
         <source
-          onError={handleErrorLoadingAsset}
+          onLoad={handleLoadingAsset}
           src={ContentService.passAnimationPath(passId, animationType)}
           type="video/mp4"
         />
@@ -74,7 +75,7 @@ export const PassMedia: FC<PassMediaProps> = ({
     ) : (
       <img
         alt="no media exists"
-        onError={handleErrorLoadingAsset}
+        onLoad={handleLoadingAsset}
         src={ContentService.passImagePath(passId, imageType)}
       />
     )
