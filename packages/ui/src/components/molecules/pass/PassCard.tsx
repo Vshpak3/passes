@@ -161,6 +161,7 @@ export const PassCard: FC<PassCardProps> = ({
           <IconTooltip
             icon={InfoIcon}
             position="top"
+            tooltipClassName="w-[80px] text-center"
             tooltipText={
               <>
                 {/* Chain: */}
@@ -172,7 +173,6 @@ export const PassCard: FC<PassCardProps> = ({
                 )} */}
               </>
             }
-            tooltipClassName="w-[80px] text-center"
           />
         </div>
         <Button

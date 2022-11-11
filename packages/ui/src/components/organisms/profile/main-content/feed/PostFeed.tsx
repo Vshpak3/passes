@@ -4,7 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, memo, useState } from "react"
+import { FC, memo } from "react"
 
 import {
   ComponentArg,

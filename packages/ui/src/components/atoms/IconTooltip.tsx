@@ -1,6 +1,5 @@
 import classNames from "classnames"
 import { FC, PropsWithChildren, SVGProps, useState } from "react"
-import { formatText } from "../../helpers/formatters"
 
 interface IconTooltipProps {
   icon?: FC<SVGProps<SVGSVGElement>>
@@ -59,7 +58,7 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
       {tooltipStatus && (
         <div
           className={classNames(
-            "absolute passes-break whitepace-pre-wrap z-10 w-[200px] rounded bg-[#2B2426] p-3 text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
+            "passes-break whitepace-pre-wrap absolute z-10 w-[200px] rounded bg-[#2B2426] p-3 text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
             tooltipPositionDefinition(position),
             tooltipClassName
           )}
