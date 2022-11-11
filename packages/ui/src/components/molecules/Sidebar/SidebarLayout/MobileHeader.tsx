@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import MenuIcon from "public/icons/sidebar/menu.svg"
 import { FC, useRef, useState } from "react"
 
@@ -44,7 +43,6 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
               </span>
             </Disclosure.Button>
           </Disclosure>
-          <div>{!isSearchBarOpen && <PassesLogoPink className="mr-2" />}</div>
           {isSearchBarOpen ? (
             <div className="mx-2 w-full md:max-w-[50%]" ref={searchBarRef}>
               <CreatorSearchBar />
