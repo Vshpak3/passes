@@ -33,7 +33,6 @@ const WelcomeMessage = () => {
     [saveWelcomeMessageHandler]
   )
 
-  console.log(welcomeMessage)
   return (
     <>
       <Tab title="Edit Welcome Message" withBack />

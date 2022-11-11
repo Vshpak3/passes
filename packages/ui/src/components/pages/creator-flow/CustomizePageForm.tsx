@@ -148,9 +148,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                   <img
                     alt=""
                     className={classNames(
-                      errors.profileBanner
-                        ? "border-2 !border-red-500"
-                        : "",
+                      errors.profileBanner && "border-2 !border-red-500",
                       "h-[115px] w-full cursor-pointer rounded-[15px] object-cover object-center"
                     )}
                     src={
