@@ -66,7 +66,8 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[14px] font-[700] text-passes-pink-100">
           {canUnsend && <Button onClick={unsendMessage}>Unsend</Button>}
-          {!canUnsend && <>Unsent</>}
+          {!canUnsend && !paidMessage.isWelcomeMesage && <>Unsent</>}
+          {paidMessage.isWelcomeMesage && <>Welcome Message</>}
         </span>
       </div>
     </div>
