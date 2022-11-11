@@ -47,7 +47,7 @@ export const SelectPassHolderTab: FC<SelectPassHolderTabProps> = ({
             option.passType === passType && expired === option.expired
               ? "border-b-[3px] border-passes-primary-color text-white"
               : "border-b-[3px] border-b-transparent text-grayDark-gray8 hover:border-passes-primary-color hover:text-white/80",
-            "flex cursor-pointer flex-row justify-between px-[8px] text-center text-[12px] font-bold sm:px-[30px] sm:pb-[10px] sm:text-[16px]"
+            "mx-3 flex cursor-pointer flex-row justify-between px-[2px] text-center text-[12px] font-bold sm:mx-4 sm:px-5 sm:pb-[10px] sm:text-[16px]"
           )}
           key={option.label}
         >
