@@ -158,16 +158,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   ])
 
   useEffect(() => {
-    const cover = document
-      .getElementsByClassName("cover-image")
-      .item(0) as HTMLDivElement
-    if (!cover) {
-      return
-    }
-    cover.style.backgroundImage = ""
-  }, [router.route])
-
-  useEffect(() => {
     if (router.isReady) {
       const query = router.query
       const landingMessage = query.lm as LandingMessageEnum

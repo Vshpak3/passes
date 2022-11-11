@@ -5,6 +5,7 @@ import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
 import { CreatorSearchBar } from "./CreatorSearchBar"
+import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
 
 class WithNormalPageLayoutOptions {
@@ -53,23 +54,10 @@ export const WithNormalPageLayout = (
               )}
             >
               {header && (
-                <div
-                  className={classNames(
-                    "col-span-12 flex h-16 justify-between border-b-[0.5px] border-passes-gray pt-2 lg:col-span-7",
-                    headerClassName
-                  )}
-                >
-                  <div className="flex-1">
-                    {!!headerTitle && (
-                      <SectionTitle className="ml-4 mt-3 hidden lg:block">
-                        {headerTitle}
-                      </SectionTitle>
-                    )}
-                  </div>
-                  <span className="mr-8 hidden lg:block">
-                    <CreatorSearchBar />
-                  </span>
-                </div>
+                <Header
+                  headerTitle={headerTitle}
+                  headerClassName={headerClassName}
+                />
               )}
               <AuthWrapper
                 creatorOnly={!!options.creatorOnly}

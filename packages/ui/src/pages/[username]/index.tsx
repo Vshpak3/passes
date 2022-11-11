@@ -39,6 +39,5 @@ const ProfilePage = () => {
 
 export default WithNormalPageLayout(memo(ProfilePage), {
   skipAuth: true,
-  header: true,
-  headerClassName: "cover-image border-b-0 !h-[200px]"
+  header: false
 })

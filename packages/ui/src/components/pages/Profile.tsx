@@ -1,4 +1,5 @@
-import { FC, memo, useCallback, useContext, useEffect } from "react"
+import classNames from "classnames"
+import { FC, memo, useCallback, useContext, useEffect, useState } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
@@ -9,6 +10,7 @@ import { ProfileDetails } from "src/components/organisms/profile/profile-details
 import { ContentService } from "src/helpers/content"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { ProfileContext } from "src/pages/[username]"
+import { Header } from "../../layout/Header"
 
 const ProfileUnmemo: FC = () => {
   const { profile, profileUserId, loadingProfile, hasInitialFetch } =
@@ -20,20 +22,16 @@ const ProfileUnmemo: FC = () => {
     }
     const profileBanner = ContentService.profileBanner(profileUserId)
     const res = await fetch(profileBanner)
-    if (Math.floor(res.status / 100) !== 2) {
-      return
-    }
-    const cover = document
-      .getElementsByClassName("cover-image")
-      .item(0) as HTMLDivElement
-    if (!cover) {
-      return
-    }
-    cover.style.backgroundImage = `url('${profileBanner}')`
+    return Math.floor(res.status / 100) !== 2
   }, [profileUserId])
 
+  const [hasBanner, setHasBanner] = useState<boolean>(false)
   useEffect(() => {
-    updateProfileBanner()
+    setHasBanner(false)
+    const fetch = async () => {
+      setHasBanner((await updateProfileBanner()) ?? false)
+    }
+    fetch()
   }, [profileUserId, updateProfileBanner])
 
   const { isTablet } = useWindowSize()
@@ -43,6 +41,18 @@ const ProfileUnmemo: FC = () => {
 
   return (
     <>
+      <Header
+        headerClassName={classNames("cover-image border-b-0 !h-[200px]")}
+        style={
+          hasBanner && !!profileUserId
+            ? {
+                backgroundImage: `url(${ContentService.profileBanner(
+                  profileUserId
+                )})`
+              }
+            : undefined
+        }
+      />
       {!profile && loadingProfile ? (
         <div className="pt-28">
           <Loader />
