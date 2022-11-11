@@ -5,7 +5,7 @@ import { FC, useEffect, useRef, useState } from "react"
 import TimeAgo from "react-timeago"
 
 import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
-import { PostVideo } from "src/components/molecules/post/PostVideo"
+import { VideoContent } from "src/components/atoms/content/VideoContent"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
@@ -98,7 +98,12 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   )
                 } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
                   return (
-                    <PostVideo key={c.contentId} videoUrl={c.signedUrl ?? ""} />
+                    <VideoContent
+                      content={c}
+                      fixedHeight
+                      isActive={false}
+                      key={c.contentId}
+                    />
                   )
                 } else {
                   console.error("Unsupported media type")
@@ -169,9 +174,11 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                     c.contentType === ContentDtoContentTypeEnum.Video
                   ) {
                     return (
-                      <PostVideo
+                      <VideoContent
+                        content={c}
+                        fixedHeight
+                        isActive={false}
                         key={c.contentId}
-                        videoUrl={ContentService.userContentMediaPath(c)}
                       />
                     )
                   } else {

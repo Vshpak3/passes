@@ -9,11 +9,11 @@ interface VideoPlayerProps {
   content: ContentDto
   autoplay?: boolean
   className?: string
-  poster: string
+  poster?: string
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  ({ content, autoplay = false, className = "", poster }, ref) => {
+  ({ content, autoplay = false, className = "", poster = "" }, ref) => {
     return (
       <video
         autoPlay={autoplay}
