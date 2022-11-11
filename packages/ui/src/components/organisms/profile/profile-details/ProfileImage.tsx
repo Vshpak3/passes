@@ -20,9 +20,11 @@ export const ProfileImage: FC<ProfileImageProps> = ({
 }) => {
   const { profileImages } = useGlobalCache()
   const [loaded, setLoaded] = useState<boolean>(profileImages.has(userId))
+
   useEffect(() => {
     setLoaded(profileImages.has(userId))
-  }, [userId])
+  }, [userId, profileImages])
+
   return (
     <div
       className={classNames(

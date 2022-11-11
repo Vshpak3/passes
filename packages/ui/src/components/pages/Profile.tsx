@@ -29,7 +29,6 @@ const ProfileUnmemo: FC = () => {
   useEffect(() => {
     setHasBanner(false)
     const fetch = async () => {
-      console.log("asdf")
       setHasBanner(await updateProfileBanner())
     }
     fetch()
