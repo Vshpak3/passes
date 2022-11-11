@@ -22,7 +22,7 @@ const MessagesPage = () => {
   const { user } = useUser()
   const [vaultContent, setVaultContent] = useState<ContentDto[]>(
     JSON.parse((content as string) ?? "[]").map((bare: ContentBareDto) => {
-      return { ...bare, user: user?.userId ?? "" }
+      return { ...bare, userId: user?.userId ?? "" }
     })
   )
   const [massMessage, setMassMessage] = useState(!!vaultContent.length)
