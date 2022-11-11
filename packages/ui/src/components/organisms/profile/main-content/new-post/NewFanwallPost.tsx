@@ -3,12 +3,14 @@ import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar/close.svg"
-import { FC, useContext, useState } from "react"
+import { FC, useContext, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { MAX_FAN_COMMENT_TEXT_LENGTH } from "src/config/post"
+import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ProfileContext } from "src/pages/[username]"
@@ -38,11 +40,12 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
 }) => {
   const { profile } = useContext(ProfileContext)
   const [extended, setExtended] = useState(false)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isReset, setIsReset] = useState(false)
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
     getValues,
     setValue,
     reset
@@ -51,20 +54,35 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
-  const onSubmit = async () => {
-    setExtended(false)
+  useEffect(() => {
+    // Any time we receive an error, just show the first one
+    const errorMessages = Object.entries(errors).map((e) => e[1].message)
+    if (errorMessages.length) {
+      toast.error(errorMessages[0])
+    }
+  }, [errors])
 
+  const postFanWallComment = async () => {
     const post: CreateFanWallCommentRequestDto = {
       creatorId,
       ...getValues()
     }
     const api = new FanWallApi()
-    const fanWallCommentId = (
-      await api.createFanWallComment({
-        createFanWallCommentRequestDto: post
-      })
-    ).fanWallCommentId
-    await createFanWallPost(post, fanWallCommentId)
+    try {
+      const fanWallCommentId = (
+        await api.createFanWallComment({
+          createFanWallCommentRequestDto: post
+        })
+      ).fanWallCommentId
+      await createFanWallPost(post, fanWallCommentId)
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const onSubmit = async () => {
+    await postFanWallComment()
+    setExtended(false)
     reset()
     setIsReset(true)
   }
@@ -92,6 +110,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
             <CustomMentionEditor
               isReset={isReset}
               onInputChange={(params: NewPostTextFormProps) => {
+                setIsButtonDisabled(!params?.text)
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}
@@ -105,7 +124,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
         {extended && (
           <Button
             className="mt-4 ml-auto flex items-center justify-center bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-[#ffffff]/90"
-            disabled={disableForm}
+            disabled={isButtonDisabled || disableForm}
             fontSize={16}
             type={ButtonTypeEnum.SUBMIT}
           >

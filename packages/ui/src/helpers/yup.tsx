@@ -73,7 +73,7 @@ export const yupTags = (type: string) => {
 
 export const yupPostText = (maxLength: number, type: string) => {
   return {
-    tags: string()
+    text: string()
       .required()
       .max(
         maxLength,

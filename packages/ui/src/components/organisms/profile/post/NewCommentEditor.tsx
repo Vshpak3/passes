@@ -1,7 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { CommentApi, CommentDto } from "@passes/api-client"
-import { FC, useCallback, useState } from "react"
+import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
@@ -10,6 +11,7 @@ import { NewPostTextFormProps } from "src/components/organisms/profile/main-cont
 import { MAX_COMMENT_TEXT_LENGTH } from "src/config/post"
 import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
+import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useUser } from "src/hooks/useUser"
 
 const newCommentFormSchema = object({
@@ -29,14 +31,25 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
   const { user } = useUser()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isReset, setIsReset] = useState(false)
+
   const {
     handleSubmit,
     getValues,
     setValue,
-    formState: { isSubmitting }
+    reset,
+    formState: { isSubmitting, errors }
   } = useForm<NewPostTextFormProps>({
     resolver: yupResolver(newCommentFormSchema)
   })
+  const { disableForm } = useFormSubmitTimeout(isSubmitting)
+
+  useEffect(() => {
+    // Any time we receive an error, just show the first one
+    const errorMessages = Object.entries(errors).map((e) => e[1].message)
+    if (errorMessages.length) {
+      toast.error(errorMessages[0])
+    }
+  }, [errors])
 
   const postComment = useCallback(async () => {
     if (!user) {
@@ -71,8 +84,9 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
     }
   }, [getValues, postId, addComment, user])
 
-  const onSubmit = () => {
-    postComment()
+  const onSubmit = async () => {
+    await postComment()
+    reset()
     setIsReset(true)
   }
 
@@ -95,7 +109,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       </div>
       <Button
         className="h-[40px] w-full shrink-0 md:ml-4 md:w-[96px]"
-        disabled={isButtonDisabled || isSubmitting}
+        disabled={isButtonDisabled || disableForm}
         type={ButtonTypeEnum.SUBMIT}
       >
         Comment
