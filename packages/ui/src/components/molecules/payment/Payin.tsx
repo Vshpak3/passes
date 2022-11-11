@@ -21,43 +21,54 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
   let method = ""
   let status = ""
   let reason = ""
+  const {
+    fourDigits,
+    payinId,
+    createdAt,
+    transactionHash,
+    payinStatus,
+    payinMethod,
+    amount,
+    address,
+    callback
+  } = payin
   const [cancelled, setCancelled] = useState<boolean>()
-  switch (payin.payinMethod.method) {
+  switch (payinMethod.method) {
     case PayinMethodDtoMethodEnum.CircleCard:
       payinInfo = <>N/A</>
       method = "Credit/Debit Card"
       break
     case PayinMethodDtoMethodEnum.PhantomCircleUsdc:
       payinInfo = (
-        <a href={`https://solscan.io/tx/${payin.transactionHash}`}>
-          {payin.transactionHash?.slice(0, 8)}...
+        <a href={`https://solscan.io/tx/${transactionHash}`}>
+          {transactionHash?.slice(0, 8)}...
         </a>
       )
       method = "Sol USDC"
       break
     case PayinMethodDtoMethodEnum.MetamaskCircleUsdc:
       // eslint-disable-next-line sonarjs/no-nested-switch
-      switch (payin.payinMethod.chain) {
+      switch (payinMethod.chain) {
         case PayinMethodDtoChainEnum.Eth:
           payinInfo = (
-            <a href={`https://etherscan.io/tx/${payin.transactionHash}`}>
-              {payin.transactionHash?.slice(0, 8)}...
+            <a href={`https://etherscan.io/tx/${transactionHash}`}>
+              {transactionHash?.slice(0, 8)}...
             </a>
           )
           method = "Eth USDC"
           break
         case PayinMethodDtoChainEnum.Avax:
           payinInfo = (
-            <a href={`https://snowtrace.io/tx/${payin.transactionHash}`}>
-              {payin.transactionHash?.slice(0, 8)}...
+            <a href={`https://snowtrace.io/tx/${transactionHash}`}>
+              {transactionHash?.slice(0, 8)}...
             </a>
           )
           method = "Avax USDC"
           break
         case PayinMethodDtoChainEnum.Matic:
           payinInfo = (
-            <a href={`https://polygonscan.com/tx/${payin.transactionHash}`}>
-              {payin.transactionHash?.slice(0, 8)}...
+            <a href={`https://polygonscan.com/tx/${transactionHash}`}>
+              {transactionHash?.slice(0, 8)}...
             </a>
           )
           method = "Polygon USDC"
@@ -66,8 +77,8 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       break
     case PayinMethodDtoMethodEnum.MetamaskCircleEth:
       payinInfo = (
-        <a href={`https://etherscan.io/tx/${payin.transactionHash}`}>
-          {payin.transactionHash?.slice(0, 8)}...
+        <a href={`https://etherscan.io/tx/${transactionHash}`}>
+          {transactionHash?.slice(0, 8)}...
         </a>
       )
       method = "Eth Native"
@@ -77,7 +88,7 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
 
   let cancellable = false
 
-  switch (payin.payinStatus) {
+  switch (payinStatus) {
     case PayinDtoPayinStatusEnum.SuccessfulReady:
     case PayinDtoPayinStatusEnum.Successful:
       status = "Complete"
@@ -100,11 +111,10 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       break
     default:
       status = "Pending"
-      cancellable =
-        payin.payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard
+      cancellable = payinMethod.method !== PayinMethodDtoMethodEnum.CircleCard
       break
   }
-  switch (payin.callback) {
+  switch (callback) {
     case PayinDtoCallbackEnum.TippedMessage:
       reason = "Tipped Message"
       break
@@ -133,7 +143,7 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
 
   const cancel = async () => {
     const paymentApi = new PaymentApi()
-    await paymentApi.cancelPayin({ payinId: payin.payinId })
+    await paymentApi.cancelPayin({ payinId: payinId })
     setCancelled(true)
   }
   return (
@@ -145,22 +155,18 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[14px] font-[700] text-passes-pink-100">
-          {payin.fourDigits
-            ? "**** " + payin.fourDigits
-            : payin.address.slice(0, 8) + "..."}
+          {fourDigits ? "**** " + fourDigits : address.slice(0, 8) + "..."}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
-          {format(payin.createdAt, "LL/dd/yyyy")}
+          {format(createdAt, "LL/dd/yyyy")}
           <br />
-          {format(payin.createdAt, "hh:mm a")}
+          {format(createdAt, "hh:mm a")}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">
-          {formatCurrency(payin.amount)}
-        </span>
+        <span className="text-[12px] font-[500]">{formatCurrency(amount)}</span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">{method}</span>

@@ -140,7 +140,7 @@ export function GetWelcomeMessageResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'earningsPurchases': json['earningsPurchases'],
         'createdAt': (new Date(json['createdAt'])),
         'isWelcomeMesage': json['isWelcomeMesage'],
-        'unsentAt': (json['unsent_at'] === null ? null : new Date(json['unsent_at'])),
+        'unsentAt': (json['unsentAt'] === null ? null : new Date(json['unsentAt'])),
         'sentTo': json['sentTo'],
     };
 }
@@ -164,7 +164,7 @@ export function GetWelcomeMessageResponseDtoToJSON(value?: GetWelcomeMessageResp
         'earningsPurchases': value.earningsPurchases,
         'createdAt': (value.createdAt.toISOString()),
         'isWelcomeMesage': value.isWelcomeMesage,
-        'unsent_at': (value.unsentAt === null ? null : value.unsentAt.toISOString()),
+        'unsentAt': (value.unsentAt === null ? null : value.unsentAt.toISOString()),
         'sentTo': value.sentTo,
     };
 }

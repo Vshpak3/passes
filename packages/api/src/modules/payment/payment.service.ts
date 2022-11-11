@@ -1580,12 +1580,17 @@ export class PaymentService {
     }
 
     // legacy - payinMethod is enforced for now
+    const defaultPayinMethod = await this.getDefaultPayinMethod(request.userId)
     const payinMethod =
       request.payinMethod !== undefined
         ? request.payinMethod
-        : await this.getDefaultPayinMethod(request.userId)
+        : defaultPayinMethod
     if (!(await this.validatePayinMethod(request.userId, payinMethod))) {
       throw new NoPayinMethodError('invalid payin method')
+    }
+
+    if (defaultPayinMethod.method === PayinMethodEnum.NONE) {
+      await this.setDefaultPayinMethod(request.userId, payinMethod)
     }
 
     const data = {

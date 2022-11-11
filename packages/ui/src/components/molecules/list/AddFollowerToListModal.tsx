@@ -43,17 +43,15 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
         </div>
         {results.map((user) => (
           <div
-            className="flex items-center justify-between py-3"
+            className="flex items-center justify-between py-3 hover:cursor-pointer"
             key={user.userId}
+            onClick={() => {
+              onSubmit(user)
+              setSearchValue("")
+            }}
           >
             <ProfileWidget user={user} />
-            <span
-              className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
-              onClick={() => {
-                onSubmit(user)
-                setSearchValue("")
-              }}
-            >
+            <span className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all">
               add
             </span>
           </div>

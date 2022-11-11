@@ -163,17 +163,12 @@ const ChatSettings = () => {
 
             {showWelcomeMessageInput && (
               <div className="relative mt-[22px] rounded-md border border-passes-gray-700/80 !py-4 !px-3 focus:border-passes-secondary-color focus:ring-0">
-                <input
-                  className="w-full border-none bg-transparent text-[#ffff]/90"
-                  placeholder={
-                    welcomeMessage
+                <div className="flex w-full flex-row justify-between">
+                  <span className="text-gray-400">
+                    {welcomeMessage
                       ? "Default Welcome Message: "
-                      : "No welcome message selected."
-                  }
-                  readOnly
-                  type="text"
-                />
-                <div className="absolute top-1/4 right-0 pr-5">
+                      : "No welcome message selected."}
+                  </span>
                   <Button
                     className="w-20 rounded-md py-1.5 text-center font-bold"
                     onClick={() =>
@@ -184,8 +179,10 @@ const ChatSettings = () => {
                     Edit
                   </Button>
                 </div>
+
                 {welcomeMessage && (
                   <ChannelMessage
+                    inChannel={false}
                     message={{
                       text: welcomeMessage.text ?? "",
                       channelId: "",

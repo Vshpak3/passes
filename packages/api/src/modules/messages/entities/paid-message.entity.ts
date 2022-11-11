@@ -35,6 +35,9 @@ export class PaidMessageEntity extends BaseEntity {
   @Property({ default: 0 })
   sent_to: number
 
+  @Property({ default: 0 })
+  viewed: number
+
   @Property({ length: 3 })
   unsent_at: Date | null
 

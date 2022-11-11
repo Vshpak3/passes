@@ -21,6 +21,7 @@ export interface ModalProps {
   childrenClassname?: string
   bare?: boolean
   isCloseOutside?: boolean
+  mobileFixed?: boolean
 }
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -32,7 +33,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   modalContainerClassname,
   childrenClassname,
   bare,
-  isCloseOutside
+  isCloseOutside,
+  mobileFixed = false
 }) => {
   const modalContentRef = useRef(null)
   useOnClickOutside(modalContentRef, () => {
@@ -75,11 +77,12 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     >
       <div
         className={classNames(
-          "m-auto w-full rounded p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
+          "m-auto rounded p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
           modalContainerClassname,
           bare
             ? "bg-transparent md:min-w-fit md:border-transparent"
-            : "bg-[#12070E]"
+            : "bg-[#12070E]",
+          !mobileFixed && "w-full"
         )}
         id="popup-modal"
       >

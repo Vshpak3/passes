@@ -17,13 +17,15 @@ interface ChannelMessageProps {
   messageUpdate?: Partial<MessageDto>
   showReadAt?: boolean
   selectedChannel?: ChannelMemberDto
+  inChannel?: boolean
 }
 const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   message,
   messageUpdate = {},
   ownsMessage = false,
   showReadAt = false,
-  selectedChannel
+  selectedChannel,
+  inChannel = false
 }) => {
   const {
     messageId,
@@ -61,8 +63,9 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
     <>
       <div
         className={classNames(
-          "m-2.5 flex  max-w-[70%] rounded",
-          ownsMessage && "flex-row-reverse self-end"
+          "m-2.5 flex  rounded",
+          ownsMessage && "flex-row-reverse self-end",
+          inChannel && "max-w-[70%]"
         )}
       >
         {!ownsMessage && (

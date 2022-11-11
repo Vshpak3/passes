@@ -8,24 +8,32 @@ import { ProfileImage } from "src/components/organisms/profile/profile-details/P
 type ProfileWidgetProps = {
   user: UserDisplayInfoDto | ListMemberDto
   isCreator?: boolean
+  linked?: boolean
 }
 
 export const ProfileWidget: FC<ProfileWidgetProps> = ({
   user,
-  isCreator = true
+  isCreator = true,
+  linked = false
 }) => {
-  return (
+  const component = (
+    <div className="flex w-full items-center gap-[10px]">
+      <ProfileImage key={user.userId} type="thumbnail" userId={user.userId} />
+      <NameDisplay
+        displayName={user.displayName}
+        displayNameClassName="font-medium"
+        horizontal={false}
+        isCreator={isCreator}
+        username={user.username}
+      />
+    </div>
+  )
+
+  return linked ? (
     <Link className="w-full" href={`/${user.username}`}>
-      <div className="flex w-full items-center gap-[10px]">
-        <ProfileImage key={user.userId} type="thumbnail" userId={user.userId} />
-        <NameDisplay
-          displayName={user.displayName}
-          displayNameClassName="font-medium"
-          horizontal={false}
-          isCreator={isCreator}
-          username={user.username}
-        />
-      </div>
+      {component}
     </Link>
+  ) : (
+    component
   )
 }

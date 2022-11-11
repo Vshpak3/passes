@@ -1,6 +1,6 @@
 import type { FileAccept } from "src/components/atoms/input/FileInput"
 
-export const MAX_FILE_COUNT = 20
+export const MAX_FILE_COUNT = 40
 
 const MB = 1048576
 export const MAX_IMAGE_SIZE = 100 * MB

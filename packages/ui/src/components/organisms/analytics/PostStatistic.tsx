@@ -1,4 +1,5 @@
 import { PostDto } from "@passes/api-client"
+import { format } from "date-fns"
 import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
@@ -17,9 +18,23 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const { removePost } = usePost()
 
+  const {
+    postId,
+    createdAt,
+    userId,
+    text,
+    contents,
+    price,
+    totalTipAmount,
+    earningsPurchases,
+    expiresAt,
+    deletedAt,
+    numPurchases
+  } = post
+
   const onDelete = async () => {
     try {
-      await removePost(post.postId)
+      await removePost(postId)
       setDeleted(true)
     } catch (error: unknown) {
       toast.error("Failed to delete: please contact support")
@@ -34,53 +49,51 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
     <>
       <div className="flex flex-row justify-between border-b border-passes-dark-200">
         <div className="flex h-[72px] flex-1 items-center justify-center">
-          <Link href={`/${post.userId}/${post.postId}`}>
-            <span className="text-[14px] font-[700]">
-              {post.createdAt.toLocaleDateString()}
+          <Link href={`/${userId}/${postId}`}>
+            <span className="text-[12px] font-[500]">
+              {format(createdAt, "LL/dd/yyyy")}
               <br />
-              {post.createdAt.toLocaleTimeString()}
+              {format(createdAt, "hh:mm a")}
             </span>
           </Link>
         </div>
         <div className="flex h-[72px] w-[100px] flex-1 items-center justify-start overflow-hidden">
-          <Link href={`/${post.userId}/${post.postId}`}>
+          <Link href={`/${userId}/${postId}`}>
             <span className="passes-break w-full overflow-hidden truncate whitespace-pre-wrap text-[14px] font-[700]">
-              {formatText(post.text)}
+              {formatText(text)}
             </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-          <Link href={`/${post.userId}/${post.postId}`}>
+          <Link href={`/${userId}/${postId}`}>
             <span className="text-[12px] font-[500]">
-              {post.contents?.length ?? 0}
+              {contents?.length ?? 0}
             </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-          <Link href={`/${post.userId}/${post.postId}`}>
+          <Link href={`/${userId}/${postId}`}>
             <span className="text-[12px] font-[500]">
-              {formatCurrency(post.price ?? 0)}
+              {formatCurrency(price ?? 0)}
             </span>
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-          <span className="text-[12px] font-[500]">{post.numPurchases}</span>
+          <span className="text-[12px] font-[500]">{numPurchases}</span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <span className="text-[12px] font-[500]">
-            {formatCurrency(post.totalTipAmount ?? 0)}
+            {formatCurrency(totalTipAmount ?? 0)}
           </span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <span className="text-[12px] font-[500]">
-            {formatCurrency(post.earningsPurchases)}
+            {formatCurrency(earningsPurchases)}
           </span>
         </div>
 
         <div className="flex h-[72px] flex-1 items-center justify-start">
-          {!deleted &&
-          !post.deletedAt &&
-          (!post.expiresAt || post.expiresAt > new Date()) ? (
+          {!deleted && !deletedAt && (!expiresAt || expiresAt > new Date()) ? (
             <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-passes-pink-100">
               <Button onClick={handleConfirmDelete}>Delete</Button>
             </span>

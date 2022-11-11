@@ -41,7 +41,7 @@ export class PaidMessageDto {
   isWelcomeMesage: boolean
 
   @DtoProperty({ type: 'date', nullable: true })
-  unsent_at: Date | null
+  unsentAt: Date | null
 
   @DtoProperty({ type: 'number' })
   sentTo: number
@@ -58,7 +58,7 @@ export class PaidMessageDto {
       this.earningsPurchases = paidMessage.earnings_purchases
       this.createdAt = paidMessage.created_at
       this.isWelcomeMesage = paidMessage.is_welcome_message
-      this.unsent_at = paidMessage.unsent_at
+      this.unsentAt = paidMessage.unsent_at
       this.sentTo = paidMessage.sent_to
     }
   }
