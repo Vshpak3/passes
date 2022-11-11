@@ -25,7 +25,7 @@ export const NameDisplay: FC<NameDisplayProps> = ({
   linkedClassName = "w-full"
 }) => {
   const text = horizontal ? (
-    <div className="flex w-full flex-row justify-around truncate">
+    <div className="flex w-full max-w-max flex-row justify-around gap-x-[4px] truncate">
       <span
         className={classNames(
           "w-full shrink-[1] truncate",
@@ -35,13 +35,13 @@ export const NameDisplay: FC<NameDisplayProps> = ({
         {displayName}
       </span>
       <Text
-        className="ml-2 w-full shrink-[1] truncate text-gray-500 lg:block"
+        className=" w-full max-w-max shrink-[1] truncate text-gray-500 lg:block"
         fontSize={14}
       >
         {" @" + username}
       </Text>
       {isCreator && (
-        <span className="ml-2 min-h-[18px] min-w-[18px]">
+        <span className="min-h-[18px] min-w-[18px]">
           <CheckVerified height={18} width={18} />
         </span>
       )}

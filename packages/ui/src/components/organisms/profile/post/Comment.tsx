@@ -83,7 +83,7 @@ export const Comment: FC<CommentProps> = ({
             </a>
           </div>
           <div className="flex w-[calc(100%-50px)] grow flex-col">
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between overflow-x-hidden">
               <div className="overflow-x-hidden">
                 <NameDisplay
                   displayName={commenterDisplayName}
