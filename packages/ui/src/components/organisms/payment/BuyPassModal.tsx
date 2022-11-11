@@ -56,7 +56,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           {title}
         </div>
         <div className="passes-break my-4 whitespace-pre-wrap text-passes-dark-gray">
-          {formatText(pass.description)}
+          {formatText(description)}
         </div>
         <div className="flex flex-row justify-between">
           <span>
