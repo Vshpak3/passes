@@ -47,7 +47,10 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
 
   return (
     <>
-      <NewFanwallPost createPost={createPost} creatorId={profileUserId || ""} />
+      <NewFanwallPost
+        createFanWallPost={createPost}
+        creatorId={profileUserId || ""}
+      />
       {newComments.map((comment) => (
         <FanWallComment
           comment={comment}

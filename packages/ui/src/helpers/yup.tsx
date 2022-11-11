@@ -1,9 +1,12 @@
+import { TagDto } from "@passes/api-client"
 import { array, bool, string } from "yup"
 
+import { MAX_MENTION_LIMIT } from "src/config/post"
 import { ContentFile } from "src/hooks/useMedia"
 
 export const yupPaid = (
   text: string,
+  maxLength: number,
   min: number,
   max: number,
   emptyMessage: string
@@ -11,7 +14,11 @@ export const yupPaid = (
   return {
     text: string()
       .optional()
-      .transform((defaultText) => defaultText.trim())
+      .max(
+        maxLength,
+        `The ${text} cannot be longer than ${maxLength} characters`
+      )
+      .transform((_text) => _text.trim())
       .when("files", {
         is: (f: ContentFile[]) => f.length === 0,
         then: string().required(emptyMessage)
@@ -50,5 +57,28 @@ export const yupPaid = (
             (value) => parseFloat(value || "") <= max
           )
       })
+  }
+}
+
+export const yupTags = (type: string) => {
+  return {
+    tags: array<TagDto>()
+      .optional()
+      .max(
+        MAX_MENTION_LIMIT,
+        `You cannot tag more than ${MAX_MENTION_LIMIT} users in a ${type}`
+      )
+      .transform((text) => text.trim())
+  }
+}
+
+export const yupPostText = (maxLength: number, type: string) => {
+  return {
+    tags: string()
+      .required()
+      .max(
+        maxLength,
+        `The ${type} cannot be longer than ${maxLength} characters`
+      )
   }
 }

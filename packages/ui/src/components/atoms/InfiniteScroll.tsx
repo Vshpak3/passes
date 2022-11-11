@@ -108,8 +108,14 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return { props: request, resets, keyValue }
   }
 
+  const [initialFetchComplete, setInitialFetchComplete] = useState(false)
+
   const fetchData = async ({ props }: Key<T>) => {
-    return await fetch(props as Omit<T, "data">)
+    const res = await fetch(props as Omit<T, "data">)
+    setTimeout(() => {
+      setInitialFetchComplete(true)
+    }, 100)
+    return res
   }
 
   const { data, setSize, mutate, size } = useSWRInfinite<T>(
@@ -199,7 +205,10 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       style={style}
     >
       {!childrenEnd && children}
-      {flattenedData.length === 0 && !hasInitialElement && emptyElement}
+      {flattenedData.length === 0 &&
+        !hasInitialElement &&
+        initialFetchComplete &&
+        emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent
           arg={data}

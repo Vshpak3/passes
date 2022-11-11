@@ -34,6 +34,7 @@ import {
   VideoSelector
 } from "src/components/organisms/MediaSelector"
 import {
+  MAX_MESSAGE_LENGTH,
   MAX_PAID_MESSAGE_PRICE,
   MAX_TIP_MESSAGE_PRICE,
   MIN_PAID_MESSAGE_PRICE
@@ -78,6 +79,7 @@ export const newMessageFormSchema = object(
   {
     ...yupPaid(
       "message",
+      MAX_MESSAGE_LENGTH,
       MIN_PAID_MESSAGE_PRICE,
       MAX_PAID_MESSAGE_PRICE,
       "Message can't be empty"

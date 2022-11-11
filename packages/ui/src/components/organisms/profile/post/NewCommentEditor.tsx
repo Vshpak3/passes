@@ -1,12 +1,21 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CommentApi, CommentDto } from "@passes/api-client"
 import React, { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
+import { MAX_COMMENT_TEXT_LENGTH } from "src/config/post"
 import { errorMessage } from "src/helpers/error"
+import { yupPostText, yupTags } from "src/helpers/yup"
 import { useUser } from "src/hooks/useUser"
+
+const newCommentFormSchema = object({
+  ...yupPostText(MAX_COMMENT_TEXT_LENGTH, "comment"),
+  ...yupTags("comment")
+})
 
 interface NewCommentProps {
   postId: string
@@ -24,12 +33,11 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
     getValues,
     setValue,
     formState: { isSubmitting }
-  } = useForm()
+  } = useForm<NewPostTextFormProps>({
+    resolver: yupResolver(newCommentFormSchema)
+  })
 
   const postComment = useCallback(async () => {
-    const text = getValues("comment")
-    const tags = getValues("mentions")
-
     if (!user) {
       return
     }
@@ -39,16 +47,14 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       const { commentId } = await api.createComment({
         createCommentRequestDto: {
           postId,
-          text,
-          tags
+          ...getValues()
         }
       })
 
       const comment: CommentDto = {
         commentId,
         postId,
-        text,
-        tags,
+        ...getValues(),
         commenterDisplayName: user.displayName,
         commenterId: user.userId,
         commenterIsCreator: !!user.isCreator,
@@ -98,8 +104,8 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
           isReset={isReset}
           onInputChange={(params: NewPostTextFormProps) => {
             setIsButtonDisabled(!params?.text)
-            setValue("comment", params?.text)
-            setValue("mentions", params?.tags)
+            setValue("text", params?.text)
+            setValue("tags", params?.tags)
           }}
           placeholder="Type a comment..."
           setIsReset={setIsReset}

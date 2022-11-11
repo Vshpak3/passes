@@ -23,12 +23,11 @@ import React, {
 } from "react"
 
 import { UserSearchResult } from "src/components/atoms/search/user/UserSearchResults"
+import { MAX_MENTION_LIMIT } from "src/config/post"
 import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"
 import { NewPostTextFormProps } from "./profile/main-content/new-post/NewPostEditor"
-
-const MENTION_LIMIT = 5
 
 const TRIGGER = "@"
 
@@ -225,7 +224,7 @@ const CustomComponentMentionEditor: FC<CustomMentionProps> = ({
       />
       <MentionSuggestions
         entryComponent={(props) => (
-          <Entry {...props} disabled={numMentions >= MENTION_LIMIT} />
+          <Entry {...props} disabled={numMentions >= MAX_MENTION_LIMIT} />
         )}
         onOpenChange={onOpenChange}
         onSearchChange={onSearchChange}

@@ -25,7 +25,6 @@ const Post = dynamic(
   { ssr: false }
 )
 
-// TODO: fix formatting
 const ContentFeedEmpty = (
   <div className="my-20 mx-auto flex flex-row items-center justify-center rounded-sm border-y border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">
     <InfoIcon className="mr-2" />

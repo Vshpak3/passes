@@ -10,9 +10,15 @@ import { array, date, object } from "yup"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
-import { MAX_PAID_POST_PRICE, MIN_PAID_POST_PRICE } from "src/config/post"
+import {
+  MAX_MENTION_LIMIT,
+  MAX_PAID_POST_PRICE,
+  MAX_PASSES_LIMIT,
+  MAX_POST_TEXT_LENGTH,
+  MIN_PAID_POST_PRICE
+} from "src/config/post"
 import { ContentService } from "src/helpers/content"
-import { yupPaid } from "src/helpers/yup"
+import { yupPaid, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { NewPostPaidSection } from "./NewPostPaidSection"
@@ -50,13 +56,18 @@ const newPostFormDefaults: NewPostFormProps = {
 const newPostFormSchema = object({
   ...yupPaid(
     "post",
+    MAX_POST_TEXT_LENGTH,
     MIN_PAID_POST_PRICE,
     MAX_PAID_POST_PRICE,
-    "Must add either text or content"
+    "Please add either text or media"
   ),
-  tags: array<TagDto>().optional(),
+  ...yupTags("post"),
   passes: array<PassDto>()
     .optional()
+    .max(
+      MAX_PASSES_LIMIT,
+      `You cannot have more than ${MAX_PASSES_LIMIT} passes in a posts`
+    )
     .transform((p: PassDto) => p.passId),
   expiresAt: date().nullable(),
   scheduledAt: date().nullable()
@@ -146,6 +157,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     })
 
     closeEditor()
+
+    console.log(errors, values.tags)
 
     // Ensure to check isPaid so if the drop down is closed we clear the values
     const post: CreatePostRequestDto = {

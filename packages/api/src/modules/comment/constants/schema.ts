@@ -1,3 +1,3 @@
 export const COMMENT_TEXT_LENGTH = 200
-export const COMMENT_TAGS_LENGTH = 200
-export const COMMENT_TAG_MAX_COUNT = 3
+export const COMMENT_TAGS_LENGTH = 350
+export const COMMENT_TAG_MAX_COUNT = 5

@@ -1,11 +1,15 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar/close.svg"
 import { FC, useContext, useState } from "react"
 import { useForm } from "react-hook-form"
+import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { MAX_FAN_COMMENT_TEXT_LENGTH } from "src/config/post"
+import { yupPostText, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ProfileContext } from "src/pages/[username]"
 import { NewPostTextFormProps } from "./NewPostEditor"
@@ -15,8 +19,13 @@ const CustomMentionEditor = dynamic(
   { ssr: false }
 )
 
+const newFallWallFormSchema = object({
+  ...yupPostText(MAX_FAN_COMMENT_TEXT_LENGTH, "fan wall comment"),
+  ...yupTags("fan wall comment")
+})
+
 interface NewFanwallPostProps {
-  createPost: (
+  createFanWallPost: (
     arg: CreateFanWallCommentRequestDto,
     fanWallCommentId: string
   ) => void | Promise<void>
@@ -24,7 +33,7 @@ interface NewFanwallPostProps {
 }
 
 export const NewFanwallPost: FC<NewFanwallPostProps> = ({
-  createPost,
+  createFanWallPost,
   creatorId
 }) => {
   const { profile } = useContext(ProfileContext)
@@ -38,17 +47,16 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
     setValue,
     reset
   } = useForm<NewPostTextFormProps>({
-    defaultValues: {}
+    resolver: yupResolver(newFallWallFormSchema)
   })
   const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const onSubmit = async () => {
-    const values = getValues()
     setExtended(false)
 
     const post: CreateFanWallCommentRequestDto = {
       creatorId,
-      ...values
+      ...getValues()
     }
     const api = new FanWallApi()
     const fanWallCommentId = (
@@ -56,7 +64,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
         createFanWallCommentRequestDto: post
       })
     ).fanWallCommentId
-    await createPost(post, fanWallCommentId)
+    await createFanWallPost(post, fanWallCommentId)
     reset()
     setIsReset(true)
   }
