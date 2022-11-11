@@ -3,7 +3,7 @@ import BackIcon from "public/icons/back-icon.svg"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
 import React, { Dispatch, FC, SetStateAction } from "react"
 
-import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
+import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { formatCurrency } from "src/helpers/formatters"
@@ -54,7 +54,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             setPaid={setPaid}
           />
         ) : (
-          <div className="flex items-center">
+          <div className="flex w-full items-center">
             {isTablet && (
               <div className="mr-2" onClick={onBack}>
                 <BackIcon />
@@ -71,29 +71,27 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 />
               </a>
             </div>
-            <div className="flex flex-col">
-              <div className="flex flex-col items-start gap-[3px] pl-3">
-                <MessagesNameDisplay
-                  displayName={selectedChannel.otherUserDisplayName}
-                  isCreator={selectedChannel.otherUserIsCreator}
-                  linked
-                  username={selectedChannel.otherUserUsername}
-                />
-                {isCreator && (
-                  <div className="flex w-full items-center justify-between">
-                    <div className="flex items-center justify-start gap-[10px]">
-                      <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
-                        <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
-                          Total Spent
-                        </span>
-                        <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
-                          {formatCurrency(amount ?? 0)}
-                        </span>
-                      </div>
+            <div className="flex flex-col items-start gap-[3px] pl-3 ">
+              <NameDisplay
+                displayName={selectedChannel.otherUserDisplayName}
+                isCreator={selectedChannel.otherUserIsCreator}
+                linked
+                username={selectedChannel.otherUserUsername}
+              />
+              {isCreator && (
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center justify-start gap-[10px]">
+                    <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
+                      <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
+                        Total Spent
+                      </span>
+                      <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                        {formatCurrency(amount ?? 0)}
+                      </span>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         )}

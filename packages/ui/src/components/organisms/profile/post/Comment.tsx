@@ -2,7 +2,7 @@ import { CommentDto } from "@passes/api-client"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
-import { MessagesNameDisplay } from "src/components/atoms/content/MessagesNameDisplay"
+import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { Text } from "src/components/atoms/Text"
 import {
@@ -82,24 +82,24 @@ export const Comment: FC<CommentProps> = ({
               />
             </a>
           </div>
-          <div className="flex grow flex-col">
-            <div className="flex justify-between">
-              <div className="flex gap-x-2">
-                <MessagesNameDisplay
+          <div className="flex w-[calc(100%-50px)] grow flex-col">
+            <div className="flex w-full justify-between">
+              <div className="overflow-x-hidden">
+                <NameDisplay
                   displayName={commenterDisplayName}
                   displayNameClassName="text-base"
                   isCreator={commenterIsCreator}
                   linked
                   username={commenterUsername}
                 />
-                {!!isHidden && (
-                  <Text className="text-gray-500" fontSize={14}>
-                    &nbsp;&nbsp; hidden
-                  </Text>
-                )}
               </div>
+              {!!isHidden && (
+                <Text className="text-gray-500" fontSize={14}>
+                  &nbsp;&nbsp; hidden
+                </Text>
+              )}
 
-              <div className="flex gap-x-2">
+              <div className="flex gap-x-2 overflow-x-hidden">
                 <TimeAgo
                   className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                   date={comment.createdAt}

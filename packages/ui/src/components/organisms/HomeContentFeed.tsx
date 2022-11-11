@@ -87,12 +87,12 @@ export const HomeContentFeed: FC = () => {
           <SectionTitle>Suggested</SectionTitle>
           {featuredCreators?.map((creator) => (
             <div
-              className="flex items-center border-t border-passes-gray py-4"
+              className="flex items-center justify-between border-t border-passes-gray py-4"
               key={creator.userId}
             >
-              <Link className="flex flex-1" href={`/${creator.username}`}>
+              <div className="overflow-x-hidden">
                 <ProfileWidget isCreator user={creator} />
-              </Link>
+              </div>
               <FollowButton
                 className="min-w-[89px]"
                 creatorId={creator.userId}

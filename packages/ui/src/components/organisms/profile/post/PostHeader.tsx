@@ -32,7 +32,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
 
   return (
     <div className="flex w-full items-center justify-between px-5 sm:px-10 md:px-10 lg:px-5">
-      <div className="flex items-center space-x-4 overflow-x-hidden">
+      <div className="flex w-full items-center space-x-4 overflow-x-hidden">
         <ProfileWidget isCreator={isCreator} user={user} />
       </div>
       <div className="ml-[10px] mt-[-21px] flex shrink-0 flex-row items-center justify-end gap-2">
