@@ -118,9 +118,7 @@ export class EmailService {
         .select(`${UserEntity.table}.email`)
       await Promise.all(
         users.map(async (user) => {
-          await this.sendRenderedEmail(user.email, messageHtml, subject, {
-            data,
-          })
+          await this.sendRenderedEmail(user.email, messageHtml, subject, data)
         }),
       )
     } catch (err) {

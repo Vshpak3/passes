@@ -95,17 +95,31 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                 <IconTooltip
                   icon={InfoIcon}
                   position="top"
-                  tooltipText={`Chain: ${
-                    passHolder.chain === PassHolderDtoChainEnum.Sol
-                      ? "Solana"
-                      : "Ethereum"
-                  }\n
-                  Collection Address: ${
-                    passHolder.collectionAddress
-                  }\nPass Adddres: ${passHolder.address}${
-                    passHolder.tokenId ? `\n${passHolder.tokenId}` : ``
-                  }`}
-                  tooltipClassName="w-[400px]"
+                  tooltipText={
+                    <>
+                      Chain:
+                      {passHolder.chain === PassHolderDtoChainEnum.Sol
+                        ? " Solana"
+                        : " Ethereum"}
+                      <br />
+                      <br />
+                      {passHolder.chain === PassHolderDtoChainEnum.Sol && (
+                        <>
+                          Collection Address: ${passHolder.collectionAddress}
+                          <br />
+                          <br />
+                        </>
+                      )}
+                      Pass Adddres: {passHolder.address}
+                      {passHolder.tokenId && (
+                        <>
+                          <br /> <br />
+                          TokenId: {parseInt(passHolder.tokenId, 16)} <br />
+                        </>
+                      )}
+                    </>
+                  }
+                  tooltipClassName="w-[380px] z-10"
                 />
               </div>
             </div>
