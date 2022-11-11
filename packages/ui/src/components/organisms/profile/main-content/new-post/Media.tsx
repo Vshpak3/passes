@@ -54,6 +54,7 @@ export const Media: FC<MediaProp> = ({
           <video
             className="select-none"
             controls
+            controlsList="nodownload"
             src={src}
             style={{ width: contentWidth, height: contentHeight }}
           />

@@ -19,6 +19,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         autoPlay={autoplay}
         className={classNames(className)}
         controls
+        controlsList="nodownload"
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}
