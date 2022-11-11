@@ -1,4 +1,5 @@
 import { CommentDto } from "@passes/api-client"
+import Link from "next/link"
 import { FC, useState } from "react"
 import TimeAgo from "react-timeago"
 
@@ -74,16 +75,16 @@ export const Comment: FC<CommentProps> = ({
       {!removed && (
         <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
           <div>
-            <a href={`${window.location.origin}/${comment.commenterUsername}`}>
+            <Link href={`/${comment.commenterUsername}`}>
               <ProfileImage
                 key={comment.commenterId}
                 type="thumbnail"
                 userId={comment.commenterId}
               />
-            </a>
+            </Link>
           </div>
           <div className="flex w-[calc(100%-50px)] grow flex-col">
-            <div className="flex justify-between overflow-x-hidden">
+            <div className="flex justify-between">
               <div className="overflow-x-hidden">
                 <NameDisplay
                   displayName={commenterDisplayName}
@@ -99,7 +100,7 @@ export const Comment: FC<CommentProps> = ({
                 </Text>
               )}
 
-              <div className="flex gap-x-2 overflow-x-hidden">
+              <div className="flex gap-x-2">
                 <TimeAgo
                   className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                   date={comment.createdAt}
