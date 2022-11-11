@@ -20,7 +20,7 @@ const ProfileUnmemo: FC = () => {
     }
     const profileBanner = ContentService.profileBanner(profileUserId)
     const res = await fetch(profileBanner)
-    if (res.status === 404) {
+    if (Math.floor(res.status / 100) !== 2) {
       return
     }
     const cover = document
