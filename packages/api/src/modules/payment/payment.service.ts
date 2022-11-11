@@ -925,7 +925,7 @@ export class PaymentService {
         CirclePayoutEntity.table + '.payout_id',
       )
       .select(`${PayoutEntity.table}.*`)
-      .where(`${CirclePayoutEntity}.circle_id`, payoutDto.id)
+      .where(`${CirclePayoutEntity.table}.circle_id`, payoutDto.id)
       .first()
 
     if (!payout) {

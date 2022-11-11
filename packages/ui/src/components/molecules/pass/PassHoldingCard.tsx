@@ -14,7 +14,7 @@ interface PassHoldingCardProps {
 
 export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
   return (
-    <div className="z-5 col-span-1 box-border flex w-full min-w-[300px] max-w-[300px] flex-col justify-between rounded py-[24px] px-[16px]">
+    <div className="col-span-1 box-border flex w-full min-w-[300px] max-w-[300px] flex-col justify-between rounded py-[24px] px-[16px]">
       <div className="max-w-[374px] rounded-[15px]">
         <PassMedia
           animationType={passHolder.animationType}
@@ -105,7 +105,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                       <br />
                       {passHolder.chain === PassHolderDtoChainEnum.Sol && (
                         <>
-                          Collection Address: ${passHolder.collectionAddress}
+                          Collection Address: {passHolder.collectionAddress}
                           <br />
                           <br />
                         </>
@@ -119,7 +119,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                       )}
                     </>
                   }
-                  tooltipClassName="w-[380px] z-10"
+                  tooltipClassName="w-[380px]"
                 />
               </div>
             </div>

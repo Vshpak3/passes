@@ -1,4 +1,4 @@
-import { PassDto, PassDtoTypeEnum } from "@passes/api-client"
+import { PassDto, PassDtoChainEnum, PassDtoTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import InfoIcon from "public/icons/square-info-icon.svg"
@@ -161,7 +161,18 @@ export const PassCard: FC<PassCardProps> = ({
           <IconTooltip
             icon={InfoIcon}
             position="top"
-            tooltipText={`Chain: ${pass.chain} \nCollection Addres: ${pass.collectionAddress}`}
+            tooltipText={
+              <>
+                Chain:
+                {pass.chain === PassDtoChainEnum.Sol ? " Solana" : " Ethereum"}
+                <br />
+                <br />
+                {pass.chain === PassDtoChainEnum.Sol && (
+                  <>Collection Address: {pass.collectionAddress}</>
+                )}
+              </>
+            }
+            tooltipClassName="w-[380px]"
           />
         </div>
         <Button
