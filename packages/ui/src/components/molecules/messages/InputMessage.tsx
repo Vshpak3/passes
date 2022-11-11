@@ -149,7 +149,10 @@ export const InputMessage: FC<InputMessageProps> = ({
   useEffect(() => {
     setTextAreaRows(
       Math.max(
-        Math.min(text.split("\n").length, MAX_TEXT_AREA_ROWS),
+        Math.min(
+          Math.max(text.split("\n").length, text.length / 80),
+          MAX_TEXT_AREA_ROWS
+        ),
         MIN_TEXT_AREA_ROWS
       )
     )
