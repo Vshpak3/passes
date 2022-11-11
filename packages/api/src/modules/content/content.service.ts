@@ -152,9 +152,7 @@ export class ContentService {
   }
 
   async deleteProfileBanner(userId: string): Promise<void> {
-    await this.s3contentService.deleteObject(
-      profileImageUploadPath(userId, 'banner'),
-    )
+    await this.s3contentService.deleteObject(profileImagePath(userId, 'banner'))
     await this.markProfileImageProcessed({ userId, type: 'banner', secret: '' })
   }
 
