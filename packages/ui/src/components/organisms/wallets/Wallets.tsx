@@ -216,15 +216,19 @@ export const Wallets = () => {
       <div className="mt-8 min-h-[200px] overflow-x-scroll">
         <table className="min-w-full pb-6 md:overflow-x-auto">
           <thead>
-            <th />
-            <th className="min-w-[150px] pb-3">Wallet Type</th>
-            <th className="min-w-[150px] pb-3">Address</th>
-            <th className="min-w-[150px] pb-3">Default For</th>
-            <th className="min-w-[150px] pb-3">Delete</th>
+            <tr>
+              <th />
+              <th className="min-w-[150px] pb-3">Wallet Type</th>
+              <th className="min-w-[150px] pb-3">Address</th>
+              <th className="min-w-[150px] pb-3">Default For</th>
+              <th className="min-w-[150px] pb-3">Delete</th>
+            </tr>
           </thead>
           <tbody>
             {loading || !wallets ? (
-              <span className="mt-4">Loading...</span>
+              <tr className="mt-4">
+                <td>Loading...</td>
+              </tr>
             ) : (
               wallets.map((wallet) => (
                 <WalletTableRow
