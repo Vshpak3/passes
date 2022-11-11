@@ -39,10 +39,7 @@ export type SignupInfoPageSchema = {
 const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
   legalFullName: string()
     .required("Enter your full name")
-    .matches(
-      FULL_NAME_REGEX,
-      "Only letters and symbols (- , ') are allowed for your name"
-    ),
+    .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
   username: string().required("Enter a username"),
   birthday: string()
     .required("Enter your birthday")

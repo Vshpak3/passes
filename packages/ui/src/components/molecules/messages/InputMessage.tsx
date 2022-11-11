@@ -86,6 +86,9 @@ export const newMessageFormSchema = object(
   }
 )
 
+const MAX_TEXT_AREA_ROWS = 10
+const MIN_TEXT_AREA_ROWS = 5
+
 export const InputMessage: FC<InputMessageProps> = ({
   selectedChannel,
   minimumTip,
@@ -139,6 +142,18 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
     setTip(0)
   }
+
+  const text = watch("text")
+  const [textAreaRows, setTextAreaRows] = useState<number>(6)
+
+  useEffect(() => {
+    setTextAreaRows(
+      Math.max(
+        Math.min(text.split("\n").length, MAX_TEXT_AREA_ROWS),
+        MIN_TEXT_AREA_ROWS
+      )
+    )
+  }, [text])
 
   const setSubmitError = (err: string) => {
     err ? toast.error(err) : toast.dismiss()
@@ -309,7 +324,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          rows={3}
+          rows={textAreaRows}
           {...register("text")}
           autoComplete="off"
           className={classNames(
@@ -346,7 +361,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-4 md:mb-0 md:border-0 md:pt-5",
+            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pt-3 md:mb-0 md:border-0",
             Object.values(errors)[0] && "!pt-0"
           )}
         >

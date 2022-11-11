@@ -50,6 +50,9 @@ interface InputMessageToolProps {
   previewIndex?: number
 }
 
+const MAX_TEXT_AREA_ROWS = 14
+const MIN_TEXT_AREA_ROWS = 7
+
 const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   vaultContent,
   clear,
@@ -111,6 +114,18 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
     }
   }
 
+  const text = watch("text")
+  const [textAreaRows, setTextAreaRows] = useState<number>(6)
+
+  useEffect(() => {
+    setTextAreaRows(
+      Math.max(
+        Math.min(text.split("\n").length, MAX_TEXT_AREA_ROWS),
+        MIN_TEXT_AREA_ROWS
+      )
+    )
+  }, [text])
+
   const submitMessage = async () => {
     try {
       await onSubmit()
@@ -167,7 +182,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          rows={3}
+          rows={textAreaRows}
           {...register("text")}
           autoComplete="off"
           className={classNames(
