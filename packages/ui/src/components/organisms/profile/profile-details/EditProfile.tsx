@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { ContentApi, GetProfileResponseDto } from "@passes/api-client"
+import { GetProfileResponseDto } from "@passes/api-client"
 import classNames from "classnames"
 import ExitIcon from "public/icons/exit-icon.svg"
 import CameraIcon from "public/icons/profile-camera-icon.svg"
@@ -29,8 +29,6 @@ import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { DeleteIcon } from "src/icons/DeleteIcon"
 import { ProfileContext } from "src/pages/[username]"
 import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
-
-const content = new ContentApi()
 
 const editProfileSchema = object({
   displayName: string()
@@ -118,6 +116,14 @@ export const EditProfile: FC<EditProfileProps> = ({
   const [profileImageUrl, setProfileImageUrl] = useState<string>()
   const [profileBannerUrl, setProfileBannerUrl] = useState<string>()
 
+  const [shouldDeleteProfileBanner, setShouldDeleteProfileBanner] =
+    useState(false)
+  const deleteProfileBanner = () => {
+    setValue("profileBanner", [])
+    setProfileBannerUrl("")
+    setShouldDeleteProfileBanner(true)
+  }
+
   useEffect(() => {
     if (!profileImage?.length) {
       if (profileUserId) {
@@ -127,13 +133,13 @@ export const EditProfile: FC<EditProfileProps> = ({
       setProfileImageUrl(URL.createObjectURL(profileImage[0]))
     }
     if (!profileBanner?.length) {
-      if (profileUserId) {
+      if (profileUserId && !shouldDeleteProfileBanner) {
         setProfileBannerUrl(ContentService.profileBanner(profileUserId))
       }
     } else {
       setProfileBannerUrl(URL.createObjectURL(profileBanner[0]))
     }
-  }, [profileBanner, profileImage, profileUserId])
+  }, [profileBanner, profileImage, profileUserId, shouldDeleteProfileBanner])
 
   const renderInput = ([key, input]: [string, RenderInputProps]) => (
     <div className="col-span-6 flex items-center" key={key}>
@@ -182,6 +188,13 @@ export const EditProfile: FC<EditProfileProps> = ({
         ])
       )
 
+      // This means if a user has no profile banner, clicks delete, and submits
+      // the form it will issue an unnecessary deletion. This isn't great but it
+      // is a pain to track the state here.
+      if (!profileBanner.length && shouldDeleteProfileBanner) {
+        changes["deleteProfileBanner"] = true
+      }
+
       if (changes) {
         await onSubmitEditProfile(changes)
       }
@@ -190,11 +203,6 @@ export const EditProfile: FC<EditProfileProps> = ({
     } finally {
       setEditProfileModalOpen(false)
     }
-  }
-
-  const deleteProfileBanner = async () => {
-    await content.deleteProfileBanner()
-    setProfileBannerUrl("")
   }
 
   return (
@@ -229,50 +237,50 @@ export const EditProfile: FC<EditProfileProps> = ({
         className="flex flex-col gap-5 px-0 py-6 xs:px-5 sm:px-12 md:p-0"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <FormImage
-          cropHeight={300}
-          cropWidth={1500}
-          imgData={profileBanner}
-          inputUI={
-            <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
-              <CameraIcon
-                className={classNames("absolute z-30", {
-                  hidden: !!profileBanner?.length
-                })}
-              />
-              <img
-                alt=""
-                className={classNames(
-                  "h-[115px] w-full rounded-[15px] object-cover object-center",
-                  { "opacity-30": !profileBanner?.length }
-                )}
-                onError={({ currentTarget }) => {
-                  currentTarget.onerror = null
-                  currentTarget.src = "/img/profile/select-banner-img.png"
-                }}
-                src={profileBannerUrl}
-              />
-              <DeleteIcon
-                className={classNames(
-                  "absolute bottom-[-30px] right-3 z-30 h-[12px] w-[12px]",
-                  {
-                    hidden: !!profileImage?.length
-                  }
-                )}
-                onClick={deleteProfileBanner}
-              />
-            </div>
-          }
-          name="profileBanner"
-          register={register}
-          setValue={setValue}
-        />
+        <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
+          <FormImage
+            cropHeight={300}
+            cropWidth={1500}
+            imgData={profileBanner}
+            inputUI={
+              <div className="flex w-full select-none items-center justify-center">
+                <CameraIcon
+                  className={classNames("absolute z-30", {
+                    hidden: !!profileBanner?.length
+                  })}
+                />
+                <img
+                  alt=""
+                  className={classNames(
+                    "h-[115px] w-full rounded-[15px] object-cover object-center",
+                    { "opacity-30": !profileBanner?.length }
+                  )}
+                  onError={({ currentTarget }) => {
+                    currentTarget.onerror = null
+                    currentTarget.src = "/img/profile/select-banner-img.png"
+                  }}
+                  src={profileBannerUrl}
+                />
+              </div>
+            }
+            name="profileBanner"
+            register={register}
+            setValue={setValue}
+          />
+          <div
+            className="absolute bottom-[-25px] right-0 flex items-center"
+            onClick={deleteProfileBanner}
+          >
+            <span className="mr-2 text-xs">Delete banner image</span>
+            <DeleteIcon className="h-[12px] w-[12px]" />
+          </div>
+        </div>
         <FormImage
           cropHeight={400}
           cropWidth={400}
           imgData={profileImage}
           inputUI={
-            <div className="relative z-20 -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer items-center justify-center rounded-full bg-black">
+            <div className="relative z-20 -mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer select-none items-center justify-center rounded-full bg-black">
               <CameraIcon
                 className={classNames("absolute z-30", {
                   hidden: !!profileImage?.length

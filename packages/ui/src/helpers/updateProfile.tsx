@@ -1,4 +1,9 @@
-import { GetProfileResponseDto, ProfileApi, UserApi } from "@passes/api-client"
+import {
+  ContentApi,
+  GetProfileResponseDto,
+  ProfileApi,
+  UserApi
+} from "@passes/api-client"
 import { pickBy } from "lodash"
 
 import { ContentService } from "src/helpers/content"
@@ -20,6 +25,7 @@ export interface ProfileUpdate
   username?: string
   profileImage: File[]
   profileBanner: File[]
+  deleteProfileBanner?: boolean
 }
 
 export async function updateProfile(
@@ -28,13 +34,17 @@ export async function updateProfile(
   const {
     profileImage,
     profileBanner,
+    deleteProfileBanner,
     username,
     displayName,
     isAdult,
     ...rest
   } = values
 
+  console.log("DELETE BANNER", deleteProfileBanner)
+
   const userApi = new UserApi()
+  const contentApi = new ContentApi()
   const contentService = new ContentService()
   const profileApi = new ProfileApi()
 
@@ -59,6 +69,8 @@ export async function updateProfile(
 
     profileBanner?.length === 1
       ? contentService.uploadProfileBanner(profileBanner[0])
+      : deleteProfileBanner
+      ? contentApi.deleteProfileBanner()
       : undefined,
 
     Object.values(rest).some((x) => x?.trim())
