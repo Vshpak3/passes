@@ -740,6 +740,11 @@ export class MessagesService {
       })
       .select('follower_id', 'creator_id')
 
+    // neither user can be blocked
+    if (await this.checkBlocked(userId, otherUserId)) {
+      return BlockedReasonEnum.USER_BLOCKED
+    }
+
     const passHolder = await this.dbReader<PassHolderEntity>(
       PassHolderEntity.table,
     )
@@ -760,11 +765,6 @@ export class MessagesService {
       (follow.length === 1 && follow[0].follower_id === otherUserId)
     ) {
       return undefined
-    }
-
-    // neither user can be blocked
-    if (await this.checkBlocked(userId, otherUserId)) {
-      return BlockedReasonEnum.USER_BLOCKED
     }
 
     const minimum = await this.getMinimumTip(otherUserId)
