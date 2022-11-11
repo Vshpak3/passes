@@ -7,6 +7,7 @@ import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalB
 import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
+import { formatText } from "src/helpers/formatters"
 import { useOwnsPass } from "src/hooks/useOwnsPass"
 
 interface BuyPassModalProps {

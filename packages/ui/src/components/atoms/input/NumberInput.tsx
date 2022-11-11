@@ -48,6 +48,10 @@ export const NumberInput: FC<NumberInputProps> = ({
       e.preventDefault()
     }
 
+    // e.target.type = "text"
+    // console.log(e)
+    // e.target.type = "number"
+
     const decimal = value.split(".")[1]
     // console.log(e)
     if (decimal && decimal.length > 1) {
