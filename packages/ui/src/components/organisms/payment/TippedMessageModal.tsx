@@ -54,7 +54,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
       />
       <PaymentModalBody
         closeModal={() => setMessageRequest(null)}
-        price={messageRequest?.price ?? 0}
+        price={messageRequest?.tipAmount ?? 0}
         setPayinMethod={setPayinMethod}
       />
       <PaymenetModalFooter onClose={() => setMessageRequest(null)}>
