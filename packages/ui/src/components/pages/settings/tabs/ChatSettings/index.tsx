@@ -125,7 +125,7 @@ const ChatSettings = () => {
             )}
           >
             <label className="flex cursor-pointer items-center justify-between">
-              <span className="text-label">Accept messages without a Tip</span>
+              <span className="text-label">Accept messages without a tip</span>
               <Checkbox name="isWithoutTip" register={register} type="toggle" />
             </label>
 
