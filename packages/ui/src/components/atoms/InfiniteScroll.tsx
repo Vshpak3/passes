@@ -114,7 +114,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     const res = await fetch(props as Omit<T, "data">)
     setTimeout(() => {
       setInitialFetchComplete(true)
-    }, 100)
+    }, 200)
     return res
   }
 

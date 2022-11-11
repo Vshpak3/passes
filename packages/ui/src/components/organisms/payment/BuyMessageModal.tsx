@@ -29,7 +29,6 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
 
   const { images, video } = contentTypeCounter(message.contents)
-  const { price } = message
   const { otherUserId, otherUserUsername, otherUserDisplayName } =
     selectedChannel
 
@@ -56,9 +55,8 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           </span>
           <span className="flex items-center text-white">
             Unlock for
-            <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
-              {/* <DollarIcon /> */}
-              <span className="ml-1">{formatCurrency(price)}</span>
+            <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">
+              {formatCurrency(message.price)}
             </span>
           </span>
         </div>

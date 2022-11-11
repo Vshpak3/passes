@@ -50,9 +50,8 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           </span>
           <span className="flex items-center text-white">
             Unlock for
-            <span className="ml-2 flex items-center rounded bg-passes-primary-color/30 p-2 font-bold">
-              {/* <DollarIcon /> */}
-              <span className="ml-1">{formatCurrency(post.price ?? 0)}</span>
+            <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">
+              {formatCurrency(post.price ?? 0)}
             </span>
           </span>
         </div>

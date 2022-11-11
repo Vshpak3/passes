@@ -68,7 +68,6 @@ export const yupTags = (type: string) => {
         MAX_MENTION_LIMIT,
         `You cannot tag more than ${MAX_MENTION_LIMIT} users in a ${type}`
       )
-      .transform((text) => text.trim())
   }
 }
 
@@ -80,5 +79,6 @@ export const yupPostText = (maxLength: number, type: string) => {
         maxLength,
         `The ${type} cannot be longer than ${maxLength} characters`
       )
+      .transform((text) => text.trim())
   }
 }
