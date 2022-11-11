@@ -1,5 +1,4 @@
-import classNames from "classnames"
-import { FC, memo, useCallback, useContext, useEffect, useState } from "react"
+import { FC, memo, useContext, useState } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { NoProfile } from "src/components/organisms/NoProfile"
@@ -7,34 +6,15 @@ import { ProfileContent } from "src/components/organisms/profile/main-content/Pr
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { PassesSidebar } from "src/components/organisms/profile/passes/PassesSidebar"
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
-import { ContentService } from "src/helpers/content"
+import { ProfileBanner } from "src/components/organisms/profile/profile-details/ProfileHeader"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
-import { Header } from "src/layout/Header"
 import { ProfileContext } from "src/pages/[username]"
 
 const ProfileUnmemo: FC = () => {
-  const { profile, profileUserId, loadingProfile, hasInitialFetch } =
+  const { profile, loadingProfile, hasInitialFetch } =
     useContext(ProfileContext)
 
-  const [hasBanner, setHasBanner] = useState<boolean>(false)
   const [profileBannerOverride, setProfileBannerOverride] = useState<string>()
-
-  const getProfileBanner = useCallback(async () => {
-    if (!profileUserId) {
-      return false
-    }
-    const profileBanner = ContentService.profileBanner(profileUserId)
-    const res = await fetch(profileBanner)
-    return Math.floor(res.status / 100) === 2
-  }, [profileUserId])
-
-  useEffect(() => {
-    setHasBanner(false)
-    const fetch = async () => {
-      setHasBanner(await getProfileBanner())
-    }
-    fetch()
-  }, [profileUserId, getProfileBanner])
 
   const { isTablet } = useWindowSize()
   if (isTablet === undefined) {
@@ -43,19 +23,7 @@ const ProfileUnmemo: FC = () => {
 
   return (
     <>
-      <Header
-        headerClassName={classNames("cover-image border-b-0 !h-[200px]")}
-        style={
-          hasBanner && !!profileUserId
-            ? {
-                backgroundImage: `url(${
-                  profileBannerOverride ||
-                  ContentService.profileBanner(profileUserId)
-                })`
-              }
-            : undefined
-        }
-      />
+      <ProfileBanner profileBannerOverride={profileBannerOverride} />
       {!profile && loadingProfile ? (
         <div className="pt-28">
           <Loader />
