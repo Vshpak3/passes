@@ -6,6 +6,7 @@ import {
   PayinMethodDtoMethodEnum,
   PaymentApi
 } from "@passes/api-client"
+import { format } from "date-fns"
 import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -151,7 +152,9 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
         <span className="text-[12px] font-[500]">
-          {new Date(payin.createdAt).toLocaleString() ?? "N/A"}
+          {format(payin.createdAt, "LL/dd/yyyy")}
+          <br />
+          {format(payin.createdAt, "hh:mm a")}
         </span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
