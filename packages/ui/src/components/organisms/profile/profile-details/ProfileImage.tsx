@@ -23,7 +23,8 @@ export const ProfileImage: FC<ProfileImageProps> = ({
 
   useEffect(() => {
     setLoaded(profileImages.has(userId))
-  }, [userId, profileImages])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId])
 
   return (
     <div
