@@ -26,7 +26,8 @@ const socialUsernameToUrl: Record<
   discordUsername: (u: string) => `https://www.discord.gg/${u}`,
   facebookUsername: (u: string) => `https://www.facebook.com/${u}`,
   instagramUsername: (u: string) => `https://www.instagram.com/${u}`,
-  tiktokUsername: (u: string) => `https://www.tiktok.com/${u}?lang=en`,
+  tiktokUsername: (u: string) =>
+    `https://www.tiktok.com/${u.startsWith("@") ? u : "@" + u}`,
   twitchUsername: (u: string) => `https://www.twitch.com/${u}`,
   twitterUsername: (u: string) => `https://www.twitter.com/${u}`,
   youtubeUsername: (u: string) => `https://www.youtube.com/user/${u}`

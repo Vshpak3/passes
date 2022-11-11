@@ -19,7 +19,7 @@ const socialMediaValidationInfo = {
   },
   tiktokUsername: {
     name: "Tiktok",
-    regex: /^[a-zA-Z\d.]{3,}$/
+    regex: /^@?[a-zA-Z\d.]{3,}$/
   },
   twitchUsername: {
     name: "Twitch",
