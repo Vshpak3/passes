@@ -5,7 +5,7 @@ import {
   MessageDto,
   MessagesApi
 } from "@passes/api-client"
-import { memo, PropsWithChildren, useEffect, useMemo } from "react"
+import { memo, useMemo } from "react"
 
 import {
   ComponentArg,

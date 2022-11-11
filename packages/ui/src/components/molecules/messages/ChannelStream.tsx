@@ -1,14 +1,6 @@
 import { ChannelMemberDto, MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
-import {
-  FC,
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState
-} from "react"
+import { FC, useCallback, useEffect, useLayoutEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -17,8 +9,8 @@ import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
+import { useOnScreen } from "src/hooks/useOnScreen"
 import { useUser } from "src/hooks/useUser"
-import { useOnScreen } from "../../../hooks/useOnScreen"
 import { ChannelMessage } from "./ChannelMessage"
 import { ChannelStreamMessages } from "./ChannelStreamMessages"
 

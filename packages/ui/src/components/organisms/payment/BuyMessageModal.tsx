@@ -12,8 +12,8 @@ import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentMod
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
-import { formatCurrency } from "../../../helpers/formatters"
 
 interface BuyMessageModalProps {
   message: MessageDto

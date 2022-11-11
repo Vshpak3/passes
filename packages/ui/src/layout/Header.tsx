@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import { CSSProperties, FC } from "react"
 
-import { SectionTitle } from "../components/atoms/SectionTitle"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { CreatorSearchBar } from "./CreatorSearchBar"
 
 interface HeaderProps {

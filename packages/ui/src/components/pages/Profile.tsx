@@ -9,8 +9,8 @@ import { PassesSidebar } from "src/components/organisms/profile/passes/PassesSid
 import { ProfileDetails } from "src/components/organisms/profile/profile-details/ProfileDetails"
 import { ContentService } from "src/helpers/content"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
+import { Header } from "src/layout/Header"
 import { ProfileContext } from "src/pages/[username]"
-import { Header } from "../../layout/Header"
 
 const ProfileUnmemo: FC = () => {
   const { profile, profileUserId, loadingProfile, hasInitialFetch } =

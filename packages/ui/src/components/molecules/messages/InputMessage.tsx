@@ -39,11 +39,11 @@ import {
   MIN_PAID_MESSAGE_PRICE
 } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
+import { formatCurrency } from "src/helpers/formatters"
 import { yupPaid } from "src/helpers/yup"
 import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { usePay } from "src/hooks/usePay"
-import { formatCurrency } from "../../../helpers/formatters"
 
 export interface InputMessageFormProps {
   text: string

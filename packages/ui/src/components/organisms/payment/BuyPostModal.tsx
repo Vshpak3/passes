@@ -10,10 +10,10 @@ import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentMod
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { formatCurrency } from "src/helpers/formatters"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
 import { plural } from "src/helpers/plural"
 import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
-import { formatCurrency } from "../../../helpers/formatters"
 
 interface BuyPostModalProps {
   post: PostDto

@@ -4,7 +4,6 @@ import {
 } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, useState } from "react"
-import { MdSource } from "react-icons/md"
 
 import { ContentService } from "src/helpers/content"
 
@@ -34,7 +33,7 @@ export const PassMedia: FC<PassMediaProps> = ({
       <div
         className={classNames(
           isPinnedPass ? "w-[274px]" : "mx-auto max-w-[240px]",
-          "pt-[100%] h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103]"
+          "h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103] pt-[100%]"
         )}
       />
     )
@@ -42,9 +41,8 @@ export const PassMedia: FC<PassMediaProps> = ({
 
   if (passHolderId) {
     return animationType ? (
-      <video autoPlay loop muted>
+      <video autoPlay loop muted onLoadedData={handleLoadingAsset}>
         <source
-          onLoad={handleLoadingAsset}
           src={ContentService.passHolderAnimationPath(
             passId,
             passHolderId,
@@ -65,9 +63,8 @@ export const PassMedia: FC<PassMediaProps> = ({
     )
   } else {
     return animationType ? (
-      <video autoPlay loop muted>
+      <video autoPlay loop muted onLoadedData={handleLoadingAsset}>
         <source
-          onLoad={handleLoadingAsset}
           src={ContentService.passAnimationPath(passId, animationType)}
           type="video/mp4"
         />

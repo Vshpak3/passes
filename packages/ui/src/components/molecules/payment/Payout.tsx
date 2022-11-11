@@ -5,7 +5,8 @@ import {
   PayoutMethodDtoMethodEnum
 } from "@passes/api-client"
 import React, { FC } from "react"
-import { formatCurrency } from "../../../helpers/formatters"
+
+import { formatCurrency } from "src/helpers/formatters"
 
 interface PayoutProps {
   payout: PayoutDto

@@ -9,7 +9,7 @@ import {
 import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
-import { formatCurrency } from "../../../helpers/formatters"
+import { formatCurrency } from "src/helpers/formatters"
 
 interface PayinProps {
   payin: PayinDto

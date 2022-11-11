@@ -4,7 +4,6 @@ import React, { FC, forwardRef, ReactElement } from "react"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isProd } from "src/helpers/env"
-import { CreatorSearchBar } from "./CreatorSearchBar"
 import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
 
@@ -55,8 +54,8 @@ export const WithNormalPageLayout = (
             >
               {header && (
                 <Header
-                  headerTitle={headerTitle}
                   headerClassName={headerClassName}
+                  headerTitle={headerTitle}
                 />
               )}
               <AuthWrapper
