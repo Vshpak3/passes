@@ -41,8 +41,6 @@ export async function updateProfile(
     ...rest
   } = values
 
-  console.log("DELETE BANNER", deleteProfileBanner)
-
   const userApi = new UserApi()
   const contentApi = new ContentApi()
   const contentService = new ContentService()
