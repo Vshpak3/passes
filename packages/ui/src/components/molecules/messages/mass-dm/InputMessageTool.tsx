@@ -3,6 +3,7 @@ import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import {
   ChangeEvent,
+  DragEvent,
   FC,
   KeyboardEvent,
   memo,
@@ -81,7 +82,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   useEffect(() => {
     setValue("files", files, { shouldValidate: true })
   }, [files, setValue])
-
+  const [dragActive, setDragActive] = useState(false)
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
   const [mediaPreviewIndex, setMediaPreviewIndex] = useState(previewIndex)
@@ -147,6 +148,29 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   const setScheduledTime = (date: Date | null) => {
     setValue("scheduledAt", date, { shouldValidate: true })
   }
+  const handleDrag = function (event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    if (event.type === "dragenter" || event.type === "dragover") {
+      setDragActive(true)
+    } else if (event.type === "dragleave") {
+      setDragActive(false)
+    }
+  }
+
+  const handleDrop = function (event: DragEvent<HTMLDivElement>) {
+    event.preventDefault()
+    event.stopPropagation()
+    setDragActive(false)
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      const files = event.dataTransfer.files
+      if (files) {
+        addNewMedia(files)
+      }
+    }
+  }
 
   const scheduledTime = watch("scheduledAt")
   return (
@@ -154,7 +178,19 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
       className="flex w-full border-t border-passes-gray"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div className="flex w-full flex-col px-[30px] pt-2">
+      <div
+        className={classNames(
+          dragActive
+            ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
+            : "sm:border sm:border-transparent",
+          "flex w-full flex-col px-[30px] pt-2"
+        )}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <input className="hidden" multiple name="files" type="file" />
         <div className="flex w-full items-center justify-between py-1">
           <div className="flex h-[30px] items-center justify-start gap-4">
             <Checkbox
