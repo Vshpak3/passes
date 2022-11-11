@@ -63,16 +63,35 @@ export const Calendar: FC = () => {
 
   const getEventsInDate = (
     date: Date
-  ): [ScheduledEventDto[], ScheduledEventDto[]] => {
+  ): { name: string; events: ScheduledEventDto[]; style: string }[] => {
     const onDate = data?.filter(
       (event: ScheduledEventDto) =>
         event.scheduledAt &&
         event.scheduledAt.getMonth() === date.getMonth() &&
         event.scheduledAt.getDate() === date.getDate()
     )
+
     return [
-      onDate?.filter((e) => e.processed) || [],
-      onDate?.filter((e) => !e.processed) || []
+      {
+        name: "Pending Post",
+        events: onDate?.filter((e) => !e.processed && !!e.createPost) || [],
+        style: "bg-passes-primary-color"
+      },
+      {
+        name: "Pending Message",
+        events: onDate?.filter((e) => !e.processed && !!e.batchMessage) || [],
+        style: "bg-passes-secondary-color"
+      },
+      {
+        name: "Processed Post",
+        events: onDate?.filter((e) => e.processed && !!e.createPost) || [],
+        style: "mb-2 bg-passes-primary-color opacity-30"
+      },
+      {
+        name: "Processed Message",
+        events: onDate?.filter((e) => e.processed && !!e.batchMessage) || [],
+        style: "mb-2 bg-passes-secondary-color opacity-30"
+      }
     ]
   }
 
@@ -94,9 +113,7 @@ export const Calendar: FC = () => {
       </div>
       <div className="flex flex-wrap">
         {matrixDate.map((date: CalendarDate, index) => {
-          const [processedPostInDate, pendingPostInDate] = getEventsInDate(
-            date.date
-          )
+          const events = getEventsInDate(date.date)
           return (
             <div
               className={classNames({
@@ -114,14 +131,14 @@ export const Calendar: FC = () => {
                 {date.date.getDate()}
               </span>
               <div className="mt-7 w-full">
-                <CalendarEntry
-                  className="mb-2 bg-gray-400 opacity-[0.40]"
-                  scheduledData={processedPostInDate}
-                />
-                <CalendarEntry
-                  className="bg-passes-primary-color"
-                  scheduledData={pendingPostInDate}
-                />
+                {events.map((e, index) => (
+                  <CalendarEntry
+                    className={classNames(e.style, "my-1")}
+                    key={index}
+                    name={e.name}
+                    scheduledData={e.events}
+                  />
+                ))}
               </div>
             </div>
           )

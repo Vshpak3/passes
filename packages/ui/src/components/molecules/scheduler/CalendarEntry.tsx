@@ -4,13 +4,16 @@ import { format } from "date-fns"
 import { FC } from "react"
 
 import { IconTooltip } from "src/components/atoms/IconTooltip"
+import { plural } from "src/helpers/plural"
 
 interface CalendarEntry {
+  name: string
   scheduledData: ScheduledEventDto[]
   className: string
 }
 
 export const CalendarEntry: FC<CalendarEntry> = ({
+  name,
   scheduledData,
   className
 }) => {
@@ -30,7 +33,12 @@ export const CalendarEntry: FC<CalendarEntry> = ({
               .map((p) => format(p.scheduledAt, "hh:mm a"))
               .join("\n")}
           >
-            {scheduledData.length}
+            <span className="flex text-xs md:hidden">
+              {scheduledData.length}
+            </span>
+            <span className="hidden text-sm md:flex">
+              {plural(name, scheduledData.length)}
+            </span>
           </IconTooltip>
         </div>
       )}
