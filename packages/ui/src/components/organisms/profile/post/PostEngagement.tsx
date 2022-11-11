@@ -96,14 +96,13 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
           </div>
         )}
       </div>
-      {showCommentSection && (
-        <CommentSection
-          decrementNumComments={decrementNumComments}
-          incrementNumComments={incrementNumComments}
-          ownsPost={isOwner}
-          postId={postId}
-        />
-      )}
+      <CommentSection
+        decrementNumComments={decrementNumComments}
+        incrementNumComments={incrementNumComments}
+        ownsPost={isOwner}
+        postId={postId}
+        hidden={!showCommentSection}
+      />
     </div>
   )
 }

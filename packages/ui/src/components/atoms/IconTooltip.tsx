@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import { FC, PropsWithChildren, SVGProps, useState } from "react"
+import { formatText } from "../../helpers/formatters"
 
 interface IconTooltipProps {
   icon?: FC<SVGProps<SVGSVGElement>>
@@ -58,16 +59,16 @@ export const IconTooltip: FC<PropsWithChildren<IconTooltipProps>> = ({
       {tooltipStatus && (
         <div
           className={classNames(
-            "absolute z-10 w-[200px] rounded bg-[#2B2426] p-3 text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
+            "absolute passes-break whitepace-pre-wrap z-60 w-[200px] rounded bg-[#2B2426] p-3 text-[12px] font-medium text-white shadow-lg transition duration-150 ease-in-out",
             tooltipPositionDefinition(position),
             tooltipClassName
           )}
           role="tooltip"
         >
-          {tooltipText}
+          {formatText(tooltipText)}
           <span
             className={classNames(
-              "absolute z-10 before:block before:h-[12px] before:w-[12px] before:rotate-45 before:bg-[#2B2426] before:content-['']",
+              "absolute z-60 before:block before:h-[12px] before:w-[12px] before:rotate-45 before:bg-[#2B2426] before:content-['']",
               arrowPositionDefinition(position)
             )}
           />

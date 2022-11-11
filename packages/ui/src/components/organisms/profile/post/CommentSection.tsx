@@ -1,4 +1,5 @@
 import { CommentDto, PostDto } from "@passes/api-client"
+import classNames from "classnames"
 import { FC, memo, useCallback, useState } from "react"
 
 import { Comment } from "src/components/organisms/profile/post/Comment"
@@ -10,11 +11,13 @@ interface CommentSectionProps {
   ownsPost: PostDto["isOwner"]
   incrementNumComments: () => void
   decrementNumComments: () => void
+  hidden: boolean
 }
 
 const CommentSectionUnemo: FC<CommentSectionProps> = ({
   postId = "",
   ownsPost,
+  hidden,
   incrementNumComments,
   decrementNumComments
 }) => {
@@ -29,7 +32,12 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
   )
 
   return (
-    <div className="mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10">
+    <div
+      className={classNames(
+        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10",
+        hidden && "hidden"
+      )}
+    >
       {newComments.map((comment) => {
         return (
           <Comment

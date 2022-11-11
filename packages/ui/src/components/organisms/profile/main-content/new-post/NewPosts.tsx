@@ -9,14 +9,10 @@ import { ProfileContext } from "src/pages/[username]"
 import { NewPostEditor } from "./NewPostEditor"
 
 interface NewPostsProps {
-  setIsNewPostAdded: (value: boolean) => void
   postUpdates: Record<string, Partial<PostDto>>
 }
 
-export const NewPosts: FC<NewPostsProps> = ({
-  setIsNewPostAdded,
-  postUpdates
-}) => {
+export const NewPosts: FC<NewPostsProps> = ({ postUpdates }) => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
   const { profile, profileUsername, profileUserId } = useContext(ProfileContext)
   const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
@@ -76,9 +72,6 @@ export const NewPosts: FC<NewPostsProps> = ({
     }
 
     setNewPosts([post, ...newPosts])
-    if (!newPosts?.length) {
-      setIsNewPostAdded(true)
-    }
   }
 
   // TODO: Missing the state to remove the post optimistically

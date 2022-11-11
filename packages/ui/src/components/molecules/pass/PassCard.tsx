@@ -161,7 +161,7 @@ export const PassCard: FC<PassCardProps> = ({
           <IconTooltip
             icon={InfoIcon}
             position="top"
-            tooltipText="Test tooltip text"
+            tooltipText={`Chain: ${pass.chain} \nCollection Addres: ${pass.collectionAddress}`}
           />
         </div>
         <Button

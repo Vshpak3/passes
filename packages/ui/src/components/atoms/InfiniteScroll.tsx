@@ -183,7 +183,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
     return () => window.removeEventListener("resize", checkScroll)
   }, [checkScroll])
-
+  console.log("asd")
   return (
     <InfiniteScroll
       className={classNames(className)}

@@ -4,7 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, memo, useState } from "react"
 
 import {
   ComponentArg,
@@ -37,10 +37,9 @@ interface PostFeedProps {
   ownsProfile: boolean
 }
 
-export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
+const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
 
-  const [isNewPostAdded, setIsNewPostAdded] = useState(false)
   const { pinnedPosts } = usePinnedPosts(profileUserId)
   const { posts } = usePostWebhook()
 
@@ -57,14 +56,11 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
         })
       }}
       fetchProps={{ creatorId: profileUserId, pinned: false }}
-      hasInitialElement={isNewPostAdded}
       keySelector="postId"
       keyValue={`/feed/creator/${profileUserId}`}
       loadingElement={PostFeedLoader}
     >
-      {ownsProfile && (
-        <NewPosts postUpdates={posts} setIsNewPostAdded={setIsNewPostAdded} />
-      )}
+      {ownsProfile && <NewPosts postUpdates={posts} />}
       {pinnedPosts.map((post) => (
         <Post
           isPinned
@@ -75,3 +71,5 @@ export const PostFeed: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
     </InfiniteScrollPagination>
   )
 }
+
+export const PostFeed = memo(PostFeedUnmemo)

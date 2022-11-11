@@ -1,4 +1,4 @@
-import { FC, useContext } from "react"
+import { FC, memo, useContext } from "react"
 
 import { ProfileNavigationOptions } from "src/components/organisms/profile/main-content/ProfileNavigation"
 import { ProfileContext } from "src/pages/[username]"
@@ -10,7 +10,7 @@ interface ProfileContentFeedProps {
   activeTab: ProfileNavigationOptions
 }
 
-export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
+const ProfileContentFeedUnmemo: FC<ProfileContentFeedProps> = ({
   activeTab
 }) => {
   const { profileUserId, ownsProfile, loadingProfile } =
@@ -33,3 +33,5 @@ export const ProfileContentFeed: FC<ProfileContentFeedProps> = ({
       return <PassesFeed creatorId={profileUserId} />
   }
 }
+
+export const ProfileContentFeed = memo(ProfileContentFeedUnmemo)

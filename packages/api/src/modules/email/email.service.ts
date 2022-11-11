@@ -115,7 +115,7 @@ export class EmailService {
         )
         .whereIn(`${UserEntity.table}.id`, userIds)
         .andWhere(`${NotificationSettingsEntity.table}.${type}`, true)
-        .select(`${UserEntity}.email`)
+        .select(`${UserEntity.table}.email`)
       await Promise.all(
         users.map(async (user) => {
           await this.sendRenderedEmail(user.email, messageHtml, subject, {
@@ -147,7 +147,7 @@ export class EmailService {
       POST_NEW_MENTION_EMAIL_SUBJECT,
       POST_NEW_MENTION,
       {},
-      'post_emails',
+      'mention_emails',
     )
   }
 }
