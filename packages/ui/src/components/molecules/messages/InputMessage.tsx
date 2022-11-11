@@ -364,7 +364,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pt-3 md:mb-0 md:border-0",
+            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
             Object.values(errors)[0] && "!pt-0"
           )}
         >
@@ -391,7 +391,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                     "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F] ",
                     blocked === PayinDataDtoBlockedEnum.InsufficientTip
                       ? "top-0.5 md:top-1"
-                      : "top-1.5 md:top-2.5"
+                      : "top-[10px] md:top-2.5"
                   )}
                 >
                   Tip
