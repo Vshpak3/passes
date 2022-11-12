@@ -99,6 +99,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
                 e.stopPropagation()
                 setOpen(false)
               }}
+              onTouchEnd={(e) => {
+                e.stopPropagation()
+                setOpen(false)
+              }}
               type="button"
             >
               <Image
