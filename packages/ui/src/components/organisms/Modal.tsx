@@ -22,6 +22,7 @@ export interface ModalProps {
   bare?: boolean
   isCloseOutside?: boolean
   mobileFixed?: boolean
+  closableOnScreen?: boolean
 }
 
 export const Modal: FC<PropsWithChildren<ModalProps>> = ({
@@ -34,7 +35,8 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   childrenClassname,
   bare,
   isCloseOutside,
-  mobileFixed = false
+  mobileFixed = false,
+  closableOnScreen = false
 }) => {
   const modalContentRef = useRef(null)
   useOnClickOutside(modalContentRef, (e) => {
@@ -88,7 +90,12 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
         id="popup-modal"
       >
         {closable && (
-          <div className="relative text-right">
+          <div
+            className={classNames(
+              !closableOnScreen && "relative",
+              "text-right"
+            )}
+          >
             <button
               className={classNames(
                 "top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
@@ -107,9 +114,9 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
             >
               <Image
                 alt="Close button"
-                height={20}
+                height={25}
                 src="/icons/exit-icon.svg"
-                width={20}
+                width={25}
               />
               <span className="sr-only">Close modal</span>
             </button>

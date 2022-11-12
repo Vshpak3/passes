@@ -44,7 +44,7 @@ export const MediaModal: FC<ModalProps> = ({
     <Modal
       bare
       childrenClassname={childrenClassname}
-      isCloseOutside
+      closableOnScreen
       isOpen={isOpen}
       mobileFixed
       modalContainerClassname={modalContainerClassname}
