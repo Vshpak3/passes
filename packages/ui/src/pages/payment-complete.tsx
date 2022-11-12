@@ -12,6 +12,7 @@ const PaymentComplete = () => {
   const router = useRouter()
   const [status, setStatus] = useState<LandingStatusEnum>()
   const [message, setMessage] = useState<string>()
+
   useEffect(() => {
     if (router.isReady) {
       const query = router.query
@@ -27,10 +28,11 @@ const PaymentComplete = () => {
       }
     }
   }, [router])
+
   return status ? (
-    <>
+    <div className="m-auto text-center">
       {message} <br /> You may now close this window.
-    </>
+    </div>
   ) : null
 }
 
