@@ -40,15 +40,6 @@ export const NumberInput: FC<NumberInputProps> = ({
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const value = e.target.value
-
-    if (
-      maxInput &&
-      value.length >=
-        maxInput?.toString().length + (type === "currency" ? 3 : 0)
-    ) {
-      e.preventDefault()
-    }
 
     if (!allowNegative) {
       preventNegative(e)
@@ -57,7 +48,10 @@ export const NumberInput: FC<NumberInputProps> = ({
 
   const validate = function (e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
-    if (type === "currency" && !isCurrency(value)) {
+    if (
+      (type === "currency" && value.length > 0 && !isCurrency(value)) ||
+      (maxInput !== undefined && parseFloat(value) > maxInput)
+    ) {
       e.target.value = prevValue
     }
 

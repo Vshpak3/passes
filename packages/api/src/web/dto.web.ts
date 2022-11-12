@@ -4,6 +4,7 @@ import { Expose, Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
+  isCurrency,
   IsDate,
   IsEnum,
   IsInt,
@@ -38,9 +39,7 @@ export function IsCurrencyNumber(
       validator: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         validate(value: any, _args: ValidationArguments) {
-          return (
-            typeof value === 'number' && value >= 0 && (value * 100) % 1 === 0
-          )
+          return typeof value === 'number' && isCurrency(value.toString())
         },
       },
     })
