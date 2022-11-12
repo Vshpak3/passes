@@ -40,6 +40,7 @@ export const useThreeDS = () => {
     setWaiting(undefined)
     setPayinId(undefined)
     setComplete(false)
+    setRedirected(false)
   }
   useEffect(() => {
     if (payinId && waiting) {
