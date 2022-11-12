@@ -29,7 +29,7 @@ export function formatCurrency(
   return formatter.format(value)
 }
 
-export function isNumeric(value: string) {
+function isNumeric(value: string) {
   return !isNaN(parseFloat(value))
 }
 
