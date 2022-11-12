@@ -34,8 +34,8 @@ export const MediaModal: FC<ModalProps> = ({
   const [height, setHeight] = useState<number>(window.innerHeight - 100)
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth - 100)
-      setHeight(window.innerHeight - 100)
+      setWidth(window.innerWidth - 50)
+      setHeight(window.innerHeight - 50)
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
@@ -49,6 +49,7 @@ export const MediaModal: FC<ModalProps> = ({
       mobileFixed
       modalContainerClassname={modalContainerClassname}
       setOpen={setOpen}
+      shouldCloseOnClickOutside
     >
       {carouselContent && (
         <div className="max-w-[900px]">
