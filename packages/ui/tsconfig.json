@@ -18,7 +18,9 @@
     "paths": {
       "src/*": ["./src/*"],
       "@passes/api-client/*": ["../api-client/src/*"],
-      "@passes/api-client": ["../api-client/src/index"]
+      "@passes/api-client": ["../api-client/src/index"],
+      "@passes/shared-constants/*": ["../shared-constants/src/*"],
+      "@passes/shared-constants": ["../shared-constants/src/index"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.js", "**/*.tsx", "**/*.jsx"],

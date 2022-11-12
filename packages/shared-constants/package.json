@@ -1,0 +1,14 @@
+{
+  "name": "@passes/shared-constants",
+  "version": "1.0.0",
+  "description": "Passes shared constants package",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "4.8.4"
+  }
+}

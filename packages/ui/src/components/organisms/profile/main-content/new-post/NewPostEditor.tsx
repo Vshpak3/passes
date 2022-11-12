@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { CreatePostRequestDto, PassDto, TagDto } from "@passes/api-client"
+import { POST_TEXT_LENGTH } from "@passes/shared-constants"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import { DragEvent, FC, useEffect, useState } from "react"
@@ -13,7 +14,6 @@ import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/N
 import {
   MAX_PAID_POST_PRICE,
   MAX_PASSES_LIMIT,
-  MAX_POST_TEXT_LENGTH,
   MIN_PAID_POST_PRICE
 } from "src/config/post"
 import { ContentService } from "src/helpers/content"
@@ -55,7 +55,7 @@ const newPostFormDefaults: NewPostFormProps = {
 const newPostFormSchema = object({
   ...yupPaid(
     "post",
-    MAX_POST_TEXT_LENGTH,
+    POST_TEXT_LENGTH,
     MIN_PAID_POST_PRICE,
     MAX_PAID_POST_PRICE,
     "Please add either text or media"

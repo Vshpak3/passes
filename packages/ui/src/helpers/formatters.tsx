@@ -43,6 +43,7 @@ export function isCurrency(value: string) {
   const ind = value.indexOf(".")
   return ind === -1 || ind > value.length - 4
 }
+
 export function getFormattedDate(date: Date) {
   return `${date.getDate().toLocaleString()}  ${date
     .toLocaleDateString("en-us", {

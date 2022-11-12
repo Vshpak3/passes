@@ -6,6 +6,7 @@
   "scripts": {
     "batch": "NODE_ENV=dev yarn ts-node --project tsconfig.json ./src/batch/batch.entrypoint.ts",
     "generate-openapi-spec": "NODE_ENV=dev yarn ts-node --project tsconfig.json ./src/openapi/generate-openapi-spec.ts",
+    "generate-shared-constants": "NODE_ENV=dev yarn ts-node --project tsconfig.json ./src/shared/generate-shared-constants.ts",
     "lint:check": "eslint . --max-warnings=0",
     "lint:fix": "eslint --fix .",
     "migration:create": "yarn mikro-orm migration:create",

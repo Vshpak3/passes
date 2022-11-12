@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Generates API client.
+# Generates API client and shared constants.
 #
 # If the first parameter is set "true" then this script will regenerate the
 # OpenAPI generator template files. We modify these files to include custom
@@ -32,6 +32,11 @@ if "${1:-false}" ; then
     --generator-name ${openapi_gen_generator}
   exit
 fi
+
+
+### Generate shared constants
+
+yarn workspace @passes/api generate-shared-constants
 
 
 ### Generate OpenAPI JSON File

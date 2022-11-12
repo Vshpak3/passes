@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { CommentApi, CommentDto } from "@passes/api-client"
+import { COMMENT_TEXT_LENGTH } from "@passes/shared-constants"
 import { FC, useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -8,14 +9,13 @@ import { object } from "yup"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
 import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
-import { MAX_COMMENT_TEXT_LENGTH } from "src/config/post"
 import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useUser } from "src/hooks/useUser"
 
 const newCommentFormSchema = object({
-  ...yupPostText(MAX_COMMENT_TEXT_LENGTH, "comment"),
+  ...yupPostText(COMMENT_TEXT_LENGTH, "comment"),
   ...yupTags("comment")
 })
 
