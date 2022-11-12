@@ -13,7 +13,7 @@ import {
 import { Loader } from "src/components/atoms/Loader"
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { useUser } from "src/hooks/useUser"
-import { FanWallComment } from "./FanWallComment"
+import { FanWallCommentCached } from "./FanWallCommentCached"
 
 const FallWallFeedLoader = (
   <div className="my-[40px] flex justify-center">
@@ -43,7 +43,12 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
   return (
     <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
-        return <FanWallComment comment={arg} ownsProfile={ownsProfile} />
+        return (
+          <FanWallCommentCached
+            fanWallComment={arg}
+            ownsProfile={ownsProfile}
+          />
+        )
       }}
       emptyElement={FanWallFeedEnd}
       endElement={FanWallFeedEnd}

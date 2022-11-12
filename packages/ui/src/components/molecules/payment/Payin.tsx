@@ -7,16 +7,17 @@ import {
   PaymentApi
 } from "@passes/api-client"
 import { format } from "date-fns"
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { formatCurrency } from "src/helpers/formatters"
+import { PayinCachedProps } from "./PayinCached"
 
-interface PayinProps {
-  payin: PayinDto
+interface PayinProps extends PayinCachedProps {
+  update: (update: Partial<PayinDto>) => void
 }
 
-export const Payin: FC<PayinProps> = ({ payin }) => {
+export const Payin: FC<PayinProps> = ({ payin, update }) => {
   let payinInfo: JSX.Element | null = null
   let method = ""
   let status = ""
@@ -32,7 +33,6 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
     address,
     callback
   } = payin
-  const [cancelled, setCancelled] = useState<boolean>()
   switch (payinMethod.method) {
     case PayinMethodDtoMethodEnum.CircleCard:
       payinInfo = <>N/A</>
@@ -137,14 +137,11 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       reason = "Post Tip"
       break
   }
-  if (cancelled) {
-    status = "Failed"
-  }
 
   const cancel = async () => {
     const paymentApi = new PaymentApi()
     await paymentApi.cancelPayin({ payinId: payinId })
-    setCancelled(true)
+    update({ payinStatus: PayinDtoPayinStatusEnum.Failed })
   }
   return (
     <div className="flex flex-row justify-between border-b border-passes-dark-200">
@@ -180,9 +177,7 @@ export const Payin: FC<PayinProps> = ({ payin }) => {
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">
         <span className="text-[14px] font-[700] text-passes-pink-100">
-          {!cancelled && cancellable && (
-            <Button onClick={cancel}>Cancel</Button>
-          )}
+          {cancellable && <Button onClick={cancel}>Cancel</Button>}
         </span>
       </div>
     </div>

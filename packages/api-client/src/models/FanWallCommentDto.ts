@@ -92,6 +92,12 @@ export interface FanWallCommentDto {
      * @memberof FanWallCommentDto
      */
     isHidden: boolean;
+    /**
+     * 
+     * @type {Date}
+     * @memberof FanWallCommentDto
+     */
+    deletedAt: Date | null;
 }
 
 /**
@@ -110,6 +116,7 @@ export function instanceOfFanWallCommentDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isOwner" in value;
     isInstance = isInstance && "isHidden" in value;
+    isInstance = isInstance && "deletedAt" in value;
 
     return isInstance;
 }
@@ -135,6 +142,7 @@ export function FanWallCommentDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'createdAt': (new Date(json['createdAt'])),
         'isOwner': json['isOwner'],
         'isHidden': json['isHidden'],
+        'deletedAt': (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
     };
 }
 
@@ -158,6 +166,7 @@ export function FanWallCommentDtoToJSON(value?: FanWallCommentDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'isOwner': value.isOwner,
         'isHidden': value.isHidden,
+        'deletedAt': (value.deletedAt === null ? null : value.deletedAt.toISOString()),
     };
 }
 

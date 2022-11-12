@@ -10,18 +10,18 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { PostHeader } from "src/components/organisms/profile/post/PostHeader"
-import { useFanWall } from "src/hooks/profile/useFanWall"
+import { useFanWall } from "src/hooks/profile/useUpdateFanWall"
+import { FanwallCommentCachedProps } from "./FanWallCommentCached"
 
-interface FanWallCommentProps {
-  comment: FanWallCommentDto
-  ownsProfile: boolean
+interface FanWallCommentProps extends FanwallCommentCachedProps {
+  update: (update: Partial<FanWallCommentDto>) => void
 }
 
 export const FanWallComment: FC<FanWallCommentProps> = ({
-  comment,
-  ownsProfile
+  fanWallComment,
+  ownsProfile,
+  update
 }) => {
-  const [removed, setRemoved] = useState<boolean>(false)
   const [showHidden, setShowHidden] = useState(false)
   const { deleteFanWallComment, hideFanWallComment, unhideFanWallComment } =
     useFanWall()
@@ -35,17 +35,16 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
     commenterDisplayName,
     commenterIsCreator,
     createdAt,
+    deletedAt,
     isOwner,
-    isHidden: _isHidden,
+    isHidden,
     text,
     tags
-  } = comment
-
-  const [isHidden, setIsHidden] = useState(_isHidden)
+  } = fanWallComment
 
   const deleteComment = async () => {
     await deleteFanWallComment(fanWallCommentId)
-    setRemoved(true)
+    update({ deletedAt: new Date() })
   }
 
   const dropdownItems: DropdownOption[] = [
@@ -64,7 +63,8 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
       "Hide",
       !isOwner && ownsProfile && !isHidden,
       async () => {
-        setIsHidden(true)
+        update({ isHidden: true })
+
         setShowHidden(false)
         await hideFanWallComment(fanWallCommentId)
       }
@@ -73,7 +73,8 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
       "Unhide",
       !isOwner && ownsProfile && isHidden,
       async () => {
-        setIsHidden(false)
+        update({ isHidden: false })
+
         await unhideFanWallComment(fanWallCommentId)
       }
     )
@@ -81,7 +82,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
 
   return (
     <>
-      {!removed && (
+      {!deletedAt && (
         <div className="mt-6 flex">
           <div className="flex !min-h-[10px] w-full grow flex-col items-stretch gap-4 border-y-[1px] border-passes-gray py-5 md:min-h-[400px] md:pt-5">
             <PostHeader

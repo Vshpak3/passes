@@ -3,7 +3,7 @@ import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar/close.svg"
-import { FC, useContext, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object } from "yup"
@@ -13,7 +13,6 @@ import { MAX_FAN_COMMENT_TEXT_LENGTH } from "src/config/post"
 import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
-import { ProfileContext } from "src/pages/[username]"
 import { NewPostTextFormProps } from "./NewPostEditor"
 
 const CustomMentionEditor = dynamic(
@@ -38,7 +37,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   createFanWallPost,
   creatorId
 }) => {
-  const { profile } = useContext(ProfileContext)
+  // const { profile } = useContext(ProfileContext)
   const [extended, setExtended] = useState(false)
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
   const [isReset, setIsReset] = useState(false)
@@ -114,9 +113,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}
-              placeholder={`Write something${
-                profile?.displayName ? ` to ${profile?.displayName}...` : "..."
-              }`}
+              placeholder="Post something ..." // removed `to ...` due to overflow issues with log names
               setIsReset={setIsReset}
             />
           </div>

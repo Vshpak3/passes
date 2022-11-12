@@ -52,6 +52,9 @@ export class FanWallCommentDto {
   @DtoProperty({ type: 'boolean' })
   isHidden: boolean
 
+  @DtoProperty({ type: 'date', nullable: true })
+  deletedAt: Date | null
+
   constructor(
     fanWallPost: FanWallCommentEntity & {
       commenter_username: string
@@ -71,5 +74,6 @@ export class FanWallCommentDto {
     this.tags = JSON.parse(fanWallPost.tags)
     this.isOwner = !!isOwner
     this.isHidden = fanWallPost.hidden
+    this.deletedAt = fanWallPost.deleted_at
   }
 }

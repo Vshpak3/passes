@@ -4,7 +4,7 @@ import {
 } from "@passes/api-client"
 import { FC, useState } from "react"
 
-import { FanWallComment } from "src/components/organisms/profile/main-content/feed/FanWallComment"
+import { FanWallCommentCached } from "src/components/organisms/profile/main-content/feed/FanWallCommentCached"
 import { useUser } from "src/hooks/useUser"
 import { NewFanwallPost } from "./NewFanwallPost"
 
@@ -27,7 +27,7 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
       return
     }
 
-    const comment: FanWallCommentDto = {
+    const fanWallComment: FanWallCommentDto = {
       fanWallCommentId,
       creatorId: createPost.creatorId,
       commenterId: user.userId,
@@ -38,9 +38,10 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
       tags: createPost.tags,
       createdAt: new Date(),
       isOwner: true,
-      isHidden: false
+      isHidden: false,
+      deletedAt: null
     }
-    setNewComments([comment, ...newComments])
+    setNewComments([fanWallComment, ...newComments])
   }
 
   // TODO: Missing the state to remove the post optimistically
@@ -51,10 +52,10 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
         createFanWallPost={createPost}
         creatorId={profileUserId || ""}
       />
-      {newComments.map((comment) => (
-        <FanWallComment
-          comment={comment}
-          key={comment.fanWallCommentId}
+      {newComments.map((fanWallComment) => (
+        <FanWallCommentCached
+          fanWallComment={fanWallComment}
+          key={fanWallComment.fanWallCommentId}
           ownsProfile={ownsProfile}
         />
       ))}
