@@ -40,7 +40,7 @@ import {
   MIN_PAID_MESSAGE_PRICE
 } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
-import { formatCurrency } from "src/helpers/formatters"
+import { formatCurrency, isCurrency } from "src/helpers/formatters"
 import { yupPaid } from "src/helpers/yup"
 import { useTippedMessageModal } from "src/hooks/context/useTippedMessageModal"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
@@ -241,7 +241,9 @@ export const InputMessage: FC<InputMessageProps> = ({
   const handleChangeTip = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
-      setTip(parseFloat(parseFloat(value.length ? value : "0").toFixed(2)))
+      if (isCurrency(value)) {
+        setTip(parseFloat(value))
+      }
     }, 100),
     [setTip]
   )
