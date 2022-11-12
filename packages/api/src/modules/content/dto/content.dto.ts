@@ -21,6 +21,9 @@ export class ContentDto {
   @DtoProperty({ type: 'date', optional: true })
   createdAt?: Date
 
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  deletedAt?: Date | null
+
   @DtoProperty({ type: 'boolean', optional: true })
   inPost?: boolean
 
@@ -49,6 +52,7 @@ export class ContentDto {
       this.inMessage = content.in_message
       this.processed = content.processed
       this.failed = content.failed
+      this.deletedAt = content.deleted_at
     }
   }
 }

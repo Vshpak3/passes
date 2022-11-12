@@ -57,6 +57,12 @@ export interface ContentDto {
     createdAt?: Date;
     /**
      * 
+     * @type {Date}
+     * @memberof ContentDto
+     */
+    deletedAt?: Date | null;
+    /**
+     * 
      * @type {boolean}
      * @memberof ContentDto
      */
@@ -122,6 +128,7 @@ export function ContentDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean)
         'signedThumbnailUrl': !exists(json, 'signedThumbnailUrl') ? undefined : json['signedThumbnailUrl'],
         'contentType': json['contentType'],
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
+        'deletedAt': !exists(json, 'deletedAt') ? undefined : (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
         'inPost': !exists(json, 'inPost') ? undefined : json['inPost'],
         'inMessage': !exists(json, 'inMessage') ? undefined : json['inMessage'],
         'processed': !exists(json, 'processed') ? undefined : json['processed'],
@@ -144,6 +151,7 @@ export function ContentDtoToJSON(value?: ContentDto | null): any {
         'signedThumbnailUrl': value.signedThumbnailUrl,
         'contentType': value.contentType,
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
+        'deletedAt': value.deletedAt === undefined ? undefined : (value.deletedAt === null ? null : value.deletedAt.toISOString()),
         'inPost': value.inPost,
         'inMessage': value.inMessage,
         'processed': value.processed,

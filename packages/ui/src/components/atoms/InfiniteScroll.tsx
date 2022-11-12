@@ -51,7 +51,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   mutateOnLoad?: boolean
   pullDownToRefresh?: boolean
   node?: HTMLDivElement
-  keySelector?: keyof A
+  keySelector: keyof A
   childrenEnd?: boolean
   renderDebounce?: number
 }
@@ -213,7 +213,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         <KeyedComponent
           arg={data}
           index={index}
-          key={keySelector ? (data[keySelector] as unknown as string) : index}
+          key={data[keySelector] as unknown as string}
           nextArg={flattenedData[index + 1]}
         />
       ))}

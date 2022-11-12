@@ -222,6 +222,7 @@ export class ContentService {
         user_id: userId,
         processed: true,
       })
+      .select('*')
     switch (category) {
       // filter content that has been used in messages
       case VaultCategoryEnum.MESSAGES: //TOODO

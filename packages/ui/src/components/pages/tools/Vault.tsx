@@ -25,7 +25,6 @@ export const Vault: FC<VaultProps> = ({
   scroll = false
 }) => {
   const [selectedItems, setSelectedItems] = useState<Array<ContentDto>>([])
-  const [deletedItems, setDeletedItems] = useState<Array<ContentDto>>([])
   const [vaultType, setVaultType] = useState<VaultType>()
   const [vaultCategory, setVaultCategory] = useState<VaultCategory>()
   const [order, setOrder] = useState<GetVaultQueryRequestDtoOrderEnum>(
@@ -46,11 +45,9 @@ export const Vault: FC<VaultProps> = ({
     <div className="my-4 h-full w-full px-2 md:px-5">
       <VaultNavigation
         addNewMedia={addNewMedia}
-        deletedItems={deletedItems}
         embedded={!!passSelectedItems}
         order={order}
         selectedItems={selectedItems}
-        setDeletedItems={setDeletedItems}
         setOrder={setOrder}
         setSelectedItems={setItems}
         setVaultCategory={setVaultCategory}
@@ -66,7 +63,6 @@ export const Vault: FC<VaultProps> = ({
       />
       <VaultMediaGrid
         category={vaultCategory}
-        deletedItems={deletedItems}
         isMaxFileCountSelected={isMaxFileCountSelected}
         order={order}
         scroll={scroll}

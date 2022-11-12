@@ -15,8 +15,8 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
-const VaultMediaItem = dynamic(
-  import("src/components/molecules/vault/VaultMedia"),
+const VaultMediaItemCached = dynamic(
+  import("src/components/molecules/vault/VaultMediaItemCached"),
   { ssr: false }
 )
 const MediaModal = dynamic(
@@ -32,7 +32,6 @@ interface VaultMediaGridProps {
   order: GetVaultQueryRequestDtoOrderEnum
   category?: VaultCategory
   type?: VaultType
-  deletedItems: ContentDto[]
   isMaxFileCountSelected: boolean
   scroll?: boolean
 }
@@ -43,7 +42,6 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
   category,
   type,
   order,
-  deletedItems,
   isMaxFileCountSelected,
   scroll = false
 }) => {
@@ -68,22 +66,29 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
     setNode(node)
   }, [])
 
-  const display = useMemo(() => {
-    return (
+  return (
+    <div
+      className={classNames(
+        scroll ? "h-[75%] min-w-fit justify-center overflow-y-hidden" : ""
+      )}
+      id="scrollableDiv"
+      ref={ref}
+    >
+      <MediaModal
+        file={{ content }}
+        isOpen={isViewMediaModal}
+        setOpen={setIsViewMediaModal}
+      />
       <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>
         KeyedComponent={({ arg }: ComponentArg<ContentDto>) => {
           return (
-            <>
-              {!deletedItems.some((x) => x.contentId === arg.contentId) && (
-                <VaultMediaItem
-                  content={arg}
-                  handleClickOnItem={handleClickOnItem}
-                  isMaxFileCountSelected={isMaxFileCountSelected}
-                  selectedItems={selectedItems}
-                  setSelectedItems={setSelectedItems}
-                />
-              )}
-            </>
+            <VaultMediaItemCached
+              content={arg}
+              handleClickOnItem={handleClickOnItem}
+              isMaxFileCountSelected={isMaxFileCountSelected}
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+            />
           )
         }}
         className={classNames(
@@ -107,36 +112,11 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
         }}
         fetchProps={fetchProps}
         keySelector="contentId"
-        keyValue="vault"
+        keyValue="/vault"
         node={node}
         scrollableTarget={scroll ? "scrollableDiv" : undefined}
         style={{ height: "100%" }}
       />
-    )
-  }, [
-    deletedItems,
-    fetchProps,
-    isMaxFileCountSelected,
-    node,
-    selectedItems,
-    setSelectedItems,
-    scroll
-  ])
-
-  return (
-    <div
-      className={classNames(
-        scroll ? "h-[75%] min-w-fit justify-center overflow-y-hidden" : ""
-      )}
-      id="scrollableDiv"
-      ref={ref}
-    >
-      <MediaModal
-        file={{ content }}
-        isOpen={isViewMediaModal}
-        setOpen={setIsViewMediaModal}
-      />
-      {display}
     </div>
   )
 }

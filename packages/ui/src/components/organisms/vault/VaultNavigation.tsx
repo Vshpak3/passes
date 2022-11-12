@@ -9,6 +9,7 @@ import ExitIcon from "public/icons/exit-icon.svg"
 import { FC, useCallback, useState } from "react"
 import { MdDelete } from "react-icons/md"
 import { toast } from "react-toastify"
+import { useSWRConfig } from "swr"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { VaultAddButton } from "src/components/molecules/vault/VaultAddButton"
@@ -21,6 +22,7 @@ import {
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { plural } from "src/helpers/plural"
+import { CACHE_KEY_CONTENT } from "src/hooks/profile/useContent"
 
 type OrderType = "recent" | "oldest"
 
@@ -39,8 +41,6 @@ interface VaultNavigationProps {
   vaultType: VaultType
   vaultCategory: VaultCategory
   order: GetVaultQueryRequestDtoOrderEnum
-  deletedItems: ContentDto[]
-  setDeletedItems: (items: ContentDto[]) => void
   embedded?: boolean
 }
 
@@ -53,8 +53,6 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
   setVaultCategory,
   setOrder,
   order,
-  deletedItems,
-  setDeletedItems,
   addNewMedia,
   embedded = false
 }) => {
@@ -93,6 +91,17 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
     },
     [setOrder]
   )
+  const { mutate: _mutateManual } = useSWRConfig()
+  const deleteItem = (contentId: string) =>
+    _mutateManual([CACHE_KEY_CONTENT, contentId], contentId, {
+      populateCache: (
+        contentId: Partial<ContentDto>,
+        original: ContentDto | undefined
+      ) => {
+        return { ...original, deletedAt: new Date() }
+      },
+      revalidate: false
+    })
 
   const handleVaultDeleteItems = async () => {
     const api = new ContentApi()
@@ -101,7 +110,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         contentIds: selectedItems.map((c) => c.contentId)
       }
     })
-    setDeletedItems([...deletedItems, ...selectedItems])
+    selectedItems.forEach((item) => deleteItem(item.contentId))
     setSelectedItems([])
   }
 

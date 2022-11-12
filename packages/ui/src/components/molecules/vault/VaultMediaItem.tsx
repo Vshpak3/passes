@@ -1,19 +1,13 @@
-import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import { format } from "date-fns"
 import { FC, MouseEvent } from "react"
 
 import { ContentService } from "src/helpers/content"
+import { VaultMediaItemCachedProps } from "./VaultMediaItemCached"
 
-interface VaultMediaItemProps {
-  content: ContentDto
-  selectedItems: ContentDto[]
-  setSelectedItems: (items: ContentDto[]) => void
-  isMaxFileCountSelected: boolean
-  handleClickOnItem: (item: ContentDto) => void
-}
+type VaultMediaItemProps = VaultMediaItemCachedProps
 
-const VaultMediaItem: FC<VaultMediaItemProps> = ({
+export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   content,
   selectedItems,
   setSelectedItems,
@@ -48,7 +42,9 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
 
   return (
-    <div className="group mb-[20px]">
+    <div
+      className={classNames(content.deletedAt && "hidden", "group mb-[20px]")}
+    >
       <div
         className={classNames(
           selectedItems.length > 0 && !isSelected
@@ -87,5 +83,3 @@ const VaultMediaItem: FC<VaultMediaItemProps> = ({
     </div>
   )
 }
-
-export default VaultMediaItem // eslint-disable-line import/no-default-export
