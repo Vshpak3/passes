@@ -18,7 +18,7 @@ export const Dropdown: FC<DropdownProps> = ({ items, className }) => {
     <Menu as="div" className="relative inline-block flex-1 text-left">
       <div className={classNames(className)}>
         <Menu.Button>
-          <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
+          <PostOptionsIcon className="min-w-[24px] cursor-pointer stroke-[#868487] hover:stroke-white" />
         </Menu.Button>
       </div>
 
