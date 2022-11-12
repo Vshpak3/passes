@@ -4,13 +4,18 @@ import {
   MessagesApi,
   PaidMessageDto
 } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import React from "react"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { PaidMessageStatisticCached } from "src/components/organisms/analytics/PaidMessageStatisticCached"
+
+const PaidMessageStatisticCached = dynamic(
+  () => import("src/components/organisms/analytics/PaidMessageStatisticCached"),
+  { ssr: false }
+)
 
 const MessageStatistics = () => {
   return (
