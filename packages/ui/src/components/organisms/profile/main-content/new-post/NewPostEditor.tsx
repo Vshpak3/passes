@@ -150,8 +150,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     }
   }, [errors])
 
-  const onSubmit = async () => {
-    const values = getValues()
+  const onSubmit = async (values: NewPostFormProps) => {
     const contentIds = await new ContentService().uploadUserContent({
       files: values.files,
       inPost: true

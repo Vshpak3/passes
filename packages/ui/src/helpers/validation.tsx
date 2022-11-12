@@ -10,6 +10,6 @@ export const getYupRequiredStringSchema = ({
   return object({
     [name]: string()
       .transform((value) => value.trim())
-      .required(errorMessage || `please enter a ${name}`)
+      .required(errorMessage || `Please enter a ${name}`)
   })
 }

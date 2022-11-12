@@ -187,11 +187,11 @@ export const EditProfile: FC<EditProfileProps> = ({
       // This means if a user has no profile banner, clicks delete, and submits
       // the form it will issue an unnecessary deletion. This isn't great but it
       // is a pain to track the state here.
-      if (!profileBanner.length && shouldDeleteProfileBanner) {
+      if (!profileBanner?.length && shouldDeleteProfileBanner) {
         changes["deleteProfileBanner"] = true
       }
 
-      if (changes) {
+      if (Object.keys(changes).length) {
         await onSubmitEditProfile(changes)
       }
     } catch (error: unknown) {

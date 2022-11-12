@@ -209,7 +209,6 @@ export class CommentService {
         })
         .where({
           id: commentId,
-          commenter_id: userId,
           post_id: postId,
           deleted_at: null,
         })

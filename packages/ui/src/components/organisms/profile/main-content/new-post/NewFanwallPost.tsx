@@ -45,7 +45,6 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
   const {
     handleSubmit,
     formState: { isSubmitting, errors },
-    getValues,
     setValue,
     reset
   } = useForm<NewPostTextFormProps>({
@@ -61,10 +60,10 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
     }
   }, [errors])
 
-  const postFanWallComment = async () => {
+  const postFanWallComment = async (values: NewPostTextFormProps) => {
     const post: CreateFanWallCommentRequestDto = {
       creatorId,
-      ...getValues()
+      ...values
     }
     const api = new FanWallApi()
     try {
@@ -79,8 +78,8 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
     }
   }
 
-  const onSubmit = async () => {
-    await postFanWallComment()
+  const onSubmit = async (values: NewPostTextFormProps) => {
+    await postFanWallComment(values)
     setExtended(false)
     reset()
     setIsReset(true)

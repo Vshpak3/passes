@@ -70,11 +70,11 @@ const LoginPage: FC = () => {
     )
   }
 
-  const onSubmit = async (data: LoginPageSchema) => {
+  const onSubmit = async (values: LoginPageSchema) => {
     try {
       setIsSubmitting(true)
       deleteAllCookies()
-      await loginUser(data.email, data.password)
+      await loginUser(values.email, values.password)
     } catch (error: unknown) {
       toast.error("Invalid credentials")
       console.error(await errorMessage(error))

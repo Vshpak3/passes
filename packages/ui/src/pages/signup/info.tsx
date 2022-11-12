@@ -133,14 +133,14 @@ const SignupInfoPage: FC = () => {
     }
   }
 
-  const onSubmit = (data: SignupInfoPageSchema) => {
+  const onSubmit = (values: SignupInfoPageSchema) => {
     setIsSubmitting(true)
     createNewUser(
-      data.legalFullName,
-      data.username,
-      iso3311a2.getCode(data.countryCode),
-      data.birthday,
-      data.displayName
+      values.legalFullName,
+      values.username,
+      iso3311a2.getCode(values.countryCode),
+      values.birthday,
+      values.displayName
     )
   }
 

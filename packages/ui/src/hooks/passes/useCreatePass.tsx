@@ -130,7 +130,7 @@ export const useCreatePass = (passType: string) => {
     onMediaChange(filesArray)
   }
 
-  const submitPassCreation = async (data: FieldValues) => {
+  const submitPassCreation = async (values: FieldValues) => {
     const passApi = new PassApi()
 
     if (files.length < MIN_FILES) {
@@ -148,16 +148,16 @@ export const useCreatePass = (passType: string) => {
     // 3. use type in creation
 
     const newPassRequestConfig = {
-      title: data.passName,
-      description: data.passDescription,
-      freetrial: data["free-dm-month-checkbox"],
+      title: values.passName,
+      description: values.passDescription,
+      freetrial: values["free-dm-month-checkbox"],
       type: newPassType(router.query.passType as string),
-      price: parseInt(data.price),
-      totalSupply: parseInt(data["totalSupply"]),
-      messages: parseInt(data["free-dms-month"]),
+      price: parseInt(values.price),
+      totalSupply: parseInt(values["totalSupply"]),
+      messages: parseInt(values["free-dms-month"]),
       duration: DURATION,
       chain: CreatePassRequestDtoChainEnum.Sol,
-      royalties: data.royalties * 100,
+      royalties: values.royalties * 100,
       imageType: CreatePassRequestDtoImageTypeEnum.Jpeg,
       accessType: CreatePassRequestDtoAccessTypeEnum.PassAccess
     }
@@ -169,7 +169,7 @@ export const useCreatePass = (passType: string) => {
       .then(({ passId }) => passId)
       .catch(({ message }) => toast(message))
 
-    // setPassMedia(data.passFile, `${passId}`).catch(({ message }) =>
+    // setPassMedia(values.passFile, `${passId}`).catch(({ message }) =>
     //   toast(message)
     // )
 

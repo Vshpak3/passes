@@ -87,7 +87,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
   const profileImage = watch("profileImage")
   const profileBanner = watch("profileBanner")
 
-  const saveProfileHandler = async (data: CreatorFlowCustomizeFormProps) => {
+  const saveProfileHandler = async (values: CreatorFlowCustomizeFormProps) => {
     const {
       displayName,
       description,
@@ -95,23 +95,23 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
       profileBanner,
       isAdult,
       ...socialAccounts
-    } = data
+    } = values
 
     await updateProfile({
       displayName,
       description,
-      profileImage: profileImage,
-      profileBanner: profileBanner,
+      profileImage,
+      profileBanner,
       isAdult,
       ..._.pickBy(socialAccounts, _.identity)
     })
     onFinishCustomizePage()
   }
 
-  const onSubmit = async (data: CreatorFlowCustomizeFormProps) => {
+  const onSubmit = async (values: CreatorFlowCustomizeFormProps) => {
     try {
       setIsSubmitting(true)
-      await saveProfileHandler(data)
+      await saveProfileHandler(values)
     } catch (error: unknown) {
       await errorMessage(error, true)
       setIsSubmitting(false)

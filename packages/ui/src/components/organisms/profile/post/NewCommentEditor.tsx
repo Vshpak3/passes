@@ -34,7 +34,6 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
 
   const {
     handleSubmit,
-    getValues,
     setValue,
     reset,
     formState: { isSubmitting, errors }
@@ -51,42 +50,45 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
     }
   }, [errors])
 
-  const postComment = useCallback(async () => {
-    if (!user) {
-      return
-    }
-
-    const api = new CommentApi()
-    try {
-      const { commentId } = await api.createComment({
-        createCommentRequestDto: {
-          postId,
-          ...getValues()
-        }
-      })
-
-      const comment: CommentDto = {
-        commentId,
-        postId,
-        ...getValues(),
-        commenterDisplayName: user.displayName,
-        commenterId: user.userId,
-        commenterIsCreator: !!user.isCreator,
-        commenterUsername: user.username,
-        createdAt: new Date(),
-        isHidden: false,
-        isOwner: true,
-        deletedAt: null
+  const postComment = useCallback(
+    async (values: NewPostTextFormProps) => {
+      if (!user) {
+        return
       }
 
-      addComment(comment)
-    } catch (error: unknown) {
-      errorMessage(error, true)
-    }
-  }, [getValues, postId, addComment, user])
+      const api = new CommentApi()
+      try {
+        const { commentId } = await api.createComment({
+          createCommentRequestDto: {
+            postId,
+            ...values
+          }
+        })
 
-  const onSubmit = async () => {
-    await postComment()
+        const comment: CommentDto = {
+          commentId,
+          postId,
+          ...values,
+          commenterDisplayName: user.displayName,
+          commenterId: user.userId,
+          commenterIsCreator: !!user.isCreator,
+          commenterUsername: user.username,
+          createdAt: new Date(),
+          isHidden: false,
+          isOwner: true,
+          deletedAt: null
+        }
+
+        addComment(comment)
+      } catch (error: unknown) {
+        errorMessage(error, true)
+      }
+    },
+    [postId, addComment, user]
+  )
+
+  const onSubmit = async (values: NewPostTextFormProps) => {
+    await postComment(values)
     reset()
     setIsReset(true)
   }

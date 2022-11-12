@@ -69,10 +69,10 @@ const ResetPassword = () => {
     )
   }
 
-  const onSubmit = async (data: ResetPasswordFormProps) => {
+  const onSubmit = async (values: ResetPasswordFormProps) => {
     try {
       setIsSubmitting(true)
-      await resetPassword(data.password)
+      await resetPassword(values.password)
     } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)

@@ -105,10 +105,10 @@ const SignupEmailPage: FC = () => {
     }
   }
 
-  const onSubmit = (data: SignupEmailPageSchema) => {
+  const onSubmit = (values: SignupEmailPageSchema) => {
     try {
       setIsSubmitting(true)
-      verifyEmail(data.email)
+      verifyEmail(values.email)
     } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)

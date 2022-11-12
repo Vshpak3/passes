@@ -69,7 +69,6 @@ const ChatSettings = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-    getValues,
     watch
   } = useForm<typeof defaultValues>({
     mode: "all",
@@ -80,9 +79,9 @@ const ChatSettings = () => {
 
   const isWithoutTip = watch("isWithoutTip")
   const showWelcomeMessageInput = watch("showWelcomeMessageInput")
-  const saveChatSettingsHandler = async () => {
+
+  const saveChatSettingsHandler = async (values: typeof defaultValues) => {
     const data: UpdateCreatorSettingsRequestDto = {}
-    const values = getValues()
     if (!values.isWithoutTip) {
       data.minimumTipAmount = +values.minimumTipAmount
     } else {

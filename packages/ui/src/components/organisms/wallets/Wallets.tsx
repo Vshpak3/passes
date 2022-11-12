@@ -1,4 +1,8 @@
-import { CreateWalletRequestDtoChainEnum } from "@passes/api-client"
+import { yupResolver } from "@hookform/resolvers/yup"
+import {
+  CreateUnauthenticatedWalletRequestDtoChainEnum,
+  CreateWalletRequestDtoChainEnum
+} from "@passes/api-client"
 import { ethers } from "ethers"
 import Metamask from "public/icons/metamask-icon.svg"
 import Phantom from "public/icons/phantom-icon.svg"
@@ -6,6 +10,7 @@ import Wallet from "public/icons/wallet-manage.svg"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
@@ -17,16 +22,29 @@ import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
 import { WalletTableRow } from "./WalletTableRow"
 
+const walletSchema = object({
+  chain: string().required("Chain is required"),
+  walletAddress: string().required("A payout address is required")
+})
+
+interface WalletForm {
+  chain: CreateUnauthenticatedWalletRequestDtoChainEnum
+  walletAddress: string
+}
+
 export const Wallets = () => {
   const { user } = useUser()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const {
     register,
-    getValues,
+    reset,
     setValue,
     handleSubmit,
     formState: { errors }
-  } = useForm()
+  } = useForm<WalletForm>({
+    defaultValues: { chain: CreateWalletRequestDtoChainEnum.Sol },
+    resolver: yupResolver(walletSchema)
+  })
 
   const {
     wallets,
@@ -111,14 +129,11 @@ export const Wallets = () => {
     }
   }
 
-  const confirmNewPayoutAddressOnSubmit = async () => {
-    const walletAddress = getValues("address")
-    const chain = getValues("chain").toLowerCase()
-    await addUnauthenticatedWallet({
-      walletAddress,
-      chain
-    }).catch((error) => errorMessage(error, true))
-    setValue("address", "")
+  const confirmNewPayoutAddressOnSubmit = async (values: WalletForm) => {
+    await addUnauthenticatedWallet(values).catch((error) =>
+      errorMessage(error, true)
+    )
+    reset()
   }
 
   return (
@@ -178,13 +193,7 @@ export const Wallets = () => {
                   className="border-[#3A444C]/30 bg-[#18090E] pl-[45px] md:w-[250px]"
                   errors={errors}
                   icon={<Wallet />}
-                  name="address"
-                  options={{
-                    required: {
-                      message: "Payout Address is required",
-                      value: true
-                    }
-                  }}
+                  name="walletAddress"
                   placeholder="Insert your Payout Address"
                   register={register}
                   type="text"
@@ -196,10 +205,9 @@ export const Wallets = () => {
                   defaultValue="SOL"
                   errors={errors}
                   name="chain"
-                  onChange={(newValue: string) => setValue("chain", newValue)}
-                  options={{
-                    required: { message: "Chain is required", value: true }
-                  }}
+                  onChange={(
+                    newValue: CreateUnauthenticatedWalletRequestDtoChainEnum
+                  ) => setValue("chain", newValue)}
                   register={register}
                   selectOptions={["SOL", "ETH"]}
                 />

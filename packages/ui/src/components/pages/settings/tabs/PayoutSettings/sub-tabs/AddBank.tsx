@@ -36,7 +36,6 @@ const AddBank = () => {
   const {
     handleSubmit,
     register,
-    getValues,
     setValue,
     watch,
     formState: { errors }
@@ -45,9 +44,8 @@ const AddBank = () => {
   })
   const countrySelected = watch("country")
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: BankForm) => {
     try {
-      const values = getValues()
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:

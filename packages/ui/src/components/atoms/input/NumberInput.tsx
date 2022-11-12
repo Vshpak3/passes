@@ -61,7 +61,12 @@ export const NumberInput: FC<NumberInputProps> = ({
 
     setPrevValue(e.target.value)
   }
-  const _placeholder = placeholder || (type === "currency" ? "0.00" : "0")
+  const _placeholder =
+    placeholder === undefined
+      ? type === "currency"
+        ? "0.00"
+        : "0"
+      : placeholder
 
   return (
     <div>

@@ -50,7 +50,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
               setSearchValue("")
             }}
           >
-            <ProfileWidget user={user} />
+            <ProfileWidget linked={false} user={user} />
             <span className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all">
               add
             </span>

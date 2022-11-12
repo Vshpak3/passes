@@ -60,11 +60,11 @@ const AdminPage = () => {
     resolver: yupResolver(adminFormSchema)
   })
 
-  const impersonateUser = async (data: AdminFormSchema) => {
+  const impersonateUser = async (values: AdminFormSchema) => {
     try {
       const api = new AdminApi()
       const res = await api.impersonateUser({
-        impersonateUserRequestDto: { ...data }
+        impersonateUserRequestDto: { ...values }
       })
 
       setAccessToken(res.accessToken)
@@ -76,19 +76,19 @@ const AdminPage = () => {
     }
   }
 
-  const makeAdult = async (data: AdminFormSchema) => {
+  const makeAdult = async (values: AdminFormSchema) => {
     try {
       const api = new AdminApi()
       await api.flagAsAdult({
-        adminDto: { ...data }
+        adminDto: { ...values }
       })
     } catch (error: unknown) {
       errorMessage(error, true)
     }
   }
 
-  const onSubmit = (event: string, data: AdminFormSchema) => {
-    const changes = dirtyValues(dirtyFields, data)
+  const onSubmit = (event: string, values: AdminFormSchema) => {
+    const changes = dirtyValues(dirtyFields, values)
     switch (event) {
       case "impersonateUser":
         impersonateUser(changes)

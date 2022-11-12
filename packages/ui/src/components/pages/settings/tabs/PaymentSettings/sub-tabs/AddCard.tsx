@@ -101,10 +101,9 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
   const { accessToken } = useUser()
   const countrySelected = watch("country")
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: CardForm) => {
     try {
       setIsSubmitting(true)
-      const values = getValues()
 
       const cardDetails = {
         number: values["card-number"]
@@ -212,7 +211,6 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             name="exp-year"
             onChange={(year: string) => setValue("exp-year", year)}
-            placeholder=" "
             register={register}
             selectOptions={years}
             value={getValues("exp-year")}
@@ -225,6 +223,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
             errors={errors}
             maxInput={999}
             name="cvv"
+            placeholder=""
             register={register}
             type="integer"
           />

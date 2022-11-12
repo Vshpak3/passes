@@ -19,7 +19,7 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
     <button
       className={classNames(
         isOpen || expanded ? " bg-[#FF51A8]/10 " : "hover:bg-[#FF51A8]/10",
-        "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-[#FF51A8] md:py-3 md:px-4"
+        "group flex h-full flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-[#FF51A8] sm:px-4 sm:py-3"
       )}
       onClick={() => setIsOpen(true)}
       type="button"

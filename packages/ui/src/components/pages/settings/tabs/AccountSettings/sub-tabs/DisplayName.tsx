@@ -29,7 +29,7 @@ const DisplayName: FC = () => {
     resolver: yupResolver(
       getYupRequiredStringSchema({
         name: "displayName",
-        errorMessage: "please enter your display name"
+        errorMessage: "Please enter a display name"
       })
     )
   })

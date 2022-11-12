@@ -117,10 +117,10 @@ const SignupInitialPage: FC = () => {
     }
   }
 
-  const onSubmit = async (data: SignupInitialPageSchema) => {
+  const onSubmit = async (values: SignupInitialPageSchema) => {
     try {
       setIsSubmitting(true)
-      await initiateSignup(data.email, data.password)
+      await initiateSignup(values.email, values.password)
     } catch (error: unknown) {
       errorMessage(error, true)
       setIsSubmitting(false)

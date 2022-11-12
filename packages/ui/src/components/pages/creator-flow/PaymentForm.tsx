@@ -51,15 +51,12 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
     formState: { errors, isSubmitSuccessful }
   } = useForm<PaymentFormFields>()
 
-  const onSubmit = async () => {
+  const onSubmit = async (values: PaymentFormFields) => {
     try {
-      const values = getValues()
-
       const payload: CircleCreateBankRequestDto = {
         idempotencyKey: idempotencyKey,
         accountNumber:
