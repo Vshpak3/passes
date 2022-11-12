@@ -83,7 +83,7 @@ export const usePay = (
           }
         })
         if (response.actionRequired) {
-          toast.info("Please wait as we redirect you.")
+          toast.info("Please wait for payment authentication window.")
           setPayin(registerResponse.payinId ?? null)
           setRedirecting(true)
           return false

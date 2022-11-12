@@ -7,6 +7,7 @@ import { errorMessage } from "src/helpers/error"
 
 interface ThreeDSContextProps {
   readonly setPayin: (payinId: string | null) => void
+  readonly complete: boolean
 }
 
 export const ThreeDSContext = createContext<ThreeDSContextProps>(
@@ -20,14 +21,18 @@ export const useThreeDS = () => {
   const [waiting, setWaiting] = useState<Date>()
   const [count, setCount] = useState(0)
   const [payinId, setPayinId] = useState<string>()
+  const [complete, setComplete] = useState<boolean>(false)
+  const [redirected, setRedirected] = useState<boolean>(false)
 
   const setPayin = (payinId: string) => {
+    setComplete(false)
     setPayinId(payinId)
     setWaiting(new Date())
   }
   const clear = () => {
     setWaiting(undefined)
     setPayinId(undefined)
+    setComplete(true)
   }
   useEffect(() => {
     if (payinId && waiting) {
@@ -38,8 +43,9 @@ export const useThreeDS = () => {
             const payin = await paymentApi.getPayin({
               getPayinRequestDto: { payinId }
             })
-            if (payin.redirectUrl) {
+            if (!redirected && payin.redirectUrl) {
               window.open(payin.redirectUrl)
+              setRedirected(true)
             } else if (
               payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
               payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady
@@ -72,7 +78,7 @@ export const useThreeDS = () => {
       const interval = setTimeout(fetch, ms(THREE_DS_WAITING_TIME))
       return () => clearInterval(interval)
     }
-  }, [count, payinId, waiting])
+  }, [count, payinId, waiting, redirect])
 
-  return { setPayin }
+  return { setPayin, complete }
 }

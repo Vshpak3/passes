@@ -202,7 +202,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       next={triggerFetch}
       pullDownToRefresh={pullDownToRefresh}
       scrollableTarget={scrollableTarget}
-      style={style}
+      style={{ overflow: "visible", ...style }}
     >
       {!childrenEnd && children}
       {flattenedData.length === 0 &&
