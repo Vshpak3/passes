@@ -41,7 +41,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
     <Modal
       closable={false}
       isOpen
-      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
+      modalContainerClassname="w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessageRequest(null)}
     >
       <PaymenetModalHeader

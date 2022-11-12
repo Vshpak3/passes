@@ -14,7 +14,6 @@ import React, {
   FC,
   KeyboardEvent,
   SetStateAction,
-  useCallback,
   useEffect,
   useState
 } from "react"
@@ -52,6 +51,7 @@ export interface InputMessageFormProps {
   isPaid: boolean
   price: string
   scheduledAt: Date | null
+  tip: string
 }
 
 interface InputMessageProps {
@@ -69,7 +69,8 @@ export const InputMessageFormDefaults: InputMessageFormProps = {
   files: [],
   isPaid: false,
   price: "",
-  scheduledAt: null
+  scheduledAt: null,
+  tip: ""
 }
 
 const api = new MessagesApi()
@@ -237,15 +238,16 @@ export const InputMessage: FC<InputMessageProps> = ({
     onCallback
   )
 
+  const tipValue = watch("tip")
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChangeTip = useCallback(
-    debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value
-      if (isCurrency(value)) {
-        setTip(parseFloat(value))
+  useEffect(
+    debounce(() => {
+      if (isCurrency(tipValue)) {
+        setTip(parseFloat(tipValue))
       }
-    }, 100),
-    [setTip]
+    }, 1000),
+    [setTip, tipValue]
   )
 
   useEffect(() => {
@@ -412,7 +414,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                 <NumberInput
                   className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px] text-right focus:border-[#B52A6F]"
                   name="tip"
-                  onChange={handleChangeTip}
                   register={register}
                   type="currency"
                 />

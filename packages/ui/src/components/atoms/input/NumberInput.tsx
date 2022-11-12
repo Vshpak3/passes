@@ -24,20 +24,19 @@ type NumberInputProps = {
   allowNegative?: boolean
   errors?: FormErrors
   className?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
+// can't use onChange - messes with useForm register/watch
 export const NumberInput: FC<NumberInputProps> = ({
   register,
   name,
   type,
   placeholder,
-  maxInput = 1000000,
+  maxInput = 100000,
   allowNegative = false,
   errors = {},
   maxInputMessage,
-  className = "",
-  onChange
+  className = ""
 }) => {
   const [prevValue, setPrevValue] = useState<string>("0")
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -74,7 +73,6 @@ export const NumberInput: FC<NumberInputProps> = ({
           className,
           errors[name] !== undefined && "border-red-500"
         )}
-        onChange={onChange}
         onInput={validate}
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
