@@ -1,7 +1,7 @@
 import { PayinMethodDto } from "@passes/api-client"
+import { MIN_THREE_DS_LIMIT } from "@passes/shared-constants"
 import { FC } from "react"
 
-import { MIN_THREE_DS_LIMIT } from "src/config/payments"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface ThreeDSInfoProps {

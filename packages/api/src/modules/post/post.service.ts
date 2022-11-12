@@ -50,6 +50,7 @@ import { ScheduledEventTypeEnum } from '../scheduled/enum/scheduled-event.type.e
 import { checkScheduledAt } from '../scheduled/scheduled.util'
 import { UserEntity } from '../user/entities/user.entity'
 import { POST_NOT_EXIST } from './constants/errors'
+import { MAX_PINNED_POST, MIN_PAID_POST_PRICE } from './constants/limits'
 import {
   CreatePostRequestDto,
   CreatePostResponseDto,
@@ -71,11 +72,6 @@ import {
   ForbiddenPostException,
   PostNotFoundException,
 } from './error/post.error'
-
-export const MINIMUM_POST_TIP_AMOUNT = 3.0
-const MAX_PINNED_POST = 3
-const MINIMUM_POST_PRICE = 3
-// const MAX_CATEGORIES_PER_USER = 25
 
 @Injectable()
 export class PostService {
@@ -106,9 +102,9 @@ export class PostService {
       checkScheduledAt(createPostDto.scheduledAt)
     }
     const { text, tags, price, contentIds, passIds } = createPostDto
-    if (!!price && price < MINIMUM_POST_PRICE && price > 0) {
+    if (!!price && price < MIN_PAID_POST_PRICE && price > 0) {
       throw new BadRequestException(
-        `Post price can not be less than ${MINIMUM_POST_PRICE}`,
+        `Post price can not be less than ${MIN_PAID_POST_PRICE}`,
       )
     }
     verifyTaggedText(text, tags)

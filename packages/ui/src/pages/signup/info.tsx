@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi } from "@passes/api-client/apis"
+import { USER_MIN_AGE } from "@passes/shared-constants"
 import { differenceInYears, format } from "date-fns"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -22,7 +23,6 @@ import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
 import { FULL_NAME_REGEX } from "src/config/name"
-import { MIN_USER_AGE_IN_YEARS } from "src/config/signup"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
 import { checkUsername } from "src/helpers/username"
@@ -49,10 +49,10 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
     .required("Enter your birthday")
     .test(
       "birthday-age",
-      `You must be at least ${MIN_USER_AGE_IN_YEARS} to sign up`,
+      `You must be at least ${USER_MIN_AGE} to sign up`,
       (value) =>
         value !== undefined &&
-        differenceInYears(new Date(), new Date(value)) >= MIN_USER_AGE_IN_YEARS
+        differenceInYears(new Date(), new Date(value)) >= USER_MIN_AGE
     ),
   countryCode: string().required("Enter your country"),
   displayName: string().required("Enter a display name")

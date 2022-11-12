@@ -1,4 +1,5 @@
 import { PostDto } from "@passes/api-client"
+import { MAX_PINNED_POST } from "@passes/shared-constants"
 import classNames from "classnames"
 import { useRouter } from "next/router"
 import { FC, memo, useContext, useEffect, useState } from "react"
@@ -12,7 +13,6 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
-import { MAX_PINNED_POST } from "src/config/post"
 import { useBuyPostModal } from "src/hooks/context/useBuyPostModal"
 import { ProfileContext } from "src/pages/[username]"
 import { DeletePostModal } from "./DeletePostModal"

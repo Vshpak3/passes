@@ -1,0 +1,3 @@
+export const SCHEDULE_MINUTE_LIMIT = 10
+export const MAX_PAST_SCHEDULE_MONTHS = 24
+export const MAX_FUTURE_SCHEDULE_MONTHS = 6

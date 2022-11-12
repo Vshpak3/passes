@@ -24,6 +24,7 @@ import { Dialog } from "src/components/organisms/Dialog"
 import { FormImage } from "src/components/organisms/FormImage"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
+import { dirtyValues } from "src/helpers/form"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
 import { socialMediaUsernameSchema } from "src/helpers/validation-social"
 import { DeleteIcon } from "src/icons/DeleteIcon"
@@ -181,12 +182,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   const onSubmit = async (values: ProfileUpdate) => {
     try {
       // Filters out non-dirty fields
-      const changes = Object.fromEntries(
-        Object.keys(dirtyFields).map((f) => [
-          f,
-          values[f as keyof ProfileUpdate]
-        ])
-      )
+      const changes = dirtyValues(dirtyFields, values)
 
       // This means if a user has no profile banner, clicks delete, and submits
       // the form it will issue an unnecessary deletion. This isn't great but it

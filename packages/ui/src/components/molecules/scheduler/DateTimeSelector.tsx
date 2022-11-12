@@ -1,11 +1,11 @@
+import {
+  MAX_FUTURE_SCHEDULE_MONTHS,
+  MAX_PAST_SCHEDULE_MONTHS
+} from "@passes/shared-constants"
 import classNames from "classnames"
 import { addMonths, format, startOfMonth } from "date-fns"
 import { FC, useContext } from "react"
 
-import {
-  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
-  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
-} from "src/config/scheduler"
 import { ChevronLeft } from "src/icons/ChevronLeft"
 import { ChevronRight } from "src/icons/ChevronRight"
 import { SchedulerContext } from "src/pages/tools/scheduler"
@@ -30,16 +30,12 @@ export const DateTimeSelected: FC<DateTimeSelectedProps> = ({
   }
 
   const disablePast =
-    addMonths(
-      startOfMonth(new Date()),
-      -1 * SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO
-    ) >= new Date(year, month, 1)
+    addMonths(startOfMonth(new Date()), -1 * MAX_PAST_SCHEDULE_MONTHS) >=
+    new Date(year, month, 1)
 
   const disableFuture =
-    addMonths(
-      startOfMonth(new Date()),
-      SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
-    ) <= new Date(year, month, 1)
+    addMonths(startOfMonth(new Date()), MAX_FUTURE_SCHEDULE_MONTHS) <=
+    new Date(year, month, 1)
 
   return (
     <>

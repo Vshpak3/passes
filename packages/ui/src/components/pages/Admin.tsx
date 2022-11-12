@@ -19,7 +19,7 @@ interface AdminFormSchema {
   username?: string
 }
 
-export const adminFormSchema = object().shape(
+const adminFormSchema = object().shape(
   {
     secret: string().required("The secret is required"),
     userId: string().when("username", {

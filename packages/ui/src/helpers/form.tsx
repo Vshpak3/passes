@@ -1,10 +1,9 @@
-export function dirtyValues<T>(
-  dirtyFields: Partial<Record<keyof T, boolean>> | boolean,
+import { FieldValues, FormState } from "react-hook-form"
+
+export function dirtyValues<T extends FieldValues>(
+  dirtyFields: FormState<T>["dirtyFields"],
   allValues: T
 ): T {
-  if (dirtyFields === true || Array.isArray(dirtyFields)) {
-    return allValues
-  }
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return Object.fromEntries(

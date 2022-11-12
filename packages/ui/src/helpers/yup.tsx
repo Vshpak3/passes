@@ -1,7 +1,7 @@
 import { TagDto } from "@passes/api-client"
+import { MAX_MENTION_LIMIT } from "@passes/shared-constants"
 import { array, bool, string } from "yup"
 
-import { MAX_MENTION_LIMIT } from "src/config/post"
 import { ContentFile } from "src/hooks/useMedia"
 
 export const yupPaid = (

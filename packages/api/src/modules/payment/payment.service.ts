@@ -165,7 +165,8 @@ const MAX_CHARGEBACKS = 3
 const MAX_CHARGEBACK_AMOUNT = 300
 
 const MINT_TO_PAYMENT = true
-const MIN_THREE_DS_LIMIT = 500
+const MIN_THREE_DS_LIMIT = 500 // @share-with-frontend payment
+
 @Injectable()
 export class PaymentService {
   private circleConnector: CircleConnector

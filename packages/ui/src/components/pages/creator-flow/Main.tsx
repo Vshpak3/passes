@@ -2,6 +2,7 @@ import {
   GetCreatorVerificationStepResponseDtoStepEnum,
   VerificationApi
 } from "@passes/api-client"
+import { CREATOR_MIN_AGE } from "@passes/shared-constants"
 import classNames from "classnames"
 import { differenceInYears } from "date-fns"
 import { useRouter } from "next/router"
@@ -14,10 +15,7 @@ import { Modal } from "src/components/organisms/Modal"
 import { CustomizePageForm } from "src/components/pages/creator-flow/CustomizePageForm"
 import { PaymentForm } from "src/components/pages/creator-flow/PaymentForm"
 import { PersonaVerification } from "src/components/pages/creator-flow/PersonaVerification"
-import {
-  CREATOR_STEPS,
-  MIN_CREATOR_AGE_IN_YEARS
-} from "src/config/creator-flow"
+import { CREATOR_STEPS } from "src/config/creator-flow"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
@@ -93,7 +91,7 @@ const CreatorFlow = () => {
         ? differenceInYears(new Date(), new Date(user.birthday))
         : 0
 
-      const authorizeUser = userAge >= MIN_CREATOR_AGE_IN_YEARS
+      const authorizeUser = userAge >= CREATOR_MIN_AGE
 
       if (!authorizeUser && typeof window !== "undefined") {
         router.push("/home")

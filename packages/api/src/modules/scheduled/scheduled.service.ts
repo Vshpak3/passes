@@ -15,6 +15,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { MessagesService } from '../messages/messages.service'
 import { PostService } from '../post/post.service'
+import { SCHEDULE_MINUTE_LIMIT } from './constants/limits'
 import { GetScheduledEventsRequestDto } from './dto/get-scheduled-events.dto'
 import { ScheduledEventDto } from './dto/scheduled-event.dto'
 import { UpdateScheduledEventRequestDto } from './dto/update-scheduled-event.dto'
@@ -23,7 +24,6 @@ import { ScheduledEventEntity } from './entities/scheduled-event.entity'
 import { ScheduledEventTypeEnum } from './enum/scheduled-event.type.enum'
 import { checkScheduledAt } from './scheduled.util'
 
-const MAX_TIME_BUFFER = 5 // minutes
 const EXECUTION_TIME_BUFFER = ms('45 minutes')
 
 @Injectable()
@@ -44,7 +44,11 @@ export class ScheduledService {
       .whereNull('processor')
       .whereNull('deleted_at')
       .andWhere({ user_id: userId, id: scheduledEventId })
-      .andWhere('scheduled_at', '>=', subMinutes(new Date(), MAX_TIME_BUFFER))
+      .andWhere(
+        'scheduled_at',
+        '>=',
+        subMinutes(new Date(), SCHEDULE_MINUTE_LIMIT),
+      )
       .update({ deleted_at: new Date() })
     return updated === 1
   }
@@ -122,7 +126,11 @@ export class ScheduledService {
       .where('id', scheduledEventId)
       .whereNull('processer')
       .whereNull('deleted_at')
-      .andWhere('scheduled_at', '<', subMinutes(new Date(), MAX_TIME_BUFFER))
+      .andWhere(
+        'scheduled_at',
+        '<',
+        subMinutes(new Date(), SCHEDULE_MINUTE_LIMIT),
+      )
       .update({ body })
     return updated === 1
   }

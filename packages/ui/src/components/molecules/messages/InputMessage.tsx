@@ -5,6 +5,12 @@ import {
   PayinDataDtoBlockedEnum
 } from "@passes/api-client"
 import { MessagesApi } from "@passes/api-client/apis"
+import {
+  MAX_PAID_MESSAGE_PRICE,
+  MAX_TIP_MESSAGE_PRICE,
+  MESSAGE_LENGTH,
+  MIN_PAID_MESSAGE_PRICE
+} from "@passes/shared-constants"
 import classNames from "classnames"
 import { debounce } from "lodash"
 import React, {
@@ -32,12 +38,6 @@ import {
   PhotoSelector,
   VideoSelector
 } from "src/components/organisms/MediaSelector"
-import {
-  MAX_MESSAGE_LENGTH,
-  MAX_PAID_MESSAGE_PRICE,
-  MAX_TIP_MESSAGE_PRICE,
-  MIN_PAID_MESSAGE_PRICE
-} from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
 import { formatCurrency, isCurrency } from "src/helpers/formatters"
 import { yupPaid } from "src/helpers/yup"
@@ -80,7 +80,7 @@ export const newMessageFormSchema = object(
   {
     ...yupPaid(
       "message",
-      MAX_MESSAGE_LENGTH,
+      MESSAGE_LENGTH,
       MIN_PAID_MESSAGE_PRICE,
       MAX_PAID_MESSAGE_PRICE,
       "Message can't be empty"

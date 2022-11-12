@@ -1,14 +1,14 @@
 import Fade from "@mui/material/Fade"
 import Popper from "@mui/material/Popper"
+import {
+  MAX_FUTURE_SCHEDULE_MONTHS,
+  MAX_PAST_SCHEDULE_MONTHS
+} from "@passes/shared-constants"
 import PlusSquareIcon from "public/icons/plus-square.svg"
 import { FC, useContext, useRef, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { CalendarPicker } from "src/components/atoms/calendar/CalendarPicker"
-import {
-  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO,
-  SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE
-} from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
@@ -68,8 +68,8 @@ export const SchedulerHeader: FC = () => {
               ref={popperMonthYearPickerRef}
             >
               <MonthYearPicker
-                maxFutureMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_IN_FUTURE}
-                maxPastMonths={SCHEDULER_VIEWABLE_THIS_MANY_MONTHS_AGO}
+                maxFutureMonths={MAX_FUTURE_SCHEDULE_MONTHS}
+                maxPastMonths={MAX_PAST_SCHEDULE_MONTHS}
                 onChangeMonth={setMonth}
                 onChangeYear={setYear}
                 selectedMonth={month}

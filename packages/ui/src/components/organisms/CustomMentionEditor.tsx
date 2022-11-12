@@ -5,6 +5,7 @@ import createMentionPlugin, {
 } from "@draft-js-plugins/mention"
 import { EntryComponentProps } from "@draft-js-plugins/mention/lib/MentionSuggestions/Entry/Entry"
 import { TagDto } from "@passes/api-client"
+import { MAX_MENTION_LIMIT } from "@passes/shared-constants"
 import {
   CharacterMetadata,
   convertFromRaw,
@@ -23,7 +24,6 @@ import React, {
 } from "react"
 
 import { UserSearchResult } from "src/components/atoms/search/user/UserSearchResults"
-import { MAX_MENTION_LIMIT } from "src/config/post"
 import { ContentService } from "src/helpers/content"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 import editorStyles from "src/styles/components/CustomComponentMentionEditor.module.css"

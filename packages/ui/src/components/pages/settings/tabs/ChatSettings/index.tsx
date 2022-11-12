@@ -1,5 +1,9 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { UpdateCreatorSettingsRequestDto } from "@passes/api-client"
+import {
+  MAX_TIP_MESSAGE_PRICE,
+  MIN_TIP_MESSAGE_PRICE
+} from "@passes/shared-constants"
 import classNames from "classnames"
 import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
@@ -15,10 +19,6 @@ import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { ChannelMessage } from "src/components/molecules/messages/ChannelMessage"
 import { Tab } from "src/components/pages/settings/Tab"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
-import {
-  MAX_TIP_MESSAGE_PRICE,
-  MIN_TIP_MESSAGE_PRICE
-} from "src/config/messaging"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"

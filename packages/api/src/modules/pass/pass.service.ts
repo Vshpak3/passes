@@ -86,7 +86,7 @@ const MAX_PASSES_PER_REQUEST = 20
 export const MAX_PASSHOLDERS_PER_REQUEST = 20
 
 const MAX_PASSES_PER_CREATOR = 1000
-const MAX_PINNED_PASSES = 3
+const MAX_PINNED_PASSES = 3 // @share-with-frontend pass
 const MAX_PASSES_PER_WEEK = 5
 
 @Injectable()

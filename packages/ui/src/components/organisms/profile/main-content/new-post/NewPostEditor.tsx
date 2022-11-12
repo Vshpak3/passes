@@ -1,6 +1,11 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { CreatePostRequestDto, PassDto, TagDto } from "@passes/api-client"
-import { POST_TEXT_LENGTH } from "@passes/shared-constants"
+import {
+  MAX_PAID_POST_PRICE,
+  MAX_PASSES_LIMIT,
+  MIN_PAID_POST_PRICE,
+  POST_TEXT_LENGTH
+} from "@passes/shared-constants"
 import classNames from "classnames"
 import dynamic from "next/dynamic"
 import { DragEvent, FC, useEffect, useState } from "react"
@@ -11,11 +16,6 @@ import { array, date, object } from "yup"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
-import {
-  MAX_PAID_POST_PRICE,
-  MAX_PASSES_LIMIT,
-  MIN_PAID_POST_PRICE
-} from "src/config/post"
 import { ContentService } from "src/helpers/content"
 import { yupPaid, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"

@@ -7,6 +7,10 @@ import {
   PostDto
 } from "@passes/api-client"
 import {
+  MAX_POST_TIP_PRICE,
+  MIN_POST_TIP_PRICE
+} from "@passes/shared-constants"
+import {
   Dispatch,
   FC,
   SetStateAction,
@@ -23,7 +27,6 @@ import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentMod
 import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
-import { MAX_TIP_POST_PRICE, MIN_TIP_POST_PRICE } from "src/config/post"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
@@ -38,13 +41,13 @@ const tipPostForm = object({
     .required("Please enter a tip value")
     .test(
       "min",
-      `The minimum tip amount is $${MIN_TIP_POST_PRICE}`,
-      (value) => parseFloat(value || "") >= MIN_TIP_POST_PRICE
+      `The minimum tip amount is $${MIN_POST_TIP_PRICE}`,
+      (value) => parseFloat(value || "") >= MIN_POST_TIP_PRICE
     )
     .test(
       "max",
-      `The maximum tip amount is $${MAX_TIP_POST_PRICE}`,
-      (value) => parseFloat(value || "") <= MAX_TIP_POST_PRICE
+      `The maximum tip amount is $${MAX_POST_TIP_PRICE}`,
+      (value) => parseFloat(value || "") <= MAX_POST_TIP_PRICE
     )
 })
 

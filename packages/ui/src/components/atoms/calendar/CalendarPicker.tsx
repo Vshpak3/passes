@@ -2,16 +2,16 @@ import "rc-time-picker/assets/index.css"
 import "react-day-picker/dist/style.css"
 import Fade from "@mui/material/Fade"
 import Popper, { PopperPlacementType } from "@mui/material/Popper"
+import {
+  MAX_FUTURE_SCHEDULE_MONTHS,
+  SCHEDULE_MINUTE_LIMIT
+} from "@passes/shared-constants"
 import { addMinutes, addMonths, format } from "date-fns"
 import { FC, PropsWithChildren, useEffect, useRef, useState } from "react"
 import { DayPicker } from "react-day-picker"
 import { toast } from "react-toastify"
 
 import { TimePicker } from "src/components/atoms/TimePicker"
-import {
-  MAX_SCHEDULE_DURATION_IN_MONTHS,
-  SCHEDULE_MINUTE_LIMIT
-} from "src/config/scheduler"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 const CALENDAR_POPUP_ID = "calendar-popper"
@@ -43,7 +43,7 @@ export interface CalendarPickerProps {
 export const CalendarPicker: FC<PropsWithChildren<CalendarPickerProps>> = ({
   onSave,
   minuteLimit = SCHEDULE_MINUTE_LIMIT,
-  maxDate = addMonths(new Date(), MAX_SCHEDULE_DURATION_IN_MONTHS),
+  maxDate = addMonths(new Date(), MAX_FUTURE_SCHEDULE_MONTHS),
   scheduledTime,
   children,
   placement,
