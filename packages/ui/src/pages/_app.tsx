@@ -118,7 +118,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   )
 
   const { hasRefreshed, router, user } = useTokenRefresh()
-  const { setPayin, complete } = useThreeDS()
+  const { setPayin, complete, reset } = useThreeDS()
 
   useEffect(() => {
     if (
@@ -182,7 +182,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     [ReportModalContext.Provider, { setReportData }],
     [BuyPassModalContext.Provider, { setPass: setBuyPass }],
     [TipPostModalContext.Provider, { setPost: setTipPost }],
-    [ThreeDSContext.Provider, { setPayin, complete }],
+    [ThreeDSContext.Provider, { setPayin, complete, reset }],
     [
       SidebarContext.Provider,
       { setShowBottomNav, showBottomNav, showTopNav, setShowTopNav }

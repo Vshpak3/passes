@@ -7,7 +7,7 @@ import {
   RegisterPayinResponseDto
 } from "@passes/api-client"
 import { SHA256 } from "crypto-js"
-import { useCallback, useContext, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { ThreeDSContext } from "src/contexts/ThreeDS"
@@ -44,7 +44,7 @@ export const usePay = (
 
   const [accessToken] = useLocalStorage(accessTokenKey, "")
   const [waiting, setWaiting] = useState<boolean>()
-  const { setPayin } = useContext(ThreeDSContext)
+  const { setPayin, reset, complete } = useContext(ThreeDSContext)
 
   const checkProvider = async (
     provider: PhantomProvider | EthereumProvider | undefined | null,
@@ -252,6 +252,13 @@ export const usePay = (
     handlePhantomCircleUSDC,
     registerPaymentFunc
   ])
+
+  useEffect(() => {
+    if (complete && callback) {
+      reset()
+      callback()
+    }
+  }, [complete, callback, reset])
 
   const submitData = async (amount?: number) => {
     const { blocked } = await registerPaymentDataFunc(amount)

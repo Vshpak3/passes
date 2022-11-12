@@ -8,6 +8,7 @@ import { errorMessage } from "src/helpers/error"
 interface ThreeDSContextProps {
   readonly setPayin: (payinId: string | null) => void
   readonly complete: boolean
+  readonly reset: () => void
 }
 
 export const ThreeDSContext = createContext<ThreeDSContextProps>(
@@ -33,6 +34,12 @@ export const useThreeDS = () => {
     setWaiting(undefined)
     setPayinId(undefined)
     setComplete(true)
+  }
+
+  const reset = () => {
+    setWaiting(undefined)
+    setPayinId(undefined)
+    setComplete(false)
   }
   useEffect(() => {
     if (payinId && waiting) {
@@ -80,5 +87,5 @@ export const useThreeDS = () => {
     }
   }, [count, payinId, waiting, redirected])
 
-  return { setPayin, complete }
+  return { setPayin, complete, reset }
 }
