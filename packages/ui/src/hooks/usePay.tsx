@@ -254,9 +254,11 @@ export const usePay = (
   ])
 
   useEffect(() => {
-    if (complete && callback) {
+    if (complete) {
       reset()
-      callback()
+      if (callback) {
+        callback()
+      }
     }
   }, [complete, callback, reset])
 
