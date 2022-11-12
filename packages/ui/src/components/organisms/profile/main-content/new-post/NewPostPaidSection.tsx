@@ -3,7 +3,6 @@ import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { UseFormRegister } from "react-hook-form"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { MAX_PAID_POST_PRICE } from "src/config/post"
 import { formatText } from "src/helpers/formatters"
 import { NewPostFormProps } from "./NewPostEditor"
 import { PassesSearchBar } from "./PassesSearchBar"
@@ -65,7 +64,6 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
             </div>
             <NumberInput
               className="min-h-[50px] w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
-              maxInput={MAX_PAID_POST_PRICE}
               name="price"
               register={register}
               type="currency"

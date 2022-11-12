@@ -24,16 +24,17 @@ export const PassHoldings: FC = () => {
   const fetchProps = useMemo(() => {
     return {
       unreadOnly: false,
-      order: GetPassHoldingsRequestDtoOrderEnum.Desc,
-      passType,
-      expired
+      order: GetPassHoldingsRequestDtoOrderEnum.Desc
+      // passType,
+      // expired
     }
-  }, [passType, expired])
+  }, [])
 
   return (
     <div className="w-full px-2">
       <div className="ml-1 mt-6 mb-2 items-center justify-between md:ml-0 md:mb-2 md:flex">
-        <div className="w-full overflow-x-auto">
+        <div className="hidden w-full overflow-x-auto">
+          {/* no filtering of passes right now, makes it easier to use*/}
           <SelectPassHolderTab
             expired={expired}
             passType={passType}
@@ -49,7 +50,7 @@ export const PassHoldings: FC = () => {
           return <PassHoldingCard passHolder={arg} />
         }}
         childrenEnd
-        className="m-auto flex flex-row flex-wrap items-center justify-evenly gap-3 md:items-start"
+        className="m-auto flex flex-row flex-wrap items-center gap-3 md:items-start md:justify-evenly"
         fetch={(req: GetPassHoldingsRequestDto) => {
           const api = new PassApi()
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })
@@ -60,6 +61,7 @@ export const PassHoldings: FC = () => {
         options={{ revalidateOnMount: true }}
       >
         <div className="hidden w-[300px] md:block" />
+
         <div className="hidden w-[300px] md:block" />
         <div className="hidden w-[300px] md:block" />
         <div className="hidden w-[300px] md:block" />

@@ -317,7 +317,6 @@ export const InputMessage: FC<InputMessageProps> = ({
                   </div>
                   <NumberInput
                     className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
-                    maxInput={MAX_PAID_MESSAGE_PRICE}
                     name="price"
                     register={register}
                     type="currency"
@@ -393,7 +392,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                 <div
                   className={classNames(
                     "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F] ",
-                    blocked === PayinDataDtoBlockedEnum.InsufficientTip
+                    blocked === PayinDataDtoBlockedEnum.InsufficientTip ||
+                      tip > MAX_TIP_MESSAGE_PRICE
                       ? "top-0.5 md:top-1"
                       : "top-[10px] md:top-2.5"
                   )}
@@ -401,13 +401,16 @@ export const InputMessage: FC<InputMessageProps> = ({
                   Tip
                 </div>
                 {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                  <span className="absolute left-4 top-6 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                  <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
                     minimum {formatCurrency(minimumTip ?? 0)}
+                  </span>
+                ) : tip > MAX_TIP_MESSAGE_PRICE ? (
+                  <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                    minimum {formatCurrency(MAX_TIP_MESSAGE_PRICE ?? 0)}
                   </span>
                 ) : null}
                 <NumberInput
                   className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px] text-right focus:border-[#B52A6F]"
-                  maxInput={MAX_TIP_MESSAGE_PRICE}
                   name="tip"
                   onChange={handleChangeTip}
                   register={register}

@@ -140,7 +140,6 @@ const ChatSettings = () => {
               <NumberInput
                 className="mt-[22px] min-h-[50px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
                 errors={errors}
-                maxInput={MAX_TIP_MESSAGE_PRICE}
                 name="minimumTipAmount"
                 placeholder="Enter Minimum Tip Amount"
                 register={register}

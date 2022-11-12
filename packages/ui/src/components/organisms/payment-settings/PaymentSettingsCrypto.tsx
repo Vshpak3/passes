@@ -81,6 +81,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
             </Button>
           ) : (
             <Button
+              className="w-auto px-1 py-2 md:px-4"
               onClick={async () =>
                 await handleSetDefaultPayinMethod(
                   deserializePayinMethod(getValues("metamask"))

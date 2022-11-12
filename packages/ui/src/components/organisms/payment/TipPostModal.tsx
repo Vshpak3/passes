@@ -120,7 +120,6 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
         </div>
         <NumberInput
           className="border-0 font-bold"
-          maxInput={MAX_TIP_POST_PRICE}
           name={TIP_VALUE}
           register={register}
           type="currency"

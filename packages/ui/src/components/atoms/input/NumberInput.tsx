@@ -32,7 +32,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   name,
   type,
   placeholder,
-  maxInput,
+  maxInput = 1000000,
   allowNegative = false,
   errors = {},
   maxInputMessage,

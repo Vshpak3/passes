@@ -30,7 +30,6 @@ import {
   PhotoSelector,
   VideoSelector
 } from "src/components/organisms/MediaSelector"
-import { MAX_PAID_MESSAGE_PRICE } from "src/config/messaging"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
@@ -208,7 +207,6 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
                 </div>
                 <NumberInput
                   className="h-[40px] w-full rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
-                  maxInput={MAX_PAID_MESSAGE_PRICE}
                   name="price"
                   register={register}
                   type="currency"
