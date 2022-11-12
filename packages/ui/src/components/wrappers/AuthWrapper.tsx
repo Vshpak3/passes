@@ -5,7 +5,6 @@ import {
   authStateMachine,
   AuthStates
 } from "src/helpers/authRouter"
-import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
@@ -38,15 +37,6 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
 
     if (skipAuth) {
-      return
-    }
-
-    // DISABLE ALL AUTHED PAGES IN PROD
-    if (isProd) {
-      setAuthed(false)
-      if (isPage) {
-        authRouter(safePush, userClaims)
-      }
       return
     }
 
