@@ -213,7 +213,7 @@ export const Wallets = () => {
           </form>
         )}
       </div>
-      <div className="mt-8 min-h-[200px] overflow-x-scroll">
+      <div className="mt-8 min-h-[200px] overflow-x-auto">
         <table className="min-w-full pb-6 md:overflow-x-auto">
           <thead>
             <tr>
