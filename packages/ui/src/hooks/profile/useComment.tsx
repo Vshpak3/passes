@@ -1,7 +1,7 @@
 import { CommentDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
 
-export const CACHE_KEY_COMMENT = "/comment"
+const CACHE_KEY_COMMENT = "/comment"
 
 export const useComment = (commentId: string) => {
   // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
