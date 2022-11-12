@@ -15,8 +15,8 @@ export const ThreeDSInfo: FC<ThreeDSInfoProps> = ({ price, payinMethod }) => {
       {!!payinMethod?.cardId && price > MIN_THREE_DS_LIMIT && (
         <span>
           A credit card purchase above {formatCurrency(MIN_THREE_DS_LIMIT)}{" "}
-          requires 3DS authentication. You may be redirected shortly after
-          paying to confirm the transaction.
+          requires 3DS authentication. A new tab will open after paying to
+          confirm the transaction.
         </span>
       )}
     </div>

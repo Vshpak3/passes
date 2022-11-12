@@ -39,7 +39,7 @@ export const useThreeDS = () => {
               getPayinRequestDto: { payinId }
             })
             if (payin.redirectUrl) {
-              window.location.href = payin.redirectUrl
+              window.open(payin.redirectUrl)
             } else if (
               payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
               payin.payinStatus === PayinDtoPayinStatusEnum.SuccessfulReady

@@ -19,7 +19,7 @@ import nprogress from "nprogress"
 import { Provider, ReactElement, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import { toast, ToastContainer } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
@@ -40,11 +40,6 @@ import { SidebarContext } from "src/contexts/SidebarContext"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
 import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
-import {
-  LANDING_MESSAGES,
-  LandingMessageEnum,
-  LandingStatusEnum
-} from "src/helpers/landing-messages"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 
@@ -156,23 +151,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     reportData,
     blockData
   ])
-
-  useEffect(() => {
-    if (router.isReady) {
-      const query = router.query
-      const landingMessage = query.lm as LandingMessageEnum
-      const result = query.r as LandingStatusEnum
-      if (landingMessage && result && LANDING_MESSAGES[result]) {
-        const action =
-          result === LandingStatusEnum.SUCCESS ? toast.success : toast.error
-        if (LANDING_MESSAGES[result][landingMessage]) {
-          action(LANDING_MESSAGES[result][landingMessage])
-        }
-        // TODO: keep other query params and hashes
-        window.history.replaceState(window.history.state, "", "?")
-      }
-    }
-  }, [router])
 
   useEffect(() => {
     if (!navPaths.filter((path) => path === router.route).length) {
