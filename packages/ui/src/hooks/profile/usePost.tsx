@@ -1,5 +1,5 @@
 import { PostApi, PostDto } from "@passes/api-client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 export const CACHE_KEY_POST = "/posts"
@@ -37,13 +37,6 @@ export const usePost = (_postId?: string) => {
   // before the loading begins. This boolean is needed to handle showing the
   // initial state properly before the loading begins.
   const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(!!post)
-
-  useEffect(() => {
-    if (!post) {
-      mutatePost()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postId])
 
   return {
     post,

@@ -26,8 +26,7 @@ export const useCreatorStats = (userId?: string) => {
     if (userId && !creatorStats) {
       mutateCreatorStats()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, mutateCreatorStats])
+  }, [userId, mutateCreatorStats, creatorStats])
 
   const { mutate: _mutateManualCreatorStats } = useSWRConfig()
   const mutateManualCreatorStats = (update: CreatorStatsUpdate) =>

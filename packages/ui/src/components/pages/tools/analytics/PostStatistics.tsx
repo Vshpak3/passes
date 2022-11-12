@@ -4,7 +4,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { PostStatistic } from "src/components/organisms/analytics/PostStatistic"
+import { PostStatisticCached } from "src/components/organisms/analytics/PostStatisticCached"
 import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
 const PostStatistics = () => {
@@ -40,7 +40,7 @@ const PostStatistics = () => {
       </div>
       <InfiniteScrollPagination<PostDto, GetPostsResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-          return <PostStatistic post={arg} />
+          return <PostStatisticCached post={arg} />
         }}
         emptyElement={<span>No posts to show</span>}
         fetch={getPosts}

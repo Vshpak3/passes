@@ -43,6 +43,9 @@ export class PaidMessageDto {
   @DtoProperty({ type: 'date', nullable: true })
   unsentAt: Date | null
 
+  @DtoProperty({ type: 'date', nullable: true })
+  hiddenAt: Date | null
+
   @DtoProperty({ type: 'number' })
   sentTo: number
 
@@ -60,6 +63,7 @@ export class PaidMessageDto {
       this.isWelcomeMesage = paidMessage.is_welcome_message
       this.unsentAt = paidMessage.unsent_at
       this.sentTo = paidMessage.sent_to
+      this.hiddenAt = paidMessage.hidden_at
     }
   }
 }

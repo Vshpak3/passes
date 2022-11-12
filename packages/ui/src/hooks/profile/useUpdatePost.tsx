@@ -20,9 +20,13 @@ export const useUpdatePost = () => {
     await api.removePost({ postId })
   }
 
+  const hidePost = async (postId: string) => {
+    await api.hidePost({ postId })
+  }
+
   const getPosts = async (req: GetPostsRequestDto) => {
     return await api.getPosts({ getPostsRequestDto: req })
   }
 
-  return { createPost, updatePost, removePost, getPosts }
+  return { createPost, updatePost, removePost, getPosts, hidePost }
 }

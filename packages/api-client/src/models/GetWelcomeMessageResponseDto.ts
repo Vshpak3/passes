@@ -94,6 +94,12 @@ export interface GetWelcomeMessageResponseDto {
     unsentAt: Date | null;
     /**
      * 
+     * @type {Date}
+     * @memberof GetWelcomeMessageResponseDto
+     */
+    hiddenAt: Date | null;
+    /**
+     * 
      * @type {number}
      * @memberof GetWelcomeMessageResponseDto
      */
@@ -115,6 +121,7 @@ export function instanceOfGetWelcomeMessageResponseDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isWelcomeMesage" in value;
     isInstance = isInstance && "unsentAt" in value;
+    isInstance = isInstance && "hiddenAt" in value;
     isInstance = isInstance && "sentTo" in value;
 
     return isInstance;
@@ -141,6 +148,7 @@ export function GetWelcomeMessageResponseDtoFromJSONTyped(json: any, ignoreDiscr
         'createdAt': (new Date(json['createdAt'])),
         'isWelcomeMesage': json['isWelcomeMesage'],
         'unsentAt': (json['unsentAt'] === null ? null : new Date(json['unsentAt'])),
+        'hiddenAt': (json['hiddenAt'] === null ? null : new Date(json['hiddenAt'])),
         'sentTo': json['sentTo'],
     };
 }
@@ -165,6 +173,7 @@ export function GetWelcomeMessageResponseDtoToJSON(value?: GetWelcomeMessageResp
         'createdAt': (value.createdAt.toISOString()),
         'isWelcomeMesage': value.isWelcomeMesage,
         'unsentAt': (value.unsentAt === null ? null : value.unsentAt.toISOString()),
+        'hiddenAt': (value.hiddenAt === null ? null : value.hiddenAt.toISOString()),
         'sentTo': value.sentTo,
     };
 }

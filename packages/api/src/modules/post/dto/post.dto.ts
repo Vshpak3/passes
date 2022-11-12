@@ -80,6 +80,9 @@ export class PostDto extends PickType(UserDto, [
   deletedAt?: Date | null
 
   @DtoProperty({ type: 'date', optional: true, nullable: true })
+  hiddenAt?: Date | null
+
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
   pinnedAt?: Date | null
 
   @Min(0)
@@ -141,6 +144,7 @@ export class PostDto extends PickType(UserDto, [
       this.passIds = JSON.parse(post.pass_ids)
       this.previewIndex = post.preview_index
       this.deletedAt = post.deleted_at
+      this.hiddenAt = post.hidden_at
       this.pinnedAt = post.pinned_at
       this.paidAt = post.paid_at
       this.paying = !!post.paying

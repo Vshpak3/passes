@@ -153,6 +153,7 @@ export class CommentApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        /* No auth for endpoint but always send access token */
         const token = window.localStorage.getItem("access-token")
         if (token) {
             headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;

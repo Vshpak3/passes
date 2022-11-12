@@ -1,19 +1,26 @@
 import { MessagesApi, PaidMessageDto } from "@passes/api-client"
+import classNames from "classnames"
 import { format } from "date-fns"
 import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
+import { PaidMessageStatisticCachedProps } from "./PaidMessageStatisticCached"
 
-interface PaidMessageStatisticProps {
-  paidMessage: PaidMessageDto
+interface PaidMessageStatisticProps extends PaidMessageStatisticCachedProps {
+  update: (update: Partial<PaidMessageDto>) => void
 }
 
 export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
-  paidMessage
+  paidMessage,
+  update
 }) => {
-  const [unsent, setUnsent] = useState<boolean>(false)
+  const [unsendPaidMessageModelOpen, setUnsendPaidMessageModelOpen] =
+    useState(false)
+  const [hidePaidMessageModelOpen, setHidePaidMessageModelOpen] =
+    useState(false)
 
   const {
     paidMessageId,
@@ -25,64 +32,118 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
     numPurchases,
     earningsPurchases,
     isWelcomeMesage,
-    unsentAt
+    unsentAt,
+    hiddenAt
   } = paidMessage
 
-  const unsendMessage = async () => {
+  const unsendPaidMessage = async () => {
     const api = new MessagesApi()
     try {
       await api.unsendPaidMessage({ paidMessageId })
-      setUnsent(true)
+      update({ unsentAt: new Date() })
+      toast.success("Unbrought messages were removed")
     } catch (error: unknown) {
       toast.error("Failed to unsend: please contact support")
     }
   }
-  const canUnsend = !unsent && !unsentAt && !isWelcomeMesage
+
+  const hidePaidMessage = async () => {
+    const api = new MessagesApi()
+    try {
+      await api.hidePaidMessage({ paidMessageId })
+      update({ hiddenAt: new Date() })
+      toast.success("Your message was permanently removed")
+    } catch (error: unknown) {
+      toast.error("Failed to remove: please contact support")
+    }
+  }
+
   return (
-    <div className="flex flex-row justify-between border-b border-passes-dark-200">
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700]">
-          <span className="text-[12px] font-[500]">
-            {format(createdAt, "LL/dd/yyyy")}
-            <br />
-            {format(createdAt, "hh:mm a")}
+    <>
+      <div
+        className={classNames(
+          hiddenAt && "hidden",
+          "flex flex-row justify-between border-b border-passes-dark-200"
+        )}
+      >
+        <div className="flex h-[72px] flex-1 items-center justify-center">
+          <span className="text-[14px] font-[700]">
+            <span className="text-[12px] font-[500]">
+              {format(createdAt, "LL/dd/yyyy")}
+              <br />
+              {format(createdAt, "hh:mm a")}
+            </span>
           </span>
-        </span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="passes-break whitespace-pre-wrap text-[14px] font-[700]">
+        </div>
+        <div className="passes-break flex h-[72px] flex-1 items-center justify-center truncate whitespace-pre-wrap text-[14px] font-[700]">
           {formatText(text)}
-        </span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+          <span className="text-[12px] font-[500]">
+            {bareContents?.length ?? 0}
+          </span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+          <span className="text-[12px] font-[500]">
+            {formatCurrency(price)}
+          </span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+          <span className="text-[12px] font-[500]">{sentTo}</span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center">
+          <span className="text-[12px] font-[500]">{numPurchases}</span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center">
+          <span className="text-[12px] font-[500]">
+            {formatCurrency(earningsPurchases)}
+          </span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center">
+          <span className="text-[12px] font-[500]">Create List</span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center">
+          <span className="text-[14px] font-[700] text-passes-pink-100">
+            {isWelcomeMesage ? (
+              <>Welcome Message</>
+            ) : !unsentAt ? (
+              <Button
+                onClick={() => {
+                  setUnsendPaidMessageModelOpen(true)
+                }}
+              >
+                Unsend
+              </Button>
+            ) : (
+              <Button
+                className="px-[18px]"
+                onClick={() => {
+                  setHidePaidMessageModelOpen(true)
+                }}
+                variant={ButtonVariant.PINK_OUTLINE}
+              >
+                Remove
+              </Button>
+            )}
+          </span>
+        </div>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">
-          {bareContents?.length ?? 0}
-        </span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">{formatCurrency(price)}</span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-        <span className="text-[12px] font-[500]">{sentTo}</span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[12px] font-[500]">{numPurchases}</span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[12px] font-[500]">
-          {formatCurrency(earningsPurchases)}
-        </span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[12px] font-[500]">Create List</span>
-      </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center">
-        <span className="text-[14px] font-[700] text-passes-pink-100">
-          {canUnsend && <Button onClick={unsendMessage}>Unsend</Button>}
-          {!canUnsend && !isWelcomeMesage && <>Unsent</>}
-          {isWelcomeMesage && <>Welcome Message</>}
-        </span>
-      </div>
-    </div>
+      {unsendPaidMessageModelOpen && (
+        <DeleteConfirmationModal
+          isOpen
+          onClose={() => setUnsendPaidMessageModelOpen(false)}
+          onDelete={unsendPaidMessage}
+          text="Unsend"
+        />
+      )}
+      {hidePaidMessageModelOpen && (
+        <DeleteConfirmationModal
+          isOpen
+          onClose={() => setHidePaidMessageModelOpen(false)}
+          onDelete={hidePaidMessage}
+          text="Remove"
+        />
+      )}
+    </>
   )
 }

@@ -94,6 +94,12 @@ export interface PaidMessageDto {
     unsentAt: Date | null;
     /**
      * 
+     * @type {Date}
+     * @memberof PaidMessageDto
+     */
+    hiddenAt: Date | null;
+    /**
+     * 
      * @type {number}
      * @memberof PaidMessageDto
      */
@@ -115,6 +121,7 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "isWelcomeMesage" in value;
     isInstance = isInstance && "unsentAt" in value;
+    isInstance = isInstance && "hiddenAt" in value;
     isInstance = isInstance && "sentTo" in value;
 
     return isInstance;
@@ -141,6 +148,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'createdAt': (new Date(json['createdAt'])),
         'isWelcomeMesage': json['isWelcomeMesage'],
         'unsentAt': (json['unsentAt'] === null ? null : new Date(json['unsentAt'])),
+        'hiddenAt': (json['hiddenAt'] === null ? null : new Date(json['hiddenAt'])),
         'sentTo': json['sentTo'],
     };
 }
@@ -165,6 +173,7 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'isWelcomeMesage': value.isWelcomeMesage,
         'unsentAt': (value.unsentAt === null ? null : value.unsentAt.toISOString()),
+        'hiddenAt': (value.hiddenAt === null ? null : value.hiddenAt.toISOString()),
         'sentTo': value.sentTo,
     };
 }

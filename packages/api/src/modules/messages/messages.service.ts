@@ -81,6 +81,7 @@ import {
 const MAX_CHANNELS_PER_REQUEST = 20
 const MAX_MESSAGES_PER_REQUEST = 20
 const MAX_PENDING_MESSAGES = 10
+const MAX_PAID_MESSAGES_PER_REQUEST = 20
 
 @Injectable()
 export class MessagesService {
@@ -1368,7 +1369,7 @@ export class MessagesService {
       OrderEnum.DESC,
       createdAt,
       lastId,
-    )
+    ).limit(MAX_PAID_MESSAGES_PER_REQUEST)
     const paidMessages = await query
     return paidMessages.map((paidMessage) => new PaidMessageDto(paidMessage))
   }

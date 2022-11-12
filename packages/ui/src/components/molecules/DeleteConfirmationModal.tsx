@@ -8,12 +8,14 @@ interface DeleteConfirmationModalProps {
   isOpen: boolean
   onClose(): void
   onDelete(): void
+  text?: string
 }
 
 export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
   isOpen,
   onClose,
-  onDelete
+  onDelete,
+  text = "Delete"
 }) => {
   const modalContentRef = useRef(null)
 
@@ -93,7 +95,7 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
                 className="rounded-full bg-[#C943A82B] py-[6px] px-4 font-bold text-[#C943A8]"
                 onClick={handleDelete}
               >
-                Delete
+                {text}
               </button>
               <button
                 className="rounded-full bg-[#9C9C9C2B] py-[6px] px-4 font-bold text-[#EDECED]"

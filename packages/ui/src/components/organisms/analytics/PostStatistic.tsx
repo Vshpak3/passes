@@ -1,22 +1,26 @@
 import { PostDto } from "@passes/api-client"
+import classNames from "classnames"
 import { format } from "date-fns"
 import Link from "next/link"
 import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
+import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
+import { PostStatisticCachedProps } from "./PostStatisticCached"
 
-interface PostStatisticProps {
+interface PostStatisticProps extends PostStatisticCachedProps {
   post: PostDto
+  update: (update: Partial<PostDto>) => void
 }
 
-export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
-  const [deleted, setDeleted] = useState<boolean>(false)
+export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
-  const { removePost } = useUpdatePost()
+  const [hidePostModelOpen, setHidePostModelOpen] = useState(false)
+  const { hidePost } = useUpdatePost()
 
   const {
     postId,
@@ -29,25 +33,32 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
     earningsPurchases,
     expiresAt,
     deletedAt,
+    hiddenAt,
     numPurchases
   } = post
 
   const onDelete = async () => {
-    try {
-      await removePost(postId)
-      setDeleted(true)
-    } catch (error: unknown) {
-      toast.error("Failed to delete: please contact support")
-    }
+    update({ deletedAt: new Date() })
   }
 
-  const handleConfirmDelete = () => {
-    setDeletePostModelOpen(true)
+  const onHide = async () => {
+    try {
+      await hidePost(postId)
+      update({ hiddenAt: new Date() })
+      toast.success("Your post was permanently removed")
+    } catch (error: unknown) {
+      toast.error("Failed to remove: please contact support")
+    }
   }
 
   return (
     <>
-      <div className="flex flex-row justify-between border-b border-passes-dark-200">
+      <div
+        className={classNames(
+          hiddenAt && "hidden",
+          "flex flex-row justify-between border-b border-passes-dark-200"
+        )}
+      >
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <Link href={`/${userId}/${postId}`}>
             <span className="text-[12px] font-[500]">
@@ -93,15 +104,21 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
         </div>
 
         <div className="flex h-[72px] flex-1 items-center justify-start">
-          {!deleted && !deletedAt && (!expiresAt || expiresAt > new Date()) ? (
-            <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-passes-pink-100">
-              <Button onClick={handleConfirmDelete}>Delete</Button>
-            </span>
-          ) : (
-            <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-gray-500">
-              Deleted
-            </span>
-          )}
+          <span className="w-full overflow-hidden truncate text-center text-[14px] font-[700] text-passes-pink-100">
+            {!deletedAt && (!expiresAt || expiresAt > new Date()) ? (
+              <Button onClick={() => setDeletePostModelOpen(true)}>
+                Delete
+              </Button>
+            ) : (
+              <Button
+                className="px-[18px]"
+                onClick={() => setHidePostModelOpen(true)}
+                variant={ButtonVariant.PINK_OUTLINE}
+              >
+                Remove
+              </Button>
+            )}
+          </span>
         </div>
       </div>
       {deletePostModelOpen && (
@@ -109,6 +126,14 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
           onDelete={onDelete}
           post={post}
           setOpen={setDeletePostModelOpen}
+        />
+      )}
+      {hidePostModelOpen && (
+        <DeleteConfirmationModal
+          isOpen
+          onClose={() => setHidePostModelOpen(false)}
+          onDelete={onHide}
+          text="Remove"
         />
       )}
     </>

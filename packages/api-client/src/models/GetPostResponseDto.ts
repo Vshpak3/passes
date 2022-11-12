@@ -151,6 +151,12 @@ export interface GetPostResponseDto {
      * @type {Date}
      * @memberof GetPostResponseDto
      */
+    hiddenAt?: Date | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof GetPostResponseDto
+     */
     pinnedAt?: Date | null;
     /**
      * 
@@ -253,6 +259,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'updatedAt': (new Date(json['updatedAt'])),
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'deletedAt': !exists(json, 'deletedAt') ? undefined : (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
+        'hiddenAt': !exists(json, 'hiddenAt') ? undefined : (json['hiddenAt'] === null ? null : new Date(json['hiddenAt'])),
         'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'totalTipAmount': !exists(json, 'totalTipAmount') ? undefined : json['totalTipAmount'],
@@ -292,6 +299,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'updatedAt': (value.updatedAt.toISOString()),
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'deletedAt': value.deletedAt === undefined ? undefined : (value.deletedAt === null ? null : value.deletedAt.toISOString()),
+        'hiddenAt': value.hiddenAt === undefined ? undefined : (value.hiddenAt === null ? null : value.hiddenAt.toISOString()),
         'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
         'price': value.price,
         'totalTipAmount': value.totalTipAmount,

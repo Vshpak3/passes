@@ -10,7 +10,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { PaidMessageStatistic } from "src/components/organisms/analytics/PaidMessageStatistic"
+import { PaidMessageStatisticCached } from "src/components/organisms/analytics/PaidMessageStatisticCached"
 
 const MessageStatistics = () => {
   return (
@@ -46,7 +46,7 @@ const MessageStatistics = () => {
       </div>
       <InfiniteScrollPagination<PaidMessageDto, GetPaidMessagesResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PaidMessageDto>) => {
-          return <PaidMessageStatistic paidMessage={arg} />
+          return <PaidMessageStatisticCached paidMessage={arg} />
         }}
         emptyElement={<span>No messages to show</span>}
         fetch={async (req: GetPaidMessagesRequestDto) => {
