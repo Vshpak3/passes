@@ -14,7 +14,6 @@ type CheckBoxTypes = "radio" | "checkbox" | "toggle"
 type CheckBoxProps = {
   name: FormName
   type: CheckBoxTypes
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   register?: FormRegister
   textPosition?: string
   label?: FormLabel

@@ -132,8 +132,6 @@ export class CommentService {
           id: commentId,
           post_id: postId,
           hidden: false,
-          blocked: false,
-          deactivated: false,
           deleted_at: null,
         })
       await trx<CommentEntity>(CommentEntity.table)
@@ -173,9 +171,7 @@ export class CommentService {
         .where({
           id: commentId,
           post_id: postId,
-          hidden: false,
-          blocked: false,
-          deactivated: false,
+          hidden: true,
           deleted_at: null,
         })
       if (updated === 1) {
@@ -215,9 +211,6 @@ export class CommentService {
           id: commentId,
           commenter_id: userId,
           post_id: postId,
-          hidden: false,
-          blocked: false,
-          deactivated: false,
           deleted_at: null,
         })
         .andWhere(function () {
