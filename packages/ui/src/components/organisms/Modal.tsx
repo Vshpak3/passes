@@ -37,10 +37,11 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   mobileFixed = false
 }) => {
   const modalContentRef = useRef(null)
-  useOnClickOutside(modalContentRef, () => {
+  useOnClickOutside(modalContentRef, (e) => {
     if (isCloseOutside) {
       setOpen(false)
     }
+    e.stopPropagation()
   })
 
   useEffect(() => {
