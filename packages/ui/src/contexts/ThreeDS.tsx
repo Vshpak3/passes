@@ -78,7 +78,7 @@ export const useThreeDS = () => {
       const interval = setTimeout(fetch, ms(THREE_DS_WAITING_TIME))
       return () => clearInterval(interval)
     }
-  }, [count, payinId, waiting, redirect])
+  }, [count, payinId, waiting, redirected])
 
   return { setPayin, complete }
 }
