@@ -51,7 +51,7 @@ export class CommentController {
     responseStatus: HttpStatus.OK,
     responseType: GetCommentsForPostResponseDto,
     responseDesc: 'A list of comments was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('post')
   async findCommentsForPost(
@@ -60,8 +60,8 @@ export class CommentController {
   ): Promise<GetCommentsForPostResponseDto> {
     return new GetCommentsForPostResponseDto(
       await this.commentService.findCommentsForPost(
-        req.user.id,
         getCommentsForPostRequestDto,
+        req.user?.id,
       ),
       getCommentsForPostRequestDto,
     )

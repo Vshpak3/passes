@@ -73,11 +73,11 @@ export class CommentService {
   }
 
   async findCommentsForPost(
-    userId: string,
     getCommentsForPostRequestDto: GetCommentsForPostRequestDto,
+    userId?: string,
   ): Promise<CommentDto[]> {
     const { postId, lastId, createdAt } = getCommentsForPostRequestDto
-    const creatorId = await this.checkPost(userId, postId)
+    const creatorId = await this.checkPost(postId, userId)
 
     let query = this.dbReader<CommentEntity>(CommentEntity.table)
       .leftJoin(
@@ -245,7 +245,7 @@ export class CommentService {
     return updated === 1
   }
 
-  async checkPost(userId: string, postId: string): Promise<string> {
+  async checkPost(postId: string, userId?: string): Promise<string> {
     const post = await this.dbReader<PostEntity>(PostEntity.table)
       .where({ id: postId })
       .select(['deleted_at', 'user_id'])
@@ -258,15 +258,17 @@ export class CommentService {
       throw new BadRequestException(POST_DELETED)
     }
 
-    const followBlockResult = await this.dbReader<FollowBlockEntity>(
-      FollowBlockEntity.table,
-    )
-      .where(`${FollowBlockEntity.table}.follower_id`, userId)
-      .where(`${FollowBlockEntity.table}.creator_id`, post.user_id)
-      .first()
+    if (userId) {
+      const followBlockResult = await this.dbReader<FollowBlockEntity>(
+        FollowBlockEntity.table,
+      )
+        .where(`${FollowBlockEntity.table}.follower_id`, userId)
+        .where(`${FollowBlockEntity.table}.creator_id`, post.user_id)
+        .first()
 
-    if (followBlockResult) {
-      throw new BadRequestException(FOLLOWER_BLOCKED)
+      if (followBlockResult) {
+        throw new BadRequestException(FOLLOWER_BLOCKED)
+      }
     }
 
     const creatorSettings = await this.dbReader<CreatorSettingsEntity>(

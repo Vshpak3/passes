@@ -14,19 +14,15 @@ export const usePost = (_postId?: string) => {
     data: post,
     isValidating: loadingPost,
     mutate: mutatePost
-  } = useSWR(
-    postId ? [CACHE_KEY_POST, postId] : null,
-    async () => {
-      if (!postId) {
-        return
-      }
-      setHasInitialFetch(true)
-      return await api.findPost({
-        postId: postId
-      })
-    },
-    { revalidateOnMount: true }
-  )
+  } = useSWR(postId ? [CACHE_KEY_POST, postId] : null, async () => {
+    if (!postId) {
+      return
+    }
+    setHasInitialFetch(true)
+    return await api.findPost({
+      postId: postId
+    })
+  })
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<PostDto>) =>
