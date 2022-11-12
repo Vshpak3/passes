@@ -10,13 +10,14 @@ export interface DropdownOption {
 
 interface DropdownProps {
   readonly items: DropdownOption[]
+  className?: string
 }
 
-export const Dropdown: FC<DropdownProps> = ({ items }) => {
+export const Dropdown: FC<DropdownProps> = ({ items, className }) => {
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="">
+    <Menu as="div" className="relative inline-block flex-1 text-left">
+      <div className={classNames(className)}>
+        <Menu.Button>
           <PostOptionsIcon className="cursor-pointer stroke-[#868487] hover:stroke-white" />
         </Menu.Button>
       </div>
@@ -30,7 +31,7 @@ export const Dropdown: FC<DropdownProps> = ({ items }) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black/5 focus:outline-none">
+        <Menu.Items className="absolute right-0 z-[60] mt-2 w-36 origin-top-right rounded-md border border-passes-dark-100 bg-black shadow-lg ring-1 ring-black/5 focus:outline-none">
           <div className="py-1">
             {items.map((item, index) => (
               <div key={index}>

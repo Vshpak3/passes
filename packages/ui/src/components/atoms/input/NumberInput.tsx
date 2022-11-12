@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 
 import {
   FormErrors,
@@ -7,6 +7,7 @@ import {
   FormPlaceholder,
   FormRegister
 } from "src/components/atoms/input/InputTypes"
+import { isCurrency } from "src/helpers/formatters"
 import { preventNegative } from "src/helpers/keyboard"
 
 type NumberFormType = "integer" | "currency"
@@ -35,6 +36,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   className = "",
   onChange
 }) => {
+  const [prevValue, setPrevValue] = useState<string>("0")
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -48,22 +50,19 @@ export const NumberInput: FC<NumberInputProps> = ({
       e.preventDefault()
     }
 
-    // e.target.type = "text"
-    // console.log(e)
-    // e.target.type = "number"
-
-    const decimal = value.split(".")[1]
-    // console.log(e)
-    if (decimal && decimal.length > 1) {
-      e.preventDefault()
-    }
-    // console.log(e)
-
     if (!allowNegative) {
       preventNegative(e)
     }
   }
 
+  const validate = function (e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value
+    if (type === "currency" && !isCurrency(value)) {
+      e.target.value = prevValue
+    }
+
+    setPrevValue(e.target.value)
+  }
   const _placeholder = placeholder || (type === "currency" ? "0.00" : "0")
 
   return (
@@ -77,6 +76,7 @@ export const NumberInput: FC<NumberInputProps> = ({
           errors[name] !== undefined && "border-red-500"
         )}
         onChange={onChange}
+        onInput={validate}
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
         step={type === "currency" ? ".01" : "1"}

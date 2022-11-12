@@ -29,6 +29,14 @@ export function formatCurrency(
   return formatter.format(value)
 }
 
+export function isCurrency(value: string) {
+  if (value.indexOf("-") >= 0) {
+    return false
+  }
+  const ind = value.indexOf(".")
+  const ind2 = value.indexOf(".", ind + 1)
+  return ind2 === -1 && (ind === -1 || ind > value.length - 4)
+}
 export function getFormattedDate(date: Date) {
   return `${date.getDate().toLocaleString()}  ${date
     .toLocaleDateString("en-us", {

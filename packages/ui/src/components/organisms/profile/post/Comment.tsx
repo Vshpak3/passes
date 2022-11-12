@@ -83,9 +83,9 @@ export const Comment: FC<CommentProps> = ({
               />
             </Link>
           </div>
-          <div className="flex w-[calc(100%-50px)] grow flex-col">
-            <div className="flex justify-between">
-              <div className="overflow-x-hidden">
+          <div className="flex flex-1 flex-col">
+            <div className="flex w-full justify-between">
+              <div className="shrink overflow-x-hidden">
                 <NameDisplay
                   displayName={commenterDisplayName}
                   displayNameClassName="text-base"
@@ -100,14 +100,17 @@ export const Comment: FC<CommentProps> = ({
                 </Text>
               )}
 
-              <div className="flex gap-x-2">
+              <div className="flex flex-wrap-reverse items-end justify-end gap-x-2">
                 <TimeAgo
                   className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                   date={comment.createdAt}
                   key={comment.commentId}
                   live={false}
                 />
-                <Dropdown items={dropdownOptions} />
+                <Dropdown
+                  className="flex justify-end"
+                  items={dropdownOptions}
+                />
               </div>
             </div>
             <Text

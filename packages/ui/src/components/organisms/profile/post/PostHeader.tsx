@@ -46,7 +46,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
         )}
         <div className="flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
           <TimeAgo
-            className="uppercase text-gray-300/60"
+            className="text-gray-300/60"
             date={createdAt}
             key={id}
             minPeriod={30}
