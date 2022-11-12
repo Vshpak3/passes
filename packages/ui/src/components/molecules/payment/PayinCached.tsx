@@ -6,8 +6,6 @@ import { Payin } from "./Payin"
 
 export interface PayinCachedProps {
   payin: PayinDto
-  ownsPost: boolean
-  decrementNumPayins: () => void
 }
 
 export const PayinCached: FC<PayinCachedProps> = ({

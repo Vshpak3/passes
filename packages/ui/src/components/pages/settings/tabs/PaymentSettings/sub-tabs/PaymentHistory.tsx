@@ -14,7 +14,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Payin } from "src/components/molecules/payment/Payin"
+import { PayinCached } from "src/components/molecules/payment/PayinCached"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { Tab } from "src/components/pages/settings/Tab"
 import { getStartEnd } from "src/helpers/monthYear"
@@ -136,7 +136,7 @@ const PaymentHistory = () => {
             </div>
             <InfiniteScrollPagination<PayinDto, GetPayinsResponseDto>
               KeyedComponent={({ arg }: ComponentArg<PayinDto>) => {
-                return <Payin payin={arg} />
+                return <PayinCached payin={arg} />
               }}
               fetch={async (req: GetPayinsRequestDto) => {
                 return await api.getPayins({ getPayinsRequestDto: req })
