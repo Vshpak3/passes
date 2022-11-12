@@ -29,13 +29,19 @@ export function formatCurrency(
   return formatter.format(value)
 }
 
+export function isNumeric(value: string) {
+  return !isNaN(parseFloat(value))
+}
+
 export function isCurrency(value: string) {
+  if (!isNumeric(value)) {
+    return false
+  }
   if (value.indexOf("-") >= 0) {
     return false
   }
   const ind = value.indexOf(".")
-  const ind2 = value.indexOf(".", ind + 1)
-  return ind2 === -1 && (ind === -1 || ind > value.length - 4)
+  return ind === -1 || ind > value.length - 4
 }
 export function getFormattedDate(date: Date) {
   return `${date.getDate().toLocaleString()}  ${date
