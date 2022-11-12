@@ -4,7 +4,6 @@ import { Expose, Transform, Type } from 'class-transformer'
 import {
   IsArray,
   IsBoolean,
-  isCurrency,
   IsDate,
   IsEnum,
   IsInt,
@@ -18,6 +17,8 @@ import {
   ValidationOptions,
 } from 'class-validator'
 import _ from 'lodash'
+
+import { isCurrency } from '../util/formatter.util'
 
 // Hacky way to validate a type is an enum
 function isEnum(e: any): boolean {
