@@ -8,7 +8,7 @@ export interface PostStatisticCachedProps {
   post: PostDto
 }
 
-export const PostStatisticCached: FC<PostStatisticCachedProps> = ({
+const PostStatisticCached: FC<PostStatisticCachedProps> = ({
   post,
   ...res
 }: PostStatisticCachedProps) => {

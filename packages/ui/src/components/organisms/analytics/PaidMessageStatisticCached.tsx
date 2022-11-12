@@ -8,9 +8,10 @@ export interface PaidMessageStatisticCachedProps {
   paidMessage: PaidMessageDto
 }
 
-export const PaidMessageStatisticCached: FC<
-  PaidMessageStatisticCachedProps
-> = ({ paidMessage, ...res }: PaidMessageStatisticCachedProps) => {
+const PaidMessageStatisticCached: FC<PaidMessageStatisticCachedProps> = ({
+  paidMessage,
+  ...res
+}: PaidMessageStatisticCachedProps) => {
   const { paidMessage: cachedPaidMessage, update } = usePaidMessage(
     paidMessage.paidMessageId
   )
