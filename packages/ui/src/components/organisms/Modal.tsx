@@ -94,7 +94,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
                 bare && "absolute right-[20px] top-[20px] z-[6]"
               )}
               data-modal-toggle="popup-modal"
-              onClick={() => setOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation()
+                setOpen(false)
+              }}
               type="button"
             >
               <Image
