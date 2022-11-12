@@ -31,7 +31,9 @@ const PaymentComplete = () => {
 
   return status ? (
     <div className="m-auto text-center">
-      {message} <br /> You may now close this window.
+      {message}.
+      <br />
+      You may now close this window.
     </div>
   ) : null
 }
