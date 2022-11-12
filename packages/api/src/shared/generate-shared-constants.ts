@@ -71,7 +71,10 @@ async function getAllTags(file: string, program: ts.Program) {
     Object.entries(matches).map(async ([type, text]) => {
       await fs.writeFile(
         path.join(ROOT, CONSTANTS_DIRECTORY, `${type}.ts`),
-        text.map((t) => `export const ${t}`).join('\n') + '\n',
+        text
+          .sort()
+          .map((t) => `export const ${t}`)
+          .join('\n') + '\n',
       )
     }),
   )

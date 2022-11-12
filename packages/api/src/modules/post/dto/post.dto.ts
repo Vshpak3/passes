@@ -12,11 +12,8 @@ import { TagDto } from '../../../util/dto/tag.dto'
 import { DtoProperty } from '../../../web/dto.web'
 import { ContentDto } from '../../content/dto/content.dto'
 import { UserDto } from '../../user/dto/user.dto'
-import {
-  POST_PRICE_MAX_PRICE,
-  POST_TAG_MAX_COUNT,
-  POST_TEXT_LENGTH,
-} from '../constants/schema'
+import { MAX_PAID_POST_PRICE } from '../constants/limits'
+import { POST_TAG_MAX_COUNT, POST_TEXT_LENGTH } from '../constants/schema'
 import { PostEntity } from '../entities/post.entity'
 
 export class PostDto extends PickType(UserDto, [
@@ -86,7 +83,7 @@ export class PostDto extends PickType(UserDto, [
   pinnedAt?: Date | null
 
   @Min(0)
-  @Max(POST_PRICE_MAX_PRICE)
+  @Max(MAX_PAID_POST_PRICE)
   @DtoProperty({ type: 'currency', optional: true })
   price?: number
 

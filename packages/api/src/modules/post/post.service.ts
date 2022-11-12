@@ -285,7 +285,7 @@ export class PostService {
       OrderEnum.DESC,
       createdAt,
       lastId,
-    ).limit(MAX_POSTS_PER_REQUEST)
+    )
     return await this.getPostsFromQuery(userId, query)
   }
 
