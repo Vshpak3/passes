@@ -4,6 +4,8 @@ module.exports = {
     project: './tsconfig.json',
   },
   extends: ['plugin:jest/recommended'],
+  // The TS import in this file causes issues with eslint
+  ignorePatterns: ['generate-shared-constants.ts'],
   rules: {
     '@typescript-eslint/no-floating-promises': ['error', { ignoreIIFE: true }],
     'no-console': 'error',
