@@ -11,3 +11,5 @@ export const MAX_PINNED_POST = 3 // @share-with-frontend post
 export const MAX_MENTION_LIMIT = 5 // @share-with-frontend post
 
 export const MAX_PASSES_LIMIT = 10 // @share-with-frontend post
+
+export const MAX_POSTS_PER_REQUEST = 20 // @share-with-frontend post
