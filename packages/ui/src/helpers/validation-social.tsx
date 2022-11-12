@@ -7,7 +7,7 @@ const socialMediaValidationInfo = {
   },
   facebookUsername: {
     name: "Facebook",
-    regex: /^[a-zA-Z\d.]{5,}$/
+    regex: /^[\w.]{5,}$/
   },
   instagramUsername: {
     name: "Instagram",
@@ -15,19 +15,19 @@ const socialMediaValidationInfo = {
   },
   twitterUsername: {
     name: "Twitter",
-    regex: /^@?[a-zA-Z\d]{1,15}$/
+    regex: /^@?\w{1,15}$/
   },
   tiktokUsername: {
     name: "Tiktok",
-    regex: /^@?[a-zA-Z\d.]{3,}$/
+    regex: /^@?[\w.]{3,}$/
   },
   twitchUsername: {
     name: "Twitch",
-    regex: /^[a-zA-Z\d.]{3,}$/
+    regex: /^[\w.]{3,}$/
   },
   youtubeUsername: {
     name: "Youtube",
-    regex: /^[a-zA-Z\d.]{3,}$/
+    regex: /^[\w.]{3,}$/
   }
 }
 
