@@ -2,8 +2,8 @@ import { CommentDto, PostDto } from "@passes/api-client"
 import classNames from "classnames"
 import { FC, memo, useCallback, useState } from "react"
 
-import { Comment } from "src/components/organisms/profile/post/Comment"
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
+import { CommentCached } from "./CommentCached"
 import { NewCommentEditor } from "./NewCommentEditor"
 
 interface CommentSectionProps {
@@ -22,7 +22,6 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
   decrementNumComments
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
-
   const addNewComment = useCallback(
     (comment: CommentDto) => {
       setNewComments((state) => [comment, ...state])
@@ -40,7 +39,7 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
     >
       {newComments.map((comment) => {
         return (
-          <Comment
+          <CommentCached
             comment={comment}
             decrementNumComments={decrementNumComments}
             key={comment.commentId}

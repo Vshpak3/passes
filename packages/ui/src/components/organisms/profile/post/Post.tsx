@@ -16,29 +16,31 @@ import { MAX_PINNED_POST } from "src/config/post"
 import { useBuyPostModal } from "src/hooks/context/useBuyPostModal"
 import { ProfileContext } from "src/pages/[username]"
 import { DeletePostModal } from "./DeletePostModal"
+import { PostCachedProps } from "./PostCached"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
 
-interface PostProps {
+interface PostProps extends PostCachedProps {
   post: PostDto
   postByUrl?: boolean
   // Whether or not the post is from shown in the non-profile home feed
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
+  update: (update: Partial<PostDto>) => void
 }
 
 const PostUnmemo: FC<PostProps> = ({
   post,
   inHomeFeed = false,
   postByUrl = false,
-  isPinned = false
+  isPinned = false,
+  update
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const { setPost } = useBuyPostModal()
   const router = useRouter()
   const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
-
   const {
     contents,
     createdAt,
@@ -68,23 +70,23 @@ const PostUnmemo: FC<PostProps> = ({
   )
 
   const onDelete = () => {
-    setIsRemoved(true)
+    update({ deletedAt: new Date() })
     if (postByUrl) {
       router.push(`/${username}`)
     }
   }
 
   const dropdownOptions: DropdownOption[] = [
-    ...DropDownReport(!post.isOwner, {
+    ...DropDownReport(!isOwner, {
       username: username,
       userId: userId
     }),
-    ...DropDownGeneral("Delete", post.isOwner, async () => {
+    ...DropDownGeneral("Delete", isOwner, async () => {
       setDeletePostModelOpen(true)
     }),
     ...DropDownGeneral(
       "Pin",
-      post.isOwner && !isPinned && contentProcessed && !!pinPost,
+      isOwner && !isPinned && contentProcessed && !!pinPost,
       async () => {
         if (pinnedPosts && pinnedPosts.length === MAX_PINNED_POST) {
           toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
@@ -120,7 +122,7 @@ const PostUnmemo: FC<PostProps> = ({
 
   return (
     <>
-      {!isRemoved && (
+      {!isRemoved && !post.deletedAt && (
         <div>
           <div
             className={classNames(
@@ -153,7 +155,7 @@ const PostUnmemo: FC<PostProps> = ({
                 price={price ?? 0}
               />
             )}
-            <PostEngagement post={post} />
+            <PostEngagement post={post} update={update} />
           </div>
         </div>
       )}

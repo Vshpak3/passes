@@ -3,7 +3,7 @@ import { FC } from "react"
 
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
-import { usePost } from "src/hooks/profile/usePost"
+import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 
 interface NewPostPopupProps {
@@ -19,7 +19,7 @@ export const NewPostPopup: FC<NewPostPopupProps> = ({
 }) => {
   const { insertNewPost } = useScheduledEvents()
 
-  const { createPost } = usePost()
+  const { createPost } = useUpdatePost()
   const handleSavePost = async (post: CreatePostRequestDto) => {
     await createPost(post)
     insertNewPost(post)

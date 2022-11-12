@@ -4,6 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
+import dynamic from "next/dynamic"
 import { FC, memo, useContext } from "react"
 
 import {
@@ -12,9 +13,13 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
-import { Post } from "src/components/organisms/profile/post/Post"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { ProfileContext } from "src/pages/[username]"
+
+const PostCached = dynamic(
+  () => import("src/components/organisms/profile/post/PostCached"),
+  { ssr: false }
+)
 
 const PostFeedLoader = (
   <div className="my-[40px] flex justify-center">
@@ -41,12 +46,12 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const api = new FeedApi()
 
   const { pinnedPosts } = useContext(ProfileContext)
-  const { posts } = usePostWebhook()
+  usePostWebhook()
 
   return (
     <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
       KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-        return <Post post={{ ...arg, ...(posts[arg.postId] ?? {}) }} />
+        return <PostCached post={{ ...arg }} />
       }}
       emptyElement={PostFeedEnd}
       endElement={PostFeedEnd}
@@ -60,13 +65,9 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       keyValue={`/feed/creator/${profileUserId}`}
       loadingElement={PostFeedLoader}
     >
-      {ownsProfile && <NewPosts postUpdates={posts} />}
+      {ownsProfile && <NewPosts />}
       {pinnedPosts.map((post) => (
-        <Post
-          isPinned
-          key={post.postId}
-          post={{ ...post, ...(posts[post.postId] ?? {}) }}
-        />
+        <PostCached isPinned key={post.postId} post={post} />
       ))}
     </InfiniteScrollPagination>
   )

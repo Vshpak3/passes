@@ -20,9 +20,11 @@ import { useFeaturedCreators } from "src/hooks/useFeaturedCreators"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 
-const Post = dynamic(
-  () => import("src/components/organisms/profile/post/Post"),
-  { ssr: false }
+const PostCached = dynamic(
+  () => import("src/components/organisms/profile/post/PostCached"),
+  {
+    ssr: false
+  }
 )
 
 const ContentFeedEmpty = (
@@ -50,7 +52,7 @@ const ContentFeedEnd = (
 
 export const HomeContentFeed: FC = () => {
   const api = new FeedApi()
-  const { posts } = usePostWebhook()
+  usePostWebhook()
   const { featuredCreators } = useFeaturedCreators()
 
   return (
@@ -59,12 +61,7 @@ export const HomeContentFeed: FC = () => {
         <SectionTitle className="mt-6 ml-4 lg:mt-4">Home</SectionTitle>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return (
-              <Post
-                inHomeFeed
-                post={{ ...arg, ...(posts[arg.postId] ?? {}) }}
-              />
-            )
+            return <PostCached inHomeFeed post={arg} />
           }}
           emptyElement={ContentFeedEmpty}
           endElement={ContentFeedEnd}

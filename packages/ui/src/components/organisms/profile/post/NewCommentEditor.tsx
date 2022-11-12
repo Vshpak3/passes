@@ -75,7 +75,8 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
         commenterUsername: user.username,
         createdAt: new Date(),
         isHidden: false,
-        isOwner: true
+        isOwner: true,
+        deletedAt: null
       }
 
       addComment(comment)

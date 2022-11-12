@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { Button } from "src/components/atoms/button/Button"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { usePost } from "src/hooks/profile/usePost"
+import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
 interface PostStatisticProps {
   post: PostDto
@@ -16,7 +16,7 @@ interface PostStatisticProps {
 export const PostStatistic: FC<PostStatisticProps> = ({ post }) => {
   const [deleted, setDeleted] = useState<boolean>(false)
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
-  const { removePost } = usePost()
+  const { removePost } = useUpdatePost()
 
   const {
     postId,

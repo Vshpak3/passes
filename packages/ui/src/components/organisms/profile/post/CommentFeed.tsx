@@ -12,7 +12,7 @@ import {
   LoadMsgPositionEnum
 } from "src/components/atoms/InfiniteLoad"
 import { ComponentArg } from "src/components/atoms/InfiniteScroll"
-import { Comment } from "./Comment"
+import { CommentCached } from "./CommentCached"
 
 interface CommentFeedProps {
   postId: PostDto["postId"]
@@ -31,7 +31,7 @@ const CommentFeedUnmemo: FC<CommentFeedProps> = ({
     <InfiniteLoad<CommentDto, GetCommentsForPostResponseDto>
       KeyedComponent={({ arg }: ComponentArg<CommentDto>) => {
         return (
-          <Comment
+          <CommentCached
             comment={arg}
             decrementNumComments={decrementNumComments}
             ownsPost={ownsPost}

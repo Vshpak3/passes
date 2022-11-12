@@ -1,25 +1,29 @@
-import { CommentApi, CreateCommentRequestDto } from "@passes/api-client"
+import { CommentDto } from "@passes/api-client"
+import useSWR, { useSWRConfig } from "swr"
 
-export const useComment = () => {
-  const api = new CommentApi()
+export const CACHE_KEY_COMMENT = "/comment"
 
-  const createComment = async (
-    createCommentRequestDto: CreateCommentRequestDto
-  ) => {
-    return await api.createComment({ createCommentRequestDto })
+export const useComment = (commentId: string) => {
+  // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
+  const { data: comment } = useSWR(
+    commentId ? [CACHE_KEY_COMMENT, commentId] : null,
+    async () => null
+  )
+
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: Partial<CommentDto>) =>
+    _mutateManual([CACHE_KEY_COMMENT, commentId], update, {
+      populateCache: (
+        update: Partial<CommentDto>,
+        original: CommentDto | undefined
+      ) => {
+        return { ...original, ...update }
+      },
+      revalidate: false
+    })
+
+  return {
+    comment,
+    update: mutateManual
   }
-
-  const deleteComment = async (postId: string, commentId: string) => {
-    await api.deleteComment({ postId, commentId })
-  }
-
-  const hideComment = async (postId: string, commentId: string) => {
-    await api.hideComment({ postId, commentId })
-  }
-
-  const unhideComment = async (postId: string, commentId: string) => {
-    await api.unhideComment({ postId, commentId })
-  }
-
-  return { createComment, deleteComment, hideComment, unhideComment }
 }

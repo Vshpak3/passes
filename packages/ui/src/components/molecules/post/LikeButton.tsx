@@ -1,25 +1,28 @@
 import { LikeApi, PostDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC, useCallback, useMemo, useState } from "react"
+import React, { FC, useCallback, useMemo } from "react"
 
 import { errorMessage } from "src/helpers/error"
 import { compactNumberFormatter } from "src/helpers/formatters"
 import { HeartIcon } from "src/icons/HeartIcon"
 
-type LikeButtonProps = Pick<PostDto, "isLiked" | "numLikes" | "postId">
+interface LikeButtonProps
+  extends Pick<PostDto, "isLiked" | "numLikes" | "postId"> {
+  update: (update: Partial<PostDto>) => void
+}
 
 export const LikeButton: FC<LikeButtonProps> = ({
-  isLiked: initialIsLiked,
-  numLikes: initialNumLikes,
-  postId
+  isLiked,
+  numLikes,
+  postId,
+  update
 }) => {
-  const [isLiked, setIsLiked] = useState(initialIsLiked)
-  const [numLikes, setNumLikes] = useState(initialNumLikes)
-
   const toggleLike = useCallback(async () => {
     // Show optimistic update
-    setNumLikes((state) => (isLiked ? state - 1 : state + 1))
-    setIsLiked((state) => !state)
+    update({
+      numLikes: isLiked ? numLikes - 1 : numLikes + 1,
+      isLiked: !isLiked
+    })
 
     // Make request to toggle like
     const likeApi = new LikeApi()
@@ -31,12 +34,8 @@ export const LikeButton: FC<LikeButtonProps> = ({
       }
     } catch (error: unknown) {
       errorMessage(error, true)
-
-      // Revert optimistic update
-      setNumLikes((state) => (isLiked ? state + 1 : state - 1))
-      setIsLiked((state) => !state)
     }
-  }, [isLiked, postId])
+  }, [isLiked, numLikes, postId, update])
 
   const formattedNumLikes = useMemo(
     () => compactNumberFormatter(numLikes),

@@ -1,7 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import MessagesIcon from "public/icons/post-messages-icon.svg"
 import ShareIcon from "public/icons/post-share-icon.svg"
-import { FC, useCallback, useMemo, useState } from "react"
+import { FC, memo, useCallback, useMemo, useState } from "react"
 
 import { LikeButton } from "src/components/molecules/post/LikeButton"
 import { TipButton } from "src/components/molecules/post/TipButton"
@@ -11,14 +11,14 @@ import { CommentSection } from "./CommentSection"
 
 interface PostEngagementProps {
   post: PostDto
+  update: (update: Partial<PostDto>) => void
 }
 
-export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
+const PostEngagementUnmemo: FC<PostEngagementProps> = ({ post, update }) => {
   const {
     contentProcessed,
     isLiked,
     isOwner,
-    numComments: initialNumComments,
     numLikes,
     passIds,
     postId,
@@ -26,28 +26,32 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     username
   } = post
 
-  const [numComments, setNumComments] = useState(initialNumComments)
   const [showCommentSection, setShowCommentSection] = useState(false)
 
   const incrementNumComments = useCallback(
-    () => setNumComments((state) => state + 1),
-    []
+    () => update({ numComments: post.numComments + 1 }),
+    [post, update]
   )
 
   const decrementNumComments = useCallback(
-    () => setNumComments((state) => state - 1),
-    []
+    () => update({ numComments: post.numComments - 1 }),
+    [post, update]
   )
   const formattedNumComments = useMemo(
-    () => compactNumberFormatter(numComments),
-    [numComments]
+    () => compactNumberFormatter(post.numComments),
+    [post.numComments]
   )
 
   return (
     <div className="flex w-full flex-col items-center justify-end px-5 sm:px-10 md:px-10 lg:px-5">
       <div className="flex w-full min-w-[340px] items-center justify-between overflow-x-hidden">
         <div className="flex items-start gap-[20px] p-0 md:gap-[45px]">
-          <LikeButton isLiked={isLiked} numLikes={numLikes} postId={postId} />
+          <LikeButton
+            isLiked={isLiked}
+            numLikes={numLikes}
+            postId={postId}
+            update={update}
+          />
           <button
             aria-label="Toggle comments"
             className="flex min-w-[48px] cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white"
@@ -106,3 +110,5 @@ export const PostEngagement: FC<PostEngagementProps> = ({ post }) => {
     </div>
   )
 }
+
+export const PostEngagement = memo(PostEngagementUnmemo)

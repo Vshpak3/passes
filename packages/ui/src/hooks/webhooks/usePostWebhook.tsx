@@ -1,18 +1,34 @@
 import { PostDto } from "@passes/api-client"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
+import { useSWRConfig } from "swr"
 
 import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
+import { CACHE_KEY_POST } from "src/hooks/profile/usePost"
 import { useUser } from "src/hooks/useUser"
 
 export const usePostWebhook = () => {
   const { accessToken } = useUser()
 
-  const [posts, setPosts] = useState<Record<string, Partial<PostDto>>>({})
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = useCallback(
+    (update: Partial<PostDto>, postId: string) =>
+      _mutateManual([CACHE_KEY_POST, postId], update, {
+        populateCache: (
+          update: Partial<PostDto>,
+          original: PostDto | undefined
+        ) => {
+          return { ...original, ...update }
+        },
+        revalidate: false
+      }),
+    [_mutateManual]
+  )
+
   const [attempts, setAttempts] = useState<number>(0)
   const [isConnected, setIsConnected] = useState(false)
   const [isLogged, setIsLogged] = useState(false)
@@ -73,17 +89,12 @@ export const usePostWebhook = () => {
             }
             break
         }
-        setPosts((posts) => {
-          return {
-            ...posts,
-            ...{ [post.postId]: { ...(posts[post.postId] ?? {}), ...post } }
-          }
-        })
+        mutateManual(post, post.postId)
       })
       return () => {
         socket.off("post")
       }
     }
-  }, [socket])
-  return { isConnected, posts, isLogged }
+  }, [mutateManual, socket])
+  return { isConnected, isLogged }
 }

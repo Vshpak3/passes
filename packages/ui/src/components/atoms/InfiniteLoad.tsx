@@ -2,6 +2,8 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
+  useLayoutEffect,
+  useMemo,
   useState
 } from "react"
 import useSWRInfinite, { SWRInfiniteConfiguration } from "swr/infinite"
@@ -22,12 +24,20 @@ interface InfiniteLoadProps<A, T extends PagedData<A>> {
   options?: SWRInfiniteConfiguration
 
   resets?: number // increment to manually reset list
-  isReverse?: boolean
 }
 
 export enum LoadMsgPositionEnum {
   TOP = "top",
   BOTTOM = "bottom"
+}
+
+const defaultOptions: SWRInfiniteConfiguration = {
+  revalidateOnMount: true,
+  revalidateAll: false,
+  revalidateFirstPage: false,
+  revalidateOnFocus: false,
+  revalidateOnReconnect: false,
+  initialSize: 1
 }
 
 // Note: there is no use of mutate as this could mess with the pagination
@@ -46,17 +56,13 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   endElement,
   loadMoreMessage = "Load more",
   loadMorePosition = LoadMsgPositionEnum.BOTTOM,
-  options = {
-    revalidateOnMount: true,
-    revalidateAll: false,
-    revalidateFirstPage: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false
-  },
-  isReverse,
+  options = defaultOptions,
   resets = 0,
   children
 }: PropsWithChildren<InfiniteLoadProps<A, T>>) => {
+  const newOptions = useMemo(() => {
+    return { ...defaultOptions, ...options }
+  }, [options])
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }
@@ -73,7 +79,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   const { data, size, setSize, isValidating } = useSWRInfinite<T>(
     getKey,
     fetchData,
-    options
+    newOptions
   )
 
   const triggerFetch = useCallback(() => {
@@ -81,7 +87,7 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   }, [setSize])
   const [flattenedData, setFlattenedData] = useState<A[]>([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (data) {
       setFlattenedData(
         data
@@ -100,12 +106,6 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
       triggerFetch()
     }
   }, [size, triggerFetch])
-
-  useEffect(() => {
-    if (isReverse) {
-      setFlattenedData((prevState) => prevState.reverse())
-    }
-  }, [isReverse, data, hasMore])
 
   return (
     <>

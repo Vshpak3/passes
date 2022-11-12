@@ -5,10 +5,10 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { PostStatistic } from "src/components/organisms/analytics/PostStatistic"
-import { usePost } from "src/hooks/profile/usePost"
+import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
 const PostStatistics = () => {
-  const { getPosts } = usePost()
+  const { getPosts } = useUpdatePost()
 
   return (
     <div className="flex flex-col">

@@ -2,21 +2,17 @@ import { ContentDto, CreatePostRequestDto, PostDto } from "@passes/api-client"
 import { FC, useContext, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Post } from "src/components/organisms/profile/post/Post"
+import { PostCached } from "src/components/organisms/profile/post/PostCached"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
-import { usePost } from "src/hooks/profile/usePost"
+import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 import { ProfileContext } from "src/pages/[username]"
 import { NewPostEditor } from "./NewPostEditor"
 
-interface NewPostsProps {
-  postUpdates: Record<string, Partial<PostDto>>
-}
-
-export const NewPosts: FC<NewPostsProps> = ({ postUpdates }) => {
+export const NewPosts: FC = () => {
   const [newPosts, setNewPosts] = useState<PostDto[]>([])
   const { profile, profileUsername, profileUserId } = useContext(ProfileContext)
   const { mutateManualCreatorStats } = useCreatorStats(profileUserId)
-  const { createPost } = usePost()
+  const { createPost } = useUpdatePost()
 
   const handleSavePost = async (createPostDto: CreatePostRequestDto) => {
     if (!profile || !profileUsername) {
@@ -74,8 +70,6 @@ export const NewPosts: FC<NewPostsProps> = ({ postUpdates }) => {
     setNewPosts([post, ...newPosts])
   }
 
-  // TODO: Missing the state to remove the post optimistically
-
   return (
     <>
       <NewPostEditor
@@ -84,10 +78,7 @@ export const NewPosts: FC<NewPostsProps> = ({ postUpdates }) => {
         popup={false}
       />
       {newPosts.map((post) => (
-        <Post
-          key={post.postId}
-          post={{ ...post, ...(postUpdates[post.postId] ?? {}) }}
-        />
+        <PostCached key={post.postId} post={post} />
       ))}
     </>
   )

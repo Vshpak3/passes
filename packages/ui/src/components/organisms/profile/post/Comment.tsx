@@ -16,22 +16,21 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
-import { useComment } from "src/hooks/profile/useComment"
+import { useUpdateComment } from "src/hooks/profile/useUpdateComment"
+import { CommentCachedProps } from "./CommentCached"
 
-interface CommentProps {
-  comment: CommentDto
-  ownsPost: boolean
-  decrementNumComments: () => void
+interface CommentProps extends CommentCachedProps {
+  update: (update: Partial<CommentDto>) => void
 }
 
 export const Comment: FC<CommentProps> = ({
   comment,
   ownsPost,
-  decrementNumComments
+  decrementNumComments,
+  update
 }) => {
-  const [removed, setRemoved] = useState(false)
   const [showHidden, setShowHidden] = useState(false)
-  const { deleteComment, hideComment, unhideComment } = useComment()
+  const { deleteComment, hideComment, unhideComment } = useUpdateComment()
 
   const {
     commentId,
@@ -41,9 +40,10 @@ export const Comment: FC<CommentProps> = ({
     commenterId,
     commenterDisplayName,
     commenterIsCreator,
-    isHidden: _isHidden
+    isHidden
   } = comment
-  const [isHidden, setIsHidden] = useState(_isHidden)
+
+  // console.log(comment)
 
   const dropdownOptions: DropdownOption[] = [
     ...DropDownReport(!isOwner, {
@@ -56,23 +56,22 @@ export const Comment: FC<CommentProps> = ({
     }),
     ...DropDownGeneral("Delete", isOwner || ownsPost, async () => {
       await deleteComment(postId, commentId)
+      update({ deletedAt: new Date() })
       decrementNumComments()
-      setRemoved(true)
     }),
     ...DropDownGeneral("Hide", !isOwner && ownsPost && !isHidden, async () => {
-      setIsHidden(true)
-      setShowHidden(false)
+      update({ isHidden: true })
       await hideComment(postId, commentId)
     }),
     ...DropDownGeneral("Unhide", !isOwner && ownsPost && isHidden, async () => {
-      setIsHidden(false)
+      update({ isHidden: false })
       await unhideComment(postId, commentId)
     })
   ]
 
   return (
     <>
-      {!removed && (
+      {!comment.deletedAt && (
         <div className="flex w-full gap-x-4 border-b-[1px] border-b-gray-300/10 py-2">
           <div>
             <Link href={`/${comment.commenterUsername}`}>
@@ -94,7 +93,7 @@ export const Comment: FC<CommentProps> = ({
                   username={commenterUsername}
                 />
               </div>
-              {!!isHidden && (
+              {!!isHidden && !showHidden && (
                 <Text className="text-gray-500" fontSize={14}>
                   &nbsp;&nbsp; hidden
                 </Text>

@@ -1,28 +1,60 @@
-import {
-  CreatePostRequestDto,
-  GetPostsRequestDto,
-  PostApi,
-  UpdatePostRequestDto
-} from "@passes/api-client"
+import { PostApi, PostDto } from "@passes/api-client"
+import { useEffect, useState } from "react"
+import useSWR, { useSWRConfig } from "swr"
 
-export const usePost = () => {
+export const CACHE_KEY_POST = "/posts"
+
+export const usePost = (_postId?: string) => {
+  const [postId, setPostId] = useState(_postId)
+
   const api = new PostApi()
 
-  const createPost = async (post: CreatePostRequestDto) => {
-    return await api.createPost({ createPostRequestDto: post })
-  }
+  // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
+  const {
+    data: post,
+    isValidating: loadingPost,
+    mutate: mutatePost
+  } = useSWR(
+    postId ? [CACHE_KEY_POST, postId] : null,
+    async () => {
+      if (!postId) {
+        return
+      }
+      setHasInitialFetch(true)
+      return await api.findPost({
+        postId: postId
+      })
+    },
+    { revalidateOnMount: true }
+  )
 
-  const updatePost = async (postId: string, data: UpdatePostRequestDto) => {
-    await api.updatePost({ postId, updatePostRequestDto: data })
-  }
+  const { mutate: _mutateManual } = useSWRConfig()
+  const mutateManual = (update: Partial<PostDto>) =>
+    _mutateManual([CACHE_KEY_POST, postId], update, {
+      populateCache: (update: Partial<PostDto>, original: PostDto) => {
+        return { ...original, ...update }
+      },
+      revalidate: false
+    })
 
-  const removePost = async (postId: string) => {
-    await api.removePost({ postId })
-  }
+  // For a brief moment during rendering, loadingPost will be set false
+  // before the loading begins. This boolean is needed to handle showing the
+  // initial state properly before the loading begins.
+  const [hasInitialFetch, setHasInitialFetch] = useState<boolean>(!!post)
 
-  const getPosts = async (req: GetPostsRequestDto) => {
-    return await api.getPosts({ getPostsRequestDto: req })
-  }
+  useEffect(() => {
+    if (!post) {
+      mutatePost()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postId])
 
-  return { createPost, updatePost, removePost, getPosts }
+  return {
+    post,
+    loadingPost,
+    mutatePost,
+    setPostId,
+    hasInitialFetch,
+    update: mutateManual
+  }
 }

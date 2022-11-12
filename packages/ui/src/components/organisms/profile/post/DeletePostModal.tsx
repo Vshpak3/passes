@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
-import { usePost } from "src/hooks/profile/usePost"
+import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
 interface DeletePostModalProps {
   post: PostDto | null
@@ -18,7 +18,7 @@ export const DeletePostModal: FC<DeletePostModalProps> = ({
   setOpen
 }) => {
   const { mutateManualCreatorStats } = useCreatorStats(post?.userId)
-  const { removePost } = usePost()
+  const { removePost } = useUpdatePost()
 
   const deletePost = async () => {
     if (!post) {

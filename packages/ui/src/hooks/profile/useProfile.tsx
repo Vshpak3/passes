@@ -35,7 +35,8 @@ export const useProfile = () => {
       return await api.findProfile({
         getProfileRequestDto: { username: profileUsername }
       })
-    }
+    },
+    { revalidateOnMount: true }
   )
 
   // Initial useEffect to get username from the route
