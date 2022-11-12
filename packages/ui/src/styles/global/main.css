@@ -17,6 +17,35 @@
 @import "../components/CheckboxSlider.css";
 @import "../components/Swiper.css";
 @import "../components/DateRangePicker.css";
+
+.max-safe-h-screen {
+  /* equivalent to 100dvh in major browsers */
+  max-height: calc(
+    100vh - env(safe-area-inset-bottom, 0) - env(safe-area-inset-top, 0)
+  );
+}
+
+@supports (-webkit-touch-callout: none) {
+  .max-safe-h-screen {
+    /* for ios safari 15, safe-area-inset-bottom is 0, so a special fix apply here */
+    max-height: -webkit-fill-available;
+  }
+}
+
+.min-safe-h-screen {
+  /* equivalent to 100dvh in major browsers */
+  min-height: calc(
+    100vh - env(safe-area-inset-bottom, 0) - env(safe-area-inset-top, 0)
+  );
+}
+
+@supports (-webkit-touch-callout: none) {
+  .min-safe-h-screen {
+    /* for ios safari 15, safe-area-inset-bottom is 0, so a special fix apply here */
+    min-height: -webkit-fill-available;
+  }
+}
+
 @supports (padding: max(0px)) {
   body,
   header,
