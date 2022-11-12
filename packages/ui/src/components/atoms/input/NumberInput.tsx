@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import React, { FC, useState } from "react"
+import { toast } from "react-toastify"
 
 import {
   FormErrors,
@@ -19,6 +20,7 @@ type NumberInputProps = {
   type: NumberFormType
   placeholder?: FormPlaceholder
   maxInput?: number
+  maxInputMessage?: string
   allowNegative?: boolean
   errors?: FormErrors
   className?: string
@@ -33,6 +35,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   maxInput,
   allowNegative = false,
   errors = {},
+  maxInputMessage,
   className = "",
   onChange
 }) => {
@@ -48,10 +51,12 @@ export const NumberInput: FC<NumberInputProps> = ({
 
   const validate = function (e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value
-    if (
-      (type === "currency" && value.length > 0 && !isCurrency(value)) ||
-      (maxInput !== undefined && parseFloat(value) > maxInput)
-    ) {
+    if (type === "currency" && value.length > 0 && !isCurrency(value)) {
+      e.target.value = prevValue
+    } else if (maxInput !== undefined && parseFloat(value) > maxInput) {
+      if (maxInputMessage) {
+        toast.error(maxInputMessage)
+      }
       e.target.value = prevValue
     }
 
