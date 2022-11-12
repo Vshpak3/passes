@@ -38,11 +38,11 @@ export const NumberInput: FC<NumberInputProps> = ({
 }) => {
   const [prevValue, setPrevValue] = useState<string>("0")
   const onKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-
     if (!allowNegative) {
       preventNegative(e)
+    }
+    if (e.key.match(/[a-zA-Z]/)) {
+      e.preventDefault()
     }
   }
 
