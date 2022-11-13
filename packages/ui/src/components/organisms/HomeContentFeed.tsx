@@ -8,11 +8,12 @@ import dynamic from "next/dynamic"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 
+import { FeedEnd } from "src/components/atoms/feed/FeedEnd"
+import { FeedLoader } from "src/components/atoms/feed/FeedLoader"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Loader } from "src/components/atoms/Loader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { FollowButton } from "src/components/molecules/FollowButton"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
@@ -34,22 +35,6 @@ const ContentFeedEmpty = (
   </div>
 )
 
-const ContentFeedLoading = (
-  <div className="my-[40px] flex justify-center">
-    <Loader />
-  </div>
-)
-
-const ContentFeedEnd = (
-  <div className="mt-[15px] flex justify-center border-t-[1px] border-passes-gray">
-    <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
-      <span className="font-medium">
-        No more posts are available at this time!
-      </span>
-    </div>
-  </div>
-)
-
 export const HomeContentFeed: FC = () => {
   const api = new FeedApi()
   usePostWebhook()
@@ -64,14 +49,16 @@ export const HomeContentFeed: FC = () => {
             return <PostCached inHomeFeed post={arg} />
           }}
           emptyElement={ContentFeedEmpty}
-          endElement={ContentFeedEnd}
+          endElement={
+            <FeedEnd message="No more posts are available at this time" />
+          }
           fetch={async (req: GetFeedRequestDto) => {
             return await api.getFeed({ getFeedRequestDto: req })
           }}
           fetchProps={{}}
           keySelector="postId"
           keyValue="/pages/feed"
-          loadingElement={ContentFeedLoading}
+          loadingElement={FeedLoader}
         />
       </div>
       <div className="min-safe-h-screen sticky col-span-3 hidden max-w-[500px] flex-col border-l-[1px] border-passes-gray lg:flex lg:px-2 lg:pr-8 xl:pl-8">

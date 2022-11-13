@@ -6,28 +6,15 @@ import {
 } from "@passes/api-client"
 import { FC } from "react"
 
+import { FeedEnd } from "src/components/atoms/feed/FeedEnd"
+import { FeedLoader } from "src/components/atoms/feed/FeedLoader"
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Loader } from "src/components/atoms/Loader"
 import { NewFanwallPosts } from "src/components/organisms/profile/main-content/new-post/NewFanwallPosts"
 import { useUser } from "src/hooks/useUser"
 import { FanWallCommentCached } from "./FanWallCommentCached"
-
-const FallWallFeedLoader = (
-  <div className="my-[40px] flex justify-center">
-    <Loader />
-  </div>
-)
-
-const FanWallFeedEnd = (
-  <div className="my-[40px] flex justify-center">
-    <div className="min-h-[500px] bg-[#12070E]/50 px-10 py-5" role="alert">
-      <span className="font-medium">There are no more fan wall comments.</span>
-    </div>
-  </div>
-)
 
 interface FanWallFeedProps {
   profileUserId: string
@@ -50,8 +37,8 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
           />
         )
       }}
-      emptyElement={FanWallFeedEnd}
-      endElement={FanWallFeedEnd}
+      emptyElement={<FeedEnd message="There are no fan wall comments yet" />}
+      endElement={<FeedEnd message="There are no more fan wall comments" />}
       fetch={async (req: GetFanWallRequestDto) => {
         const api = new FanWallApi()
         return await api.getFanWallForCreator({
@@ -61,7 +48,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
       fetchProps={{ creatorId: profileUserId }}
       keySelector="fanWallCommentId"
       keyValue={`/pages/fanwall/${profileUserId}`}
-      loadingElement={FallWallFeedLoader}
+      loadingElement={FeedLoader}
     >
       {!!accessToken.length && (
         <NewFanwallPosts
