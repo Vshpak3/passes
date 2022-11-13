@@ -15,7 +15,7 @@ class WithNormalPageLayoutOptions {
   headerClassName?: string
   sidebar?: boolean = true
   background?: boolean = true
-  consistent?: boolean = true
+  noScroll?: boolean = true
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -39,12 +39,12 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           options.background ? "background-gradient" : "bg-passes-black",
-          "relative w-full lg:pb-0",
-          options.consistent && "pb-16"
+          "min-safe-h-screen relative w-full pb-16 lg:pb-0",
+          options.noScroll && "max-safe-h-screen"
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
-          <div className="min-safe-h-screen relative w-full grid-cols-10 md:grid">
+          <div className="relative w-full grid-cols-10 md:grid">
             {sidebar && <Sidebar />}
             <main
               className={classNames(

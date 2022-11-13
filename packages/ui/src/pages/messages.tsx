@@ -73,5 +73,5 @@ const MessagesPage = () => {
 export default WithNormalPageLayout(memo(MessagesPage), {
   header: false,
   sidebar: true,
-  consistent: false
+  noScroll: true
 })
