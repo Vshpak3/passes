@@ -21,7 +21,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { user } = useUser()
 
   return (
-    <header className="col-span-3 h-screen w-full items-end border-r-[1px] border-passes-gray md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
+    <header className="col-span-3 w-full items-end overflow-y-auto border-r-[1px] border-passes-gray md:sticky md:inset-y-0 md:flex md:shrink-0 md:flex-col">
       <div className="flex h-full w-full flex-1 flex-col bg-passes-black lg:px-0">
         <div className="flex flex-1 flex-col items-end justify-between overflow-y-auto py-6 pr-6 scrollbar-hide lg:pr-8">
           <div className="min-w-[152px]">
