@@ -50,7 +50,7 @@ export const PassHoldings: FC = () => {
           return <PassHoldingCard passHolder={arg} />
         }}
         childrenEnd
-        className="m-auto flex flex-row flex-wrap items-center gap-3 md:items-start md:justify-evenly"
+        className="m-auto flex flex-row flex-wrap items-center justify-center gap-3 md:items-start md:justify-evenly"
         fetch={(req: GetPassHoldingsRequestDto) => {
           const api = new PassApi()
           return api.getPassHoldings({ getPassHoldingsRequestDto: req })

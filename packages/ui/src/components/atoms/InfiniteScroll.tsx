@@ -46,7 +46,6 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   style?: CSSProperties
   scrollableTarget?: string
   inverse?: boolean
-  hasInitialElement?: boolean
   initialScrollY?: number
   mutateOnLoad?: boolean
   pullDownToRefresh?: boolean
@@ -79,7 +78,6 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   emptyElement,
   loadingElement,
   endElement,
-  hasInitialElement = false,
   resets = 0,
   className,
   style = {},
@@ -98,7 +96,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   const newOptions = useMemo(() => {
     return { ...defaultOptions, ...options }
   }, [options])
-  // console.log(fetchProps)
+
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }
@@ -108,14 +106,8 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
     return { props: request, resets, keyValue }
   }
 
-  const [initialFetchComplete, setInitialFetchComplete] = useState(false)
-
   const fetchData = async ({ props }: Key<T>) => {
-    const res = await fetch(props as Omit<T, "data">)
-    setTimeout(() => {
-      setInitialFetchComplete(true)
-    }, 200)
-    return res
+    return await fetch(props as Omit<T, "data">)
   }
 
   const { data, setSize, mutate, size } = useSWRInfinite<T>(
@@ -205,10 +197,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       style={{ overflow: "visible", ...style }}
     >
       {!childrenEnd && children}
-      {flattenedData.length === 0 &&
-        !hasInitialElement &&
-        initialFetchComplete &&
-        emptyElement}
+      {data && data.length >= 1 && data[0].data.length === 0 && emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent
           arg={data}
