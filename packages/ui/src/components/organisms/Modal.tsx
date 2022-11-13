@@ -40,10 +40,10 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
 }) => {
   const modalContentRef = useRef(null)
   useOnClickOutside(modalContentRef, (e) => {
+    e.stopPropagation()
     if (isCloseOutside) {
       setOpen(false)
     }
-    e.stopPropagation()
   })
 
   useEffect(() => {
