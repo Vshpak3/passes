@@ -21,6 +21,7 @@ import React, {
   KeyboardEvent,
   SetStateAction,
   useEffect,
+  useRef,
   useState
 } from "react"
 import { useForm } from "react-hook-form"
@@ -89,9 +90,6 @@ export const newMessageFormSchema = object(
   }
 )
 
-const MAX_TEXT_AREA_ROWS = 10
-const MIN_TEXT_AREA_ROWS = 5
-
 export const InputMessage: FC<InputMessageProps> = ({
   selectedChannel,
   minimumTip,
@@ -145,21 +143,12 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
     setTip(0)
   }
+  const inputEl = useRef(null)
 
-  const text = watch("text")
-  const [textAreaRows, setTextAreaRows] = useState<number>(6)
-
-  useEffect(() => {
-    setTextAreaRows(
-      Math.max(
-        Math.min(
-          text ? Math.max(text.split("\n").length, text.length / 80) : 0,
-          MAX_TEXT_AREA_ROWS
-        ),
-        MIN_TEXT_AREA_ROWS
-      )
-    )
-  }, [text])
+  const resize = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.style.height = "auto"
+    e.target.style.height = Math.min(2 + e.target.scrollHeight, 500) + "px"
+  }
 
   const setSubmitError = (err: string) => {
     err ? toast.error(err) : toast.dismiss()
@@ -282,6 +271,7 @@ export const InputMessage: FC<InputMessageProps> = ({
       }
     }
   }
+
   return (
     <form
       className="flex w-full border-t border-passes-gray"
@@ -332,20 +322,22 @@ export const InputMessage: FC<InputMessageProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          rows={textAreaRows}
+          // rows={textAreaRows}
           {...register("text")}
           autoComplete="off"
           className={classNames(
             files.length
               ? "focus:border-b-transparent"
               : errors.text && "border-b-red",
-            "w-full resize-none  border-x-0 border-b border-transparent bg-transparent p-2 px-[10px] pt-3 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
+            " w-full resize-none border-x-0 border-b border-transparent bg-transparent px-[10px] text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
           )}
           name="text"
+          onInput={resize}
+          onKeyDown={submitOnEnter}
           // onFocus={() => {
           //   clearErrors()
           // }}
-          onKeyDown={submitOnEnter}
+          ref={inputEl}
         />
         {files.length > 0 && (
           <div className="flex px-2 md:px-5">

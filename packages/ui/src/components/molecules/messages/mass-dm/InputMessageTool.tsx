@@ -50,9 +50,6 @@ interface InputMessageToolProps {
   previewIndex?: number
 }
 
-const MAX_TEXT_AREA_ROWS = 14
-const MIN_TEXT_AREA_ROWS = 7
-
 const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   vaultContent,
   clear,
@@ -114,20 +111,10 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
     }
   }
 
-  const text = watch("text")
-  const [textAreaRows, setTextAreaRows] = useState<number>(6)
-
-  useEffect(() => {
-    setTextAreaRows(
-      Math.max(
-        Math.min(
-          text ? Math.max(text.split("\n").length, text.length / 80) : 0,
-          MAX_TEXT_AREA_ROWS
-        ),
-        MIN_TEXT_AREA_ROWS
-      )
-    )
-  }, [text])
+  const resize = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.target.style.height = "auto"
+    e.target.style.height = Math.min(2 + e.target.scrollHeight, 500) + "px"
+  }
 
   const submitMessage = async () => {
     try {
@@ -219,7 +206,6 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          rows={textAreaRows}
           {...register("text")}
           autoComplete="off"
           className={classNames(
@@ -228,6 +214,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
               : errors.text && "border-b-red",
             "w-full resize-none border-x-0 border-b border-transparent bg-transparent p-2 text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0"
           )}
+          onInput={resize}
           // onFocus={() => {
           //   clearErrors()
           // }}
