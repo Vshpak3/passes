@@ -26,6 +26,9 @@ export class ListDto {
   @DtoProperty({ type: 'date' })
   updatedAt: Date
 
+  @DtoProperty({ type: 'date', nullable: true })
+  deletedAt: Date | null
+
   constructor(list: ListEntity | undefined) {
     if (list) {
       this.listId = list.id
@@ -34,6 +37,7 @@ export class ListDto {
       this.count = list.count
       this.createdAt = list.created_at
       this.updatedAt = list.updated_at
+      this.deletedAt = list.deleted_at
     }
   }
 }

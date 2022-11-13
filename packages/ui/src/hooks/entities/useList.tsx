@@ -1,12 +1,18 @@
-import { ListDto } from "@passes/api-client"
+import { ListApi, ListDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_LIST = "/list"
 
+const api = new ListApi()
+
 export const useList = (listId: string) => {
-  const { data: list } = useSWR(
+  const { data: list, mutate } = useSWR<ListDto>(
     listId ? [CACHE_KEY_LIST, listId] : null,
-    async () => null
+    async () => {
+      return await api.getList({
+        listId
+      })
+    }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
@@ -23,6 +29,7 @@ export const useList = (listId: string) => {
 
   return {
     list,
-    update: mutateManual
+    update: mutateManual,
+    mutate
   }
 }

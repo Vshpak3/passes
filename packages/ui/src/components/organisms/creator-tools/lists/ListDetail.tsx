@@ -3,7 +3,6 @@ import {
   GetListMembersRequestDtoOrderEnum as Order,
   GetListMembersRequestDtoOrderTypeEnum as OrderType,
   GetListMembersResponseDto,
-  GetListResponseDto,
   GetListResponseDtoTypeEnum,
   ListApi,
   ListDtoTypeEnum,
@@ -23,6 +22,7 @@ import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowe
 import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
 import { errorMessage } from "src/helpers/error"
 import { formatText } from "src/helpers/formatters"
+import { useList } from "src/hooks/entities/useList"
 import { AddIcon } from "src/icons/AddIcon"
 import { ArrowLeft } from "src/icons/ArrowLeft"
 import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
@@ -37,8 +37,6 @@ const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
 const ListDetail: FC<ListDetailProps> = ({ listId }) => {
-  const [listInfo, setListInfo] = useState<GetListResponseDto>()
-  const [listName, setListName] = useState<string>("")
   const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
   const [search, setSearch] = useState<string>("")
@@ -47,23 +45,10 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [order, setOrder] = useState<Order>(Order.Desc)
 
   const [newListsMembers, setNewListsMembers] = useState<ListMemberDto[]>([])
-
-  const fetchInfo = useCallback(async () => {
-    try {
-      // Get list information by ID
-      const listInfoRes: GetListResponseDto = await listApi.getList({
-        listId
-      })
-      setListInfo(listInfoRes)
-      setListName(listInfoRes.name ?? "")
-    } catch (error) {
-      errorMessage(error, true)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { list, update, mutate } = useList(listId)
 
   useEffect(() => {
-    fetchInfo()
+    mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -142,13 +127,13 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           })
         ).value
         if (updated) {
-          setListName(value)
+          update({ name: value })
         }
       } catch (error) {
         errorMessage(error, true)
       }
     },
-    [listId]
+    [listId, update]
   )
 
   const router = useRouter()
@@ -163,18 +148,18 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           fanInfo={arg}
           key={arg.listMemberId}
           onRemoveFan={handleRemoveFan}
-          removable={listInfo?.type === ListDtoTypeEnum.Normal}
+          removable={list?.type === ListDtoTypeEnum.Normal}
         />
       )
     },
-    [handleRemoveFan, listInfo?.type]
+    [handleRemoveFan, list?.type]
   )
 
   useEffect(() => {
-    if (listInfo?.type === ListDtoTypeEnum.TopSpenders) {
+    if (list?.type === ListDtoTypeEnum.TopSpenders) {
       setOrderType(OrderType.Metadata)
     }
-  }, [listInfo])
+  }, [list])
 
   return (
     <div className="relative text-white">
@@ -189,19 +174,19 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             <div
               className={
                 "flex items-center" +
-                (listInfo?.type === GetListResponseDtoTypeEnum.Normal
+                (list?.type === GetListResponseDtoTypeEnum.Normal
                   ? "border-r border-r-[#fff]"
                   : "")
               }
             >
               <h2 className="whitespace-pre-wrap pr-[10px] text-2xl font-bold">
-                {formatText(listName)}
+                {formatText(list?.name)}
               </h2>
             </div>
-            {listInfo?.type === GetListResponseDtoTypeEnum.Normal && (
+            {list?.type === GetListResponseDtoTypeEnum.Normal && (
               <UpdateListNamePopper
                 onSubmit={handleEditListName}
-                value={listName}
+                value={list?.name ?? ""}
               />
             )}
           </div>
@@ -215,8 +200,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                 type="text"
               />
             </span>
-            {listInfo &&
-            listInfo.type === GetListResponseDtoTypeEnum.TopSpenders ? (
+            {list && list.type === GetListResponseDtoTypeEnum.TopSpenders ? (
               <SortDropdown
                 onSelect={onSortSelect}
                 options={[
@@ -245,7 +229,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           </div>
 
           <div className="flex items-center justify-center gap-3">
-            {listInfo?.type === ListDtoTypeEnum.Normal && (
+            {list?.type === ListDtoTypeEnum.Normal && (
               <Button
                 className="font-[700]"
                 icon={<AddIcon />}
@@ -263,11 +247,11 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
               <div className="flex flex-row items-center gap-[10px]">
                 <InfoIconOutlined />
                 <span>
-                  {listInfo?.type === ListDtoTypeEnum.Followers
+                  {list?.type === ListDtoTypeEnum.Followers
                     ? "You have no followers yet."
-                    : listInfo?.type === ListDtoTypeEnum.Following
+                    : list?.type === ListDtoTypeEnum.Following
                     ? "You are not following anyone yet."
-                    : listInfo?.type === ListDtoTypeEnum.TopSpenders
+                    : list?.type === ListDtoTypeEnum.TopSpenders
                     ? "No spenders yet."
                     : "Users you add to the list will be shown here:"}
                 </span>

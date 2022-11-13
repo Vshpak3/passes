@@ -17,7 +17,7 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { CreateNewListModal } from "src/components/molecules/list/CreateNewListModal"
-import { List } from "src/components/organisms/creator-tools/lists/List"
+import { ListCached } from "src/components/organisms/creator-tools/lists/ListCached"
 import {
   SortDropdown,
   SortOption
@@ -86,7 +86,8 @@ const FanLists: NextPage = () => {
           count: 0,
           createdAt: new Date(),
           updatedAt: new Date(),
-          type: ListDtoTypeEnum.Normal
+          type: ListDtoTypeEnum.Normal,
+          deletedAt: null
         }
       ])
     } catch (error) {
@@ -99,7 +100,7 @@ const FanLists: NextPage = () => {
   }, [fetchProps])
 
   const keyedComponent = useCallback(({ arg }: ComponentArg<ListDto>) => {
-    return <List list={arg} removable />
+    return <ListCached list={arg} removable />
   }, [])
 
   return (
@@ -171,7 +172,7 @@ const FanLists: NextPage = () => {
           keyValue="/pages/lists"
         >
           {newLists.map((list, index) => (
-            <List key={index} list={list} removable />
+            <ListCached key={index} list={list} removable />
           ))}
         </InfiniteScrollPagination>
       </ul>

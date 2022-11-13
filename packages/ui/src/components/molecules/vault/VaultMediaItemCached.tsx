@@ -4,7 +4,7 @@ import { FC, useEffect } from "react"
 import { useContent } from "src/hooks/entities/useContent"
 import { VaultMediaItem } from "./VaultMediaItem"
 
-interface VaultMediaItemCachedProps {
+export interface VaultMediaItemCachedProps {
   content: ContentDto
   selectedItems: ContentDto[]
   setSelectedItems: (items: ContentDto[]) => void

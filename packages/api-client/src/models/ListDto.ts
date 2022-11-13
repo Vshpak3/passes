@@ -55,6 +55,12 @@ export interface ListDto {
      * @memberof ListDto
      */
     updatedAt: Date;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ListDto
+     */
+    deletedAt: Date | null;
 }
 
 
@@ -81,6 +87,7 @@ export function instanceOfListDto(value: object): boolean {
     isInstance = isInstance && "count" in value;
     isInstance = isInstance && "createdAt" in value;
     isInstance = isInstance && "updatedAt" in value;
+    isInstance = isInstance && "deletedAt" in value;
 
     return isInstance;
 }
@@ -101,6 +108,7 @@ export function ListDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): L
         'count': json['count'],
         'createdAt': (new Date(json['createdAt'])),
         'updatedAt': (new Date(json['updatedAt'])),
+        'deletedAt': (json['deletedAt'] === null ? null : new Date(json['deletedAt'])),
     };
 }
 
@@ -119,6 +127,7 @@ export function ListDtoToJSON(value?: ListDto | null): any {
         'count': value.count,
         'createdAt': (value.createdAt.toISOString()),
         'updatedAt': (value.updatedAt.toISOString()),
+        'deletedAt': (value.deletedAt === null ? null : value.deletedAt.toISOString()),
     };
 }
 
