@@ -37,8 +37,6 @@
   }
 }
 
-/* Necessary for weird mobile issues */
-
 .safe-h-screen {
   /* equivalent to 100dvh in major browsers */
   height: calc(

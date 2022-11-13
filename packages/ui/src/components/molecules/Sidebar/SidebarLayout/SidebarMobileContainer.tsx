@@ -36,14 +36,12 @@ export const SidebarMobileContainer: FC<
             leaveFrom="translate-x-0"
             leaveTo="-translate-x-full"
           >
-            <Dialog.Panel className="max-safe-h-screen relative flex w-full max-w-[220px] flex-1 flex-col overflow-y-auto bg-passes-black">
+            <Dialog.Panel className="relative flex w-full max-w-[220px] flex-1 flex-col overflow-y-auto border-r-[1px] border-passes-gray bg-passes-black scrollbar-hide">
               <div className="h-0 flex-1">
                 <SidebarMobileHeader toggleSidebar={toggleSidebar} />
-                <div className="">
-                  <nav className="flex flex-col items-start gap-3">
-                    {children}
-                  </nav>
-                </div>
+                <nav className="flex flex-col items-start gap-3">
+                  {children}
+                </nav>
               </div>
             </Dialog.Panel>
           </Transition.Child>
