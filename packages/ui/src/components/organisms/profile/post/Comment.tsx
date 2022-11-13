@@ -119,7 +119,7 @@ export const Comment: FC<CommentProps> = ({
               </div>
             </div>
             <Text
-              className="passes-break whitespace-pre-wrap font-light"
+              className="whitespace-pre-wrap font-light"
               fontSize={14}
             >
               {!isHidden || showHidden ? (

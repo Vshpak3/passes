@@ -91,7 +91,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                 message.automatic ? `bg-[#B52A6F]/[0.32]` : `bg-[#18090E]`
               )}
             >
-              <span className="passes-break whitespace-pre-wrap">
+              <span className="whitespace-pre-wrap">
                 {formatText(text)}
               </span>
               {!!messageContent.length && (

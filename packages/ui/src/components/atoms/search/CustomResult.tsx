@@ -10,7 +10,7 @@ interface CustomResultProps {
 export const CustomResult: FC<CustomResultProps> = ({ text }) => (
   <Combobox.Option disabled value="placeholder">
     <div className="my-6 pl-6 text-passes-dark-gray">
-      <p className="passes-break whitespace-pre-wrap">{formatText(text)}</p>
+      <p className="whitespace-pre-wrap">{formatText(text)}</p>
     </div>
   </Combobox.Option>
 )

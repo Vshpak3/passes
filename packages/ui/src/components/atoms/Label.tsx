@@ -27,7 +27,7 @@ export const Label: FC<LabelProps> = ({
   return (
     <label
       className={classNames(
-        "passes-break block whitespace-pre-wrap",
+        "block whitespace-pre-wrap",
         errors[name] ? "text-red-500" : "text-white",
         className ?? "text-sm font-medium"
       )}
