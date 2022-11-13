@@ -4,7 +4,7 @@ import "react-date-range/dist/theme/default.css"
 //@ts-ignore
 import { FC, memo } from "react"
 
-import NewCard from "src/components/molecules/payment/NewCard"
+import { NewCard } from "src/components/molecules/payment/NewCard"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
