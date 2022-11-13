@@ -147,7 +147,7 @@ const LoginPage: FC = () => {
               type="checkbox"
             />
             <Link href="/forgot-password">
-              <p className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+              <p className="ml-1 inline cursor-pointer select-none bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
                 Forgot Password
               </p>
             </Link>
@@ -187,11 +187,11 @@ const LoginPage: FC = () => {
           fontSize={13}
         >
           Don&apos;t have an account?
-          <Link href="/signup">
-            <p className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+          <Link className="flex flex-row items-center gap-1" href="/signup">
+            <p className="z-10 ml-1 inline cursor-pointer select-none bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
               Sign up
-              <EnterPurpleIcon />
             </p>
+            <EnterPurpleIcon />
           </Link>
         </Text>
       </div>

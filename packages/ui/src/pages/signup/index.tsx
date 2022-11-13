@@ -221,11 +221,11 @@ const SignupInitialPage: FC = () => {
           fontSize={13}
         >
           Have an account?
-          <Link href="/login">
-            <p className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+          <Link href="/login flex flex-row items-center gap-1">
+            <p className="z-10 ml-1 inline cursor-pointer select-none bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
               Sign In
-              <EnterPurpleIcon />
             </p>
+            <EnterPurpleIcon />
           </Link>
         </Text>
       </div>
