@@ -26,7 +26,14 @@
 }
 
 .background-gradient {
-  background: linear-gradient(to bottom left, #4e1e2f, #12070e 40%);
+  background: linear-gradient(
+    91.26deg,
+    #1d2570 12.36%,
+    #904141 36.84%,
+    #881752 69.13%,
+    #e2742d 94.13%
+  );
+  transform: rotate(-105deg);
 }
 
 @layer components {
