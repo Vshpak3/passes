@@ -94,7 +94,7 @@ export const FanWallComment: FC<FanWallCommentProps> = ({
               userId={commenterId}
               username={commenterUsername}
             />
-            <p className="whitespace-pre-wrap px-5 text-start text-base font-medium text-[#ffffff]/90 sm:px-10 md:px-10 lg:px-5">
+            <p className="passes-break whitespace-pre-wrap px-5 text-start text-base font-medium text-[#ffffff]/90 sm:px-10 md:px-10 lg:px-5">
               {!isHidden || showHidden ? (
                 <FormattedText tags={tags} text={text} />
               ) : (

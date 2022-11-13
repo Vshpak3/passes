@@ -75,7 +75,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
             </span>
           </span>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center truncate whitespace-pre-wrap text-[14px] font-[700]">
+        <div className="passes-break flex h-[72px] flex-1 items-center justify-center truncate whitespace-pre-wrap text-[14px] font-[700]">
           {formatText(text)}
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">

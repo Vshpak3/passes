@@ -22,7 +22,7 @@ export const ProfileInformation: FC = () => {
           username={profileUsername ?? ""}
         />
       </div>
-      <span className="my-3 whitespace-pre-wrap font-[500] leading-[22px] text-white">
+      <span className="passes-break my-3 whitespace-pre-wrap font-[500] leading-[22px] text-white">
         {formatText(profile?.description)}
       </span>
       <div className="mt-1.5 flex w-full flex-row flex-wrap items-center gap-y-[20px] gap-x-[60px]">

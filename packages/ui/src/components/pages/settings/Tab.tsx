@@ -41,14 +41,14 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
                 <ArrowRightIcon />
               </button>
             )}
-            <h3 className="text-label-lg whitespace-pre-wrap">
+            <h3 className="text-label-lg passes-break whitespace-pre-wrap">
               {formatText(title)}
             </h3>
           </div>
           {TitleBtn}
         </div>
         {!!description && (
-          <p className="mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
+          <p className="passes-break mt-3 text-xs font-medium text-white/50 sm:text-base md:text-base">
             {description}
           </p>
         )}

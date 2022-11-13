@@ -55,7 +55,7 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
         <div className="flex justify-center rounded bg-gradient-to-r from-[#46165E] to-passes-tertiary-color py-2 font-bold">
           {title}
         </div>
-        <div className="my-4 whitespace-pre-wrap text-passes-dark-gray">
+        <div className="passes-break my-4 whitespace-pre-wrap text-passes-dark-gray">
           {formatText(description)}
         </div>
         <div className="flex flex-row justify-between">

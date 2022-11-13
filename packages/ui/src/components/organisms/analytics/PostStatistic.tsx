@@ -70,7 +70,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
         </div>
         <div className="flex h-[72px] w-[100px] flex-1 items-center justify-start overflow-hidden">
           <Link href={`/${userId}/${postId}`}>
-            <span className="w-full overflow-hidden truncate whitespace-pre-wrap text-[14px] font-[700]">
+            <span className="passes-break w-full overflow-hidden truncate whitespace-pre-wrap text-[14px] font-[700]">
               {formatText(text)}
             </span>
           </Link>
