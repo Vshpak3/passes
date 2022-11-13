@@ -228,7 +228,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@fbusername</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="facebookUsername"
                   placeholder="Enter username"
@@ -243,7 +243,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@instaname</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="instagramUsername"
                   placeholder="Enter username"
@@ -258,7 +258,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@twittername</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="twitterUsername"
                   placeholder="Enter username"
@@ -273,7 +273,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@discordname</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="discordUsername"
                   placeholder="Enter username"
@@ -288,7 +288,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@tiktokname</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="tiktokUsername"
                   placeholder="Enter username"
@@ -303,7 +303,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@twitchname</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="twitchUsername"
                   placeholder="Enter username"
@@ -318,7 +318,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                 <span>@youtubename</span>
               ) : (
                 <Input
-                  className="min-h-0 w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-none bg-black px-1 py-0.5 text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                   errors={errors}
                   name="youtubeUsername"
                   placeholder="Enter username"

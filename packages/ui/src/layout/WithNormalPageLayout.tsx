@@ -44,7 +44,7 @@ export const WithNormalPageLayout = (
         )}
       >
         <div className="mx-auto block max-w-[3000px]">
-          <div className="relative min-h-screen w-full grid-cols-10 md:grid">
+          <div className="min-safe-h-screen relative w-full grid-cols-10 md:grid">
             {sidebar && <Sidebar />}
             <main
               className={classNames(

@@ -22,7 +22,7 @@ const UnMemoizedProfileContent: FC<ProfileContentProps> = ({ tab }) => {
   return (
     <div>
       <ProfileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="min-safe-h-screen min-h-[100vh]">
+      <div className="min-safe-h-screen">
         <ProfileContentFeed activeTab={activeTab} />
       </div>
     </div>

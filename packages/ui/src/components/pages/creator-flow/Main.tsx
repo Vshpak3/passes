@@ -124,7 +124,7 @@ const CreatorFlow = () => {
   }, [])
 
   return (
-    <div className="relative flex min-h-screen flex-1 bg-black">
+    <div className="relative flex flex-1 bg-black">
       <div className="shrink grow bg-[#000]">
         <div className="cover-image h-[240px] sm:h-[300px]">
           <div className="flex h-full flex-col">
