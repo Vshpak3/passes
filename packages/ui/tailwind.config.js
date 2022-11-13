@@ -89,7 +89,6 @@ module.exports = {
     require("@tailwindcss/aspect-ratio"),
     require("@tailwindcss/line-clamp"),
     require("tailwind-scrollbar-hide"),
-    require("postcss-100vh-fix"),
     function ({ addVariant }) {
       addVariant("child", "& :first-child")
       addVariant("child-hover", "& :first-child:hover")

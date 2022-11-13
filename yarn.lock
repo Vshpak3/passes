@@ -5272,7 +5272,6 @@ __metadata:
     nprogress: 0.2.0
     openpgp: 5.0.1
     postcss: 8.4.19
-    postcss-100vh-fix: 1.0.2
     prettier: 2.7.1
     prettier-plugin-tailwindcss: 0.1.13
     rc-time-picker: 3.7.3
@@ -17339,15 +17338,6 @@ __metadata:
     async: ^2.6.0
     is-number-like: ^1.0.3
   checksum: 5ca0b5bab4797327607a2979251057e476b2caf26dd17c7d628d059bd8962c23803a2b12ff2a72fca207dfb10563b158b915f6c38bc8319a4f351323266786c7
-  languageName: node
-  linkType: hard
-
-"postcss-100vh-fix@npm:1.0.2":
-  version: 1.0.2
-  resolution: "postcss-100vh-fix@npm:1.0.2"
-  peerDependencies:
-    postcss: ^8.1.0
-  checksum: 67c2f3433705b79b593782de6f33740877a27221b7d4d7007f5b2c7f8f04a35f501ec482026fe6454885604cf4acf892480f7782356994c9846b8c4180700ac2
   languageName: node
   linkType: hard
 
