@@ -13,26 +13,35 @@ const defaultValues = {
   showPostCount: true
 }
 
+type ProfileSettingsForm = typeof defaultValues
+
 const ProfileSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
     useCreatorSettings()
 
-  const { register, handleSubmit, setValue, watch } = useForm<
-    typeof defaultValues
-  >({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isDirty }
+  } = useForm<ProfileSettingsForm>({
     defaultValues
   })
 
-  const saveProfileSettingsHandler = async (values: typeof defaultValues) => {
+  const onSubmit = async (values: ProfileSettingsForm) => {
     await updateCreatorSettings(values, "Profile settings has been changed")
+    reset(undefined, { keepValues: true })
   }
 
   useEffect(() => {
-    if (creatorSettings) {
-      setValue("showLikeCount", !!creatorSettings.showLikeCount)
-      setValue("showPostCount", !!creatorSettings.showPostCount)
+    if (isLoading) {
+      return
     }
-  }, [creatorSettings, setValue])
+    reset({
+      showLikeCount: !!creatorSettings?.showLikeCount,
+      showPostCount: !!creatorSettings?.showPostCount
+    })
+  }, [creatorSettings, isLoading, reset])
 
   return (
     <Tab
@@ -40,13 +49,9 @@ const ProfileSettings = () => {
       title="Profile"
       withBack
     >
-      {!isLoading && (
-        <form
-          className="mt-[22px]"
-          onSubmit={handleSubmit(saveProfileSettingsHandler)}
-        >
-          <div className="mt-[32px] space-y-[32px]">
-            {/* Disable private profiles for now
+      <form className="mt-[22px]" onSubmit={handleSubmit(onSubmit)}>
+        <div className="mt-[32px] space-y-[32px]">
+          {/* Disable private profiles for now
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Fully Private Profile</span>
             <Checkbox
@@ -55,7 +60,7 @@ const ProfileSettings = () => {
               type="toggle"
             />
           </label> */}
-            {/*<label className="flex cursor-pointer items-center justify-between">
+          {/*<label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Show fans count on your profile</span>
             <Checkbox
               name="showFollowerCount"
@@ -72,38 +77,25 @@ const ProfileSettings = () => {
             />
         </label>*/}
 
-            <label className="flex cursor-pointer items-center justify-between">
-              <span className="text-label">
-                Show likes count on your profile
-              </span>
-              <Checkbox
-                name="showLikeCount"
-                register={register}
-                type="toggle"
-              />
-            </label>
-            <label className="flex cursor-pointer items-center justify-between">
-              <span className="text-label">
-                Show post count on your profile
-              </span>
-              <Checkbox
-                name="showPostCount"
-                register={register}
-                type="toggle"
-              />
-            </label>
-          </div>
+          <label className="flex cursor-pointer items-center justify-between">
+            <span className="text-label">Show likes count on your profile</span>
+            <Checkbox name="showLikeCount" register={register} type="toggle" />
+          </label>
+          <label className="flex cursor-pointer items-center justify-between">
+            <span className="text-label">Show post count on your profile</span>
+            <Checkbox name="showPostCount" register={register} type="toggle" />
+          </label>
+        </div>
 
-          <Button
-            className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-            disabled={_.isEqual(watch(), creatorSettings)}
-            disabledClass="opacity-[0.5]"
-            type={ButtonTypeEnum.SUBMIT}
-          >
-            <span>Save</span>
-          </Button>
-        </form>
-      )}
+        <Button
+          className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
+          disabled={isLoading || !isDirty}
+          disabledClass="opacity-[0.5]"
+          type={ButtonTypeEnum.SUBMIT}
+        >
+          <span>Save</span>
+        </Button>
+      </form>
     </Tab>
   )
 }

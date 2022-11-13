@@ -66,6 +66,7 @@ const ChatSettings = () => {
     useWelcomeMessage()
 
   const isLoading = isCreatorSettingsLoading ?? isWelcomeMessageLoading
+
   const {
     register,
     handleSubmit,
@@ -73,8 +74,6 @@ const ChatSettings = () => {
     formState: { errors, isDirty, isSubmitting },
     watch
   } = useForm<ChatSettingsFormProps>({
-    mode: "all",
-    reValidateMode: "onChange",
     defaultValues,
     resolver: yupResolver(chatSettingsSchema)
   })

@@ -1,5 +1,4 @@
 import { GetNotificationSettingsResponseDto } from "@passes/api-client"
-import _ from "lodash"
 import { ChangeEvent, memo, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -36,8 +35,8 @@ const EmailNotifications = () => {
     try {
       await updateNotificationSettings(values)
       toast.success("Email notifications has been changed")
-      reset()
-    } catch (error) {
+      reset(undefined, { keepValues: true })
+    } catch (error: unknown) {
       errorMessage(error, true)
     }
   }
