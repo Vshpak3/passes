@@ -7,8 +7,7 @@ import { formatText } from "src/helpers/formatters"
 interface TabProps {
   title: string
   description?: string
-  withBack?: boolean
-  withBackMobile?: boolean
+  isRootTab?: boolean
   TitleBtn?: React.ReactNode
 }
 
@@ -16,11 +15,10 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
   title,
   description,
   children,
-  withBack,
-  withBackMobile,
+  isRootTab = false,
   TitleBtn
 }) => {
-  const { popTabFromStackHandler, setShowSettingsTab } =
+  const { popTabFromStackHandler, clearActiveTab, setShowSettingsTab } =
     useSettings() as SettingsContextProps
 
   return (
@@ -28,16 +26,18 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
       <div className="border-b border-passes-dark-200 pb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {withBack && (
-              <button className="mr-4" onClick={popTabFromStackHandler}>
-                <ArrowRightIcon />
-              </button>
-            )}
-            {withBackMobile && (
+            {isRootTab ? (
               <button
                 className="mr-3 md:hidden"
-                onClick={() => setShowSettingsTab(false)}
+                onClick={() => {
+                  setShowSettingsTab(false)
+                  clearActiveTab()
+                }}
               >
+                <ArrowRightIcon />
+              </button>
+            ) : (
+              <button className="mr-4" onClick={popTabFromStackHandler}>
                 <ArrowRightIcon />
               </button>
             )}

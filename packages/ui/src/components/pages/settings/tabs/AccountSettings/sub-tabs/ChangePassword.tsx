@@ -65,7 +65,6 @@ const ChangePassword = () => {
       <Tab
         description="Change your password at any time."
         title="Change Password"
-        withBack
       />
       <form className="mt-6" onSubmit={handleSubmit(onChangePassword)}>
         <div className="border-b border-passes-dark-200 pb-6">

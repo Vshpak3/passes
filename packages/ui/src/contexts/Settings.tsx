@@ -19,15 +19,16 @@ import {
 } from "src/config/settings"
 
 export interface SettingsContextProps {
-  showSettingsTab: boolean
-  setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
   activeTab: TabsEnum
-  subTabsStack: SubTabsEnum[]
-  setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum | undefined>>
-  setSubTabsStack: React.Dispatch<React.SetStateAction<SubTabsEnum[]>>
-  addTabToStackHandler: (tab: SubTabsEnum) => void
-  popTabFromStackHandler: () => void
   addOrPopStackHandler: (tab: SubTabsEnum) => void
+  addTabToStackHandler: (tab: SubTabsEnum) => void
+  clearActiveTab: () => void
+  popTabFromStackHandler: () => void
+  setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum | undefined>>
+  setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
+  setSubTabsStack: React.Dispatch<React.SetStateAction<SubTabsEnum[]>>
+  showSettingsTab: boolean
+  subTabsStack: SubTabsEnum[]
 }
 
 const SettingsContext = createContext<Partial<SettingsContextProps>>({})
@@ -37,6 +38,12 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [subTabsStack, setSubTabsStack] = useState<SubTabsEnum[]>([])
   const [showSettingsTab, setShowSettingsTab] = useState(false)
   const router = useRouter()
+
+  const clearActiveTab = useCallback(() => {
+    // setActiveTab(undefined)
+    router.replace(`/settings`, undefined, { shallow: true })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const addTabToStackHandler = useCallback(
     (tab: SubTabsEnum) => {
@@ -94,20 +101,22 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue = useMemo(
     () => ({
-      showSettingsTab,
-      setShowSettingsTab,
       activeTab,
-      subTabsStack,
-      setActiveTab,
-      setSubTabsStack,
+      addOrPopStackHandler,
       addTabToStackHandler,
+      clearActiveTab,
       popTabFromStackHandler,
-      addOrPopStackHandler
+      setActiveTab,
+      setShowSettingsTab,
+      setSubTabsStack,
+      showSettingsTab,
+      subTabsStack
     }),
     [
       activeTab,
       addOrPopStackHandler,
       addTabToStackHandler,
+      clearActiveTab,
       popTabFromStackHandler,
       showSettingsTab,
       subTabsStack

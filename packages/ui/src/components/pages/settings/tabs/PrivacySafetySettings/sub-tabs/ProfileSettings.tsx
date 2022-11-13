@@ -46,7 +46,6 @@ const ProfileSettings = () => {
     <Tab
       description="Manage what information you and your fans see and share on Passes."
       title="Profile"
-      withBack
     >
       <form className="mt-[22px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-[32px] space-y-[32px]">

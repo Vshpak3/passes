@@ -38,7 +38,7 @@ const WelcomeMessage = () => {
 
   return (
     <>
-      <Tab title="Edit Welcome Message" withBack />
+      <Tab title="Edit Welcome Message" />
       <div className={classNames(isLoading && "hidden")}>
         <InputMessageTool
           clear={() => null}

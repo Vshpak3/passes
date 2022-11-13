@@ -76,8 +76,8 @@ const PayoutSettings = () => {
     <>
       <Tab
         description="Add and manage payout methods."
+        isRootTab
         title="Payout Settings"
-        withBackMobile
       />
       <div className="my-8 flex flex-col gap-6 xl:flex-row">
         <div

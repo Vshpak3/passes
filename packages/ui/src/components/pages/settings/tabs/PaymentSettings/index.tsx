@@ -43,8 +43,8 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({ isEmbedded = false }) => {
       {!isEmbedded && (
         <Tab
           description="Add and manage payment methods."
+          isRootTab
           title="Payment Settings"
-          withBackMobile
         />
       )}
       <PaymentSettingsDefault

@@ -38,8 +38,8 @@ const PrivacySafetySettings = () => {
   return (
     <Tab
       description="Manage what information you and your fans see and share on Twitter."
+      isRootTab
       title="Privacy & Safety Settings"
-      withBackMobile
     >
       <ul className="mt-[34px]">
         {subTabs.map(({ Icon, id, name, disabled, subText }) => {

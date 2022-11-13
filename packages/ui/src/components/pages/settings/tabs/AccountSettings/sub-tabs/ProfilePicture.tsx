@@ -60,11 +60,7 @@ const ProfilePicture: FC = () => {
   }
 
   return (
-    <Tab
-      description="Change your profile picture."
-      title="Profile Picture"
-      withBack
-    >
+    <Tab description="Change your profile picture." title="Profile Picture">
       <form
         className="mt-6 flex items-center space-x-[30px]"
         onSubmit={handleSubmit(onSaveProfile)}

@@ -20,8 +20,8 @@ const NotificationEmailSettings = () => {
   return (
     <Tab
       description="Select the notifications you receive about your activities, transactions, and recommendations."
+      isRootTab
       title="Notifications & Emails Settings"
-      withBackMobile
     >
       <ul className="mt-[34px]">
         {subTabs.map(({ Icon, id, name, subText }) => (

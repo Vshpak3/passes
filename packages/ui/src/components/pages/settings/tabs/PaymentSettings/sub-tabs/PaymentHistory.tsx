@@ -57,7 +57,7 @@ const PaymentHistory = () => {
   }, [startDate, endDate])
   return (
     <>
-      <Tab title="Payment History" withBack />
+      <Tab title="Payment History" />
       <button
         aria-describedby={monthYearPopperId}
         className="my-4"

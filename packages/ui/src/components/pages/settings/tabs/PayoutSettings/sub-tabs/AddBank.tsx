@@ -82,7 +82,7 @@ const AddBank = () => {
   }
 
   return (
-    <Tab title="Add Bank" withBack>
+    <Tab title="Add Bank">
       <div className="mt-4 flex flex-col">
         <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Type of Bank Account

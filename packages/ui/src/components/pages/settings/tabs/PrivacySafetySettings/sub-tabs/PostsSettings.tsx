@@ -45,7 +45,7 @@ const PostsSettings = () => {
   }, [creatorSettings, isLoading, reset])
 
   return (
-    <Tab title="Posts" withBack>
+    <Tab title="Posts">
       <form className="mt-[22px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-[32px] space-y-[32px]">
           <label className="flex cursor-pointer items-center justify-between">

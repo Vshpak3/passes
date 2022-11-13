@@ -51,7 +51,7 @@ const DisplayName: FC = () => {
   }
 
   return (
-    <Tab title="Change Display Name" withBack>
+    <Tab title="Change Display Name">
       <form className="mt-6" onSubmit={handleSubmit(onSaveDisplayName)}>
         <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
           <span>Display Name</span>

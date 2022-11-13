@@ -20,7 +20,6 @@ const BlockedRestrictedAccounts = () => {
     <Tab
       description="When you block someone, that person won’t be able to follow or message you, and you won’t see notifications from them."
       title="Blocked & Restricted Accounts"
-      withBack
     >
       <div className="mt-5 space-y-[26px] px-2.5">
         <InfiniteScrollPagination<ListMemberDto, GetBlockedResponseDto>

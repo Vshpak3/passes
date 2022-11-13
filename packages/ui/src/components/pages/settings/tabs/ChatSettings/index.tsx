@@ -109,8 +109,8 @@ const ChatSettings = () => {
     <AuthWrapper creatorOnly isPage>
       <Tab
         description="Setup auto welcome message, and manage messages without tips."
+        isRootTab
         title="Chat Settings"
-        withBackMobile
       />
       {!isLoading && (
         <form className="my-6" onSubmit={handleSubmit(onSubmit)}>

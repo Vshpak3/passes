@@ -187,9 +187,9 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
               .map(({ name, id }) => (
                 <li
                   className={classNames(
-                    "rounded-l-[4px] border-r p-2.5 pr-[13px]",
+                    "rounded-l-[4px] p-2.5 pr-[13px]",
                     id === activeTab
-                      ? "border-passes-primary-color bg-passes-primary-color/25"
+                      ? "md:border-r md:border-passes-primary-color md:bg-passes-primary-color/25"
                       : "border-transparent"
                   )}
                   key={id}

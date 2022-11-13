@@ -19,7 +19,6 @@ const DeactivateAccount = () => {
       <Tab
         description="Find out how you can deactivate your account."
         title="Deactivate Your Account"
-        withBack
       />
       <Button
         className="mt-6 w-auto !px-[68px]"
