@@ -79,7 +79,7 @@ export const ChannelList: FC<ChannelListProps> = ({
         "lg:block"
       )}
     >
-      <div className="h-full">
+      <div className="h-full pb-16 lg:pb-0">
         <div
           className="max-h-full overflow-y-auto scrollbar-hide"
           id="channelsDiv"
