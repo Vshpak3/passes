@@ -210,7 +210,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
 
       <div
         className={classNames(
-          "pb-18 w-full overflow-x-hidden px-3 pt-5 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
+          "w-full overflow-x-hidden px-3 pt-5 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
           { hidden: !showSettingsTab }
         )}
       >
