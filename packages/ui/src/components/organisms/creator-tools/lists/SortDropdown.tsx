@@ -13,7 +13,7 @@ export const orderTypeDisplayNames: Record<string, string> = {
   "created at": "Added at date",
   recent: "Most recent",
   oldest: "Oldest",
-  tip: "Highest tip amount",
+  tip: "Recent tip",
   purchased: "Purchased",
   notPurchased: "Not purchased"
 }

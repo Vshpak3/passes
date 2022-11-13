@@ -33,10 +33,9 @@ export const useMedia = (initFiles?: ContentFile[]) => {
       return
     }
     const newFiles = Array.from(_newFiles)
-
     // Validate properties of each file
     for (const file of newFiles) {
-      const type = file.type.match(/(\w+)\/(\w+)/)?.at(1)
+      const type = (file.type.match(/(\w+)\/(\w+)/) ?? [])[1]
       if (!type || (type !== "image" && type !== "video")) {
         toast.error(`Invalid media type ${file.type}`)
         return
