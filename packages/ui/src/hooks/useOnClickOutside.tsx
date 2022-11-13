@@ -2,7 +2,8 @@ import { RefObject, useEffect } from "react"
 
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   ref: RefObject<T>,
-  handler: (event: MouseEvent | TouchEvent) => void
+  handler: (event: MouseEvent | TouchEvent) => void,
+  end?: boolean
 ) {
   useEffect(
     () => {
@@ -16,11 +17,11 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
         }
         handler(event)
       }
-      document.addEventListener("mouseup", listener)
-      document.addEventListener("touchend", listener)
+      document.addEventListener(end ? "mouseup" : "mousedown", listener)
+      document.addEventListener(end ? "touchend" : "touchstart", listener)
       return () => {
-        document.removeEventListener("mouseup", listener)
-        document.removeEventListener("touchend", listener)
+        document.removeEventListener(end ? "mouseup" : "mousedown", listener)
+        document.removeEventListener(end ? "touchend" : "touchstart", listener)
       }
     },
     // Add ref and handler to effect dependencies
@@ -29,6 +30,6 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
     // ... callback/cleanup to run every render. It's not a big deal ...
     // ... but to optimize you can wrap handler in useCallback before ...
     // ... passing it into this hook.
-    [ref, handler]
+    [ref, handler, end]
   )
 }

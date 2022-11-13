@@ -39,12 +39,16 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   closableOnScreen = false
 }) => {
   const modalContentRef = useRef(null)
-  useOnClickOutside(modalContentRef, (e) => {
-    e.stopPropagation()
-    if (isCloseOutside) {
-      setOpen(false)
-    }
-  })
+  useOnClickOutside(
+    modalContentRef,
+    (e) => {
+      e.stopImmediatePropagation()
+      if (isCloseOutside) {
+        setOpen(false)
+      }
+    },
+    true
+  )
 
   useEffect(() => {
     ReactModal.setAppElement("body")
