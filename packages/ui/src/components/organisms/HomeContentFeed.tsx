@@ -70,7 +70,7 @@ export const HomeContentFeed: FC = () => {
           }}
           fetchProps={{}}
           keySelector="postId"
-          keyValue="/feed"
+          keyValue="/pages/feed"
           loadingElement={ContentFeedLoading}
         />
       </div>

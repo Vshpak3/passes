@@ -41,7 +41,7 @@ export class CommentService {
   ): Promise<string> {
     const { postId, text, tags } = createCommentDto
     verifyTaggedText(text, tags)
-    await this.checkPost(userId, postId)
+    await this.checkPost(postId, userId)
     const data = {
       id: v4(),
       post_id: postId,
@@ -59,7 +59,7 @@ export class CommentService {
 
     // post creation check incase user was blocked in between the checkPost and writing
     try {
-      await this.checkPost(userId, postId)
+      await this.checkPost(postId, userId)
     } catch (err) {
       await this.dbWriter<CommentEntity>(CommentEntity.table)
         .where({ id: data.id })

@@ -8,7 +8,7 @@ import {
   MAX_RECONNECT_ATTEMPTS,
   TIME_BETWEEN_RECONNECTS
 } from "src/config/webhooks"
-import { CACHE_KEY_POST } from "src/hooks/profile/usePost"
+import { CACHE_KEY_POST } from "src/hooks/entities/usePost"
 import { useUser } from "src/hooks/useUser"
 
 export const usePostWebhook = () => {

@@ -41,7 +41,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
         }}
         fetchProps={{ creatorId, type: selectedPassType }}
         keySelector="passId"
-        keyValue={`pass/creator-passes/${creatorId}`}
+        keyValue={`/pages/pass/creator-passes/${creatorId}`}
         style={{ overflow: "visible" }}
       >
         <div className="w-[200px]" />

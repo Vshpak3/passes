@@ -22,7 +22,7 @@ import {
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { plural } from "src/helpers/plural"
-import { CACHE_KEY_CONTENT } from "src/hooks/profile/useContent"
+import { CACHE_KEY_CONTENT } from "src/hooks/entities/useContent"
 
 type OrderType = "recent" | "oldest"
 

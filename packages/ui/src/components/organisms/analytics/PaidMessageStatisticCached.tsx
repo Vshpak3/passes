@@ -1,7 +1,7 @@
 import { PaidMessageDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
-import { usePaidMessage } from "src/hooks/profile/usePaidMessage"
+import { usePaidMessage } from "src/hooks/entities/usePaidMessage"
 import { PaidMessageStatistic } from "./PaidMessageStatistic"
 
 export interface PaidMessageStatisticCachedProps {

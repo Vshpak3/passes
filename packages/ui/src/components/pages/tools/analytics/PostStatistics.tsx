@@ -51,7 +51,7 @@ const PostStatistics = () => {
         fetch={getPosts}
         fetchProps={{}}
         keySelector="postId"
-        keyValue="posts"
+        keyValue="/pages/posts/statistics"
         options={{ revalidateOnMount: true }}
       />
     </div>

@@ -1,7 +1,7 @@
 import { FanWallCommentDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
-import { useFanWallComment } from "src/hooks/profile/useFanwallComment"
+import { useFanWallComment } from "src/hooks/entities/useFanwallComment"
 import { FanWallComment } from "./FanWallComment"
 
 export interface FanwallCommentCachedProps {

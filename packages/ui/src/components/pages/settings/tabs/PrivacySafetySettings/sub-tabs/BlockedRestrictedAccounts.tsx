@@ -40,7 +40,7 @@ const BlockedRestrictedAccounts = () => {
             order: SearchFollowRequestDtoOrderEnum.Desc
           }}
           keySelector="userId"
-          keyValue="blocked"
+          keyValue="/pages/blocked"
           options={{ revalidateOnMount: true }}
         />
       </div>

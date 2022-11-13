@@ -1,10 +1,10 @@
 import { ContentDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
-import { useContent } from "src/hooks/profile/useContent"
+import { useContent } from "src/hooks/entities/useContent"
 import { VaultMediaItem } from "./VaultMediaItem"
 
-export interface VaultMediaItemCachedProps {
+interface VaultMediaItemCachedProps {
   content: ContentDto
   selectedItems: ContentDto[]
   setSelectedItems: (items: ContentDto[]) => void

@@ -57,7 +57,7 @@ export const PassHoldings: FC = () => {
         }}
         fetchProps={fetchProps}
         keySelector="passHolderId"
-        keyValue="/passholdings"
+        keyValue="/pages/passholdings"
         options={{ revalidateOnMount: true }}
       >
         <div className="hidden w-[300px] md:block" />

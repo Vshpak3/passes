@@ -57,7 +57,7 @@ const ChannelStreamMessagesUnmemo = ({
       fetchProps={fetchProps}
       inverse
       keySelector="messageId"
-      keyValue={`messages/${channelId}`}
+      keyValue={`/pages/messages/${channelId}`}
       loadingElement={
         <div className="sticky top-[0px] left-0 z-50 h-0.5 w-full">
           <div

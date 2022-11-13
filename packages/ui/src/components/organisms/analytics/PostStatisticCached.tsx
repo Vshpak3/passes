@@ -1,7 +1,7 @@
 import { PostDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
-import { usePost } from "src/hooks/profile/usePost"
+import { usePost } from "src/hooks/entities/usePost"
 import { PostStatistic } from "./PostStatistic"
 
 export interface PostStatisticCachedProps {

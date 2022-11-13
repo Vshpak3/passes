@@ -282,7 +282,7 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
           fetchProps={fetchProps}
           hasInitialElement={newListsMembers.length > 0}
           keySelector="userId"
-          keyValue={`list/list-members/${listId}`}
+          keyValue={`/pages/list/list-members/${listId}`}
         >
           {newListsMembers.map((listMember, index) => (
             <ListMember

@@ -1,7 +1,7 @@
 import { CommentDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
-import { useComment } from "src/hooks/profile/useComment"
+import { useComment } from "src/hooks/entities/useComment"
 import { Comment } from "./Comment"
 
 export interface CommentCachedProps {

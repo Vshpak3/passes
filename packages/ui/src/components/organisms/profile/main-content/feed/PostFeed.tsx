@@ -62,7 +62,7 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       }}
       fetchProps={{ creatorId: profileUserId, pinned: false }}
       keySelector="postId"
-      keyValue={`/feed/creator/${profileUserId}`}
+      keyValue={`/pages/feed/creator/${profileUserId}`}
       loadingElement={PostFeedLoader}
     >
       {ownsProfile && <NewPosts />}
