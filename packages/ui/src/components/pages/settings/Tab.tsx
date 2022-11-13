@@ -35,7 +35,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
             )}
             {withBackMobile && (
               <button
-                className="mr-3 lg:hidden"
+                className="mr-3 md:hidden"
                 onClick={() => setShowSettingsTab(false)}
               >
                 <ArrowRightIcon />
