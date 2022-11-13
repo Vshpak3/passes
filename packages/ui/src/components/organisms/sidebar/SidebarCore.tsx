@@ -22,46 +22,46 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
 
   return (
     <div className="flex h-full w-full flex-1 flex-col bg-passes-black lg:px-0">
-      <div className="flex flex-1 flex-col items-end justify-between py-6 pr-6 lg:pr-8">
-        <div className="min-w-[152px]">
-          <div className="flex shrink-0">
-            <Link href="/home">
-              <PassesLogoPink className="mt-2 block h-[30x] w-[30px] fill-current" />
-            </Link>
-          </div>
-          <nav className="flex flex-col items-start gap-0 pt-10">
-            {navigation.map((item: SidebarNavigation) => (
-              <AuthWrapper
-                creatorOnly={item.creatorOnly !== false}
-                key={`sidebar-${item.id}`}
-                skipAuth={item.showWithoutAuth}
-              >
-                {!item.children ? (
-                  <SidebarItem
-                    isActive={item.id === active}
-                    item={item}
-                    key={`sidebar-${item.id}`}
-                  />
-                ) : (
-                  <SidebarDropdown
-                    active={active}
-                    item={item}
-                    key={`sidebar-${item.id}`}
-                  />
-                )}
+      <div className="safe-h-screen min-safe-h-screen max-safe-h-screen flex flex-1 flex-col items-end justify-between py-6 pr-6 lg:pr-8">
+        <div className="flex h-full min-w-[152px] flex-col justify-between">
+          <div>
+            <div className="flex shrink-0">
+              <Link href="/home">
+                <PassesLogoPink className="mt-2 block h-[30x] w-[30px] fill-current" />
+              </Link>
+            </div>
+            <nav className="flex flex-col items-start gap-0 pt-10">
+              {navigation.map((item: SidebarNavigation) => (
+                <AuthWrapper
+                  creatorOnly={item.creatorOnly !== false}
+                  key={`sidebar-${item.id}`}
+                  skipAuth={item.showWithoutAuth}
+                >
+                  {!item.children ? (
+                    <SidebarItem
+                      isActive={item.id === active}
+                      item={item}
+                      key={`sidebar-${item.id}`}
+                    />
+                  ) : (
+                    <SidebarDropdown
+                      active={active}
+                      item={item}
+                      key={`sidebar-${item.id}`}
+                    />
+                  )}
+                </AuthWrapper>
+              ))}
+              <AuthWrapper>
+                {user?.isCreator ? (
+                  <NewPostButton />
+                ) : isOverMinCreatorAge(user) ? (
+                  <BecomeCreatorButton />
+                ) : null}
               </AuthWrapper>
-            ))}
-            <AuthWrapper>
-              {user?.isCreator ? (
-                <NewPostButton />
-              ) : isOverMinCreatorAge(user) ? (
-                <BecomeCreatorButton />
-              ) : null}
-            </AuthWrapper>
-          </nav>
-        </div>
-        <AuthWrapper>
-          <div className="mb-20 mr-5 flex flex-col items-start gap-0">
+            </nav>
+          </div>
+          <AuthWrapper>
             <SidebarItem
               isActive={false}
               isDropdown={false}
@@ -73,8 +73,8 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               }}
               key="sidebar-logout"
             />
-          </div>
-        </AuthWrapper>
+          </AuthWrapper>
+        </div>
       </div>
     </div>
   )
