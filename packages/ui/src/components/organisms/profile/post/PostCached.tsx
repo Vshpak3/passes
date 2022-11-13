@@ -11,18 +11,26 @@ export interface PostCachedProps {
   inHomeFeed?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
+  fetch?: boolean
 }
 
 export const PostCached: FC<PostCachedProps> = ({
   post,
+  fetch,
   ...res
 }: PostCachedProps) => {
-  const { post: cachedPost, update } = usePost(post.postId)
+  const { post: cachedPost, update, mutatePost } = usePost(post.postId)
 
   useEffect(() => {
     update(post)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [post])
+
+  useEffect(() => {
+    if (fetch) {
+      mutatePost()
+    }
+  }, [fetch, mutatePost])
 
   return <Post post={cachedPost ?? post} {...res} update={update} />
 }
