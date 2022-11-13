@@ -95,107 +95,103 @@ const LoginPage: FC = () => {
   }
 
   return (
-    <div className="h-screen bg-black">
-      <div className="relative mx-auto flex h-full w-full max-w-[1440px] justify-center pt-12 md:px-4 md:pt-16 lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
-        <span className="absolute top-[136px] left-0 hidden h-[650px] w-[650px] items-center justify-center lg:flex xl:left-12 xl:h-[751px] xl:w-[751px]">
-          <span className="absolute h-full w-full bg-[conic-gradient(from_133.17deg_at_43.11%_51.11%,#F2BD6C_0deg,#BD499B_230.62deg,#A359D5_360deg)] opacity-60 blur-[125px]" />
-          <span className="absolute h-[73%] w-[73%] rounded-full border-[41px] border-white/[0.15]" />
-        </span>
-        <div className="hidden justify-center lg:flex">
-          <SignupTiles />
-        </div>
+    <div className="relative mx-auto flex h-full w-full max-w-[1440px] justify-center pt-12 md:px-4 md:pt-16 lg:items-center lg:justify-between lg:px-16 lg:pt-0 xl:px-[170px] 2xl:px-[200px]">
+      <span className="absolute top-[136px] left-0 hidden h-[650px] w-[650px] items-center justify-center lg:flex xl:left-12 xl:h-[751px] xl:w-[751px]">
+        <span className="absolute h-full w-full bg-[conic-gradient(from_133.17deg_at_43.11%_51.11%,#F2BD6C_0deg,#BD499B_230.62deg,#A359D5_360deg)] opacity-60 blur-[125px]" />
+        <span className="absolute h-[73%] w-[73%] rounded-full border-[41px] border-white/[0.15]" />
+      </span>
+      <div className="hidden justify-center lg:flex">
+        <SignupTiles />
+      </div>
 
-        <div className="flex flex-col items-center gap-y-5">
-          <Text className="mb-4 font-[500] text-white" fontSize={36}>
-            Sign In
-          </Text>
-          <Text className="-mt-8 text-[#b3bee7] opacity-[0.75]">
-            Welcome back!
-          </Text>
-          <form
-            className="flex flex-col gap-y-5"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
-              <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="email"
-                placeholder="Enter your email"
-                register={register}
-                type="text"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Password
-              </Text>
-              <PasswordInput
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="password"
-                placeholder="Enter your password"
-                register={register}
-              />
-            </div>
-
-            <div className="flex flex-row gap-14">
-              <Checkbox
-                errors={errors}
-                label="Remember for 30 days"
-                name="remember"
-                register={register}
-                type="checkbox"
-              />
-              <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
-                <Link href="/forgot-password">Forgot Password</Link>
-              </Text>
-            </div>
-
-            <Button
-              className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-              disabled={isSubmitting}
-              disabledClass="opacity-[0.5]"
-              type={ButtonTypeEnum.SUBMIT}
-              variant={ButtonVariant.NONE}
-            >
-              <Text className="font-medium" fontSize={16}>
-                Login
-              </Text>
-              <EnterIcon />
-            </Button>
-          </form>
-
-          <div className="z-10 flex gap-[17px]">
-            <RoundedIconButton
-              icon={GoogleLogo}
-              onClick={handleLoginWithGoogle}
-            />
-            <RoundedIconButton
-              icon={FacebookLogo}
-              onClick={handleLoginWithFacebook}
-            />
-            <RoundedIconButton
-              icon={TwitterLogo}
-              onClick={handleLoginWithTwitter}
+      <div className="flex flex-col items-center gap-y-5">
+        <Text className="mb-4 font-[500] text-white" fontSize={36}>
+          Sign In
+        </Text>
+        <Text className="-mt-8 text-[#b3bee7] opacity-[0.75]">
+          Welcome back!
+        </Text>
+        <form
+          className="flex flex-col gap-y-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="flex flex-col">
+            <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
+            <Input
+              className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+              errors={errors}
+              name="email"
+              placeholder="Enter your email"
+              register={register}
+              type="text"
             />
           </div>
 
-          <Text
-            className="z-10 flex w-[360px] justify-center text-[#b3bee7]"
-            fontSize={13}
+          <div className="flex flex-col">
+            <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Password</Text>
+            <PasswordInput
+              className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+              errors={errors}
+              name="password"
+              placeholder="Enter your password"
+              register={register}
+            />
+          </div>
+
+          <div className="flex flex-row gap-14">
+            <Checkbox
+              errors={errors}
+              label="Remember for 30 days"
+              name="remember"
+              register={register}
+              type="checkbox"
+            />
+            <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+              <Link href="/forgot-password">Forgot Password</Link>
+            </Text>
+          </div>
+
+          <Button
+            className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
+            disabled={isSubmitting}
+            disabledClass="opacity-[0.5]"
+            type={ButtonTypeEnum.SUBMIT}
+            variant={ButtonVariant.NONE}
           >
-            Don&apos;t have an account?
-            <Link href="/signup">
-              <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
-                Sign up
-                <EnterPurpleIcon />
-              </div>
-            </Link>
-          </Text>
+            <Text className="font-medium" fontSize={16}>
+              Login
+            </Text>
+            <EnterIcon />
+          </Button>
+        </form>
+
+        <div className="z-10 flex gap-[17px]">
+          <RoundedIconButton
+            icon={GoogleLogo}
+            onClick={handleLoginWithGoogle}
+          />
+          <RoundedIconButton
+            icon={FacebookLogo}
+            onClick={handleLoginWithFacebook}
+          />
+          <RoundedIconButton
+            icon={TwitterLogo}
+            onClick={handleLoginWithTwitter}
+          />
         </div>
+
+        <Text
+          className="z-10 flex w-[360px] justify-center text-[#b3bee7]"
+          fontSize={13}
+        >
+          Don&apos;t have an account?
+          <Link href="/signup">
+            <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+              Sign up
+              <EnterPurpleIcon />
+            </div>
+          </Link>
+        </Text>
       </div>
     </div>
   )

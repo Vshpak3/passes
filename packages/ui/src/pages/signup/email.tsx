@@ -116,7 +116,7 @@ const SignupEmailPage: FC = () => {
   }
 
   return (
-    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
+    <div className="flex flex-1 flex-col px-0 pt-6 lg:px-20">
       <div className="absolute left-0 top-0 h-[300px] w-full bg-[#12070E] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
       <div className="z-10 flex justify-center md:mt-20 lg:mt-40">
         <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
