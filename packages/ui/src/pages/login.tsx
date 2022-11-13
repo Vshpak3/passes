@@ -146,9 +146,11 @@ const LoginPage: FC = () => {
               register={register}
               type="checkbox"
             />
-            <Text className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
-              <Link href="/forgot-password">Forgot Password</Link>
-            </Text>
+            <Link href="/forgot-password">
+              <p className="ml-1 flex cursor-pointer select-none flex-row bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+                Forgot Password
+              </p>
+            </Link>
           </div>
 
           <Button
@@ -186,10 +188,10 @@ const LoginPage: FC = () => {
         >
           Don&apos;t have an account?
           <Link href="/signup">
-            <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+            <p className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
               Sign up
               <EnterPurpleIcon />
-            </div>
+            </p>
           </Link>
         </Text>
       </div>

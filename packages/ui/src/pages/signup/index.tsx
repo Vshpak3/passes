@@ -222,10 +222,10 @@ const SignupInitialPage: FC = () => {
         >
           Have an account?
           <Link href="/login">
-            <div className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
+            <p className="z-10 ml-1 flex cursor-pointer select-none flex-row items-center gap-1 bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 bg-clip-text text-transparent">
               Sign In
               <EnterPurpleIcon />
-            </div>
+            </p>
           </Link>
         </Text>
       </div>

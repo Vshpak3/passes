@@ -56,7 +56,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   return (
     <ReactModal
       isOpen={isOpen}
-      onRequestClose={() => setOpen(false)}
+      onRequestClose={() => (isCloseOutside ? setOpen(false) : null)}
       shouldCloseOnOverlayClick={shouldCloseOnClickOutside}
       style={{
         content: {
