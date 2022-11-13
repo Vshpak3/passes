@@ -43,6 +43,7 @@ export const useThreeDS = () => {
     setRedirected(false)
   }
   useEffect(() => {
+    const windowReference = window.open()
     if (payinId && waiting) {
       const fetch = async () => {
         const paymentApi = new PaymentApi()
@@ -51,8 +52,9 @@ export const useThreeDS = () => {
             const payin = await paymentApi.getPayin({
               getPayinRequestDto: { payinId }
             })
-            if (!redirected && payin.redirectUrl) {
-              window.open(payin.redirectUrl)
+            if (!redirected && payin.redirectUrl && windowReference) {
+              windowReference.location = payin.redirectUrl
+              // window.open(payin.redirectUrl)
               setRedirected(true)
             } else if (
               payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
