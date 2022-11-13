@@ -12,7 +12,7 @@ export interface VaultMediaItemCachedProps {
   handleClickOnItem: (item: ContentDto) => void
 }
 
-export const VaultMediaItemCached: FC<VaultMediaItemCachedProps> = ({
+const VaultMediaItemCached: FC<VaultMediaItemCachedProps> = ({
   content,
   ...res
 }: VaultMediaItemCachedProps) => {
