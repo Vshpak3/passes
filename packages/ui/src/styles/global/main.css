@@ -16,3 +16,7 @@
 @import "../components/CheckboxSlider.css";
 @import "../components/Swiper.css";
 @import "../components/DateRangePicker.css";
+
+.Toastify__toast-container {
+  z-index: 200000;
+}

@@ -1,4 +1,5 @@
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
+import ms from "ms"
 import Link from "next/link"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
@@ -52,7 +53,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
   closeModal,
   setNewCard
 }) => {
-  const { defaultPayinMethod, cards } = usePayinMethod()
+  const { defaultPayinMethod, cards } = usePayinMethod(false, ms("1 second"))
 
   const { setValue, watch } = useForm<PaymentModalBodyFromProps>({
     defaultValues: {
