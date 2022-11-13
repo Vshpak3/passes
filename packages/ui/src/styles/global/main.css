@@ -13,7 +13,6 @@
 /* Imports of Per-Component Styling */
 
 @import "../components/Calendar.css";
-@import "../components/Text.css";
 @import "../components/CheckboxSlider.css";
 @import "../components/Swiper.css";
 @import "../components/DateRangePicker.css";

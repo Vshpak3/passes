@@ -118,10 +118,7 @@ export const Comment: FC<CommentProps> = ({
                 </div>
               </div>
             </div>
-            <Text
-              className="whitespace-pre-wrap font-light"
-              fontSize={14}
-            >
+            <Text className="whitespace-pre-wrap font-light" fontSize={14}>
               {!isHidden || showHidden ? (
                 <FormattedText tags={comment.tags} text={comment.text} />
               ) : (
