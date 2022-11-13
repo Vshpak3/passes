@@ -132,7 +132,7 @@ const FanLists: NextPage = () => {
       <ul className="px-7">
         <li className="flex items-center justify-between py-5">
           <div className="flex flex-row justify-between gap-[32px] border-b border-[#2C282D]">
-            <span className="cursor-pointer border-b-[3px] border-b-[#9C4DC1] py-[16px] px-[12px] text-base font-bold">
+            <span className="cursor-pointer border-b-[3px] border-b-passes-pink-100 py-[16px] px-[12px] text-base font-bold">
               Created List
             </span>
           </div>
