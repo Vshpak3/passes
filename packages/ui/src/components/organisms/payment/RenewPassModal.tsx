@@ -45,7 +45,7 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
     <Modal
       closable={false}
       isOpen={isOpen}
-      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
+      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
       setOpen={setOpen}
     >
       {newCard ? (

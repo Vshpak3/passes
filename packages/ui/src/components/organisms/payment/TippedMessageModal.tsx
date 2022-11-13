@@ -43,7 +43,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
     <Modal
       closable={false}
       isOpen
-      modalContainerClassname="w-[80%] lg:max-w-[30%]"
+      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessageRequest(null)}
     >
       {newCard ? (

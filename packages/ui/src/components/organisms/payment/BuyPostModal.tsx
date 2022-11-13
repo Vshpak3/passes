@@ -37,7 +37,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
     <Modal
       closable={false}
       isOpen
-      modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
+      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
       {newCard ? (
