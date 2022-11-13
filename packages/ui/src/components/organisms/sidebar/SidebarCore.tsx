@@ -61,19 +61,21 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               </AuthWrapper>
             </nav>
           </div>
-          <AuthWrapper>
-            <SidebarItem
-              isActive={false}
-              isDropdown={false}
-              item={{
-                name: "Logout",
-                id: "logout",
-                icon: LogoutIcon,
-                href: "/logout"
-              }}
-              key="sidebar-logout"
-            />
-          </AuthWrapper>
+          <div className="flex pr-4 lg:justify-end">
+            <AuthWrapper>
+              <SidebarItem
+                isActive={false}
+                isDropdown={false}
+                item={{
+                  name: "Logout",
+                  id: "logout",
+                  icon: LogoutIcon,
+                  href: "/logout"
+                }}
+                key="sidebar-logout"
+              />
+            </AuthWrapper>
+          </div>
         </div>
       </div>
     </div>
