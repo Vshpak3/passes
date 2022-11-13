@@ -38,7 +38,7 @@ export const SidebarMobileContainer: FC<
           >
             <Dialog.Panel className="relative flex w-full max-w-[220px] flex-1 flex-col overflow-y-auto border-r-[1px] border-passes-gray bg-passes-black scrollbar-hide">
               <div className="h-0 flex-1">
-                <SidebarMobileHeader toggleSidebar={toggleSidebar} />
+                {/* <SidebarMobileHeader toggleSidebar={toggleSidebar} /> */}
                 <nav className="flex flex-col items-start gap-3">
                   {children}
                 </nav>

@@ -40,7 +40,7 @@ export const SidebarMobileWrapper: FC<
           <MobileNavBar activeRoute={activeRoute} />
         </>
       ) : (
-        <header className="sticky inset-y-0 col-span-3 flex shrink-0 flex-col border-r-[1px] border-passes-gray">
+        <header className="safe-h-screen min-safe-h-screen max-safe-h-screen sticky inset-y-0 col-span-3 flex shrink-0 flex-col border-r-[1px] border-passes-gray">
           {children}
         </header>
       )}
