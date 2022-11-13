@@ -57,7 +57,9 @@ export const Comment: FC<CommentProps> = ({
     ...DropDownGeneral("Delete", isOwner || ownsPost, async () => {
       await deleteComment(postId, commentId)
       update({ deletedAt: new Date() })
-      decrementNumComments()
+      if (!isHidden) {
+        decrementNumComments()
+      }
     }),
     ...DropDownGeneral("Hide", !isOwner && ownsPost && !isHidden, async () => {
       update({ isHidden: true })
