@@ -42,7 +42,7 @@ import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
-import { gradients } from "./_gradients"
+import { gradients } from "src/layout/_gradients"
 
 const BlockModal = dynamic(
   () => import("src/components/organisms/BlockModal"),
