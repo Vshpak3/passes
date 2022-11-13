@@ -144,7 +144,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
 
       await addCard(payload)
       toast.success("Credit card added succesfully")
-      await sleep("1 second") // waiting for circle
+      await sleep("3 second") // waiting for circle
       if (callback) {
         callback()
       }

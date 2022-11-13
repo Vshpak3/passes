@@ -1,0 +1,22 @@
+.modal-gradient {
+  background: conic-gradient(
+    from 133.17deg at 43.11% 51.11%,
+    #f79a00 0deg,
+    #f14a9d 230.62deg,
+    #8400b9 360deg
+  );
+  opacity: 0.6;
+  filter: blur(125px);
+  transform: rotate(-90deg);
+}
+
+.background-gradient {
+  background: linear-gradient(
+    91.26deg,
+    #1d2570 12.36%,
+    #904141 36.84%,
+    #881752 69.13%,
+    #e2742d 94.13%
+  );
+  transform: rotate(-105deg);
+}
