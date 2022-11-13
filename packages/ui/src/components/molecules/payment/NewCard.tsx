@@ -8,6 +8,7 @@ import { SHA256 } from "crypto-js"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
+import ArrowRightIcon from "public/icons/arrow-right.svg"
 import InfoIcon from "public/icons/info-icon.svg"
 import { FC, memo, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -178,7 +179,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           )}
           onClick={callback}
         >
-          back
+          <ArrowRightIcon />
         </div>
       </div>
       <CreditCardInput
