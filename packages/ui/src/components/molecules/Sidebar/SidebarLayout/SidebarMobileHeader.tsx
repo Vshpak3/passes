@@ -13,7 +13,7 @@ export const SidebarMobileHeader: FC<SidebarMobileHeaderProps> = ({
     <Disclosure>
       <Disclosure.Button>
         <span
-          className="group m-4 flex cursor-pointer items-center"
+          className="group m-4 flex cursor-pointer select-none items-center"
           onClick={toggleSidebar}
         >
           <div className="group flex items-center text-[26px] font-[500] text-white">

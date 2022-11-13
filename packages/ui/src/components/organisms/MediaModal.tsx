@@ -30,12 +30,12 @@ export const MediaModal: FC<ModalProps> = ({
   carouselContent = undefined // deprecate content carousel for now
   // const width = window.innerWidth - 100
   // const height = window.innerHeight - 100
-  const [width, setWidth] = useState<number>(window.innerWidth - 100)
-  const [height, setHeight] = useState<number>(window.innerHeight - 100)
+  const [width, setWidth] = useState<number>(window.innerWidth - 25)
+  const [height, setHeight] = useState<number>(window.innerHeight - 25)
   useEffect(() => {
     const handleResize = () => {
-      setWidth(window.innerWidth - 50)
-      setHeight(window.innerHeight - 50)
+      setWidth(window.innerWidth - 25)
+      setHeight(window.innerHeight - 25)
     }
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
