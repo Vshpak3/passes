@@ -4,9 +4,7 @@ import useSWR, { useSWRConfig } from "swr"
 
 export const CACHE_KEY_POST = "/posts"
 
-export const usePost = (_postId?: string) => {
-  const [postId, setPostId] = useState(_postId)
-
+export const usePost = (postId: string) => {
   const api = new PostApi()
 
   // TODO: add refresh interval passed on a "ready" tag for when content is finished uploading
@@ -14,10 +12,7 @@ export const usePost = (_postId?: string) => {
     data: post,
     isValidating: loadingPost,
     mutate: mutatePost
-  } = useSWR(postId ? [CACHE_KEY_POST, postId] : null, async () => {
-    if (!postId) {
-      return
-    }
+  } = useSWR([CACHE_KEY_POST, postId], async () => {
     setHasInitialFetch(true)
     return await api.findPost({
       postId: postId
@@ -42,8 +37,8 @@ export const usePost = (_postId?: string) => {
     post,
     loadingPost,
     mutatePost,
-    setPostId,
     hasInitialFetch,
+    setHasInitialFetch,
     update: mutateManual
   }
 }

@@ -21,12 +21,6 @@ import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
 
 interface PostProps extends PostCachedProps {
-  post: PostDto
-  postByUrl?: boolean
-  // Whether or not the post is from shown in the non-profile home feed
-  inHomeFeed?: boolean
-  // Whether or not the post was from returned from the feed API
-  isPinned?: boolean
   update: (update: Partial<PostDto>) => void
 }
 
@@ -35,6 +29,7 @@ const PostUnmemo: FC<PostProps> = ({
   inHomeFeed = false,
   postByUrl = false,
   isPinned = false,
+  bordered = false,
   update
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
@@ -123,7 +118,11 @@ const PostUnmemo: FC<PostProps> = ({
   return (
     <>
       {!isRemoved && !post.deletedAt && (
-        <div>
+        <div
+          className={classNames(
+            bordered && "border-b-[0.5px] border-passes-gray"
+          )}
+        >
           <div
             className={classNames(
               isPinned && "bg-passes-pink-100/10",
