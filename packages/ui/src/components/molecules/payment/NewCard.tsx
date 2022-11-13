@@ -169,18 +169,17 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
   return (
     <>
       <div className="mt-3 flex w-full flex-row justify-between">
+        {isEmbedded && (
+          <div
+            className="text-passes-primary-color underline hover:cursor-pointer"
+            onClick={callback}
+          >
+            <ArrowRightIcon />
+          </div>
+        )}
         <span className="block text-[16px] font-[500] text-white">
           Card Info
         </span>
-        <div
-          className={classNames(
-            !isEmbedded && "hidden",
-            "text-passes-primary-color underline hover:cursor-pointer"
-          )}
-          onClick={callback}
-        >
-          <ArrowRightIcon />
-        </div>
       </div>
       <CreditCardInput
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
