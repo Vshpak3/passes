@@ -369,7 +369,7 @@ export const InputMessage: FC<InputMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mb-5 flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
+            "flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
             Object.values(errors)[0] && "!pt-0"
           )}
         >
