@@ -46,6 +46,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
   style?: CSSProperties
   scrollableTarget?: string
   inverse?: boolean
+  hasInitialElement?: boolean
   initialScrollY?: number
   mutateOnLoad?: boolean
   pullDownToRefresh?: boolean
@@ -78,6 +79,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   emptyElement,
   loadingElement,
   endElement,
+  hasInitialElement = false,
   resets = 0,
   className,
   style = {},
@@ -96,7 +98,6 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   const newOptions = useMemo(() => {
     return { ...defaultOptions, ...options }
   }, [options])
-
   const getKey = (pageIndex: number, response: T): Key<T> => {
     if (pageIndex === 0) {
       return { props: fetchProps, resets, keyValue }
@@ -197,7 +198,12 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       style={{ overflow: "visible", ...style }}
     >
       {!childrenEnd && children}
-      {data && data.length >= 1 && data[0].data.length === 0 && emptyElement}
+      {flattenedData.length === 0 &&
+        data &&
+        data.length >= 1 &&
+        data[0].data.length === 0 &&
+        hasInitialElement &&
+        emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent
           arg={data}
