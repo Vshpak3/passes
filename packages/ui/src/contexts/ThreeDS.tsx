@@ -52,7 +52,7 @@ export const useThreeDS = () => {
               getPayinRequestDto: { payinId }
             })
             if (!redirected && payin.redirectUrl) {
-              window.open(payin.redirectUrl, "_blank")
+              window.open(payin.redirectUrl, "_blank", "noopener,noreferrer")
               setRedirected(true)
             } else if (
               payin.payinStatus === PayinDtoPayinStatusEnum.Successful ||
