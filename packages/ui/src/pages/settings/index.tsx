@@ -181,7 +181,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
           }
         )}
       >
-        <div className="min-safe-h-screen mx-auto w-full border-r border-passes-dark-200 pt-2">
+        <div className="mx-auto h-full w-full border-passes-dark-200 pt-2 md:border-r">
           <ul className="mt-6 -mr-px">
             {tabs
               .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
@@ -210,7 +210,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
 
       <div
         className={classNames(
-          "w-full overflow-x-hidden px-3 pt-6 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
+          "pb-18 w-full overflow-x-hidden px-3 pt-5 sm:px-[29px] md:block md:max-w-[830px] md:px-5",
           { hidden: !showSettingsTab }
         )}
       >
