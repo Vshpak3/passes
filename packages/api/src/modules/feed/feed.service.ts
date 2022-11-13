@@ -27,6 +27,70 @@ export class FeedService {
     private readonly postService: PostService,
   ) {}
 
+  async getAllPosts(
+    userId: string,
+    getFeedRequestDto: GetFeedRequestDto,
+  ): Promise<PostDto[]> {
+    const { lastId, createdAt } = getFeedRequestDto
+    const dbReader = this.dbReader
+    let query = this.dbReader<PostEntity>(PostEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${PostEntity.table}.user_id`,
+      )
+      .leftJoin(PostUserAccessEntity.table, function () {
+        this.on(
+          `${PostUserAccessEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(
+          `${PostUserAccessEntity.table}.user_id`,
+          dbReader.raw('?', [userId]),
+        )
+      })
+      .leftJoin(PostTipEntity.table, function () {
+        this.on(
+          `${PostTipEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        ).andOn(`${PostTipEntity.table}.user_id`, dbReader.raw('?', [userId]))
+      })
+      .leftJoin(PostLikeEntity.table, function () {
+        this.on(
+          `${PostEntity.table}.id`,
+          `${PostLikeEntity.table}.post_id`,
+        ).andOn(`${PostLikeEntity.table}.liker_id`, dbReader.raw('?', [userId]))
+      })
+      .select([
+        `${PostEntity.table}.*`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+        `${PostUserAccessEntity.table}.paid_at as paid_at`,
+        `${PostUserAccessEntity.table}.paying as paying`,
+        `${PostTipEntity.table}.amount as your_tips`,
+        `${PostLikeEntity.table}.id as is_liked`,
+      ])
+      .whereNull(`${PostEntity.table}.deleted_at`)
+      .andWhere(function () {
+        return this.whereNull(`${PostEntity.table}.expires_at`).orWhere(
+          `${PostEntity.table}.expires_at`,
+          '>',
+          new Date(),
+        )
+      })
+      .andWhere(`${PostEntity.table}.content_processed`, true)
+      .limit(MAX_POST_PER_FEED_REQUEST)
+    query = createPaginatedQuery(
+      query,
+      PostEntity.table,
+      PostEntity.table,
+      'created_at',
+      OrderEnum.DESC,
+      createdAt,
+      lastId,
+    )
+    return await this.postService.getPostsFromQuery(userId, query)
+  }
+
   async getFeed(
     userId: string,
     getFeedRequestDto: GetFeedRequestDto,

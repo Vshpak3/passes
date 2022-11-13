@@ -29,7 +29,7 @@ export class FeedController {
     @Body() getFeedRequestDto: GetFeedRequestDto,
   ): Promise<GetFeedResponseDto> {
     return new GetFeedResponseDto(
-      await this.feedService.getFeed(req.user.id, getFeedRequestDto),
+      await this.feedService.getAllPosts(req.user.id, getFeedRequestDto),
       getFeedRequestDto,
     )
   }
