@@ -180,7 +180,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
           }
         )}
       >
-        <div className="mx-auto h-full w-full border-r border-passes-dark-200 pt-2">
+        <div className="min-safe-h-screen mx-auto w-full border-r border-passes-dark-200 pt-2">
           <ul className="mt-6 -mr-px">
             {tabs
               .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
