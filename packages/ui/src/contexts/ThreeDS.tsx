@@ -43,8 +43,8 @@ export const useThreeDS = () => {
     setRedirected(false)
   }
   useEffect(() => {
-    const windowReference = window.open()
     if (payinId && waiting) {
+      const windowReference = window.open()
       const fetch = async () => {
         const paymentApi = new PaymentApi()
         if (waiting.valueOf() + ms(THREE_DS_EXPIRATION_TIME) > Date.now()) {
