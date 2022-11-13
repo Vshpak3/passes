@@ -1,7 +1,6 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
-import BackIcon from "public/icons/back-icon.svg"
 import PhotosIcon from "public/icons/profile-photos1-icon.svg"
-import React, { Dispatch, FC, SetStateAction } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 
 import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
@@ -10,6 +9,7 @@ import { formatCurrency } from "src/helpers/formatters"
 import { useUser } from "src/hooks/useUser"
 import { useUserSpending } from "src/hooks/useUserSpending"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
+import { ArrowLeft } from "src/icons/ArrowLeft"
 
 interface ChannelHeaderProps {
   selectedChannel: ChannelMemberDto
@@ -56,8 +56,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
         ) : (
           <div className="flex w-full items-center">
             {isTablet && (
-              <div className="mr-2" onClick={onBack}>
-                <BackIcon />
+              <div className="mr-4 cursor-pointer" onClick={onBack}>
+                <ArrowLeft height="16" width="16" />
               </div>
             )}
             <div className="">

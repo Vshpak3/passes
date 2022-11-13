@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 
 type ArrowLeftProps = {
-  className: string
+  className?: string
   width: string
   height: string
 }

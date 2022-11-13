@@ -1,13 +1,13 @@
 import { ContentBareDto, ContentDto } from "@passes/api-client"
 import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
-import MessagesBackIcon from "public/icons/messages-back-icon.svg"
 import MessagesPlusIcon from "public/icons/messages-plus-icon.svg"
 import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { useUser } from "src/hooks/useUser"
+import { ArrowLeft } from "src/icons/ArrowLeft"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
@@ -34,8 +34,11 @@ const MessagesPage = () => {
           {user?.isCreator ? (
             <div className="flex flex-1 items-center">
               {massMessage ? (
-                <div className="ml-4 cursor-pointer">
-                  <MessagesBackIcon onClick={() => setMassMessage(false)} />
+                <div
+                  className="ml-4 cursor-pointer"
+                  onClick={() => setMassMessage(false)}
+                >
+                  <ArrowLeft height="16" width="16" />
                 </div>
               ) : null}
               <div className="flex flex-row items-center">
