@@ -42,6 +42,7 @@ import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
+import { gradients } from "./_gradients"
 
 const BlockModal = dynamic(
   () => import("src/components/organisms/BlockModal"),
@@ -193,6 +194,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     <AppProviders providers={providers}>
       {getLayout(
         <>
+          {gradients()}
           <Component {...pageProps} />
           {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
           {buyMessage && selectedChannel && (
