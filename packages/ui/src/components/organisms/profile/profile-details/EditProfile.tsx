@@ -26,15 +26,14 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { dirtyValues } from "src/helpers/form"
 import { ProfileUpdate, updateProfile } from "src/helpers/updateProfile"
-import { socialMediaUsernameSchema } from "src/helpers/validation-social"
+import { displayNameSchema } from "src/helpers/validation/displayName"
+import { socialMediaUsernameSchema } from "src/helpers/validation/social"
 import { DeleteIcon } from "src/icons/DeleteIcon"
 import { ProfileContext } from "src/pages/[username]"
 import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
-  displayName: string()
-    .transform((name) => name.trim())
-    .required("Please enter a display name"),
+  ...displayNameSchema,
   description: string()
     .transform((name) => name.trim())
     .optional(),

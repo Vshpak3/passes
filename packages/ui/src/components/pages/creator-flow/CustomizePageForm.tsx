@@ -10,6 +10,7 @@ import ProfileTwitterIcon from "public/icons/social/twitter.svg"
 import ProfileYoutubeIcon from "public/icons/social/youtube.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { array, object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
@@ -17,8 +18,9 @@ import { Input } from "src/components/atoms/input/GeneralInput"
 import { FormImage } from "src/components/organisms/FormImage"
 import { errorMessage } from "src/helpers/error"
 import { updateProfile } from "src/helpers/updateProfile"
+import { displayNameSchema } from "src/helpers/validation/displayName"
+import { socialMediaUsernameSchema } from "src/helpers/validation/social"
 import { useUser } from "src/hooks/useUser"
-import { creatorFlowProfileSchema } from "./helper/CreatorFlowProfileSchema"
 
 interface CreatorFlowCustomizeFormProps {
   displayName: string
@@ -37,6 +39,16 @@ interface CreatorFlowCustomizeFormProps {
 
   isAdult: boolean
 }
+
+const creatorFlowProfileSchema = object({
+  ...displayNameSchema,
+  description: string()
+    .transform((name) => name.trim())
+    .required("Please enter a bio"),
+  profileImage: array().min(1, "Please upload a profile image"),
+  profileBanner: array().optional(),
+  ...socialMediaUsernameSchema
+})
 
 interface ConnectedAccountsProps {
   discord: boolean

@@ -1,28 +1,18 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { USER_DISPLAY_NAME_LENGTH } from "@passes/shared-constants"
 import { FC, memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { object, SchemaOf, string } from "yup"
+import { object, SchemaOf } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
+import { displayNameSchema } from "src/helpers/validation/displayName"
 import { useUser } from "src/hooks/useUser"
 
 interface DisplayNameFormProps {
   displayName: string
-}
-
-export const displayNameSchema = {
-  displayName: string()
-    .transform((value) => value.trim())
-    .required("Please enter a display name")
-    .max(
-      USER_DISPLAY_NAME_LENGTH,
-      `Display name cannot exceed ${USER_DISPLAY_NAME_LENGTH} characters`
-    )
 }
 
 const displayNameFormSchema: SchemaOf<DisplayNameFormProps> =

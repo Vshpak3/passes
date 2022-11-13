@@ -10,7 +10,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { passwordFormSchema } from "src/pages/signup"
+import { passwordSchema } from "src/helpers/validation/password"
 
 interface ChangePasswordFormProps {
   oldPassword: string
@@ -20,7 +20,7 @@ interface ChangePasswordFormProps {
 
 const changePasswordFormSchema: SchemaOf<ChangePasswordFormProps> = object({
   oldPassword: string().required("Please enter your current password"),
-  ...passwordFormSchema
+  ...passwordSchema
 })
 
 const defaultValues = {

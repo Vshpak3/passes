@@ -12,14 +12,14 @@ import { Text } from "src/components/atoms/Text"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { sleep } from "src/helpers/sleep"
-import { emailFormSchema } from "./signup"
+import { emailSchema } from "src/helpers/validation/email"
 
 export interface ForgotPasswordFormProps {
   email: string
 }
 
 const forgotPasswordFormSchema: SchemaOf<ForgotPasswordFormProps> = object({
-  ...emailFormSchema
+  ...emailSchema
 })
 
 const ForgotPassword = () => {

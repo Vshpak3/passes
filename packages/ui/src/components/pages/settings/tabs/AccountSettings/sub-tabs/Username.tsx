@@ -1,41 +1,22 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import {
-  USER_USERNAME_LENGTH,
-  VALID_USERNAME_REGEX
-} from "@passes/shared-constants"
 import { FC, memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
-import { object, SchemaOf, string } from "yup"
+import { object, SchemaOf } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
+import { usernameSchema } from "src/helpers/validation/username"
 import { useUser } from "src/hooks/useUser"
 
 interface UsernameFormProps {
   username: string
 }
 
-export const usernameSchema = {
-  username: string()
-    .transform((value) => value.trim())
-    .required("Please enter a username")
-    .max(
-      USER_USERNAME_LENGTH,
-      `Username cannot exceed ${USER_USERNAME_LENGTH} characters`
-    )
-    .matches(
-      new RegExp(VALID_USERNAME_REGEX),
-      "This username contains invalid characters"
-    )
-}
-
 const usernameFormSchema: SchemaOf<UsernameFormProps> = object(usernameSchema)
-
-const a = { ...usernameFormSchema }
 
 const Username: FC = () => {
   const { user, loading, updateUsername } = useUser()

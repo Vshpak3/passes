@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AuthApi, AuthLocalApi } from "@passes/api-client"
-import { PASSWORD_MIN_LENGTH, PASSWORD_REGEX } from "@passes/shared-constants"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
@@ -10,7 +9,7 @@ import GoogleLogo from "public/icons/google-logo.svg"
 import TwitterLogo from "public/icons/twitter-logo.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
-import { object, SchemaOf, string } from "yup"
+import { object, SchemaOf } from "yup"
 
 import {
   Button,
@@ -25,6 +24,8 @@ import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
+import { emailSchema } from "src/helpers/validation/email"
+import { passwordSchema } from "src/helpers/validation/password"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
@@ -35,43 +36,9 @@ export interface SignupInitialPageSchema {
   confirmPassword: string
 }
 
-// To be re-used by the forgot password page
-export const emailFormSchema = {
-  email: string()
-    .required("Enter an email address")
-    .email("Email address is invalid")
-}
-
-// To be re-used by the reset password page
-export const passwordFormSchema = {
-  password: string()
-    .required("Enter a password")
-    .min(
-      PASSWORD_MIN_LENGTH,
-      `Password should be at least ${PASSWORD_MIN_LENGTH} characters`
-    )
-    .matches(
-      PASSWORD_REGEX,
-      "Password must contain at least one letter and number"
-    ),
-  confirmPassword: string()
-    .required("Enter a password")
-    .min(
-      PASSWORD_MIN_LENGTH,
-      `Password should be at least ${PASSWORD_MIN_LENGTH} characters`
-    )
-    .matches(
-      PASSWORD_REGEX,
-      "Password must contain at least one letter and number"
-    )
-    .test("match", "Passwords do not match", function (confirmPassword) {
-      return confirmPassword === this?.parent?.password
-    })
-}
-
 const signupInitialPageSchema: SchemaOf<SignupInitialPageSchema> = object({
-  ...emailFormSchema,
-  ...passwordFormSchema
+  ...emailSchema,
+  ...passwordSchema
 })
 
 const SignupInitialPage: FC = () => {

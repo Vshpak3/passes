@@ -11,10 +11,10 @@ import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { errorMessage } from "src/helpers/error"
 import { sleep } from "src/helpers/sleep"
+import { passwordSchema } from "src/helpers/validation/password"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
-import { passwordFormSchema } from "./signup"
 
 export interface ResetPasswordFormProps {
   password: string
@@ -22,7 +22,7 @@ export interface ResetPasswordFormProps {
 }
 
 const resetPasswordFormSchema: SchemaOf<ResetPasswordFormProps> = object({
-  ...passwordFormSchema
+  ...passwordSchema
 })
 
 const ResetPassword = () => {
