@@ -1,20 +1,41 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FC, memo } from "react"
+import {
+  USER_USERNAME_LENGTH,
+  VALID_USERNAME_REGEX
+} from "@passes/shared-constants"
+import { FC, memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { getYupRequiredStringSchema } from "src/helpers/validation"
-import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useUser } from "src/hooks/useUser"
 
 interface UsernameFormProps {
   username: string
 }
+
+export const usernameSchema = {
+  username: string()
+    .transform((value) => value.trim())
+    .required("Please enter a username")
+    .max(
+      USER_USERNAME_LENGTH,
+      `Username cannot exceed ${USER_USERNAME_LENGTH} characters`
+    )
+    .matches(
+      new RegExp(VALID_USERNAME_REGEX),
+      "This username contains invalid characters"
+    )
+}
+
+const usernameFormSchema: SchemaOf<UsernameFormProps> = object(usernameSchema)
+
+const a = { ...usernameFormSchema }
 
 const Username: FC = () => {
   const { user, loading, updateUsername } = useUser()
@@ -24,14 +45,19 @@ const Username: FC = () => {
     watch,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm<UsernameFormProps>({
-    defaultValues: { username: user?.username || "" },
-    resolver: yupResolver(getYupRequiredStringSchema({ name: "username" }))
+    resolver: yupResolver(usernameFormSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const username = watch("username")
+
+  useEffect(() => {
+    if (user?.username) {
+      setValue("username", user?.username)
+    }
+  }, [setValue, user])
 
   const onSaveUserName = async ({ username }: UsernameFormProps) => {
     try {
@@ -63,14 +89,13 @@ const Username: FC = () => {
             {errors.username.message}
           </Text>
         )}
-
         <Button
           className="mt-6 w-auto !px-[52px]"
           disabled={
             loading ||
-            username.trim().length === 0 ||
+            username?.trim().length === 0 ||
             username === user?.username ||
-            disableForm
+            isSubmitting
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

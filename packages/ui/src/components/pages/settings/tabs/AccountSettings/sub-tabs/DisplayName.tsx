@@ -1,19 +1,32 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { FC, memo } from "react"
+import { USER_DISPLAY_NAME_LENGTH } from "@passes/shared-constants"
+import { FC, memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
+import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
-import { getYupRequiredStringSchema } from "src/helpers/validation"
-import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { useUser } from "src/hooks/useUser"
 
 interface DisplayNameFormProps {
   displayName: string
 }
+
+export const displayNameSchema = {
+  displayName: string()
+    .transform((value) => value.trim())
+    .required("Please enter a display name")
+    .max(
+      USER_DISPLAY_NAME_LENGTH,
+      `Display name cannot exceed ${USER_DISPLAY_NAME_LENGTH} characters`
+    )
+}
+
+const displayNameFormSchema: SchemaOf<DisplayNameFormProps> =
+  object(displayNameSchema)
 
 const DisplayName: FC = () => {
   const { user, loading, updateDisplayName } = useUser()
@@ -23,19 +36,19 @@ const DisplayName: FC = () => {
     watch,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm<DisplayNameFormProps>({
-    defaultValues: { displayName: user?.displayName || "" },
-    resolver: yupResolver(
-      getYupRequiredStringSchema({
-        name: "displayName",
-        errorMessage: "Please enter a display name"
-      })
-    )
+    resolver: yupResolver(displayNameFormSchema)
   })
-  const { disableForm } = useFormSubmitTimeout(isSubmitting)
 
   const displayName = watch("displayName")
+
+  useEffect(() => {
+    if (user?.displayName) {
+      setValue("displayName", user?.displayName)
+    }
+  }, [setValue, user])
 
   const onSaveDisplayName = async ({ displayName }: DisplayNameFormProps) => {
     try {
@@ -64,9 +77,9 @@ const DisplayName: FC = () => {
           className="mt-6 w-auto !px-[52px]"
           disabled={
             loading ||
-            displayName.trim().length === 0 ||
+            displayName?.trim().length === 0 ||
             displayName === user?.displayName ||
-            disableForm
+            isSubmitting
           }
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

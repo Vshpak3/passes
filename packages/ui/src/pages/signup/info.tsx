@@ -22,6 +22,8 @@ import { Select } from "src/components/atoms/input/Select"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
+import { displayNameSchema } from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
+import { usernameSchema } from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
 import { FULL_NAME_REGEX } from "src/config/name"
 import { COUNTRIES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
@@ -44,7 +46,6 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
   legalFullName: string()
     .required("Enter your full name")
     .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
-  username: string().required("Enter a username"),
   birthday: string()
     .required("Enter your birthday")
     .test(
@@ -55,7 +56,8 @@ const signupInfoPageSchema: SchemaOf<SignupInfoPageSchema> = object({
         differenceInYears(new Date(), new Date(value)) >= USER_MIN_AGE
     ),
   countryCode: string().required("Enter your country"),
-  displayName: string().required("Enter a display name")
+  ...usernameSchema,
+  ...displayNameSchema
 })
 
 const SignupInfoPage: FC = () => {
