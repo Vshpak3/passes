@@ -12,7 +12,6 @@ import {
   MIN_PAID_MESSAGE_PRICE
 } from "@passes/shared-constants"
 import classNames from "classnames"
-import { debounce } from "lodash"
 import React, {
   ChangeEvent,
   Dispatch,
@@ -227,15 +226,13 @@ export const InputMessage: FC<InputMessageProps> = ({
 
   const tipValue = watch("tip")
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(
-    debounce(() => {
-      if (isCurrency(tipValue)) {
-        setTip(parseFloat(tipValue))
-      }
-    }, 1000),
-    [setTip, tipValue]
-  )
+  useEffect(() => {
+    if (isCurrency(tipValue)) {
+      setTip(parseFloat(tipValue))
+    } else {
+      setTip(0)
+    }
+  }, [setTip, tipValue])
 
   useEffect(() => {
     if (channelId && !isNaN(tip)) {
