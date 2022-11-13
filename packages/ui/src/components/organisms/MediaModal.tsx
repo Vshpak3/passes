@@ -46,11 +46,11 @@ export const MediaModal: FC<ModalProps> = ({
       childrenClassname={childrenClassname}
       closable
       closableOnScreen
+      isCloseOutside
       isOpen={isOpen}
       mobileFixed
       modalContainerClassname={modalContainerClassname}
       setOpen={setOpen}
-      shouldCloseOnClickOutside
     >
       {carouselContent && (
         <div className="max-w-[900px]">
