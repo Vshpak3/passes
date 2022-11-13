@@ -21,7 +21,6 @@ import React, {
   KeyboardEvent,
   SetStateAction,
   useEffect,
-  useRef,
   useState
 } from "react"
 import { useForm } from "react-hook-form"
@@ -143,7 +142,6 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
     setTip(0)
   }
-  const inputEl = useRef(null)
 
   const resize = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto"
@@ -271,7 +269,6 @@ export const InputMessage: FC<InputMessageProps> = ({
       }
     }
   }
-
   return (
     <form
       className="flex w-full border-t border-passes-gray"
@@ -322,7 +319,6 @@ export const InputMessage: FC<InputMessageProps> = ({
         <textarea
           cols={40}
           placeholder="Send a message.."
-          // rows={textAreaRows}
           {...register("text")}
           autoComplete="off"
           className={classNames(
@@ -337,7 +333,6 @@ export const InputMessage: FC<InputMessageProps> = ({
           // onFocus={() => {
           //   clearErrors()
           // }}
-          ref={inputEl}
         />
         {files.length > 0 && (
           <div className="flex px-2 md:px-5">
