@@ -8,6 +8,7 @@ import {
 } from "@passes/api-client/models"
 import classNames from "classnames"
 import { debounce } from "lodash"
+import ms from "ms"
 import React, { FC, useCallback, useMemo, useState } from "react"
 
 import {
@@ -131,7 +132,7 @@ export const ChannelList: FC<ChannelListProps> = ({
               revalidateFirstPage: true,
               revalidateOnFocus: true,
               revalidateOnReconnect: true,
-              refreshInterval: 1000
+              refreshInterval: ms("1 second")
             }}
             scrollableTarget="channelsDiv"
             style={{ overflowX: "hidden" }}

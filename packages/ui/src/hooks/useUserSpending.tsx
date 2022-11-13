@@ -1,4 +1,5 @@
 import { CreatorStatsApi } from "@passes/api-client"
+import ms from "ms"
 import useSWR from "swr"
 
 const api = new CreatorStatsApi()
@@ -13,7 +14,7 @@ export const useUserSpending = (isCreator: boolean, userId?: string) => {
         })
       ).amount
     },
-    { refreshInterval: 1000, revalidateOnMount: true }
+    { refreshInterval: ms("1 second"), revalidateOnMount: true }
   )
 
   return {
