@@ -4,9 +4,10 @@ import { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { BuyPostButton } from "src/components/molecules/payment/BuyPostButton"
+import { NewCard } from "src/components/molecules/payment/NewCard"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
-import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
-import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
+import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
@@ -24,6 +25,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   const { externalPasses } = useExternalPasses()
   const whitePasessList = getWhiteListedPasses(externalPasses, post?.passIds)
   const { images, video } = contentTypeCounter(post?.contents)
+  const [newCard, setNewCard] = useState<boolean>(false)
 
   const onSuccessHandler = () => {
     setPost(null)
@@ -38,54 +40,63 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
-      <PaymenetModalHeader
-        title="Buy Post"
-        user={{ userId, username, displayName }}
-      />
-      <div>
-        <div className="my-4 flex justify-between">
-          <span className="flex items-center rounded border border-passes-gray-600 px-2 py-1 text-white">
-            {Boolean(video) && `${video} videos`}{" "}
-            {Boolean(images) && plural("photo", images)}
-          </span>
-          <span className="flex items-center text-white">
-            Unlock for
-            <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">
-              {formatCurrency(post.price ?? 0)}
-            </span>
-          </span>
-        </div>
-        <span className="my-4 flex text-passes-dark-gray">
-          This content will be unlocked and available in the feed after
-          purchase.
-        </span>
-        {!!whitePasessList?.length && (
+      {newCard ? (
+        <NewCard callback={() => setNewCard(false)} isEmbedded />
+      ) : (
+        <>
+          <PaymentModalHeader
+            title="Buy Post"
+            user={{ userId, username, displayName }}
+          />
           <div>
-            <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
-              or <br />
-              <span className="my-[12px] block">Verify Whitelisted NFT</span>
-            </span>
-            <div>
-              <Button>
-                <WalletIcon />
-                Verify your NFT
-              </Button>
+            <div className="my-4 flex justify-between">
+              <span className="flex items-center rounded border border-passes-gray-600 px-2 py-1 text-white">
+                {Boolean(video) && `${video} videos`}{" "}
+                {Boolean(images) && plural("photo", images)}
+              </span>
+              <span className="flex items-center text-white">
+                Unlock for
+                <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">
+                  {formatCurrency(post.price ?? 0)}
+                </span>
+              </span>
             </div>
+            <span className="my-4 flex text-passes-dark-gray">
+              This content will be unlocked and available in the feed after
+              purchase.
+            </span>
+            {!!whitePasessList?.length && (
+              <div>
+                <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
+                  or <br />
+                  <span className="my-[12px] block">
+                    Verify Whitelisted NFT
+                  </span>
+                </span>
+                <div>
+                  <Button>
+                    <WalletIcon />
+                    Verify your NFT
+                  </Button>
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <PaymentModalBody
-        closeModal={() => setPost(null)}
-        price={price ?? 0}
-        setPayinMethod={setPayinMethod}
-      />
-      <PaymenetModalFooter onClose={() => setPost(null)}>
-        <BuyPostButton
-          onSuccess={onSuccessHandler}
-          payinMethod={payinMethod}
-          postId={postId || ""}
-        />
-      </PaymenetModalFooter>
+          <PaymentModalBody
+            closeModal={() => setPost(null)}
+            price={price ?? 0}
+            setNewCard={setNewCard}
+            setPayinMethod={setPayinMethod}
+          />
+          <PaymentModalFooter onClose={() => setPost(null)}>
+            <BuyPostButton
+              onSuccess={onSuccessHandler}
+              payinMethod={payinMethod}
+              postId={postId || ""}
+            />
+          </PaymentModalFooter>
+        </>
+      )}
     </Modal>
   )
 }

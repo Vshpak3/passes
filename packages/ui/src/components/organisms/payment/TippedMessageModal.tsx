@@ -5,9 +5,10 @@ import {
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
 
+import { NewCard } from "src/components/molecules/payment/NewCard"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
-import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
-import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
+import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
 import { Modal } from "src/components/organisms/Modal"
 
@@ -26,6 +27,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
   onSuccess
 }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
+  const [newCard, setNewCard] = useState<boolean>(false)
 
   const onSuccessHandler = useCallback(() => {
     setMessageRequest(null)
@@ -44,25 +46,32 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
       modalContainerClassname="w-[80%] lg:max-w-[30%]"
       setOpen={() => setMessageRequest(null)}
     >
-      <PaymenetModalHeader
-        title="Tip Message"
-        user={{
-          userId: otherUserId,
-          username: otherUserUsername,
-          displayName: otherUserDisplayName
-        }}
-      />
-      <PaymentModalBody
-        closeModal={() => setMessageRequest(null)}
-        price={messageRequest?.tipAmount ?? 0}
-        setPayinMethod={setPayinMethod}
-      />
-      <PaymenetModalFooter onClose={() => setMessageRequest(null)}>
-        <TippedMessageButton
-          messageRequest={{ ...messageRequest, payinMethod }}
-          onSuccess={onSuccessHandler}
-        />
-      </PaymenetModalFooter>
+      {newCard ? (
+        <NewCard callback={() => setNewCard(false)} isEmbedded />
+      ) : (
+        <>
+          <PaymentModalHeader
+            title="Tip Message"
+            user={{
+              userId: otherUserId,
+              username: otherUserUsername,
+              displayName: otherUserDisplayName
+            }}
+          />
+          <PaymentModalBody
+            closeModal={() => setMessageRequest(null)}
+            price={messageRequest?.tipAmount ?? 0}
+            setNewCard={setNewCard}
+            setPayinMethod={setPayinMethod}
+          />
+          <PaymentModalFooter onClose={() => setMessageRequest(null)}>
+            <TippedMessageButton
+              messageRequest={{ ...messageRequest, payinMethod }}
+              onSuccess={onSuccessHandler}
+            />
+          </PaymentModalFooter>
+        </>
+      )}
     </Modal>
   )
 }

@@ -171,7 +171,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   }
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full border-t-[1px] border-passes-dark-200 lg:border-t-0">
       <div
         className={classNames(
           "flex-1 flex-shrink-0 px-4 md:block md:min-w-[330px]",

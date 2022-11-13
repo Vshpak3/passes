@@ -2,7 +2,7 @@ import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import Link from "next/link"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
-import { FC, useEffect, useMemo } from "react"
+import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 
 import { Select } from "src/components/atoms/input/Select"
@@ -20,6 +20,7 @@ interface PaymentModalBodyProps {
   price: number
   closeModal: () => void
   setPayinMethod: (method: PayinMethodDto) => void
+  setNewCard: Dispatch<SetStateAction<boolean>>
 }
 interface PaymentModalBodyFromProps {
   method: string
@@ -48,7 +49,8 @@ const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
 export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
   price,
   setPayinMethod,
-  closeModal
+  closeModal,
+  setNewCard
 }) => {
   const { defaultPayinMethod, cards } = usePayinMethod()
 
@@ -109,7 +111,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
         onChange={(newValue: string) => setValue("method", newValue)}
         selectOptions={options}
       />
-      <div className="my-4 mr-1 text-passes-dark-gray">
+      <div className="my-4 mr-1 hidden text-passes-dark-gray">
         Want to update your default payment or add a new one?
         <Link
           className="ml-2 font-light text-passes-primary-color underline"
@@ -118,6 +120,14 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
         >
           Settings
         </Link>
+      </div>
+      <div
+        className="my-4 mr-1 font-light text-passes-primary-color underline hover:cursor-pointer"
+        onClick={() => {
+          setNewCard(true)
+        }}
+      >
+        Add a new card
       </div>
       <ThreeDSInfo payinMethod={payinMethod} price={price} />
     </form>

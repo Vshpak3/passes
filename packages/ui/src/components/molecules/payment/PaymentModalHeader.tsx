@@ -4,12 +4,12 @@ import { FC } from "react"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 
-interface PaymenetModalHeaderProps {
+interface PaymentModalHeaderProps {
   title: string
   user?: UserDisplayInfoDto
 }
 
-export const PaymenetModalHeader: FC<PaymenetModalHeaderProps> = ({
+export const PaymentModalHeader: FC<PaymentModalHeaderProps> = ({
   title,
   user
 }) => {

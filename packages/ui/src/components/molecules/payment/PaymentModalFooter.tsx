@@ -4,7 +4,7 @@ interface PaymenetModalFooterProps {
   onClose: () => void
 }
 
-export const PaymenetModalFooter: FC<
+export const PaymentModalFooter: FC<
   PropsWithChildren<PaymenetModalFooterProps>
 > = ({ onClose, children }) => {
   return (

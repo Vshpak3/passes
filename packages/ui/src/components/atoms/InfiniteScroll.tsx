@@ -202,7 +202,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
         data &&
         data.length >= 1 &&
         data[0].data.length === 0 &&
-        hasInitialElement &&
+        !hasInitialElement &&
         emptyElement}
       {flattenedData.map((data, index) => (
         <KeyedComponent

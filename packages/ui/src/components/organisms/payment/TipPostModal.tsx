@@ -22,9 +22,10 @@ import { useForm } from "react-hook-form"
 import { object, string } from "yup"
 
 import { NumberInput } from "src/components/atoms/input/NumberInput"
+import { NewCard } from "src/components/molecules/payment/NewCard"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
-import { PaymenetModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
-import { PaymenetModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
+import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
+import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
 import { Modal } from "src/components/organisms/Modal"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
@@ -60,6 +61,7 @@ const api = new PostApi()
 
 const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   const [payinMethod, setPayinMethod] = useState<PayinMethodDto>()
+  const [newCard, setNewCard] = useState<boolean>(false)
 
   const {
     register,
@@ -113,41 +115,49 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
       modalContainerClassname="max-w-[80%] lg:max-w-[30%]"
       setOpen={() => setPost(null)}
     >
-      <PaymenetModalHeader
-        title="Send Tip"
-        user={{ userId, username, displayName }}
-      />
-      <div className="flex items-center rounded border border-passes-primary-color pl-4">
-        <div className="basis-3/4">
-          <span>Enter Tip Amount</span>
-        </div>
-        <NumberInput
-          className="border-0 font-bold"
-          name={TIP_VALUE}
-          register={register}
-          type="currency"
-        />
-      </div>
-      {errors?.[TIP_VALUE] && (
-        <span className="text-right text-xs text-red-500">
-          {errors?.[TIP_VALUE].message}
-        </span>
+      {newCard ? (
+        <NewCard callback={() => setNewCard(false)} isEmbedded />
+      ) : (
+        <>
+          <PaymentModalHeader
+            title="Send Tip"
+            user={{ userId, username, displayName }}
+          />
+          <div className="flex items-center rounded border border-passes-primary-color pl-4">
+            <div className="basis-3/4">
+              <span>Enter Tip Amount</span>
+            </div>
+            <NumberInput
+              className="border-0 font-bold"
+              name={TIP_VALUE}
+              register={register}
+              type="currency"
+            />
+          </div>
+          {errors?.[TIP_VALUE] && (
+            <span className="text-right text-xs text-red-500">
+              {errors?.[TIP_VALUE].message}
+            </span>
+          )}
+          <div className="my-4" />
+          <PaymentModalBody
+            closeModal={() => setPost(null)}
+            price={tipValue}
+            setNewCard={setNewCard}
+            setPayinMethod={setPayinMethod}
+          />
+          <PaymentModalFooter onClose={() => setPost(null)}>
+            <TipPostButton
+              isDisabled={
+                !payinMethod ||
+                payinMethod.method === PayinMethodDtoMethodEnum.None
+              }
+              isLoading={loading}
+              onClick={onSubmit}
+            />
+          </PaymentModalFooter>
+        </>
       )}
-      <div className="my-4" />
-      <PaymentModalBody
-        closeModal={() => setPost(null)}
-        price={tipValue}
-        setPayinMethod={setPayinMethod}
-      />
-      <PaymenetModalFooter onClose={() => setPost(null)}>
-        <TipPostButton
-          isDisabled={
-            !payinMethod || payinMethod.method === PayinMethodDtoMethodEnum.None
-          }
-          isLoading={loading}
-          onClick={onSubmit}
-        />
-      </PaymenetModalFooter>
     </Modal>
   )
 }

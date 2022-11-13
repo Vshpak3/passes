@@ -28,11 +28,19 @@ const PostFeedLoader = (
 )
 
 const PostFeedEnd = (
-  <div className="my-4 flex justify-center pb-16 lg:my-8">
+  <div className="mt-[15px] flex justify-center border-t-[1px] border-passes-gray">
     <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
       <span className="font-medium">
         No more posts are available at this time!
       </span>
+    </div>
+  </div>
+)
+
+const PostFeedEmpty = (
+  <div className="mt-[15px] flex justify-center border-passes-gray">
+    <div className="bg-[#12070E]/50 px-10 py-5" role="alert">
+      <span className="font-medium">No posts are available at this time!</span>
     </div>
   </div>
 )
@@ -53,7 +61,7 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
         return <PostCached post={{ ...arg }} />
       }}
-      emptyElement={PostFeedEnd}
+      emptyElement={PostFeedEmpty}
       endElement={PostFeedEnd}
       fetch={async (req: GetProfileFeedRequestDto) => {
         return await api.getFeedForCreator({
