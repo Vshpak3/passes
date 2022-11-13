@@ -197,6 +197,17 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     setNode(node)
   }, [])
 
+  // hack to remove missing items in chrome
+  const onScroll = useCallback(() => {
+    if (node) {
+      if (node.style.backfaceVisibility === "hidden") {
+        node.style.backfaceVisibility = "visible"
+      } else {
+        node.style.backfaceVisibility = "hidden"
+      }
+    }
+  }, [node])
+
   return (
     <>
       {isConnected ? (
@@ -209,6 +220,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           <div
             className="relative flex h-full flex-col-reverse overflow-y-scroll"
             id="messagesDiv"
+            onScroll={onScroll}
             ref={ref}
           >
             {/*
