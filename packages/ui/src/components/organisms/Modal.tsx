@@ -78,7 +78,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           alignItems: "center",
           justifyItems: "center",
           background: "rgba(0, 0, 0, 0.5)",
-          zIndex: 11
+          zIndex: 3000
         }
       }}
     >

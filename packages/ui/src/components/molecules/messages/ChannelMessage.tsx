@@ -25,7 +25,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
   ownsMessage = false,
   showReadAt = false,
   selectedChannel,
-  inChannel = false
+  inChannel = true
 }) => {
   const {
     messageId,
