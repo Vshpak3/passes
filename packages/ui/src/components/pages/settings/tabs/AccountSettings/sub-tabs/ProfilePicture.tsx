@@ -108,7 +108,6 @@ const ProfilePicture: FC = () => {
             profileImage === lastSubmittedProfPic ||
             isSubmitting
           }
-          disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >
           <span>Save</span>

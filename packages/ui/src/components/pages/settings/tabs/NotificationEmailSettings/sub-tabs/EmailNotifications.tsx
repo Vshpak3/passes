@@ -18,18 +18,21 @@ const EmailNotifications = () => {
     updateNotificationSettings,
     loadingNotificationSettings
   } = useNotificationSettings()
-  const [disable, setDisable] = useState(true)
 
-  const { register, handleSubmit, reset, watch, setValue } =
-    useForm<NotificationSettingsFormProps>()
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    formState: { isDirty }
+  } = useForm<NotificationSettingsFormProps>()
 
   const [isEmailAll, setIsEmailAll] = useState(false)
 
   const allEmailNotifications = watch()
 
-  const saveNotificationSettingsHandler = async (
-    values: NotificationSettingsFormProps
-  ) => {
+  const onSubmit = async (values: NotificationSettingsFormProps) => {
     try {
       await updateNotificationSettings(values)
       toast.success("Email notifications has been changed")
@@ -41,7 +44,9 @@ const EmailNotifications = () => {
 
   const emailAllNotificationsHandler = (e: ChangeEvent<HTMLInputElement>) => {
     Object.keys(allEmailNotifications).forEach((field) => {
-      setValue(field as keyof NotificationSettingsFormProps, e.target.checked)
+      setValue(field as keyof NotificationSettingsFormProps, e.target.checked, {
+        shouldDirty: true
+      })
     })
     setIsEmailAll(e.target.checked)
   }
@@ -56,10 +61,6 @@ const EmailNotifications = () => {
   useEffect(() => {
     setIsEmailAll(Object.values(allEmailNotifications).some((n) => n))
   }, [allEmailNotifications])
-
-  useEffect(() => {
-    setDisable(_.isEqual(allEmailNotifications, notificationSettings))
-  }, [allEmailNotifications, notificationSettings])
 
   return (
     <Tab
@@ -82,10 +83,7 @@ const EmailNotifications = () => {
           can turn them off anytime.
         </p>
       </div>
-      <form
-        className="mt-[22px]"
-        onSubmit={handleSubmit(saveNotificationSettingsHandler)}
-      >
+      <form className="mt-[22px]" onSubmit={handleSubmit(onSubmit)}>
         <div>
           <h4 className="text-label">Email Notification Types</h4>
 
@@ -139,8 +137,7 @@ const EmailNotifications = () => {
 
         <Button
           className="mt-[22px] w-auto !px-[52px] md:mt-[34px]"
-          disabled={disable}
-          disabledClass="opacity-[0.5]"
+          disabled={loadingNotificationSettings || !isDirty}
           type={ButtonTypeEnum.SUBMIT}
         >
           <span>Save</span>

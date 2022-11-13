@@ -7,7 +7,7 @@ import {
 import classNames from "classnames"
 import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { boolean, mixed, number, object } from "yup"
+import { boolean, mixed, number, object, SchemaOf } from "yup"
 
 import {
   Button,
@@ -31,9 +31,11 @@ const defaultValues = {
   minimumTipAmount: ""
 }
 
-const chatSettingsSchema = object({
-  isWithoutTip: boolean(),
-  showWelcomeMessageInput: boolean(),
+type ChatSettingsFormProps = typeof defaultValues
+
+const chatSettingsSchema: SchemaOf<ChatSettingsFormProps> = object({
+  isWithoutTip: boolean().required(),
+  showWelcomeMessageInput: boolean().required(),
   minimumTipAmount: mixed().when("isWithoutTip", {
     is: false,
     then: number()
@@ -67,10 +69,10 @@ const ChatSettings = () => {
   const {
     register,
     handleSubmit,
-    setValue,
-    formState: { errors },
+    reset,
+    formState: { errors, isDirty, isSubmitting },
     watch
-  } = useForm<typeof defaultValues>({
+  } = useForm<ChatSettingsFormProps>({
     mode: "all",
     reValidateMode: "onChange",
     defaultValues,
@@ -80,37 +82,29 @@ const ChatSettings = () => {
   const isWithoutTip = watch("isWithoutTip")
   const showWelcomeMessageInput = watch("showWelcomeMessageInput")
 
-  const saveChatSettingsHandler = async (values: typeof defaultValues) => {
-    const data: UpdateCreatorSettingsRequestDto = {}
-    if (!values.isWithoutTip) {
-      data.minimumTipAmount = +values.minimumTipAmount
-    } else {
-      data.minimumTipAmount = null
+  const onSubmit = async (values: ChatSettingsFormProps) => {
+    const data: UpdateCreatorSettingsRequestDto = {
+      minimumTipAmount: !values.isWithoutTip ? +values.minimumTipAmount : null,
+      welcomeMessage: !!values.showWelcomeMessageInput
     }
-
-    data.welcomeMessage = !!values.showWelcomeMessageInput
-
     await updateCreatorSettings(
       data,
       "Chat settings have been updated successfully"
     )
+    reset(undefined, { keepValues: true })
   }
 
   useEffect(() => {
     // inject already saved values in fields
-
-    setValue("showWelcomeMessageInput", !!creatorSettings?.welcomeMessage, {
-      shouldValidate: true
+    if (isCreatorSettingsLoading) {
+      return
+    }
+    reset({
+      showWelcomeMessageInput: !!creatorSettings?.welcomeMessage,
+      isWithoutTip: !creatorSettings?.minimumTipAmount,
+      minimumTipAmount: `${creatorSettings?.minimumTipAmount}`
     })
-
-    setValue("isWithoutTip", !creatorSettings?.minimumTipAmount, {
-      shouldValidate: true
-    })
-
-    setValue("minimumTipAmount", `${creatorSettings?.minimumTipAmount}`, {
-      shouldValidate: true
-    })
-  }, [creatorSettings, setValue])
+  }, [creatorSettings, isCreatorSettingsLoading, reset])
 
   return (
     <AuthWrapper creatorOnly isPage>
@@ -120,7 +114,7 @@ const ChatSettings = () => {
         withBackMobile
       />
       {!isLoading && (
-        <form className="mt-6" onSubmit={handleSubmit(saveChatSettingsHandler)}>
+        <form className="my-6" onSubmit={handleSubmit(onSubmit)}>
           <div
             className={classNames(
               "border-b border-passes-dark-200",
@@ -207,8 +201,7 @@ const ChatSettings = () => {
 
           <Button
             className="mt-6 w-auto !px-[52px]"
-            disabled={isLoading}
-            disabledClass="opacity-[0.5]"
+            disabled={isLoading || !isDirty || isSubmitting}
             type={ButtonTypeEnum.SUBMIT}
           >
             <span>Save</span>

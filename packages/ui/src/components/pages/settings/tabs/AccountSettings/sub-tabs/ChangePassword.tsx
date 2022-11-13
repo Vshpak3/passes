@@ -34,7 +34,7 @@ const ChangePassword = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting }
+    formState: { errors, isDirty, isSubmitting }
   } = useForm<ChangePasswordFormProps>({
     defaultValues,
     resolver: yupResolver(changePasswordFormSchema)
@@ -49,14 +49,10 @@ const ChangePassword = () => {
 
   const onChangePassword = async ({
     oldPassword,
-    confirmPassword,
-    password
+    password: newPassword
   }: ChangePasswordFormProps) => {
     try {
-      if (password !== confirmPassword) {
-        return toast.error("Passwords does not match")
-      }
-      await changePassword({ oldPassword, newPassword: password })
+      await changePassword({ oldPassword, newPassword })
       toast.success("Your password has been changed successfully")
       reset(defaultValues)
     } catch (error) {
@@ -108,8 +104,7 @@ const ChangePassword = () => {
 
         <Button
           className="mt-6 w-auto !px-[52px]"
-          disabled={isSubmitting}
-          disabledClass="opacity-[0.5]"
+          disabled={!isDirty || isSubmitting}
           type={ButtonTypeEnum.SUBMIT}
         >
           <span>Save</span>

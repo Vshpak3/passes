@@ -1,6 +1,7 @@
 import { CreateWelcomeMessageRequestDto } from "@passes/api-client"
 import classNames from "classnames"
 import { memo, useCallback } from "react"
+import { toast } from "react-toastify"
 
 import { InputMessageTool } from "src/components/molecules/messages/mass-dm/InputMessageTool"
 import { Tab } from "src/components/pages/settings/Tab"
@@ -19,6 +20,7 @@ const WelcomeMessage = () => {
     async (welcomeMessageData: CreateWelcomeMessageRequestDto) => {
       await createWelcomeMessage(welcomeMessageData)
       popTabFromStackHandler()
+      toast.success("Successfully added welcome message")
     },
     [createWelcomeMessage, popTabFromStackHandler]
   )

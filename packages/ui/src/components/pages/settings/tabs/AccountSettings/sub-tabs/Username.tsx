@@ -78,7 +78,6 @@ const Username: FC = () => {
             username === user?.username ||
             isSubmitting
           }
-          disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}
         >
           <span>Save</span>
