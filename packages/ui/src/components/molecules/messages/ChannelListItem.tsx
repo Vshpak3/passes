@@ -53,7 +53,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
             userId={channel.otherUserId}
           />
         </div>
-        <div className="flex justify-between overflow-x-hidden">
+        <div className="flex w-full justify-between overflow-x-hidden">
           <div className="flex w-full flex-col items-start justify-center">
             <NameDisplay
               displayName={channel.otherUserDisplayName}
