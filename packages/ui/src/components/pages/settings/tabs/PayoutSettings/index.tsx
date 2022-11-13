@@ -16,7 +16,7 @@ import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { BankIcon } from "src/icons/BankIcon"
 
 const PayoutSettings = () => {
-  const { setActiveTab, addOrPopStackHandler } =
+  const { navToActiveTab, addOrPopStackHandler } =
     useSettings() as SettingsContextProps
   const {
     banks,
@@ -108,7 +108,7 @@ const PayoutSettings = () => {
           <Button
             className="w-auto"
             icon={<Wallet />}
-            onClick={() => setActiveTab(TabsEnum.WalletSettings)}
+            onClick={() => navToActiveTab(TabsEnum.WalletSettings)}
           >
             Manage Wallets
           </Button>

@@ -6,7 +6,6 @@ import React, {
   PropsWithChildren,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState
 } from "react"
@@ -19,11 +18,14 @@ import {
 } from "src/config/settings"
 
 export interface SettingsContextProps {
-  activeTab: TabsEnum
   addOrPopStackHandler: (tab: SubTabsEnum) => void
   addTabToStackHandler: (tab: SubTabsEnum) => void
-  clearActiveTab: () => void
+  navFromActiveTab: () => void
+  navToActiveTab: (tab: TabsEnum) => void
   popTabFromStackHandler: () => void
+
+  // Should only be used by index
+  activeTab: TabsEnum
   setActiveTab: React.Dispatch<React.SetStateAction<TabsEnum | undefined>>
   setShowSettingsTab: React.Dispatch<React.SetStateAction<boolean>>
   setSubTabsStack: React.Dispatch<React.SetStateAction<SubTabsEnum[]>>
@@ -39,25 +41,59 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
   const [showSettingsTab, setShowSettingsTab] = useState(false)
   const router = useRouter()
 
-  const clearActiveTab = useCallback(() => {
-    // setActiveTab(undefined)
-    router.replace(`/settings`, undefined, { shallow: true })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const setRoute = useCallback(
+    (primaryTab: TabsEnum | undefined, secondaryTabStack: SubTabsEnum[]) => {
+      router.replace(
+        path.join(
+          "/settings",
+          primaryTab !== undefined ? tabToPath[primaryTab] : "",
+          secondaryTabStack.length
+            ? secondaryTabStack.map((t) => subTabToPath[t]).join("/")
+            : ""
+        ),
+        undefined,
+        {
+          shallow: true
+        }
+      )
+    },
+    [router]
+  )
+
+  const navToActiveTab = useCallback(
+    (id: TabsEnum) => {
+      setShowSettingsTab(true)
+      setActiveTab(id)
+      setSubTabsStack([])
+      setRoute(id, [])
+    },
+    [setRoute]
+  )
+
+  const navFromActiveTab = useCallback(() => {
+    setShowSettingsTab(false)
+    setActiveTab(undefined)
+    setSubTabsStack([])
+    setRoute(undefined, [])
+  }, [setRoute])
 
   const addTabToStackHandler = useCallback(
     (tab: SubTabsEnum) => {
-      if (!subTabsStack.includes(tab)) {
-        setSubTabsStack((prevTabs) => [...prevTabs, tab])
+      if (subTabsStack.includes(tab)) {
+        return
       }
+      const updatedStack = [...subTabsStack, tab]
+      setSubTabsStack(updatedStack)
+      setRoute(activeTab, updatedStack)
     },
-    [subTabsStack]
+    [activeTab, setRoute, subTabsStack]
   )
 
   const popTabFromStackHandler = useCallback(() => {
     const updatedStack = subTabsStack.slice(0, -1)
     setSubTabsStack(updatedStack)
-  }, [subTabsStack])
+    setRoute(activeTab, updatedStack)
+  }, [activeTab, setRoute, subTabsStack])
 
   const addOrPopStackHandler = useCallback(
     (tab: SubTabsEnum) => {
@@ -65,46 +101,21 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
       if (index > -1) {
         const updatedStack = subTabsStack.slice(0, index + 1)
         setSubTabsStack(updatedStack)
+        setRoute(activeTab, updatedStack)
       } else {
         addTabToStackHandler(tab)
       }
     },
-    [addTabToStackHandler, subTabsStack]
+    [activeTab, addTabToStackHandler, setRoute, subTabsStack]
   )
-
-  useEffect(() => {
-    if (activeTab) {
-      router.replace(`/settings/${tabToPath[activeTab]}`, undefined, {
-        shallow: true
-      })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTab])
-
-  useEffect(() => {
-    if (activeTab !== undefined) {
-      router.replace(
-        path.join(
-          "/settings",
-          tabToPath[activeTab],
-          subTabsStack.map((t) => subTabToPath[t]).join("/")
-        ),
-        undefined,
-        {
-          shallow: true
-        }
-      )
-    }
-    // Leave out the activeTab and router
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subTabsStack])
 
   const contextValue = useMemo(
     () => ({
       activeTab,
       addOrPopStackHandler,
       addTabToStackHandler,
-      clearActiveTab,
+      navFromActiveTab,
+      navToActiveTab,
       popTabFromStackHandler,
       setActiveTab,
       setShowSettingsTab,
@@ -116,7 +127,8 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
       activeTab,
       addOrPopStackHandler,
       addTabToStackHandler,
-      clearActiveTab,
+      navFromActiveTab,
+      navToActiveTab,
       popTabFromStackHandler,
       showSettingsTab,
       subTabsStack

@@ -134,6 +134,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     subTabsStack,
     setSubTabsStack,
     showSettingsTab,
+    navToActiveTab,
     setShowSettingsTab
   } = useSettings() as SettingsContextProps
   const { isMobile } = useWindowSize()
@@ -196,11 +197,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
                 >
                   <button
                     className="text-label flex w-full items-center justify-between"
-                    onClick={() => {
-                      setShowSettingsTab(true)
-                      setActiveTab(id)
-                      setSubTabsStack([])
-                    }}
+                    onClick={() => navToActiveTab(id)}
                   >
                     <span>{name}</span>
                     <ChevronRightIcon />

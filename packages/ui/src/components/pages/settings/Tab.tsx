@@ -18,7 +18,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
   isRootTab = false,
   TitleBtn
 }) => {
-  const { popTabFromStackHandler, clearActiveTab, setShowSettingsTab } =
+  const { popTabFromStackHandler, navFromActiveTab } =
     useSettings() as SettingsContextProps
 
   return (
@@ -29,10 +29,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
             {isRootTab ? (
               <button
                 className="mr-3 md:hidden"
-                onClick={() => {
-                  setShowSettingsTab(false)
-                  clearActiveTab()
-                }}
+                onClick={() => navFromActiveTab()}
               >
                 <ArrowRightIcon />
               </button>
