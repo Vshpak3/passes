@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { GradientBorderTile } from "src/components/atoms/signup/GradientBorderTile"
 import { LoginNFT } from "src/components/atoms/signup/LoginNFT"

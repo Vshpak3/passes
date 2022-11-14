@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import Image from "next/image"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
-import React, { FC } from "react"
+import { FC, useEffect, useState } from "react"
 
 interface LoginTileProps {
   name: string
@@ -15,9 +15,16 @@ export const LoginTile: FC<LoginTileProps> = ({
   name,
   username,
   filename,
-  hidden,
+  hidden: _hidden,
   setLoaded
 }) => {
+  // We need this hack since the browser optimizes if we set hidden directly
+  // and does not load the iamge
+  const [hidden, setHidden] = useState(false)
+  useEffect(() => {
+    setHidden(_hidden)
+  }, [_hidden])
+
   return (
     <div className={classNames("p-2", { hidden })}>
       <div className="flex items-center space-x-[3px]">
