@@ -12,7 +12,7 @@ export const GradientBorderTile: FC<
   return (
     <div
       className={classNames(
-        "relative h-32 w-32 select-none overflow-hidden rounded-[15px] bg-[linear-gradient(to_right_bottom,#F2BD6C,#BD499B,#A359D5)] xl:h-[135px] xl:w-[135px]",
+        "relative h-32 h-[135px] w-32 w-[135px] select-none overflow-hidden rounded-[15px] bg-[linear-gradient(to_right_bottom,#F2BD6C,#BD499B,#A359D5)]",
         className
       )}
     >

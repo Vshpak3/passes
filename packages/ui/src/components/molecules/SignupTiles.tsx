@@ -21,15 +21,25 @@ const tiles = [
   },
   // Row 2
   {
-    name: "Emma Norton",
-    username: "emmanorts",
-    filename: "/img/login/emma-norton.png"
+    name: "Alex Drachnik",
+    username: undefined,
+    filename: "/img/login/alex-drachnik.webm"
   },
   {
-    name: "Emma Norton",
+    name: "Anna DeGuzman",
     username: undefined,
-    filename: "/img/login/emma-norton.webm"
+    filename: "/img/login/anna-deguzman.webm"
   },
+  // {
+  //   name: "Emma Norton",
+  //   username: "emmanorts",
+  //   filename: "/img/login/emma-norton.png"
+  // },
+  // {
+  //   name: "Emma Norton",
+  //   username: undefined,
+  //   filename: "/img/login/emma-norton.webm"
+  // },
   {
     name: "Lauren Higgs",
     username: "lauluhiggs",
