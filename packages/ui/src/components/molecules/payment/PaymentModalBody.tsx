@@ -121,7 +121,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
     : undefined
 
   return (
-    <form>
+    <form className="mb-4">
       <div className="mb-2">Payment Method</div>
       <Select
         changeOnDefault
