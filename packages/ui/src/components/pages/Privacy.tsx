@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable react/no-unescaped-entities */
 const PrivacyPolicy = () => {
   return (
     <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">
