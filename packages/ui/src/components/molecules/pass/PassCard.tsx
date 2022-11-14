@@ -146,7 +146,7 @@ export const PassCard: FC<PassCardProps> = ({
                 {pass.remainingSupply} out of {pass.totalSupply} left
               </p>
             ) : (
-              <p>Unlimted supply</p>
+              <p>Unlimited supply</p>
             )}
           </span>
           <IconTooltip
