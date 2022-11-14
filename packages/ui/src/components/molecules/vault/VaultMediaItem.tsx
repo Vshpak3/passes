@@ -1,5 +1,6 @@
 import classNames from "classnames"
 import { format } from "date-fns"
+import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import { FC, MouseEvent } from "react"
 
 import { ContentService } from "src/helpers/content"
@@ -53,7 +54,10 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-full cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0"
+          "container flex w-full cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0",
+          content.contentType === "video"
+            ? "relative flex items-center justify-center"
+            : ""
         )}
         onClick={handleClick}
       >
@@ -64,6 +68,11 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           src={ContentService.userContentThumbnailPath(content)}
           width={300}
         />
+        {content.contentType === "video" && (
+          <div className="absolute mt-[23px]">
+            <PlayIcon />
+          </div>
+        )}
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div className="text-center text-[12px] font-medium uppercase text-white opacity-50">
