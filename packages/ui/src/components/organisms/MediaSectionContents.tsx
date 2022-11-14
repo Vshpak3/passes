@@ -58,8 +58,8 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
       direction="horizontal"
       droppableId={listId}
       isCombineEnabled={false}
-      type="CARD"
       isDropDisabled={dragDisabled}
+      type="CARD"
     >
       {(dropProvided) => (
         <div
@@ -80,9 +80,9 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
             ) : (
               items.map((item, index) => (
                 <Draggable
-                  isDragDisabled={dragDisabled}
                   draggableId={item._id}
                   index={index}
+                  isDragDisabled={dragDisabled}
                   key={item._id}
                 >
                   {(dragProvided, snapshot) => (

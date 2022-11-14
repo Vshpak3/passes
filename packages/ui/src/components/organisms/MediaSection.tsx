@@ -53,6 +53,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
       ) : (
         <MediaSectionReorder
           addNewMedia={addNewMedia}
+          dragDisabled={dragDisabled}
           errors={errors}
           files={files}
           isPaid={isPaid}
@@ -61,7 +62,6 @@ export const MediaSection: FC<MediaSectionProps> = ({
           register={register}
           setFiles={setFiles}
           setMediaPreviewIndex={setMediaPreviewIndex}
-          dragDisabled={dragDisabled}
         />
       )}
     </div>

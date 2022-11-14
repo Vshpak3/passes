@@ -129,6 +129,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
           )}
           <div className="flex overflow-x-auto">
             <MediaSectionContents
+              dragDisabled={dragDisabled}
               errors={errors}
               internalScroll
               items={filesMap["Free"]}
@@ -139,7 +140,6 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
               onRemove={onRemove}
               register={register}
               renderPlusIcon={!isPaid && files.length !== MAX_FILE_COUNT}
-              dragDisabled={dragDisabled}
             />
           </div>
         </div>
@@ -152,6 +152,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
               </div>
               <div className="flex items-center overflow-x-auto">
                 <MediaSectionContents
+                  dragDisabled={dragDisabled}
                   errors={errors}
                   internalScroll
                   items={filesMap["Paid"]}
@@ -162,7 +163,6 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
                   onRemove={onRemove}
                   register={register}
                   renderPlusIcon={isPaid && files.length !== MAX_FILE_COUNT}
-                  dragDisabled={dragDisabled}
                 />
               </div>
             </div>

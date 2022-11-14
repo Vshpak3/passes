@@ -13,7 +13,7 @@ import { ImpersonateUser } from "./tabs/ImpersonateUser"
 
 const ADMIN_EMAIL = "@passes.com"
 
-const AdminPage = () => {
+export const Admin = () => {
   const { loading, user } = useUser()
   const router = useRouter()
   const [ready, setReady] = useState(false)
@@ -23,11 +23,11 @@ const AdminPage = () => {
       return
     }
     setReady(true)
-    // if (!user || !user.email.endsWith(ADMIN_EMAIL)) {
-    //   router.push("/home")
-    // } else {
-    //   setReady(true)
-    // }
+    if (!user || !user.email.endsWith(ADMIN_EMAIL)) {
+      router.push("/home")
+    } else {
+      setReady(true)
+    }
   }, [loading, router, user])
 
   const handleNavItemClick = (id: AdminTabsEnum) => {
@@ -83,5 +83,3 @@ const AdminPage = () => {
     </>
   )
 }
-
-export default AdminPage // eslint-disable-line import/no-default-export
