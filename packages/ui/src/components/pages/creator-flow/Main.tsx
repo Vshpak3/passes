@@ -22,7 +22,7 @@ import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 const api = new VerificationApi()
 
-const CreatorFlow = () => {
+export const CreatorFlow = () => {
   const { user, setAccessToken } = useUser()
   const router = useRouter()
 
@@ -248,5 +248,3 @@ const CreatorFlow = () => {
     </div>
   )
 }
-
-export default CreatorFlow // eslint-disable-line import/no-default-export

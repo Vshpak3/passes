@@ -1,15 +1,10 @@
-import dynamic from "next/dynamic"
 import { FC, useEffect } from "react"
 
 import { Loader } from "src/components/atoms/Loader"
 import { Header } from "src/components/molecules/performance/Header"
 import { usePost } from "src/hooks/entities/usePost"
 import { NotFoundPage } from "src/pages/404"
-
-const PostCached = dynamic(
-  () => import("src/components/organisms/profile/post/PostCached"),
-  { ssr: false }
-)
+import { PostCached } from "./PostCached"
 
 interface PostByUrlProps {
   postId: string

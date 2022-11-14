@@ -53,5 +53,4 @@ const ProfileUnmemo: FC = () => {
   )
 }
 
-// eslint-disable-next-line import/no-default-export
-export default memo(ProfileUnmemo)
+export default memo(ProfileUnmemo) // eslint-disable-line import/no-default-export

@@ -32,5 +32,3 @@ export const PostCached: FC<PostCachedProps> = ({
 
   return <Post post={cachedPost ?? post} {...res} update={update} />
 }
-
-export default PostCached // eslint-disable-line import/no-default-export

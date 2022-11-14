@@ -1,20 +1,15 @@
 import { ContentBareDto, ContentDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import { useRouter } from "next/router"
 import MessagesPlusIcon from "public/icons/messages-plus-icon.svg"
 import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
+import Messages from "src/components/organisms/Messages"
 import { useUser } from "src/hooks/useUser"
 import { ArrowLeft } from "src/icons/ArrowLeft"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
-
-const Messages = dynamic(() => import("src/components/organisms/MessagesV2"), {
-  suspense: true
-  // ssr: false
-})
 
 const MessagesPage = () => {
   const router = useRouter()

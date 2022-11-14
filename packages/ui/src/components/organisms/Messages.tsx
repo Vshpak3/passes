@@ -15,7 +15,7 @@ import { ChannelViewMassDM } from "src/components/molecules/messages/mass-dm/Cha
 import { useSidebarContext } from "src/hooks/context/useSidebarContext"
 import { useUser } from "src/hooks/useUser"
 
-interface MessagesV2Props {
+interface MessagesProps {
   defaultUserId?: string
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
@@ -23,7 +23,7 @@ interface MessagesV2Props {
   setMassMessage: Dispatch<SetStateAction<boolean>>
 }
 
-const MessagesV2: FC<MessagesV2Props> = ({
+const Messages: FC<MessagesProps> = ({
   defaultUserId,
   vaultContent,
   setVaultContent,
@@ -143,4 +143,4 @@ const MessagesV2: FC<MessagesV2Props> = ({
   )
 }
 
-export default memo(MessagesV2) // eslint-disable-line import/no-default-export
+export default memo(Messages) // eslint-disable-line import/no-default-export

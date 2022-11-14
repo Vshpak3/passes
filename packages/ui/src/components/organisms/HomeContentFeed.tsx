@@ -4,7 +4,6 @@ import {
   GetFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import InfoIcon from "public/icons/post-info-circle-icon.svg"
 import { FC } from "react"
 
@@ -20,13 +19,7 @@ import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import { useFeaturedCreators } from "src/hooks/useFeaturedCreators"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
-
-const PostCached = dynamic(
-  () => import("src/components/organisms/profile/post/PostCached"),
-  {
-    ssr: false
-  }
-)
+import { PostCached } from "./profile/post/PostCached"
 
 const ContentFeedEmpty = (
   <div className="my-20 mx-auto flex flex-row items-center justify-center rounded-sm border-y border-gray-800 bg-gradient-to-r from-[#3D224A] px-3 py-2 text-center">

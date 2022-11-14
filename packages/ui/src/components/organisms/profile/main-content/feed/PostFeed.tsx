@@ -4,7 +4,6 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import { FC, memo, useContext } from "react"
 
 import { FeedEnd } from "src/components/atoms/feed/FeedEnd"
@@ -14,13 +13,9 @@ import {
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
+import { PostCached } from "src/components/organisms/profile/post/PostCached"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { ProfileContext } from "src/pages/[username]"
-
-const PostCached = dynamic(
-  () => import("src/components/organisms/profile/post/PostCached"),
-  { ssr: false }
-)
 
 interface PostFeedProps {
   profileUserId: string

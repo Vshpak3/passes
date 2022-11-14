@@ -1,12 +1,7 @@
-import dynamic from "next/dynamic"
 import { Suspense } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
-
-const PrivacyPolicy = dynamic(() => import("src/components/pages/Privacy"), {
-  suspense: true
-  // ssr: false
-})
+import { PrivacyPolicy } from "src/components/pages/Privacy"
 
 const PrivacyPolicyPage = () => {
   return (

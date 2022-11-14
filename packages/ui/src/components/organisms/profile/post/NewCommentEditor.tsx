@@ -7,7 +7,7 @@ import { toast } from "react-toastify"
 import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
-import CustomComponentMentionEditor from "src/components/organisms/CustomMentionEditor"
+import { CustomMentionEditor } from "src/components/organisms/CustomMentionEditor"
 import { NewPostTextFormProps } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
 import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
@@ -99,7 +99,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-[5px] border border-passes-gray bg-black/10 p-4">
-        <CustomComponentMentionEditor
+        <CustomMentionEditor
           isReset={isReset}
           onInputChange={(params: NewPostTextFormProps) => {
             setIsButtonDisabled(!params?.text)

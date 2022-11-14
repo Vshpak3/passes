@@ -8,10 +8,9 @@ export interface PaidMessageStatisticCachedProps {
   paidMessage: PaidMessageDto
 }
 
-const PaidMessageStatisticCached: FC<PaidMessageStatisticCachedProps> = ({
-  paidMessage,
-  ...res
-}: PaidMessageStatisticCachedProps) => {
+export const PaidMessageStatisticCached: FC<
+  PaidMessageStatisticCachedProps
+> = ({ paidMessage, ...res }: PaidMessageStatisticCachedProps) => {
   const { paidMessage: cachedPaidMessage, update } = usePaidMessage(
     paidMessage.paidMessageId
   )
@@ -31,5 +30,3 @@ const PaidMessageStatisticCached: FC<PaidMessageStatisticCachedProps> = ({
     />
   )
 }
-
-export default PaidMessageStatisticCached // eslint-disable-line import/no-default-export

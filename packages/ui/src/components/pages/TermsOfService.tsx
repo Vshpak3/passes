@@ -1,4 +1,4 @@
-const TermsOfService = () => {
+export const TermsOfService = () => {
   return (
     <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">
       <div className="mx-10 mt-20 md:mx-20 lg:mx-40 xl:mx-52">
@@ -1066,5 +1066,3 @@ const TermsOfService = () => {
     </div>
   )
 }
-
-export default TermsOfService // eslint-disable-line import/no-default-export

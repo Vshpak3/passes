@@ -85,5 +85,3 @@ export const MediaModal: FC<ModalProps> = ({
     </Modal>
   )
 }
-
-export default MediaModal // eslint-disable-line import/no-default-export

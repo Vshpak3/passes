@@ -1,18 +1,13 @@
 import { GetPostsResponseDto, PostDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import PostStatisticCached from "src/components/organisms/analytics/PostStatisticCached"
 import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
-const PostStatisticCached = dynamic(
-  () => import("src/components/organisms/analytics/PostStatisticCached"),
-  { ssr: false }
-)
-
-const PostStatistics = () => {
+export const PostStatistics = () => {
   const { getPosts } = useUpdatePost()
 
   return (
@@ -57,5 +52,3 @@ const PostStatistics = () => {
     </div>
   )
 }
-
-export default PostStatistics // eslint-disable-line import/no-default-export

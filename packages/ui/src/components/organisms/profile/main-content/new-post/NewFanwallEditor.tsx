@@ -2,7 +2,6 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { CreateFanWallCommentRequestDto, FanWallApi } from "@passes/api-client"
 import { FAN_COMMENT_TEXT_LENGTH } from "@passes/shared-constants"
 import classNames from "classnames"
-import dynamic from "next/dynamic"
 import CloseIcon from "public/icons/sidebar/close.svg"
 import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -10,15 +9,11 @@ import { toast } from "react-toastify"
 import { object } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { CustomMentionEditor } from "src/components/organisms/CustomMentionEditor"
 import { errorMessage } from "src/helpers/error"
 import { yupPostText, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { NewPostTextFormProps } from "./NewPostEditor"
-
-const CustomMentionEditor = dynamic(
-  () => import("src/components/organisms/CustomMentionEditor"),
-  { ssr: false }
-)
 
 const newFallWallFormSchema = object({
   ...yupPostText(FAN_COMMENT_TEXT_LENGTH, "fan wall comment"),

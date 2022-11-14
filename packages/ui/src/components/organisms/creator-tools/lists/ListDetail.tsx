@@ -36,7 +36,7 @@ type ListDetailProps = {
 const listApi = new ListApi()
 const DEBOUNCE_TIMEOUT = 500
 
-const ListDetail: FC<ListDetailProps> = ({ listId }) => {
+export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
   const [addFollowerOpen, setAddFollowerOpen] = useState<boolean>(false)
 
   const [search, setSearch] = useState<string>("")
@@ -287,5 +287,3 @@ const ListDetail: FC<ListDetailProps> = ({ listId }) => {
     </div>
   )
 }
-
-export default ListDetail // eslint-disable-line import/no-default-export

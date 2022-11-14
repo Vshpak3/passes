@@ -12,7 +12,7 @@ export interface VaultMediaItemCachedProps {
   handleClickOnItem: (item: ContentDto) => void
 }
 
-const VaultMediaItemCached: FC<VaultMediaItemCachedProps> = ({
+export const VaultMediaItemCached: FC<VaultMediaItemCachedProps> = ({
   content,
   ...res
 }: VaultMediaItemCachedProps) => {
@@ -26,5 +26,3 @@ const VaultMediaItemCached: FC<VaultMediaItemCachedProps> = ({
 
   return <VaultMediaItem content={cachedContent ?? content} {...res} />
 }
-
-export default VaultMediaItemCached // eslint-disable-line import/no-default-export

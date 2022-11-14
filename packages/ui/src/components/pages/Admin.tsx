@@ -36,7 +36,7 @@ const adminFormSchema = object().shape(
   [["userId", "username"]]
 )
 
-const AdminPage = () => {
+export const Admin = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
   const [ready, setReady] = useState(false)
@@ -173,5 +173,3 @@ const AdminPage = () => {
     </>
   )
 }
-
-export default AdminPage // eslint-disable-line import/no-default-export

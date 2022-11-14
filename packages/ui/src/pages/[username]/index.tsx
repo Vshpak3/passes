@@ -1,17 +1,12 @@
 import { GetProfileResponseDto, PassDto, PostDto } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import { createContext, memo, Suspense } from "react"
 import { KeyedMutator } from "swr"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
+import ProfileUnmemo from "src/components/pages/Profile"
 import { ProfileUpdate } from "src/helpers/updateProfile"
 import { useProfile } from "src/hooks/profile/useProfile"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
-
-const Profile = dynamic(() => import("src/components/pages/Profile"), {
-  suspense: true
-  // ssr: false
-})
 
 interface ProfileProps {
   profile: GetProfileResponseDto | undefined
@@ -40,7 +35,7 @@ const ProfilePage = () => {
   return (
     <Suspense fallback={<CenterLoader />}>
       <ProfileContext.Provider value={useProfile()}>
-        <Profile />
+        <ProfileUnmemo />
       </ProfileContext.Provider>
     </Suspense>
   )

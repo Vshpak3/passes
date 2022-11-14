@@ -1,8 +1,28 @@
 import classNames from "classnames"
-import dynamic from "next/dynamic"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { FC, useEffect } from "react"
 
+import AccountSettings from "src/components/pages/settings/tabs/AccountSettings"
+import AccountInformation from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
+import ChangePassword from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
+import DeactivateAccount from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
+import DisplayName from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
+import ProfilePicture from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
+import Username from "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
+import ChatSettings from "src/components/pages/settings/tabs/ChatSettings"
+import WelcomeMessage from "src/components/pages/settings/tabs/ChatSettings/sub-tabs/WelcomeMessage"
+import NotificationEmailSettings from "src/components/pages/settings/tabs/NotificationEmailSettings"
+import EmailNotifications from "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
+import PaymentSettings from "src/components/pages/settings/tabs/PaymentSettings"
+import AddCard from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
+import PaymentHistory from "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/PaymentHistory"
+import PayoutSettings from "src/components/pages/settings/tabs/PayoutSettings"
+import AddBank from "src/components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank"
+import PrivacySafetySettings from "src/components/pages/settings/tabs/PrivacySafetySettings"
+import BlockedRestrictedAccounts from "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
+import PostsSettings from "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
+import ProfileSettings from "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
+import WalletSettings from "src/components/pages/settings/tabs/WalletSettings"
 import {
   pathToSubTab,
   pathToTab,
@@ -19,109 +39,6 @@ import { useUser } from "src/hooks/useUser"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
-const AccountSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/AccountSettings")
-)
-const AccountInformation = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/AccountInformation"
-    )
-)
-const ChangePassword = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ChangePassword"
-    )
-)
-const DeactivateAccount = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DeactivateAccount"
-    )
-)
-const DisplayName = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/DisplayName"
-    )
-)
-const ProfilePicture = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/ProfilePicture"
-    )
-)
-const Username = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/AccountSettings/sub-tabs/Username"
-    )
-)
-const ChatSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/ChatSettings")
-)
-const WelcomeMessage = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/ChatSettings/sub-tabs/WelcomeMessage"
-    )
-)
-const NotificationEmailSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/NotificationEmailSettings")
-)
-const EmailNotifications = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/NotificationEmailSettings/sub-tabs/EmailNotifications"
-    )
-)
-const PaymentSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/PaymentSettings/index")
-)
-const AddBank = dynamic(
-  () =>
-    import("src/components/pages/settings/tabs/PayoutSettings/sub-tabs/AddBank")
-)
-const AddCard = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/AddCard"
-    )
-)
-const WalletSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/WalletSettings")
-)
-const PrivacySafetySettings = dynamic(
-  () => import("src/components/pages/settings/tabs/PrivacySafetySettings")
-)
-const BlockedRestrictedAccounts = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/BlockedRestrictedAccounts"
-    )
-)
-const PostsSettings = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/PostsSettings"
-    )
-)
-const ProfileSettings = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
-    )
-)
-const PaymentHistory = dynamic(
-  () =>
-    import(
-      "src/components/pages/settings/tabs/PaymentSettings/sub-tabs/PaymentHistory"
-    )
-)
-const PayoutSettings = dynamic(
-  () => import("src/components/pages/settings/tabs/PayoutSettings/index")
-)
 export interface SettingsPageProps {
   settingsPath?: string[]
 }

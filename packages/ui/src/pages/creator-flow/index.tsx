@@ -1,21 +1,13 @@
-import dynamic from "next/dynamic"
 import { Suspense } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
+import { CreatorFlow } from "src/components/pages/creator-flow/Main"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
-
-const CreatorFlowMain = dynamic(
-  () => import("src/components/pages/creator-flow/Main"),
-  {
-    suspense: true
-    // ssr: false
-  }
-)
 
 const CreatorFlowPage = () => {
   return (
     <Suspense fallback={<CenterLoader />}>
-      <CreatorFlowMain />
+      <CreatorFlow />
     </Suspense>
   )
 }

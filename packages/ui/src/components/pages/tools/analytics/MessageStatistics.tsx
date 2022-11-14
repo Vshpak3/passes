@@ -4,20 +4,15 @@ import {
   MessagesApi,
   PaidMessageDto
 } from "@passes/api-client"
-import dynamic from "next/dynamic"
 import React from "react"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { PaidMessageStatisticCached } from "src/components/organisms/analytics/PaidMessageStatisticCached"
 
-const PaidMessageStatisticCached = dynamic(
-  () => import("src/components/organisms/analytics/PaidMessageStatisticCached"),
-  { ssr: false }
-)
-
-const MessageStatistics = () => {
+export const MessageStatistics = () => {
   return (
     <div className="flex flex-col">
       <div className="flex flex-row justify-between border-b border-passes-dark-200">
@@ -68,5 +63,3 @@ const MessageStatistics = () => {
     </div>
   )
 }
-
-export default MessageStatistics // eslint-disable-line import/no-default-export

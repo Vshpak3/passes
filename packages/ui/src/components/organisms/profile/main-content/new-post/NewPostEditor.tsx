@@ -7,12 +7,12 @@ import {
   POST_TEXT_LENGTH
 } from "@passes/shared-constants"
 import classNames from "classnames"
-import dynamic from "next/dynamic"
 import { DragEvent, FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { array, date, object } from "yup"
 
+import { CustomMentionEditor } from "src/components/organisms/CustomMentionEditor"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
 import { NewPostEditorHeader } from "src/components/organisms/profile/new-post/NewPostEditorHeader"
@@ -21,11 +21,6 @@ import { yupPaid, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 import { NewPostPaidSection } from "./NewPostPaidSection"
-
-const CustomMentionEditor = dynamic(
-  () => import("src/components/organisms/CustomMentionEditor"),
-  { ssr: false }
-)
 
 export interface NewPostTextFormProps {
   text: string
