@@ -11,6 +11,8 @@ import { toast } from "react-toastify"
 import { ContentFile } from "src/hooks/useMedia"
 import { isDev } from "./env"
 
+const UPLOAD_BATCH_SIZE = 10
+
 const getUrlPath = (...args: string[]) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
@@ -202,6 +204,24 @@ export class ContentService {
     return this.uploadFile((await this.contentApi.preSignW9()).url, file)
   }
 
+  private async promiseAllBatched(
+    items: ContentFile[],
+    task: (file: ContentFile) => Promise<string>,
+    batchSize: number
+  ) {
+    let position = 0
+    let results: string[] = []
+    while (position < items.length) {
+      const itemsForBatch = items.slice(position, position + batchSize)
+      results = [
+        ...results,
+        ...(await Promise.all(itemsForBatch.map((item) => task(item))))
+      ]
+      position += batchSize
+    }
+    return results
+  }
+
   /**
    * Uploads user content
    *
@@ -228,8 +248,9 @@ export class ContentService {
     if (showMessage) {
       toast.info("Please wait a moment as your content is uploaded")
     }
-    return await Promise.all(
-      files.map(async (file: ContentFile) => {
+    return await this.promiseAllBatched(
+      files,
+      async (file: ContentFile) => {
         if (!file.file) {
           return file.content?.contentId ?? ""
         }
@@ -242,7 +263,8 @@ export class ContentService {
         })
         const result = await this.uploadFile(url, file.file)
         return this.parseContentUrl(result).id
-      })
+      },
+      UPLOAD_BATCH_SIZE
     ).then((r) => {
       toast.dismiss()
       return r
