@@ -83,21 +83,21 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
               />
               {isCreator && (
                 <div className="flex w-full items-center justify-between">
-                  <div className="flex items-center justify-start gap-[10px]">
+                  <div className="flex w-full items-center justify-start gap-[10px] overflow-x-auto">
                     <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
-                      <span className="flex w-fit items-center justify-center bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
+                      <div className="flex w-fit items-center justify-center whitespace-nowrap bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
                         Total Spent
-                      </span>
-                      <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                      </div>
+                      <div className="flex h-full w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
                         {formatCurrency(amount ?? 0)}
-                      </span>
+                      </div>
                     </div>
                     {passHolders?.map((passHolder) => (
                       <div
                         className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md"
                         key={passHolder.passHolderId}
                       >
-                        <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                        <span className="flex w-fit items-center justify-center whitespace-nowrap bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
                           {passHolder.title}
                         </span>
                       </div>

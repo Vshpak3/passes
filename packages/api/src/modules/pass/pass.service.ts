@@ -458,7 +458,7 @@ export class PassService {
         `${PassEntity.table}.id`,
         `${PassHolderEntity.table}.pass_id`,
       )
-      .where(`${PassEntity.table}.creator`, userId)
+      .where(`${PassEntity.table}.creator_id`, userId)
       .select([
         `${PassHolderEntity.table}.*`,
         `${PassEntity.table}.messages as total_messages`,

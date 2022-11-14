@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Get,
   HttpStatus,
   Param,
   Patch,
@@ -280,7 +279,7 @@ export class PassController {
     responseDesc: 'A pass was pinned',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Get('pin/:passId')
+  @Post('pin/:passId')
   async pinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
@@ -297,7 +296,7 @@ export class PassController {
     responseDesc: 'A pass was unpinned',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Get('unpin/:passId')
+  @Post('unpin/:passId')
   async unpinPass(
     @Req() req: RequestWithUser,
     @Param('passId') passId: string,
@@ -314,7 +313,7 @@ export class PassController {
     responseDesc: 'Gets pass holders',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Get('passholders')
+  @Post('passholders')
   async getPassHolders(
     @Req() req: RequestWithUser,
     @Body() getPassHoldersRequest: GetPassHoldersRequestDto,

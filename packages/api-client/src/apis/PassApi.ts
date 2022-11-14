@@ -394,7 +394,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/passholders`,
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
             body: GetPassHoldersRequestDtoToJSON(requestParameters.getPassHoldersRequestDto),
@@ -506,7 +506,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/pin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
@@ -693,7 +693,7 @@ export class PassApi extends runtime.BaseAPI {
 
         const response = await this.request({
             path: `/api/pass/unpin/{passId}`.replace(`{${"passId"}}`, encodeURIComponent(String(requestParameters.passId))),
-            method: 'GET',
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
