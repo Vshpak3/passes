@@ -392,7 +392,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                   </span>
                 ) : tip > MAX_TIP_MESSAGE_PRICE ? (
                   <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                    minimum {formatCurrency(MAX_TIP_MESSAGE_PRICE ?? 0)}
+                    maximum {formatCurrency(MAX_TIP_MESSAGE_PRICE ?? 0)}
                   </span>
                 ) : null}
                 <NumberInput
@@ -411,7 +411,12 @@ export const InputMessage: FC<InputMessageProps> = ({
               <Button
                 big
                 className="w-[130px]"
-                disabled={isNaN(tip) || !!blocked || loading}
+                disabled={
+                  isNaN(tip) ||
+                  !!blocked ||
+                  loading ||
+                  tip > MAX_TIP_MESSAGE_PRICE
+                }
                 disabledClass="cursor-not-allowed"
                 onClick={handleSubmit(submitMessage)}
               >
