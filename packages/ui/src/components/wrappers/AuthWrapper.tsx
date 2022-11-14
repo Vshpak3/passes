@@ -25,7 +25,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   creatorOnly,
   hasRefreshed = true
 }) => {
-  const { userClaims, user } = useUser()
+  const { userClaims, user, loading } = useUser()
   const { safePush } = useSafeRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
@@ -38,6 +38,10 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
 
     if (skipAuth) {
+      return
+    }
+
+    if (loading) {
       return
     }
 
@@ -72,7 +76,8 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     userClaims,
     hasRefreshed,
     safePush,
-    user?.email
+    user?.email,
+    loading
   ])
 
   return authed ? <>{children}</> : null
