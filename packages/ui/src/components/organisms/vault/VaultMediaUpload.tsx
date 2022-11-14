@@ -49,7 +49,7 @@ export const VaultMediaUpload: FC<VaultMediaUploadProps> = ({
   return (
     <>
       {!!files?.length && (
-        <form className="max-w-[500px]" onSubmit={handleSubmit(onSubmit)}>
+        <form className="w-full" onSubmit={handleSubmit(onSubmit)}>
           <MediaSection
             addNewMedia={addNewMedia}
             errors={errors}
