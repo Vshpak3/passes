@@ -1,6 +1,9 @@
 // eslint-disable-next-line eslint-comments/disable-enable-pair
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { InternalServerErrorException } from '@nestjs/common'
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import CryptoJS from 'crypto-js'
 
 import { DatabaseService } from '../../database/database.service'
@@ -205,7 +208,9 @@ async function createNftPassSuccessCallback(
       )
     }
   } catch (err) {
-    null
+    if (!(err instanceof BadRequestException)) {
+      payService.sentry.instance().captureException(err)
+    }
   }
 
   return {

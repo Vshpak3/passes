@@ -193,7 +193,7 @@ export class PaymentService {
     @Inject(RedisLockService)
     protected readonly lockService: RedisLockService,
     private readonly ethService: EthService,
-    @InjectSentry() private readonly sentry: SentryService,
+    @InjectSentry() readonly sentry: SentryService,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
