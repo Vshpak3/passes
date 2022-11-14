@@ -514,7 +514,7 @@ export class PassService {
       query,
       PassEntity.table,
       PassEntity.table,
-      pinned ? 'price' : 'created_at',
+      pinned ? 'pinned_at' : 'price',
       pinned ? OrderEnum.DESC : OrderEnum.ASC,
       createdAt,
       lastId,
