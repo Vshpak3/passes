@@ -8,7 +8,6 @@ import {
   SendMessageRequestDto
 } from "@passes/api-client"
 import debounce from "lodash.debounce"
-import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
