@@ -5,11 +5,11 @@ import { FC } from "react"
 import { Button } from "src/components/atoms/button/Button"
 
 interface BecomeCreatorButtonProps {
-  isMobile?: boolean
+  isTablet?: boolean
 }
 
 export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
-  isMobile
+  isTablet = true
 }) => {
   // const router = useRouter()
   const onClick = () => {
@@ -18,7 +18,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
   }
 
   return (
-    <div className={classNames({ hidden: isMobile })}>
+    <div className={classNames({ hidden: isTablet })}>
       <div className="flex px-6">
         <Button
           className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"

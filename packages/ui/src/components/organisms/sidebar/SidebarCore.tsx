@@ -11,6 +11,7 @@ import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayou
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { isOverMinCreatorAge } from "src/helpers/isOver18"
 import { useUser } from "src/hooks/useUser"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface SidebarProps {
   navigation: SidebarNavigation[]
@@ -19,6 +20,7 @@ interface SidebarProps {
 
 export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { user } = useUser()
+  const { isTablet } = useWindowSize()
 
   return (
     <div className="flex h-full w-full flex-1 flex-col bg-passes-black lg:px-0">
@@ -54,9 +56,9 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
               ))}
               <AuthWrapper>
                 {user?.isCreator ? (
-                  <NewPostButton />
+                  <NewPostButton isTablet={isTablet} />
                 ) : isOverMinCreatorAge(user) ? (
-                  <BecomeCreatorButton />
+                  <BecomeCreatorButton isTablet={isTablet} />
                 ) : null}
               </AuthWrapper>
             </nav>

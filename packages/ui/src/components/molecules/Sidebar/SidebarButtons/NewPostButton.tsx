@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import PlusSign from "public/icons/plus-sign.svg"
 import { FC, useState } from "react"
 
@@ -5,10 +6,10 @@ import { Button } from "src/components/atoms/button/Button"
 import { NewPostPopup } from "src/components/molecules/scheduler/NewPostPopup"
 
 interface NewPostButtonProps {
-  isMobile?: boolean
+  isTablet?: boolean
 }
 
-export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
+export const NewPostButton: FC<NewPostButtonProps> = ({ isTablet }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   return (
     <>
@@ -17,15 +18,15 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isMobile }) => {
         onCancel={() => setIsNewPostModalOpen(false)}
       />
       <Button
-        className={`my-5 flex h-12 w-12 items-center justify-center rounded-[50%] ${
-          // isMobile ? "hidden" : "lg:hidden"
-          "hidden"
-        }`}
+        className={classNames(
+          { hidden: true }, // isTablet ? "hidden" : "lg:hidden"
+          "my-5 flex h-12 w-12 items-center justify-center rounded-[50%]"
+        )}
         onClick={() => setIsNewPostModalOpen(true)}
       >
         <PlusSign className="h-4 w-4" />
       </Button>
-      <div className={`${isMobile ? "" : "hidden"} lg:flex`}>
+      <div className={classNames({ hidden: isTablet }, "lg:flex")}>
         <Button
           className="mt-4 rounded-[5px]"
           fontSize={16}
