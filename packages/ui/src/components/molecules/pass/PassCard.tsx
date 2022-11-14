@@ -106,31 +106,31 @@ export const PassCard: FC<PassCardProps> = ({
               {formatCurrency(pass.price)} / {getPassType(pass.type)}
             </div>
           </div>
-          {pass.type === PassDtoTypeEnum.Subscription && (
-            <div className="mt-2 flex w-full flex-row items-center justify-between">
-              <div className="flex flex-col">
-                {pass.totalMessages !== null && pass.totalMessages > 0 && (
-                  <span className="text-sm text-white md:text-xs">
-                    <span className="font-[700] text-white">
-                      {pass.totalMessages}{" "}
-                    </span>
-                    <span className="text-[#767676]">free messages</span>
+          {/* {pass.type === PassDtoTypeEnum.Subscription && ( */}
+          <div className="mt-2 flex w-full flex-row items-center justify-between">
+            <div className="flex flex-col">
+              {pass.totalMessages !== null && pass.totalMessages > 0 && (
+                <span className="text-sm text-white md:text-xs">
+                  <span className="font-[700] text-white">
+                    {pass.totalMessages}{" "}
                   </span>
-                )}
-                {pass.totalMessages === null && (
-                  <span className="flex text-sm text-gray-400 md:text-xs">
-                    <span className="mr-[3px] font-[700] text-white">
-                      Unlimited
-                    </span>{" "}
-                    <span className="text-[#767676]">free messages</span>
-                  </span>
-                )}
-              </div>
-              <div className="text-sm font-[500] text-gray-400 md:text-xs">
-                {pass.freetrial ? "Free trial" : "No free trial"}
-              </div>
+                  <span className="text-[#767676]">free messages</span>
+                </span>
+              )}
+              {pass.totalMessages === null && (
+                <span className="flex text-sm text-gray-400 md:text-xs">
+                  <span className="mr-[3px] font-[700] text-white">
+                    Unlimited
+                  </span>{" "}
+                  <span className="text-[#767676]">free messages</span>
+                </span>
+              )}
             </div>
-          )}
+            {/* <div className="text-sm font-[500] text-gray-400 md:text-xs">
+                {pass.freetrial ? "Free trial" : "No free trial"}
+              </div> */}
+          </div>
+          {/* )} */}
           <div
             className={classNames(
               isPinnedPass ? "w-full" : "w-[90%]",
