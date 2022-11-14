@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode"
 import { NextRouter } from "next/router"
 
 import { JWTUserClaims } from "src/hooks/useUser"
+import { isProd } from "./env"
 import { tokenStillValid } from "./token"
 
 export enum AuthStates {
@@ -33,7 +34,11 @@ export function authStateToRoute(state: AuthStates) {
     case AuthStates.VERIFY:
       return "/signup/info"
     case AuthStates.AUTHED:
-      return "/home"
+      if (isProd) {
+        return "/soon"
+      } else {
+        return "/home"
+      }
   }
 }
 
