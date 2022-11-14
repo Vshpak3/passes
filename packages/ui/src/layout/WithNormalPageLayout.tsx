@@ -15,6 +15,7 @@ class WithNormalPageLayoutOptions {
   headerClassName?: string
   sidebar?: boolean = true
   background?: boolean = true
+  noScroll?: boolean = false
 
   constructor(init?: Partial<WithNormalPageLayoutOptions>) {
     Object.assign(this, init)
@@ -47,7 +48,8 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           "bg-passes-black",
-          "min-safe-h-screen relative w-full pb-16 lg:pb-0"
+          "min-safe-h-screen relative w-full lg:pb-0",
+          !options.noScroll && "pb-16 "
         )}
       >
         {background && (
