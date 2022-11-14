@@ -2,7 +2,6 @@ import React from "react"
 
 export const FanTips = () => {
   return (
-    // <div className="bg-[url('/img/homepage/glow.webp')] bg-contain bg-no-repeat py-32">
     <div className="py-32">
       <h3 className="mx-auto max-w-2xl text-center text-5xl font-extrabold leading-[4rem]">
         Get paid for your time. <br />{" "}
