@@ -12,11 +12,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, SchemaOf, string } from "yup"
 
-import {
-  Button,
-  ButtonTypeEnum,
-  ButtonVariant
-} from "src/components/atoms/button/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Select } from "src/components/atoms/input/Select"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
@@ -30,6 +26,7 @@ import { displayNameSchema } from "src/helpers/validation/displayName"
 import { usernameSchema } from "src/helpers/validation/username"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { JWTUserClaims, useUser } from "src/hooks/useUser"
+import { StandAlonePage } from "src/layout/StandAlonePage"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 
 const BIRTHDAY_DATE_FORMAT = "yyyy-MM-dd"
@@ -147,129 +144,106 @@ const SignupInfoPage: FC = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col px-0 md:pt-6 lg:px-20">
-      <div className="absolute left-0 top-0 h-[300px] w-full bg-[#12070E] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
-      <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
-        <div className="flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] pt-8 opacity-[60] md:border md:py-[3%]">
-          <Text
-            className="mb-4 w-[360px] text-center font-[500] text-white"
-            fontSize={36}
-          >
-            Let&apos;s get to know each other
-          </Text>
-          <form
-            className="flex flex-col gap-y-5"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Your name
-              </Text>
-              <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="legalFullName"
-                options={{
-                  required: {
-                    value: true,
-                    message: "Full name is required"
-                  }
-                }}
-                placeholder="Enter your name"
-                register={register}
-                type="text"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Username
-              </Text>
-              <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="username"
-                options={{
-                  required: {
-                    value: true,
-                    message: "Username is required"
-                  }
-                }}
-                placeholder="Enter your username"
-                register={register}
-                type="text"
-              />
-            </div>
-
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Display Name
-              </Text>
-              <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="displayName"
-                options={{
-                  required: {
-                    value: true,
-                    message: "Display name is required"
-                  }
-                }}
-                placeholder="Enter your display name"
-                register={register}
-                type="text"
-              />
-            </div>
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Birthday
-              </Text>
-              <DateSelector
-                errors={errors.birthday}
-                onDateChange={onDateChange}
-              />
-            </div>
-            <div className="flex flex-col">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Country
-              </Text>
-              <Select
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                errors={errors}
-                name="countryCode"
-                onChange={(newValue: string) =>
-                  setValue("countryCode", newValue)
-                }
-                options={{
-                  required: {
-                    value: true,
-                    message: "Country is required"
-                  }
-                }}
-                placeholder="Enter your country"
-                register={register}
-                selectOptions={COUNTRIES}
-                showOnTop
-              />
-            </div>
-
-            <Button
-              className="flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-              disabled={isSubmitting}
-              disabledClass="opacity-[0.5]"
-              type={ButtonTypeEnum.SUBMIT}
-              variant={ButtonVariant.NONE}
-            >
-              <Text className="font-medium" fontSize={16}>
-                Register account
-              </Text>
-              <EnterIcon />
-            </Button>
-          </form>
-          <SignupFooter disabled={isSubmitting} />
+    <StandAlonePage className="w-[100vw] max-w-[750px]">
+      <Text
+        className="mb-4 w-[360px] text-center font-[500] text-white"
+        fontSize={36}
+      >
+        Let&apos;s get to know each other
+      </Text>
+      <form className="flex flex-col gap-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col">
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Your name</Text>
+          <Input
+            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            errors={errors}
+            name="legalFullName"
+            options={{
+              required: {
+                value: true,
+                message: "Full name is required"
+              }
+            }}
+            placeholder="Enter your name"
+            register={register}
+            type="text"
+          />
         </div>
-      </div>
-    </div>
+
+        <div className="flex flex-col">
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Username</Text>
+          <Input
+            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            errors={errors}
+            name="username"
+            options={{
+              required: {
+                value: true,
+                message: "Username is required"
+              }
+            }}
+            placeholder="Enter your username"
+            register={register}
+            type="text"
+          />
+        </div>
+
+        <div className="flex flex-col">
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+            Display Name
+          </Text>
+          <Input
+            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            errors={errors}
+            name="displayName"
+            options={{
+              required: {
+                value: true,
+                message: "Display name is required"
+              }
+            }}
+            placeholder="Enter your display name"
+            register={register}
+            type="text"
+          />
+        </div>
+        <div className="flex flex-col">
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Birthday</Text>
+          <DateSelector errors={errors.birthday} onDateChange={onDateChange} />
+        </div>
+        <div className="flex flex-col">
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
+          <Select
+            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            errors={errors}
+            name="countryCode"
+            onChange={(newValue: string) => setValue("countryCode", newValue)}
+            options={{
+              required: {
+                value: true,
+                message: "Country is required"
+              }
+            }}
+            placeholder="Enter your country"
+            register={register}
+            selectOptions={COUNTRIES}
+            showOnTop
+          />
+        </div>
+
+        <Button
+          disabled={isSubmitting}
+          disabledClass="opacity-[0.5]"
+          type={ButtonTypeEnum.SUBMIT}
+        >
+          <Text className="font-medium" fontSize={16}>
+            Register account
+          </Text>
+          <EnterIcon />
+        </Button>
+      </form>
+      <SignupFooter disabled={isSubmitting} />
+    </StandAlonePage>
   )
 }
 

@@ -14,6 +14,7 @@ import { sleep } from "src/helpers/sleep"
 import { passwordSchema } from "src/helpers/validation/password"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
+import { StandAlonePage } from "src/layout/StandAlonePage"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 
 export interface ResetPasswordFormProps {
@@ -80,87 +81,81 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col px-0 pt-6 lg:px-20">
-      <div className="absolute left-0 top-0 h-[300px] w-full bg-[#12070E] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
-      <div className="z-10 flex justify-center md:mt-20 lg:my-auto">
-        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
-          <Text
-            className="mb-4 w-[360px] text-center font-[500] text-white"
-            fontSize={36}
-          >
-            Password Reset
+    <StandAlonePage className="my-[15vh] h-[30vh] w-[100vw] max-w-[750px]">
+      <Text
+        className="mb-4 w-[360px] text-center font-[500] text-white"
+        fontSize={36}
+      >
+        Password Reset
+      </Text>
+      {passwordReset ? (
+        <>
+          <Text className="flex flex-wrap py-2 text-center text-[#b3bee7] opacity-[0.75]">
+            Success! Your password has been changed.
           </Text>
-          {passwordReset ? (
-            <>
-              <Text className="-mt-6 flex flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
-                Success! Your password has been changed.
-              </Text>
-              <Text className="flex flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
-                We will automatically log you in. Alternatively, click here to
-                log in.
-              </Text>
-              <button
-                className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                onClick={() => safePush("/login")}
-              >
-                <Text className="font-medium" fontSize={16}>
-                  Log in
-                </Text>
-                <EnterIcon />
-              </button>
-            </>
-          ) : (
-            <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
-              Please enter your new password and confirm it.
+          <Text className="flex flex-wrap py-2 text-center text-[#b3bee7] opacity-[0.75]">
+            We will automatically log you in. Alternatively, click here to log
+            in.
+          </Text>
+          <button
+            className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
+            onClick={() => safePush("/login")}
+          >
+            <Text className="font-medium" fontSize={16}>
+              Log in
             </Text>
-          )}
-          {!passwordReset && (
-            <form
-              className="flex flex-col gap-y-5"
-              onSubmit={handleSubmit(onSubmit)}
+            <EnterIcon />
+          </button>
+        </>
+      ) : (
+        <>
+          <Text className="flex flex-wrap pb-4 text-center text-[#b3bee7] opacity-[0.75]">
+            Please enter your new password and confirm it.
+          </Text>
+          <form
+            className="flex flex-col gap-y-5"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col items-start">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                Password
+              </Text>
+              <PasswordInput
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                errors={errors}
+                name="password"
+                placeholder="Enter your password"
+                register={register}
+              />
+            </div>
+
+            <div className="flex flex-col items-start">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                Confirm Password
+              </Text>
+              <PasswordInput
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                errors={errors}
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                register={register}
+              />
+            </div>
+
+            <Button
+              disabled={isSubmitting}
+              disabledClass="opacity-[0.5]"
+              type={ButtonTypeEnum.SUBMIT}
             >
-              <div className="flex flex-col">
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                  Password
-                </Text>
-                <PasswordInput
-                  className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  errors={errors}
-                  name="password"
-                  placeholder="Enter your password"
-                  register={register}
-                />
-              </div>
-
-              <div className="flex flex-col">
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                  Confirm Password
-                </Text>
-                <PasswordInput
-                  className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                  errors={errors}
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  register={register}
-                />
-              </div>
-
-              <Button
-                className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-[#598BF4] to-[#B53BEC] text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                disabled={isSubmitting}
-                disabledClass="opacity-[0.5]"
-                type={ButtonTypeEnum.SUBMIT}
-              >
-                <Text className="font-medium" fontSize={16}>
-                  Reset Password
-                </Text>
-                <EnterIcon />
-              </Button>
-            </form>
-          )}
-        </div>
-      </div>
-    </div>
+              <Text className="font-medium" fontSize={16}>
+                Reset Password
+              </Text>
+              <EnterIcon />
+            </Button>
+          </form>
+        </>
+      )}
+    </StandAlonePage>
   )
 }
 

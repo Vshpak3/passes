@@ -2,10 +2,10 @@ import { useRouter } from "next/router"
 import { FC, forwardRef, PropsWithChildren, useEffect, useState } from "react"
 
 import { authRouter } from "src/helpers/authRouter"
-import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 import { IntercomWrapper } from "./IntercomWrapper"
+import { getComponentName } from "./WithNormalPageLayout"
 
 interface LoginWrapperProps {
   routeOnlyIfAuth?: boolean
@@ -38,21 +38,15 @@ export const WithLoginPageLayout = (
 ) => {
   // eslint-disable-next-line react/no-multi-comp
   const WithLoginPageLayout = forwardRef((props, ref) => (
-    <div className="h-screen bg-black">
-      <LoginWrapper routeOnlyIfAuth={options.routeOnlyIfAuth}>
-        <IntercomWrapper>
-          <Page {...props} ref={ref} />
-        </IntercomWrapper>
-      </LoginWrapper>
-    </div>
+    <LoginWrapper routeOnlyIfAuth={options.routeOnlyIfAuth}>
+      <IntercomWrapper>
+        <Page {...props} ref={ref} />
+      </IntercomWrapper>
+    </LoginWrapper>
   ))
 
   WithLoginPageLayout.displayName = `WithLoginPageLayout(${getComponentName(
     Page
   )})`
   return WithLoginPageLayout
-}
-
-function getComponentName(target: FC) {
-  return isProd ? "Component" : target.displayName || target.name
 }

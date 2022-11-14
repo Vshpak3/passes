@@ -27,10 +27,19 @@ export const WithNormalPageLayout = (
   options: WithNormalPageLayoutOptions = {}
 ) => {
   options = new WithNormalPageLayoutOptions(options)
+
   const component = forwardRef((props, ref) => <Page {...props} ref={ref} />)
   component.displayName = `WithNormalPageLayout(${getComponentName(Page)})`
 
-  const { headerTitle, sidebar, header, headerClassName } = options
+  const {
+    skipAuth,
+    creatorOnly,
+    headerTitle,
+    sidebar,
+    header,
+    headerClassName,
+    background
+  } = options
   return {
     // https://nextjs.org/docs/basic-features/layouts
     // tl;dr: pages that share layout won't re-render on navigation
@@ -41,7 +50,7 @@ export const WithNormalPageLayout = (
           "min-safe-h-screen relative w-full pb-16 lg:pb-0"
         )}
       >
-        {options.background && (
+        {background && (
           <>
             <div className="background-gradient fixed right-[0vw] top-[0vh] hidden h-[20vh] w-[20vh] blur-[10vh] md:block" />
             <div className="background-gradient fixed right-[5vw] top-[60vh] hidden h-[15vh] w-[15vh] blur-[13vh] md:block" />
@@ -63,10 +72,10 @@ export const WithNormalPageLayout = (
                 />
               )}
               <AuthWrapper
-                creatorOnly={!!options.creatorOnly}
+                creatorOnly={!!creatorOnly}
                 hasRefreshed={hasRefreshed}
                 isPage
-                skipAuth={!!options.skipAuth}
+                skipAuth={!!skipAuth}
               >
                 {!!headerTitle && (
                   <SectionTitle className="ml-4 mt-3 lg:hidden">
@@ -84,6 +93,6 @@ export const WithNormalPageLayout = (
   }
 }
 
-function getComponentName(target: FC) {
+export function getComponentName(target: FC) {
   return isProd ? "Component" : target.displayName || target.name
 }

@@ -7,17 +7,14 @@ import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { object, SchemaOf, string } from "yup"
 
-import {
-  Button,
-  ButtonTypeEnum,
-  ButtonVariant
-} from "src/components/atoms/button/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
 import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
+import { StandAlonePage } from "src/layout/StandAlonePage"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 
 const RESEND_WAIT_TIME = 60
@@ -116,93 +113,84 @@ const SignupEmailPage: FC = () => {
   }
 
   return (
-    <div className="flex flex-1 flex-col px-0 pt-6 lg:px-20">
-      <div className="absolute left-0 top-0 h-[300px] w-full bg-[#12070E] bg-[url('/img/signup-background.png')] bg-cover opacity-[50] backdrop-blur-[164px]" />
-      <div className="z-10 flex justify-center md:mt-20 lg:mt-40">
-        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black px-[7%] py-[3%] opacity-[60] md:mt-0 md:border">
-          {hasSentEmail ? (
-            <>
-              <Text
-                className="mb-4 w-[360px] text-center font-[500] text-white"
-                fontSize={36}
-              >
-                Email sent!
-              </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                We have sent an email to you to verify your email address.{" "}
-                <br />
-                Please click in the link your email to continue.
-              </Text>
-              <Button
-                className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                disabled={isSubmitting || hasResentEmail}
-                disabledClass="opacity-[0.5]"
-                onClick={resendEmail}
-                type={ButtonTypeEnum.SUBMIT}
-                variant={ButtonVariant.NONE}
-              >
-                <Text className="font-medium" fontSize={16}>
-                  {!hasResentEmail ? (
-                    <>Resend Verification Email</>
-                  ) : (
-                    <>Please wait {timeLeft} seconds to resend</>
-                  )}
-                </Text>
-              </Button>
-              {hasResentEmail && (
-                <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                  We have resent an email to you to verify your email address.
-                </Text>
+    <StandAlonePage className="h-[30vh] w-[100vw] max-w-[750px]">
+      {hasSentEmail ? (
+        <>
+          <Text
+            className="mb-4 w-full text-center font-[500] text-white"
+            fontSize={36}
+          >
+            Email sent!
+          </Text>
+          <Text className="mb-1 pb-2 text-[#b3bee7] opacity-[0.75]">
+            We have sent an email to you to verify your email address. <br />
+            Please click in the link your email to continue.
+          </Text>
+          <Button
+            disabled={isSubmitting || hasResentEmail}
+            disabledClass="opacity-[0.5]"
+            onClick={resendEmail}
+            type={ButtonTypeEnum.SUBMIT}
+          >
+            <Text className="font-medium" fontSize={16}>
+              {!hasResentEmail ? (
+                <>Resend Verification Email</>
+              ) : (
+                <>Please wait {timeLeft} seconds to resend</>
               )}
-              <SignupFooter disabled={isSubmitting} />
-            </>
-          ) : (
-            <>
-              <Text
-                className="mb-4 w-[360px] text-center font-[500] text-white"
-                fontSize={36}
-              >
-                Let&apos;s get to know each other
-              </Text>
-              <form
-                className="flex flex-col gap-y-5"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <div className="flex flex-col">
-                  <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                    Email address
-                  </Text>
-                  <Input
-                    className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
-                    errors={errors}
-                    name="email"
-                    options={{
-                      required: true
-                    }}
-                    placeholder="Enter your email address"
-                    register={register}
-                    type="text"
-                  />
-                </div>
-
-                <Button
-                  className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                  disabled={isSubmitting}
-                  disabledClass="opacity-[0.5]"
-                  type={ButtonTypeEnum.SUBMIT}
-                >
-                  <Text className="font-medium" fontSize={16}>
-                    Register account
-                  </Text>
-                  <EnterIcon />
-                </Button>
-              </form>
-              <SignupFooter disabled={isSubmitting} />
-            </>
+            </Text>
+          </Button>
+          {hasResentEmail && (
+            <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+              We have resent an email to you to verify your email address.
+            </Text>
           )}
-        </div>
-      </div>
-    </div>
+          <SignupFooter disabled={isSubmitting} />
+        </>
+      ) : (
+        <>
+          <Text
+            className="mb-4 w-full text-center font-[500] text-white"
+            fontSize={36}
+          >
+            Let&apos;s get to know each other
+          </Text>
+          <form
+            className="flex flex-col gap-y-5"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <div className="flex flex-col">
+              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+                Email address
+              </Text>
+              <Input
+                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                errors={errors}
+                name="email"
+                options={{
+                  required: true
+                }}
+                placeholder="Enter your email address"
+                register={register}
+                type="text"
+              />
+            </div>
+
+            <Button
+              disabled={isSubmitting}
+              disabledClass="opacity-[0.5]"
+              type={ButtonTypeEnum.SUBMIT}
+            >
+              <Text className="font-medium" fontSize={16}>
+                Register account
+              </Text>
+              <EnterIcon />
+            </Button>
+          </form>
+          <SignupFooter disabled={isSubmitting} />
+        </>
+      )}
+    </StandAlonePage>
   )
 }
 
