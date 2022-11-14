@@ -48,7 +48,7 @@ interface EarningsGraphProps {
   userBalance?: number
 }
 
-const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
+export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const datepickerRef = useRef(null)
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false)
   useOnClickOutside(datepickerRef, () => setIsDatePickerOpen(false))
@@ -234,5 +234,3 @@ const EARNINGS_GRAPH_TABS = [
     value: CreatorEarningDtoTypeEnum.Chargebacks
   }
 ]
-
-export default EarningsGraph // eslint-disable-line import/no-default-export

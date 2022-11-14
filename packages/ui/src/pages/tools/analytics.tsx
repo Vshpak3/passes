@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import { TabButton } from "src/components/atoms/button/TabButton"
 import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsHeader"
-import EarningsGraph from "src/components/pages/tools/analytics/EarningsGraph"
+import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
 import { MessageStatistics } from "src/components/pages/tools/analytics/MessageStatistics"
 import { PostStatistics } from "src/components/pages/tools/analytics/PostStatistics"
 import { useCreatorBalance } from "src/hooks/useAnalytics"
