@@ -1,6 +1,9 @@
 import { DtoProperty } from '../../../web/dto.web'
+import { ContentBareDto } from '../../content/dto/content-bare'
+import { ListDto } from '../../list/dto/list.dto'
 import { CreateBatchMessageRequestDto } from '../../messages/dto/create-batch-message.dto'
 import { SendMessageRequestDto } from '../../messages/dto/send-message.dto'
+import { PassDto } from '../../pass/dto/pass.dto'
 import { CreatePostRequestDto } from '../../post/dto/create-post.dto'
 import { ScheduledEventEntity } from '../entities/scheduled-event.entity'
 import { ScheduledEventTypeEnum } from '../enum/scheduled-event.type.enum'
@@ -27,7 +30,21 @@ export class ScheduledEventDto {
   @DtoProperty({ type: 'boolean' })
   processed: boolean
 
-  constructor(scheduledEvent: ScheduledEventEntity | undefined) {
+  @DtoProperty({ custom_type: [ContentBareDto], optional: true })
+  contents?: ContentBareDto[]
+
+  @DtoProperty({ custom_type: [ListDto], optional: true })
+  lists?: ListDto[]
+
+  @DtoProperty({ custom_type: [PassDto], optional: true })
+  passes?: PassDto[]
+
+  constructor(
+    scheduledEvent: ScheduledEventEntity | undefined,
+    contents?: ContentBareDto[],
+    lists?: ListDto[],
+    passes?: PassDto[],
+  ) {
     if (scheduledEvent) {
       this.scheduledEventId = scheduledEvent.id
       this.type = scheduledEvent.type
@@ -44,6 +61,9 @@ export class ScheduledEventDto {
           break
       }
       this.scheduledAt = scheduledEvent.scheduled_at
+      this.contents = contents
+      this.lists = lists
+      this.passes = passes
     }
   }
 }

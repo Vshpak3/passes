@@ -30,7 +30,7 @@ interface MediaSectionReorderProps {
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
   addNewMedia: (newFiles: FileList | null) => void
   mediaPreviewIndex: number
-  setMediaPreviewIndex: Dispatch<SetStateAction<number>> | undefined
+  setMediaPreviewIndex: (index: number) => void
   isPaid: boolean
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   errors: Partial<FieldErrorsImpl>

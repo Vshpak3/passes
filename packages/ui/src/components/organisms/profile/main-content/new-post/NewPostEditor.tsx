@@ -39,6 +39,7 @@ export interface NewPostFormProps extends NewPostTextFormProps {
   passes: PassDto[]
   expiresAt: Date | null
   scheduledAt: Date | null
+  previewIndex: number
 }
 
 const newPostFormDefaults: NewPostFormProps = {
@@ -49,7 +50,8 @@ const newPostFormDefaults: NewPostFormProps = {
   price: "",
   passes: [],
   expiresAt: null,
-  scheduledAt: null
+  scheduledAt: null,
+  previewIndex: 0
 }
 
 const newPostFormSchema = object({
@@ -79,6 +81,8 @@ interface NewPostEditorProps {
   isExtended?: boolean
   onClose?: () => void
   popup: boolean
+  title?: string
+  schedulable?: boolean
 }
 
 export const NewPostEditor: FC<NewPostEditorProps> = ({
@@ -87,14 +91,15 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   onlyText = false,
   isExtended = false,
   popup,
-  onClose
+  onClose,
+  title = "New Post",
+  schedulable = true
 }) => {
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [dragActive, setDragActive] = useState(false)
 
-  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
   const {
     handleSubmit,
@@ -150,6 +155,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     }
   }, [errors])
 
+  const previewIndex = watch("previewIndex")
+
   const onSubmit = async (values: NewPostFormProps) => {
     const contentIds = await new ContentService().uploadUserContent({
       files: values.files,
@@ -165,7 +172,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
       price: values.isPaid ? parseFloat(values.price) : 0,
       contentIds,
-      previewIndex: values.isPaid ? mediaPreviewIndex : 0,
+      previewIndex: values.isPaid ? values.previewIndex : 0,
       expiresAt: values.expiresAt,
       scheduledAt: values.scheduledAt ?? undefined
     }
@@ -224,7 +231,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
             formName="isPaid"
             onClose={closeEditor}
             register={register}
-            title="New post"
+            title={title}
           />
         )}
 
@@ -269,11 +276,13 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
               errors={errors}
               files={files}
               isPaid={isPaid}
-              mediaPreviewIndex={mediaPreviewIndex}
+              mediaPreviewIndex={previewIndex}
               onRemove={onRemove}
               register={register}
               setFiles={setFiles}
-              setMediaPreviewIndex={setMediaPreviewIndex}
+              setMediaPreviewIndex={(index) => {
+                setValue("previewIndex", index)
+              }}
             />
           )}
         </div>
@@ -289,6 +298,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
             <NewPostEditorFooter
               addContent={addContent}
               disableForm={disableForm}
+              schedulable={schedulable}
               scheduledTime={getValues()?.scheduledAt}
               setScheduledTime={setScheduledTime}
             />

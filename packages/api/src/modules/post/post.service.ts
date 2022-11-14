@@ -184,7 +184,7 @@ export class PostService {
             }),
           )
         }
-        await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
+        await trx<CreatorStatEntity>(CreatorStatEntity.table)
           .increment('num_posts', 1)
           .where('user_id', userId)
       })

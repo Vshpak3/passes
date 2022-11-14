@@ -165,6 +165,7 @@ export class ListService {
   async getListsForUser(
     userId: string,
     getListsRequestsDto: GetListsRequestsDto,
+    listIds?: string[],
   ): Promise<ListDto[]> {
     const { name, lastId, createdAt, updatedAt, order, orderType, search } =
       getListsRequestsDto
@@ -188,22 +189,26 @@ export class ListService {
         break
     }
 
-    query = createPaginatedQuery(
-      query,
-      ListEntity.table,
-      ListEntity.table,
-      column,
-      order,
-      value,
-      lastId,
-    )
-    if (search && search.length) {
-      // const strippedSearch = search.replace(/\W/g, '')
-      const likeClause = `%${search}%`
-      query = query.andWhereILike(`${ListEntity.table}.name`, likeClause)
+    if (listIds) {
+      query = query.whereIn('id', listIds)
+      if (search && search.length) {
+        // const strippedSearch = search.replace(/\W/g, '')
+        const likeClause = `%${search}%`
+        query = query.andWhereILike(`${ListEntity.table}.name`, likeClause)
+      }
+    } else {
+      query = createPaginatedQuery(
+        query,
+        ListEntity.table,
+        ListEntity.table,
+        column,
+        order,
+        value,
+        lastId,
+      ).limit(MAX_LISTS_PER_REQUEST)
     }
 
-    const lists = await query.limit(MAX_LISTS_PER_REQUEST)
+    const lists = await query
     await this.fillAutomatedLists(lists)
     return lists.map((list) => new ListDto(list))
   }

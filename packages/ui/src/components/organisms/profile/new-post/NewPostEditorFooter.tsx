@@ -13,13 +13,15 @@ interface NewPostEditorFooterProps {
   setScheduledTime: (date: Date | null) => void
   scheduledTime: Date | null
   addContent: (content: ContentDto[]) => void
+  schedulable: boolean
 }
 
 export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
   disableForm,
   setScheduledTime,
   scheduledTime,
-  addContent
+  addContent,
+  schedulable
 }) => {
   return (
     <div className="w-full">
@@ -34,13 +36,15 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
         <div className="flex">
           <div className="flex w-full flex-wrap justify-between gap-1">
             <VaultSelector expanded selectVaultContent={addContent} />
-            <CalendarSelector
-              activeHeader="Schedule"
-              name="Schedule"
-              placement="bottom"
-              scheduledTime={scheduledTime}
-              setScheduledTime={setScheduledTime}
-            />
+            {schedulable && (
+              <CalendarSelector
+                activeHeader="Schedule"
+                name="Schedule"
+                placement="bottom"
+                scheduledTime={scheduledTime}
+                setScheduledTime={setScheduledTime}
+              />
+            )}
           </div>
         </div>
 

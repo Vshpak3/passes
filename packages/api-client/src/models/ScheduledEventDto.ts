@@ -13,6 +13,12 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import type { ContentBareDto } from './ContentBareDto';
+import {
+    ContentBareDtoFromJSON,
+    ContentBareDtoFromJSONTyped,
+    ContentBareDtoToJSON,
+} from './ContentBareDto';
 import type { CreateBatchMessageRequestDto } from './CreateBatchMessageRequestDto';
 import {
     CreateBatchMessageRequestDtoFromJSON,
@@ -25,6 +31,18 @@ import {
     CreatePostRequestDtoFromJSONTyped,
     CreatePostRequestDtoToJSON,
 } from './CreatePostRequestDto';
+import type { ListDto } from './ListDto';
+import {
+    ListDtoFromJSON,
+    ListDtoFromJSONTyped,
+    ListDtoToJSON,
+} from './ListDto';
+import type { PassDto } from './PassDto';
+import {
+    PassDtoFromJSON,
+    PassDtoFromJSONTyped,
+    PassDtoToJSON,
+} from './PassDto';
 import type { SendMessageRequestDto } from './SendMessageRequestDto';
 import {
     SendMessageRequestDtoFromJSON,
@@ -80,6 +98,24 @@ export interface ScheduledEventDto {
      * @memberof ScheduledEventDto
      */
     processed: boolean;
+    /**
+     * 
+     * @type {Array<ContentBareDto>}
+     * @memberof ScheduledEventDto
+     */
+    contents?: Array<ContentBareDto>;
+    /**
+     * 
+     * @type {Array<ListDto>}
+     * @memberof ScheduledEventDto
+     */
+    lists?: Array<ListDto>;
+    /**
+     * 
+     * @type {Array<PassDto>}
+     * @memberof ScheduledEventDto
+     */
+    passes?: Array<PassDto>;
 }
 
 
@@ -124,6 +160,9 @@ export function ScheduledEventDtoFromJSONTyped(json: any, ignoreDiscriminator: b
         'type': json['type'],
         'scheduledAt': (new Date(json['scheduledAt'])),
         'processed': json['processed'],
+        'contents': !exists(json, 'contents') ? undefined : ((json['contents'] as Array<any>).map(ContentBareDtoFromJSON)),
+        'lists': !exists(json, 'lists') ? undefined : ((json['lists'] as Array<any>).map(ListDtoFromJSON)),
+        'passes': !exists(json, 'passes') ? undefined : ((json['passes'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
 
@@ -143,6 +182,9 @@ export function ScheduledEventDtoToJSON(value?: ScheduledEventDto | null): any {
         'type': value.type,
         'scheduledAt': (value.scheduledAt.toISOString()),
         'processed': value.processed,
+        'contents': value.contents === undefined ? undefined : ((value.contents as Array<any>).map(ContentBareDtoToJSON)),
+        'lists': value.lists === undefined ? undefined : ((value.lists as Array<any>).map(ListDtoToJSON)),
+        'passes': value.passes === undefined ? undefined : ((value.passes as Array<any>).map(PassDtoToJSON)),
     };
 }
 

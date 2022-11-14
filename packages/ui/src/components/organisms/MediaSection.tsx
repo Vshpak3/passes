@@ -16,7 +16,7 @@ interface MediaSectionProps {
   setFiles: Dispatch<SetStateAction<ContentFile[]>>
   isPaid: boolean
   mediaPreviewIndex: number
-  setMediaPreviewIndex?: Dispatch<SetStateAction<number>>
+  setMediaPreviewIndex?: (index: number) => void
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
@@ -28,7 +28,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
   onRemove,
   isPaid,
   mediaPreviewIndex,
-  setMediaPreviewIndex
+  setMediaPreviewIndex = () => null
 }) => {
   const onFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     addNewMedia(event.target.files)

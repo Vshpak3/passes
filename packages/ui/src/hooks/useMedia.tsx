@@ -1,4 +1,4 @@
-import { ContentDto } from "@passes/api-client"
+import { ContentBareDto, ContentDto } from "@passes/api-client"
 import { MouseEvent, useState } from "react"
 import { toast } from "react-toastify"
 
@@ -9,6 +9,7 @@ import {
   MAX_VIDEO_SIZE,
   MAX_VIDEO_SIZE_NAME
 } from "src/config/media-limits"
+import { useUser } from "./useUser"
 
 export class ContentFile {
   file?: File
@@ -18,6 +19,16 @@ export class ContentFile {
     this.file = file
     this.content = content
   }
+}
+
+export const ContentFilesFromBare = (contents?: ContentBareDto[]) => {
+  const { user } = useUser()
+  if (!contents) {
+    return []
+  }
+  return contents.map((content) => {
+    return { content: { ...content, userId: user?.userId ?? "" } }
+  })
 }
 
 export const useMedia = (initFiles?: ContentFile[]) => {

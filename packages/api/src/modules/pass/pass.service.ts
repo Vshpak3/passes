@@ -494,7 +494,10 @@ export class PassService {
     return passHolders.map((passHolder) => new PassHolderDto(passHolder))
   }
 
-  async getCreatorPasses(getCreatorPassesRequestDto: GetPassesRequestDto) {
+  async getCreatorPasses(
+    getCreatorPassesRequestDto: GetPassesRequestDto,
+    passIds?: string[],
+  ) {
     const { createdAt, search, creatorId, lastId, pinned, type } =
       getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
@@ -511,27 +514,31 @@ export class PassService {
       query = query.whereNotNull('pinned_at')
     }
 
-    query = createPaginatedQuery(
-      query,
-      PassEntity.table,
-      PassEntity.table,
-      pinned ? 'pinned_at' : 'price',
-      pinned ? OrderEnum.DESC : OrderEnum.ASC,
-      createdAt,
-      lastId,
-    )
-    if (search && search.length) {
-      // const strippedSearch = search.replace(/\W/g, '')
-      const likeClause = `%${search}%`
-      query = query.andWhere(function () {
-        return this.whereILike(
-          `${PassEntity.table}.title`,
-          likeClause,
-        ).orWhereILike(`${PassEntity.table}.description`, likeClause)
-      })
-    }
+    if (passIds) {
+      query = query.whereIn('id', passIds)
+    } else {
+      query = createPaginatedQuery(
+        query,
+        PassEntity.table,
+        PassEntity.table,
+        pinned ? 'pinned_at' : 'price',
+        pinned ? OrderEnum.DESC : OrderEnum.ASC,
+        createdAt,
+        lastId,
+      ).limit(MAX_PASSES_PER_REQUEST)
 
-    const passes = await query.limit(MAX_PASSES_PER_REQUEST)
+      if (search && search.length) {
+        // const strippedSearch = search.replace(/\W/g, '')
+        const likeClause = `%${search}%`
+        query = query.andWhere(function () {
+          return this.whereILike(
+            `${PassEntity.table}.title`,
+            likeClause,
+          ).orWhereILike(`${PassEntity.table}.description`, likeClause)
+        })
+      }
+    }
+    const passes = await query
     return passes.map((pass) => new PassDto(pass))
   }
 

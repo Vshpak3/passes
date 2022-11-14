@@ -3,8 +3,9 @@ import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_CREATOR_PINNED_PASSES = "/pass/creator-passes/pinned"
+const CACHE_KEY_CREATOR_PASSES = "/pass/creator-passes"
 
-export const useCreatorPinnedPasses = (creatorId?: string) => {
+export const useCreatorPasses = (creatorId?: string) => {
   const api = new PassApi()
 
   const { data: pinnedPasses, mutate: mutatePinnedPasses } = useSWR(
@@ -17,6 +18,18 @@ export const useCreatorPinnedPasses = (creatorId?: string) => {
       ).data
     },
     { revalidateOnMount: true }
+  )
+
+  // Note, this does not retrieve immediately
+  const { data: passes, mutate: mutatePasses } = useSWR(
+    creatorId ? [CACHE_KEY_CREATOR_PASSES, creatorId] : null,
+    async () => {
+      return (
+        await api.getCreatorPasses({
+          getPassesRequestDto: { creatorId }
+        })
+      ).data
+    }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
@@ -62,6 +75,8 @@ export const useCreatorPinnedPasses = (creatorId?: string) => {
   return {
     pinnedPasses: pinnedPasses || [],
     pinPass,
-    unpinPass
+    unpinPass,
+    passes,
+    mutatePasses
   }
 }

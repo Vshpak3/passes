@@ -13,7 +13,12 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { OrderEnum } from '../../util/dto/page.dto'
+import { ContentService } from '../content/content.service'
+import { ListOrderTypeEnum } from '../list/enum/list.order.enum'
+import { ListService } from '../list/list.service'
 import { MessagesService } from '../messages/messages.service'
+import { PassService } from '../pass/pass.service'
 import { PostService } from '../post/post.service'
 import { SCHEDULE_MINUTE_LIMIT } from './constants/limits'
 import { GetScheduledEventsRequestDto } from './dto/get-scheduled-events.dto'
@@ -25,7 +30,7 @@ import { ScheduledEventTypeEnum } from './enum/scheduled-event.type.enum'
 import { checkScheduledAt } from './scheduled.util'
 
 const EXECUTION_TIME_BUFFER = ms('45 minutes')
-
+const NO_EVENT_TYPE_ERROR = 'no type in event'
 @Injectable()
 export class ScheduledService {
   constructor(
@@ -35,6 +40,9 @@ export class ScheduledService {
     private readonly dbWriter: DatabaseService['knex'],
     private readonly postService: PostService,
     private readonly messagesService: MessagesService,
+    private readonly passService: PassService,
+    private readonly listService: ListService,
+    private readonly contentService: ContentService,
   ) {}
 
   async deleteScheduledEvent(userId: string, scheduledEventId: string) {
@@ -74,20 +82,72 @@ export class ScheduledService {
     getScheduledEventsRequestDto: GetScheduledEventsRequestDto,
   ) {
     const { startDate, endDate } = getScheduledEventsRequestDto
+    const events = (
+      await this.dbReader<ScheduledEventEntity>(ScheduledEventEntity.table)
+        .andWhere('user_id', userId)
+        .where('scheduled_at', '>=', startDate)
+        .andWhere('scheduled_at', '<', endDate)
+        .whereNull('deleted_at')
+        // Gets events that have been scheduled
+        // .andWhere('processed', false)
+        .orderBy('scheduled_at', 'asc')
+        .select('*')
+    ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
 
-    return (
-      (
-        await this.dbReader<ScheduledEventEntity>(ScheduledEventEntity.table)
-          .andWhere('user_id', userId)
-          .where('scheduled_at', '>=', startDate)
-          .andWhere('scheduled_at', '<', endDate)
-          .whereNull('deleted_at')
-          // Gets events that have been scheduled
-          // .andWhere('processed', false)
-          .orderBy('scheduled_at', 'asc')
-          .select('*')
-      ).map((scheduledEvent) => new ScheduledEventDto(scheduledEvent))
+    await Promise.all(
+      events.map(async (event) => {
+        const { type, createPost, sendMessage, batchMessage } = event
+        switch (type) {
+          case ScheduledEventTypeEnum.CREATE_POST:
+            if (!createPost) {
+              throw new BadRequestException('create post body is empty')
+            }
+            await this.postService.validateCreatePost(userId, createPost)
+            event.passes = await this.passService.getCreatorPasses(
+              {},
+              createPost.passIds,
+            )
+            event.contents = await this.contentService.validateContentIds(
+              userId,
+              createPost.contentIds,
+            )
+            break
+          case ScheduledEventTypeEnum.SEND_MESSAGE:
+            if (!sendMessage) {
+              throw new BadRequestException('send message body is empty')
+            }
+            event.contents = await this.contentService.validateContentIds(
+              userId,
+              sendMessage.contentIds,
+            )
+            break
+          case ScheduledEventTypeEnum.BATCH_MESSAGE:
+            if (!batchMessage) {
+              throw new BadRequestException('batch message body is empty')
+            }
+            event.passes = await this.passService.getCreatorPasses(
+              {},
+              batchMessage.passIds,
+            )
+            event.contents = await this.contentService.validateContentIds(
+              userId,
+              batchMessage.contentIds,
+            )
+            event.lists = await this.listService.getListsForUser(
+              userId,
+              {
+                order: OrderEnum.DESC,
+                orderType: ListOrderTypeEnum.CREATED_AT,
+              },
+              [...batchMessage.includeListIds, ...batchMessage.excludeListIds],
+            )
+            break
+          default:
+            throw new InternalServerErrorException(NO_EVENT_TYPE_ERROR)
+        }
+      }),
     )
+    return events
   }
 
   async updateScheduledEvent(
@@ -97,6 +157,7 @@ export class ScheduledService {
     const { scheduledEventId, type, batchMessage, sendMessage, createPost } =
       updateScheduledEventRequestDto
     let body: any = undefined
+    let scheduledAt: Date | undefined = undefined
     switch (type) {
       case ScheduledEventTypeEnum.CREATE_POST:
         if (!createPost) {
@@ -104,21 +165,24 @@ export class ScheduledService {
         }
         await this.postService.validateCreatePost(userId, createPost)
         body = createPost
+        scheduledAt = createPost.scheduledAt
         break
       case ScheduledEventTypeEnum.SEND_MESSAGE:
         if (!sendMessage) {
           throw new BadRequestException('send message body is empty')
         }
         body = sendMessage
+        scheduledAt = sendMessage.scheduledAt
         break
       case ScheduledEventTypeEnum.BATCH_MESSAGE:
         if (!batchMessage) {
           throw new BadRequestException('batch message body is empty')
         }
         body = batchMessage
+        scheduledAt = batchMessage.scheduledAt
         break
       default:
-        throw new InternalServerErrorException('no type in event')
+        throw new InternalServerErrorException(NO_EVENT_TYPE_ERROR)
     }
     const updated = await this.dbWriter<ScheduledEventEntity>(
       ScheduledEventEntity.table,
@@ -131,7 +195,7 @@ export class ScheduledService {
         '<',
         subMinutes(new Date(), SCHEDULE_MINUTE_LIMIT),
       )
-      .update({ body })
+      .update(scheduledAt ? { body, scheduled_at: scheduledAt } : { body })
     return updated === 1
   }
 
@@ -180,7 +244,7 @@ export class ScheduledService {
             )
             break
           default:
-            throw new InternalServerErrorException('no type in event')
+            throw new InternalServerErrorException(NO_EVENT_TYPE_ERROR)
         }
         await this.dbWriter<ScheduledEventEntity>(ScheduledEventEntity.table)
           .update('processed', true)
