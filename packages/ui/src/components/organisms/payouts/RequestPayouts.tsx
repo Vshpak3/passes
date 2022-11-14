@@ -133,7 +133,7 @@ export const RequestPayouts = () => {
                 className="ml-2 flex w-[239px]"
                 onClick={onManualPayoutClick}
               >
-                Request Payment
+                Request Payout
               </Button>
             </div>
           </div>
