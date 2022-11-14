@@ -60,7 +60,11 @@ const cardForm = object({
       return numberValidation.isValid
     })
     .test("is-not-mex", "Amex unsupported", function (value) {
-      return !!value?.match(/^3[47]\d{13,14}$/)?.length
+      if (!value) {
+        return false
+      }
+      const nospaces = value.replace(/\s/g, "")
+      return !nospaces?.match(/^3[47]\d{13,14}$/)?.length
     })
     .required("Card number is required"),
   "exp-month": string().required("Month is required"),
