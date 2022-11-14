@@ -13,6 +13,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { VaultLoader } from "src/components/atoms/vault/VaultLoader"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 
 const VaultMediaItemCached = dynamic(
@@ -113,6 +114,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
         fetchProps={fetchProps}
         keySelector="contentId"
         keyValue="/pages/vault"
+        loadingElement={VaultLoader}
         node={node}
         scrollableTarget={scroll ? "scrollableDiv" : undefined}
         style={{ height: "100%" }}
