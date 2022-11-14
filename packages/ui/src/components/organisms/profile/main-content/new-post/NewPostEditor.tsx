@@ -83,6 +83,7 @@ interface NewPostEditorProps {
   popup: boolean
   title?: string
   schedulable?: boolean
+  showDefaultToast?: boolean
 }
 
 export const NewPostEditor: FC<NewPostEditorProps> = ({
@@ -93,7 +94,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   popup,
   onClose,
   title = "New Post",
-  schedulable = true
+  schedulable = true,
+  showDefaultToast = true
 }) => {
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
   const [extended, setExtended] = useState(isExtended)
@@ -179,14 +181,16 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
 
     await handleSavePost(post)
 
-    toast.dismiss()
+    if (showDefaultToast) {
+      toast.dismiss()
 
-    if (!values.scheduledAt) {
-      toast.success("Your post has been created!")
-    } else {
-      toast.success(
-        "Your post has been scheduled; go to the scheduler to view."
-      )
+      if (!values.scheduledAt) {
+        toast.success("Your post has been created!")
+      } else {
+        toast.success(
+          "Your post has been scheduled; go to the scheduler to view."
+        )
+      }
     }
 
     resetEditor()

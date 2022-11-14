@@ -306,6 +306,7 @@ export class CreatorStatsService {
         this.dbWriter<PostEntity>(PostEntity.table)
           .where({
             user_id: creatorId,
+            deleted_at: null,
           })
           .sum('num_likes'),
       )

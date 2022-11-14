@@ -184,15 +184,16 @@ export class ScheduledService {
       default:
         throw new InternalServerErrorException(NO_EVENT_TYPE_ERROR)
     }
+    body = JSON.stringify(body)
     const updated = await this.dbWriter<ScheduledEventEntity>(
       ScheduledEventEntity.table,
     )
       .where('id', scheduledEventId)
-      .whereNull('processer')
+      .whereNull('processor')
       .whereNull('deleted_at')
       .andWhere(
         'scheduled_at',
-        '<',
+        '>',
         subMinutes(new Date(), SCHEDULE_MINUTE_LIMIT),
       )
       .update(scheduledAt ? { body, scheduled_at: scheduledAt } : { body })

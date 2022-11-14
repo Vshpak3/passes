@@ -50,6 +50,7 @@ export const EditPostPopup: FC<EditPostPopupProps> = ({
         onClose={onCancel}
         popup
         schedulable={false}
+        showDefaultToast={false}
         title="Edit Post"
       />
     </Dialog>
