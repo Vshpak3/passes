@@ -25,7 +25,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   creatorOnly,
   hasRefreshed = true
 }) => {
-  const { userClaims } = useUser()
+  const { userClaims, user } = useUser()
   const { safePush } = useSafeRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
@@ -42,7 +42,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
 
     // DISABLE ALL AUTHED PAGES IN PROD
-    if (isProd) {
+    if (isProd && !user?.email.endsWith("@passes.com")) {
       setAuthed(false)
       if (isPage) {
         authRouter(safePush, userClaims)
