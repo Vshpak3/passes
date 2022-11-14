@@ -8,7 +8,7 @@ import SettingsIcon from "public/icons/sidebar/settings.svg"
 import { SidebarNavigation } from "src/components/molecules/Sidebar/SidebarLayout/Types"
 import { isProd } from "src/helpers/env"
 
-const creatorToolsItems: SidebarNavigation[] = [
+const sidebarCreatorToolItems: SidebarNavigation[] = [
   ...(!isProd
     ? [
         {
@@ -51,7 +51,7 @@ const creatorToolsItems: SidebarNavigation[] = [
   }
 ]
 
-export const navigation: SidebarNavigation[] = [
+export const sidebarMainItems: SidebarNavigation[] = [
   {
     id: "home",
     name: "Home",
@@ -88,7 +88,7 @@ export const navigation: SidebarNavigation[] = [
     href: "",
     icon: CreatorToolsIcon,
     creatorOnly: true,
-    children: creatorToolsItems
+    children: sidebarCreatorToolItems
   },
   {
     id: "profile",

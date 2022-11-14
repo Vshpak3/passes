@@ -1,16 +1,18 @@
 import { useRouter } from "next/router"
+import HomeIcon from "public/icons/sidebar/home.svg"
+import LoginIcon from "public/icons/sidebar/login.svg"
 import { useEffect, useState } from "react"
 
 import { SidebarCore } from "src/components/organisms/sidebar/SidebarCore"
 import { SidebarMobileWrapper } from "src/components/organisms/sidebar/SidebarMobileWrapper"
 import { useUser } from "src/hooks/useUser"
-import { navigation as _navigation } from "./sidebarData"
+import { sidebarMainItems } from "./sidebarData"
 
 export const Sidebar = () => {
   const router = useRouter()
-  const { user } = useUser()
+  const { user, loading } = useUser()
 
-  const [navigation, setNavigation] = useState(_navigation)
+  const [navigation, setNavigation] = useState(sidebarMainItems)
   const [active, setActive] = useState(router.asPath.split("/").pop() ?? "home")
 
   useEffect(() => {
@@ -36,14 +38,14 @@ export const Sidebar = () => {
         if (n.id === "profile") {
           n.href = `/${user?.username}`
         } else if (n.id === "home") {
-          n.name = user ? "Home" : "Login"
-          n.href = user ? "/home" : "/login"
-          // TODO: update icon as well
+          n.name = loading || !!user ? "Home" : "Login"
+          n.href = loading || !!user ? "/home" : "/login"
+          n.icon = loading || !!user ? HomeIcon : LoginIcon
         }
         return n
       })
     )
-  }, [user])
+  }, [loading, user])
 
   return (
     <SidebarMobileWrapper activeRoute={active}>

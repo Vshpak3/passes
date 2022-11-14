@@ -6,6 +6,7 @@ import { FC, useRef, useState } from "react"
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { useSidebarContext } from "src/hooks/context/useSidebarContext"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
+import { useUser } from "src/hooks/useUser"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
 
 interface MobileNavbarProps {
@@ -16,6 +17,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
   const { showTopNav } = useSidebarContext()
   const [isSearchBarOpen, setIsSearchBarOpen] = useState(false)
   const searchBarRef = useRef(null)
+  const { user, loading } = useUser()
 
   const handleSearchClick = () => {
     setIsSearchBarOpen((searchBarState: boolean) => !searchBarState)
@@ -43,19 +45,20 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
               </span>
             </Disclosure.Button>
           </Disclosure>
-          {isSearchBarOpen ? (
-            <div className="mx-2 w-full max-w-[400px]" ref={searchBarRef}>
-              <CreatorSearchBar />
-            </div>
-          ) : (
-            <Button
-              className="mr-3"
-              onClick={handleSearchClick}
-              variant={ButtonVariant.NONE}
-            >
-              <SearchIcon height="25" width="25" />
-            </Button>
-          )}
+          {(loading || !!user) &&
+            (isSearchBarOpen ? (
+              <div className="mx-2 w-full max-w-[400px]" ref={searchBarRef}>
+                <CreatorSearchBar />
+              </div>
+            ) : (
+              <Button
+                className="mr-3"
+                onClick={handleSearchClick}
+                variant={ButtonVariant.NONE}
+              >
+                <SearchIcon height="25" width="25" />
+              </Button>
+            ))}
         </div>
       )}
     </>
