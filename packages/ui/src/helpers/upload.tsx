@@ -9,7 +9,7 @@ export async function promiseAllBatched<T>(
     const itemsForBatch = items.slice(position, position + batchSize)
     results = [
       ...results,
-      ...(await Promise.allSettled(itemsForBatch.map((item) => task(item))))
+      ...(await Promise.all(itemsForBatch.map((item) => task(item))))
     ]
     position += batchSize
   }
