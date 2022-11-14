@@ -194,4 +194,6 @@ const SignupEmailPage: FC = () => {
   )
 }
 
-export default WithLoginPageLayout(SignupEmailPage)
+export default WithLoginPageLayout(SignupEmailPage, {
+  refreshUnverifiedToken: true
+})

@@ -167,6 +167,37 @@ export class AuthApi extends runtime.BaseAPI {
     }
 
     /**
+     * Refreshes an unverified access token
+     */
+    async refreshUnverifiedRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<AccessTokensResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/auth/refresh-unverified`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => AccessTokensResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Refreshes an unverified access token
+     */
+    async refreshUnverified(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<AccessTokensResponseDto> {
+        const response = await this.refreshUnverifiedRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
      * Sets the user email
      */
     async setUserEmailRaw(requestParameters: SetUserEmailRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {

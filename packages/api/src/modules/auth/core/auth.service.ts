@@ -46,15 +46,22 @@ export class AuthService {
     this.clientUrl = this.configService.get('clientUrl') as string
   }
 
-  async setEmail(authId: string, email: string): Promise<void> {
+  private async getAuthRecord(
+    authId: string,
+    fields: (keyof AuthEntity)[],
+  ): Promise<Pick<AuthEntity, keyof AuthEntity>> {
     const authRecord = await this.dbReader<AuthEntity>(AuthEntity.table)
       .where({ id: authId })
-      .select('is_email_verified')
+      .select(fields)
       .first()
-
     if (!authRecord) {
       throw new InternalServerErrorException('Unexpected missing auth record')
     }
+    return authRecord
+  }
+
+  async setEmail(authId: string, email: string): Promise<void> {
+    const authRecord = await this.getAuthRecord(authId, ['is_email_verified'])
 
     // Block endpoint if verified. Do not block if only the email is set
     // (since the user may have entered the wrong email)
@@ -172,14 +179,11 @@ export class AuthService {
     authId: string,
     createUserRequestDto: CreateUserRequestDto,
   ): Promise<AuthRecord> {
-    const authRecord = await this.dbReader<AuthEntity>(AuthEntity.table)
-      .where({ id: authId })
-      .select(['user_id', 'is_email_verified', 'email'])
-      .first()
-
-    if (!authRecord) {
-      throw new InternalServerErrorException('Unexpected missing auth record')
-    }
+    const authRecord = await this.getAuthRecord(authId, [
+      'is_email_verified',
+      'email',
+      'user_id',
+    ])
 
     if (authRecord.user_id) {
       throw new BadRequestException('Auth is already associated with a user')
@@ -196,6 +200,12 @@ export class AuthService {
     )
 
     return AuthRecord.fromUserDto(user)
+  }
+
+  async getAuthRecordFromId(authId: string): Promise<AuthRecord> {
+    return this.getAuthRecordFromAuthOrUser(
+      await this.getAuthRecord(authId, ['id', 'user_id', 'is_email_verified']),
+    )
   }
 
   async getAuthRecordFromAuthOrUser(authEntity: any): Promise<AuthRecord> {

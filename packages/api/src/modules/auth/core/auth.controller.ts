@@ -104,6 +104,33 @@ export class AuthController {
   }
 
   /**
+   * Used for signup email and info pages so that if another session updates
+   * the JWT we can update this session.
+   *
+   * Can only be hit with an unverified access token.
+   */
+  @ApiEndpoint({
+    summary: 'Refreshes an unverified access token',
+    responseStatus: HttpStatus.CREATED,
+    responseType: AccessTokensResponseDto,
+    responseDesc: 'Refreshes an unverified access token',
+    role: RoleEnum.UNVERIFIED,
+  })
+  @Post('refresh-unverified')
+  async refreshUnverified(
+    @Req() req: RequestWithUser,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<AccessTokensResponseDto> {
+    const authRecord = await this.authService.getAuthRecordFromId(req.user.id)
+    return await createTokens(
+      res,
+      authRecord,
+      this.jwtService,
+      this.s3contentService,
+    )
+  }
+
+  /**
    * Can only be hit with VERIFIED access token.
    */
   @ApiEndpoint({
