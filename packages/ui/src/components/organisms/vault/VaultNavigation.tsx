@@ -130,7 +130,7 @@ export const VaultNavigation: FC<VaultNavigationProps> = ({
         />
       )}
       {!embedded && (
-        <div className="absolute right-2 top-0 flex flex-col items-end gap-3 md:h-[45px] md:flex-row md:items-start">
+        <div className="right-2 top-0 flex flex-col items-end gap-3 md:absolute md:h-[45px] md:flex-row md:items-start">
           {selectedItems && selectedItems?.length > 0 && (
             <div className="flex flex-col">
               <div className="flex flex-row items-center gap-2">
