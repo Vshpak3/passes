@@ -26,6 +26,8 @@ describe('App e2e', () => {
     getRedisConnectionToken('message_publisher'),
     getRedisConnectionToken('post_subscriber'),
     getRedisConnectionToken('post_publisher'),
+    getRedisConnectionToken('pass_subscriber'),
+    getRedisConnectionToken('pass_publisher'),
   ]
 
   beforeAll(async () => {
