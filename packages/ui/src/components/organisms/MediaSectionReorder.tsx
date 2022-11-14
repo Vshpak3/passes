@@ -34,6 +34,7 @@ interface MediaSectionReorderProps {
   isPaid: boolean
   onRemove: (index: number, e: MouseEvent<HTMLDivElement>) => void
   errors: Partial<FieldErrorsImpl>
+  dragDisabled?: boolean
 }
 
 export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
@@ -45,7 +46,8 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
   setMediaPreviewIndex,
   isPaid,
   onRemove,
-  errors
+  errors,
+  dragDisabled = false
 }) => {
   const [filesMap, setFilesMap] = useState<MediaSectionContents>({
     Free: [],
@@ -137,6 +139,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
               onRemove={onRemove}
               register={register}
               renderPlusIcon={!isPaid && files.length !== MAX_FILE_COUNT}
+              dragDisabled={dragDisabled}
             />
           </div>
         </div>
@@ -159,6 +162,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
                   onRemove={onRemove}
                   register={register}
                   renderPlusIcon={isPaid && files.length !== MAX_FILE_COUNT}
+                  dragDisabled={dragDisabled}
                 />
               </div>
             </div>

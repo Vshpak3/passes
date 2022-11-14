@@ -26,6 +26,7 @@ interface MediaSectionContentsProps {
   register: FormRegister
   errors: Partial<FieldErrorsImpl>
   onFileInputChange: (event: ChangeEvent<HTMLInputElement>) => void
+  dragDisabled?: boolean
 }
 
 const getMediaClassname = (contentType: string) => {
@@ -49,7 +50,8 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
   renderPlusIcon,
   onFileInputChange,
   register,
-  errors
+  errors,
+  dragDisabled = false
 }) => {
   return (
     <Droppable
@@ -57,6 +59,7 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
       droppableId={listId}
       isCombineEnabled={false}
       type="CARD"
+      isDropDisabled={dragDisabled}
     >
       {(dropProvided) => (
         <div
@@ -76,7 +79,12 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
               </div>
             ) : (
               items.map((item, index) => (
-                <Draggable draggableId={item._id} index={index} key={item._id}>
+                <Draggable
+                  isDragDisabled={dragDisabled}
+                  draggableId={item._id}
+                  index={index}
+                  key={item._id}
+                >
                   {(dragProvided, snapshot) => (
                     <div
                       className="relative z-[2] flex w-[85px] min-w-[85px] shrink-0 md:w-[175px] md:min-w-[175px]"
@@ -89,7 +97,8 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
                           className={classNames(
                             snapshot.isDragging
                               ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                              : getMediaClassname(item.content.contentType)
+                              : getMediaClassname(item.content.contentType),
+                            dragDisabled && "!cursor-pointer"
                           )}
                           iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
                           noRender
@@ -109,7 +118,8 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
                           className={classNames(
                             snapshot.isDragging
                               ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                              : getMediaClassname(item.file.type)
+                              : getMediaClassname(item.file.type),
+                            dragDisabled && "!cursor-pointer"
                           )}
                           file={item.file}
                           iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"

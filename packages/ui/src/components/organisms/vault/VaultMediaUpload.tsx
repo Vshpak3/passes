@@ -60,6 +60,7 @@ export const VaultMediaUpload: FC<VaultMediaUploadProps> = ({
             register={register}
             setFiles={setFiles}
             setMediaPreviewIndex={() => null}
+            dragDisabled={true}
           />
           <Button
             className="my-[10px] w-fit"

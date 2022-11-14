@@ -17,6 +17,7 @@ interface MediaSectionProps {
   isPaid: boolean
   mediaPreviewIndex: number
   setMediaPreviewIndex?: (index: number) => void
+  dragDisabled?: boolean
 }
 
 export const MediaSection: FC<MediaSectionProps> = ({
@@ -28,7 +29,8 @@ export const MediaSection: FC<MediaSectionProps> = ({
   onRemove,
   isPaid,
   mediaPreviewIndex,
-  setMediaPreviewIndex = () => null
+  setMediaPreviewIndex = () => null,
+  dragDisabled = false
 }) => {
   const onFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     addNewMedia(event.target.files)
@@ -59,6 +61,7 @@ export const MediaSection: FC<MediaSectionProps> = ({
           register={register}
           setFiles={setFiles}
           setMediaPreviewIndex={setMediaPreviewIndex}
+          dragDisabled={dragDisabled}
         />
       )}
     </div>
