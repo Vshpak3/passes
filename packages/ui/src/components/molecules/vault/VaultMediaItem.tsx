@@ -54,25 +54,33 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           isSelected
             ? "border-1-[#9C4DC1]"
             : "border-1-[rgba(27, 20, 29, 0.5)]",
-          "container flex w-full cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0",
-          content.contentType === "video"
-            ? "relative flex items-center justify-center"
-            : ""
+          "container flex w-full cursor-pointer flex-col-reverse overflow-hidden border bg-black px-0"
         )}
         onClick={handleClick}
       >
-        <img
-          alt="Can't find media"
-          className="object-cover"
-          height={300}
-          src={ContentService.userContentThumbnailPath(content)}
-          width={300}
-        />
-        {content.contentType === "video" && (
-          <div className="absolute mt-[23px]">
-            <PlayIcon />
+        {content.contentType === "video" ? (
+          <div className="relative flex items-center justify-center">
+            <img
+              alt="Can't find media"
+              className="object-cover"
+              height={300}
+              src={ContentService.userContentThumbnailPath(content)}
+              width={300}
+            />
+            <div className="absolute mt-[23px]">
+              <PlayIcon />
+            </div>
           </div>
+        ) : (
+          <img
+            alt="Can't find media"
+            className="object-cover"
+            height={300}
+            src={ContentService.userContentThumbnailPath(content)}
+            width={300}
+          />
         )}
+
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div className="text-center text-[12px] font-medium uppercase text-white opacity-50">
