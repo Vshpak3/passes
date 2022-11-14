@@ -75,16 +75,14 @@ export const WithLoginPageLayout = (
 ) => {
   // eslint-disable-next-line react/no-multi-comp
   const WithLoginPageLayout = forwardRef((props, ref) => (
-    <div className="h-screen bg-black">
-      <LoginWrapper
-        refreshUnverifiedToken={options.refreshUnverifiedToken}
-        routeOnlyIfAuth={options.routeOnlyIfAuth}
-      >
-        <IntercomWrapper>
-          <Page {...props} ref={ref} />
-        </IntercomWrapper>
-      </LoginWrapper>
-    </div>
+    <LoginWrapper
+      refreshUnverifiedToken={options.refreshUnverifiedToken}
+      routeOnlyIfAuth={options.routeOnlyIfAuth}
+    >
+      <IntercomWrapper>
+        <Page {...props} ref={ref} />
+      </IntercomWrapper>
+    </LoginWrapper>
   ))
 
   WithLoginPageLayout.displayName = `WithLoginPageLayout(${getComponentName(
