@@ -11,7 +11,7 @@ export interface EventTableItemCachedProps {
   isTablet: boolean
 }
 
-export const PayinCached: FC<EventTableItemCachedProps> = ({
+export const EventTableItemCached: FC<EventTableItemCachedProps> = ({
   scheduledEvent,
   ...res
 }: EventTableItemCachedProps) => {

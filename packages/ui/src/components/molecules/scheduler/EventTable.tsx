@@ -5,10 +5,10 @@ import { FC, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
-import { EventTableItem } from "src/components/molecules/scheduler/EventTableItem"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
+import { EventTableItemCached } from "./EventTableItemCached"
 
 export const EventTable: FC = () => {
   const { isTablet } = useWindowSize()
@@ -42,7 +42,7 @@ export const EventTable: FC = () => {
   }
 
   const tableItems = data?.map((item: ScheduledEventDto) => (
-    <EventTableItem
+    <EventTableItemCached
       isTablet={!!isTablet}
       key={item.scheduledEventId}
       onChangeTime={handleOnUpdateEvent}
