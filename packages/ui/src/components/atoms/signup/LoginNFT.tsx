@@ -6,7 +6,7 @@ interface LoginNFTProps {
 
 export const LoginNFT: FC<LoginNFTProps> = ({ filename }) => {
   return (
-    <video autoPlay loop muted>
+    <video autoPlay className="rounded-[15px]" loop muted>
       <source src={filename} type="video/webm" />
     </video>
   )
