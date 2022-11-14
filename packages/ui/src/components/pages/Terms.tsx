@@ -5,741 +5,1010 @@ const TermsOfService = () => {
         <h1 className="text-[24px] font-bold">Passes Terms of Service</h1>
         <br />
         <p>
-          If you live outside the European Union, EFTA States, or the United
-          Kingdom, including if you live in the United States
+          PASSES PLATFORM TERMS OF SERVICE <br /> Last Updated Date: November
+          11, 2022 <br /> <br /> Welcome, and thank you for your interest in
+          Passes (“Passes”, “we” or “us”), our website at www.passes.com and
+          associated mobile applications (“Website”), and any other services or
+          resources that are accessed or enabled via the Website (collectively
+          with the Website, the “Services”). <br />
+          <br /> PLEASE READ THESE PLATFORM TERMS OF SERVICE (“TERMS OF
+          SERVICE”) CAREFULLY. While we’ve taken all effort to explain the
+          provision of our Services to you in as simple and straightforward a
+          manner as possible, there will inevitably be clauses that do contain a
+          little bit of ‘legalease’. If you require any further explanation or
+          clarification with regards to any of the following, please feel free
+          to get in touch with us and we would be more than happy to provide
+          further explanation and assistance. <br />
+          <br /> BY ACCESSING OR USING THE SERVICES IN ANY WAY, INCLUDING BY
+          CLICKING ON AN “I ACCEPT” BUTTON, COMPLETING THE ACCOUNT REGISTRATION
+          PROCESS, AND/OR BROWSING THE WEBSITE, YOU REPRESENT THAT: (1) YOU HAVE
+          READ, UNDERSTAND, AND AGREE TO BE BOUND BY THESE TERMS OF SERVICE; (2)
+          YOU ARE OF LEGAL AGE TO FORM A BINDING CONTRACT WITH PASSES; AND (3)
+          YOU HAVE THE AUTHORITY TO ENTER INTO THESE TERMS OF SERVICE PERSONALLY
+          OR ON BEHALF OF THE ENTITY YOU HAVE NAMED AS THE USER, AND TO BIND
+          THAT ENTITY TO THESE TERMS OF SERVICE. THE TERM “YOU” REFERS TO THE
+          INDIVIDUAL OR LEGAL ENTITY, AS APPLICABLE, IDENTIFIED AS THE USER WHEN
+          YOU REGISTERED FOR THE SERVICES. IF YOU DO NOT AGREE TO BE BOUND BY
+          THESE TERMS OF SERVICE, YOU MAY NOT ACCESS OR USE ANY OF THE SERVICES.
+          <br />
+          <br />
+          THE SERVICES INCLUDE A PLATFORM WHICH ALLOWS USERS TO OFFER TO SELL,
+          SELL AND BUY TANGIBLE AND/OR DIGITAL GOODS, ASSETS, PRODUCTS, SERVICES
+          AND BENEFITS. ALL ITEMS AVAILABLE THROUGH THE PLATFORM, WHETHER
+          DIGITAL OR TANGIBLE, ARE FURNISHED BY OR ON BEHALF OF SELLERS IN
+          CONNECTION WITH SUCH SALES. PASSES IS NOT RESPONSIBLE FOR ANY GOODS
+          OFFERED FOR SALE OR SOLD THROUGH THE SERVICES, UNLESS PASSES IS
+          IDENTIFIED AS THE SELLER AT THE POINT OF SALE. WE ARE NOT A BROKER,
+          FINANCIAL INSTITUTION, OR CREDITOR. YOU AGREE THAT WE SHALL NOT BE A
+          PARTY TO OR HAVE ANY RESPONSIBILITY OR LIABILITY FOR, ARISING OUT OF,
+          RELATING TO, ASSOCIATED WITH OR RESULTING FROM ANY DISPUTES BETWEEN
+          YOU AND ANY SELLER OF GOODS IN RESPECT OF THE USE, MISUSE, PROVISION
+          OR FAILURE TO PROVIDE ANY GOODS. <br />
+          <br />
+          Your use of, and participation in, certain Services may be subject to
+          additional terms (“Supplemental Terms”) and such Supplemental Terms
+          will either be listed in these Terms of Service or will be presented
+          to you for your acceptance when you sign up to use the supplemental
+          Service. If these Terms of Service are inconsistent with the
+          Supplemental Terms, the Supplemental Terms shall control with respect
+          to such Service. <br />
+          <br />
+          PLEASE NOTE THAT THESE TERMS OF SERVICE ARE SUBJECT TO CHANGE BY US IN
+          OUR SOLE DISCRETION AT ANY TIME. When changes are made, we will make a
+          new copy of these Terms of Service available on or through the
+          Services and any new Supplemental Terms will be made available from
+          within, or through, the Website. We will also update the “Last
+          Updated” date at the top of these Terms of Service. If we make any
+          material changes, and you have registered with us to create an Account
+          (as defined below), we may also send an e-mail to you at the last
+          e-mail address you provided to us pursuant to these Terms of Service.
+          Any changes to these Terms of Service will be effective immediately
+          for new users of the Services and will be effective thirty (30) days
+          after posting notice of such changes on the Website for existing
+          Members (defined below). We may also require you to provide consent to
+          the updated Terms of Service in a specified manner before further use
+          of the Services is permitted. If you do not agree to any change(s)
+          after receiving a notice of such change(s), you shall stop using the
+          Services. Otherwise, your continued use of the Services constitutes
+          your acceptance of such change(s). PLEASE REGULARLY CHECK THE SERVICES
+          TO VIEW THE THEN-CURRENT TERMS OF SERVICE. <br />
+          <br />
+          WHO WE ARE. The Services are owned and operated by Passes, Inc., a
+          company incorporated in the United States of America. Our registered
+          office is at 1 S.E. 3rd Avenue, Miami, Miami-Dade County, Florida. You
+          can contact us at help@passes.com <br />
+          <br />
+          WHO CAN USE THE SERVICES. No one under the age of 13 is allowed to
+          create an Account or otherwise use the Services. By using the
+          Services, you represent that you are: (a) over the age of 13 and agree
+          to form a binding contract with us (if less than 18 years old, you
+          must have consent from your parent or legal guardian); (b) not barred
+          from using the Services under the applicable law of the country where
+          you are located; and (c) not someone who has previously had an Account
+          disabled on the Services for a violation of these Terms of Service,
+          any applicable law or any of our policies. <br />
+          <br />
+          SERVICES. The Services consist of the Passes website and mobile
+          applications, the Passes platform and any other products and services
+          made available by Passes. Passes is a platform where users can access
+          premium information, data, text, music, sound, photographs, graphics,
+          video, messages, tags and/or other materials (collectively, “Content”)
+          made available by Passes and/or by certain content creators
+          (“Creator(s),” and such Content “Creator Content”), join exclusive
+          members-only communities for those Creators (“Membership
+          Communities”), purchase and sell digital and tangible merchandise and
+          collectibles through Membership Communities or the Platform (as
+          defined below), and interact with Creators and other Members. License
+          to use the Services. The Services and the information and content
+          available on or through them are protected by copyright laws. Subject
+          to the terms of these Terms of Service, Passes grants you a limited
+          license to access and use the Services on the basis that this license
+          is: not a commercial license – you can only access and use the
+          Services for your own personal, non-commercial use; non-transferable –
+          you cannot pass this right to someone else; non-exclusive – other
+          people can access and use the Services; revocable – we have the right
+          to remove your ability to use the Services at any time; and limited –
+          the license does not extend beyond what has just been described above.
+          Updates. You understand that the Services are evolving. As a result,
+          we may require you to accept updates to any of the Services that you
+          have installed on your computer or mobile device. You acknowledge and
+          agree that we may update the Services with or without notifying you.
+          You may need to update third-party software from time to time in order
+          to use the Services. Certain Restrictions. The rights granted to you
+          in these Terms of Service are subject to the following restrictions:
+          You cannot violate someone else’s rights by impersonating them,
+          posting their private or confidential information, or otherwise
+          infringing their intellectual property rights, publicity rights or
+          right to privacy. You may not post content belonging to another
+          person, unless you have obtained a license or permission from such
+          person in advance. You cannot use the Services to carry out or enable
+          any unlawful, misleading or otherwise fraudulent activity. You cannot
+          use the Services to promote or offer commercial activities and/or
+          sales, such as contests, sweepstakes, advertising or pyramid schemes
+          without our prior written consent. You cannot use the Services to
+          carry out any financial activities subject to registration or
+          licensing, including, but not limited to, using the Services to
+          transact in securities or other similar transactions. You cannot use
+          the Services to harass, intimidate, defame, or bully other users. You
+          cannot conduct yourself in a vulgar, offensive, harassing or
+          objectionable manner while using the Services. You cannot use the
+          Services to generate unsolicited advertisement or spam. You cannot
+          engage in any activity that would interfere with or impair the
+          delivery of our Services or its intended operation. You cannot upload
+          or otherwise send or transmit any material that contains viruses,
+          ‘Trojan horses’, worms or any other computer code, files or programs
+          designed to interrupt, destroy or limit the functionality of the
+          Services or any associated infrastructure. You cannot reproduce, copy,
+          transmit, store, sell or otherwise distribute the Services. You cannot
+          alter, translate, create derivative works from, or try to reverse
+          engineer the Services or any associated infrastructure, or otherwise
+          attempt to derive the source code of the software that enables or
+          underlies the Services. You cannot purchase and sell, or attempt to
+          license, any account (including your individual account) or other data
+          obtained through the Services or in the course of using our Services.
+          You cannot frame or use framing techniques to enclose any of our
+          trademarks, logos or other content (including images, text, page
+          layout or form). You cannot use any manual or automated software,
+          devices or other processes (including, but not limited to, spiders,
+          robots, scrapers, crawlers, avatars, data mining tools or the like) to
+          ‘scrape’ or download data from any web pages on the Services (except
+          that we may choose to grant the operators of public search engines
+          revocable permission to use spiders to copy materials from the
+          Services for the sole purpose of and solely to the extent necessary
+          for creating publicly available searchable indices of the materials,
+          but not caches or archives of such materials). You cannot alter,
+          remove or destroy any copyright notices or other proprietary markings
+          contained on or in the Services. <br />
+          <br />
+          ACCOUNT REGISTRATION. Registering Your Account. In order to access
+          certain features of the Services, you may be required to become a
+          Member. For purposes of these Terms of Service, a “Member” is a user
+          who has registered an account on the Services (“Account”).
+          Registration Data. In registering an Account on the Services, you
+          agree to: (a) provide true, accurate, current and complete information
+          about yourself as prompted by the registration form (the “Registration
+          Data”); and (b) maintain and promptly update the Registration Data to
+          keep it true, accurate, current and complete. You are responsible for
+          all activities that occur under your Account. You agree that you will
+          monitor your Account to restrict use by minors, and you will accept
+          full responsibility for any unauthorized use of the Services by
+          minors. You may not share your Account or password with anyone, and
+          you agree to notify us immediately of any unauthorized use of your
+          password or any other breach of security. If you provide any
+          information that is untrue, inaccurate, not current or incomplete, or
+          we have reasonable grounds to suspect that any information you provide
+          is untrue, inaccurate, not current or incomplete, we have the right to
+          suspend or terminate your Account and refuse any and all current or
+          future use of the Services. You agree not to create an Account using a
+          false identity or information, or on behalf of someone other than
+          yourself. You agree that you will not have more than one Account at
+          any given time. We reserve the right to remove or reclaim any
+          usernames at any time and for any reason, including, but not limited
+          to, claims by a third-party that a username violates the third-party’s
+          rights. Requests for Additional Information. Passes may from time to
+          time require you to provide additional information and documents at
+          the request of any competent authority, in order to help Passes comply
+          with applicable law, regulation, or policy, including laws related to
+          money laundering and funds obtained by criminal means, or for
+          counteracting financing of terrorism, or otherwise in Passes’ sole
+          discretion. Passes may also require you to provide additional
+          information and documents in cases where it has reasons to believe
+          that: (a) your Account is being used for money laundering or for any
+          other illegal activity; (b) you have concealed or reported false
+          identification information and other details; and/or (c) transactions
+          effected via your Account were effected in breach of these Terms of
+          Service. In such cases, Passes may, in its sole discretion, pause or
+          cancel your transactions until such requested additional information
+          and documents have been reviewed by Passes and accepted as satisfying
+          the requirements of applicable law, regulation, or policy. If you do
+          not provide complete and accurate information and documents in
+          response to any such request from Passes, Passes may refuse to provide
+          any NFTs, product, service, and/or further access to the Services to
+          you. Member Warranties. When you register for an Account, you hereby
+          warrant to us as follows: Independent Investigation and Non-Reliance.
+          You are sophisticated, experienced and knowledgeable in the minting,
+          listing, buying, selling or trading of any NFTs (as defined below)
+          using blockchain technology. Additionally, you have conducted an
+          independent investigation of the Services and the matters contemplated
+          by these Terms of Service, have formed your own independent judgment
+          regarding the benefits and risks of and necessary and desirable
+          practices regarding the foregoing and, in making the determination to
+          mint, list, buy, sell or trade any NFTs using the Services, you have
+          relied solely on the results of such investigation and such
+          independent judgment. You understand, acknowledge and agree that the
+          legal requirements applicable to blockchain technologies and digital
+          assets generally, including the NFTs, are evolving, and you have
+          conducted an independent investigation of such potentially applicable
+          legal requirements and the resulting risks and uncertainties,
+          including the risk that one or more governmental entities or other
+          persons may assert that any digital assets or cryptographic tokens
+          (including the NFTs) may constitute securities under applicable legal
+          requirements. Litigation. There is no legal proceeding pending that
+          relates to your activities relating to the minting of NFTs or other
+          token or digital asset trading or blockchain technology related
+          activities. Compliance. You have not failed to comply with, and have
+          not violated, any applicable legal requirement relating to any
+          blockchain technologies, token trading activities or minting NFTs. No
+          investigation or review by any governmental entity is pending or, to
+          your knowledge, has been threatened against or with respect to you,
+          nor does any government order or action prohibit you or any of your
+          representatives from engaging in or continuing any conduct, activity
+          or practice relating to buying, minting or selling NFTs. Your Account.
+          Notwithstanding anything to the contrary herein, you acknowledge and
+          agree that you shall have no ownership or other property interest in
+          your Account. Necessary Equipment and Software. You must provide all
+          equipment and software necessary to connect to the Services. You are
+          solely responsible for any fees, including Internet connection or
+          mobile fees, that you incur when accessing or using the Services.
+          Relationship of the Parties. You are an independent contractor and not
+          a partner, joint venturer, agent or employee of Passes, and you will
+          not bind or attempt to bind Passes to any contract. Neither these
+          Terms of Service nor your use of the Services shall create an
+          association, partnership, joint venture, or relationship of principal
+          and agent, master and servant, or employer and employee, between you
+          and Passes. <br />
+          <br />
+          USING THE SERVICES. Platform. The Services include a platform (the
+          “Platform”) where Passes, Members and Creators can sell and buy
+          tangible and/or digital goods, assets, products, services, and
+          benefits (“Benefits”), including, but not limited to, non-fungible
+          tokens hosted on a blockchain platform (“NFTs”). Pricing and payment
+          terms, including the specific details with relation to the offering of
+          any NFTs, shall be set forth at the point of sale. Certain portions of
+          the Platform may be accessible only through the Membership Community
+          of a particular Creator. NFTs and Benefits listed on the Platform are
+          being offered by the individuals seeking to sell NFTs and Benefits
+          (“Sellers”), and the actual contracts for sale are between the Sellers
+          and the individuals seeking to buy NFTs and/or Benefits (as
+          applicable) (“Buyers”). While we may, in our discretion, help
+          facilitate resolution of disputes through various programs, we have no
+          control over the quality of NFTs offered on the Platform nor the
+          Benefits offered by the Sellers. We cannot control or guarantee the
+          truth or accuracy of a Member’s or Creator’s Content, the ability of
+          the Creator to deliver the Benefits, the ability of Sellers to sell
+          NFTs, the ability of Buyers to pay for NFTs, or that a Buyer and
+          Seller will actually complete a transaction or deliver or return any
+          NFTs listed on the Platform or deliver any of the Benefits they offer.
+          While Passes may provide pricing and guidance for NFTs sold by Sellers
+          on our Platform, such information is solely informational. We do not
+          have control over the quality, timing, legality, failure to provide,
+          or any aspect whatsoever of any reviews provided by Members, NFTs sold
+          by Sellers, Benefits offered or sold by the Creators or of the
+          integrity, responsibility, or any actions of any Members. Passes makes
+          no representations about the suitability, reliability, timeliness or
+          accuracy in public, private or offline interactions. When interacting
+          with other Members you should exercise caution and common sense to
+          protect your personal safety and property, just as you would when
+          interacting offline with other persons whom you don’t know. PASSES IS
+          NOT RESPONSIBLE FOR THE CONDUCT, WHETHER ONLINE OR OFFLINE, OF ANY
+          USER OF THE SERVICES. PASSES WILL NOT BE LIABLE FOR ANY CLAIM, INJURY
+          OR DAMAGE ARISING IN CONNECTION WITH YOUR INTERACTIONS WITH OTHER
+          USERS OF THE SERVICES OR YOUR USE OF OR INABILITY TO USE ANY NFTs
+          PURCHASED THROUGH THE SERVICES. Purchasing NFTs through the Platform.
+          You may from time to time have the opportunity to purchase NFTs
+          through the Platform. NFTs may be redeemed for or used to ‘unlock’
+          various goods, rights, and other privileges on or through the
+          Services, including, but not limited to, unique Creator Content not
+          otherwise available to Members. The terms applicable to the purchase
+          of each NFT will be displayed to you at the point of sale, and such
+          terms will be viewable at all times thereafter by the then-current
+          owner of the relevant NFT. When you purchase a NFT through the
+          Platform, you agree to comply with any terms, including licenses or
+          payment rights, that are embedded within or otherwise included with
+          such NFT, and to make commercially reasonable efforts to bind
+          subsequent owners of such NFTs to any such terms. Unless otherwise
+          expressly set forth at the point of sale for such NFT, ownership of a
+          NFT does not convey any right, title or interest in or to the Content,
+          including any characters, artwork, or other work of authorship,
+          embodied by or linked to such NFT (such Content, “NFT IP”). Unless
+          otherwise expressly set forth at the point of sale for such NFT, when
+          you purchase a NFT you shall receive in connection with such NFT a
+          limited, non-exclusive, non-sublicensable, non-transferable license to
+          view and display the NFT IP for your personal, non-commercial use and
+          to perform, display and reproduce the NFT IP solely in accordance with
+          the functionality of the Services for so long as you own such NFT.
+          Storage of Your NFTs. Passes will record ownership of your NFTs on its
+          internal ledger. You will be able to access your NFTs through your
+          Account. If you lose your Account, you may lose access to your NFTs.
+          While your NFTs may be interoperable with other compatible
+          blockchains, platforms, digital wallets or other services, only NFTs
+          supported by Passes that are stored on the Platform will be accessible
+          through the Platform. NFTs that have been transferred out of your
+          Account to a third-party blockchain, platform, digital wallet or other
+          service may no longer be compatible with the Platform, and Passes
+          disclaims all liability in connection with NFTs that have been so
+          transferred. Memberships. Members may from time to time be given
+          access to Membership Communities through the Platform. Each Membership
+          Community has unique access requirements. Members may be able to use
+          certain NFTs to gain access to a Membership Community. Once you join a
+          Membership Community, you may have access to certain Creator Content
+          and/or Third-Party Websites and/or Third-Party Applications (as
+          defined below) through such Membership Community. Selling NFTs through
+          the Platform. PLEASE READ CAREFULLY THIS IMPORTANT INFORMATION ABOUT
+          PROCEDURES FOR SELLING NFTs THROUGH THE PLATFORM BEFORE USING THE
+          PLATFORM TO SELL NFTs. To help the government fight the funding of
+          terrorism and money laundering activities, applicable law requires all
+          financial institutions to obtain, verify, and record information that
+          identifies each person who has an account which has the ability to
+          list items for sale on the Platform. When you engage in transactions
+          on the Platform, we may ask for your name, address, date of birth, and
+          other information that will allow us and/or our Payment Processor(s)
+          (as defined below) to identify you. We may also ask for a copy of your
+          driver’s license or other identifying documents. We reserve the right
+          to require you to provide additional information and documents in
+          accordance with Section 4.3 of these Terms of Service. Failure to
+          provide such information upon request, as well as any other violation
+          of these Terms of Service, may result in your removal from the
+          Services, including a termination of your ability to sell through the
+          Platform. Restrictions Specific to NFTs. You shall not (and shall not
+          permit any third-party to) take any action or Make Available any
+          Content on or through the Services that engages in or knowingly
+          facilitates any ‘front-running’, ‘wash trading’, ‘pump and dump
+          trading’, ‘ramping’, ‘cornering’ or fraudulent, deceptive or
+          manipulative trading activities, including: (a) trading a NFT at
+          successively lower or higher prices for the purpose of creating or
+          inducing a false, misleading or artificial appearance of activity in
+          such NFT, unduly or improperly influencing the market price for such
+          NFT trading on the Services or establishing a price which does not
+          reflect the true state of the market in such NFT; (b) executing or
+          causing the execution of any transaction in a NFT which involves no
+          material change in the beneficial ownership thereof; (c) entering any
+          order for the purchase or sale of a NFT with the knowledge that an
+          order of substantially the same size, and at substantially the same
+          price, for the sale of such NFT, has been or will be entered by or for
+          the same or different parties; or (d) participating in, facilitating,
+          assisting or knowingly transacting with any pool, syndicate or joint
+          account organized for the purpose of unfairly or deceptively
+          influencing the market price of an a NFT. Taxes on Transactions
+          Involving NFTs. You are solely responsible for determining what, if
+          any, taxes apply to transactions involving your NFTs. Neither Passes
+          nor any other Passes entity is responsible for determining the taxes
+          that may apply to transactions involving NFTs. Access Cards. Passes
+          offers two types of access card: (a) Subscription cards; and (b) Super
+          Cards (each as defined below, and each a “Card”). Each of these Cards
+          allows you to enjoy access to exclusive Content and/or Membership
+          Communities, as described at the point of sale. You can purchase a
+          Card through the Services. By purchasing a Card, you authorize us to
+          charge the relevant fees to the payment method with which you placed
+          the order. Subscription Cards. You can choose to purchase a
+          subscription to access, view, and interact with exclusive Content
+          and/or Membership Communities and/or enjoy other benefits (each a
+          “Subscription”). Subscriptions will automatically be renewed at the
+          end of the relevant subscription period at the then-current
+          subscription fee, except if your payment method payment is declined or
+          if you have cancelled your Subscription. You have the right to cancel
+          your Subscription at any time, and if you do so you will be permitted
+          to enjoy the benefits attached to the Subscription until the end of
+          your subscription period in which you cancelled, after which no
+          further payments will be taken from your payment method in respect of
+          the Subscription (unless you choose to renew your Subscription at a
+          later stage) and you will no longer be able to continue to enjoy the
+          benefits attached to the Subscription. Super Cards. You can choose to
+          purchase a Super Card to access, view, and interact with exclusive
+          Content and/or Membership Communities and/or enjoy other real life
+          benefits. When you purchase a Super Card, you will continue to enjoy
+          the benefits attached to it until the expiration date specified by the
+          Creator selling the Super Card and specified at the point of sale.
+          Account Management. Certain Creators may use third party companies,
+          agencies or individuals to manage their account for them (including
+          but not limited to the posting of content and answering of messages
+          sent to the account), meaning that when interacting with a Creator you
+          may be interacting with a third party company, agency or individual.
+          Passes is not responsible for your interaction with, or the management
+          of, a Creator account, nor is Passes responsible for ensuring your
+          interactions are with the Creator themselves. PASSES WILL NOT BE
+          LIABLE FOR ANY CLAIM, INJURY OR DAMAGE ARISING IN CONNECTION WITH YOUR
+          INTERACTIONS WITH A CRETOR OR A THIRD PARTY MANAGEMENT COMPANY, AGENCY
+          OR INDIVIDUAL MANAGING THE CREATOR’S ACCOUNT ON THEIR BEHALF.
+          <br />
+          <br />
+          RESPONSIBILITY FOR CONTENT. Types of Content. You acknowledge that all
+          Content shall be the sole responsibility of the party from whom such
+          Content originated. This means that you, and not Passes, are entirely
+          responsible for all Content that you upload, post, sell, e-mail,
+          transmit or otherwise make available (“Make Available”) through the
+          Services (“Your Content”), and that other Members of the Services, and
+          not Passes, are similarly responsible for all Content that they Make
+          Available through the Services (“User Content”). User Content
+          includes, but is not limited to, Creator Content. No Obligation to
+          Pre-Screen Content. You acknowledge that we have no obligation to
+          pre-screen Content (including, but not limited to, User Content),
+          although we reserve the right in our sole discretion to monitor,
+          pre-screen, refuse or remove any Content. By entering into these Terms
+          of Service, you hereby provide your irrevocable consent to such
+          monitoring. You acknowledge and agree that you have no expectation of
+          privacy concerning the transmission of Your Content, including, but
+          not limited to, chat, text, or voice communications. In the event that
+          Passes pre-screens, refuses or removes any Content, you acknowledge
+          that Passes will do so for Passes’ benefit, not yours. Without
+          limiting the foregoing, we shall have the right to remove any Content
+          that violates these Terms of Service or that we otherwise determine in
+          our sole discretion is objectionable. Storage. Unless expressly agreed
+          to by us in writing elsewhere, we have no obligation to store any of
+          Your Content that you Make Available on the Services. Passes has no
+          responsibility or liability for: (a) the deletion or accuracy of any
+          Content, including Your Content; (b) the failure to store, transmit or
+          receive transmission of Content; or (c) the security, privacy,
+          storage, or transmission of other communications originating with or
+          involving use of the Services. Certain Services may enable you to
+          specify the level at which such Services restrict access to Your
+          Content. You are solely responsible for applying the appropriate level
+          of access to Your Content. If you do not choose, the system may
+          default to its most permissive setting. You agree that we retain the
+          right to create reasonable limits on our use and storage of the
+          Content, including Your Content, such as limits on file size, storage
+          space, processing capacity, and similar limits as determined by us in
+          our sole discretion. <br />
+          <br />
+          OWNERSHIP. Services. Except with respect to Your Content and User
+          Content, you agree that Passes and our licensors own all rights, title
+          and interest in and to the Services (including but not limited to, any
+          computer code, themes, objects, characters, character names, stories,
+          dialogue, concepts, artwork, animations, sounds, musical compositions,
+          audiovisual effects, methods of operation, documentation and Passes
+          software). Trademarks. Passes and all related graphics, logos, service
+          marks and trade names used on or in connection with the Services are
+          the trademarks of Passes and may not be used without permission in
+          connection with your, or any third-party, products or services. Other
+          trademarks, service marks and trade names that may appear on or in the
+          Services are the property of their respective owners. Your Content.
+          Passes does not claim ownership of Your Content. However, when you
+          post or publish Your Content on, in or through the Services, you
+          warrant that you own and/or have a royalty-free, perpetual,
+          irrevocable, worldwide, non-exclusive right and license to use,
+          display, share, and monetize Your Content worldwide on, in or through
+          the Services. License to Your Content. Subject to any applicable
+          account settings that you select, you grant Passes a fully paid,
+          royalty-free, perpetual, irrevocable, worldwide, royalty-free,
+          non-exclusive and fully sublicensable right and license to use,
+          license, distribute, reproduce, modify, adapt, publicly perform, and
+          publicly display Your Content for the purposes of operating and
+          providing the Services to you and to our other Members and to improve
+          the Services and develop new products and services. Please remember
+          that other Members may search for, see, use, modify and reproduce any
+          of Your Content that you submit to any ‘public’ area of the Services.
+          You agree that you, not Passes, are responsible for all of Your
+          Content that you Make Available on or in the Services. User Content.
+          You may only use any User Content, whether as embedded in or otherwise
+          comprising a NFT or otherwise available on the Services, in accordance
+          with the terms of these Terms of Service and with the terms of any
+          additional right or license granted expressly by the creator of such
+          User Content and, in the case of NFTs, as set forth at the point of
+          sale and solely if as applicable to you as a Buyer. Username.
+          Notwithstanding anything contained herein to the contrary, by
+          submitting Your Content to any ‘public’ area of the Services, you
+          hereby expressly permit us to identify you by your username (which may
+          be a pseudonym) as the contributor of Your Content. Feedback. You
+          agree that submission of any ideas, suggestions, documents, and/or
+          proposals to Passes through our suggestion, feedback, wiki, forum or
+          similar pages (“Feedback”) is at your own risk and that we have no
+          obligations (including, but not limited to, obligations of
+          confidentiality) with respect to such Feedback. You warrant that you
+          have all rights necessary to submit the Feedback. You hereby grant to
+          Passes a fully paid, royalty-free, perpetual, irrevocable, worldwide,
+          non-exclusive, and fully sublicensable right and license to use and
+          commercially or non-commercially exploit in any manner any and all
+          Feedback. <br />
+          <br />
+          INTERACTIONS WITH OTHER USERS. User Responsibility. You are solely
+          responsible for your interactions with other Members and any other
+          parties with whom you interact; provided, however, that we reserve the
+          right, but have no obligation, to intercede in such disputes. You
+          agree that Passes will not be responsible for any liability incurred
+          as the result of such interactions. Content Provided by Other Users.
+          The Services may contain User Content provided by other Members.
+          Passes is not responsible for and does not control User Content.
+          Passes has no obligation to review or monitor, and does not approve,
+          endorse or make any representations or warranties with respect to,
+          User Content. You use all User Content and interact with other Members
+          at your own risk. <br />
+          <br />
+          FEES AND PURCHASE TERMS. Fees. Registering for the Services is free;
+          however, we charge certain fees for various transactions through your
+          use of the Services (“Fees”) as set forth at the point of sale. All
+          amounts are quoted in US dollars unless otherwise stated. Payment. You
+          agree to pay any Fees or charges incurred by your Account in
+          accordance with the fees, charges and billing terms then-currently in
+          effect. You may be required to provide us or our Payment Processor(s)
+          (as defined below) with a valid credit card, digital wallet address,
+          bank account information or other payment provider account (“Payment
+          Method”) as a condition to accessing certain Services. By providing us
+          with your Payment Method details, you agree that Passes is authorized
+          to immediately invoice your Account for all fees and charges due and
+          payable to us hereunder and that no additional notice or consent is
+          required. We reserve the right at any time to change our fees, prices,
+          and/or billing methods, either immediately upon posting on the
+          Services or by e-mail delivery to you. Taxes. Any payments required
+          may not include any Sales Tax that may be due in connection with the
+          Services provided. If Passes determines it has a legal obligation to
+          collect a Sales Tax from you, Passes will collect such Sales Tax in
+          addition to the other payments required. If any Services or products,
+          or payments for any Services or products, are subject to any Sales Tax
+          in any jurisdiction and you have not paid the applicable Sales Tax to
+          Passes, you will be responsible for the payment of such Sales Tax and
+          any related penalties or interest to the relevant tax authority, and
+          you will indemnify Passes for any liability or expense Passes may
+          incur in connection with such Sales Taxes. For purposes of this
+          section, “Sales Tax” means any sales or use tax and any other tax
+          measured by sales proceeds that is the functional equivalent of a
+          sales tax where the applicable taxing jurisdiction does not otherwise
+          impose a sales or use tax. <br />
+          <br />
+          ASSUMPTION OF RISK RELATED TO BLOCKCHAIN TECHNOLOGY. You acknowledge
+          and agree that: The prices of digital assets are extremely volatile.
+          Fluctuations in the price of other digital assets could materially and
+          adversely affect the value of NFTs, which may also be subject to
+          significant price volatility. We cannot and do not guarantee that any
+          purchasers of NFTs will not lose money. NFTs exist and can be
+          transferred only by virtue of the ownership record maintained on the
+          blockchain supporting such NFTs. Any transfer of NFTs occurs within
+          the supporting blockchain. Passes makes no warranties about the
+          quality or availability of any supporting blockchain. There are risks
+          associated with using NFTs and cryptocurrency, including, but not
+          limited to, the risk of hardware, software and Internet connections,
+          the risk of malicious software introduction, and the risk that third
+          parties may obtain unauthorized access to information stored within
+          your Account (including your NFTs). The legal and regulatory regime
+          governing blockchain technologies, cryptocurrencies and tokens is
+          uncertain, and new regulations or policies may materially adversely
+          affect the development of the Services and the value and/or utility of
+          NFTs. There are risks associated with purchasing user-generated User
+          Content, including but not limited to, the risk of purchasing
+          counterfeit assets, mislabeled assets, assets that are vulnerable to
+          metadata decay, assets on smart contracts with bugs and assets that
+          may become untransferable. Passes has no responsibility for any
+          counterfeit assets that mimic Passes assets. Passes reserves the right
+          to hide NFTs that Passes suspects or believes may violate these Terms
+          of Service. NFTs you purchase may become inaccessible on the Services.
+          Under no circumstances shall the inability to view any assets on the
+          Services serve as grounds for a claim against Passes. Passes has no
+          responsibility for the NFTs sold, bought or traded on the Services.
+          Passes does not investigate and cannot guarantee or warrant the
+          authenticity, originality, uniqueness, marketability, legality or
+          value of any NFT created or traded on the Services. For the avoidance
+          of doubt, Passes shall have no responsibility for any failure of any
+          Member or Creator to comply with any terms regarding the authenticity,
+          originality, uniqueness, scarcity or other description or
+          characteristics of the NFT furnished by or on behalf of that Member or
+          Creator and available via the Services. <br />
+          <br />
+          RELEASE. Passes expressly disclaims any liability that may arise
+          between users of its Services. The Platform is only a venue for
+          connecting Buyers with Sellers. Because Passes is not a party to the
+          actual contracts between Buyers and Sellers, in the event that you
+          have a dispute with one or more users, you release Passes, its
+          parents, subsidiaries, affiliates, officers, employees, investors,
+          agents, partners and licensors, but excluding any users (each a
+          “Passes Party” and collectively the “Passes Parties”) from any and all
+          claims, demands, or damages (actual or consequential) of every kind
+          and nature, known and unknown, suspected and unsuspected, disclosed
+          and undisclosed, arising out of or in any way connected with such
+          disputes. <br />
+          <br />
+          INDEMNIFICATION. You agree to indemnify and hold harmless Passes and
+          the Passes Parties from any losses, costs, liabilities and expenses
+          (including reasonable attorneys’ fees) relating to or arising out of
+          any and all of the following: (a) Your Content; (b) your use of the
+          Services in breach of these Terms of Service; (c) your violation of
+          any rights of another party, including any Members; (d) your purchase
+          or attempt to purchase NFTs on or through the Services; (e) your sale
+          or attempt to sell NFTs on or through the Services; or (f) your
+          violation of any applicable laws, rules or regulations. Passes
+          reserves the right, at its own cost, to assume the exclusive defense
+          and control of any matter otherwise subject to indemnification by you,
+          in which event you will fully cooperate with Passes in asserting any
+          available defenses. You agree that the provisions in this section will
+          survive any termination of your Account, these Terms of Service and/or
+          your access to the Services. <br />
+          <br />
+          DISCLAIMER OF WARRANTIES AND CONDITIONS. AS IS. YOU EXPRESSLY
+          UNDERSTAND AND AGREE THAT, TO THE FULLEST EXTENT PERMITTED BY
+          APPLICABLE LAW, YOUR USE OF THE SERVICES IS AT YOUR SOLE RISK, AND THE
+          SERVICES ARE PROVIDED ON AN ‘AS IS’ AND ‘AS AVAILABLE’ BASIS. PASSES
+          EXPRESSLY DISCLAIMS ALL WARRANTIES, REPRESENTATIONS AND CONDITIONS OF
+          ANY KIND, WHETHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
+          ANY IMPLIED WARRANTIES OR CONDITIONS OF MERCHANTABILITY, FITNESS FOR A
+          PARTICULAR PURPOSE AND NON-INFRINGEMENT ARISING FROM USE OF THE
+          SERVICES. WE WILL NOT BE RESPONSIBLE OR LIABLE TO YOU FOR ANY LOSSES
+          YOU SUSTAIN AS A RESULT OF YOUR USE OF THE SERVICES. WE TAKE NO
+          RESPONSIBILITY FOR, AND WILL NOT BE LIABLE TO YOU FOR, ANY LOSSES,
+          DAMAGES OR CLAIMS ARISING FROM YOUR USE OF THE SERVICES INCLUDING, BUT
+          NOT LIMITED TO,: (1) USER ERROR SUCH AS FORGOTTEN PASSWORDS,
+          INCORRECTLY CONSTRUCTED TRANSACTIONS OR MISTYPED ADDRESSES; (2) SERVER
+          FAILURE OR DATA LOSS; (3) CORRUPTED DIGITAL WALLET OR NFT FILES; (4)
+          UNAUTHORIZED ACCESS TO APPLICATIONS; OR (5) ANY UNAUTHORIZED
+          THIRD-PARTY ACTIVITIES, INCLUDING, BUT NOT LIMITED TO, THE USE OF
+          VIRUSES, PHISHING, BRUTEFORCING OR OTHER MEANS OF ATTACK AGAINST THE
+          SERVICE OR NFTs. PASSES MAKES NO WARRANTY, REPRESENTATION OR CONDITION
+          THAT: (1) THE SERVICES WILL MEET YOUR REQUIREMENTS; (2) YOUR USE OF
+          THE SERVICES WILL BE UNINTERRUPTED, TIMELY, SECURE OR ERROR-FREE; OR
+          (3) THE RESULTS THAT MAY BE OBTAINED FROM USE OF THE SERVICES WILL BE
+          ACCURATE OR RELIABLE. ANY CONTENT DOWNLOADED FROM OR OTHERWISE
+          ACCESSED THROUGH THE SERVICES IS ACCESSED AT YOUR OWN RISK, AND YOU
+          SHALL BE SOLELY RESPONSIBLE FOR ANY DAMAGE TO YOUR PROPERTY,
+          INCLUDING, BUT NOT LIMITED TO, YOUR COMPUTER SYSTEM AND ANY DEVICE YOU
+          USE TO ACCESS THE SERVICES, OR ANY OTHER LOSS THAT RESULTS FROM
+          ACCESSING SUCH CONTENT. THE SERVICES MAY BE SUBJECT TO DELAYS,
+          CANCELLATIONS AND OTHER DISRUPTIONS. PASSES MAKES NO WARRANTY,
+          REPRESENTATION OR CONDITION WITH RESPECT TO SERVICES, INCLUDING, BUT
+          NOT LIMITED TO, THE QUALITY, EFFECTIVENESS, REPUTATION AND OTHER
+          CHARACTERISTICS OF THE SERVICES. NO ADVICE OR INFORMATION, WHETHER
+          ORAL OR WRITTEN, OBTAINED FROM PASSES OR THROUGH THE SERVICES WILL
+          CREATE ANY WARRANTY NOT EXPRESSLY MADE HEREIN. FROM TIME TO TIME,
+          PASSES MAY OFFER NEW ‘BETA’ FEATURES OR TOOLS WITH WHICH ITS USERS MAY
+          EXPERIMENT. SUCH FEATURES OR TOOLS ARE OFFERED SOLELY FOR EXPERIMENTAL
+          PURPOSES AND WITHOUT ANY WARRANTY OF ANY KIND, AND MAY BE MODIFIED OR
+          DISCONTINUED WITHOUT NOTICE AT PASSES’ SOLE DISCRETION. PASSES DOES
+          NOT GUARANTEE THAT ANY NFT OR OTHER CONTENT WILL BE AVAILABLE AT ALL
+          TIMES, IN ALL LOCATIONS OR AT ANY GIVEN TIME, OR THAT PASSES WILL
+          CONTINUE TO OFFER A PARTICULAR SERVICE OR NFT FOR ANY PARTICULAR
+          LENGTH OF TIME. PASSES DOES NOT GUARANTEE THAT NFTs WILL BE
+          INTEROPERABLE WITH OR ACCESSIBLE THROUGH ANY THIRD-PARTY SERVICE
+          PROVIDERS. NO LIABILITY FOR CONDUCT OF OTHER USERS. YOU ARE SOLELY
+          RESPONSIBLE FOR ALL OF YOUR COMMUNICATIONS AND INTERACTIONS WITH OTHER
+          USERS OF THE SERVICES. YOU UNDERSTAND THAT PASSES DOES NOT MAKE ANY
+          ATTEMPT TO VERIFY THE STATEMENTS OF USERS OF THE SERVICES. PASSES
+          MAKES NO WARRANTY THAT THE SERVICES OR NFTs PROVIDED BY THIRD-PARTIES
+          WILL MEET YOUR REQUIREMENTS OR BE AVAILABLE ON AN UNINTERRUPTED,
+          SECURE OR ERROR-FREE BASIS. PASSES MAKES NO WARRANTY REGARDING THE
+          ACCURACY, TIMELINESS, TRUTHFULNESS, COMPLETENESS OR RELIABILITY OF ANY
+          USER CONTENT OBTAINED THROUGH THE SERVICES. <br />
+          <br />
+          EXCLUSION AND LIMITATION OF LIABILITY. EXCLUSION OF CERTAIN DAMAGES.
+          YOU UNDERSTAND AND AGREE THAT, TO THE FULLEST EXTENT PERMITTED BY
+          APPLICABLE LAW, IN NO EVENT SHALL PASSES OR ITS AFFILIATES BE LIABLE
+          FOR ANY LOSS OF PROFITS, REVENUE OR DATA, INDIRECT, INCIDENTAL,
+          SPECIAL, OR CONSEQUENTIAL DAMAGES, OR DAMAGES OR COSTS DUE TO LOSS OF
+          PRODUCTION OR USE, BUSINESS INTERRUPTION, OR PROCUREMENT OF SUBSTITUTE
+          GOODS OR SERVICES, IN EACH CASE WHETHER OR NOT PASSES HAS BEEN ADVISED
+          OF THE POSSIBILITY OF SUCH DAMAGES, ARISING OUT OF OR IN CONNECTION
+          WITH THESE TERMS OF SERVICE OR YOUR USE OF THE SERVICES. THE FOREGOING
+          LIMITATION OF LIABILITY SHALL NOT APPLY TO LIABILITY FOR: (1) DEATH OR
+          PERSONAL INJURY CAUSED BY NEGLIGENCE; (2) FRAUD OR FRAUDULENT
+          MISREPRESENTATION; OR (3) ANY OTHER LIABILITY WHICH MAY NOT BE
+          EXCLUDED PURSUANT TO APPLICABLE LAW. CAP ON LIABILITY. TO THE FULLEST
+          EXTENT PERMITTED BY APPLICABLE LAW, PASSES AND ITS AFFILIATES WILL NOT
+          BE LIABLE TO YOU FOR MORE THAN THE GREATER OF: (1) THE TOTAL AMOUNT
+          PAID TO PASSES BY YOU DURING THE ONE-MONTH PERIOD PRIOR TO THE ACT,
+          OMISSION OR OCCURRENCE GIVING RISE TO SUCH LIABILITY; OR (2) $100. THE
+          FOREGOING CAP ON LIABILITY SHALL NOT APPLY TO LIABILITY FOR: (A) DEATH
+          OR PERSONAL INJURY CAUSED BY NEGLIGENCE; (B) FRAUD OR FRAUDULENT
+          MISREPRESENTATION; OR (C) ANY OTHER LIABILITY WHICH MAY NOT BE
+          EXCLUDED PURSUANT TO APPLICABLE LAW. USER CONTENT. EXCEPT FOR PASSES’
+          OBLIGATIONS TO PROTECT YOUR PERSONAL DATA AS SET FORTH IN PASSES’
+          PRIVACY POLICY, PASSES AND ITS AFFILIATES ASSUME NO RESPONSIBILITY FOR
+          THE TIMELINESS, DELETION, MIS-DELIVERY OR FAILURE TO STORE ANY CONTENT
+          (INCLUDING, BUT NOT LIMITED TO, YOUR CONTENT, USER CONTENT OR NFTs),
+          USER COMMUNICATIONS OR PERSONALIZATION SETTINGS. EXCLUSION OF DAMAGES.
+          CERTAIN JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF
+          CERTAIN DAMAGES. IF THESE LAWS APPLY TO YOU, SOME OR ALL OF THE ABOVE
+          EXCLUSIONS OR LIMITATIONS MAY NOT APPLY TO YOU, AND YOU MIGHT HAVE
+          ADDITIONAL RIGHTS. <br />
+          <br />
+          PROCEDURE FOR MAKING CLAIMS OF COPYRIGHT INFRINGEMENT. It is Passes’
+          policy to terminate membership privileges of any Member who repeatedly
+          infringes copyright upon prompt notification to Passes by the
+          copyright owner or the copyright owner’s legal agent. Without limiting
+          the foregoing, if you believe that your work has been copied and
+          posted on the Services in a way that constitutes copyright
+          infringement, please provide us with the following information: (a) an
+          electronic or physical signature of the person authorized to act on
+          behalf of the owner of the copyright interest; (b) a description of
+          the copyrighted work that you claim has been infringed; (c) a
+          description of the location on the Services of the material that you
+          claim is infringing; (d) your address, telephone number and e-mail
+          address; (e) a written statement by you that you have a good faith
+          belief that the disputed use is not authorized by the copyright owner,
+          its agent or the law; and (f) a statement by you, made under penalty
+          of perjury, that the above information in your notice is accurate and
+          that you are the copyright owner or authorized to act on the copyright
+          owner’s behalf. <br />
+          <br />
+          MONITORING AND ENFORCEMENT. Passes reserves the right to: (a) remove
+          or refuse to post any of Your Content for any or no reason in our sole
+          discretion; (b) take any action with respect to any of Your Content
+          that we deem necessary or appropriate in our sole discretion,
+          including if we believe that such Content violates these Terms of
+          Service, infringes any intellectual property right or other right of
+          any person or entity, threatens the personal safety of users of the
+          Services or the public, or could create liability for Passes; (c)
+          disclose your identity or other information about you to any
+          third-party who claims that material posted by you violates their
+          rights, including their intellectual property rights or their right to
+          privacy; (d) take appropriate legal action, including, but not limited
+          to, referral to law enforcement, for any illegal or unauthorized use
+          of the Services; and/or (e) terminate or suspend your access to all or
+          part of the Services for any or no reason, including, but not limited
+          to, any violation of these Terms of Service. <br />
+          <br />
+          MISCELLANEOUS. All items are non-refundable. All payments must exceed
+          $2.40, and there is no maximum payment thresholds. We accept USD
+          payments, as well as Ethereum and USDC (both native and bridged).{" "}
+          <br />
+          <br />
+          TERM AND TERMINATION. Term. These Terms of Service commence on the
+          date when you accept them (as described in the preamble above) and
+          remain in full force and effect while you use the Services, unless
+          terminated earlier in accordance with these Terms of Service.
+          Termination by You. If you want to terminate your use of the Services,
+          you may do so by: (a) notifying us at any time; and/or (b) closing
+          your Account for all of the Services that you use, provided, however,
+          that notwithstanding any such termination and for the avoidance of
+          doubt, the terms of these Terms of Service shall continue to apply
+          with respect to any NFT or other digital asset obtained by you through
+          the Platform. Termination by Passes. Passes reserves the right to
+          terminate your access to some or all of the Services, including by
+          closing your Account, without notice to you in the event we reasonably
+          believe that you are in breach of any part of these Terms of Service.
+          Effect of Termination. Termination of any Services includes removal of
+          access to such Services and barring of further use of the Services.
+          Termination of all Services also includes deletion of your Account and
+          all related information, files and Content associated with or inside
+          your Account (or any part thereof), including Your Content. Upon
+          termination of any Service, your right to use such Service will
+          automatically terminate immediately. You understand that any
+          termination of Services may involve deletion of Your Content
+          associated therewith from our live databases. Passes will not have any
+          liability whatsoever to you for any suspension or termination,
+          including for deletion of Your Content. All provisions of these Terms
+          of Service which by their nature should survive, shall survive
+          termination of Services, including, but not limited to, ownership
+          provisions, warranty disclaimers, and limitation of liability. No
+          Subsequent Registration. If your registration(s) with, or ability to
+          access, the Services or any other Passes community, is discontinued by
+          us due to your violation of any portion of these Terms of Service or
+          for conduct otherwise inappropriate for the community, then you agree
+          that you shall not attempt to re-register with or access the Services
+          or any Passes community through use of a different member name or
+          otherwise, and you acknowledge that you will not be entitled to
+          receive a refund for fees related to those Services to which your
+          access has been terminated. In the event that you violate the
+          immediately preceding sentence, Passes reserves the right, in its sole
+          discretion, to immediately take any or all of the actions set forth
+          herein without any notice or warning to you. <br />
+          <br />
+          INTERNATIONAL USERS. The Services can be accessed from countries
+          around the world and may contain references to Services and Content
+          that are not available in your country. These references do not imply
+          that Passes intends to announce such Services or Content in your
+          country. The Services are controlled and offered by Passes from its
+          facilities in the United States of America. Passes provides no
+          warranties that the Services are appropriate or available for use in
+          other locations. Those who access or use the Services from other
+          countries do so at their own volition and are responsible for
+          compliance with local law. <br />
+          <br />
+          THIRD-PARTY SERVICES. Third-Party Payment Processing. Payment
+          processing for the Services will be performed by Passes’ third-party
+          payment processors (each, a “Payment Processor”). Your use of the
+          payment processing facility provided by the Payment Processor is
+          subject to the Payment Processor’s own terms and conditions, as may be
+          modified by the Payment Processor from time to time. As a condition of
+          using the Payment Processor’s payment processing facility, you must
+          provide accurate and complete information, and you authorize us to
+          share this information with the Payment Processor and to charge your
+          payment method for all amounts that may become due under these Terms
+          of Service. All bank, credit card or other payment information is sent
+          directly to and stored with the Payment Processor using its security
+          protocols. Passes does not store your payment information on its
+          systems and shall not have any responsibility for the safety or
+          security of that information. Third-Party Websites, Applications and
+          Ads. The Services may contain links to third-party websites
+          (“Third-Party Websites”), applications (“Third-Party Applications”)
+          and advertisements for third parties (“Third-Party Ads”). When you
+          click on a link to a Third-Party Website, Third-Party Application or
+          Third-Party Ad, we will not warn you that you have left the Services
+          and are subject to the terms and conditions (including privacy
+          policies) of another website or service. Such Third-Party Websites,
+          Third-Party Applications and Third-Party Ads are not under the control
+          of Passes. Passes is not responsible for any Third-Party Websites,
+          Third-Party Applications or Third-Party Ads. Passes provides these
+          Third-Party Websites, Third-Party Applications and Third-Party Ads
+          only as a convenience and does not review, approve, monitor or endorse
+          any Third-Party Websites, Third-Party Applications or Third-Party Ads.
+          <br />
+          <br />
+          GENERAL PROVISIONS. Electronic Communications. The communications
+          between you and Passes may take place via electronic means, whether
+          you visit the Services or send Passes e-mails, or whether Passes posts
+          notices on the Services or communicates with you via e-mail. For
+          contractual purposes, you: (a) consent to receive communications from
+          us in an electronic form; and (b) agree that all terms and conditions,
+          agreements, notices, disclosures and other communications that we
+          provide to you electronically satisfy any legal requirement that such
+          communications would satisfy if it were to be in writing. Assignment.
+          These Terms of Service, and your rights and obligations hereunder, may
+          not be assigned, subcontracted, delegated or otherwise transferred by
+          you without our prior written consent, and any attempted assignment,
+          subcontract, delegation or transfer in violation of the foregoing will
+          be null and void. Force Majeure. Passes shall not be liable for any
+          delay or failure to perform resulting from causes outside its
+          reasonable control, including, but not limited to, acts of God, war,
+          terrorism, riots, embargos, acts of civil or military authorities,
+          fire, floods, pandemics, epidemics, accidents, strikes or shortages of
+          transportation facilities, fuel, energy, labor or materials.
+          Questions, Complaints, Claims. If you have any questions, complaints
+          or claims with respect to the Services, please contact us at
+          help@passes.com. We will do our best to address your concerns. If you
+          feel that your concerns have been addressed incompletely, we invite
+          you to let us know for further investigation. Exclusive Venue. Both
+          you and we agree that all claims and disputes arising out of or
+          relating to these Terms of Service will be to the non-exclusive
+          jurisdiction of the State of New York. If you are a resident of a
+          country in the European Economic Area (EEA) or the United Kingdom
+          (UK), you may bring a claim to enforce your consumer protection rights
+          in connection with these Terms of Service in the country in which you
+          live. Governing Law. The Terms of Service and any action related
+          thereto will be governed and interpreted by and under the laws of the
+          State of New York. If you are a resident of a country in the European
+          Economic Area (EEA) or the United Kingdom (UK), you may benefit from
+          additional rights pursuant to the applicable law of your country of
+          residence. Choice of Language. It is the express wish of the parties
+          that these Terms of Service and all related documents have been drawn
+          up in English. Notice. Where Passes requires that you provide an
+          e-mail address, you are responsible for providing us with your most
+          current e-mail address. In the event that the last e-mail address you
+          provided to us is not valid, or for any reason is not capable of
+          delivering to you any notices required/ permitted by these Terms of
+          Service, our dispatch of the e-mail containing such notice will
+          nonetheless constitute effective notice. You may give notice to us at
+          help@passes.com. Waiver. Any waiver or failure to enforce any
+          provision of these Terms of Service on one occasion will not be deemed
+          a waiver of any other provision or of such provision on any other
+          occasion. Severability. If any portion of these Terms of Service is
+          held invalid or unenforceable, that portion shall be construed in a
+          manner to reflect, as nearly as possible, the original intention of
+          the parties, and the remaining portions shall remain in full force and
+          effect. Third-Party Rights. These Terms of Services are between you
+          and us, and no other person shall have any rights to enforce any of
+          its terms. Entire Agreement. These Terms of Service, together with any
+          Supplemental Terms, are the final, complete and exclusive agreement of
+          the parties with respect to the subject matter hereof and supersede
+          all prior discussions between the parties with respect to such subject
+          matter.
         </p>
         <br />
+        <br />
+        <br />
+        <h1 className="text-[24px] font-bold">CREATOR TERMS OF SERVICE</h1>
         <p>
-          These Terms of Service (“Terms”) govern your access to and use of our
-          services, including our various websites, SMS, APIs, email
-          notifications, applications, buttons, widgets, ads, and commerce
-          services that link to these Terms (collectively, the “Services”), and
-          any information, text, links, graphics, photos, audio, videos, or
-          other materials or arrangements of materials uploaded, downloaded or
-          appearing on the Services (collectively referred to as “Content”). By
-          using the Services you agree to be bound by these Terms.
+          Last Updated Date: October 27, 202 <br /> <br /> Welcome, and thank
+          you for your interest in Passes and becoming a Creator on our
+          Platform. PLEASE READ THESE CREATOR TERMS OF SERVICE (“CREATOR TERMS
+          OF SERVICE”) CAREFULLY. While we’ve taken all efforts to explain your
+          position and obligations as a Creator on our Services to you in as
+          simple and straightforward a manner as possible, there will inevitably
+          be clauses that do contain a little bit of ‘legalease’. If you require
+          any further explanation or clarification with regards to any of the
+          following, please feel free to get in touch with us and we would be
+          more than happy to provide further explanation and assistance THESE
+          CREATOR TERMS OF SERVICE ARE ADDITIONAL TERMS WHICH APPLY TO YOU IF
+          YOU USE OUR SERVICES AS A CREATOR. NOTWITHSTANDING BEING BOUND BY
+          THESE TERMS, YOU WILL CONTINUE TO BE SUBJECT TO THE PLATFORM TERMS OF
+          SERVICE. IN THE EVENT OF ANY INCONSISTENCY BETWEEN THE PLATFORM TERMS
+          OF SERVICE AND THESE CREATOR TERMS OF SERVICE, THESE CREATOR TERMS OF
+          SERVICE WILL PREVAIL TO THE EXTENT OF SUCH INCONSISTENCY. PLEASE NOTE
+          THAT THESE CREATOR TERMS OF SERVICE ARE SUBJECT TO CHANGE BY US IN OUR
+          SOLE DISCRETION AT ANY TIME. When changes are made, we will make a new
+          copy of these Creator Terms of Service available on or through the
+          Services. We will also update the “Last Updated” date at the top of
+          these Creator Terms of Service. If we make any material changes, and
+          you have registered with us to create a Creator account (“Creator
+          Account”), we may also send an e-mail to you at the last e-mail
+          address you provided to us. Any changes to these Creator Terms of
+          Service will be effective immediately for new Creators on the Services
+          and will be effective thirty (30) days after posting notice of such
+          changes on the Website for existing Creators. We may also require you
+          to provide consent to the updated Creator Terms of Service in a
+          specified manner before further use of the Services as a Creator is
+          permitted. If you do not agree to any change(s) after receiving a
+          notice of such change(s), you shall stop using the Services as a
+          Creator. Otherwise, your continued use of the Services as a Creator
+          constitutes your acceptance of such change(s). PLEASE REGULARLY CHECK
+          THE SERVICES TO VIEW THE THEN-CURRENT CREATOR TERMS OF SERVICE. Unless
+          defined in these Creator Terms of Service, the defined terms used in
+          these Creator Terms of Service are as defined in the Platform Terms of
+          Service. OBLIGATIONS OF A CREATOR Using our Services as a Creator.
+          When registering with us or using the Services as a Creator, you agree
+          and acknowledge that you are responsible for: (i) any and all activity
+          on your Creator Account; (ii) any interaction from your Creator
+          Account with any other users of our Services; (iii) the Creator
+          Content uploaded, posted, published or displayed using your Creator
+          Account; and (iv) any offers and/or Subscription Benefits you provide,
+          and/or products you sell using your Creator Account. Offers and
+          Subscription Benefits. When providing certain sales, offers,
+          Subscription Benefits, or other services to other users of our
+          Services (whether these are one-off benefits or recurring benefits
+          (e.g. a monthly recuring offering)), you acknowledge and agree that
+          you are solely responsible for providing and honoring those sales,
+          offers and Subscription Benefits (e.g. should you offer monthly video
+          call sessions as part of the Super Pass to your Creator Content, you
+          are solely responsible for providing those monthly video call
+          sessions). You warrant that you will honor the offers and Subscription
+          Benefits you offer via the Services, and acknowledge that Passes is
+          not responsible for ensuring you deliver and/or honor the offers,
+          sales and/or Subscription Benefits made available by you. Binding
+          Terms. When using our Services you acknowledge that you shall comply
+          in full with these Creator Terms of Service, our Platform Terms of
+          Service and all other Supplemental Terms which may apply to your use
+          of the Services as a Creator. Every Creator is bound by these Creator
+          Terms of Service. If you have an agent, agency, management company or
+          other third-party assisting you with the operations of your Creator
+          Account (or which operate it on your behalf), this does not affect
+          your personal responsibility. CREATOR CONTENT Creator Content. Any
+          Creator Content uploaded, published, displayed or posted to the
+          Platform by you shall comply with the Terms of Service and Creator
+          Terms of Service. Passes does not claim ownership of your Creator
+          Content, however, when you post or publish your Creator Content on, in
+          or through the Services, you warrant that you own and/or have a
+          royalty-free, perpetual, irrevocable, worldwide, non-exclusive right
+          and license to use, display, share and exploit your Creator Content
+          worldwide on, in or through the Services. You warrant that your
+          Creator Content is of satisfactory quality, taking into account any
+          description of your Creator Content, the price and all other
+          circumstances including any statement or representation which you make
+          about the nature of your Creator Content on your account and is as
+          described by you. No endorsements. We are not responsible for and do
+          not endorse any aspect of any Creator Content posted by you. We do not
+          have any obligation to pre-screen and/or monitor any Creator Content
+          and have no direct control over what the Creator Content may contain.
+          License to Creator Content. Subject to any applicable account settings
+          that you select, you grant Passes a fully paid, royalty-free,
+          perpetual, irrevocable, worldwide, royalty-free, non-exclusive and
+          fully sublicensable right and license to use, license, distribute,
+          reproduce, modify, adapt, publicly perform, and publicly display your
+          Creator Content for the purposes of operating and providing the
+          Services to you and to our other Members and to improve the Services
+          and develop new products and services. Please remember that other
+          Members may search for, see, use, modify and reproduce any of your
+          Creator Content that you submit to any ‘public’ area of the Services.
+          You agree that you, not Passes, are responsible for all of the Creator
+          Content that you Make Available on or in the Services. Liability and
+          Indemnification. You agree to indemnify and hold harmless Passes and
+          the Passes Parties from any losses, costs, liabilities and expenses
+          (including reasonable attorneys’ fees) relating to or arising out or
+          your Creator Content and any Subscription Benefits you offer. Passes
+          reserves the right, at its own cost, to assume the exclusive defense
+          and control of any matter otherwise subject to indemnification by you,
+          in which event you will fully cooperate with Passes in asserting any
+          available defenses. You agree that the provisions in this section will
+          survive any termination of your Creator Account, these Creator Terms
+          of Service and/or your access to the Services. PAYMENTS TO SELLERS
+          Sale by a Seller. In the event of a sale of a NFT or other Creator
+          Content or a Tip by you through the Platform (a “Sale”), Passes shall
+          pay you a percentage (%) of Passes’ Net Consideration in respect of
+          the Sale (the “Sale Proceeds”). For the purpose of this Section, “Net
+          Consideration” shall mean, with respect to any Sale, the total
+          consideration actually received by Passes in connection with such Sale
+          less any fees, taxes, and third-party expenses (e.g. any ‘gas’ or
+          other payment or transaction processing fees). Payment Terms. When
+          cashing out, you can either select to receive your funds via bank
+          transfer or directly in a crypto wallet of your choice. The percentage
+          taken by Passes for any Sales will depend on whether Sale is paid with
+          credit/debit cards or cryptocurrencies. We take a 20% fee of all
+          credit/debit Sales, and a 10% fee of all cryptocurrency Sales. Unless
+          you opt otherwise, Passes shall pay Sale Proceeds owed to you
+          bi-weekly within thirty (30) days of the end of each such bi-weekly
+          period to your digital wallet address account or bank account as
+          identified in your Creator Account. Withholding of payment. Passes may
+          withhold all or any part of the Sale Proceeds due to you but not yet
+          paid out if: (i) we reasonably believe that you have breached any part
+          of these Creator Terms of Service or any part of the Platform Terms of
+          Service; (ii) you attempt or threaten to breach any part of these
+          Creator Terms of Service or any part of the Platform Terms of Service
+          in a way which we reasonably believe could harm Passes or another
+          Creator or Member; (iii) we reasonably suspect that all or any part of
+          the Sale Proceeds result from unlawful or fraudulent activity, either
+          by you or by the Buyer; (iv) we reasonably suspect that the relevant
+          Creator Content infringes any third-party intellectual property; or
+          (v) we have received complaints from our Members that you do not
+          provide the Subscription Benefits associated with the Access purchased
+          by the Buyer, for as long as is necessary for us to investigate the
+          actual, threatened or suspected breach by you or the suspected
+          unlawful activity (as applicable). We shall not have any
+          responsibility to you if we withhold any of your Sale Proceeds where
+          we have a right to do so under these Creator Terms of Service.
         </p>
-        <br />
-        <h1 className="text-[24px] font-bold">1. Who May Use the Services</h1>
-        <br />
-        <p>
-          You may use the Services only if you agree to form a binding contract
-          with Passes and are not a person barred from receiving services under
-          the laws of the applicable jurisdiction. In any case, you must be at
-          least 13 years old to use the Services. If you are accepting these
-          Terms and using the Services on behalf of a company, organization,
-          government, or other legal entity, you represent and warrant that you
-          are authorized to do so and have the authority to bind such entity to
-          these Terms, in which case the words “you” and “your” as used in these
-          Terms shall refer to such entity.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">2. Privacy</h1>
-        <br />
-        <p>
-          Our Privacy Policy describes how we handle the information you provide
-          to us when you use our Services. You understand that through your use
-          of the Services you consent to the collection and use (as set forth in
-          the Privacy Policy) of this information, including the transfer of
-          this information to the United States, Ireland, and/or other countries
-          for storage, processing and use by Passes and its affiliates.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">3. Content on the Services</h1>
-        <br />
-        <p>
-          You are responsible for your use of the Services and for any Content
-          you provide, including compliance with applicable laws, rules, and
-          regulations. You should only provide Content that you are comfortable
-          sharing with others.
-        </p>
-        <br />
-        <p>
-          Any use or reliance on any Content or materials posted via the
-          Services or obtained by you through the Services is at your own risk.
-          We do not endorse, support, represent or guarantee the completeness,
-          truthfulness, accuracy, or reliability of any Content or
-          communications posted via the Services or endorse any opinions
-          expressed via the Services. You understand that by using the Services,
-          you may be exposed to Content that might be offensive, harmful,
-          inaccurate or otherwise inappropriate, or in some cases, postings that
-          have been mislabeled or are otherwise deceptive. All Content is the
-          sole responsibility of the person who originated such Content. We may
-          not monitor or control the Content posted via the Services and, we
-          cannot take responsibility for such Content.
-        </p>
-        <br />
-        <p>
-          We reserve the right to remove Content that violates the User
-          Agreement, including for example, copyright or trademark violations or
-          other intellectual property misappropriation, impersonation, unlawful
-          conduct, or harassment. Information regarding specific policies and
-          the process for reporting or appealing violations can be found in our
-          Help Center.
-        </p>
-        <br />
-        <p>
-          If you believe that your Content has been copied in a way that
-          constitutes copyright infringement, please report this by visiting our
-          Copyright reporting form or contacting our designated copyright agent
-          at:
-        </p>
-        <br />
-        <p>Passes, Inc. </p>
-        <br />
-        <p>Attn: Copyright Agent </p>
-        <br />
-        <p>XXXXXX</p>
-        <br />
-        <p>Reports: XXXXX </p>
-        <br />
-        <p>Email: help@Passes.com </p>
-        <br />
-        <p className="text-[18px] font-bold">
-          Your Rights and Grant of Rights in the Content
-        </p>
-        <br />
-        <p>
-          You retain your rights to any Content you submit, post or display on
-          or through the Services. What’s yours is yours — you own your Content
-          (and your incorporated audio, photos and videos are considered part of
-          the Content).
-        </p>
-        <br />
-        <p>
-          By submitting, posting or displaying Content on or through the
-          Services, you grant us a worldwide, non-exclusive, royalty-free
-          license (with the right to sublicense) to use, copy, reproduce,
-          process, adapt, modify, publish, transmit, display and distribute such
-          Content in any and all media or distribution methods now known or
-          later developed (for clarity, these rights include, for example,
-          curating, transforming, and translating). This license authorizes us
-          to make your Content available to the rest of the world and to let
-          others do the same. You agree that this license includes the right for
-          Passes to provide, promote, and improve the Services and to make
-          Content submitted to or through the Services available to other
-          companies, organizations or individuals for the syndication,
-          broadcast, distribution, Retweet, promotion or publication of such
-          Content on other media and services, subject to our terms and
-          conditions for such Content use. Such additional uses by Passes, or
-          other companies, organizations or individuals, is made with no
-          compensation paid to you with respect to the Content that you submit,
-          post, transmit or otherwise make available through the Services as the
-          use of the Services by you is hereby agreed as being sufficient
-          compensation for the Content and grant of rights herein.
-        </p>
-        <br />
-        <p>
-          Passes has an evolving set of rules for how ecosystem partners can
-          interact with your Content on the Services. These rules exist to
-          enable an open ecosystem with your rights in mind. You understand that
-          we may modify or adapt your Content as it is distributed, syndicated,
-          published, or broadcast by us and our partners and/or make changes to
-          your Content in order to adapt the Content to different media.
-        </p>
-        <br />
-        <p>
-          You represent and warrant that you have, or have obtained, all rights,
-          licenses, consents, permissions, power and/or authority necessary to
-          grant the rights granted herein for any Content that you submit, post
-          or display on or through the Services. You agree that such Content
-          will not contain material subject to copyright or other proprietary
-          rights, unless you have necessary permission or are otherwise legally
-          entitled to post the material and to grant Passes the license
-          described above.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">4. Using the Services</h1>
-        <br />
-        <p>
-          Please review the Passes Rules and Policies, which are part of the
-          User Agreement and outline what is prohibited on the Services. You may
-          use the Services only in compliance with these Terms and all
-          applicable laws, rules and regulations.
-        </p>
-        <br />
-        <p>
-          Our Services evolve constantly. As such, the Services may change from
-          time to time, at our discretion. We may stop (permanently or
-          temporarily) providing the Services or any features within the
-          Services to you or to users generally. We also retain the right to
-          create limits on use and storage at our sole discretion at any time.
-          We may also remove or refuse to distribute any Content on the
-          Services, limit distribution or visibility of any Content on the
-          service, suspend or terminate users, and reclaim usernames without
-          liability to you.
-        </p>
-        <br />
-        <p>
-          In consideration for Passes granting you access to and use of the
-          Services, you agree that Passes and its third-party providers and
-          partners may place advertising on the Services or in connection with
-          the display of Content or information from the Services whether
-          submitted by you or others. You also agree not to misuse our Services,
-          for example, by interfering with them or accessing them using a method
-          other than the interface and the instructions that we provide. You
-          agree that you will not work around any technical limitations in the
-          software provided to you as part of the Services, or reverse engineer,
-          decompile or disassemble the software, except and only to the extent
-          that applicable law expressly permits. You may not do any of the
-          following while accessing or using the Services: (i) access, tamper
-          with, or use non-public areas of the Services, Passes’s computer
-          systems, or the technical delivery systems of Passes’s providers; (ii)
-          probe, scan, or test the vulnerability of any system or network or
-          breach or circumvent any security or authentication measures; (iii)
-          access or search or attempt to access or search the Services by any
-          means (automated or otherwise) other than through our currently
-          available, published interfaces that are provided by Passes (and only
-          pursuant to the applicable terms and conditions), unless you have been
-          specifically allowed to do so in a separate agreement with Passes;
-          (iv) forge any TCP/IP packet header or any part of the header
-          information in any email or posting, or in any way use the Services to
-          send altered, deceptive or false source-identifying information; or
-          (v) interfere with, or disrupt, (or attempt to do so), the access of
-          any user, host or network, including, without limitation, sending a
-          virus, overloading, flooding, spamming, mail-bombing the Services, or
-          by scripting the creation of Content in such a manner as to interfere
-          with or create an undue burden on the Services. We also reserve the
-          right to access, read, preserve, and disclose any information as we
-          reasonably believe is necessary to (i) satisfy any applicable law,
-          regulation, legal process or governmental request, (ii) enforce the
-          Terms, including investigation of potential violations hereof, (iii)
-          detect, prevent, or otherwise address fraud, security or technical
-          issues, (iv) respond to user support requests, or (v) protect the
-          rights, property or safety of Passes, its users and the public. Passes
-          does not disclose personally-identifying information to third parties
-          except in accordance with our Privacy Policy.
-        </p>
-        <br />
-        <p>
-          Passes may offer certain services or features for which additional
-          terms and conditions may apply in connection with your use of those
-          services. By using or paying for any of these additional services, you
-          agree to any additional terms applicable to those services, and those
-          additional terms become part of our agreement with you. If any of the
-          applicable additional terms conflict with these Terms, the additional
-          terms will prevail while you are using those services to which they
-          apply.
-        </p>
-
-        <br />
-        <p className="text-[18px] font-bold">Your Account</p>
-        <br />
-        <p>
-          You may need to create an account to use some of our Services. You are
-          responsible for safeguarding your account, so use a strong password
-          and limit its use to this account. We cannot and will not be liable
-          for any loss or damage arising from your failure to comply with the
-          above.
-        </p>
-        <br />
-        <p>
-          You can control most communications from the Services. We may need to
-          provide you with certain communications, such as service announcements
-          and administrative messages. These communications are considered part
-          of the Services and your account, and you may not be able to opt-out
-          from receiving them. If you added your phone number to your account
-          and you later change or deactivate that phone number, you must update
-          your account information to help prevent us from communicating with
-          anyone who acquires your old number.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">
-          Your License to Use the Services
-        </p>
-        <br />
-        <p>
-          Passes gives you a personal, worldwide, royalty-free, non-assignable
-          and non-exclusive license to use the software provided to you as part
-          of the Services. This license has the sole purpose of enabling you to
-          use and enjoy the benefit of the Services as provided by Passes, in
-          the manner permitted by these Terms.
-        </p>
-        <br />
-        <p>
-          The Services are protected by copyright, trademark, and other laws of
-          both the United States and other countries. Nothing in the Terms gives
-          you a right to use the Passes name or any of the Passes trademarks,
-          logos, domain names, other distinctive brand features, and other
-          proprietary rights. All right, title, and interest in and to the
-          Services (excluding Content provided by users) are and will remain the
-          exclusive property of Passes and its licensors. Any feedback,
-          comments, or suggestions you may provide regarding Passes, or the
-          Services is entirely voluntary and we will be free to use such
-          feedback, comments or suggestions as we see fit and without any
-          obligation to you.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">Ending These Terms </p>
-        <br />
-        <p>
-          You may end your legal agreement with Passes at any time by
-          deactivating your accounts and discontinuing your use of the Services.
-        </p>
-        <br />
-        <p>
-          We may suspend or terminate your account or cease providing you with
-          all or part of the Services at any time for any or no reason,
-          including, but not limited to, if we reasonably believe: (i) you have
-          violated these Terms, (ii) you create risk or possible legal exposure
-          for us; (iii) your account should be removed due to unlawful conduct,
-          (iv) your account should be removed due to prolonged inactivity; or
-          (v) our provision of the Services to you is no longer commercially
-          viable. We will make reasonable efforts to notify you by the email
-          address associated with your account or the next time you attempt to
-          access your account, depending on the circumstances.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">
-          5. Disclaimers and Limitations of Liability
-        </h1>
-        <br />
-        <p className="text-[18px] font-bold">
-          The Services are Available &quot;AS-IS&quot;
-        </p>
-        <br />
-        <p>
-          Your access to and use of the Services or any Content are at your own
-          risk. You understand and agree that the Services are provided to you
-          on an “AS IS” and “AS AVAILABLE” basis. The “Passes Entities” refers
-          to Passes, its parents, affiliates, related companies, officers,
-          directors, employees, agents, representatives, partners, and
-          licensors. Without limiting the foregoing, to the maximum extent
-          permitted under applicable law, THE Passes ENTITIES DISCLAIM ALL
-          WARRANTIES AND CONDITIONS, WHETHER EXPRESS OR IMPLIED, OF
-          MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
-          NON-INFRINGEMENT. The Passes Entities make no warranty or
-          representation and disclaim all responsibility and liability for: (i)
-          the completeness, accuracy, availability, timeliness, security or
-          reliability of the Services or any Content; (ii) any harm to your
-          computer system, loss of data, or other harm that results from your
-          access to or use of the Services or any Content; (iii) the deletion
-          of, or the failure to store or to transmit, any Content and other
-          communications maintained by the Services; and (iv) whether the
-          Services will meet your requirements or be available on an
-          uninterrupted, secure, or error-free basis. No advice or information,
-          whether oral or written, obtained from the Passes Entities or through
-          the Services, will create any warranty or representation not expressly
-          made herein.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">Limitation of Liability </p>
-        <br />
-        <p>
-          TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE Passes ENTITIES
-          SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL,
-          CONSEQUENTIAL OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES,
-          WHETHER INCURRED DIRECTLY OR INDIRECTLY, OR ANY LOSS OF DATA, USE,
-          GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM (i) YOUR ACCESS
-          TO OR USE OF OR INABILITY TO ACCESS OR USE THE SERVICES; (ii) ANY
-          CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE SERVICES, INCLUDING
-          WITHOUT LIMITATION, ANY DEFAMATORY, OFFENSIVE OR ILLEGAL CONDUCT OF
-          OTHER USERS OR THIRD PARTIES; (iii) ANY CONTENT OBTAINED FROM THE
-          SERVICES; OR (iv) UNAUTHORIZED ACCESS, USE OR ALTERATION OF YOUR
-          TRANSMISSIONS OR CONTENT. IN NO EVENT SHALL THE AGGREGATE LIABILITY OF
-          THE Passes ENTITIES EXCEED THE GREATER OF ONE HUNDRED U.S. DOLLARS
-          (U.S. $100.00) OR THE AMOUNT YOU PAID Passes, IF ANY, IN THE PAST SIX
-          MONTHS FOR THE SERVICES GIVING RISE TO THE CLAIM. THE LIMITATIONS OF
-          THIS SUBSECTION SHALL APPLY TO ANY THEORY OF LIABILITY, WHETHER BASED
-          ON WARRANTY, CONTRACT, STATUTE, TORT (INCLUDING NEGLIGENCE) OR
-          OTHERWISE, AND WHETHER OR NOT THE Passes ENTITIES HAVE BEEN INFORMED
-          OF THE POSSIBILITY OF ANY SUCH DAMAGE, AND EVEN IF A REMEDY SET FORTH
-          HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">6. General</h1>
-        <br />
-        <p>
-          We may revise these Terms from time to time. The changes will not be
-          retroactive, and the most current version of the Terms, which will
-          always be at Passes.com/tos, will govern our relationship with you. We
-          will try to notify you of material revisions, for example via a
-          service notification or an email to the email associated with your
-          account. By continuing to access or use the Services after those
-          revisions become effective, you agree to be bound by the revised
-          Terms.
-        </p>
-        <br />
-        <p>
-          The laws of the State of California, excluding its choice of law
-          provisions, will govern these Terms and any dispute that arises
-          between you and Passes. All disputes related to these Terms or the
-          Services will be brought solely in the federal or state courts located
-          in San Francisco County, California, United States, and you consent to
-          personal jurisdiction and waive any objection as to inconvenient
-          forum.
-        </p>
-        <br />
-        <p>
-          If you are a federal, state, or local government entity in the United
-          States using the Services in your official capacity and legally unable
-          to accept the controlling law, jurisdiction or venue clauses above,
-          then those clauses do not apply to you. For such U.S. federal
-          government entities, these Terms and any action related thereto will
-          be governed by the laws of the United States of America (without
-          reference to conflict of laws) and, in the absence of federal law and
-          to the extent permitted under federal law, the laws of the State of
-          California (excluding choice of law).
-        </p>
-        <br />
-        <p>
-          In the event that any provision of these Terms is held to be invalid
-          or unenforceable, then that provision will be limited or eliminated to
-          the minimum extent necessary, and the remaining provisions of these
-          Terms will remain in full force and effect. Passes’s failure to
-          enforce any right or provision of these Terms will not be deemed a
-          waiver of such right or provision.
-        </p>
-        <br />
-
-        <h1 className="text-[24px] font-bold">7. Miscellaneous</h1>
-        <br />
-        <p>
-          All items are non-refundable. All payments must exceed $2.40, and
-          there is no maximum payment thresholds. We accept USD payments, as
-          well as Ethereum and USDC (both native and bridged).
-        </p>
-        <br />
-        <br />
-        <div className="border-b border-dashed" />
-        <br />
-        <h1 className="text-[24px] font-bold">Passes Terms of Service </h1>
-        <br />
-        <p>
-          If you live in the European Union, EFTA States, or the United Kingdom
-        </p>
-        <br />
-        <p>
-          These Terms of Service (“Terms”) govern your access to and use of our
-          services, including our various websites, SMS, APIs, email
-          notifications, applications, buttons, widgets, ads, and commerce
-          services that link to these Terms (collectively, the “Services”), and
-          any information, text, links, graphics, photos, audio, videos, or
-          other materials or arrangements of materials uploaded, downloaded or
-          appearing on the Services (collectively referred to as “Content”). By
-          using the Services you agree to be bound by these Terms.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">1. Who May Use the Services</h1>
-        <br />
-        <p>
-          You may use the Services only if you agree to form a binding contract
-          with Passes and are not a person barred from receiving services under
-          the laws of the applicable jurisdiction. In any case, you must be at
-          least 13 years old, or in the case of Periscope 16 years old, to use
-          the Services. If you are accepting these Terms and using the Services
-          on behalf of a company, organization, government, or other legal
-          entity, you represent and warrant that you are authorized to do so and
-          have the authority to bind such entity to these Terms, in which case
-          the words “you” and “your” as used in these Terms shall refer to such
-          entity.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">2. Privacy</h1>
-        <br />
-        <p>
-          Our Privacy Policy (https://www.Passes.com/privacy) describes how we
-          handle the information you provide to us when you use our Services.
-          You understand that through your use of the Services you consent to
-          the collection and use (as set forth in the Privacy Policy) of this
-          information, including the transfer of this information to the United
-          States, Ireland, and/or other countries for storage, processing and
-          use by Passes and its affiliates.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">3. Content on the Services</h1>
-        <br />
-        <p>
-          You are responsible for your use of the Services and for any Content
-          you provide, including compliance with applicable laws, rules, and
-          regulations. You should only provide Content that you are comfortable
-          sharing with others.
-        </p>
-        <br />
-        <p>
-          Any use or reliance on any Content or materials posted via the
-          Services or obtained by you through the Services is at your own risk.
-          We do not endorse, support, represent or guarantee the completeness,
-          truthfulness, accuracy, or reliability of any Content or
-          communications posted via the Services or endorse any opinions
-          expressed via the Services. You understand that by using the Services,
-          you may be exposed to Content that might be offensive, harmful,
-          inaccurate or otherwise inappropriate, or in some cases, postings that
-          have been mislabeled or are otherwise deceptive. All Content is the
-          sole responsibility of the person who originated such Content. We may
-          not monitor or control the Content posted via the Services and, we
-          cannot take responsibility for such Content.
-        </p>
-        <br />
-        <p>
-          We reserve the right to remove Content that violates the User
-          Agreement, including for example, copyright or trademark violations or
-          other intellectual property misappropriation, impersonation, unlawful
-          conduct, or harassment. Information regarding specific policies and
-          the process for reporting or appealing violations can be found in our
-          Help Center.
-        </p>
-        <br />
-        <p>
-          If you believe that your Content has been copied in a way that
-          constitutes copyright infringement, please report this by visiting our
-          Copyright reporting form or contacting our designated copyright agent
-          at:
-        </p>
-        <br />
-        <p>Passes, Inc. </p>
-        <br />
-        <p>Attn: Copyright Agent </p>
-        <br />
-        <p>XXXXXXXX </p>
-        <br />
-        <p>Email: copyright@Passes.com </p>
-        <br />
-        <p className="text-[18px] font-bold">
-          Your Rights and Grant of Rights in the Content
-        </p>
-        <br />
-        <p>
-          You retain your rights to any Content you submit, post or display on
-          or through the Services. What’s yours is yours — you own your Content
-          (and your incorporated audio, photos and videos are considered part of
-          the Content).
-        </p>
-        <br />
-        <p>
-          By submitting, posting or displaying Content on or through the
-          Services, you grant us a worldwide, non-exclusive, royalty-free
-          license (with the right to sublicense) to use, copy, reproduce,
-          process, adapt, modify, publish, transmit, display and distribute such
-          Content in any and all media or distribution methods now known or
-          later developed (for clarity, these rights include, for example,
-          curating, transforming, and translating). This license authorizes us
-          to make your Content available to the rest of the world and to let
-          others do the same. You agree that this license includes the right for
-          Passes to provide, promote, and improve the Services and to make
-          Content submitted to or through the Services available to other
-          companies, organizations or individuals for the syndication,
-          broadcast, distribution, Retweet, promotion or publication of such
-          Content on other media and services, subject to our terms and
-          conditions for such Content use. Such additional uses by Passes, or
-          other companies, organizations or individuals, is made with no
-          compensation paid to you with respect to the Content that you submit,
-          post, transmit or otherwise make available through the Services as the
-          use of the Services by you is hereby agreed as being sufficient
-          compensation for the Content and grant of rights herein.
-        </p>
-        <br />
-        <p>
-          Passes has an evolving set of rules for how ecosystem partners can
-          interact with your Content on the Services. These rules exist to
-          enable an open ecosystem with your rights in mind. You understand that
-          we may modify or adapt your Content as it is distributed, syndicated,
-          published, or broadcast by us and our partners and/or make changes to
-          your Content in order to adapt the Content to different media.
-        </p>
-        <br />
-        <p>
-          You represent and warrant that you have, or have obtained, all rights,
-          licenses, consents, permissions, power and/or authority necessary to
-          grant the rights granted herein for any Content that you submit, post
-          or display on or through the Services. You agree that such Content
-          will not contain material subject to copyright or other proprietary
-          rights, unless you have necessary permission or are otherwise legally
-          entitled to post the material and to grant Passes the license
-          described above.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">4. Using the Services</h1>
-        <br />
-        <p>
-          Please review the Passes Rules and Policies, which are part of the
-          User Agreement and outline what is prohibited on the Services. You may
-          use the Services only in compliance with these Terms and all
-          applicable laws, rules and regulations.
-        </p>
-        <br />
-        <p>
-          Our Services evolve constantly. As such, the Services may change from
-          time to time, at our discretion. We may stop (permanently or
-          temporarily) providing the Services or any features within the
-          Services to you or to users generally. We also retain the right to
-          create limits on use and storage at our sole discretion at any time.
-          We may also remove or refuse to distribute any Content on the
-          Services, limit distribution or visibility of any Content on the
-          service, suspend or terminate users, and reclaim usernames without
-          liability to you.
-        </p>
-        <br />
-        <p>
-          In consideration for Passes granting you access to and use of the
-          Services, you agree that Passes and its third-party providers and
-          partners may place advertising on the Services or in connection with
-          the display of Content or information from the Services whether
-          submitted by you or others. You also agree not to misuse our Services,
-          for example, by interfering with them or accessing them using a method
-          other than the interface and the instructions that we provide. You
-          agree that you will not work around any technical limitations in the
-          software provided to you as part of the Services, or reverse engineer,
-          decompile or disassemble the software, except and only to the extent
-          that applicable law expressly permits. You may not do any of the
-          following while accessing or using the Services: (i) access, tamper
-          with, or use non-public areas of the Services, Passes’s computer
-          systems, or the technical delivery systems of Passes’s providers; (ii)
-          probe, scan, or test the vulnerability of any system or network or
-          breach or circumvent any security or authentication measures; (iii)
-          access or search or attempt to access or search the Services by any
-          means (automated or otherwise) other than through our currently
-          available, published interfaces that are provided by Passes (and only
-          pursuant to the applicable terms and conditions), unless you have been
-          specifically allowed to do so in a separate agreement with Passes
-          (NOTE: crawling the Services is permissible if done in accordance with
-          the provisions of the robots.txt file, however, scraping the Services
-          without the prior consent of Passes is expressly prohibited); (iv)
-          forge any TCP/IP packet header or any part of the header information
-          in any email or posting, or in any way use the Services to send
-          altered, deceptive or false source-identifying information; or (v)
-          interfere with, or disrupt, (or attempt to do so), the access of any
-          user, host or network, including, without limitation, sending a virus,
-          overloading, flooding, spamming, mail-bombing the Services, or by
-          scripting the creation of Content in such a manner as to interfere
-          with or create an undue burden on the Services. We also reserve the
-          right to access, read, preserve, and disclose any information as we
-          reasonably believe is necessary to (i) satisfy any applicable law,
-          regulation, legal process or governmental request, (ii) enforce the
-          Terms, including investigation of potential violations hereof, (iii)
-          detect, prevent, or otherwise address fraud, security or technical
-          issues, (iv) respond to user support requests, or (v) protect the
-          rights, property or safety of Passes, its users and the public. Passes
-          does not disclose personally-identifying information to third parties
-          except in accordance with our Privacy Policy.
-        </p>
-        <br />
-        <p>
-          Passes may offer certain services or features for which additional
-          terms and conditions may apply in connection with your use of those
-          services. By using or paying for any of these additional services, you
-          agree to any additional terms applicable to those services, and those
-          additional terms become part of our agreement with you. If any of the
-          applicable additional terms conflict with these Terms, the additional
-          terms will prevail while you are using those services to which they
-          apply.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">Your Account </p>
-        <br />
-        <p>
-          You may need to create an account to use some of our Services. You are
-          responsible for safeguarding your account, so use a strong password
-          and limit its use to this account. We cannot and will not be liable
-          for any loss or damage arising from your failure to comply with the
-          above.
-        </p>
-        <br />
-        <p>
-          You can control most communications from the Services. We may need to
-          provide you with certain communications, such as service announcements
-          and administrative messages. These communications are considered part
-          of the Services and your account, and you may not be able to opt-out
-          from receiving them. If you added your phone number to your account
-          and you later change or deactivate that phone number, you must update
-          your account information to help prevent us from communicating with
-          anyone who acquires your old number.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">
-          Your License to Use the Services
-        </p>
-        <br />
-        <p>
-          Passes gives you a personal, worldwide, royalty-free, non-assignable
-          and non-exclusive license to use the software provided to you as part
-          of the Services. This license has the sole purpose of enabling you to
-          use and enjoy the benefit of the Services as provided by Passes, in
-          the manner permitted by these Terms.
-        </p>
-        <br />
-        <p>
-          The Services are protected by copyright, trademark, and other laws of
-          both the United States and other countries. Nothing in the Terms gives
-          you a right to use the Passes name or any of the Passes trademarks,
-          logos, domain names, other distinctive brand features, and other
-          proprietary rights. All right, title, and interest in and to the
-          Services (excluding Content provided by users) are and will remain the
-          exclusive property of Passes and its licensors. Any feedback,
-          comments, or suggestions you may provide regarding Passes, or the
-          Services is entirely voluntary and we will be free to use such
-          feedback, comments or suggestions as we see fit and without any
-          obligation to you.
-        </p>
-        <br />
-        <p className="text-[18px] font-bold">Ending These Terms</p>
-        <br />
-        <p>
-          You may end your legal agreement with Passes at any time by
-          deactivating your accounts and discontinuing your use of the Services.
-        </p>
-        <br />
-        <p>
-          We may suspend or terminate your account or cease providing you with
-          all or part of the Services at any time for any or no reason,
-          including, but not limited to, if we reasonably believe: (i) you have
-          violated these Terms or the Passes Rules and Policies (ii) you create
-          risk or possible legal exposure for us; (iii) your account should be
-          removed due to unlawful conduct, (iv) your account should be removed
-          due to prolonged inactivity; or (v) our provision of the Services to
-          you is no longer commercially viable. We will make reasonable efforts
-          to notify you by the email address associated with your account or the
-          next time you attempt to access your account, depending on the
-          circumstances. In all such cases, the Terms shall terminate,
-          including, without limitation, your license to use the Services,
-          except that the following sections shall continue to apply: 2, 3, 5,
-          and 6. If you believe your account was terminated in error you can
-          file an appeal following the steps found in our Help Center. For the
-          avoidance of doubt, these Terms survive the deactivation or
-          termination of your account.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">5. Limitations of Liability</h1>
-        <br />
-        <p>
-          By using the Services you agree that Passes, its parents, affiliates,
-          related companies, officers, directors, employees, agents
-          representatives, partners and licensors, liability is limited to the
-          maximum extent permissible in your country of residence.
-        </p>
-        <br />
-        <h1 className="text-[24px] font-bold">6. General</h1>
-        <br />
-        <p>
-          We may revise these Terms from time to time. The changes will not be
-          retroactive, and the most current version of the Terms, which will
-          always be at Passes.com/tos, will govern our relationship with you.
-          Other than for changes addressing new functions or made for legal
-          reasons, we will notify you 30 days in advance of making effective
-          changes to these Terms that impact the rights or obligations of any
-          party to these Terms, for example via a service notification or an
-          email to the email associated with your account. By continuing to
-          access or use the Services after those revisions become effective, you
-          agree to be bound by the revised Terms.
-        </p>
-        <br />
-        <p>
-          In the event that any provision of these Terms is held to be invalid
-          or unenforceable, then that provision will be limited or eliminated to
-          the minimum extent necessary, and the remaining provisions of these
-          Terms will remain in full force and effect. Passes’s failure to
-          enforce any right or provision of these Terms will not be deemed a
-          waiver of such right or provision.
-        </p>
-        <br />
-        <p>
-          These Terms are an agreement between you and Passes International
-          Unlimited Company (Co. number XXXXX, VAT number XXXXXXX), an Irish
-          company with its registered office at XXXXXXXX Ireland. If you have
-          any questions about these Terms, please contact us.
-        </p>
-        <br />
-        <br />
         <br />
       </div>
     </div>
