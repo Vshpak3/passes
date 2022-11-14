@@ -1,9 +1,11 @@
 import { PassHolderDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
 
-export const CACHE_KEY_PASS_HOLDER = "/passholder"
+const CACHE_KEY_PASS_HOLDER = "/passholder"
 
-export const usePassHolder = (passHolderId: string) => {
+// Might be used in the future
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const usePassHolder = (passHolderId: string) => {
   const { data: passHolder } = useSWR(
     passHolderId ? [CACHE_KEY_PASS_HOLDER, passHolderId] : null,
     async () => null
