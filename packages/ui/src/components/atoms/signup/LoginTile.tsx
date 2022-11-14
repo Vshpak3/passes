@@ -1,3 +1,4 @@
+import classNames from "classnames"
 import Image from "next/image"
 import VerifiedIcon from "public/icons/post-verified-small-icon.svg"
 import React, { FC } from "react"
@@ -6,11 +7,19 @@ interface LoginTileProps {
   name: string
   username: string
   filename: string
+  hidden: boolean
+  setLoaded: () => void
 }
 
-export const LoginTile: FC<LoginTileProps> = ({ name, username, filename }) => {
+export const LoginTile: FC<LoginTileProps> = ({
+  name,
+  username,
+  filename,
+  hidden,
+  setLoaded
+}) => {
   return (
-    <div className="p-2">
+    <div className={classNames("p-2", { hidden })}>
       <div className="flex items-center space-x-[3px]">
         <VerifiedIcon />
         <span className="text-[9px] font-medium leading-[11px]">Verified</span>
@@ -20,10 +29,10 @@ export const LoginTile: FC<LoginTileProps> = ({ name, username, filename }) => {
         <span className="relative h-[55px] w-[55px] rounded-full">
           <Image
             alt={name}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
+            height="65"
+            onLoad={setLoaded}
             src={filename}
+            width="65"
           />
         </span>
         <p className="mt-[5px] text-[9px] font-medium leading-[11px]">{name}</p>

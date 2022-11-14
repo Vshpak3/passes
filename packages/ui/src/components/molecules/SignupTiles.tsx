@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 import { GradientBorderTile } from "src/components/atoms/signup/GradientBorderTile"
 import { LoginNFT } from "src/components/atoms/signup/LoginNFT"
 import { LoginTile } from "src/components/atoms/signup/LoginTile"
@@ -80,19 +82,31 @@ const tiles = [
 ]
 
 export const SignupTiles = () => {
+  const [loadCount, setLoadCount] = useState(0)
+
   return (
     <div className="grid grid-cols-3 gap-5 xl:gap-[25px]">
-      {tiles.map(({ name, username, filename }) => {
+      {tiles.map(({ name, username, filename }, idx) => {
         if (filename.endsWith("png") && username) {
           return (
             <GradientBorderTile key={filename}>
-              <LoginTile filename={filename} name={name} username={username} />
+              <LoginTile
+                filename={filename}
+                hidden={loadCount !== tiles.length}
+                name={name}
+                setLoaded={() => setLoadCount((c) => c + 1)}
+                username={username}
+              />
             </GradientBorderTile>
           )
         } else if (filename.endsWith("webm")) {
           return (
             <GradientBorderTile key={filename}>
-              <LoginNFT filename={filename} />
+              <LoginNFT
+                filename={filename}
+                hidden={loadCount !== tiles.length}
+                setLoaded={() => setLoadCount((c) => c + 1)}
+              />
             </GradientBorderTile>
           )
         } else {
