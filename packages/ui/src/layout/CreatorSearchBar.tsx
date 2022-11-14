@@ -1,12 +1,16 @@
 import { useRouter } from "next/router"
-import { FC, useCallback, useMemo } from "react"
+import { useCallback, useMemo } from "react"
 
 import { UserSearchResultOption } from "src/components/atoms/search/user/UserSearchResultOption"
 import { SearchBar } from "src/components/molecules/SearchBar"
 import { AuthWrapper } from "src/components/wrappers/AuthWrapper"
 import { useCreatorSearch } from "src/hooks/search/useCreatorSearch"
 
-export const CreatorSearchBar: FC = () => {
+interface Props {
+  focusOnMount?: boolean
+}
+
+export const CreatorSearchBar = ({ focusOnMount = false }: Props) => {
   const { push } = useRouter()
   const { results, loading, searchValue, onChangeInput, setSearchValue } =
     useCreatorSearch()
@@ -33,6 +37,7 @@ export const CreatorSearchBar: FC = () => {
       <div className="flex w-full min-w-[100%] items-center xl:min-w-[340px]">
         <SearchBar
           contentName="creators"
+          focusOnMount={focusOnMount}
           loading={loading}
           onInputChange={onChangeInput}
           onSelect={goToProfile}

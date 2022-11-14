@@ -1,6 +1,6 @@
 import { Combobox } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import { ChangeEvent, PropsWithChildren } from "react"
+import { ChangeEvent, PropsWithChildren, useEffect, useRef } from "react"
 
 import { CustomResult } from "src/components/atoms/search/CustomResult"
 
@@ -11,6 +11,7 @@ interface SearchBarProps<T> {
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
   onSelect: (value: T) => void
   contentName: string
+  focusOnMount?: boolean
 }
 
 export const SearchBar = <T,>({
@@ -19,8 +20,17 @@ export const SearchBar = <T,>({
   options,
   onInputChange,
   onSelect,
-  contentName
+  contentName,
+  focusOnMount
 }: PropsWithChildren<SearchBarProps<T>>) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (inputRef && focusOnMount) {
+      inputRef?.current?.focus()
+    }
+  }, [focusOnMount])
+
   return (
     <Combobox<T> onChange={onSelect} value={searchValue as unknown as T}>
       <div className="relative flex w-full flex-col">
@@ -38,6 +48,7 @@ export const SearchBar = <T,>({
               name="search"
               onChange={onInputChange}
               placeholder={`Find ${contentName}`}
+              ref={inputRef}
               type="search"
               value={searchValue}
             />
