@@ -90,6 +90,7 @@ const ForgotPassword = () => {
               name="email"
               placeholder="Enter your email"
               register={register}
+              transparent={false}
               type="text"
             />
           </div>

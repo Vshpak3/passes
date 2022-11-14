@@ -54,27 +54,30 @@ export const DateSelector: FC<DateSelectorProps> = ({
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="flex w-full justify-between">
         <Select
-          className="w-[140px]"
+          className="w-[140px] bg-black"
           name="month"
           onChange={(m) => setMonth(selectMonths.indexOf(m))}
           placeholder="Month"
           selectOptions={selectMonths}
+          transparent={false}
         />
         <Select
-          className="w-[90px]"
+          className="w-[90px] bg-black"
           name="day"
           onChange={setDay}
           placeholder="Day"
           selectOptions={selectDays}
+          transparent={false}
         />
         <Select
-          className="w-[100px]"
+          className="w-[100px] bg-black"
           name="year"
           onChange={setYear}
           placeholder="Year"
           selectOptions={selectYears}
+          transparent={false}
         />
       </div>
       {errors && (

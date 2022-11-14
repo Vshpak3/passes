@@ -126,6 +126,7 @@ const ResetPassword = () => {
                 name="password"
                 placeholder="Enter your password"
                 register={register}
+                transparent={false}
               />
             </div>
 
@@ -139,6 +140,7 @@ const ResetPassword = () => {
                 name="confirmPassword"
                 placeholder="Confirm your password"
                 register={register}
+                transparent={false}
               />
             </div>
 

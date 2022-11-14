@@ -42,7 +42,7 @@ const SignupEmailPage: FC = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const [hasSentEmail, setHasSentEmail] = useState(true)
+  const [hasSentEmail, setHasSentEmail] = useState(false)
   const [hasResentEmail, setHasResentEmail] = useState(false)
   const [timeLeft, setTimeLeft] = useState(RESEND_WAIT_TIME)
 
@@ -159,7 +159,7 @@ const SignupEmailPage: FC = () => {
             className="flex flex-col gap-y-5"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div className="flex flex-col">
+            <div className="flex flex-col items-start">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
                 Email address
               </Text>
@@ -172,6 +172,7 @@ const SignupEmailPage: FC = () => {
                 }}
                 placeholder="Enter your email address"
                 register={register}
+                transparent={false}
                 type="text"
               />
             </div>

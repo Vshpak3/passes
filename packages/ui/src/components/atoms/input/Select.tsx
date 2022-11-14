@@ -37,6 +37,7 @@ type SelectProps = {
   placeholderClass?: string
   showOnTop?: boolean
   changeOnDefault?: boolean
+  transparent?: boolean
 }
 
 export const Select: FC<SelectProps> = ({
@@ -52,6 +53,7 @@ export const Select: FC<SelectProps> = ({
   onChange,
   showOnTop = false,
   changeOnDefault = false,
+  transparent = true,
   ...rest
 }) => {
   const isString = typeof defaultValue === "string"
@@ -88,8 +90,9 @@ export const Select: FC<SelectProps> = ({
       >
         <Listbox.Button
           className={classNames(
-            "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border bg-transparent px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
+            "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-blue-500",
             className,
+            transparent && "bg-transparent",
             errors?.[name] ? "border-red-500" : "border-passes-dark-100",
             { "text-gray-500": !displayedValue && placeholder }
           )}

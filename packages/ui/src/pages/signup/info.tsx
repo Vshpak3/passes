@@ -152,10 +152,10 @@ const SignupInfoPage: FC = () => {
         Let&apos;s get to know each other
       </Text>
       <form className="flex flex-col gap-y-5" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Your name</Text>
           <Input
-            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="legalFullName"
             options={{
@@ -166,14 +166,15 @@ const SignupInfoPage: FC = () => {
             }}
             placeholder="Enter your name"
             register={register}
+            transparent={false}
             type="text"
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Username</Text>
           <Input
-            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="username"
             options={{
@@ -184,16 +185,17 @@ const SignupInfoPage: FC = () => {
             }}
             placeholder="Enter your username"
             register={register}
+            transparent={false}
             type="text"
           />
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
             Display Name
           </Text>
           <Input
-            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="displayName"
             options={{
@@ -204,17 +206,18 @@ const SignupInfoPage: FC = () => {
             }}
             placeholder="Enter your display name"
             register={register}
+            transparent={false}
             type="text"
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Birthday</Text>
           <DateSelector errors={errors.birthday} onDateChange={onDateChange} />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
           <Select
-            className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="countryCode"
             onChange={(newValue: string) => setValue("countryCode", newValue)}
@@ -228,6 +231,7 @@ const SignupInfoPage: FC = () => {
             register={register}
             selectOptions={COUNTRIES}
             showOnTop
+            transparent={false}
           />
         </div>
 
