@@ -59,7 +59,15 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isPage && !_authed) {
       authRouter(safePush, userClaims)
     }
-  }, [isPage, skipAuth, creatorOnly, userClaims, hasRefreshed, safePush])
+  }, [
+    isPage,
+    skipAuth,
+    creatorOnly,
+    userClaims,
+    hasRefreshed,
+    safePush,
+    user?.email
+  ])
 
   return authed ? <>{children}</> : null
 }
