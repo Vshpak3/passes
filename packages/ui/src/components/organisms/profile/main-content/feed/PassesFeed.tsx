@@ -14,7 +14,7 @@ import {
   PassType,
   SelectPassFilter
 } from "src/components/atoms/passes/SelectPassFilter"
-import { PassCard } from "src/components/molecules/pass/PassCard"
+import { PassCardCached } from "src/components/molecules/pass/PassCardCached"
 import { usePassWebhook } from "src/hooks/webhooks/usePassWebhook"
 
 interface PassesFeedProps {
@@ -29,7 +29,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
       <SelectPassFilter onSelectedPassType={setSelectedPassType} />
       <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PassDto>) => {
-          return <PassCard className="w-[200px]" pass={arg} />
+          return <PassCardCached className="w-[200px]" pass={arg} />
         }}
         childrenEnd
         className="m-auto flex flex-row flex-wrap justify-evenly gap-3 pb-20"
