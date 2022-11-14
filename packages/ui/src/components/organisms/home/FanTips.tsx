@@ -11,7 +11,7 @@ export const FanTips = () => {
         Prioritize your DMs.
       </h2>
 
-      <p className="mx-auto py-4 text-center"></p>
+      <p className="mx-auto py-4 text-center" />
       <div className="mx-auto max-w-7xl px-4 py-16 sm:py-32 sm:px-6 lg:py-16 lg:px-8">
         <img alt="Fan Tips" className="mx-auto" src="/img/homepage/tips.svg" />
       </div>
