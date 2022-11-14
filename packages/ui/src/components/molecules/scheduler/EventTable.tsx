@@ -6,12 +6,10 @@ import { toast } from "react-toastify"
 
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
-import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 import { EventTableItemCached } from "./EventTableItemCached"
 
 export const EventTable: FC = () => {
-  const { isTablet } = useWindowSize()
   const { month, year } = useContext(SchedulerContext)
 
   const { data, setMonthYear, deleteScheduledEvent, updateScheduledTime } =
@@ -41,19 +39,6 @@ export const EventTable: FC = () => {
     toast.success("Updated schedule successefully")
   }
 
-  const tableItems = data?.map((item: ScheduledEventDto) => (
-    <EventTableItemCached
-      isTablet={!!isTablet}
-      key={item.scheduledEventId}
-      onChangeTime={handleOnUpdateEvent}
-      onDeleteEvent={handleOnDeleteEvent}
-      scheduledEvent={item}
-    />
-  ))
-  if (isTablet === undefined) {
-    return null
-  }
-
   return (
     <div className="pb-20">
       <div className="mb-9 text-base font-bold md:text-2xl">
@@ -75,23 +60,16 @@ export const EventTable: FC = () => {
               onDelete={handleDeleteEvent}
             />
           )}
-          {!isTablet ? (
-            <table className="table w-full">
-              <thead>
-                <tr className="contents text-left text-base font-medium leading-6 text-white opacity-50">
-                  <th className="pl-5 pb-5">Type</th>
-                  <th className="px-3 pb-5">Media</th>
-                  <th className="px-3 pb-5">Price</th>
-                  <th className="px-3 pb-5">Text</th>
-                  <th className="pb-5 text-center">Date</th>
-                  <th className="px-10 pb-5">Action</th>
-                </tr>
-              </thead>
-              <tbody>{tableItems}</tbody>
-            </table>
-          ) : (
-            <div className="w-full">{tableItems}</div>
-          )}
+          <div className="w-full">
+            {data?.map((item: ScheduledEventDto) => (
+              <EventTableItemCached
+                key={item.scheduledEventId}
+                onChangeTime={handleOnUpdateEvent}
+                onDeleteEvent={handleOnDeleteEvent}
+                scheduledEvent={item}
+              />
+            ))}
+          </div>
         </div>
       )}
     </div>

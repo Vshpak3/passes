@@ -6,6 +6,7 @@ import TrashIcon from "public/icons/trash.svg"
 import { FC, useState } from "react"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
+import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { EditPostPopup } from "./EditPostPopup"
 import { EventTableItemCachedProps } from "./EventTableItemCached"
@@ -15,8 +16,7 @@ type EventTableItemProps = EventTableItemCachedProps
 export const EventTableItem: FC<EventTableItemProps> = ({
   scheduledEvent,
   onDeleteEvent,
-  onChangeTime,
-  isTablet
+  onChangeTime
 }) => {
   const today = new Date()
   const [edit, setEdit] = useState<boolean>(false)
@@ -32,26 +32,22 @@ export const EventTableItem: FC<EventTableItemProps> = ({
 
   let text: string
   let price: number | string
-  let media: number
   let typeStr: string
 
   switch (type) {
     case ScheduledEventDtoTypeEnum.CreatePost:
       text = createPost?.text ?? ""
       price = createPost?.price ?? 0
-      media = createPost?.contentIds.length ?? 0
       typeStr = "Post"
       break
     case ScheduledEventDtoTypeEnum.BatchMessage:
       text = batchMessage?.text ?? ""
       price = batchMessage?.price ?? 0
-      media = batchMessage?.contentIds.length ?? 0
       typeStr = "Message"
       break
     case ScheduledEventDtoTypeEnum.SendMessage:
       text = sendMessage?.text ?? ""
       price = sendMessage?.price ?? 0
-      media = sendMessage?.contentIds.length ?? 0
       typeStr = "Message"
       break
     default:
@@ -79,19 +75,10 @@ export const EventTableItem: FC<EventTableItemProps> = ({
             }}
           />
           {type === ScheduledEventDtoTypeEnum.CreatePost && (
-            <>
-              <EditIcon
-                className="mr-3 cursor-pointer"
-                onClick={() => setEdit(true)}
-              />
-              {edit && (
-                <EditPostPopup
-                  isOpen
-                  onCancel={() => setEdit(false)}
-                  scheduledEvent={scheduledEvent}
-                />
-              )}
-            </>
+            <EditIcon
+              className="mr-3 cursor-pointer"
+              onClick={() => setEdit(true)}
+            />
           )}
         </>
       ) : (
@@ -99,46 +86,41 @@ export const EventTableItem: FC<EventTableItemProps> = ({
       )}
     </div>
   )
+  const { images, video } = contentTypeCounter(scheduledEvent.contents ?? [])
 
-  return !isTablet ? (
-    <tr className="px-5 odd:bg-passes-purple-200">
-      <td className="pl-5 pb-1">{typeStr}</td>
-      <td className="px-3 pb-1">{media}</td>
-      <td className="px-3 pb-1">{price ? formatCurrency(price) : "Free"}</td>
-      <td className="my-[6px] max-w-[350px] truncate px-3 pb-1">
-        {formatText(text)}
-      </td>
-      <td className="min-w-[75px] pb-1 text-center">
-        {format(scheduledAt, "LLLL do, yyyy 'at' hh:mm a")}
-      </td>
-      <td className="my-[6px] min-w-[200px] whitespace-nowrap px-3">
-        <div className="flex min-h-[60px] items-center">
-          {generateActionStatus}
+  return (
+    <>
+      {edit && (
+        <EditPostPopup
+          isOpen
+          onCancel={() => setEdit(false)}
+          scheduledEvent={scheduledEvent}
+        />
+      )}
+      <div className="mb-8 bg-passes-purple-200 p-5">
+        <div className="mb-6 flex items-center justify-between">
+          <span>
+            {format(scheduledAt, "LLL do, yyyy")}
+            <br />
+            {format(scheduledAt, "hh:mm a")}
+          </span>
+          <span>{generateActionStatus}</span>
         </div>
-      </td>
-    </tr>
-  ) : (
-    <div className="mb-8 bg-passes-purple-200 p-5">
-      <div className="mb-6 flex items-center justify-between">
-        <span>
-          {format(scheduledAt, "LLL do, yyyy")}
-          <br />
-          {format(scheduledAt, "hh:mm a")}
-        </span>
-        <span>{generateActionStatus}</span>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-start px-3">
-          <span className="block px-5">{typeStr}</span>
-          <span className="block px-5">{media}</span>
-          <span className="block px-5">
-            {price ? formatCurrency(price) : "Free"}
-          </span>
-          <span className="my-[6px] block max-w-[350px] truncate px-5">
-            {formatText(text)}
-          </span>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-start px-3">
+            <span className="block px-5">{typeStr}</span>
+            <span className="block px-5">
+              {images} images, {video} videos
+            </span>
+            <span className="block px-5">
+              {price ? formatCurrency(price) : "Free"}
+            </span>
+            <span className="my-[6px] block max-w-[350px] truncate px-5">
+              {formatText(text)}
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

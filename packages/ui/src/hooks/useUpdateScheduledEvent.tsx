@@ -25,7 +25,9 @@ export const useUpdateScheduledEvent = () => {
       revalidate: false
     })
 
-  const update = async (update: UpdateScheduledEventRequestDto) => {
+  const update = async (
+    update: UpdateScheduledEventRequestDto & Partial<ScheduledEventDto>
+  ) => {
     await api.updateScheduledEventBody({
       updateScheduledEventRequestDto: update
     })

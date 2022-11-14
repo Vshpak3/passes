@@ -1,5 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { CreatePostRequestDto, PassDto, TagDto } from "@passes/api-client"
+import {
+  ContentDto,
+  CreatePostRequestDto,
+  PassDto,
+  TagDto
+} from "@passes/api-client"
 import {
   MAX_PAID_POST_PRICE,
   MAX_PASSES_LIMIT,
@@ -20,6 +25,7 @@ import { ContentService } from "src/helpers/content"
 import { yupPaid, yupTags } from "src/helpers/yup"
 import { useFormSubmitTimeout } from "src/hooks/useFormSubmitTimeout"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
+import { useUser } from "src/hooks/useUser"
 import { NewPostPaidSection } from "./NewPostPaidSection"
 
 export interface NewPostTextFormProps {
@@ -70,7 +76,11 @@ const newPostFormSchema = object({
 })
 
 interface NewPostEditorProps {
-  handleSavePost: (arg: CreatePostRequestDto) => void | Promise<void>
+  handleSavePost: (
+    arg: CreatePostRequestDto,
+    contents: ContentDto[],
+    passes: PassDto[]
+  ) => void | Promise<void>
   initialData: Partial<NewPostFormProps>
   onlyText?: boolean
   isExtended?: boolean
@@ -92,12 +102,17 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   schedulable = true,
   showDefaultToast = true
 }) => {
-  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia()
+  const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
+    initialData.files
+  )
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
   const [dragActive, setDragActive] = useState(false)
 
-  const [selectedPasses, setSelectedPasses] = useState<PassDto[]>([])
+  const [selectedPasses, setSelectedPasses] = useState<PassDto[]>(
+    initialData.passes ?? []
+  )
+  const { user } = useUser()
   const {
     handleSubmit,
     register,
@@ -155,7 +170,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const previewIndex = watch("previewIndex")
 
   const onSubmit = async (values: NewPostFormProps) => {
-    const contentIds = await new ContentService().uploadUserContent({
+    const contents = await new ContentService().uploadUserContentBare({
       files: values.files,
       inPost: true
     })
@@ -168,13 +183,19 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       tags: values.tags,
       passIds: values.isPaid ? selectedPasses.map((pass) => pass.passId) : [],
       price: values.isPaid ? parseFloat(values.price) : 0,
-      contentIds,
+      contentIds: contents.map((content) => content.contentId),
       previewIndex: values.isPaid ? values.previewIndex : 0,
       expiresAt: values.expiresAt,
       scheduledAt: values.scheduledAt ?? undefined
     }
 
-    await handleSavePost(post)
+    await handleSavePost(
+      post,
+      contents.map((content) => {
+        return { ...content, userId: user?.userId ?? "" }
+      }),
+      selectedPasses
+    )
 
     if (showDefaultToast) {
       toast.dismiss()

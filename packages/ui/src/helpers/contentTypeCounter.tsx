@@ -1,6 +1,6 @@
-import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
+import { ContentBareDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 
-export const contentTypeCounter = (content?: ContentDto[]) => {
+export const contentTypeCounter = (content?: ContentBareDto[]) => {
   let imagesLength = 0
   let videoLength = 0
   let audioLength = 0

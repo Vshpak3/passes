@@ -23,17 +23,22 @@ export const EditPostPopup: FC<EditPostPopupProps> = ({
     scheduledEvent
   const { text, tags, previewIndex, expiresAt, price, scheduledAt } =
     createPost ?? {}
-
   return (
     <Dialog
-      className="w-screen overflow-auto border-[0.5px] border-passes-gray-600 transition-all md:max-h-[70vh] md:max-w-[40%] lg:max-w-[40%]"
+      className="w-screen overflow-auto border-[0.5px] border-passes-gray-600 transition-all md:max-h-[70vh] md:max-w-[70%] lg:max-w-[40%]"
       onClose={onCancel}
       open={isOpen}
       transition={false}
     >
       <NewPostEditor
-        handleSavePost={(editedPost) => {
-          update({ scheduledEventId, createPost: editedPost, type })
+        handleSavePost={(editedPost, contents, passes) => {
+          update({
+            scheduledEventId,
+            createPost: editedPost,
+            type,
+            contents,
+            passes
+          })
         }}
         initialData={{
           text,

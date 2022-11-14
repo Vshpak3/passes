@@ -8,7 +8,6 @@ export interface EventTableItemCachedProps {
   scheduledEvent: ScheduledEventDto
   onDeleteEvent: (id: string) => void | Promise<void>
   onChangeTime: (id: string, time: Date) => void | Promise<void>
-  isTablet: boolean
 }
 
 export const EventTableItemCached: FC<EventTableItemCachedProps> = ({

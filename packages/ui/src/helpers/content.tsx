@@ -1,5 +1,6 @@
 import {
   ContentApi,
+  ContentBareDto,
   ContentDto,
   ContentDtoContentTypeEnum,
   PassDtoAnimationTypeEnum,
@@ -213,7 +214,7 @@ export class ContentService {
    * @param contentType optional parameter to override default file type (useful for gifs since they are video/mp4 files)
    * @returns Content array
    */
-  async uploadUserContent({
+  async uploadUserContentBare({
     files,
     contentType: _contentType,
     inPost = false,
@@ -225,7 +226,7 @@ export class ContentService {
     inPost?: boolean
     inMessage?: boolean
     showMessage?: boolean
-  }): Promise<string[]> {
+  }): Promise<ContentBareDto[]> {
     if (!files.length) {
       return await Promise.resolve([])
     }
@@ -237,7 +238,7 @@ export class ContentService {
       async (file: ContentFile) => {
         const fileFile = file.file
         if (!fileFile) {
-          return file.content?.contentId ?? ""
+          return file.content
         }
         const contentType = _contentType ?? this.getFileContentType(fileFile)
         if (!contentType) {
@@ -254,12 +255,33 @@ export class ContentService {
         await this.contentApi.markUploaded({
           markUploadedRequestDto: { contentId }
         })
-        return contentId
+        return { contentId, type: contentType }
       },
       UPLOAD_BATCH_SIZE
     ).then((r) => {
       toast.dismiss()
       return r
     })
+  }
+
+  /**
+   * Uploads user content
+   *
+   * @param files list of files to upload
+   * @param contentType optional parameter to override default file type (useful for gifs since they are video/mp4 files)
+   * @returns Content array
+   */
+  async uploadUserContent({
+    ...res
+  }: {
+    files: ContentFile[]
+    contentType?: ContentDtoContentTypeEnum
+    inPost?: boolean
+    inMessage?: boolean
+    showMessage?: boolean
+  }): Promise<string[]> {
+    return (await this.uploadUserContentBare(res)).map(
+      (contentBare) => contentBare.contentId
+    )
   }
 }

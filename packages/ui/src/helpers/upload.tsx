@@ -1,10 +1,12 @@
+import { ContentBareDto } from "@passes/api-client"
+
 export async function promiseAllBatched<T>(
   items: T[],
   task: (file: T) => Promise<any>, // eslint-disable-line @typescript-eslint/no-explicit-any
   batchSize: number
 ) {
   let position = 0
-  let results: string[] = []
+  let results: ContentBareDto[] = []
   while (position < items.length) {
     const itemsForBatch = items.slice(position, position + batchSize)
     results = [
