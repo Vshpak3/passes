@@ -1,6 +1,7 @@
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import ms from "ms"
 import Link from "next/link"
+import CardIcon from "public/icons/bank-card.svg"
 import MetamaskIcon from "public/icons/metamask-icon.svg"
 import PhantomIcon from "public/icons/phantom-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
@@ -30,7 +31,7 @@ interface PaymentModalBodyFromProps {
 const MetamMaskSelectOptionsWithImage = MetaMaskSelectOptions.map((option) => {
   const newOption = { ...option }
   newOption.label = (
-    <span className="my-1 flex">
+    <span className="my-1 flex pl-[2px]">
       <MetamaskIcon width="20px" /> <span className="ml-4">{option.label}</span>
     </span>
   )
@@ -40,13 +41,22 @@ const MetamMaskSelectOptionsWithImage = MetaMaskSelectOptions.map((option) => {
 const PhantomSelectOptionsWithImage = PhantomSelectOptions.map((option) => {
   const newOption = { ...option }
   newOption.label = (
-    <span className="my-1 flex">
+    <span className="my-1 flex pl-[2px]">
       <PhantomIcon width="20px" /> <span className="ml-4">{option.label}</span>
     </span>
   )
   return newOption
 })
 
+const NewCardValue = "new-card"
+
+const NewCardLabel = (
+  <span className="my-1 flex flex-row items-center pl-[2px]">
+    <CardIcon className="pt-[2px]" height="20px" width="22px" />
+    <span className="ml-4">New Card</span>
+  </span>
+)
+const NewCardOption = { value: NewCardValue, label: NewCardLabel }
 export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
   price,
   setPayinMethod,
@@ -92,9 +102,18 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
 
   const options = [
     ...cardOptions,
+    NewCardOption,
     ...MetamMaskSelectOptionsWithImage,
     ...PhantomSelectOptionsWithImage
   ]
+
+  const onSelect = (newValue: string) => {
+    if (newValue === NewCardValue) {
+      setNewCard(true)
+    } else {
+      setValue("method", newValue)
+    }
+  }
   const defaultSelected = defaultPayinMethod
     ? options.filter(
         (option) => option.value === serializePayinMethod(payinMethod)
@@ -109,7 +128,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
         className="my-4"
         defaultValue={defaultSelected}
         name="method"
-        onChange={(newValue: string) => setValue("method", newValue)}
+        onChange={onSelect}
         selectOptions={options}
       />
       <div className="my-4 mr-1 hidden text-passes-dark-gray">
@@ -123,7 +142,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
         </Link>
       </div>
       <div
-        className="my-4 mr-1 font-light text-passes-primary-color underline hover:cursor-pointer"
+        className="my-4 mr-1 hidden font-light text-passes-primary-color underline hover:cursor-pointer"
         onClick={() => {
           setNewCard(true)
         }}

@@ -41,7 +41,7 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
         <Button
           className="mt-5 mb-6 rounded-md"
           icon={
-            <div className="mr-2">
+            <div className="pr-2">
               <CardIcon />
             </div>
           }
