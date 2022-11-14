@@ -6,6 +6,7 @@ import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { MessagesChannelGalleryHeader } from "src/components/molecules/direct-messages/MessagesChannelGalleryHeader"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
 import { formatCurrency } from "src/helpers/formatters"
+import { usePassHolders } from "src/hooks/usePassHolders"
 import { useUser } from "src/hooks/useUser"
 import { useUserSpending } from "src/hooks/useUserSpending"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
@@ -32,6 +33,8 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
 }) => {
   const { isTablet } = useWindowSize()
   const galleryAvailable = false
+
+  const { passHolders } = usePassHolders(selectedChannel.otherUserId)
 
   const { user } = useUser()
   const { amount } = useUserSpending(
@@ -89,6 +92,16 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                         {formatCurrency(amount ?? 0)}
                       </span>
                     </div>
+                    {passHolders?.map((passHolder) => (
+                      <div
+                        className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md"
+                        key={passHolder.passHolderId}
+                      >
+                        <span className="flex w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                          {passHolder.title}
+                        </span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
