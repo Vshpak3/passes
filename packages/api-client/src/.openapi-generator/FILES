@@ -166,6 +166,7 @@ models/ListMemberDto.ts
 models/LocalUserLoginRequestDto.ts
 models/MarkProcessedProfileImageRequestDto.ts
 models/MarkProcessedUserContentRequestDto.ts
+models/MarkUploadedRequestDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts

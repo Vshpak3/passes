@@ -27,6 +27,7 @@ import {
   MarkProcessedProfileImageRequestDto,
   MarkProcessedUserContentRequestDto,
 } from './dto/mark-processed'
+import { MarkUploadedRequestDto } from './dto/mark-uploaded-dto'
 import { PresignPassRequestDto } from './dto/presign-pass.dto'
 
 @ApiTags('content')
@@ -74,6 +75,21 @@ export class ContentController {
       throw new BadRequestException()
     }
     await this.contentService.markProfileImageProcessed(markProcessedDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Mark uploaded',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Content was marked uploaded',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('uploaded')
+  async markUploaded(
+    @Req() req: RequestWithUser,
+    @Body() markUploadedDto: MarkUploadedRequestDto,
+  ): Promise<void> {
+    await this.contentService.markUploaded(req.user.id, markUploadedDto)
   }
 
   @ApiEndpoint({

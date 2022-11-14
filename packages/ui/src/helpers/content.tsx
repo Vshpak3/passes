@@ -262,7 +262,11 @@ export class ContentService {
           createContentRequestDto: { contentType, inPost, inMessage }
         })
         const result = await this.uploadFile(url, file.file)
-        return this.parseContentUrl(result).id
+        const contentId = this.parseContentUrl(result).id
+        await this.contentApi.markUploaded({
+          markUploadedRequestDto: { contentId }
+        })
+        return contentId
       },
       UPLOAD_BATCH_SIZE
     ).then((r) => {

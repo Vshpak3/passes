@@ -139,6 +139,7 @@ export * from './ListMemberDto';
 export * from './LocalUserLoginRequestDto';
 export * from './MarkProcessedProfileImageRequestDto';
 export * from './MarkProcessedUserContentRequestDto';
+export * from './MarkUploadedRequestDto';
 export * from './MessageDto';
 export * from './MetamaskCircleETHEntryRequestDto';
 export * from './MetamaskCircleETHEntryResponseDto';

@@ -23,6 +23,7 @@ import type {
   GetVaultQueryResponseDto,
   MarkProcessedProfileImageRequestDto,
   MarkProcessedUserContentRequestDto,
+  MarkUploadedRequestDto,
   PresignPassRequestDto,
 } from '../models';
 import {
@@ -42,6 +43,8 @@ import {
     MarkProcessedProfileImageRequestDtoToJSON,
     MarkProcessedUserContentRequestDtoFromJSON,
     MarkProcessedUserContentRequestDtoToJSON,
+    MarkUploadedRequestDtoFromJSON,
+    MarkUploadedRequestDtoToJSON,
     PresignPassRequestDtoFromJSON,
     PresignPassRequestDtoToJSON,
 } from '../models';
@@ -56,6 +59,10 @@ export interface GetVaultContentRequest {
 
 export interface MarkProfileImageProcessedRequest {
     markProcessedProfileImageRequestDto: MarkProcessedProfileImageRequestDto;
+}
+
+export interface MarkUploadedRequest {
+    markUploadedRequestDto: MarkUploadedRequestDto;
 }
 
 export interface MarkUserContentProcessedRequest {
@@ -217,6 +224,43 @@ export class ContentApi extends runtime.BaseAPI {
      */
     async markProfileImageProcessed(requestParameters: MarkProfileImageProcessedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.markProfileImageProcessedRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Mark uploaded
+     */
+    async markUploadedRaw(requestParameters: MarkUploadedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.markUploadedRequestDto === null || requestParameters.markUploadedRequestDto === undefined) {
+            throw new runtime.RequiredError('markUploadedRequestDto','Required parameter requestParameters.markUploadedRequestDto was null or undefined when calling markUploaded.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/content/uploaded`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: MarkUploadedRequestDtoToJSON(requestParameters.markUploadedRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Mark uploaded
+     */
+    async markUploaded(requestParameters: MarkUploadedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markUploadedRaw(requestParameters, initOverrides);
     }
 
     /**

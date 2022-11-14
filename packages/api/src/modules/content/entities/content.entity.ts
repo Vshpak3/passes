@@ -28,4 +28,7 @@ export class ContentEntity extends BaseEntity {
 
   @Property({ default: false })
   failed: boolean
+
+  @Property({ default: false })
+  uploaded: boolean
 }

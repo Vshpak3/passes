@@ -37,6 +37,7 @@ import {
   MarkProcessedProfileImageRequestDto,
   MarkProcessedUserContentRequestDto,
 } from './dto/mark-processed'
+import { MarkUploadedRequestDto } from './dto/mark-uploaded-dto'
 import { ContentEntity } from './entities/content.entity'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
@@ -91,6 +92,16 @@ export class ContentService {
     } catch (error) {
       throw new InternalServerErrorException(error)
     }
+  }
+
+  async markUploaded(
+    userId: string,
+    markUploadedDto: MarkUploadedRequestDto,
+  ): Promise<void> {
+    await this.dbWriter<ContentEntity>(ContentEntity.table)
+      .where({ id: markUploadedDto.contentId })
+      .andWhere({ user_id: userId })
+      .update({ uploaded: true })
   }
 
   async markUserContentProcessed(
