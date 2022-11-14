@@ -23,7 +23,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
 
   return (
     <>
-      <div className="border-b border-passes-dark-200 pb-6">
+      <div className="w-full border-b border-passes-dark-200 pb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             {isRootTab ? (
