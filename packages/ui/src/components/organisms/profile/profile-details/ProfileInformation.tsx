@@ -31,7 +31,7 @@ export const ProfileInformation: FC = () => {
           numPosts={creatorStats?.numPosts}
         />
         <ProfileSocialMedia
-          discordUsername={profile?.discordUsername}
+          // discordUsername={profile?.discordUsername}
           facebookUsername={profile?.facebookUsername}
           instagramUsername={profile?.instagramUsername}
           tiktokUsername={profile?.tiktokUsername}
