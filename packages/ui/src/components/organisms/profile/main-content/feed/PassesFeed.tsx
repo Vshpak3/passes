@@ -15,6 +15,7 @@ import {
   SelectPassFilter
 } from "src/components/atoms/passes/SelectPassFilter"
 import { PassCard } from "src/components/molecules/pass/PassCard"
+import { usePassWebhook } from "src/hooks/webhooks/usePassWebhook"
 
 interface PassesFeedProps {
   creatorId: string
@@ -22,7 +23,7 @@ interface PassesFeedProps {
 
 export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
   const [selectedPassType, setSelectedPassType] = useState<PassType>()
-
+  usePassWebhook()
   return (
     <div className="m-5">
       <SelectPassFilter onSelectedPassType={setSelectedPassType} />
