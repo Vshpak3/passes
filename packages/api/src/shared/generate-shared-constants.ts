@@ -1,6 +1,7 @@
 import fs from 'fs/promises'
 import path from 'path'
 import * as ts from 'typescript'
+import { rejectIfAny } from '../util/promise.util'
 
 import { clearDirectory, getFilesWithMatch } from './file-helpers'
 
@@ -67,16 +68,18 @@ async function getAllTags(file: string, program: ts.Program) {
     }
   }
   await clearDirectory(path.join(ROOT, CONSTANTS_DIRECTORY))
-  await Promise.allSettled(
-    Object.entries(matches).map(async ([type, text]) => {
-      await fs.writeFile(
-        path.join(ROOT, CONSTANTS_DIRECTORY, `${type}.ts`),
-        text
-          .sort()
-          .map((t) => `export const ${t}`)
-          .join('\n') + '\n',
-      )
-    }),
+  rejectIfAny(
+    await Promise.allSettled(
+      Object.entries(matches).map(async ([type, text]) => {
+        await fs.writeFile(
+          path.join(ROOT, CONSTANTS_DIRECTORY, `${type}.ts`),
+          text
+            .sort()
+            .map((t) => `export const ${t}`)
+            .join('\n') + '\n',
+        )
+      }),
+    ),
   )
   await fs.writeFile(
     path.join(ROOT, CONSTANTS_DIRECTORY, 'index.ts'),

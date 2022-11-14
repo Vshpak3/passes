@@ -22,6 +22,7 @@ import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { verifyTaggedText } from '../../util/text.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { ContentService } from '../content/content.service'
@@ -773,15 +774,17 @@ export class PostService {
     const posts = await this.dbReader<PostEntity>(PostEntity.table)
       .whereNull('deleted_at')
       .select('id')
-    await Promise.allSettled(
-      posts.map(async (post) => {
-        try {
-          await this.refreshPostCounts(post.id)
-        } catch (err) {
-          this.logger.error(`Error updating post counts for ${post.id}`, err)
-          this.sentry.instance().captureException(err)
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        posts.map(async (post) => {
+          try {
+            await this.refreshPostCounts(post.id)
+          } catch (err) {
+            this.logger.error(`Error updating post counts for ${post.id}`, err)
+            this.sentry.instance().captureException(err)
+          }
+        }),
+      ),
     )
   }
 
@@ -819,10 +822,12 @@ export class PostService {
         .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((post) => post.id)
-    await Promise.allSettled(
-      postIds.map(async (postId) => {
-        await this.checkPostContentProcessed(postId)
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        postIds.map(async (postId) => {
+          await this.checkPostContentProcessed(postId)
+        }),
+      ),
     )
   }
 

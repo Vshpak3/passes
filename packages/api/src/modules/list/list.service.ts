@@ -16,6 +16,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { createPaginatedQuery } from '../../util/page.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
 import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -122,29 +123,31 @@ export class ListService {
   }
 
   async fillAutomatedLists(lists: any[]) {
-    await Promise.allSettled(
-      lists.map(async (list) => {
-        switch (list.type) {
-          case ListTypeEnum.FOLLOWERS:
-            list.count = (
-              await this.dbReader<CreatorStatEntity>(CreatorStatEntity.table)
-                .where({ user_id: list.user_id })
-                .select('num_followers')
-                .first()
-            )?.num_followers
-            break
-          case ListTypeEnum.FOLLOWING:
-            list.count = (
-              await this.dbReader<UserEntity>(UserEntity.table)
-                .where({ id: list.user_id })
-                .select('num_following')
-                .first()
-            )?.num_following
-            break
-          default:
-            break
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        lists.map(async (list) => {
+          switch (list.type) {
+            case ListTypeEnum.FOLLOWERS:
+              list.count = (
+                await this.dbReader<CreatorStatEntity>(CreatorStatEntity.table)
+                  .where({ user_id: list.user_id })
+                  .select('num_followers')
+                  .first()
+              )?.num_followers
+              break
+            case ListTypeEnum.FOLLOWING:
+              list.count = (
+                await this.dbReader<UserEntity>(UserEntity.table)
+                  .where({ id: list.user_id })
+                  .select('num_following')
+                  .first()
+              )?.num_following
+              break
+            default:
+              break
+          }
+        }),
+      ),
     )
   }
 
@@ -425,10 +428,12 @@ export class ListService {
     const lists = await this.dbReader<ListEntity>(ListEntity.table)
       .whereIn('type', [ListTypeEnum.TOP_SPENDERS])
       .select('*')
-    await Promise.allSettled(
-      lists.map(async (list) => {
-        await this.updateAsyncList(list)
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        lists.map(async (list) => {
+          await this.updateAsyncList(list)
+        }),
+      ),
     )
   }
 

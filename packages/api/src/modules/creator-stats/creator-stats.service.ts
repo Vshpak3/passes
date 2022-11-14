@@ -9,6 +9,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { rejectIfAny } from '../../util/promise.util'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
@@ -115,20 +116,22 @@ export class CreatorStatsService {
     multipler = 1,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await Promise.allSettled(
-        Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
-          await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
-            .insert({
-              category: category,
-              amount: amounts[category] * multipler,
-              user_id: userId,
-              type: earningType,
-            })
-            .onConflict()
-            .merge({
-              amount: trx.raw('amount + ?', [amounts[category] * multipler]),
-            })
-        }),
+      rejectIfAny(
+        await Promise.allSettled(
+          Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
+            await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+              .insert({
+                category: category,
+                amount: amounts[category] * multipler,
+                user_id: userId,
+                type: earningType,
+              })
+              .onConflict()
+              .merge({
+                amount: trx.raw('amount + ?', [amounts[category] * multipler]),
+              })
+          }),
+        ),
       )
     })
   }
@@ -277,18 +280,20 @@ export class CreatorStatsService {
     const creators = await this.dbReader<CreatorStatEntity>(
       CreatorStatEntity.table,
     ).select('user_id')
-    await Promise.allSettled(
-      creators.map(async (creator) => {
-        try {
-          await this.refreshCreatorStats(creator.user_id)
-        } catch (err) {
-          this.logger.error(
-            `Error updating stats for creator ${creator.user_id}`,
-            err,
-          )
-          this.sentry.instance().captureException(err)
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        creators.map(async (creator) => {
+          try {
+            await this.refreshCreatorStats(creator.user_id)
+          } catch (err) {
+            this.logger.error(
+              `Error updating stats for creator ${creator.user_id}`,
+              err,
+            )
+            this.sentry.instance().captureException(err)
+          }
+        }),
+      ),
     )
   }
 

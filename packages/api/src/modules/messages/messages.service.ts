@@ -19,6 +19,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { ContentService } from '../content/content.service'
 import { ContentDto } from '../content/dto/content.dto'
 import { ContentBareDto } from '../content/dto/content-bare'
@@ -397,34 +398,36 @@ export class MessagesService {
       previewIndex,
     )
 
-    await Promise.allSettled(
-      finalUserIds.map(async (otherUserId) => {
-        const channelId = (
-          await this.createChannel(userId, {
-            userId: otherUserId,
-          })
-        ).channelId
-        try {
-          await this.createMessage(
-            false,
-            userId,
-            text,
-            channelId,
-            otherUserId,
-            0,
-            false,
-            contents,
-            previewIndex,
-            price,
-            paidMessageId,
-          )
-        } catch (err) {
-          this.logger.error(
-            `failed to send batch message ${paidMessageId} to ${userId}`,
-            err,
-          )
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        finalUserIds.map(async (otherUserId) => {
+          const channelId = (
+            await this.createChannel(userId, {
+              userId: otherUserId,
+            })
+          ).channelId
+          try {
+            await this.createMessage(
+              false,
+              userId,
+              text,
+              channelId,
+              otherUserId,
+              0,
+              false,
+              contents,
+              previewIndex,
+              price,
+              paidMessageId,
+            )
+          } catch (err) {
+            this.logger.error(
+              `failed to send batch message ${paidMessageId} to ${userId}`,
+              err,
+            )
+          }
+        }),
+      ),
     )
   }
 
@@ -1063,13 +1066,15 @@ export class MessagesService {
 
       const contents = JSON.parse(message.contents)
 
-      await Promise.allSettled(
-        contents.map(async (content: ContentBareDto) => {
-          await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
-            .insert({ user_id: userId, content_id: content.contentId })
-            .onConflict(['user_id', 'content_id'])
-            .ignore()
-        }),
+      rejectIfAny(
+        await Promise.allSettled(
+          contents.map(async (content: ContentBareDto) => {
+            await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
+              .insert({ user_id: userId, content_id: content.contentId })
+              .onConflict(['user_id', 'content_id'])
+              .ignore()
+          }),
+        ),
       )
     })
 
@@ -1434,9 +1439,11 @@ export class MessagesService {
         paid_message_id: paidMessageId,
       })
       .select('channel_id')
-    await Promise.allSettled(
-      channels.map(
-        async (channel) => await this.updateChannel(channel.channel_id),
+    rejectIfAny(
+      await Promise.allSettled(
+        channels.map(
+          async (channel) => await this.updateChannel(channel.channel_id),
+        ),
       ),
     )
     return !!updated
@@ -1475,10 +1482,12 @@ export class MessagesService {
         .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((message) => message.id)
-    await Promise.allSettled(
-      messageIds.map(async (messageId) => {
-        await this.checkMessageContentProcessed(messageId)
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        messageIds.map(async (messageId) => {
+          await this.checkMessageContentProcessed(messageId)
+        }),
+      ),
     )
   }
 

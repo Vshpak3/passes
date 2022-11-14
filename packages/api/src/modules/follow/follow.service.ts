@@ -16,6 +16,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
@@ -388,18 +389,20 @@ export class FollowService {
     const comments = await this.dbReader<CommentEntity>(CommentEntity.table)
       .whereIn('commenter_id', Array.from(users))
       .distinct('post_id')
-    await Promise.allSettled(
-      comments.map(async (comment) => {
-        try {
-          await this.postService.refreshPostCounts(comment.post_id)
-        } catch (err) {
-          this.logger.error(
-            `Error updating post counts for ${comment.post_id}`,
-            err,
-          )
-          this.sentry.instance().captureException(err)
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        comments.map(async (comment) => {
+          try {
+            await this.postService.refreshPostCounts(comment.post_id)
+          } catch (err) {
+            this.logger.error(
+              `Error updating post counts for ${comment.post_id}`,
+              err,
+            )
+            this.sentry.instance().captureException(err)
+          }
+        }),
+      ),
     )
 
     // reset counts of all posts that any blocked or unblocked user has commented on

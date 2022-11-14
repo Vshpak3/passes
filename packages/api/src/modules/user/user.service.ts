@@ -18,6 +18,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { CreateUserRequestDto } from '../auth/dto/create-user.dto'
 import { AuthEntity } from '../auth/entities/auth.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
@@ -83,10 +84,12 @@ export class UserService {
         `${WhitelistedUsersEntity.table}.email`,
       )
       .distinct(`${UserEntity.table}.id`, `${UserEntity.table}.email`)
-    await Promise.allSettled(
-      users.map(async (user) => {
-        await this.createWhitelistedPassesForUser(user.id, user.email)
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        users.map(async (user) => {
+          await this.createWhitelistedPassesForUser(user.id, user.email)
+        }),
+      ),
     )
   }
 

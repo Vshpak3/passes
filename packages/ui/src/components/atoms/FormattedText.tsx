@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from "react"
 
 import { useGlobalCache } from "src/contexts/GlobalCache"
 import { formatReplacedText } from "src/helpers/formatters"
+import { rejectIfAny } from "src/helpers/promise"
 import { getUsername } from "src/helpers/username"
 
 type FormattedTextProps = {
@@ -18,15 +19,17 @@ export const FormattedText: FC<FormattedTextProps> = ({ text, tags }) => {
 
   const insertMentions = async (text: string, tags: TagDto[]) => {
     const tagMap: Record<number, string> = {}
-    await Promise.allSettled(
-      tags.map(async (tag) => {
-        const username =
-          context.usernames[tag.userId] ??
-          (context.usernames[tag.userId] = await getUsername(tag.userId))
-        tagMap[
-          tag.index
-        ] = `<a href="/${username}" class="text-[#FF51A8]">@${username}</a>`
-      })
+    rejectIfAny(
+      await Promise.allSettled(
+        tags.map(async (tag) => {
+          const username =
+            context.usernames[tag.userId] ??
+            (context.usernames[tag.userId] = await getUsername(tag.userId))
+          tagMap[
+            tag.index
+          ] = `<a href="/${username}" class="text-[#FF51A8]">@${username}</a>`
+        })
+      )
     )
 
     setFormattedText(formatReplacedText(text, tagMap))

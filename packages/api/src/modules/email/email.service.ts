@@ -15,6 +15,7 @@ import { DatabaseService } from '../../database/database.service'
 import { getAwsConfig } from '../../util/aws.util'
 import { TagDto } from '../../util/dto/tag.dto'
 import { isEnv } from '../../util/env'
+import { rejectIfAny } from '../../util/promise.util'
 import { NotificationSettingsEntity } from '../notifications/entities/notification-settings.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import maizzleConfig from './config'
@@ -116,10 +117,12 @@ export class EmailService {
         .whereIn(`${UserEntity.table}.id`, userIds)
         .andWhere(`${NotificationSettingsEntity.table}.${type}`, true)
         .select(`${UserEntity.table}.email`)
-      await Promise.allSettled(
-        users.map(async (user) => {
-          await this.sendRenderedEmail(user.email, messageHtml, subject, data)
-        }),
+      rejectIfAny(
+        await Promise.allSettled(
+          users.map(async (user) => {
+            await this.sendRenderedEmail(user.email, messageHtml, subject, data)
+          }),
+        ),
       )
     } catch (err) {
       this.sentry.instance().captureException(err)

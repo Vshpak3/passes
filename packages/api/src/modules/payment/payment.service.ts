@@ -22,6 +22,7 @@ import {
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { createPaginatedQuery } from '../../util/page.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { AgencyEntity } from '../agency/entities/agency.entity'
 import { CreatorAgencyEntity } from '../agency/entities/creator-agency.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
@@ -1825,20 +1826,22 @@ export class PaymentService {
           `${CreatorAgencyEntity.table}.rate`,
         )
 
-      await Promise.allSettled(
-        creatorShares.map(async (creatorShare) => {
-          const rate = creatorShare.rate ?? 0
-          await this.creatorStatsService.handlePayinSuccess(
-            payin.user_id,
-            creatorShare.creator_id,
-            payin.callback,
-            {
-              [EarningCategoryEnum.NET]: creatorShare.amount * (1 - rate),
-              [EarningCategoryEnum.GROSS]: payin.amount,
-              [EarningCategoryEnum.AGENCY]: creatorShare.amount * rate,
-            },
-          )
-        }),
+      rejectIfAny(
+        await Promise.allSettled(
+          creatorShares.map(async (creatorShare) => {
+            const rate = creatorShare.rate ?? 0
+            await this.creatorStatsService.handlePayinSuccess(
+              payin.user_id,
+              creatorShare.creator_id,
+              payin.callback,
+              {
+                [EarningCategoryEnum.NET]: creatorShare.amount * (1 - rate),
+                [EarningCategoryEnum.GROSS]: payin.amount,
+                [EarningCategoryEnum.AGENCY]: creatorShare.amount * rate,
+              },
+            )
+          }),
+        ),
       )
     }
   }
@@ -2014,14 +2017,16 @@ export class PaymentService {
       .where({ is_creator: true })
       .andWhereNot('payout_frequency', PayoutFrequencyEnum.MANUAL)
       .select([`${UserEntity.table}.id`, 'payout_frequency'])
-    await Promise.allSettled(
-      creators.map(async (creator) => {
-        try {
-          await this.payoutCreator(creator.id, creator.payout_frequency)
-        } catch (err) {
-          this.logger.error(`Error paying out ${creator.id}`, err)
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        creators.map(async (creator) => {
+          try {
+            await this.payoutCreator(creator.id, creator.payout_frequency)
+          } catch (err) {
+            this.logger.error(`Error paying out ${creator.id}`, err)
+          }
+        }),
+      ),
     )
   }
 
@@ -2383,69 +2388,79 @@ export class PaymentService {
         `${PassHolderEntity.table}.holder_id`,
       )
 
-    await Promise.allSettled(
-      nftPassSubscriptions.map(async (subscription) => {
-        try {
-          // holder of pass changed
-          if (subscription.user_id !== subscription.holder_id) {
+    rejectIfAny(
+      await Promise.allSettled(
+        nftPassSubscriptions.map(async (subscription) => {
+          try {
+            // holder of pass changed
+            if (subscription.user_id !== subscription.holder_id) {
+              await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
+                .where({ id: subscription.id })
+                .update({
+                  subscription_status: SubscriptionStatusEnum.CANCELLED,
+                })
+              return
+            }
+
+            let status = SubscriptionStatusEnum.DISABLED
+            if (
+              subscription.expires_at.valueOf() - EXPIRING_DURATION_MS >
+              now
+            ) {
+              status = SubscriptionStatusEnum.ACTIVE
+            } else if (subscription.expires_at.valueOf() > now) {
+              status = SubscriptionStatusEnum.EXPIRING
+            }
+
             await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
               .where({ id: subscription.id })
-              .update({ subscription_status: SubscriptionStatusEnum.CANCELLED })
-            return
-          }
+              .update({ subscription_status: status })
 
-          let status = SubscriptionStatusEnum.DISABLED
-          if (subscription.expires_at.valueOf() - EXPIRING_DURATION_MS > now) {
-            status = SubscriptionStatusEnum.ACTIVE
-          } else if (subscription.expires_at.valueOf() > now) {
-            status = SubscriptionStatusEnum.EXPIRING
-          }
-
-          await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
-            .where({ id: subscription.id })
-            .update({ subscription_status: status })
-
-          // TODO: send email notifications
-          // try to pay subscription if possible
-          if (subscription.expires_at.valueOf() - EXPIRING_DURATION_MS <= now) {
-            try {
-              const method: PayinMethodDto = {
-                method: subscription.payin_method,
-                cardId: subscription.card_id,
-                chainId: subscription.chain_id,
-              }
-              // can only autorenew with card
-              if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
-                const registerResponse =
-                  await this.passService.registerRenewPass(
-                    subscription.user_id,
-                    subscription.pass_holder_id,
-                    method,
-                  )
-                await this.payinEntryHandler(subscription.user_id, {
-                  payinId: registerResponse.payinId,
-                  ip: subscription.ip_address,
-                  sessionId: subscription.session_id,
-                } as CircleCardPayinEntryRequestDto)
-              }
-            } catch (err) {
-              this.logger.error(
-                `Error paying subscription for ${subscription.id}`,
-                err,
-              )
-              if (!(err instanceof NoPayinMethodError)) {
-                this.sentry.instance().captureException(err)
+            // TODO: send email notifications
+            // try to pay subscription if possible
+            if (
+              subscription.expires_at.valueOf() - EXPIRING_DURATION_MS <=
+              now
+            ) {
+              try {
+                const method: PayinMethodDto = {
+                  method: subscription.payin_method,
+                  cardId: subscription.card_id,
+                  chainId: subscription.chain_id,
+                }
+                // can only autorenew with card
+                if (subscription.payin_method === PayinMethodEnum.CIRCLE_CARD) {
+                  const registerResponse =
+                    await this.passService.registerRenewPass(
+                      subscription.user_id,
+                      subscription.pass_holder_id,
+                      method,
+                    )
+                  await this.payinEntryHandler(subscription.user_id, {
+                    payinId: registerResponse.payinId,
+                    ip: subscription.ip_address,
+                    sessionId: subscription.session_id,
+                  } as CircleCardPayinEntryRequestDto)
+                }
+              } catch (err) {
+                this.logger.error(
+                  `Error paying subscription for ${subscription.id}`,
+                  err,
+                )
+                if (!(err instanceof NoPayinMethodError)) {
+                  this.sentry.instance().captureException(err)
+                }
               }
             }
+          } catch (err) {
+            this.logger.error(
+              `Error updating subscription for ${subscription.id}`,
+              err,
+            )
+            this.sentry.instance().captureException(err)
           }
-        } catch (err) {
-          this.logger.error(
-            `Error updating subscription for ${subscription.id}`,
-            err,
-          )
-          this.sentry.instance().captureException(err)
-        }
-      }),
+        }),
+      ),
     )
   }
 

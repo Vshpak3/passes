@@ -25,6 +25,7 @@ import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { validateAddress } from '../../util/wallet.util'
 import { EthService } from '../eth/eth.service'
 import {
@@ -895,24 +896,26 @@ export class PassService {
         .andWhere('created_at', '>=', newDate)
         .andWhere('created_at', '<=', oldDate)
         .select('id', 'pass_holder_ids', 'payin_id')
-      await Promise.allSettled(
-        accesses.map(async (access) => {
-          let ids: string[] = JSON.parse(access.pass_holder_ids)
-          ids = ids.filter((id) => id !== passHolder.id)
-          if (!access.payin_id && !ids.length) {
-            await this.dbWriter<PostUserAccessEntity>(
-              PostUserAccessEntity.table,
-            )
-              .where({ id: access.id })
-              .update({ paid_at: null, pass_holder_ids: JSON.stringify(ids) })
-          } else {
-            await this.dbWriter<PostUserAccessEntity>(
-              PostUserAccessEntity.table,
-            )
-              .where({ id: access.id })
-              .update({ pass_holder_ids: JSON.stringify(ids) })
-          }
-        }),
+      rejectIfAny(
+        await Promise.allSettled(
+          accesses.map(async (access) => {
+            let ids: string[] = JSON.parse(access.pass_holder_ids)
+            ids = ids.filter((id) => id !== passHolder.id)
+            if (!access.payin_id && !ids.length) {
+              await this.dbWriter<PostUserAccessEntity>(
+                PostUserAccessEntity.table,
+              )
+                .where({ id: access.id })
+                .update({ paid_at: null, pass_holder_ids: JSON.stringify(ids) })
+            } else {
+              await this.dbWriter<PostUserAccessEntity>(
+                PostUserAccessEntity.table,
+              )
+                .where({ id: access.id })
+                .update({ pass_holder_ids: JSON.stringify(ids) })
+            }
+          }),
+        ),
       )
     }
   }

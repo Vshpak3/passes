@@ -7,6 +7,7 @@ import {
 import { pickBy } from "lodash"
 
 import { ContentService } from "src/helpers/content"
+import { rejectIfAny } from "./promise"
 
 export interface ProfileUpdate
   extends Pick<
@@ -46,37 +47,39 @@ export async function updateProfile(
   const contentService = new ContentService()
   const profileApi = new ProfileApi()
 
-  await Promise.allSettled([
-    username
-      ? userApi.setUsername({
-          updateUsernameRequestDto: { username }
-        })
-      : undefined,
+  rejectIfAny(
+    await Promise.allSettled([
+      username
+        ? userApi.setUsername({
+            updateUsernameRequestDto: { username }
+          })
+        : undefined,
 
-    displayName
-      ? await userApi.setDisplayName({
-          updateDisplayNameRequestDto: { displayName }
-        })
-      : undefined,
+      displayName
+        ? await userApi.setDisplayName({
+            updateDisplayNameRequestDto: { displayName }
+          })
+        : undefined,
 
-    isAdult ? await userApi.makeAdult() : undefined,
+      isAdult ? await userApi.makeAdult() : undefined,
 
-    profileImage?.length === 1
-      ? contentService.uploadProfileImage(profileImage[0])
-      : undefined,
+      profileImage?.length === 1
+        ? contentService.uploadProfileImage(profileImage[0])
+        : undefined,
 
-    profileBanner?.length === 1
-      ? contentService.uploadProfileBanner(profileBanner[0])
-      : deleteProfileBanner
-      ? contentApi.deleteProfileBanner()
-      : undefined,
+      profileBanner?.length === 1
+        ? contentService.uploadProfileBanner(profileBanner[0])
+        : deleteProfileBanner
+        ? contentApi.deleteProfileBanner()
+        : undefined,
 
-    Object.values(rest).some((x) => x?.trim())
-      ? profileApi.createOrUpdateProfile({
-          createOrUpdateProfileRequestDto: {
-            ...pickBy(rest, (v) => v && v.trim())
-          }
-        })
-      : undefined
-  ])
+      Object.values(rest).some((x) => x?.trim())
+        ? profileApi.createOrUpdateProfile({
+            createOrUpdateProfileRequestDto: {
+              ...pickBy(rest, (v) => v && v.trim())
+            }
+          })
+        : undefined
+    ])
+  )
 }

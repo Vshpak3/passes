@@ -19,6 +19,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
+import { rejectIfAny } from '../../util/promise.util'
 import { AuthRecord } from '../auth/core/auth-record'
 import { JwtService } from '../auth/jwt/jwt.service'
 import { ProfileEntity } from '../profile/entities/profile.entity'
@@ -132,15 +133,17 @@ export class VerificationService {
       query = query.andWhere({ user_id: userId })
     }
     const inquiries = await query
-    await Promise.allSettled(
-      inquiries.map(async (inquiry) => {
-        try {
-          await this.refreshPersonaVerification(inquiry.id, inquiry.user_id)
-        } catch (err) {
-          this.logger.error(`Error updating inquiry ${inquiry.id}`, err)
-          this.sentry.instance().captureException(err)
-        }
-      }),
+    rejectIfAny(
+      await Promise.allSettled(
+        inquiries.map(async (inquiry) => {
+          try {
+            await this.refreshPersonaVerification(inquiry.id, inquiry.user_id)
+          } catch (err) {
+            this.logger.error(`Error updating inquiry ${inquiry.id}`, err)
+            this.sentry.instance().captureException(err)
+          }
+        }),
+      ),
     )
     let ret: KYCStatusEnum | undefined = undefined
     if (userId) {
