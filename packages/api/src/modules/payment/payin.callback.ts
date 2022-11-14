@@ -185,7 +185,7 @@ async function createNftPassSuccessCallback(
   }
   const pass = await db<PassEntity>(PassEntity.table)
     .where({ id: input.passId })
-    .select('creator_id')
+    .select('creator_id', 'title')
     .first()
   try {
     if (pass?.creator_id) {
@@ -193,10 +193,16 @@ async function createNftPassSuccessCallback(
         input.userId,
         pass.creator_id,
       )
+      await payService.messagesService.sendAutomaticMessage(
+        input.userId,
+        pass.creator_id,
+        `You purchased a ${pass.title} membership`,
+      )
     }
   } catch (err) {
     null
   }
+
   return {
     passHolderId: newPassHolder.id,
     expiresAt: newPassHolder.expiresAt,
