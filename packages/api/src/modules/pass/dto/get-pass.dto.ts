@@ -5,6 +5,8 @@ import { DtoProperty } from '../../../web/dto.web'
 import { PassTypeEnum } from '../enum/pass.enum'
 import { PassDto } from './pass.dto'
 
+export class GetPassRequestDto extends PickType(PassDto, ['passId']) {}
+
 export class GetPassResponseDto extends PassDto {}
 
 export class GetPassesRequestDto extends PickType(PageRequestDto, [

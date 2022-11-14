@@ -145,6 +145,7 @@ async function createNftPassCreationCallback(
   db: DatabaseService['knex'],
 ): Promise<PayinCallbackOutput> {
   await payService.passService.useSupply(input.passId)
+  await payService.passService.publishBuyingPass(payin.user_id, input.passId)
   return {}
 }
 
@@ -155,6 +156,10 @@ async function createNftPassFailureCallback(
   db: DatabaseService['knex'],
 ): Promise<PayinCallbackOutput> {
   await payService.passService.freeSupply(input.passId)
+  await payService.passService.publishFailedBuyingPass(
+    payin.user_id,
+    input.passId,
+  )
   return {}
 }
 

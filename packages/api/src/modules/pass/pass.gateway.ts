@@ -3,16 +3,16 @@ import { WebSocketGateway } from '@nestjs/websockets'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 
 import { GatewayBase } from '../../util/gateway.base'
-import { PostNotificationDto } from './dto/post-notification.dto'
+import { PassHolderNotificationDto } from './dto/pass-notification.dto'
 
 @WebSocketGateway({
-  namespace: '/api/post/gateway',
-  path: '/api/post/gateway',
+  namespace: '/api/pass/gateway',
+  path: '/api/pass/gateway',
 })
-export class PostGateway extends GatewayBase {
+export class PassGateway extends GatewayBase {
   constructor(
     private readonly configService: ConfigService,
-    @InjectRedis('post_subscriber') private readonly redisService: Redis,
+    @InjectRedis('pass_subscriber') private readonly redisService: Redis,
   ) {
     super()
     this.secret = configService.get<string>('jwt.authSecret') as string
@@ -24,12 +24,12 @@ export class PostGateway extends GatewayBase {
       this.redisService.subscribe &&
       this.redisService.on
     ) {
-      await this.redisService.subscribe('post')
+      await this.redisService.subscribe('pass')
       await this.redisService.on(
         'message',
-        (_channel: string, dataStr: string) => {
-          const post: PostNotificationDto = JSON.parse(dataStr)
-          this.send(post.recieverId, 'post', post)
+        (_event: string, dataStr: string) => {
+          const passHolder: PassHolderNotificationDto = JSON.parse(dataStr)
+          this.send(passHolder.recieverId, 'pass', passHolder)
         },
       )
     }

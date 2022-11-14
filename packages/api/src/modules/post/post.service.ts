@@ -95,7 +95,7 @@ export class PostService {
     private readonly contentService: ContentService,
     private readonly emailService: EmailService,
 
-    @InjectRedis('post_subscriber') private readonly redisService: Redis,
+    @InjectRedis('post_publisher') private readonly redisService: Redis,
   ) {}
 
   async validateCreatePost(

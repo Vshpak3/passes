@@ -25,6 +25,8 @@ import {
   GetExternalPassesResponseDto,
   GetPassesRequestDto,
   GetPassesResponseDto,
+  GetPassRequestDto,
+  GetPassResponseDto,
 } from './dto/get-pass.dto'
 import {
   GetPassHoldersRequestDto,
@@ -72,6 +74,20 @@ export class PassController {
     @Body() mintPassDto: MintPassRequestDto,
   ): Promise<MintPassResponseDto> {
     return await this.passService.mintPass(req.user.id, mintPassDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Gets pass created by a creator',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPassResponseDto,
+    responseDesc: 'A pass was retrieved',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('find/pass')
+  async getPass(
+    @Body() getPassRequestDto: GetPassRequestDto,
+  ): Promise<GetPassResponseDto> {
+    return await this.passService.getPass(getPassRequestDto.passId)
   }
 
   @ApiEndpoint({
@@ -181,6 +197,26 @@ export class PassController {
       req.user.id,
       createPassHolderDto.passId,
       createPassHolderDto.payinMethod,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Check purchase pass progress',
+    responseStatus: HttpStatus.OK,
+    responseType: BooleanResponseDto,
+    responseDesc: 'Progress for purchase pass ',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('target/check')
+  async checkPurchasingPass(
+    @Req() req: RequestWithUser,
+    @Body() getPassRequestDto: GetPassRequestDto,
+  ): Promise<BooleanResponseDto> {
+    return new BooleanResponseDto(
+      await this.passService.checkPurchasingPass(
+        req.user.id,
+        getPassRequestDto.passId,
+      ),
     )
   }
 

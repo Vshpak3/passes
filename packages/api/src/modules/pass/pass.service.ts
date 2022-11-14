@@ -8,6 +8,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import CryptoJS from 'crypto-js'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -62,6 +63,7 @@ import { GetPassHoldingsRequestDto } from './dto/get-pass-holdings.dto'
 import { MintPassRequestDto, MintPassResponseDto } from './dto/mint-pass.dto'
 import { PassDto } from './dto/pass.dto'
 import { PassHolderDto } from './dto/pass-holder.dto'
+import { PassHolderNotificationDto } from './dto/pass-notification.dto'
 import { UpdatePassRequestDto } from './dto/update-pass.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
@@ -69,6 +71,7 @@ import { PassPurchaseEntity } from './entities/pass-purchase.entity'
 import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { AccessTypeEnum } from './enum/access.enum'
 import { PassTypeEnum } from './enum/pass.enum'
+import { PassNotificationEnum } from './enum/pass.notification.enum'
 import { PassAnimationEnum } from './enum/pass-animation.enum'
 import { PassImageEnum } from './enum/pass-image.enum'
 import {
@@ -110,6 +113,8 @@ export class PassService {
     @Inject(forwardRef(() => PaymentService))
     private readonly payService: PaymentService,
     private readonly s3ContentService: S3ContentService,
+
+    @InjectRedis('pass_publisher') private readonly redisService: Redis,
   ) {
     this.nftS3Bucket = configService.get('s3_bucket.nft') as string
   }
@@ -728,6 +733,12 @@ export class PassService {
 
     await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
     await this.passPurchased(userId, passId)
+    const notification: PassHolderNotificationDto =
+      new PassHolderNotificationDto(
+        data as unknown as any, // TODO: fixing typing
+        PassNotificationEnum.PAID,
+      )
+    await this.redisService.publish('pass', JSON.stringify(notification))
 
     return {
       id,
@@ -763,6 +774,24 @@ export class PassService {
         )}`,
       })
     }
+  }
+
+  async publishBuyingPass(userId: string, passId: string) {
+    const notification: PassHolderNotificationDto = {
+      recieverId: userId,
+      passId: passId,
+      notification: PassNotificationEnum.PAYING,
+    }
+    await this.redisService.publish('pass', JSON.stringify(notification))
+  }
+
+  async publishFailedBuyingPass(userId: string, passId: string) {
+    const notification: PassHolderNotificationDto = {
+      recieverId: userId,
+      passId: passId,
+      notification: PassNotificationEnum.FAILED_PAYMENT,
+    }
+    await this.redisService.publish('pass', JSON.stringify(notification))
   }
 
   async useSupply(passId: string) {
@@ -1056,14 +1085,18 @@ export class PassService {
     })
   }
 
+  getPassTarget(userId: string, passId) {
+    return CryptoJS.SHA256(`nft-pass-${userId}-${passId}`).toString(
+      CryptoJS.enc.Hex,
+    )
+  }
+
   async registerPurchasePassData(
     userId: string,
     passId: string,
     payinMethod?: PayinMethodDto,
   ): Promise<PayinDataDto> {
-    const target = CryptoJS.SHA256(`nft-pass-${userId}-${passId}`).toString(
-      CryptoJS.enc.Hex,
-    )
+    const target = this.getPassTarget(userId, passId)
 
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .where({ id: passId })
@@ -1086,7 +1119,7 @@ export class PassService {
     let blocked: BlockedReasonEnum | undefined = undefined
     if (await this.payService.checkPayinBlocked(userId)) {
       blocked = BlockedReasonEnum.PAYMENTS_DEACTIVATED
-    } else if (await this.payService.checkPayinTargetBlocked(target)) {
+    } else if (await this.checkPurchasingPass(userId, passId)) {
       blocked = BlockedReasonEnum.PURCHASE_IN_PROGRESS
     } else if (checkHolder) {
       // Don't block someone from repurchasing
@@ -1105,6 +1138,11 @@ export class PassService {
       blocked,
       amountEth: pass.eth_price ?? undefined,
     }
+  }
+
+  async checkPurchasingPass(userId: string, passId: string) {
+    const target = this.getPassTarget(userId, passId)
+    return await this.payService.checkPayinTargetBlocked(target)
   }
 
   /**

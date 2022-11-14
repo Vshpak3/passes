@@ -1,4 +1,4 @@
-import { PassDto, PassDtoChainEnum, PassDtoTypeEnum } from "@passes/api-client"
+import { PassDtoChainEnum, PassDtoTypeEnum } from "@passes/api-client"
 import { MAX_PINNED_PASSES } from "@passes/shared-constants"
 import classNames from "classnames"
 import { useRouter } from "next/router"
@@ -14,11 +14,10 @@ import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyPassModal } from "src/hooks/context/useBuyPassModal"
 import { useUser } from "src/hooks/useUser"
 import { ProfileContext } from "src/pages/[username]"
+import { PassCardCachedProps } from "./PassCardCached"
 
-interface PassCardProps {
-  pass: PassDto
-  isPinnedPass?: boolean
-  className?: string
+interface PassCardProps extends PassCardCachedProps {
+  paying?: boolean
 }
 
 export const getPassType = (passType: PassDtoTypeEnum) => {
@@ -34,7 +33,8 @@ export const getPassType = (passType: PassDtoTypeEnum) => {
 export const PassCard: FC<PassCardProps> = ({
   pass,
   isPinnedPass = false,
-  className
+  className,
+  paying
 }) => {
   const { setPass } = useBuyPassModal()
 
@@ -178,7 +178,7 @@ export const PassCard: FC<PassCardProps> = ({
         </div>
         <Button
           className="mt-[12px] h-[44px] w-full rounded-full py-[10px] text-center"
-          disabled={pass.remainingSupply === 0}
+          disabled={pass.remainingSupply === 0 || paying}
           onClick={() => {
             redirectUnauthedToLogin(user, router) ||
               (isCreator
@@ -194,6 +194,8 @@ export const PassCard: FC<PassCardProps> = ({
             ? `${isPinned ? "Unpin" : "Pin"} Pass`
             : pass.remainingSupply === 0
             ? "Sold out"
+            : paying
+            ? "Processing..."
             : "Buy Membership"}
         </Button>
       </div>

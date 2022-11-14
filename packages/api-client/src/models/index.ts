@@ -98,6 +98,8 @@ export * from './GetPassHoldersRequestDto';
 export * from './GetPassHoldersResponseDto';
 export * from './GetPassHoldingsRequestDto';
 export * from './GetPassHoldingsResponseDto';
+export * from './GetPassRequestDto';
+export * from './GetPassResponseDto';
 export * from './GetPassesRequestDto';
 export * from './GetPassesResponseDto';
 export * from './GetPayinMethodResponseDto';
