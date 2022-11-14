@@ -6,7 +6,7 @@ import { FC, useState } from "react"
 
 import { FanWallCommentCached } from "src/components/organisms/profile/main-content/feed/FanWallCommentCached"
 import { useUser } from "src/hooks/useUser"
-import { NewFanwallEditor } from "./NewFanwallPost"
+import { NewFanwallEditor } from "./NewFanwallEditor"
 
 interface NewFanwallPosts {
   profileUserId: string

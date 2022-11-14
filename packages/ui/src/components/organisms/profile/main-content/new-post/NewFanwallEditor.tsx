@@ -26,7 +26,7 @@ const newFallWallFormSchema = object({
 })
 
 interface NewFanwallEditorProps {
-  createFanWallEditor: (
+  createFanWallPost: (
     arg: CreateFanWallCommentRequestDto,
     fanWallCommentId: string
   ) => void | Promise<void>
@@ -34,7 +34,7 @@ interface NewFanwallEditorProps {
 }
 
 export const NewFanwallEditor: FC<NewFanwallEditorProps> = ({
-  createFanWallEditor,
+  createFanWallPost,
   creatorId
 }) => {
   // const { profile } = useContext(ProfileContext)
@@ -72,7 +72,7 @@ export const NewFanwallEditor: FC<NewFanwallEditorProps> = ({
           createFanWallCommentRequestDto: post
         })
       ).fanWallCommentId
-      await createFanWallEditor(post, fanWallCommentId)
+      await createFanWallPost(post, fanWallCommentId)
     } catch (error: unknown) {
       errorMessage(error, true)
     }
