@@ -5,7 +5,6 @@ import {
   authStateMachine,
   AuthStates
 } from "src/helpers/authRouter"
-import { isProd } from "src/helpers/env"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
 
@@ -25,7 +24,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
   creatorOnly,
   hasRefreshed = true
 }) => {
-  const { userClaims, user, loading } = useUser()
+  const { userClaims } = useUser()
   const { safePush } = useSafeRouter()
   const [authed, setAuthed] = useState(skipAuth)
 
@@ -41,25 +40,6 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
       return
     }
 
-    if (loading) {
-      return
-    }
-
-    // DISABLE ALL AUTHED PAGES IN PROD
-    if (
-      isProd &&
-      !(
-        user?.email.endsWith("@passes.com") ||
-        user?.email === "anna.victoria.deguzman@gmail.com"
-      )
-    ) {
-      setAuthed(false)
-      if (isPage) {
-        authRouter(safePush, userClaims)
-      }
-      return
-    }
-
     let _authed = authStateMachine(userClaims) === AuthStates.AUTHED
     if (creatorOnly && !userClaims?.isCreator) {
       _authed = false
@@ -69,16 +49,7 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     if (isPage && !_authed) {
       authRouter(safePush, userClaims)
     }
-  }, [
-    isPage,
-    skipAuth,
-    creatorOnly,
-    userClaims,
-    hasRefreshed,
-    safePush,
-    user?.email,
-    loading
-  ])
+  }, [isPage, skipAuth, creatorOnly, userClaims, hasRefreshed, safePush])
 
   return authed ? <>{children}</> : null
 }
