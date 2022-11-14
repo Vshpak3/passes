@@ -42,7 +42,13 @@ export const AuthWrapper: FC<PropsWithChildren<AuthWrapperProps>> = ({
     }
 
     // DISABLE ALL AUTHED PAGES IN PROD
-    if (isProd && !user?.email.endsWith("@passes.com")) {
+    if (
+      isProd &&
+      !(
+        user?.email.endsWith("@passes.com") ||
+        user?.email === "anna.victoria.deguzman@gmail.com"
+      )
+    ) {
       setAuthed(false)
       if (isPage) {
         authRouter(safePush, userClaims)
