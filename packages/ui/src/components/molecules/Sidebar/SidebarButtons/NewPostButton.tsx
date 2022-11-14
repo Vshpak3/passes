@@ -9,7 +9,7 @@ interface NewPostButtonProps {
   isTablet?: boolean
 }
 
-export const NewPostButton: FC<NewPostButtonProps> = ({ isTablet }) => {
+export const NewPostButton: FC<NewPostButtonProps> = ({ isTablet = true }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   return (
     <>
