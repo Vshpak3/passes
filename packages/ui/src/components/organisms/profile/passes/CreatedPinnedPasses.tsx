@@ -1,7 +1,7 @@
 import { FC, useContext } from "react"
 
 import { SectionTitle } from "src/components/atoms/SectionTitle"
-import { PassCard } from "src/components/molecules/pass/PassCard"
+import { PassCardCached } from "src/components/molecules/pass/PassCardCached"
 import { ProfileContext } from "src/pages/[username]"
 
 export const CreatorPinnedPasses: FC = () => {
@@ -14,7 +14,7 @@ export const CreatorPinnedPasses: FC = () => {
       <div className="w-full items-center px-4">
         {pinnedPasses?.map((pass) => (
           <div className="py-2" key={pass.passId}>
-            <PassCard isPinnedPass key={pass.passId} pass={pass} />
+            <PassCardCached isPinnedPass key={pass.passId} pass={pass} />
           </div>
         ))}
       </div>

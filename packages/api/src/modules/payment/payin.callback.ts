@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   BadRequestException,
+  ConflictException,
   InternalServerErrorException,
 } from '@nestjs/common'
 import CryptoJS from 'crypto-js'
@@ -205,7 +206,9 @@ async function createNftPassSuccessCallback(
       )
     }
   } catch (err) {
-    if (!(err instanceof BadRequestException)) {
+    if (
+      !(err instanceof BadRequestException || err instanceof ConflictException)
+    ) {
       payService.sentry.instance().captureException(err)
     }
   }
