@@ -86,7 +86,7 @@ export const SignupTiles = () => {
 
   return (
     <div className="grid grid-cols-3 gap-5 xl:gap-[25px]">
-      {tiles.map(({ name, username, filename }, idx) => {
+      {tiles.map(({ name, username, filename }) => {
         if (filename.endsWith("png") && username) {
           return (
             <GradientBorderTile key={filename}>
