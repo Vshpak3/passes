@@ -67,7 +67,7 @@ async function getAllTags(file: string, program: ts.Program) {
     }
   }
   await clearDirectory(path.join(ROOT, CONSTANTS_DIRECTORY))
-  await Promise.all(
+  await Promise.allSettled(
     Object.entries(matches).map(async ([type, text]) => {
       await fs.writeFile(
         path.join(ROOT, CONSTANTS_DIRECTORY, `${type}.ts`),

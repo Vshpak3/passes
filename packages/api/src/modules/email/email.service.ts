@@ -116,7 +116,7 @@ export class EmailService {
         .whereIn(`${UserEntity.table}.id`, userIds)
         .andWhere(`${NotificationSettingsEntity.table}.${type}`, true)
         .select(`${UserEntity.table}.email`)
-      await Promise.all(
+      await Promise.allSettled(
         users.map(async (user) => {
           await this.sendRenderedEmail(user.email, messageHtml, subject, data)
         }),

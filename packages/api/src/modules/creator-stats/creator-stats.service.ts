@@ -115,7 +115,7 @@ export class CreatorStatsService {
     multipler = 1,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await Promise.all(
+      await Promise.allSettled(
         Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
           await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
             .insert({
