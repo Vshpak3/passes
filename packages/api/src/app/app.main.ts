@@ -26,6 +26,7 @@ export class App {
     console.log(`Node version ${process.version}`)
     const app = await NestFactory.createApplicationContext(AppModule, {
       logger: await createLogger(),
+      abortOnError: false,
     })
     app.enableShutdownHooks()
     return app
