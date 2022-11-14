@@ -12,9 +12,7 @@ interface EditPostPopupProps {
   scheduledEvent: ScheduledEventDto
 }
 
-// Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const EditPostPopup: FC<EditPostPopupProps> = ({
+export const EditPostPopup: FC<EditPostPopupProps> = ({
   isOpen,
   onCancel,
   scheduledEvent

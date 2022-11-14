@@ -153,7 +153,7 @@ const SignupInfoPage: FC = () => {
       </Text>
       <form className="flex flex-col gap-y-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Your name</Text>
+          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Full name</Text>
           <Input
             className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
@@ -164,7 +164,7 @@ const SignupInfoPage: FC = () => {
                 message: "Full name is required"
               }
             }}
-            placeholder="Enter your name"
+            placeholder="Enter your full name"
             register={register}
             transparent={false}
             type="text"

@@ -1,11 +1,9 @@
 import { ScheduledEventDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
 
-const CACHE_KEY_SCHEDULED_EVENT = "/scheduled-event"
+export const CACHE_KEY_SCHEDULED_EVENT = "/scheduled-event"
 
-// Might be used in the future
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const useScheduledEvent = (scheduledEventId: string) => {
+export const useScheduledEvent = (scheduledEventId: string) => {
   const { data: scheduledEvent } = useSWR<ScheduledEventDto>(
     scheduledEventId ? [CACHE_KEY_SCHEDULED_EVENT, scheduledEventId] : null
   )

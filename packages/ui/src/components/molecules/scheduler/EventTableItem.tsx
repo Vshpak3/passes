@@ -1,21 +1,16 @@
-import {
-  ScheduledEventDto,
-  ScheduledEventDtoTypeEnum
-} from "@passes/api-client"
+import { ScheduledEventDtoTypeEnum } from "@passes/api-client"
 import { format } from "date-fns"
 import CheckIcon from "public/icons/check.svg"
+import EditIcon from "public/icons/edit-icon.svg"
 import TrashIcon from "public/icons/trash.svg"
-import { FC } from "react"
+import { FC, useState } from "react"
 
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { formatCurrency, formatText } from "src/helpers/formatters"
+import { EditPostPopup } from "./EditPostPopup"
+import { EventTableItemCachedProps } from "./EventTableItemCached"
 
-interface EventTableItemProps {
-  scheduledEvent: ScheduledEventDto
-  onDeleteEvent: (id: string) => void | Promise<void>
-  onChangeTime: (id: string, time: Date) => void | Promise<void>
-  isTablet: boolean
-}
+type EventTableItemProps = EventTableItemCachedProps
 
 export const EventTableItem: FC<EventTableItemProps> = ({
   scheduledEvent,
@@ -24,6 +19,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   isTablet
 }) => {
   const today = new Date()
+  const [edit, setEdit] = useState<boolean>(false)
 
   const {
     scheduledEventId,
@@ -82,6 +78,21 @@ export const EventTableItem: FC<EventTableItemProps> = ({
               await onChangeTime(scheduledEventId, date)
             }}
           />
+          {type === ScheduledEventDtoTypeEnum.CreatePost && (
+            <>
+              <EditIcon
+                className="mr-3 cursor-pointer"
+                onClick={() => setEdit(true)}
+              />
+              {edit && (
+                <EditPostPopup
+                  isOpen
+                  onCancel={() => setEdit(false)}
+                  scheduledEvent={scheduledEvent}
+                />
+              )}
+            </>
+          )}
         </>
       ) : (
         <CheckIcon />
