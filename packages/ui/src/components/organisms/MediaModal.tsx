@@ -40,6 +40,7 @@ export const MediaModal: FC<ModalProps> = ({
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
   return (
     <Modal
       bare

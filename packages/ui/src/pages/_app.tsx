@@ -8,7 +8,6 @@ import {
   SendMessageRequestDto
 } from "@passes/api-client"
 import debounce from "lodash.debounce"
-import ms from "ms"
 import { NextPage } from "next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
@@ -19,7 +18,6 @@ import nprogress from "nprogress"
 import { Provider, ReactElement, useEffect, useState } from "react"
 import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
-import { ToastContainer } from "react-toastify"
 import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
@@ -64,6 +62,9 @@ const ReportModal = dynamic(
   () => import("src/components/organisms/ReportModal"),
   { ssr: false }
 )
+const ToastPortal = dynamic(() => import("src/layout/ToastPortal"), {
+  ssr: false
+})
 
 // Only show nprogress after this many milliseconds (slow loading)
 const LOADING_DEBOUNCE_TIME = 500
@@ -223,19 +224,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
             <BlockModal blockData={blockData} setBlockData={setBlockData} />
           )}
           {tipPost && <TipPostModal post={tipPost} setPost={setTipPost} />}
-          <ToastContainer
-            autoClose={ms("4 seconds")}
-            closeOnClick
-            draggable={false}
-            hideProgressBar
-            limit={3}
-            newestOnTop={false}
-            pauseOnFocusLoss
-            pauseOnHover
-            position="bottom-center"
-            rtl={false}
-            theme="colored"
-          />
         </>,
         hasRefreshed
       )}
@@ -252,22 +240,25 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   const getLayout = Component.getLayout ?? ((page) => page)
   return (
-    <NextThemeProvider attribute="class" disableTransitionOnChange>
-      <DefaultHead />
-      <Script
-        dangerouslySetInnerHTML={{ __html: SegmentConfig }}
-        id="segmentScript"
-      />
-      <SWRConfig value={GlobalSWRConfig}>
-        <DndProvider backend={HTML5Backend}>
-          <SubApp
-            Component={Component}
-            getLayout={getLayout}
-            pageProps={pageProps}
-          />
-        </DndProvider>
-      </SWRConfig>
-    </NextThemeProvider>
+    <>
+      <NextThemeProvider attribute="class" disableTransitionOnChange>
+        <DefaultHead />
+        <Script
+          dangerouslySetInnerHTML={{ __html: SegmentConfig }}
+          id="segmentScript"
+        />
+        <SWRConfig value={GlobalSWRConfig}>
+          <DndProvider backend={HTML5Backend}>
+            <SubApp
+              Component={Component}
+              getLayout={getLayout}
+              pageProps={pageProps}
+            />
+          </DndProvider>
+        </SWRConfig>
+      </NextThemeProvider>
+      <ToastPortal />
+    </>
   )
 }
 

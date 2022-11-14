@@ -5,7 +5,7 @@ class Document extends NextDocument {
     return (
       <Html>
         <Head />
-        <body style={{ overscrollBehaviorY: "none" }}>
+        <body id="toast-root" style={{ overscrollBehaviorY: "none" }}>
           <Main />
           <NextScript />
         </body>
