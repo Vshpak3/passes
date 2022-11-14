@@ -57,9 +57,6 @@ export const Hero = () => {
             className="my-20 mx-auto"
             src="/img/homepage/palooza.gif"
           />
-          <p className="max-w-2xl text-center text-lg font-medium">
-            Welcome to Passes.
-          </p>
           <div className="mx-auto flex w-full max-w-lg flex-col py-8">
             <p className="text-center text-lg font-bold">Sign Up for Updates</p>
 

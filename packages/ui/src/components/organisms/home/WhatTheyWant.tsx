@@ -1,6 +1,6 @@
 import React from "react"
 
-export const MonthlyMemberships = () => {
+export const WhatTheyWant = () => {
   return (
     <div className="mx-auto max-w-7xl py-32 px-4 lg:py-48" id="features">
       <div className="grid grid-cols-1 gap-16 lg:grid-cols-5">
@@ -10,21 +10,12 @@ export const MonthlyMemberships = () => {
           src="/img/homepage/memberships.webp"
         />
         <div className="order-1 col-span-2 max-w-lg space-y-4 lg:order-2">
-          <span
-            className="rounded-full px-4 py-2"
-            style={{
-              backgroundImage:
-                "linear-gradient(88deg, #f2bd6c, #bd499b 65%, #a359d5)"
-            }}
-          >
-            Passes
-          </span>
           <h3 className="max-w-2xl text-4xl font-extrabold leading-[4rem] md:text-5xl">
-            Monthly memberships for your biggest fans
+            Give the people what they want.{" "}
           </h3>
           <p className="max-w-sm py-4">
-            Earn a recurring income by accepting monthly subscriptions for
-            exclusive behind-the-scenes content that your fans will love.
+            TikTok is oversaturated. Instagram wants to be TikTok. Give your
+            superfans the quality content they deserve.{" "}
           </p>
         </div>
       </div>
