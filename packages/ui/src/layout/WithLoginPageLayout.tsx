@@ -28,15 +28,15 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   const { safePush } = useSafeRouter()
 
   const _refreshUnverifiedToken = async () => {
-    new AuthApi()
+    await new AuthApi()
       .refreshUnverified()
       .then((t) => {
-        setRefreshed(true)
         setAccessToken(t.accessToken)
         authRouter(safePush, t.accessToken)
         return t
       })
       .catch((e) => e)
+    setRefreshed(true)
   }
 
   useEffect(() => {
