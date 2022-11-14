@@ -1,5 +1,3 @@
-import { ContentFile } from "src/hooks/useMedia"
-
 export async function promiseAllBatched<T>(
   items: T[],
   task: (file: T) => Promise<any>, // eslint-disable-line @typescript-eslint/no-explicit-any
