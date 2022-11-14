@@ -195,12 +195,24 @@ async function createNftPassSuccessCallback(
     .where({ id: input.passId })
     .select('creator_id', 'title')
     .first()
+
+  // auto follow
   try {
     if (pass?.creator_id) {
       await payService.followService.followCreator(
         input.userId,
         pass.creator_id,
       )
+    }
+  } catch (err) {
+    if (!(err instanceof BadRequestException)) {
+      payService.sentry.instance().captureException(err)
+    }
+  }
+
+  // send purchase message in chat
+  try {
+    if (pass?.creator_id) {
       await payService.messagesService.sendAutomaticMessage(
         input.userId,
         pass.creator_id,
