@@ -1,4 +1,4 @@
-import DiscordIcon from "public/icons/social/discord.svg"
+// import DiscordIcon from "public/icons/social/discord.svg"
 import FacebookIcon from "public/icons/social/facebook.svg"
 import InstagramIcon from "public/icons/social/instagram.svg"
 import TikTokIcon from "public/icons/social/tiktok.svg"
@@ -9,8 +9,10 @@ import { FC } from "react"
 
 import { formatTextToString } from "src/helpers/formatters"
 
+// Discord is removed for now
+
 export const SocialUsernames = {
-  discordUsername: true,
+  // discordUsername: true,
   facebookUsername: true,
   instagramUsername: true,
   tiktokUsername: true,
@@ -23,7 +25,7 @@ const socialUsernameToUrl: Record<
   keyof typeof SocialUsernames,
   (u: string) => string
 > = {
-  discordUsername: (u: string) => `https://www.discord.gg/${u}`,
+  // discordUsername: (u: string) => `https://www.discord.gg/${u}`,
   facebookUsername: (u: string) => `https://www.facebook.com/${u}`,
   instagramUsername: (u: string) => `https://www.instagram.com/${u}`,
   tiktokUsername: (u: string) =>
@@ -35,7 +37,7 @@ const socialUsernameToUrl: Record<
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const socialUsernameToIcon: Record<keyof typeof SocialUsernames, any> = {
-  discordUsername: DiscordIcon,
+  // discordUsername: DiscordIcon,
   facebookUsername: FacebookIcon,
   instagramUsername: InstagramIcon,
   tiktokUsername: TikTokIcon,
