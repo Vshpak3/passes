@@ -13,7 +13,6 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Loader } from "src/components/atoms/Loader"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { ProfileContext } from "src/pages/[username]"
