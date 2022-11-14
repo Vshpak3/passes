@@ -1,12 +1,10 @@
-import { PartialType } from '@nestjs/swagger'
-
 import { DtoProperty } from '../../../web/dto.web'
 import { PassEntity } from '../entities/pass.entity'
 import { PassHolderEntity } from '../entities/pass-holder.entity'
 import { PassNotificationEnum } from '../enum/pass.notification.enum'
 import { PassHolderDto } from './pass-holder.dto'
 
-export class PassHolderNotificationDto extends PartialType(PassHolderDto) {
+export class PassHolderNotificationDto extends PassHolderDto {
   @DtoProperty({ type: 'uuid' })
   recieverId: string
 

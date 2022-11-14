@@ -36,7 +36,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
             {passHolder.totalMessages !== null && passHolder.totalMessages > 0 && (
               <div className="mt-[12px]">
                 <span className="text-[14px] font-medium text-white">
-                  {passHolder.messages}free messages left
+                  {passHolder.messages} free messages left
                 </span>
               </div>
             )}

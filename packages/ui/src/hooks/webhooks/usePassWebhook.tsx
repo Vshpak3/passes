@@ -78,10 +78,6 @@ export const usePassWebhook = () => {
     if (socket) {
       socket.on("pass", async (data) => {
         const passHolding = data as PassHolderDto & { notification: string }
-        if (data.paidAt) {
-          data.paidAt = new Date(data.paidAt)
-        }
-
         const update: Partial<PassWithStatusDto> = {}
         switch (passHolding.notification) {
           case "paying":

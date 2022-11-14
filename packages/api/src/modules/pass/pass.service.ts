@@ -781,7 +781,7 @@ export class PassService {
       recieverId: userId,
       passId: passId,
       notification: PassNotificationEnum.PAYING,
-    }
+    } as PassHolderNotificationDto
     await this.redisService.publish('pass', JSON.stringify(notification))
   }
 
@@ -790,7 +790,7 @@ export class PassService {
       recieverId: userId,
       passId: passId,
       notification: PassNotificationEnum.FAILED_PAYMENT,
-    }
+    } as PassHolderNotificationDto
     await this.redisService.publish('pass', JSON.stringify(notification))
   }
 
