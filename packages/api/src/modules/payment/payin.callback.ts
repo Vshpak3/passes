@@ -219,7 +219,7 @@ async function createNftPassSuccessCallback(
       await payService.messagesService.sendAutomaticMessage(
         input.userId,
         pass.creator_id,
-        `You purchased a ${pass.title} membership`,
+        `You purchased ${pass.title} membership`,
       )
     }
   } catch (err) {
