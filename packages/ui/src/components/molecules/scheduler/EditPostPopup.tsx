@@ -49,6 +49,7 @@ export const EditPostPopup: FC<EditPostPopupProps> = ({
         isExtended
         onClose={onCancel}
         popup
+        schedulable={false}
         title="Edit Post"
       />
     </Dialog>
