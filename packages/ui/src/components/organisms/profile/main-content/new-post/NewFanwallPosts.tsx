@@ -6,7 +6,7 @@ import { FC, useState } from "react"
 
 import { FanWallCommentCached } from "src/components/organisms/profile/main-content/feed/FanWallCommentCached"
 import { useUser } from "src/hooks/useUser"
-import { NewFanwallPost } from "./NewFanwallPost"
+import { NewFanwallEditor } from "./NewFanwallPost"
 
 interface NewFanwallPosts {
   profileUserId: string
@@ -48,7 +48,7 @@ export const NewFanwallPosts: FC<NewFanwallPosts> = ({
 
   return (
     <>
-      <NewFanwallPost
+      <NewFanwallEditor
         createFanWallPost={createPost}
         creatorId={profileUserId || ""}
       />

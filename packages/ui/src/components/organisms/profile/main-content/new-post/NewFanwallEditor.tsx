@@ -25,16 +25,16 @@ const newFallWallFormSchema = object({
   ...yupTags("fan wall comment")
 })
 
-interface NewFanwallPostProps {
-  createFanWallPost: (
+interface NewFanwallEditorProps {
+  createFanWallEditor: (
     arg: CreateFanWallCommentRequestDto,
     fanWallCommentId: string
   ) => void | Promise<void>
   creatorId: string
 }
 
-export const NewFanwallPost: FC<NewFanwallPostProps> = ({
-  createFanWallPost,
+export const NewFanwallEditor: FC<NewFanwallEditorProps> = ({
+  createFanWallEditor,
   creatorId
 }) => {
   // const { profile } = useContext(ProfileContext)
@@ -72,7 +72,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
           createFanWallCommentRequestDto: post
         })
       ).fanWallCommentId
-      await createFanWallPost(post, fanWallCommentId)
+      await createFanWallEditor(post, fanWallCommentId)
     } catch (error: unknown) {
       errorMessage(error, true)
     }
@@ -112,7 +112,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
                 setValue("text", params?.text)
                 setValue("tags", params?.tags)
               }}
-              placeholder="Post something ..." // removed `to ...` due to overflow issues with log names
+              placeholder="Leave a comment ..." // removed `to ...` due to overflow issues with log names
               setIsReset={setIsReset}
             />
           </div>
@@ -124,7 +124,7 @@ export const NewFanwallPost: FC<NewFanwallPostProps> = ({
             fontSize={16}
             type={ButtonTypeEnum.SUBMIT}
           >
-            Post
+            Comment
           </Button>
         )}
       </div>
