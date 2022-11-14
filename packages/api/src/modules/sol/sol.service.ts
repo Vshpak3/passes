@@ -54,6 +54,9 @@ const MAX_TIME_NFT_REFRESH = ms('30 minutes')
 const SIGNER_ID_PREFIX_PASS = 'pass'
 const SIGNER_ID_PREFIX_PASSHOLDER = 'passholder'
 
+// const CHECK_SIGNATURE_ATTEMPTS = 6
+// const CHECK_SIGNATURE_TIME = ms('10 seconds')
+
 export class SolService {
   private _connection: Connection | undefined
   private cloudfrontUrl: string
@@ -226,15 +229,20 @@ export class SolService {
     transaction.addSignature(walletPubKey, Buffer.from(walletSignature))
     transaction.addSignature(signerPubKey, Buffer.from(signerSignature))
 
-    return await sendAndConfirmRawTransaction(
-      this.getConnection(),
-      transaction.serialize(),
-      {
-        ...blockhash,
-        signature: base58.encode(transaction.signature as Buffer),
-      },
-      { skipPreflight: false },
-    )
+    try {
+      return await sendAndConfirmRawTransaction(
+        this.getConnection(),
+        transaction.serialize(),
+        {
+          ...blockhash,
+          signature: base58.encode(transaction.signature as Buffer),
+        },
+        { skipPreflight: false, maxRetries: 20 },
+      )
+    } catch (err) {
+      this.sentry.instance().captureException(err)
+    }
+    return base58.encode(Buffer.from(walletSignature))
   }
 
   private async createNftMetadataJson(
