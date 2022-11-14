@@ -113,7 +113,7 @@ const ResetPassword = () => {
             Please enter your new password and confirm it.
           </Text>
           <form
-            className="flex flex-col gap-y-5"
+            className="flex flex-col gap-y-3"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col items-start">

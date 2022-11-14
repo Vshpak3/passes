@@ -156,7 +156,7 @@ const SignupEmailPage: FC = () => {
             Let&apos;s get to know each other
           </Text>
           <form
-            className="flex flex-col gap-y-5"
+            className="flex flex-col gap-y-3"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col items-start">

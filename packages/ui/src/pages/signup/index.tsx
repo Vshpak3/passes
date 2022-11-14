@@ -125,7 +125,7 @@ const SignupInitialPage: FC = () => {
             Please enter your details.
           </Text>
           <form
-            className="flex flex-col gap-y-5"
+            className="flex flex-col gap-y-3"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col">

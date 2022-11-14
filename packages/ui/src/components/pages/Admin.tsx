@@ -113,7 +113,7 @@ const AdminPage = () => {
                 Impersonate a user
               </Text>
               <form
-                className="flex flex-col gap-y-5"
+                className="flex flex-col gap-y-3"
                 onSubmit={handleSubmit((d) => onSubmit("impersonateUser", d))}
               >
                 <div className="flex flex-col">

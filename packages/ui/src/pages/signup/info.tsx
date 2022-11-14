@@ -151,7 +151,7 @@ const SignupInfoPage: FC = () => {
       >
         Let&apos;s get to know each other
       </Text>
-      <form className="flex flex-col gap-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex flex-col gap-y-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Full name</Text>
           <Input
