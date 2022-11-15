@@ -16,7 +16,14 @@
   left: -11px !important;
 }
 
-.swiper-button-prev .swiper-rtl .swiper-button-prev::after,
+.swiper-button-prev:after {
+  padding: 0 30px;
+}
+
+.swiper-button-next:after {
+  padding: 0 30px;
+}
+
 .swiper-button-next .swiper-rtl .swiper-button-next::after {
   padding: 0 30px;
 }
