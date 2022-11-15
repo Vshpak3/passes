@@ -32,7 +32,7 @@ export const NewPosts: FC = () => {
 
     const post: PostDto = {
       postId: res.postId || "",
-      purchasable: false,
+      accessible: true,
       userId: profile.userId,
       username: profileUsername,
       displayName: profile.displayName ?? "",
