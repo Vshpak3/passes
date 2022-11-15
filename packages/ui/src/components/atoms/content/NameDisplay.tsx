@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import Link from "next/link"
-import CheckVerified from "public/icons/check-verified-03.svg"
+import CheckVerified from "public/icons/check-verified.svg"
 import { FC } from "react"
 
 import { Text } from "src/components/atoms/Text"
