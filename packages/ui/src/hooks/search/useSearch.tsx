@@ -38,6 +38,7 @@ export const useSearch = <T,>(
     if (searchValue) {
       search(searchValue)
     } else {
+      search.cancel()
       setResults([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
