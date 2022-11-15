@@ -5,6 +5,7 @@ import { useRouter } from "next/router"
 import { FC, memo, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
+import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
@@ -19,6 +20,7 @@ import { DeletePostModal } from "./DeletePostModal"
 import { PostCachedProps } from "./PostCached"
 import { PostEngagement } from "./PostEngagement"
 import { PostHeader } from "./PostHeader"
+import { PostLockButton } from "./PostLockButton"
 
 interface PostProps extends PostCachedProps {
   update: (update: Partial<PostDto>) => void
@@ -144,16 +146,27 @@ const PostUnmemo: FC<PostProps> = ({
               <FormattedText tags={tags} text={text} />
             </p>
             {!!contents?.length && (
-              <MediaContent
-                contents={contents}
-                isProcessing={!contentProcessed}
-                key={postId}
-                openBuyModal={() => setPost(post)}
-                paid={!!paidAt || isOwner || accessible}
-                paying={paying}
-                previewIndex={previewIndex}
-                price={price ?? 0}
-              />
+              <>
+                <MediaContent
+                  contents={contents}
+                  isProcessing={!contentProcessed}
+                  key={postId}
+                  openBuyModal={() => setPost(post)}
+                  paid={!!paidAt || isOwner || accessible}
+                  paying={paying}
+                  previewIndex={previewIndex}
+                  price={price}
+                />
+                {!!price && !isOwner && (
+                  <PostLockButton
+                    key={postId}
+                    openBuyModal={() => setPost(post)}
+                    paid={!!paidAt || accessible}
+                    paying={paying}
+                    price={price}
+                  />
+                )}
+              </>
             )}
             <PostEngagement post={post} update={update} />
           </div>
