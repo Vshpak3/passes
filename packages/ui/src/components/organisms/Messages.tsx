@@ -52,6 +52,7 @@ const Messages: FC<MessagesProps> = ({
 
   useEffect(() => {
     setShowBottomNav(!openChannelView)
+    setShowTopNav(!openChannelView)
   }, [
     openChannelView,
     showBottomNav,
