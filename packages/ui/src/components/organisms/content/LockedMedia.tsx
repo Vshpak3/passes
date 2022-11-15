@@ -3,6 +3,7 @@ import classNames from "classnames"
 import { FC } from "react"
 
 import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
+import { UnlockText } from "src/components/organisms/UnlockText"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 import { plural } from "src/helpers/plural"
@@ -59,12 +60,11 @@ export const LockedMedia: FC<LockedMediaProps> = ({
               }
               onClick={openBuyModal}
             />
-            <p className="text-base font-medium">
-              <span>
-                Unlock {video ? `${plural("video", video)},` : ""}{" "}
-                {plural("photo", images)}!
-              </span>
-            </p>
+            <UnlockText
+              className="text-base font-medium"
+              images={images}
+              videos={video}
+            />
           </div>
         </div>
       </div>

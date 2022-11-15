@@ -6,10 +6,10 @@ import TimeAgo from "react-timeago"
 
 import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { VideoContent } from "src/components/atoms/content/VideoContent"
+import { UnlockText } from "src/components/organisms/UnlockText"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { plural } from "src/helpers/plural"
 
 interface GalleryMediaProps {
   contents: ContentDto[]
@@ -140,11 +140,11 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   value={purchased.toString()}
                 />
                 {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
-                <div className="flex items-center justify-center px-2 pt-4 text-[#ffffff]">
-                  <span>
-                    Unlock {plural("video", video)}, {plural("photo", images)}
-                  </span>
-                </div>
+                <UnlockText
+                  className="flex items-center justify-center px-2 pt-4 text-white"
+                  images={images}
+                  videos={video}
+                />
               </div>
             )}
           </div>

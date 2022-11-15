@@ -9,10 +9,10 @@ import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalB
 import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { Modal } from "src/components/organisms/Modal"
+import { UnlockText } from "src/components/organisms/UnlockText"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
 import { getWhiteListedPasses } from "src/helpers/getWhiteListedPasses"
-import { plural } from "src/helpers/plural"
 import { useExternalPasses } from "src/hooks/passes/useExternalPasses"
 
 interface BuyPostModalProps {
@@ -50,10 +50,12 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           />
           <div>
             <div className="my-4 flex justify-between">
-              <span className="flex items-center rounded border border-passes-gray-600 px-2 py-1 text-white">
-                {Boolean(video) && `${video} videos`}{" "}
-                {Boolean(images) && plural("photo", images)}
-              </span>
+              <UnlockText
+                className="flex items-center rounded border border-passes-gray-600 px-2 py-1 text-white"
+                images={images}
+                showUnlock={false}
+                videos={video}
+              />
               <span className="flex items-center text-white">
                 Unlock for
                 <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">
