@@ -12,27 +12,15 @@ export const SidebarMobileContainer: FC<
   return (
     <Transition.Root as={Fragment} show={mobileSidebarOpen}>
       <Dialog as="div" className="relative z-40" onClose={toggleSidebar}>
-        <Transition.Child
-          as={Fragment}
-          enter="transition-opacity ease-linear duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity ease-linear duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-transparent" />
-        </Transition.Child>
-
         <div className="fixed inset-0 z-40 flex">
           <Transition.Child
             as={Fragment}
             enter="transition ease-in-out duration-300 transform"
             enterFrom="-translate-x-full"
             enterTo="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
+            // leave="transition ease-in-out duration-300 transform"
+            // leaveFrom="translate-x-0"
+            // leaveTo="-translate-x-full"
           >
             <Dialog.Panel className="relative flex w-full max-w-[220px] flex-1 flex-col overflow-y-auto border-r-[1px] border-passes-gray bg-passes-black scrollbar-hide">
               <div className="h-0 flex-1">
