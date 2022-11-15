@@ -33,7 +33,7 @@ export const LikeButton: FC<LikeButtonProps> = ({
         await likeApi.likePost({ postId })
       }
     } catch (error: unknown) {
-      errorMessage(error, true)
+      // Fail silently if the like fails
     }
   }, [isLiked, numLikes, postId, update])
 
