@@ -19,8 +19,14 @@ const metaTags = (router: NextRouter) => [
     name: "description"
   },
   {
-    content:
-      "minimum-scale: 1.0, initial-scale: 1.0, maximum-scale: 1.0, user-scalable: 0, width: device-width, viewport-fit: cover",
+    content: [
+      "minimum-scale=1.0",
+      "initial-scale=1.0",
+      "maximum-scale=1.0",
+      "user-scalable=0",
+      "width=device-width",
+      "viewport-fit=cover"
+    ].join(" "),
     key: "viewport",
     name: "viewport"
   },
