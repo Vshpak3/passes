@@ -48,7 +48,7 @@ export const SearchBar = <T,>({
             />
           </div>
         </Combobox.Button>
-        <Combobox.Options className="absolute top-14 z-10 w-full overflow-y-hidden rounded-md border border-[#ffffff]/10 bg-[#1b141d] outline-none">
+        <Combobox.Options className="absolute top-14 z-20 w-full overflow-y-hidden rounded-md border border-[#ffffff]/10 bg-[#1b141d] outline-none">
           {options.length ? (
             options
           ) : searchValue && loading ? (
