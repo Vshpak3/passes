@@ -61,7 +61,7 @@ export interface PostDto {
      * @type {boolean}
      * @memberof PostDto
      */
-    purchasable: boolean;
+    accessible: boolean;
     /**
      * 
      * @type {string}
@@ -211,7 +211,7 @@ export function instanceOfPostDto(value: object): boolean {
     isInstance = isInstance && "username" in value;
     isInstance = isInstance && "displayName" in value;
     isInstance = isInstance && "postId" in value;
-    isInstance = isInstance && "purchasable" in value;
+    isInstance = isInstance && "accessible" in value;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "previewIndex" in value;
@@ -244,7 +244,7 @@ export function PostDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'username': json['username'],
         'displayName': json['displayName'],
         'postId': json['postId'],
-        'purchasable': json['purchasable'],
+        'accessible': json['accessible'],
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'contents': !exists(json, 'contents') ? undefined : ((json['contents'] as Array<any>).map(ContentDtoFromJSON)),
@@ -284,7 +284,7 @@ export function PostDtoToJSON(value?: PostDto | null): any {
         'username': value.username,
         'displayName': value.displayName,
         'postId': value.postId,
-        'purchasable': value.purchasable,
+        'accessible': value.accessible,
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'contents': value.contents === undefined ? undefined : ((value.contents as Array<any>).map(ContentDtoToJSON)),

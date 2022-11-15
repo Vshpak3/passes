@@ -37,6 +37,7 @@ const PostUnmemo: FC<PostProps> = ({
   const router = useRouter()
   const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
   const {
+    accessible,
     contents,
     createdAt,
     displayName,
@@ -148,7 +149,7 @@ const PostUnmemo: FC<PostProps> = ({
                 isProcessing={!contentProcessed}
                 key={postId}
                 openBuyModal={() => setPost(post)}
-                paid={!!paidAt || isOwner}
+                paid={!!paidAt || isOwner || accessible}
                 paying={paying}
                 previewIndex={previewIndex}
                 price={price ?? 0}

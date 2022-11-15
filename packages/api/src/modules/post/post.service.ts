@@ -320,29 +320,32 @@ export class PostService {
           new Date(),
         ).orWhereNull(`${PassHolderEntity.table}.expires_at`)
       })
-      .select('post_id')
+      .select('post_id', `${PassHolderEntity.table}.id`)
+
     const postsFromPass = new Set(
       passAccesses.map((passAccess) => passAccess.post_id),
     )
 
-    return posts.map(
-      (post) =>
-        new PostDto(
-          post,
+    return posts.map((post) => {
+      const accessible =
+        post.paid_at || // single post purchase
+        postsFromPass.has(post.id) || // owns pass that gives access
+        post.user_id === userId || // user made post
+        !post.price || // no price on post
+        post.price === 0 // price of post is 0
+      return new PostDto(
+        post,
+        post.user_id === userId,
+        accessible,
+        this.contentService.getContentDtosFromBare(
+          JSON.parse(post.contents),
+          accessible,
+          post.user_id,
+          post.preview_index,
           post.user_id === userId,
-          this.contentService.getContentDtosFromBare(
-            JSON.parse(post.contents),
-            post.paid_at || // single post purchase
-              postsFromPass.has(post.id) || // owns pass that gives access
-              post.user_id === userId || // user made post
-              !post.price || // no price on post
-              post.price === 0, // price of post is 0
-            post.user_id,
-            post.preview_index,
-            post.user_id === userId,
-          ),
         ),
-    )
+      )
+    })
   }
 
   async updatePost(

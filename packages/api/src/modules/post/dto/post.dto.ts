@@ -25,7 +25,7 @@ export class PostDto extends PickType(UserDto, [
   postId: string
 
   @DtoProperty({ type: 'boolean' })
-  purchasable: boolean
+  accessible: boolean
 
   @Length(0, POST_TEXT_LENGTH)
   @DtoProperty({ type: 'string' })
@@ -118,6 +118,7 @@ export class PostDto extends PickType(UserDto, [
         })
       | undefined,
     isOwner,
+    accessible,
     contents?: ContentDto[],
   ) {
     super()
@@ -153,13 +154,7 @@ export class PostDto extends PickType(UserDto, [
         this.numPurchases = post.num_purchases
       }
       this.isOwner = isOwner
-      this.purchasable =
-        !isOwner &&
-        !this.paidAt &&
-        !this.paying &&
-        !!contents &&
-        !!contents.length &&
-        !contents.filter((content) => content.signedUrl).length
+      this.accessible = accessible
     }
   }
 }
