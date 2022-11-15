@@ -58,11 +58,12 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
           />
         ) : (
           <div className="flex w-full items-center">
-            {isTablet && (
-              <div className="mr-4 cursor-pointer" onClick={onBack}>
-                <ArrowLeft height="16" width="16" />
-              </div>
-            )}
+            <div
+              className="mr-4 min-w-[16px] cursor-pointer lg:hidden"
+              onClick={onBack}
+            >
+              <ArrowLeft height="16" width="16" />
+            </div>
             <div className="">
               <a
                 href={`${window.location.origin}/${selectedChannel.otherUserUsername}`}
