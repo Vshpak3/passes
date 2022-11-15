@@ -95,7 +95,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                 {formatText(text)}
               </span>
               {!!messageContent.length && (
-                <div className="w-[260px] md:w-[403px]">
+                <div className="w-[260px] min-w-[50vw] md:min-w-[403px] md:max-w-[403px]">
                   <MediaContent
                     contents={messageContent}
                     isProcessing={!contentProcessed}

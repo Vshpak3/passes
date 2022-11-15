@@ -69,7 +69,11 @@ const ChannelStreamMessagesUnmemo = ({
       }
       node={node}
       scrollableTarget="messagesDiv"
-      style={{ display: "flex", flexDirection: "column-reverse" }}
+      style={{
+        display: "flex",
+        flexDirection: "column-reverse",
+        overflowX: "hidden"
+      }}
     >
       <div className="w-full py-[15px]" />
     </InfiniteScrollPagination>
