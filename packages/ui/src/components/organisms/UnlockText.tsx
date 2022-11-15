@@ -17,8 +17,8 @@ export const UnlockText: FC<UnlockTextProps> = ({
 }) => {
   return (
     <span className={className}>
-      {showUnlock && "Unlock"} {!!videos && `${videos} videos,`}
-      {!!images && plural("photo", images)}
+      {showUnlock && "Unlock"} {!!videos && plural("video", videos)}
+      {!!images && (videos ? ", " : "") + plural("photo", images)}
     </span>
   )
 }

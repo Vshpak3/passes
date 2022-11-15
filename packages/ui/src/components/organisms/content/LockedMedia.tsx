@@ -6,7 +6,6 @@ import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockBu
 import { UnlockText } from "src/components/organisms/UnlockText"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
-import { plural } from "src/helpers/plural"
 
 interface LockedMediaProps {
   contents: ContentDto[]
