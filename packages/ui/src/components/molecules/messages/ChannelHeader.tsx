@@ -47,7 +47,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
 
   return (
     <div className="flex h-24 flex-col items-start backdrop-blur-[50px]">
-      <div className="flex w-full flex-row items-center justify-between border-b border-passes-gray px-5 py-4">
+      <div className="flex w-full flex-row items-center justify-between overflow-x-scroll border-b border-passes-gray px-5 py-4">
         {gallery ? (
           <MessagesChannelGalleryHeader
             gallery={gallery}
