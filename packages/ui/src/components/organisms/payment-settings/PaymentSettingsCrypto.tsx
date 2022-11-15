@@ -7,7 +7,7 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/button/Button"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import {
   deserializePayinMethod,
   MetaMaskSelectOptions,
@@ -31,7 +31,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
 }) => {
   const { defaultPayinMethod } = usePayinMethod(true)
 
-  const { register, getValues, setValue, watch } = useForm({
+  const { getValues, setValue, watch, control } = useForm({
     defaultValues: {
       metamask: MetaMaskSelectOptions[0].value as string,
       phantom: PhantomSelectOptions[0].value as string
@@ -63,12 +63,11 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </span>
         </div>
         <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
-          <Select
+          <SelectInput
             className="my-4 bg-[#18090E] md:w-[145px]"
+            control={control}
             defaultValue={MetaMaskSelectOptions[0]}
             name="metamask"
-            onChange={(newValue: string) => setValue("metamask", newValue)}
-            register={register}
             selectOptions={MetaMaskSelectOptions}
           />
         </div>
@@ -102,12 +101,11 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </div>
         </div>
         <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
-          <Select
+          <SelectInput
             className="my-4 bg-[#18090E] md:w-[145px]"
+            control={control}
             defaultValue={PhantomSelectOptions[0]}
             name="phantom"
-            onChange={(newValue: "sol") => setValue("phantom", newValue)}
-            register={register}
             selectOptions={PhantomSelectOptions}
           />
         </div>

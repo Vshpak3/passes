@@ -14,7 +14,7 @@ import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
@@ -64,6 +64,7 @@ const SignupInfoPage: FC = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
     setError,
     setValue
@@ -217,12 +218,12 @@ const SignupInfoPage: FC = () => {
         </div>
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
-          <Select
+          <SelectInput
             autoComplete="country"
             className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            control={control}
             errors={errors}
             name="countryCode"
-            onChange={(newValue: string) => setValue("countryCode", newValue)}
             options={{
               required: {
                 value: true,
@@ -230,7 +231,6 @@ const SignupInfoPage: FC = () => {
               }
             }}
             placeholder="Enter your country"
-            register={register}
             selectOptions={COUNTRIES}
             showOnTop
             transparent={false}

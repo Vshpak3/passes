@@ -14,7 +14,7 @@ import { object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { Modal } from "src/components/organisms/Modal"
 import { errorMessage } from "src/helpers/error"
@@ -38,7 +38,7 @@ export const Wallets = () => {
   const {
     register,
     reset,
-    setValue,
+    control,
     handleSubmit,
     formState: { errors }
   } = useForm<WalletForm>({
@@ -200,15 +200,12 @@ export const Wallets = () => {
                 />
               </div>
               <div className="basis-1/5">
-                <Select
+                <SelectInput
                   className="mr-3 mt-0 w-[80px] bg-[#18090E]"
+                  control={control}
                   defaultValue="SOL"
                   errors={errors}
                   name="chain"
-                  onChange={(
-                    newValue: CreateUnauthenticatedWalletRequestDtoChainEnum
-                  ) => setValue("chain", newValue)}
-                  register={register}
                   selectOptions={["SOL", "ETH"]}
                 />
               </div>

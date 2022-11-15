@@ -114,6 +114,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
       setValue("method", newValue)
     }
   }
+
   const defaultSelected = defaultPayinMethod
     ? options.filter(
         (option) => option.value === serializePayinMethod(payinMethod)

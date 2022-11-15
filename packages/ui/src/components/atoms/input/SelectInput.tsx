@@ -1,13 +1,9 @@
-import React from "react"
 import { Controller } from "react-hook-form"
 
-import { FormAutoComplete } from "src/components/atoms/input/InputTypes"
 import { Select, SelectProps } from "src/components/atoms/input/Select"
 
-interface SelectInputProps extends SelectProps {
-  autoComplete: FormAutoComplete
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  control: any
+interface SelectInputProps extends Omit<SelectProps, "register"> {
+  control: any // eslint-disable-line @typescript-eslint/no-explicit-any
   name: string
 }
 

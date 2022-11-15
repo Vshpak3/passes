@@ -13,7 +13,7 @@ import {
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
 
@@ -51,7 +51,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   const {
     register,
     handleSubmit,
-    setValue,
+    control,
     formState: { errors, isSubmitSuccessful }
   } = useForm<PaymentFormFields>()
 
@@ -163,35 +163,29 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div className="text-[#b3bee7] opacity-[0.75]">
                 Type of Bank Account
               </div>
-              <Select
+              <SelectInput
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                control={control}
                 errors={errors}
                 name="bankAccountType"
-                onChange={(newValue: BankTypeEnum) =>
-                  setValue("bankAccountType", newValue)
-                }
                 options={{
                   required: true
                 }}
                 placeholder="Choose"
-                register={register}
                 selectOptions={[{ label: "US", value: "US" }]}
               />
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Country</div>
-              <Select
+              <SelectInput
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                control={control}
                 errors={errors}
                 name="bankAddress.country"
-                onChange={(newValue: string) =>
-                  setValue("bankAddress", { country: newValue })
-                }
                 options={{
                   required: true
                 }}
                 placeholder="Choose Country"
-                register={register}
                 selectOptions={[{ label: "USA", value: "US" }]}
               />
             </div>

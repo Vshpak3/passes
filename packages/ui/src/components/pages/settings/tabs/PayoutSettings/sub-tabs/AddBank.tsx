@@ -3,12 +3,12 @@ import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 //@ts-ignore
 import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
-import { memo, useState } from "react"
+import { memo } from "react"
 import { useForm } from "react-hook-form"
 import { v4 } from "uuid"
 
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
@@ -21,28 +21,38 @@ enum BankTypeEnum {
   NON_IBAN = "non iban"
 }
 
-// TODO: update with actual values
 interface BankForm {
-  [key: string]: string
+  "account-number": string
+  "routing-number": string
+  iban: string
+  name: string
+  city: string
+  country: string
+  address1: string
+  address2: string
+  district: string
+  "postal-code": string
+  "bank-name": string
+  "bank-city": string
+  "bank-country": string // eslint-disable-line sonarjs/no-duplicate-string
 }
 
 const AddBank = () => {
-  const BANK_COUNTRY_FIELD = "bank-country"
-
   const idempotencyKey = v4()
 
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
-  const [bankType, setBankType] = useState<BankTypeEnum>(BankTypeEnum.US)
   const {
     handleSubmit,
     register,
     setValue,
     watch,
+    control,
     formState: { errors }
   } = useForm<BankForm>({
-    defaultValues: { country: COUNTRIES[0], BANK_COUNTRY_FIELD: COUNTRIES[0] }
+    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
   })
   const countrySelected = watch("country")
+  const bankType = watch("bank-country")
 
   const onSubmit = async (values: BankForm) => {
     try {
@@ -69,7 +79,7 @@ const AddBank = () => {
         bankAddress: {
           bankName: values["bank-name"],
           city: values["bank-city"],
-          country: iso3311a2.getCode(values[BANK_COUNTRY_FIELD])
+          country: iso3311a2.getCode(values["bank-country"])
         }
       }
 
@@ -87,15 +97,11 @@ const AddBank = () => {
         <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Type of Bank Account
         </span>
-        <Select
+        <SelectInput
+          control={control}
           defaultValue={bankType}
           errors={errors}
           name="bank-country"
-          onChange={(newValue: BankTypeEnum) => {
-            setBankType(newValue)
-            setValue(BANK_COUNTRY_FIELD, newValue)
-          }}
-          register={register}
           selectOptions={[
             { label: "US Bank", value: BankTypeEnum.US },
             { label: "International Bank - IBAN", value: BankTypeEnum.IBAN },
@@ -171,15 +177,15 @@ const AddBank = () => {
         register={register}
         type="text"
       />
-      <Select
+      <SelectInput
         className="mt-4"
+        control={control}
         errors={errors}
         name="bank-country"
         onChange={(newValue: string) => setValue("bank-country", newValue)}
         options={{
           required: { message: "Country is required", value: true }
         }}
-        register={register}
         selectOptions={COUNTRIES}
       />
 
@@ -215,16 +221,15 @@ const AddBank = () => {
           register={register}
           type="text"
         />
-        <Select
+        <SelectInput
           className="mt-4"
+          control={control}
           errors={errors}
           name="country"
-          onChange={(newValue: string) => setValue("country", newValue)}
           options={{
             required: { message: "Country is required", value: true }
           }}
           placeholder="Country"
-          register={register}
           selectOptions={COUNTRIES}
         />
         <Input
@@ -240,16 +245,15 @@ const AddBank = () => {
         />
         <div className="flex gap-4">
           {countrySelected === COUNTRIES[0] ? (
-            <Select
+            <SelectInput
               className="mt-4"
+              control={control}
               errors={errors}
               name="district"
-              onChange={(newValue: string) => setValue("district", newValue)}
               options={{
                 required: { message: "State is required", value: true }
               }}
               placeholder="State"
-              register={register}
               selectOptions={US_STATES}
               showOnTop
             />
