@@ -12,6 +12,7 @@ interface FormImageProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setValue: UseFormSetValue<any>
   inputUI: JSX.Element
+  inputUIClass?: string
   cropWidth: number
   cropHeight: number
 }
@@ -23,7 +24,8 @@ export const FormImage: FC<FormImageProps> = ({
   setValue,
   inputUI,
   cropWidth,
-  cropHeight
+  cropHeight,
+  inputUIClass
 }) => {
   const [imageCropOpen, setImageCropOpen] = useState(false)
 
@@ -49,6 +51,7 @@ export const FormImage: FC<FormImageProps> = ({
         options={{ onChange: () => setImageCropOpen(true) }}
         register={register}
         trigger={inputUI}
+        triggerClass={inputUIClass}
       />
     </>
   )

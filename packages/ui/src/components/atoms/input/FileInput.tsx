@@ -23,6 +23,7 @@ type FileInputProps = {
   accept?: FileAccept
   trigger?: JSX.Element
   className?: string
+  triggerClass?: string
   onBlur?: (event: Event) => void
 }
 
@@ -53,6 +54,7 @@ export const FileInput: FC<FileInputProps> = ({
   trigger,
   className,
   onBlur,
+  triggerClass,
   ...rest
 }) => {
   const uploadRef = useRef<HTMLInputElement | null>(null)
@@ -80,7 +82,9 @@ export const FileInput: FC<FileInputProps> = ({
           {...reg}
           {...rest}
         />
-        <span onClick={onClick}>{trigger}</span>
+        <span className={triggerClass} onClick={onClick}>
+          {trigger}
+        </span>
       </div>
     </>
   )
