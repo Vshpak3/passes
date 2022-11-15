@@ -24,6 +24,7 @@ import { Select } from "src/components/atoms/input/Select"
 import { FULL_NAME_REGEX } from "src/config/name"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
+import { isProd } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { encrypt } from "src/helpers/openpgp"
 import { sleep } from "src/helpers/sleep"
@@ -55,9 +56,10 @@ const cardForm = object({
     .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
   "cc-number": string()
     .test("is-credit-card-valid", "Card number is invalid", function (value) {
-      const numberValidation = cardValidator.number(value)
-
-      return numberValidation.isValid
+      if (!isProd && value === "4007 0000 0000 0007") {
+        return true
+      }
+      return cardValidator.number(value).isValid
     })
     .test("is-not-mex", "Amex unsupported", function (value) {
       if (!value) {
