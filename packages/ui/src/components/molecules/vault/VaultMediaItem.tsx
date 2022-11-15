@@ -67,7 +67,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
               src={ContentService.userContentThumbnailPath(content)}
               width={300}
             />
-            <div className="absolute mt-[23px]">
+            <div className="absolute">
               <PlayIcon />
             </div>
           </div>
