@@ -37,6 +37,12 @@ export interface CreateContentRequestDto {
      * @memberof CreateContentRequestDto
      */
     inMessage: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateContentRequestDto
+     */
+    contentLength: number;
 }
 
 
@@ -60,6 +66,7 @@ export function instanceOfCreateContentRequestDto(value: object): boolean {
     isInstance = isInstance && "contentType" in value;
     isInstance = isInstance && "inPost" in value;
     isInstance = isInstance && "inMessage" in value;
+    isInstance = isInstance && "contentLength" in value;
 
     return isInstance;
 }
@@ -77,6 +84,7 @@ export function CreateContentRequestDtoFromJSONTyped(json: any, ignoreDiscrimina
         'contentType': json['contentType'],
         'inPost': json['inPost'],
         'inMessage': json['inMessage'],
+        'contentLength': json['contentLength'],
     };
 }
 
@@ -92,6 +100,7 @@ export function CreateContentRequestDtoToJSON(value?: CreateContentRequestDto | 
         'contentType': value.contentType,
         'inPost': value.inPost,
         'inMessage': value.inMessage,
+        'contentLength': value.contentLength,
     };
 }
 

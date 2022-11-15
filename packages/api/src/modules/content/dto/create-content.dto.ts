@@ -10,4 +10,7 @@ export class CreateContentRequestDto {
 
   @DtoProperty({ type: 'boolean' })
   inMessage: boolean
+
+  @DtoProperty({ type: 'number' })
+  contentLength: number
 }

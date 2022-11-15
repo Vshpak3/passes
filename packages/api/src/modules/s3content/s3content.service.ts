@@ -39,9 +39,13 @@ type Folders = keyof typeof FOLDER_BUCKET_MAP
 
 type S3Bucket = { [K in typeof FOLDER_BUCKET_MAP[Folders]]: string }
 
+// use transfer acceleration for content that exceeds threshold size
+const S3_TRANSFER_ACCELERATION_THRESHOLD = 1_000_000_000 // 1GB
+
 @Injectable()
 export class S3ContentService {
   private readonly s3Client: S3Client
+  private readonly transferAccelerateS3Client: S3Client
   private readonly s3Buckets: S3Bucket
 
   private readonly keyPairId: string
@@ -66,7 +70,12 @@ export class S3ContentService {
     ) as number
 
     this.s3Buckets = configService.get('s3_bucket') as S3Bucket
-    this.s3Client = new S3Client(getAwsConfig(configService))
+    const awsConfig = getAwsConfig(configService)
+    this.s3Client = new S3Client(awsConfig)
+    this.transferAccelerateS3Client = new S3Client({
+      ...awsConfig,
+      useAccelerateEndpoint: true,
+    })
   }
 
   private cloudFrontPath = (...args: string[]) => {
@@ -82,6 +91,10 @@ export class S3ContentService {
     }
 
     return [bucket, path]
+  }
+
+  shouldUseTransferAcceleration(contentLength: number) {
+    return contentLength >= S3_TRANSFER_ACCELERATION_THRESHOLD
   }
 
   /**
@@ -160,7 +173,10 @@ export class S3ContentService {
    * @param _path path where file will be uploaded to. Starts with one of the upstream directories
    * @returns signed url used to upload files to
    */
-  async signUrlForContentUpload(_path: string): Promise<string> {
+  async signUrlForContentUpload(
+    _path: string,
+    useAccelerate = false,
+  ): Promise<string> {
     const [Bucket, Key] = this.getBucketKeyFromPath(_path)
 
     // Upload files directly to the downstream directory in dev
@@ -169,15 +185,15 @@ export class S3ContentService {
     }
 
     const url = await getPresignedUrl(
-      this.s3Client,
+      useAccelerate ? this.transferAccelerateS3Client : this.s3Client,
       new PutObjectCommand({ Bucket, Key }),
       {
         expiresIn: this.signedUrlExpirationTime / 1000, // convert to seconds
       },
     )
 
-    // Replaces bucket domain with CloudFront
-    return this.cloudFrontPath(Key + url.split(Key)?.[1])
+    // Replaces bucket domain with CloudFront if not using transfer acceleration
+    return useAccelerate ? url : this.cloudFrontPath(Key + url.split(Key)?.[1])
   }
 
   /**

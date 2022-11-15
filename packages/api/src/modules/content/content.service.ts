@@ -292,6 +292,9 @@ export class ContentService {
     const contentId = await this.createContent(userId, createContentDto)
     return this.s3contentService.signUrlForContentUpload(
       mediaContentUploadPath(userId, contentId, createContentDto.contentType),
+      this.s3contentService.shouldUseTransferAcceleration(
+        createContentDto.contentLength,
+      ),
     )
   }
 

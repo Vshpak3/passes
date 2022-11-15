@@ -245,7 +245,12 @@ export class ContentService {
           throw new Error("Invalid file type")
         }
         const { url } = await this.contentApi.preSignContent({
-          createContentRequestDto: { contentType, inPost, inMessage }
+          createContentRequestDto: {
+            contentType,
+            inPost,
+            inMessage,
+            contentLength: fileFile.size
+          }
         })
         const result = await retryWrapper(
           () => this.uploadFile(url, fileFile),
