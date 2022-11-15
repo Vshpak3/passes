@@ -116,7 +116,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           .trim()
           .replace(/\D/g, "")
           .replace(/\s/g, ""),
-        "cc-csc": values["cc-csc"]
+        cvv: values["cc-csc"]
       }
       const payload = {
         createCardDto: {
