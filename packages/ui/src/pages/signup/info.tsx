@@ -155,6 +155,7 @@ const SignupInfoPage: FC = () => {
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Full name</Text>
           <Input
+            autoComplete="name"
             className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="legalFullName"
@@ -217,6 +218,7 @@ const SignupInfoPage: FC = () => {
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
           <Select
+            autoComplete="country"
             className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
             errors={errors}
             name="countryCode"

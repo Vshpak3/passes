@@ -3,6 +3,7 @@ import classNames from "classnames"
 import { FC, Fragment, useCallback, useEffect, useState } from "react"
 
 import {
+  FormAutoComplete,
   FormErrors,
   FormLabel,
   FormName,
@@ -24,6 +25,7 @@ type FormSelectOptions = Array<FormSelectOption>
 type SelectProps = {
   label?: FormLabel
   name: FormName
+  autoComplete?: FormAutoComplete | "off"
   options?: FormOptions
   register?: FormRegister
   errors?: FormErrors
@@ -43,6 +45,9 @@ type SelectProps = {
 export const Select: FC<SelectProps> = ({
   name,
   label,
+  // TODO: MAKE THIS WORK
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  autoComplete = "off",
   register,
   errors = {},
   options,

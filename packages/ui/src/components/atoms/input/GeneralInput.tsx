@@ -3,6 +3,7 @@ import { toLower } from "lodash"
 import React, { FC } from "react"
 
 import {
+  FormAutoComplete,
   FormErrors,
   FormLabel,
   FormName,
@@ -29,6 +30,7 @@ export enum EIcon {
 export type InputProps = {
   name: FormName
   type: FormType
+  autoComplete?: FormAutoComplete | "off"
   register: FormRegister
   label?: FormLabel
   options?: FormOptions
@@ -47,6 +49,7 @@ export type InputProps = {
 export const Input: FC<InputProps> = ({
   name,
   type,
+  autoComplete = "off",
   label,
   placeholder = "",
   register,
@@ -81,7 +84,7 @@ export const Input: FC<InputProps> = ({
           </div>
         )}
         <input
-          autoComplete="off"
+          autoComplete={autoComplete}
           placeholder={placeholder || label}
           readOnly={options.readOnly}
           type={type}

@@ -237,6 +237,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Email</div>
               <Input
+                autoComplete="email"
                 className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="email"
@@ -250,7 +251,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 }}
                 placeholder="Email Address"
                 register={register}
-                type="text"
+                type="email"
               />
             </div>
             <div className="flex flex-col gap-[24px]">

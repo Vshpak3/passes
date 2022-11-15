@@ -121,6 +121,7 @@ const ResetPassword = () => {
                 Password
               </Text>
               <PasswordInput
+                autoComplete="new-password"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="password"
@@ -135,6 +136,7 @@ const ResetPassword = () => {
                 Confirm Password
               </Text>
               <PasswordInput
+                autoComplete="new-password"
                 className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
                 errors={errors}
                 name="confirmPassword"

@@ -56,6 +56,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
     <>
       <div className="flex w-full justify-between">
         <Select
+          autoComplete="bday-month"
           className="w-[140px] bg-black"
           name="month"
           onChange={(m) => setMonth(selectMonths.indexOf(m))}
@@ -64,6 +65,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
           transparent={false}
         />
         <Select
+          autoComplete="bday-day"
           className="w-[90px] bg-black"
           name="day"
           onChange={setDay}
@@ -72,6 +74,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
           transparent={false}
         />
         <Select
+          autoComplete="bday-year"
           className="w-[100px] bg-black"
           name="year"
           onChange={setYear}

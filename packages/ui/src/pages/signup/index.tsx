@@ -131,12 +131,13 @@ const SignupInitialPage: FC = () => {
             <div className="flex flex-col">
               <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
               <Input
+                autoComplete="email"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 errors={errors}
                 name="email"
                 placeholder="Enter your email"
                 register={register}
-                type="text"
+                type="email"
               />
             </div>
 
@@ -145,6 +146,7 @@ const SignupInitialPage: FC = () => {
                 Password
               </Text>
               <PasswordInput
+                autoComplete="current-password"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 errors={errors}
                 name="password"
@@ -158,6 +160,7 @@ const SignupInitialPage: FC = () => {
                 Confirm Password
               </Text>
               <PasswordInput
+                autoComplete="current-password"
                 className="w-[340px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180] xs:w-[360px]"
                 errors={errors}
                 name="confirmPassword"

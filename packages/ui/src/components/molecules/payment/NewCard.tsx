@@ -36,24 +36,24 @@ interface NewCardProps {
 }
 
 interface CardForm {
-  "card-holder": string
-  cardnumber: string
-  "exp-month": string
-  "exp-year": string
+  "cc-name": string
+  "cc-number": string
+  "cc-exp-month": string // eslint-disable-line sonarjs/no-duplicate-string
+  "cc-exp-year": string // eslint-disable-line sonarjs/no-duplicate-string
+  "cc-csc": string
   "postal-code": string
-  address1: string
-  address2: string
+  "address-line1": string
+  "address-line2": string
   city: string
   country: string
-  cvv: string
   district: string
 }
 
 const cardForm = object({
-  "card-holder": string()
+  "cc-name": string()
     .required("Name is required")
     .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
-  cardnumber: string()
+  "cc-number": string()
     .test("is-credit-card-valid", "Card number is invalid", function (value) {
       const numberValidation = cardValidator.number(value)
 
@@ -67,16 +67,16 @@ const cardForm = object({
       return !nospaces?.match(/^3[47]\d{13,14}$/)?.length
     })
     .required("Card number is required"),
-  "exp-month": string().required("Month is required"),
-  "exp-year": string().required("Year is required"),
+  "cc-exp-month": string().required("Month is required"),
+  "cc-exp-year": string().required("Year is required"),
   "postal-code": string()
     .required("Postal code is required")
     .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
-  address1: string().required("Address is required"),
-  address2: string().optional(),
+  "address-line1": string().required("Address is required"),
+  "address-line2": string().optional(),
   city: string().required("City is required"),
   country: string().required("Country is required"),
-  cvv: string()
+  "cc-csc": string()
     .required("CVV is required")
     .matches(/^\d{3}$/, "CVV number must be a 3 digit number"),
   district: string().required("State is required")
@@ -112,11 +112,11 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       setIsSubmitting(true)
 
       const cardDetails = {
-        number: values["cardnumber"]
+        number: values["cc-number"]
           .trim()
           .replace(/\D/g, "")
           .replace(/\s/g, ""),
-        cvv: values["cvv"]
+        "cc-csc": values["cc-csc"]
       }
       const payload = {
         createCardDto: {
@@ -124,22 +124,22 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           keyId: "",
           encryptedData: "",
           billingDetails: {
-            name: values["card-holder"],
+            name: values["cc-name"],
             city: values["city"],
             country: iso3311a2.getCode(values["country"]),
-            line1: values["address1"],
-            line2: values["address2"],
+            line1: values["address-line1"],
+            line2: values["address-line2"],
             district: values["district"],
             postalCode: values["postal-code"]
           },
-          expMonth: parseInt(values["exp-month"]),
-          expYear: parseInt(values["exp-year"]),
+          expMonth: parseInt(values["cc-exp-month"]),
+          expYear: parseInt(values["cc-exp-year"]),
           metadata: {
             sessionId: SHA256(accessToken).toString().substring(0, 50),
             ipAddress: ""
           }
         },
-        cardNumber: values["cardnumber"]
+        cardNumber: values["cc-number"]
       }
 
       const encryptedData = await encrypt(
@@ -188,15 +188,13 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           Card Info
         </span>
       </div>
-      <CreditCardInput
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        control={control as any}
-        name="cardnumber"
-      />
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+      <CreditCardInput control={control as any} name="cc-number" />
       <Input
+        autoComplete="cc-name"
         className="mt-4"
         errors={errors}
-        name="card-holder"
+        name="cc-name"
         placeholder="Card holder"
         register={register}
         type="text"
@@ -205,36 +203,39 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <Select
+            autoComplete="cc-exp-month"
             className="mt-2 w-[100px]"
             errors={errors}
-            name="exp-month"
-            onChange={(month: string) => setValue("exp-month", month)}
+            name="cc-exp-month"
+            onChange={(month: string) => setValue("cc-exp-month", month)}
             register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
             )}
-            value={getValues("exp-month") || undefined}
+            value={getValues("cc-exp-month") || undefined}
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
           <Select
+            autoComplete="cc-exp-year"
             className="mt-2 w-[100px]"
             errors={errors}
-            name="exp-year"
-            onChange={(year: string) => setValue("exp-year", year)}
+            name="cc-exp-year"
+            onChange={(year: string) => setValue("cc-exp-year", year)}
             register={register}
             selectOptions={years}
-            value={getValues("exp-year")}
+            value={getValues("cc-exp-year")}
           />
         </div>
         <div className="mb-4 flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <NumberInput
+            autoComplete="cc-csc"
             className="mt-2 min-h-[50px] w-[71px]"
             errors={errors}
             maxInput={999}
-            name="cvv"
+            name="cc-csc"
             placeholder=""
             register={register}
             type="integer"
@@ -243,22 +244,25 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       </div>
       <span className="mt-4 text-[16px] font-[500]">Billing address</span>
       <Input
+        autoComplete="address-line1"
         className="mt-3"
         errors={errors}
-        name="address1"
+        name="address-line1"
         placeholder="Address 1"
         register={register}
         type="text"
       />
       <Input
+        autoComplete="address-line2"
         className="mt-3"
         errors={errors}
-        name="address2"
+        name="address-line2"
         placeholder="Address 2"
         register={register}
         type="text"
       />
       <Select
+        autoComplete="country"
         className="mt-3"
         defaultValue={COUNTRIES[0]}
         errors={errors}
@@ -269,6 +273,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         selectOptions={COUNTRIES}
       />
       <Input
+        autoComplete="address-level2"
         className="mt-3"
         errors={errors}
         name="city"
@@ -279,6 +284,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       <div className="flex gap-4">
         {countrySelected === COUNTRIES[0] ? (
           <Select
+            autoComplete="address-level1"
             className="mt-3 w-[120px]"
             errors={errors}
             name="district"
@@ -290,6 +296,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           />
         ) : (
           <Input
+            autoComplete="address-level1"
             className="mt-3"
             errors={errors}
             icon={
@@ -307,8 +314,8 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
             type="text"
           />
         )}
-
         <Input
+          autoComplete="postal-code"
           className="mt-3"
           errors={errors}
           name="postal-code"

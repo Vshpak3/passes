@@ -3,6 +3,7 @@ import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import {
+  FormAutoComplete,
   FormErrors,
   FormName,
   FormPlaceholder,
@@ -18,6 +19,7 @@ type NumberInputProps = {
   register: FormRegister
   name: FormName
   type: NumberFormType
+  autoComplete?: FormAutoComplete | "off"
   placeholder?: FormPlaceholder
   maxInput?: number
   maxInputMessage?: string
@@ -31,6 +33,7 @@ export const NumberInput: FC<NumberInputProps> = ({
   register,
   name,
   type,
+  autoComplete,
   placeholder,
   maxInput = 100000,
   allowNegative = false,
@@ -72,7 +75,7 @@ export const NumberInput: FC<NumberInputProps> = ({
     <div>
       <input
         {...register(name)}
-        autoComplete="off"
+        autoComplete={autoComplete}
         className={classNames(
           "block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",
           className,

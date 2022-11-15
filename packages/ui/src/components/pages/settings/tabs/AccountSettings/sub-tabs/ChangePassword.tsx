@@ -69,6 +69,7 @@ const ChangePassword = () => {
       <form className="mt-6" onSubmit={handleSubmit(onChangePassword)}>
         <div className="border-b border-passes-dark-200 pb-6">
           <PasswordInput
+            autoComplete="current-password"
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="oldPassword"
@@ -86,6 +87,7 @@ const ChangePassword = () => {
 
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
           <PasswordInput
+            autoComplete="new-password"
             className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="password"
@@ -93,6 +95,7 @@ const ChangePassword = () => {
             register={register}
           />
           <PasswordInput
+            autoComplete="new-password"
             className="mt-6 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="confirmPassword"
