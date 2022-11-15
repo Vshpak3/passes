@@ -39,7 +39,7 @@ export const ProfileImage: FC<ProfileImageProps> = ({
       <img
         alt=""
         className="h-full w-full object-cover object-center"
-        src="/img/profile/default-profile-img.svg"
+        src="/img/profile/default-profile-image.svg"
         style={loaded || override ? { display: "none" } : {}}
       />
       <img

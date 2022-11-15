@@ -19,7 +19,7 @@
 }
 
 .cover-image {
-  background-image: url("/img/default-banner.png");
+  background-image: url("/img/profile/default-banner-image.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

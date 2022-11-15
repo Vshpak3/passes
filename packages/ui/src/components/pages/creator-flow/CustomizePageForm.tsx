@@ -166,7 +166,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                     src={
                       profileBanner?.length
                         ? URL.createObjectURL(profileBanner[0])
-                        : "/img/profile/default-banner.png"
+                        : "/img/profile/default-banner-image.png"
                     }
                   />
                 </div>
@@ -192,7 +192,7 @@ export const CustomizePageForm: FC<CustomizePageFormProps> = ({
                   src={
                     profileImage?.length
                       ? URL.createObjectURL(profileImage[0])
-                      : "/img/profile/select-profile-img.png"
+                      : "/img/profile/default-profile-image.svg"
                   }
                 />
               </div>

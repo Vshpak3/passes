@@ -31,7 +31,7 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
           className="w-[300px] object-cover drop-shadow-profile-photo md:min-w-[500px] md:max-w-[500px]"
           onError={({ currentTarget }) => {
             currentTarget.onerror = null
-            currentTarget.src = "/img/profile/default-profile-img.svg"
+            currentTarget.src = "/img/profile/default-profile-image.svg"
           }}
           src={ContentService.profileImagePath(profileUserId)}
         />
