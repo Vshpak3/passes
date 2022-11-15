@@ -53,6 +53,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { POST_NOT_EXIST } from './constants/errors'
 import {
   MAX_PINNED_POST,
+  MAX_POST_BUYERS_PER_REQUEST,
   MAX_POSTS_PER_REQUEST,
   MIN_PAID_POST_PRICE,
 } from './constants/limits'
@@ -60,6 +61,10 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import {
+  GetPostBuyersRequestDto,
+  PostBuyerDto,
+} from './dto/get-post-buyers.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
@@ -869,5 +874,48 @@ export class PostService {
       }
       await this.redisService.publish('post', JSON.stringify(notification))
     }
+  }
+
+  async getPostBuyers(
+    userId: string,
+    getPostBuyersRequestDto: GetPostBuyersRequestDto,
+  ): Promise<PostBuyerDto[]> {
+    const { postId, lastId, paidAt } = getPostBuyersRequestDto
+    const post = await this.dbReader<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .select('id')
+      .first()
+    if (!post) {
+      throw new BadRequestException(`No post with id ${postId}`)
+    }
+
+    let query = this.dbReader<PostUserAccessEntity>(PostUserAccessEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${PostUserAccessEntity.table}.user_id`,
+      )
+      .where(`${PostUserAccessEntity.table}.post_id`, postId)
+      .where(`${PostUserAccessEntity.table}.user_id`, userId)
+      .select(
+        `${PostUserAccessEntity.table}.id`,
+        `${PostUserAccessEntity.table}.user_id`,
+        `${PostUserAccessEntity.table}.paid_at`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+      )
+
+    query = createPaginatedQuery(
+      query,
+      PostUserAccessEntity.table,
+      PostUserAccessEntity.table,
+      'paid_at',
+      OrderEnum.DESC,
+      paidAt,
+      lastId,
+    ).limit(MAX_POST_BUYERS_PER_REQUEST)
+
+    const postBuyers = await query
+    return postBuyers.map((postBuyer) => new PostBuyerDto(postBuyer))
   }
 }

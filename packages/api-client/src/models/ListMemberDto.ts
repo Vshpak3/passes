@@ -61,6 +61,12 @@ export interface ListMemberDto {
      * @memberof ListMemberDto
      */
     metaNumber?: number | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ListMemberDto
+     */
+    metaDate?: Date | null;
 }
 
 /**
@@ -94,6 +100,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'follow': !exists(json, 'follow') ? undefined : json['follow'],
         'createdAt': (new Date(json['createdAt'])),
         'metaNumber': !exists(json, 'metaNumber') ? undefined : json['metaNumber'],
+        'metaDate': !exists(json, 'metaDate') ? undefined : (json['metaDate'] === null ? null : new Date(json['metaDate'])),
     };
 }
 
@@ -113,6 +120,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'follow': value.follow,
         'createdAt': (value.createdAt.toISOString()),
         'metaNumber': value.metaNumber,
+        'metaDate': value.metaDate === undefined ? undefined : (value.metaDate === null ? null : value.metaDate.toISOString()),
     };
 }
 

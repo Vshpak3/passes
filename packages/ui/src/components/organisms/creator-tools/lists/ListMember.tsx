@@ -6,7 +6,7 @@ import { formatCurrency } from "src/helpers/formatters"
 
 type ListMemberProps = {
   fanInfo: ListMemberDto
-  onRemoveFan: (userId: string) => Promise<void>
+  onRemoveFan?: (userId: string) => Promise<void>
   removable: boolean
 }
 
@@ -34,7 +34,9 @@ const ListMemberUnmemo: FC<ListMemberProps> = ({
             <span
               className="ml-3 cursor-pointer text-base font-medium leading-6 text-white transition-all"
               onClick={async () => {
-                await onRemoveFan(fanInfo.userId)
+                if (onRemoveFan) {
+                  await onRemoveFan(fanInfo.userId)
+                }
                 setRemoved(true)
               }}
             >

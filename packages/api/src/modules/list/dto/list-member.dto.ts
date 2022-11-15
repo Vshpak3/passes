@@ -22,10 +22,16 @@ export class ListMemberDto extends PickType(UserDto, [
   @DtoProperty({ type: 'number', optional: true, nullable: true })
   metaNumber?: number | null
 
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  metaDate?: Date | null
+
   constructor(
     listMember:
       | (ListMemberEntity &
-          Pick<UserEntity, 'username' | 'display_name'> & { follow?: string })
+          Pick<UserEntity, 'username' | 'display_name'> & {
+            follow?: string
+            meta_date?: Date | null
+          })
       | undefined,
   ) {
     super()
@@ -36,6 +42,7 @@ export class ListMemberDto extends PickType(UserDto, [
       this.displayName = listMember.display_name
       this.createdAt = listMember.created_at
       this.metaNumber = listMember.meta_number
+      this.metaDate = listMember.meta_date
 
       this.follow = listMember.follow
     }

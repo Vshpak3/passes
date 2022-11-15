@@ -23,6 +23,8 @@ import type {
   GetChannelResponseDto,
   GetChannelsRequestDto,
   GetChannelsResponseDto,
+  GetMessageBuyersRequestDto,
+  GetMessageBuyersResponseDto,
   GetMessageResponseDto,
   GetMessagesRequestDto,
   GetMessagesResponseDto,
@@ -54,6 +56,10 @@ import {
     GetChannelsRequestDtoToJSON,
     GetChannelsResponseDtoFromJSON,
     GetChannelsResponseDtoToJSON,
+    GetMessageBuyersRequestDtoFromJSON,
+    GetMessageBuyersRequestDtoToJSON,
+    GetMessageBuyersResponseDtoFromJSON,
+    GetMessageBuyersResponseDtoToJSON,
     GetMessageResponseDtoFromJSON,
     GetMessageResponseDtoToJSON,
     GetMessagesRequestDtoFromJSON,
@@ -100,6 +106,10 @@ export interface GetChannelsRequest {
 
 export interface GetMessageRequest {
     messageId: string;
+}
+
+export interface GetMessageBuyersRequest {
+    getMessageBuyersRequestDto: GetMessageBuyersRequestDto;
 }
 
 export interface GetMessagesRequest {
@@ -340,6 +350,44 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getMessage(requestParameters: GetMessageRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessageResponseDto> {
         const response = await this.getMessageRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets purchased
+     */
+    async getMessageBuyersRaw(requestParameters: GetMessageBuyersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetMessageBuyersResponseDto>> {
+        if (requestParameters.getMessageBuyersRequestDto === null || requestParameters.getMessageBuyersRequestDto === undefined) {
+            throw new runtime.RequiredError('getMessageBuyersRequestDto','Required parameter requestParameters.getMessageBuyersRequestDto was null or undefined when calling getMessageBuyers.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/messages/purchased`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetMessageBuyersRequestDtoToJSON(requestParameters.getMessageBuyersRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetMessageBuyersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets purchased
+     */
+    async getMessageBuyers(requestParameters: GetMessageBuyersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetMessageBuyersResponseDto> {
+        const response = await this.getMessageBuyersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

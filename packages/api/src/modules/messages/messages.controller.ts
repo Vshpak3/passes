@@ -31,6 +31,10 @@ import {
   GetMessagesResponseDto,
 } from './dto/get-message.dto'
 import {
+  GetMessageBuyersRequestDto,
+  GetMessageBuyersResponseDto,
+} from './dto/get-message-buyers.dto'
+import {
   GetPaidMessagesRequestDto,
   GetPaidMessagesResponseDto,
 } from './dto/get-paid-message.dto'
@@ -415,6 +419,27 @@ export class MessagesController {
   ): Promise<BooleanResponseDto> {
     return new BooleanResponseDto(
       await this.messagesService.hidePaidMessage(req.user.id, paidMessageId),
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Gets purchased',
+    responseStatus: HttpStatus.OK,
+    responseType: GetMessageBuyersResponseDto,
+    responseDesc: 'A list of buyers',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('purchased')
+  async getMessageBuyers(
+    @Req() req: RequestWithUser,
+    @Body() getMessageBuyersRequestDto: GetMessageBuyersRequestDto,
+  ): Promise<GetMessageBuyersResponseDto> {
+    return new GetMessageBuyersResponseDto(
+      await this.messagesService.getMessageBuyers(
+        req.user.id,
+        getMessageBuyersRequestDto,
+      ),
+      getMessageBuyersRequestDto,
     )
   }
 }

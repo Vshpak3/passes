@@ -18,6 +18,8 @@ import type {
   BooleanResponseDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
+  GetPostBuyersRequestDto,
+  GetPostBuyersResponseDto,
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
   GetPostResponseDto,
@@ -36,6 +38,10 @@ import {
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
+    GetPostBuyersRequestDtoFromJSON,
+    GetPostBuyersRequestDtoToJSON,
+    GetPostBuyersResponseDtoFromJSON,
+    GetPostBuyersResponseDtoToJSON,
     GetPostHistoryRequestDtoFromJSON,
     GetPostHistoryRequestDtoToJSON,
     GetPostHistoryResponseDtoFromJSON,
@@ -64,6 +70,10 @@ export interface CreatePostRequest {
 
 export interface FindPostRequest {
     postId: string;
+}
+
+export interface GetPostBuyersRequest {
+    getPostBuyersRequestDto: GetPostBuyersRequestDto;
 }
 
 export interface GetPostHistoryRequest {
@@ -182,6 +192,44 @@ export class PostApi extends runtime.BaseAPI {
      */
     async findPost(requestParameters: FindPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostResponseDto> {
         const response = await this.findPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Gets purchased
+     */
+    async getPostBuyersRaw(requestParameters: GetPostBuyersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostBuyersResponseDto>> {
+        if (requestParameters.getPostBuyersRequestDto === null || requestParameters.getPostBuyersRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostBuyersRequestDto','Required parameter requestParameters.getPostBuyersRequestDto was null or undefined when calling getPostBuyers.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/purchased`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPostBuyersRequestDtoToJSON(requestParameters.getPostBuyersRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostBuyersResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Gets purchased
+     */
+    async getPostBuyers(requestParameters: GetPostBuyersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostBuyersResponseDto> {
+        const response = await this.getPostBuyersRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

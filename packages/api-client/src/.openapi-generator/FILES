@@ -111,6 +111,8 @@ models/GetListMembersResponseDto.ts
 models/GetListResponseDto.ts
 models/GetListsRequestsDto.ts
 models/GetListsResponseDto.ts
+models/GetMessageBuyersRequestDto.ts
+models/GetMessageBuyersResponseDto.ts
 models/GetMessageResponseDto.ts
 models/GetMessagesRequestDto.ts
 models/GetMessagesResponseDto.ts
@@ -138,6 +140,8 @@ models/GetPayoutMethodResponseDto.ts
 models/GetPayoutsRequestDto.ts
 models/GetPayoutsResponseDto.ts
 models/GetPersonaStatusResponseDto.ts
+models/GetPostBuyersRequestDto.ts
+models/GetPostBuyersResponseDto.ts
 models/GetPostHistoryRequestDto.ts
 models/GetPostHistoryResponseDto.ts
 models/GetPostResponseDto.ts
@@ -169,6 +173,7 @@ models/LocalUserLoginRequestDto.ts
 models/MarkProcessedProfileImageRequestDto.ts
 models/MarkProcessedUserContentRequestDto.ts
 models/MarkUploadedRequestDto.ts
+models/MessageBuyerDto.ts
 models/MessageDto.ts
 models/MetamaskCircleETHEntryRequestDto.ts
 models/MetamaskCircleETHEntryResponseDto.ts
@@ -188,6 +193,7 @@ models/PayoutDto.ts
 models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
+models/PostBuyerDto.ts
 models/PostDto.ts
 models/PostHistoryDto.ts
 models/PresignPassRequestDto.ts

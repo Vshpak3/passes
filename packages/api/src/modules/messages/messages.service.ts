@@ -56,6 +56,10 @@ import {
 } from './dto/get-channel.dto'
 import { GetChannelMesssageInfoResponseDto } from './dto/get-channel-message-info.dto'
 import { GetMessagesRequestDto } from './dto/get-message.dto'
+import {
+  GetMessageBuyersRequestDto,
+  MessageBuyerDto,
+} from './dto/get-message-buyers.dto'
 import { GetPaidMessagesRequestDto } from './dto/get-paid-message.dto'
 import { GetPaidMessageHistoryRequestDto } from './dto/get-paid-message-history.dto'
 import { MessageDto } from './dto/message.dto'
@@ -83,6 +87,7 @@ const MAX_CHANNELS_PER_REQUEST = 20
 const MAX_MESSAGES_PER_REQUEST = 20
 const MAX_PENDING_MESSAGES = 10
 const MAX_PAID_MESSAGES_PER_REQUEST = 20
+const MAX_MESSAGE_BUYERS_PER_REQUEST = 20
 
 @Injectable()
 export class MessagesService {
@@ -1054,7 +1059,7 @@ export class MessagesService {
     const date = new Date()
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
-        .update({ paid_at: date, paying: false })
+        .update({ paid_at: date, paying: false, payer_id: userId })
         .where({ id: messageId })
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
@@ -1538,5 +1543,52 @@ export class MessagesService {
         ),
       )
     }
+  }
+
+  async getMessageBuyers(
+    userId: string,
+    getMessageBuyersRequestDto: GetMessageBuyersRequestDto,
+  ): Promise<MessageBuyerDto[]> {
+    const { paidMessageId, lastId, paidAt } = getMessageBuyersRequestDto
+    const paidMessage = await this.dbReader<PaidMessageEntity>(
+      PaidMessageEntity.table,
+    )
+      .where({ id: paidMessageId, creator_id: userId })
+      .select('id')
+      .first()
+    if (!paidMessage) {
+      throw new BadRequestException(`No post with id ${paidMessage}`)
+    }
+
+    let query = this.dbReader<MessageEntity>(MessageEntity.table)
+      .innerJoin(
+        UserEntity.table,
+        `${UserEntity.table}.id`,
+        `${MessageEntity.table}.user_id`,
+      )
+      .where(`${MessageEntity.table}.payer_id`, userId)
+      .where(`${MessageEntity.table}.paid_message_id`, paidMessageId)
+      .select(
+        `${MessageEntity.table}.id`,
+        `${MessageEntity.table}.payer_id as receiver_id`,
+        `${MessageEntity.table}.paid_at`,
+        `${UserEntity.table}.username`,
+        `${UserEntity.table}.display_name`,
+      )
+
+    query = createPaginatedQuery(
+      query,
+      MessageEntity.table,
+      MessageEntity.table,
+      'paid_at',
+      OrderEnum.DESC,
+      paidAt,
+      lastId,
+    ).limit(MAX_MESSAGE_BUYERS_PER_REQUEST)
+
+    const messageBuyers = await query
+    return messageBuyers.map(
+      (messageBuyer) => new MessageBuyerDto(messageBuyer),
+    )
   }
 }

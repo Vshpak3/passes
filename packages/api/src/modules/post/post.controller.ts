@@ -23,6 +23,10 @@ import {
 } from './dto/create-post.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import {
+  GetPostBuyersRequestDto,
+  GetPostBuyersResponseDto,
+} from './dto/get-post-buyers.dto'
+import {
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
@@ -242,6 +246,27 @@ export class PostController {
     return new GetPostsResponseDto(
       await this.postService.getPosts(req.user.id, getPostsRequestDto),
       getPostsRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Gets purchased',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPostBuyersResponseDto,
+    responseDesc: 'A list of buyers',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('purchased')
+  async getPostBuyers(
+    @Req() req: RequestWithUser,
+    @Body() getPostsBuyersRequestDto: GetPostBuyersRequestDto,
+  ): Promise<GetPostBuyersResponseDto> {
+    return new GetPostBuyersResponseDto(
+      await this.postService.getPostBuyers(
+        req.user.id,
+        getPostsBuyersRequestDto,
+      ),
+      getPostsBuyersRequestDto,
     )
   }
 }

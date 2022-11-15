@@ -6,6 +6,7 @@ import { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
+import { PostBuyerDialog } from "src/components/molecules/analytics/PostBuyerDialog"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { DeletePostModal } from "src/components/organisms/profile/post/DeletePostModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
@@ -20,6 +21,7 @@ interface PostStatisticProps extends PostStatisticCachedProps {
 export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const [hidePostModelOpen, setHidePostModelOpen] = useState(false)
+  const [postBuyerDialogOpen, setPostBuyerDialogOpen] = useState(false)
   const { hidePost } = useUpdatePost()
 
   const {
@@ -90,7 +92,12 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
           </Link>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
-          <span className="text-[12px] font-[500]">{numPurchases}</span>
+          <span
+            className="text-[12px] font-[500]"
+            onClick={() => setPostBuyerDialogOpen(true)}
+          >
+            {numPurchases}
+          </span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <span className="text-[12px] font-[500]">
@@ -134,6 +141,12 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
           onClose={() => setHidePostModelOpen(false)}
           onDelete={onHide}
           text="Remove"
+        />
+      )}
+      {postBuyerDialogOpen && (
+        <PostBuyerDialog
+          onClose={() => setPostBuyerDialogOpen(false)}
+          postId={postId}
         />
       )}
     </>

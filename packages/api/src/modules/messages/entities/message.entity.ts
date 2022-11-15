@@ -40,6 +40,9 @@ export class MessageEntity extends BaseEntity {
   @Property()
   paid_at: Date | null
 
+  @ManyToOne({ entity: () => UserEntity })
+  payer_id: string | null
+
   @Property({ default: false })
   paying: boolean
 
