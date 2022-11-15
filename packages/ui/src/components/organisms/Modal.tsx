@@ -43,6 +43,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     modalContentRef,
     (e) => {
       e.stopImmediatePropagation()
+      e.stopPropagation()
       if (isCloseOutside) {
         setOpen(false)
       }
