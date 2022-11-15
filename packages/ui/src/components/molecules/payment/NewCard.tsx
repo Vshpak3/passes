@@ -36,7 +36,7 @@ interface NewCardProps {
   isEmbedded?: boolean
 }
 
-interface CardForm extends FieldValues {
+interface CardForm {
   "cc-name": string
   "cc-number": string
   "cc-exp-month": string

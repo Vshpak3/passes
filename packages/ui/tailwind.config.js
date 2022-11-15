@@ -52,12 +52,6 @@ module.exports = {
           success: "#71CB6F"
         }
       },
-      fontFamily: {
-        "sans-system": defaultTheme.fontFamily.sans,
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        prompt: ["Prompt", ...defaultTheme.fontFamily.sans],
-        em: ["Playfair Display", "serif"]
-      },
       keyframes: {
         "fade-in-down": {
           "0%": {

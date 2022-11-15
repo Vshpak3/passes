@@ -36,7 +36,7 @@ export const Text: FC<PropsWithChildren<TextProps>> = ({
 
   return (
     <Tag
-      className={"font-sans" + (className && ` ${className}`)}
+      className={className}
       style={{
         fontSize: `${pxToRem(fontSize)}rem`,
         letterSpacing: `${dynamicTracking(fontSize)}em`,

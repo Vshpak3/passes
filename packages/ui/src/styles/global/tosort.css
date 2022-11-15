@@ -64,11 +64,6 @@ body {
   @apply bg-mauve-mauve1 p-0 text-[0.9375rem] font-normal leading-[calc(0.9375rem_*_1.4)] tracking-[-0.009em] text-white dark:bg-black dark:text-white;
 }
 
-em,
-i {
-  @apply font-em text-[calc(1em_+_2px)] font-normal italic leading-none tracking-normal;
-}
-
 @supports (font-variation-settings: "wght" 450) {
   body,
   em,
