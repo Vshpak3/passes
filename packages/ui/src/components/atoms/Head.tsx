@@ -78,7 +78,11 @@ export const DefaultHead = () => {
         name="msapplication-config"
       />
 
-      <link href={CLIENT_URL} key="canonical" rel="canonical" />
+      <link
+        href={`${CLIENT_URL}${router.asPath}`}
+        key="canonical"
+        rel="canonical"
+      />
       <link
         href="/other/favicon/favicon.ico"
         key="favicon"
