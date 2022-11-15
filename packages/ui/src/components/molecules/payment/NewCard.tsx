@@ -16,7 +16,7 @@ import { toast } from "react-toastify"
 import { v4 } from "uuid"
 import { object, string } from "yup"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
@@ -174,7 +174,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
   const years = useMemo(getExpirationYears, [])
 
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mt-3 flex w-full flex-row justify-between">
         {isEmbedded && (
           <div
@@ -330,11 +330,11 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           "mt-4 w-full text-[16px] font-[500]"
         )}
         disabled={isSubmitting}
-        onClick={handleSubmit(onSubmit)}
+        type={ButtonTypeEnum.SUBMIT}
       >
         {isSubmitting ? "Submitting ..." : "Confirm and Continue"}
       </Button>
-    </>
+    </form>
   )
 }
 
