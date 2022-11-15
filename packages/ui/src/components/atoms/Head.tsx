@@ -7,21 +7,32 @@ const DESCRIPTION =
 const CLIENT_URL = `https://${process.env.NEXT_PUBLIC_UI_BASE_URL}`
 
 const metaTags = (router: NextRouter) => [
-  {
-    content: DESCRIPTION,
-    key: "description",
-    name: "description"
-  },
+  // Core
   {
     content: TITLE,
     key: "application-name",
     name: "application-name"
   },
   {
+    content: DESCRIPTION,
+    key: "description",
+    name: "description"
+  },
+  {
+    content:
+      "minimum-scale: 1.0, initial-scale: 1.0, maximum-scale: 1.0, user-scalable: 0, width: device-width, viewport-fit: cover",
+    key: "viewport",
+    name: "viewport"
+  },
+
+  // Apple
+  {
     content: TITLE,
     key: "apple-mobile-web-app-title",
     name: "apple-mobile-web-app-title"
   },
+
+  // Twitter
   {
     content: TITLE,
     key: "twitter-title",
@@ -47,6 +58,8 @@ const metaTags = (router: NextRouter) => [
     key: "twitter-image-alt",
     property: "twitter:image:alt"
   },
+
+  // Open Graph
   {
     content: TITLE,
     key: "og-title",
@@ -87,12 +100,8 @@ const metaTags = (router: NextRouter) => [
     key: "og-image-alt",
     property: "og:image:alt"
   },
-  {
-    content:
-      "minimum-scale: 1.0, initial-scale: 1.0, maximum-scale: 1.0, user-scalable: 0, width: device-width, viewport-fit: cover",
-    key: "viewport",
-    name: "viewport"
-  },
+
+  // Misc
   {
     content: "follow, index",
     key: "robots",
