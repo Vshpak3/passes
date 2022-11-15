@@ -309,6 +309,16 @@ export class UserService {
         is_creator: true,
         is_active: true,
       })
+      .orderByRaw(
+        `
+        CASE 
+          WHEN display_name LIKE '${likeClause.slice(1)}' THEN 1
+          WHEN username LIKE '${likeClause.slice(1)}' THEN 2
+          WHEN display_name LIKE '${likeClause}' THEN 3
+          WHEN username LIKE '${likeClause}' THEN 4
+          ELSE 5
+        END`,
+      )
       .limit(CREATOR_SEARCH_LIMIT)
 
     return new SearchCreatorResponseDto(creators)
@@ -317,11 +327,12 @@ export class UserService {
   async featuredCreators(): Promise<SearchCreatorResponseDto> {
     const creators = await this.dbReader<UserEntity>(UserEntity.table)
       .select('id', 'username', 'display_name')
-      .where({ featured: true })
+      .whereNot({ featured: 0 })
       .andWhere({
         is_creator: true,
         is_active: true,
       })
+      .orderBy('featured', 'desc')
       .limit(CREATOR_SEARCH_LIMIT)
 
     return new SearchCreatorResponseDto(creators)
