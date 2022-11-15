@@ -37,7 +37,7 @@ interface NewCardProps {
 
 interface CardForm {
   "card-holder": string
-  "card-number": string // eslint-disable-line sonarjs/no-duplicate-string
+  cardnumber: string
   "exp-month": string
   "exp-year": string
   "postal-code": string
@@ -53,7 +53,7 @@ const cardForm = object({
   "card-holder": string()
     .required("Name is required")
     .matches(FULL_NAME_REGEX, "Please enter a valid full name"),
-  "card-number": string()
+  cardnumber: string()
     .test("is-credit-card-valid", "Card number is invalid", function (value) {
       const numberValidation = cardValidator.number(value)
 
@@ -112,7 +112,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       setIsSubmitting(true)
 
       const cardDetails = {
-        number: values["card-number"]
+        number: values["cardnumber"]
           .trim()
           .replace(/\D/g, "")
           .replace(/\s/g, ""),
@@ -139,7 +139,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
             ipAddress: ""
           }
         },
-        cardNumber: values["card-number"]
+        cardNumber: values["cardnumber"]
       }
 
       const encryptedData = await encrypt(
@@ -191,7 +191,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       <CreditCardInput
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         control={control as any}
-        name="card-number"
+        name="cardnumber"
       />
       <Input
         className="mt-4"

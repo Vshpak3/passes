@@ -48,7 +48,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
           {(loading || !!user) &&
             (isSearchBarOpen ? (
               <div className="mx-2 w-full max-w-[400px]" ref={searchBarRef}>
-                <CreatorSearchBar focusOnMount />
+                <CreatorSearchBar />
               </div>
             ) : (
               <Button

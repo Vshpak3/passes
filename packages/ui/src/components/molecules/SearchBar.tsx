@@ -1,8 +1,9 @@
 import { Combobox } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import { ChangeEvent, PropsWithChildren, useEffect, useRef } from "react"
+import { ChangeEvent, PropsWithChildren } from "react"
 
 import { CustomResult } from "src/components/atoms/search/CustomResult"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
 interface SearchBarProps<T> {
   searchValue: string
@@ -11,7 +12,6 @@ interface SearchBarProps<T> {
   onInputChange: (e: ChangeEvent<HTMLInputElement>) => void
   onSelect: (value: T) => void
   contentName: string
-  focusOnMount?: boolean
 }
 
 export const SearchBar = <T,>({
@@ -20,16 +20,9 @@ export const SearchBar = <T,>({
   options,
   onInputChange,
   onSelect,
-  contentName,
-  focusOnMount
+  contentName
 }: PropsWithChildren<SearchBarProps<T>>) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (inputRef && focusOnMount) {
-      inputRef?.current?.focus()
-    }
-  }, [focusOnMount])
+  const { isMobile } = useWindowSize()
 
   return (
     <Combobox<T> onChange={onSelect} value={searchValue as unknown as T}>
@@ -43,12 +36,13 @@ export const SearchBar = <T,>({
             />
             <Combobox.Input
               autoComplete="off"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={isMobile}
               className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#12070E]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
               id="search"
               name="search"
               onChange={onInputChange}
               placeholder={`Find ${contentName}`}
-              ref={inputRef}
               type="search"
               value={searchValue}
             />

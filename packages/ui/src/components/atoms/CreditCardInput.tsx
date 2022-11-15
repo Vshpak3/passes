@@ -48,11 +48,13 @@ export const CreditCardInput: FC<CreditCardInputProps> = ({
               <MasterCardIcon />
             </span>
             <input
+              autoComplete="cc-number"
               className={classNames(
                 "block min-h-[50px] w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent p-3 text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500",
                 error && "border-red-500"
               )}
               maxLength={19}
+              name={name}
               onChange={(event) => handleChange(event, onChange)}
               placeholder="Card number"
               value={visibleValue}
