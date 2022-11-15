@@ -1,9 +1,9 @@
 import classNames from "classnames"
 import Link from "next/link"
+import CheckVerified from "public/icons/check-verified-03.svg"
 import { FC } from "react"
 
 import { Text } from "src/components/atoms/Text"
-import { CheckVerified } from "src/icons/CheckVerified"
 
 interface NameDisplayProps {
   username: string
@@ -41,7 +41,7 @@ export const NameDisplay: FC<NameDisplayProps> = ({
         {" @" + username}
       </Text>
       {isCreator && (
-        <span className="min-h-[18px] min-w-[18px]">
+        <span className="max-h-[18px] min-h-[18px] min-w-[18px] max-w-[18px]">
           <CheckVerified height={18} width={18} />
         </span>
       )}
@@ -57,8 +57,8 @@ export const NameDisplay: FC<NameDisplayProps> = ({
         <div className="mb-1 flex truncate">
           <div className="truncate">{displayName}</div>
           {isCreator && (
-            <span className="ml-2 flex min-h-[18px] min-w-[18px] flex-col justify-center">
-              <CheckVerified height={18} width={18} />
+            <span className="ml-2 flex max-h-[18px] min-h-[18px] min-w-[18px] max-w-[18px] flex-col justify-center">
+              <CheckVerified />
             </span>
           )}
         </div>
