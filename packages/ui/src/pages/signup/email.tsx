@@ -122,12 +122,12 @@ const SignupEmailPage: FC = () => {
           >
             Email sent!
           </Text>
-          <Text className="mb-1 pb-2 text-[#b3bee7] opacity-[0.75]">
+          <Text className="mx-1 pb-2 text-[#b3bee7] opacity-[0.75]">
             We have sent an email to you to verify your email address. <br />
             Please click in the link your email to continue.
           </Text>
           <Button
-            disabled={isSubmitting || hasResentEmail}
+            disabled={hasResentEmail}
             disabledClass="opacity-[0.5]"
             onClick={resendEmail}
             type={ButtonTypeEnum.SUBMIT}
@@ -141,7 +141,7 @@ const SignupEmailPage: FC = () => {
             </Text>
           </Button>
           {hasResentEmail && (
-            <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+            <Text className="my-3 text-[#b3bee7] opacity-[0.75]">
               We have resent an email to you to verify your email address.
             </Text>
           )}
