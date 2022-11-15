@@ -11,7 +11,7 @@ import iso3311a2 from "iso-3166-1-alpha-2"
 import ArrowRightIcon from "public/icons/arrow-right.svg"
 import InfoIcon from "public/icons/info-icon.svg"
 import { FC, memo, useEffect, useMemo, useState } from "react"
-import { useForm } from "react-hook-form"
+import { FieldValues, useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
 import { object, string } from "yup"
@@ -20,7 +20,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { Select } from "src/components/atoms/input/Select"
+import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { FULL_NAME_REGEX } from "src/config/name"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
@@ -36,11 +36,11 @@ interface NewCardProps {
   isEmbedded?: boolean
 }
 
-interface CardForm {
+interface CardForm extends FieldValues {
   "cc-name": string
   "cc-number": string
-  "cc-exp-month": string // eslint-disable-line sonarjs/no-duplicate-string
-  "cc-exp-year": string // eslint-disable-line sonarjs/no-duplicate-string
+  "cc-exp-month": string
+  "cc-exp-year": string
   "cc-csc": string
   "postal-code": string
   "address-line1": string
@@ -91,9 +91,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
     register,
     control,
     watch,
-    getValues,
     handleSubmit,
-    setValue,
     formState: { errors }
   } = useForm<CardForm>({
     defaultValues: {
@@ -204,30 +202,26 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
-          <Select
+          <SelectInput
             autoComplete="cc-exp-month"
             className="mt-2 w-[100px]"
+            control={control}
             errors={errors}
             name="cc-exp-month"
-            onChange={(month: string) => setValue("cc-exp-month", month)}
-            register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
             )}
-            value={getValues("cc-exp-month") || undefined}
           />
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
-          <Select
+          <SelectInput
             autoComplete="cc-exp-year"
             className="mt-2 w-[100px]"
+            control={control}
             errors={errors}
             name="cc-exp-year"
-            onChange={(year: string) => setValue("cc-exp-year", year)}
-            register={register}
             selectOptions={years}
-            value={getValues("cc-exp-year")}
           />
         </div>
         <div className="mb-4 flex flex-col">
@@ -263,15 +257,14 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         register={register}
         type="text"
       />
-      <Select
+      <SelectInput
         autoComplete="country"
         className="mt-3"
+        control={control}
         defaultValue={COUNTRIES[0]}
         errors={errors}
         name="country"
-        onChange={(newValue: string) => setValue("country", newValue)}
         placeholder="Country"
-        register={register}
         selectOptions={COUNTRIES}
       />
       <Input
@@ -285,14 +278,13 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       />
       <div className="flex gap-4">
         {countrySelected === COUNTRIES[0] ? (
-          <Select
+          <SelectInput
             autoComplete="address-level1"
             className="mt-3 w-[120px]"
+            control={control}
             errors={errors}
             name="district"
-            onChange={(newValue: string) => setValue("district", newValue)}
             placeholder="State"
-            register={register}
             selectOptions={US_STATES}
             showOnTop
           />

@@ -22,7 +22,7 @@ export type SelectOption = {
 type FormSelectOption = string | SelectOption
 type FormSelectOptions = Array<FormSelectOption>
 
-type SelectProps = {
+export type SelectProps = {
   label?: FormLabel
   name: FormName
   autoComplete?: FormAutoComplete | "off"
