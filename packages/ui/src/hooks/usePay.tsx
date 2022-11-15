@@ -47,13 +47,14 @@ export const usePay = (
   const { setPayin, reset, complete } = useContext(ThreeDSContext)
 
   const checkProvider = async (
+    name: string,
     provider: PhantomProvider | EthereumProvider | undefined | null,
     cancelPayinCallback: () => Promise<void>
   ) => {
     if (!provider) {
       //display message to user
       cancelPayinCallback()
-      throw new Error("Wallet provider does not exist")
+      throw new Error(`${name} is not installed on your browser`)
     }
   }
 
@@ -107,7 +108,7 @@ export const usePay = (
       cancelPayinCallback: () => Promise<void>
     ) => {
       const provider = detectSolanaProvider({}) as PhantomProvider
-      await checkProvider(provider, cancelPayinCallback)
+      await checkProvider("Phantom", provider, cancelPayinCallback)
       try {
         await executePhantomUSDCProvider(
           provider,
@@ -138,7 +139,7 @@ export const usePay = (
       const provider = (await detectEthereumProvider({
         mustBeMetaMask: true
       })) as EthereumProvider
-      await checkProvider(provider, cancelPayinCallback)
+      await checkProvider("MetaMask", provider, cancelPayinCallback)
       const account = await connectMetamask(provider)
       await executeMetamaskUSDCProvider(
         account,
@@ -162,7 +163,7 @@ export const usePay = (
       const provider = (await detectEthereumProvider({
         mustBeMetaMask: true
       })) as EthereumProvider
-      await checkProvider(provider, cancelPayinCallback)
+      await checkProvider("MetaMask", provider, cancelPayinCallback)
       if (registerResponse.amountEth === undefined) {
         //display message to user
         cancelPayinCallback()

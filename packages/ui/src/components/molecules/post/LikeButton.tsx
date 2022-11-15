@@ -1,8 +1,7 @@
 import { LikeApi, PostDto } from "@passes/api-client"
 import classNames from "classnames"
-import React, { FC, useCallback, useMemo } from "react"
+import { FC, useCallback, useMemo } from "react"
 
-import { errorMessage } from "src/helpers/error"
 import { compactNumberFormatter } from "src/helpers/formatters"
 import { HeartIcon } from "src/icons/HeartIcon"
 
