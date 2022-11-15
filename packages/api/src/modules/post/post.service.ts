@@ -895,8 +895,8 @@ export class PostService {
         `${UserEntity.table}.id`,
         `${PostUserAccessEntity.table}.user_id`,
       )
+      .whereNotNull(`${PostUserAccessEntity.table}.paid_at`)
       .where(`${PostUserAccessEntity.table}.post_id`, postId)
-      .where(`${PostUserAccessEntity.table}.user_id`, userId)
       .select(
         `${PostUserAccessEntity.table}.id`,
         `${PostUserAccessEntity.table}.user_id`,

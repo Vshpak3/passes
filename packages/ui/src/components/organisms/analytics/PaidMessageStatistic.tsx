@@ -5,6 +5,7 @@ import React, { FC, useState } from "react"
 import { toast } from "react-toastify"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
+import { MessageBuyerDialog } from "src/components/molecules/analytics/MessageBuyerDialog"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { PaidMessageStatisticCachedProps } from "./PaidMessageStatisticCached"
@@ -21,6 +22,7 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
     useState(false)
   const [hidePaidMessageModelOpen, setHidePaidMessageModelOpen] =
     useState(false)
+  const [messageBuyerDialogOpen, setMessageBuyerDialogOpen] = useState(false)
 
   const {
     paidMessageId,
@@ -91,7 +93,10 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
         <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
           <span className="text-[12px] font-[500]">{sentTo}</span>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center">
+        <div
+          className="flex h-[72px] flex-1 items-center justify-center hover:cursor-pointer"
+          onClick={() => setMessageBuyerDialogOpen(true)}
+        >
           <span className="text-[12px] font-[500]">{numPurchases}</span>
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center">
@@ -142,6 +147,12 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
           onClose={() => setHidePaidMessageModelOpen(false)}
           onDelete={hidePaidMessage}
           text="Remove"
+        />
+      )}
+      {messageBuyerDialogOpen && (
+        <MessageBuyerDialog
+          onClose={() => setMessageBuyerDialogOpen(false)}
+          paidMessageId={paidMessageId}
         />
       )}
     </>

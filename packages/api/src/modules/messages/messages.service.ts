@@ -1155,7 +1155,7 @@ export class MessagesService {
   ) {
     await this.dbWriter.transaction(async (trx) => {
       await trx<MessageEntity>(MessageEntity.table)
-        .update({ paid_at: null })
+        .update({ paid_at: null, payer_id: null })
         .where({ id: messageId })
       await trx<PaidMessageEntity>(PaidMessageEntity.table)
         .where({ id: paidMessageId })
@@ -1564,7 +1564,7 @@ export class MessagesService {
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
-        `${MessageEntity.table}.user_id`,
+        `${MessageEntity.table}.payer_id`,
       )
       .where(`${MessageEntity.table}.payer_id`, userId)
       .where(`${MessageEntity.table}.paid_message_id`, paidMessageId)
