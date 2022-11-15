@@ -252,7 +252,7 @@ export const EditProfile: FC<EditProfileProps> = ({
                   )}
                   onError={({ currentTarget }) => {
                     currentTarget.onerror = null
-                    currentTarget.src = "/img/profile/select-banner-img.png"
+                    currentTarget.src = "/img/profile/default-banner.png"
                   }}
                   src={profileBannerUrl}
                 />
