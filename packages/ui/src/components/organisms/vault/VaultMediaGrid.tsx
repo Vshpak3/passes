@@ -66,8 +66,10 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
       ref={ref}
     >
       <MediaModal
+        childrenClassname="p-0"
         file={{ content }}
         isOpen={isViewMediaModal}
+        modalContainerClassname="p-0"
         setOpen={setIsViewMediaModal}
       />
       <InfiniteScrollPagination<ContentDto, GetVaultQueryResponseDto>

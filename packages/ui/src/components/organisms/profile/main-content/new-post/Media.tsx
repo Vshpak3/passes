@@ -37,6 +37,7 @@ export const Media: FC<MediaProp> = ({
   noRender,
   noRenderString
 }) => {
+  const fitContent = "fit-content"
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
       <>
@@ -56,7 +57,7 @@ export const Media: FC<MediaProp> = ({
             controls
             controlsList="nodownload"
             src={src}
-            style={{ width: contentWidth, height: contentHeight }}
+            style={{ width: fitContent, height: contentHeight }}
           />
         )}
         {!preview && (
@@ -81,8 +82,8 @@ export const Media: FC<MediaProp> = ({
           src={src}
           style={{
             objectFit,
-            maxHeight: contentHeight || "fit-content",
-            maxWidth: contentWidth || "fit-content"
+            maxHeight: contentHeight || fitContent,
+            maxWidth: contentWidth || fitContent
           }}
         />
         {!preview && (
