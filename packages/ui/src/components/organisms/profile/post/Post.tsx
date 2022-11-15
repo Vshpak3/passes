@@ -5,7 +5,6 @@ import { useRouter } from "next/router"
 import { FC, memo, useContext, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 
-import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
@@ -163,7 +162,6 @@ const PostUnmemo: FC<PostProps> = ({
                     openBuyModal={() => setPost(post)}
                     paid={!!paidAt || accessible}
                     paying={paying}
-                    price={price}
                   />
                 )}
               </>
