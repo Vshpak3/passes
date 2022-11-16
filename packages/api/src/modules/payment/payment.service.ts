@@ -343,10 +343,6 @@ export class PaymentService {
     }
     // save metadata into subscription for repeat purchases
     if (payin.target) {
-      if (await this.checkPayinTargetBlocked(payin.target)) {
-        await this.failPayin(payin.payinId, payin.userId)
-        throw new BadRequestException('Payment for item already in progress')
-      }
       await this.dbWriter<SubscriptionEntity>(SubscriptionEntity.table)
         .where({ target: payin.target, user_id: payin.userId })
         .update({
@@ -1178,6 +1174,13 @@ export class PaymentService {
     }
     const payinDto = new PayinDto(payin)
     let entryResponseDto: PayinEntryResponseDto
+    if (
+      payinDto.target &&
+      (await this.checkPayinTargetBlocked(payinDto.target))
+    ) {
+      await this.failPayin(payinDto.payinId, payinDto.userId)
+      throw new BadRequestException('Payment for item already in progress')
+    }
     try {
       await this.dbWriter<PayinEntity>(PayinEntity.table)
         .update({ payin_status: PayinStatusEnum.CREATED_READY })
