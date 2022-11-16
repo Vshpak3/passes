@@ -1198,7 +1198,6 @@ export class PaymentService {
         default:
           throw new NoPayinMethodError('entrypoint hit with no method')
       }
-
       await this.dbWriter<PayinEntity>(PayinEntity.table)
         .update({ payin_status: PayinStatusEnum.CREATED_READY })
         .where({ id: entryDto.payinId })
@@ -1767,6 +1766,7 @@ export class PaymentService {
       .where({ id: payinId })
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
+        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
         PayinStatusEnum.ACTION_REQUIRED,
