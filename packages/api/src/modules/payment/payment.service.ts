@@ -1179,6 +1179,11 @@ export class PaymentService {
     const payinDto = new PayinDto(payin)
     let entryResponseDto: PayinEntryResponseDto
     try {
+      await this.dbWriter<PayinEntity>(PayinEntity.table)
+        .update({ payin_status: PayinStatusEnum.CREATED_READY })
+        .where({ id: entryDto.payinId })
+
+      await handleCreationCallback(payin, this, this.dbWriter)
       switch (payinDto.payinMethod.method) {
         case PayinMethodEnum.CIRCLE_CARD:
           entryResponseDto = await this.entryCircleCard(
@@ -1198,15 +1203,11 @@ export class PaymentService {
         default:
           throw new NoPayinMethodError('entrypoint hit with no method')
       }
-      await this.dbWriter<PayinEntity>(PayinEntity.table)
-        .update({ payin_status: PayinStatusEnum.CREATED_READY })
-        .where({ id: entryDto.payinId })
     } catch (err) {
       await this.unregisterPayin(payinDto.payinId, userId)
+      await this.uncreatePayin(payinDto.payinId, userId)
       throw err
     }
-
-    await handleCreationCallback(payin, this, this.dbWriter)
     return entryResponseDto
   }
 
@@ -1766,7 +1767,6 @@ export class PaymentService {
       .where({ id: payinId })
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
-        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
         PayinStatusEnum.ACTION_REQUIRED,
@@ -1793,7 +1793,6 @@ export class PaymentService {
       .andWhere({ user_id: userId })
       .andWhere('payin_status', 'in', [
         PayinStatusEnum.ACTION_REQUIRED,
-        PayinStatusEnum.CREATED_READY,
         PayinStatusEnum.CREATED,
         PayinStatusEnum.PENDING,
       ])
