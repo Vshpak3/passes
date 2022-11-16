@@ -11,21 +11,44 @@ import { getComponentName } from "./WithNormalPageLayout"
 const REFRESH_MAX_SECONDS = 10
 
 interface LoginWrapperProps {
+  routeOnTokenChange?: boolean
   routeOnlyIfAuth?: boolean
   refreshUnverifiedToken?: boolean
 }
 
 const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   children,
-  routeOnlyIfAuth,
-  refreshUnverifiedToken
+  routeOnTokenChange = true,
+  routeOnlyIfAuth = false,
+  refreshUnverifiedToken = false
 }) => {
-  const [secondsSinceRefresh, setSecondsSinceRefresh] = useState(1)
-  const [refreshed, setRefreshed] = useState(!refreshUnverifiedToken)
-  const [ready, setReady] = useState(false)
-  const { userClaims, setAccessToken } = useUser()
   const router = useRouter()
   const { safePush } = useSafeRouter()
+  const { accessToken, setAccessToken, userClaims } = useUser()
+
+  const [ready, setReady] = useState(false)
+  const [refreshed, setRefreshed] = useState(!refreshUnverifiedToken)
+  const [secondsSinceRefresh, setSecondsSinceRefresh] = useState(1)
+
+  useEffect(() => {
+    if (router.isReady && refreshed) {
+      const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
+      setReady(!redirected)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router, refreshed])
+
+  useEffect(() => {
+    if (routeOnTokenChange && accessToken) {
+      authRouter(safePush, accessToken)
+    }
+  }, [accessToken, safePush, routeOnTokenChange])
+
+  // Unverified Refreshing
+  // There can be issues if you are mid-authentition (e.g. on the email or signup
+  // pages) you continue in another browser/device. This commonly happens if the
+  // verificaiton email is opened elsewhere. The below logic accounts for the this
+  // situation.
 
   const _refreshUnverifiedToken = async () => {
     await new AuthApi()
@@ -36,7 +59,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
         return t
       })
       .catch((e) => e)
-    setRefreshed(true)
+    setRefreshed(true) // only needed for initial call on page load
   }
 
   useEffect(() => {
@@ -54,15 +77,6 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
     return () => clearInterval(interval)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsSinceRefresh])
-
-  useEffect(() => {
-    if (router.isReady && refreshed) {
-      const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
-      setReady(!redirected)
-    }
-    // This is intended to only run on page load to ensure direction from page
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, refreshed])
 
   return (
     <>{ready ? children : <div className="h-screen w-screen bg-black" />}</>

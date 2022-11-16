@@ -26,7 +26,6 @@ import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { errorMessage } from "src/helpers/error"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
-import { useUser } from "src/hooks/useUser"
 import { WithLoginPageLayout } from "src/layout/WithLoginPageLayout"
 import { deleteAllCookies } from "./logout"
 
@@ -46,7 +45,6 @@ const loginPageSchema: SchemaOf<LoginPageSchema> = object({
 
 const LoginPage: FC = () => {
   const router = useRouter()
-  const { mutate } = useUser()
   const { auth } = useAuthEvent()
 
   const {
@@ -57,17 +55,12 @@ const LoginPage: FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const loginUser = async (email: string, password: string) => {
-    await auth(
-      async () => {
-        const api = new AuthLocalApi()
-        return await api.loginWithEmailPassword({
-          localUserLoginRequestDto: { email, password }
-        })
-      },
-      async () => {
-        mutate()
-      }
-    )
+    await auth(async () => {
+      const api = new AuthLocalApi()
+      return await api.loginWithEmailPassword({
+        localUserLoginRequestDto: { email, password }
+      })
+    })
   }
 
   const onSubmit = async (values: LoginPageSchema) => {
