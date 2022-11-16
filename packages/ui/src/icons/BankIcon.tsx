@@ -21,7 +21,6 @@ export const BankIcon: FC<BankIconProps> = ({
   >
     <path
       d="M19.5 9V17M5.5 9V17V9ZM10 9V17V9ZM15 9V17V9Z"
-      opacity="0.4"
       stroke="white"
       strokeLinecap="round"
       strokeLinejoin="round"

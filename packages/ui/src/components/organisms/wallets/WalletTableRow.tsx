@@ -152,16 +152,12 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
       <td className="min-w-[160px] py-3">
         <div className="flex justify-center">
           <Button
-            className="h-[36px] w-[36px] text-passes-primary-color"
+            className="h-[36px] w-[36px]"
             disabled={wallet.custodial}
             onClick={onDeleteHandler}
             variant={ButtonVariant.PINK_OUTLINE}
           >
-            {wallet.custodial ? (
-              <LockOutlineIcon className="absolute z-10 -translate-x-1/2" />
-            ) : (
-              <DeleteOutlineIcon className="absolute z-10 -translate-x-1/2" />
-            )}
+            {wallet.custodial ? <LockOutlineIcon /> : <DeleteOutlineIcon />}
           </Button>
         </div>
       </td>

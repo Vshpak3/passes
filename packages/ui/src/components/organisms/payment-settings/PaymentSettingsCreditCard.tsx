@@ -34,17 +34,13 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
 
   return (
     <div className="mt-8 flex flex-col">
-      <h3 className="text-[18px] font-bold text-white">
+      <h3 className="text-lg font-bold text-white">
         Add Card as a Payment Method
       </h3>
-      <div className="w-[130px]">
+      <div>
         <Button
-          className="mt-5 mb-6 rounded-md"
-          icon={
-            <div className="pr-2">
-              <CardIcon />
-            </div>
-          }
+          className="mt-5 mb-6"
+          icon={<CardIcon />}
           onClick={
             isEmbedded
               ? () => setOpen(true)

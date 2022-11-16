@@ -52,7 +52,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
 
   return (
     <div className="flex flex-col">
-      <h3 className="mb-3 text-[18px] font-bold text-white">
+      <h3 className="mb-3 text-lg font-bold text-white">
         Add Crypto Wallet as a Payment Method
       </h3>
       <div className="flex w-full flex-wrap md:flex-nowrap">

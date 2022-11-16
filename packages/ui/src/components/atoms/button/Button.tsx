@@ -95,7 +95,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
         fontSize={fontSize}
         style={{ lineHeight: 1 }}
       >
-        {icon}
+        {Boolean(icon) && <span className="mr-2">{icon}</span>}
+        {/* {icon} */}
         {children}
       </Text>
     </button>
