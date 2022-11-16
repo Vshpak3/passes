@@ -20,7 +20,7 @@ export const useCreatorPasses = (creatorId?: string) => {
     { revalidateOnMount: true }
   )
 
-  // Note, this does not retrieve immediately
+  // TODO - far futuer: consider pagination
   const { data: passes, mutate: mutatePasses } = useSWR(
     creatorId ? [CACHE_KEY_CREATOR_PASSES, creatorId] : null,
     async () => {
@@ -29,7 +29,8 @@ export const useCreatorPasses = (creatorId?: string) => {
           getPassesRequestDto: { creatorId }
         })
       ).data
-    }
+    },
+    { revalidateOnMount: true }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()

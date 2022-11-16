@@ -4,7 +4,7 @@ import {
   GetProfileFeedResponseDto,
   PostDto
 } from "@passes/api-client"
-import { FC, memo, useContext } from "react"
+import { FC, memo, useContext, useMemo } from "react"
 
 import { FeedEnd } from "src/components/atoms/feed/FeedEnd"
 import { FeedLoader } from "src/components/atoms/feed/FeedLoader"
@@ -28,6 +28,10 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const { pinnedPosts } = useContext(ProfileContext)
   usePostWebhook()
 
+  const fetchProps = useMemo(() => {
+    return { creatorId: profileUserId, pinned: false }
+  }, [profileUserId])
+
   return (
     <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
       KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
@@ -42,7 +46,7 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           getProfileFeedRequestDto: req
         })
       }}
-      fetchProps={{ creatorId: profileUserId, pinned: false }}
+      fetchProps={fetchProps}
       keySelector="postId"
       keyValue={`/pages/feed/creator/${profileUserId}`}
       loadingElement={FeedLoader}

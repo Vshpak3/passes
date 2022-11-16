@@ -4,7 +4,7 @@ import {
   PassApi,
   PassDto
 } from "@passes/api-client"
-import { FC, useState } from "react"
+import { FC, useMemo, useState } from "react"
 
 import {
   ComponentArg,
@@ -24,6 +24,11 @@ interface PassesFeedProps {
 export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
   const [selectedPassType, setSelectedPassType] = useState<PassType>()
   usePassWebhook()
+
+  const fetchProps = useMemo(() => {
+    return { creatorId, type: selectedPassType }
+  }, [creatorId, selectedPassType])
+
   return (
     <div className="m-5">
       <SelectPassFilter onSelectedPassType={setSelectedPassType} />
@@ -40,7 +45,7 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
             getPassesRequestDto: req
           })
         }}
-        fetchProps={{ creatorId, type: selectedPassType }}
+        fetchProps={fetchProps}
         keySelector="passId"
         keyValue={`/pages/pass/creator-passes/${creatorId}`}
         style={{ overflow: "visible" }}

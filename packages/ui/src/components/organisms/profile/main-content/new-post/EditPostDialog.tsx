@@ -22,6 +22,7 @@ export const EditPostDialog: FC<EditPostDialogProps> = ({ onCancel, post }) => {
       mutatePasses()
     }
   }, [mutatePasses, passes])
+  console.log(passes)
 
   return (
     <Dialog

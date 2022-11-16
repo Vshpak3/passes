@@ -4,7 +4,7 @@ import {
   GetFanWallRequestDto,
   GetFanWallResponseDto
 } from "@passes/api-client"
-import { FC } from "react"
+import { FC, useMemo } from "react"
 
 import { FeedEnd } from "src/components/atoms/feed/FeedEnd"
 import { FeedLoader } from "src/components/atoms/feed/FeedLoader"
@@ -26,7 +26,9 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
   ownsProfile
 }) => {
   const { accessToken } = useUser()
-
+  const fetchProps = useMemo(() => {
+    return { creatorId: profileUserId }
+  }, [profileUserId])
   return (
     <InfiniteScrollPagination<FanWallCommentDto, GetFanWallResponseDto>
       KeyedComponent={({ arg }: ComponentArg<FanWallCommentDto>) => {
@@ -45,7 +47,7 @@ export const FanWallFeed: FC<FanWallFeedProps> = ({
           getFanWallRequestDto: req
         })
       }}
-      fetchProps={{ creatorId: profileUserId }}
+      fetchProps={fetchProps}
       keySelector="fanWallCommentId"
       keyValue={`/pages/fanwall/${profileUserId}`}
       loadingElement={FeedLoader}

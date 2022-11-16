@@ -24,9 +24,6 @@ export const ChannelGalleryView: FC<ChannelGalleryViewProps> = ({
   selectedChannel,
   isCreator
 }) => {
-  // TODO: Replace mocked content with real content when chat is up and there is media in a specific channel
-  // const pendingContent = content.filter((media) => media.locked)
-  // const purchasedContent = content.filter((media) => !media.locked)
   return (
     <div className="flex h-full flex-wrap items-start justify-start gap-2 overflow-auto p-[10px]">
       <InfiniteScrollPagination<MessageDto, GetMessagesResponseDto>
