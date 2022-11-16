@@ -40,7 +40,8 @@ type Folders = keyof typeof FOLDER_BUCKET_MAP
 type S3Bucket = { [K in typeof FOLDER_BUCKET_MAP[Folders]]: string }
 
 // use transfer acceleration for content that exceeds threshold size
-const S3_TRANSFER_ACCELERATION_THRESHOLD = 1_000_000_000 // 1GB
+// DISABLE TEMP
+const S3_TRANSFER_ACCELERATION_THRESHOLD = 10_000_000_000 // 1GB
 
 @Injectable()
 export class S3ContentService {
