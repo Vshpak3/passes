@@ -56,7 +56,6 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
           <>
             <button
               className={classNames(
-                fixedHeight ? "max-h-[75vh]" : "",
                 messagesView && fixedHeight
                   ? "max-h-[400px]"
                   : fixedHeight
