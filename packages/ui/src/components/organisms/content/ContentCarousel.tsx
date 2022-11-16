@@ -22,7 +22,7 @@ export interface ContentCarouselProps {
   price?: number
   openBuyModal?: () => void
   messagesView?: boolean
-  isOwner: boolean
+  isOwner?: boolean
 }
 
 export const ContentCarousel: FC<ContentCarouselProps> = ({
@@ -35,7 +35,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   openBuyModal,
   activeIndex = 0,
   messagesView = false,
-  isOwner
+  isOwner = false
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const hasAccess = paid || price === 0 || previewIndex >= contents.length
