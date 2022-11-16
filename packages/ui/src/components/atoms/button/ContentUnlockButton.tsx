@@ -20,7 +20,7 @@ export const ContentUnlockButton: FC<ContentUnlockButtonProps> = ({
   <button
     className={classNames(
       className,
-      "flex w-full items-center justify-center gap-[10px] rounded-[5px] border-none bg-[#B52A6F] py-[9px] text-base font-medium text-white shadow-sm"
+      "flex w-full items-center justify-center gap-[10px] rounded-[5px] border-none bg-passes-pink-100 py-[9px] text-base font-medium text-white shadow-sm"
     )}
     disabled={isDisabled}
     onClick={onClick}

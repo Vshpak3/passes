@@ -265,7 +265,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
           {unreadCount > 0 && (
             <div className="absolute bottom-0 z-20 flex w-full items-center justify-center self-center">
               <button
-                className="z-20 flex items-center justify-center self-center rounded border border-[#3A444C]/30 bg-[#B52A6F]/25 py-2.5 px-6"
+                className="z-20 flex items-center justify-center self-center rounded border border-[#3A444C]/30 bg-passes-pink-100/25 py-2.5 px-6"
                 onClick={handleScrollToBottom}
               >
                 <ArrowDownIcon />

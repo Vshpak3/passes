@@ -88,7 +88,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
             <div
               className={classNames(
                 `flex flex-col justify-center gap-1 rounded border border-[#363037] p-2.5`,
-                message.automatic ? `bg-[#B52A6F]/[0.32]` : `bg-[#18090E]`,
+                message.automatic ? `bg-passes-pink-100/[0.32]` : `bg-[#18090E]`,
                 ownsMessage ? "items-end" : "items-start"
               )}
             >

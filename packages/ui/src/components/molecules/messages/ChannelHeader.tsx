@@ -86,7 +86,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 <div className="flex w-full items-center justify-between">
                   <div className="flex w-full items-center justify-start gap-[10px] overflow-x-auto">
                     <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
-                      <div className="flex w-fit items-center justify-center whitespace-nowrap bg-[#B52A6F] py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
+                      <div className="flex w-fit items-center justify-center whitespace-nowrap bg-passes-pink-100 py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
                         Total Spent
                       </div>
                       <div className="flex h-full w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
@@ -115,7 +115,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             onClick={() => setGallery(!gallery)}
           >
             <PhotosIcon className="flex shrink-0" />
-            <span className="text-sm text-[#B52A6F]">Gallery</span>
+            <span className="text-sm text-passes-pink-100">Gallery</span>
           </div>
         )}
       </div>

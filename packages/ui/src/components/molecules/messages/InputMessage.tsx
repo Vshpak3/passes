@@ -377,7 +377,7 @@ export const InputMessage: FC<InputMessageProps> = ({
               <div className="relative">
                 <div
                   className={classNames(
-                    "absolute left-4 text-[14px] font-medium leading-[25px] text-[#B52A6F] ",
+                    "absolute left-4 text-[14px] font-medium leading-[25px] text-passes-pink-100 ",
                     blocked === PayinDataDtoBlockedEnum.InsufficientTip ||
                       tip > MAX_TIP_MESSAGE_PRICE
                       ? "top-0.5 md:top-1"
@@ -396,7 +396,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                   </span>
                 ) : null}
                 <NumberInput
-                  className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-[#B52A6F] px-3 py-[6px] text-right focus:border-[#B52A6F]"
+                  className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-passes-pink-100 px-3 py-[6px] text-right focus:border-passes-pink-100"
                   name="tip"
                   register={register}
                   type="currency"
