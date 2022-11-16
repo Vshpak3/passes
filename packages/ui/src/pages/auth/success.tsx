@@ -8,7 +8,7 @@ import { useSafeRouter } from "src/hooks/useSafeRouter"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
-  const { auth } = useAuthEvent()
+  const { auth } = useAuthEvent(false)
   const { safePush } = useSafeRouter()
 
   useEffect(() => {
@@ -24,8 +24,8 @@ const AuthSuccess: FC = () => {
         }
       },
       async () => undefined,
-      async () => {
-        authRouter(safePush, router.query.accessToken)
+      async (token: string) => {
+        authRouter(safePush, token)
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
