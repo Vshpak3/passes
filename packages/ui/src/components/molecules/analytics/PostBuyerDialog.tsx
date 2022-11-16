@@ -29,7 +29,7 @@ export const PostBuyerDialog: FC<PostBuyerDialogProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] min-w-[400px] flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:rounded-[15px]"
+      className="flex h-[90vh] w-[50vw] min-w-[400px] max-w-[1200px] flex-col items-center justify-center border border-[#ffffff]/10 bg-[#0c0609] px-[29px] py-5 transition-all md:rounded-[15px]"
       footer={
         <div className="relative h-full pt-5">
           <div className="flex h-full flex-col items-start justify-start gap-3">
@@ -52,7 +52,8 @@ export const PostBuyerDialog: FC<PostBuyerDialogProps> = ({
                 fanInfo={{
                   listMemberId: arg.postUserAccessId,
                   ...arg,
-                  createdAt: arg.paidAt ?? new Date()
+                  createdAt: arg.paidAt ?? new Date(),
+                  follow: ""
                 }}
                 removable={false}
               />

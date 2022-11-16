@@ -1566,7 +1566,7 @@ export class MessagesService {
         `${UserEntity.table}.id`,
         `${MessageEntity.table}.payer_id`,
       )
-      .where(`${MessageEntity.table}.payer_id`, userId)
+      .whereNotNull(`${MessageEntity.table}.payer_id`)
       .where(`${MessageEntity.table}.paid_message_id`, paidMessageId)
       .select(
         `${MessageEntity.table}.id`,
