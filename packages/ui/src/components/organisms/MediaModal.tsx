@@ -2,7 +2,7 @@ import { ContentDto } from "@passes/api-client"
 import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 
 import { ContentCarousel } from "src/components/organisms/content/ContentCarousel"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { Media } from "src/components/organisms/profile/main-content/new-post/Media"
 import { MediaFile } from "src/components/organisms/profile/main-content/new-post/MediaFile"
 import { ContentService } from "src/helpers/content"
@@ -13,7 +13,6 @@ interface ModalProps {
   setOpen: Dispatch<SetStateAction<boolean>>
   file: ContentFile
   modalContainerClassname?: string
-  childrenClassname?: string
   carouselContent?: ContentDto[]
   activeIndex?: number
 }
@@ -23,7 +22,6 @@ export const MediaModal: FC<ModalProps> = ({
   setOpen,
   file,
   modalContainerClassname,
-  childrenClassname,
   carouselContent,
   activeIndex = 0
 }) => {
@@ -42,16 +40,10 @@ export const MediaModal: FC<ModalProps> = ({
   }, [])
 
   return (
-    <Modal
-      bare
-      childrenClassname={childrenClassname}
-      closable
-      closableOnScreen
-      isCloseOutside
-      isOpen={isOpen}
-      mobileFixed
-      modalContainerClassname={modalContainerClassname}
-      setOpen={setOpen}
+    <Dialog
+      className={modalContainerClassname}
+      onClose={() => setOpen(false)}
+      open={isOpen}
     >
       {carouselContent && (
         <div className="max-w-[900px]">
@@ -82,6 +74,6 @@ export const MediaModal: FC<ModalProps> = ({
           type={file.content.contentType}
         />
       )}
-    </Modal>
+    </Dialog>
   )
 }

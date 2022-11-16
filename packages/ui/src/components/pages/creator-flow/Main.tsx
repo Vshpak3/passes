@@ -11,7 +11,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { CreatorSteps } from "src/components/molecules/creator-flow/CreatorSteps"
 import { WelcomeToPasses } from "src/components/organisms/creator-flow/WelcomePasses"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { CustomizePageForm } from "src/components/pages/creator-flow/CustomizePageForm"
 import { PaymentForm } from "src/components/pages/creator-flow/PaymentForm"
 import { PersonaVerification } from "src/components/pages/creator-flow/PersonaVerification"
@@ -218,11 +218,10 @@ export const CreatorFlow = () => {
       </div>
 
       {!isMobile && (
-        <Modal
-          closable={false}
-          isOpen={isVerificationDialogOpen}
-          modalContainerClassname="!w-auto sm:flex hidden rounded-[15px] bg-[#12070E]/50 backdrop-blur-[50px]"
-          setOpen={setIsVerificationDialogOpen}
+        <Dialog
+          className="hidden !w-auto rounded-lg bg-passes-black/50 backdrop-blur-[50px] sm:flex"
+          onClose={() => setIsVerificationDialogOpen(false)}
+          open={isVerificationDialogOpen}
         >
           <div className="px-[72px] py-[95px] text-xl font-bold text-white">
             <div className="flex max-w-[624px] items-center justify-center">
@@ -232,18 +231,17 @@ export const CreatorFlow = () => {
               Just a moment while we transfer you to the verification screen...
             </div>
           </div>
-        </Modal>
+        </Dialog>
       )}
 
       {!isMobile && (
-        <Modal
-          closable={false}
-          isOpen={isWelcomeModalOpen}
-          modalContainerClassname="w-auto sm:flex hidden"
-          setOpen={setIsWelcomeModalOpen}
+        <Dialog
+          className="hidden w-auto sm:flex"
+          onClose={() => setIsWelcomeModalOpen(false)}
+          open={isWelcomeModalOpen}
         >
           <WelcomeToPasses />
-        </Modal>
+        </Dialog>
       )}
     </div>
   )

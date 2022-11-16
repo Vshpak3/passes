@@ -2,24 +2,31 @@ import classNames from "classnames"
 import React, { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
-import { Modal, ModalProps } from "src/components/organisms/Modal"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
+import { Dialog } from "src/components/organisms/Dialog"
 
-interface CreateNewListModalProps extends ModalProps {
+interface CreateNewListModalProps {
   onSubmit(listName: string): void
+  setOpen: (value: boolean) => void
+  isOpen: boolean
 }
 
 const CreateNewListModal: FC<CreateNewListModalProps> = ({
   onSubmit,
   setOpen,
-  ...rest
+  isOpen
 }) => {
   const [listName, setListName] = useState<string>("")
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setListName(e.target.value)
   }
   return (
-    <Modal setOpen={setOpen} {...rest}>
-      <span className="absolute top-[20px]">Create New List</span>
+    <Dialog
+      className="border border-white/10 bg-passes-black px-6 py-5 md:rounded-lg"
+      onClose={() => setOpen(false)}
+      open={isOpen}
+    >
+      <SectionTitle>Create New List</SectionTitle>
       <div className="relative flex flex-col pt-[18px]">
         <input
           className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80"
@@ -47,7 +54,7 @@ const CreateNewListModal: FC<CreateNewListModalProps> = ({
           </Button>
         </div>
       </div>
-    </Modal>
+    </Dialog>
   )
 }
 

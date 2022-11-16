@@ -1,7 +1,7 @@
 import Image from "next/image"
-import { FC, useEffect, useRef } from "react"
-import ReactModal from "react-modal"
+import { FC, useRef } from "react"
 
+import { Dialog } from "src/components/organisms/Dialog"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
 interface DeleteConfirmationModalProps {
@@ -28,41 +28,14 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
     onClose()
   })
 
-  useEffect(() => {
-    ReactModal.setAppElement("body")
-  }, [])
-
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={onClose}
-      shouldCloseOnOverlayClick
-      style={{
-        content: {
-          display: "flex",
-          flexGrow: 1,
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "fit-content",
-          height: "fit-content",
-          borderRadius: "6px",
-          // Overrides
-          padding: 0,
-          border: 0,
-          background: "transparent"
-        },
-        overlay: {
-          display: "flex",
-          alignItems: "center",
-          justifyItems: "center",
-          background: "rgba(0, 0, 0, 0.5)",
-          zIndex: 11
-        }
-      }}
+    <Dialog
+      className="border border-white/10 bg-passes-black px-6 py-5 md:rounded-lg"
+      onClose={onClose}
+      open={isOpen}
     >
       <div
-        className="m-auto w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-white/10"
+        className="m-auto w-[298px] py-3 px-6 md:w-auto md:min-w-[500px] md:border-white/10"
         id="popup-modal"
       >
         <div className="relative text-right">
@@ -107,6 +80,6 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
           </div>
         </div>
       </div>
-    </ReactModal>
+    </Dialog>
   )
 }

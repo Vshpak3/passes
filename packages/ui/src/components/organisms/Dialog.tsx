@@ -64,7 +64,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
           <div
             className={classNames(
               media ? "bg-black" : "bg-black/40",
-              "bg-opacity-15 fixed inset-0 bg-transparent"
+              "bg-opacity-15 fixed inset-0 overflow-scroll bg-transparent"
             )}
           />
         </Transition.Child>
@@ -88,8 +88,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                   )}
                   <div
                     className={classNames(
-                      "z-10 h-full w-full",
-                      innerScroll ? "overflow-y-hidden" : "overflow-y-scroll"
+                      "z-10 h-full w-full bg-passes-black",
+                      innerScroll ? "overflow-y-scroll" : "overflow-y-visible"
                     )}
                   >
                     {children}

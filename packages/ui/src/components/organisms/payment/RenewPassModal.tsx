@@ -10,7 +10,7 @@ import { PayinMethodDisplay } from "src/components/molecules/payment/PayinMethod
 import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { RenewPassButton } from "src/components/molecules/payment/RenewPassButton"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
 
 interface RenewPassModalProps {
@@ -42,11 +42,10 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
   } = passHolder
 
   return (
-    <Modal
-      closable={false}
-      isOpen={isOpen}
-      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
-      setOpen={setOpen}
+    <Dialog
+      className="flex w-full flex-col items-center justify-center border border-white/10 bg-passes-black px-6 py-5 transition-all md:w-[80%] md:rounded-[15px] lg:max-w-[30%]"
+      onClose={() => setOpen(false)}
+      open={isOpen}
     >
       {newCard ? (
         <NewCard callback={() => setNewCard(false)} isEmbedded />
@@ -101,6 +100,6 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
           </PaymentModalFooter>
         </>
       )}
-    </Modal>
+    </Dialog>
   )
 }

@@ -27,7 +27,7 @@ import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalB
 import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TipPostButton } from "src/components/molecules/payment/TipPostButton"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { LandingMessageEnum } from "src/helpers/landing-messages"
 import { usePay } from "src/hooks/usePay"
 
@@ -109,11 +109,10 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
   }, [isSubmitSuccessful, setPost])
 
   return (
-    <Modal
-      closable={false}
-      isOpen
-      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
-      setOpen={() => setPost(null)}
+    <Dialog
+      className="flex w-full flex-col items-center justify-center border border-white/10 bg-passes-black px-6 py-5 transition-all md:w-[80%] md:rounded-[15px] lg:max-w-[30%]"
+      onClose={() => setPost(null)}
+      open
     >
       {newCard ? (
         <NewCard callback={() => setNewCard(false)} isEmbedded />
@@ -158,7 +157,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
           </PaymentModalFooter>
         </>
       )}
-    </Modal>
+    </Dialog>
   )
 }
 

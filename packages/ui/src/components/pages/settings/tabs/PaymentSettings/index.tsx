@@ -3,7 +3,7 @@ import "react-date-range/dist/theme/default.css"
 import { PayinMethodDto } from "@passes/api-client"
 import { FC, memo, useState } from "react"
 
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { PaymentSettingsCreditCard } from "src/components/organisms/payment-settings/PaymentSettingsCreditCard"
 import { PaymentSettingsCrypto } from "src/components/organisms/payment-settings/PaymentSettingsCrypto"
 import { PaymentSettingsDefault } from "src/components/organisms/payment-settings/PaymentSettingsDefault"
@@ -31,14 +31,14 @@ const PaymentSettings: FC<PaymentSettingsProps> = ({ isEmbedded = false }) => {
   return (
     <>
       {isEmbedded && (
-        <Modal isOpen={open} setOpen={setOpen}>
+        <Dialog onClose={() => setOpen(false)} open={open}>
           <AddCard
             callback={() => {
               setOpen(false)
               getCards()
             }}
           />
-        </Modal>
+        </Dialog>
       )}
       {!isEmbedded && (
         <Tab

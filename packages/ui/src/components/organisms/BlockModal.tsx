@@ -6,8 +6,8 @@ import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
 import { Text } from "src/components/atoms/Text"
+import { Dialog } from "src/components/organisms/Dialog"
 import { errorMessage } from "src/helpers/error"
-import { Modal } from "./Modal"
 
 const BLOCKED_USER_LIST_PAGE = "/settings/privacy/safety/blocked"
 
@@ -50,7 +50,11 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
   }
 
   return (
-    <Modal isOpen setOpen={() => setBlockData(null)}>
+    <Dialog
+      className="border border-white/10 bg-passes-black px-6 py-5 md:rounded-lg"
+      onClose={() => setBlockData(null)}
+      open
+    >
       <h2 className="mb-5 font-[500] text-white">Block @{username}</h2>
       <RadioGroup
         className="flex flex-col gap-4"
@@ -102,7 +106,7 @@ const BlockModal: FC<BlockModalProps> = ({ blockData, setBlockData }) => {
           <Text className="text-white">Confirm</Text>
         </Button>
       </div>
-    </Modal>
+    </Dialog>
   )
 }
 

@@ -1,6 +1,8 @@
+import CloseIcon from "public/icons/sidebar/close.svg"
 import { Dispatch, FC, SetStateAction, useRef } from "react"
 
-import { Modal } from "src/components/organisms/Modal"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
+import { Dialog } from "src/components/organisms/Dialog"
 import { ContentService } from "src/helpers/content"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
@@ -20,11 +22,18 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
     setIsProfilePicModalOpen(false)
   })
   return (
-    <Modal
-      isOpen={isProfilePicModalOpen}
-      setOpen={setIsProfilePicModalOpen}
-      shouldCloseOnClickOutside
+    <Dialog
+      onClose={() => setIsProfilePicModalOpen(false)}
+      open={isProfilePicModalOpen}
     >
+      <div className="m-4 flex justify-end">
+        <Button
+          onClick={() => setIsProfilePicModalOpen(false)}
+          variant={ButtonVariant.NONE}
+        >
+          <CloseIcon />
+        </Button>
+      </div>
       <div className="flex flex-row justify-center" ref={containerEl}>
         <img
           alt=""
@@ -36,6 +45,6 @@ export const ProfileImageModal: FC<ProfileImageModalProps> = ({
           src={ContentService.profileImagePath(profileUserId)}
         />
       </div>
-    </Modal>
+    </Dialog>
   )
 }

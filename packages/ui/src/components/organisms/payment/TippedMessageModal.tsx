@@ -10,7 +10,7 @@ import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalB
 import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
 import { TippedMessageButton } from "src/components/molecules/payment/TippedMessageButton"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 
 interface TippedMessageModalProps {
   messageRequest: SendMessageRequestDto
@@ -40,11 +40,10 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
     selectedChannel
 
   return (
-    <Modal
-      closable={false}
-      isOpen
-      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
-      setOpen={() => setMessageRequest(null)}
+    <Dialog
+      className="flex w-full flex-col items-center justify-center border border-white/10 bg-passes-black px-6 py-5 transition-all md:w-[80%] md:rounded-lg lg:max-w-[30%]"
+      onClose={() => setMessageRequest(null)}
+      open
     >
       {newCard ? (
         <NewCard callback={() => setNewCard(false)} isEmbedded />
@@ -72,7 +71,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
           </PaymentModalFooter>
         </>
       )}
-    </Modal>
+    </Dialog>
   )
 }
 

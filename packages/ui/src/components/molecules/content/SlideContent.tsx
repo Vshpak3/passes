@@ -71,7 +71,6 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
               <MediaModal
                 activeIndex={activeIndex}
                 carouselContent={carouselContent}
-                childrenClassname="p-0"
                 file={{ content }}
                 isOpen={openModal}
                 modalContainerClassname="p-0"

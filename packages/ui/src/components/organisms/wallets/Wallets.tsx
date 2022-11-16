@@ -16,7 +16,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { useUserConnectedWallets } from "src/hooks/useUserConnectedWallets"
@@ -138,12 +138,12 @@ export const Wallets = () => {
 
   return (
     <>
-      <Modal
-        isOpen={isModalOpen}
-        modalContainerClassname="rounded-[15px]"
-        setOpen={setIsModalOpen}
+      <Dialog
+        className="border border-white/10 bg-passes-black px-6 py-5 md:rounded-lg"
+        onClose={() => setIsModalOpen(false)}
+        open={isModalOpen}
       >
-        <div className="md:px-10 md:pb-20">
+        <div className="md:px-10 md:pb-10">
           <h4 className="mt-5 text-center text-2xl font-bold dark:text-white">
             Choose Wallet to Connect
           </h4>
@@ -164,7 +164,7 @@ export const Wallets = () => {
             </div>
           </div>
         </div>
-      </Modal>
+      </Dialog>
       <div className="mt-4 flex w-full flex-col items-start justify-start xl:flex-row">
         <div>
           <Button

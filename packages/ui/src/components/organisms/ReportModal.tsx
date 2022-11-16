@@ -5,8 +5,8 @@ import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
 import { Text } from "src/components/atoms/Text"
+import { Dialog } from "src/components/organisms/Dialog"
 import { errorMessage } from "src/helpers/error"
-import { Modal } from "./Modal"
 
 export interface ReportModalData {
   userId: string
@@ -40,7 +40,11 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
   }
 
   return (
-    <Modal isOpen setOpen={() => setReportData(null)}>
+    <Dialog
+      className="border border-white/10 bg-passes-black px-6 py-5 md:rounded-lg"
+      onClose={() => setReportData(null)}
+      open
+    >
       <h2 className="mb-5 font-[500] text-white">Report @{username}</h2>
       <RadioGroup
         className="flex flex-col gap-4"
@@ -117,7 +121,7 @@ const ReportModal: FC<ReportModalProps> = ({ reportData, setReportData }) => {
           <Text className="text-white">Report</Text>
         </Button>
       </div>
-    </Modal>
+    </Dialog>
   )
 }
 

@@ -8,7 +8,7 @@ import { NewCard } from "src/components/molecules/payment/NewCard"
 import { PaymentModalBody } from "src/components/molecules/payment/PaymentModalBody"
 import { PaymentModalFooter } from "src/components/molecules/payment/PaymentModalFooter"
 import { PaymentModalHeader } from "src/components/molecules/payment/PaymentModalHeader"
-import { Modal } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { UnlockText } from "src/components/organisms/UnlockText"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency } from "src/helpers/formatters"
@@ -34,11 +34,10 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
   const { displayName, userId, username, price, postId } = post
 
   return (
-    <Modal
-      closable={false}
-      isOpen
-      modalContainerClassname="w-full md:w-[80%] lg:max-w-[30%]"
-      setOpen={() => setPost(null)}
+    <Dialog
+      className="flex w-full flex-col items-center justify-center border border-white/10 bg-passes-black px-6 py-5 transition-all md:w-[80%] md:rounded-[15px] lg:max-w-[30%]"
+      onClose={() => setPost(null)}
+      open
     >
       {newCard ? (
         <NewCard callback={() => setNewCard(false)} isEmbedded />
@@ -96,7 +95,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
           </PaymentModalFooter>
         </>
       )}
-    </Modal>
+    </Dialog>
   )
 }
 

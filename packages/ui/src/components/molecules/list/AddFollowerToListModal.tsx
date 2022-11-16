@@ -4,28 +4,34 @@ import SearchIcon from "public/icons/header-search-icon-2.svg"
 import React, { FC } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
+import { SectionTitle } from "src/components/atoms/SectionTitle"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
-import { Modal, ModalProps } from "src/components/organisms/Modal"
+import { Dialog } from "src/components/organisms/Dialog"
 import { useFollowerSearch } from "src/hooks/search/useFollowerSearch"
 
-interface AddFollowerToListModalProps extends ModalProps {
+interface AddFollowerToListModalProps {
   onSubmit(user: ListMemberDto): void
   listId: string
+  setOpen: (value: boolean) => void
+  isOpen: boolean
 }
 
 const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
   onSubmit,
   setOpen,
   listId,
-  ...rest
+  isOpen
 }) => {
   const { results, searchValue, onChangeInput, searchRef, setSearchValue } =
     useFollowerSearch(listId)
 
   return (
-    <Modal setOpen={setOpen} {...rest} childrenClassname="w-[692px]">
-      <span className="absolute top-[20px]">Add Users to the List</span>
-
+    <Dialog
+      className="border border-white/10 bg-[#0c0609] px-6 py-5 md:rounded-[15px]"
+      onClose={() => setOpen(false)}
+      open={isOpen}
+    >
+      <SectionTitle>Add Users to the List</SectionTitle>
       <div className="relative flex flex-col pt-[18px]">
         <div className="relative flex items-center gap-3">
           <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2" />
@@ -74,7 +80,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
           </Button>
         </div>
       </div>
-    </Modal>
+    </Dialog>
   )
 }
 
