@@ -75,23 +75,23 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
               ) : (
                 <>
                   {!!profile?.isCreator && (
-                    <>
-                      <FollowButton
-                        className="m-auto mt-3 h-[36px] w-[98px]"
-                        creatorId={profileUserId}
-                      />
-                      <Link
-                        className="m-auto h-[36px] w-[98px] pt-2"
-                        href={chatLink}
+                    <FollowButton
+                      className="m-auto mt-3 h-[36px] w-[98px]"
+                      creatorId={profileUserId}
+                    />
+                  )}
+                  {(!!profile?.isCreator || !!user?.isCreator) && (
+                    <Link
+                      className="m-auto h-[36px] w-[98px] pt-2"
+                      href={chatLink}
+                    >
+                      <Button
+                        className="w-full"
+                        variant={ButtonVariant.PINK_OUTLINE}
                       >
-                        <Button
-                          className="w-full"
-                          variant={ButtonVariant.PINK_OUTLINE}
-                        >
-                          <ChatIcon />
-                        </Button>
-                      </Link>
-                    </>
+                        <ChatIcon />
+                      </Button>
+                    </Link>
                   )}
                 </>
               )}
@@ -133,21 +133,20 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
           ) : (
             <>
               {!!profile?.isCreator && (
-                <>
-                  <FollowButton
-                    className="mb-2 h-[25px] w-[80px]"
-                    creatorId={profileUserId}
-                  />
-
-                  <Link href={chatLink}>
-                    <Button
-                      className="h-[25px] w-[80px]"
-                      variant={ButtonVariant.PINK_OUTLINE}
-                    >
-                      <ChatIcon />
-                    </Button>
-                  </Link>
-                </>
+                <FollowButton
+                  className="mb-2 h-[25px] w-[80px]"
+                  creatorId={profileUserId}
+                />
+              )}
+              {(!!profile?.isCreator || !!user?.isCreator) && (
+                <Link href={chatLink}>
+                  <Button
+                    className="h-[25px] w-[80px]"
+                    variant={ButtonVariant.PINK_OUTLINE}
+                  >
+                    <ChatIcon />
+                  </Button>
+                </Link>
               )}
               {!ownsProfile && (
                 <div className="mr-0 ml-auto">
