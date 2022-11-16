@@ -62,7 +62,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
                   autoplayVideo={autoplayVideo}
                   carouselContent={array}
                   content={c}
-                  fixedHeight={contents.length > 1}
+                  fixedHeight
                   index={index}
                   isActive={isActive}
                   messagesView={messagesView}
@@ -76,7 +76,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           <SwiperSlide>
             <LockedMedia
               contents={contents}
-              fixedHeight={contents.length > 1}
+              fixedHeight
               messagesView={messagesView}
               openBuyModal={openBuyModal}
               paying={paying}

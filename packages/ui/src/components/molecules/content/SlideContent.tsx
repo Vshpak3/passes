@@ -58,7 +58,7 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
               className={classNames(
                 fixedHeight ? "max-h-[75vh]" : "",
                 messagesView && fixedHeight
-                  ? "max-h-[45vh] md:max-h-[55vh]"
+                  ? "max-h-[400px]"
                   : fixedHeight
                   ? "max-h-[55vh] sm:max-h-[75vh]"
                   : "",

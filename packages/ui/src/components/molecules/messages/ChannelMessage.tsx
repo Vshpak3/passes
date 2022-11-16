@@ -75,7 +75,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mx-2 flex flex-col md:mx-4",
+            "mx-2 flex w-full flex-col md:mx-4",
             ownsMessage ? "items-end" : "items-start"
           )}
         >
@@ -87,7 +87,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           >
             <div
               className={classNames(
-                `flex flex-col justify-center gap-1 rounded border border-[#363037] p-2.5`,
+                `flex w-full flex-col justify-center gap-1 rounded border border-[#363037] p-2.5`,
                 message.automatic
                   ? `bg-passes-pink-100/[0.32]`
                   : `bg-[#18090E]`,
@@ -99,7 +99,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               </span>
               <div className="flex w-full flex-col items-center justify-center">
                 {!!messageContent.length && (
-                  <div className="w-[260px] min-w-[50vw] md:min-w-[403px] md:max-w-[403px]">
+                  <div className="w-full min-w-full max-w-full">
                     <MediaContent
                       contents={messageContent}
                       isOwner={ownsMessage}
