@@ -21,7 +21,7 @@ export const PostByUrl: FC<PostByUrlProps> = ({ postId }) => {
   return (
     <>
       {!hasInitialFetch || loadingPost ? (
-        <div className="pt-[100px]">
+        <div className="pt-16">
           <Loader />
         </div>
       ) : post ? (
@@ -31,7 +31,7 @@ export const PostByUrl: FC<PostByUrlProps> = ({ postId }) => {
             <div className="col-span-7 w-full pt-20 lg:col-span-4">
               <PostCached bordered post={post} postByUrl toUpdate={false} />
             </div>
-            <div className="col-span-3 hidden h-screen border-l-[0.5px] border-passes-gray lg:block" />
+            <div className="col-span-3 hidden h-screen border-l-[1px] border-passes-gray lg:block" />
           </div>
         </>
       ) : (
