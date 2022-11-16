@@ -48,7 +48,7 @@ export const WithNormalPageLayout = (
       <div
         className={classNames(
           "bg-passes-black",
-          "min-safe-h-screen relative w-full lg:pb-0",
+          "min-safe-h-screen relative flex w-full lg:pb-0",
           !options.noScroll && "pb-16"
         )}
       >
@@ -58,8 +58,8 @@ export const WithNormalPageLayout = (
             <div className="background-gradient fixed right-[5vw] top-[60vh] hidden h-[15vh] w-[15vh] blur-[13vh] md:block" />
           </>
         )}
-        <div className="mx-auto block max-w-[3000px]">
-          <div className="relative w-full grid-cols-10 md:grid">
+        <div className="mx-auto block max-w-[3000px] flex-1">
+          <div className="relative h-full w-full grid-cols-10 md:grid">
             {sidebar && <Sidebar />}
             <main
               className={classNames(

@@ -44,10 +44,11 @@ const ListUnmemo: FC<ListProps> = ({ list, removable, update }) => {
       {list.type === ListDtoTypeEnum.Normal ? (
         <Button
           className="flex h-[40px] w-[40px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
-          icon={<DeleteIcon />}
           onClick={() => setDeleteModalOpen(true)}
           variant={ButtonVariant.NONE}
-        />
+        >
+          <DeleteIcon />
+        </Button>
       ) : (
         <div className="flex h-[40px] w-[40px] items-center justify-center">
           <IconTooltip

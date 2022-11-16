@@ -1,5 +1,6 @@
 import { Disclosure } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
+import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import MenuIcon from "public/icons/sidebar/menu.svg"
 import { FC, useRef, useState } from "react"
 
@@ -51,13 +52,18 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
                 <CreatorSearchBar />
               </div>
             ) : (
-              <Button
-                className="mr-3"
-                onClick={handleSearchClick}
-                variant={ButtonVariant.NONE}
-              >
-                <SearchIcon height="25" width="25" />
-              </Button>
+              <div className="flex w-full flex-1 justify-between">
+                <span className="flex flex-1 justify-center">
+                  <PassesLogoPink />
+                </span>
+                <Button
+                  className="mr-3"
+                  onClick={handleSearchClick}
+                  variant={ButtonVariant.NONE}
+                >
+                  <SearchIcon height="25" width="25" />
+                </Button>
+              </div>
             ))}
         </div>
       )}
