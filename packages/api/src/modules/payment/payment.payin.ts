@@ -30,7 +30,7 @@ async function handleCallback(
     await db<PayinEntity>(PayinEntity.table)
       .update({
         payin_status: successfulCallbackStatus,
-        callback_output_json: output ? JSON.stringify(output) : {},
+        callback_output_json: output ? JSON.stringify(output) : '',
       })
       .where({ id: payin.id })
   } catch (err) {
