@@ -1,5 +1,5 @@
 import { PostDto } from "@passes/api-client"
-import { FC, useEffect } from "react"
+import { FC } from "react"
 
 import { Dialog } from "src/components/organisms/Dialog"
 import { NewPostEditor } from "src/components/organisms/profile/main-content/new-post/NewPostEditor"
@@ -13,16 +13,10 @@ interface EditPostDialogProps {
 }
 
 export const EditPostDialog: FC<EditPostDialogProps> = ({ onCancel, post }) => {
-  const { passes, mutatePasses } = useCreatorPasses(post.userId)
+  const { passes } = useCreatorPasses(post.userId)
   const { update, editPost } = usePost(post.postId)
   const { text, tags, previewIndex, expiresAt, price, contents, passIds } = post
   const passSet = new Set(passIds)
-  useEffect(() => {
-    if (!passes) {
-      mutatePasses()
-    }
-  }, [mutatePasses, passes])
-  console.log(passes)
 
   return (
     <Dialog
