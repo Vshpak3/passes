@@ -57,7 +57,7 @@ interface InfiniteScrollProps<A, T extends PagedData<A>> {
 }
 
 const defaultOptions: SWRInfiniteConfiguration = {
-  revalidateOnMount: true,
+  revalidateOnMount: false,
   revalidateAll: false,
   revalidateFirstPage: false,
   revalidateOnFocus: false,

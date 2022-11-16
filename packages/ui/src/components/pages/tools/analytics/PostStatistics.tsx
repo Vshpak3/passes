@@ -47,7 +47,6 @@ export const PostStatistics = () => {
         fetchProps={{}}
         keySelector="postId"
         keyValue="/pages/posts/statistics"
-        options={{ revalidateOnMount: true }}
       />
     </div>
   )

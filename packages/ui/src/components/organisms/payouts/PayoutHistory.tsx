@@ -139,7 +139,6 @@ export const PayoutHistory = () => {
           keySelector="payoutId"
           keyValue="/pages/payouts"
           options={{
-            revalidateOnMount: true,
             refreshInterval: ms("3 seconds")
           }}
         />

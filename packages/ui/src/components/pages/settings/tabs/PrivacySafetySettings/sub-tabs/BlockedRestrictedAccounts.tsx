@@ -40,7 +40,6 @@ const BlockedRestrictedAccounts = () => {
           }}
           keySelector="userId"
           keyValue="/pages/blocked"
-          options={{ revalidateOnMount: true }}
         />
       </div>
     </Tab>

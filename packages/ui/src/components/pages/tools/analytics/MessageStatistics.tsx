@@ -58,7 +58,6 @@ export const MessageStatistics = () => {
         fetchProps={{}}
         keySelector="paidMessageId"
         keyValue="/pages/paid-messages/statistics"
-        options={{ revalidateOnMount: true }}
       />
     </div>
   )
