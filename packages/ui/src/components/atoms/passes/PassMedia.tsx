@@ -40,17 +40,15 @@ export const PassMedia: FC<PassMediaProps> = ({
       : ContentService.passAnimationPath(passId, animationType)
     return (
       <>
-        {!!shouldUsePlaceholder && (
-          <video
-            autoPlay
-            className={classNames(shouldUsePlaceholder ? "hidden" : "")}
-            loop
-            muted
-            onLoadedData={handleLoadingAsset}
-          >
-            <source src={animationPath} type="video/mp4" />
-          </video>
-        )}
+        {<video
+          autoPlay
+          className={classNames(shouldUsePlaceholder ? "hidden" : "")}
+          loop
+          muted
+          onLoadedData={handleLoadingAsset}
+        >
+          <source src={animationPath} type="video/mp4" />
+        </video>
         {shouldUsePlaceholder && placeHolder}
       </>
     )
