@@ -125,17 +125,17 @@ export class ContentController {
   }
 
   @ApiEndpoint({
-    summary: 'Get pre signed url for profile image',
+    summary: 'Get pre signed url for uploading a profile image',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
-    responseDesc: 'Profile image was signed',
+    responseDesc: 'Profile image upload url was signed',
     role: RoleEnum.GENERAL,
   })
-  @Get('sign/profile/image')
-  async preSignProfileImage(
+  @Get('sign/upload/profile-image')
+  async preSignUploadProfileImage(
     @Req() req: RequestWithUser,
   ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignProfileImage(
+    const url = await this.contentService.preSignUploadProfileImage(
       req.user.id,
       'image',
     )
@@ -143,17 +143,17 @@ export class ContentController {
   }
 
   @ApiEndpoint({
-    summary: 'Get pre signed url for profile banner',
+    summary: 'Get pre signed url for uploading a profile banner',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
-    responseDesc: 'Profile banner was signed',
+    responseDesc: 'Profile banner upload url was signed',
     role: RoleEnum.GENERAL,
   })
-  @Get('sign/profile/banner')
-  async preSignProfileBanner(
+  @Get('sign/upload/profile-banner')
+  async preSignUploadProfileBanner(
     @Req() req: RequestWithUser,
   ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignProfileImage(
+    const url = await this.contentService.preSignUploadProfileImage(
       req.user.id,
       'banner',
     )
@@ -161,18 +161,18 @@ export class ContentController {
   }
 
   @ApiEndpoint({
-    summary: 'Get pre signed url for pass image',
+    summary: 'Get pre signed url for uploading a pass',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
-    responseDesc: 'Pass image was signed',
+    responseDesc: 'Pass upload url was signed',
     role: RoleEnum.GENERAL,
   })
-  @Post('sign/pass')
-  async preSignPass(
+  @Post('sign/upload/pass')
+  async preSignUploadPass(
     @Req() req: RequestWithUser,
     @Body() presignPassRequestDto: PresignPassRequestDto,
   ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignPass(
+    const url = await this.contentService.preSignUploadPass(
       req.user.id,
       presignPassRequestDto.passId,
       presignPassRequestDto.type,
@@ -181,14 +181,29 @@ export class ContentController {
   }
 
   @ApiEndpoint({
-    summary: 'Get signed url for content',
+    summary: 'Get signed url for uploading a W-9 form',
     responseStatus: HttpStatus.OK,
     responseType: GetSignedUrlResponseDto,
-    responseDesc: 'Content url was signed',
-    role: RoleEnum.GENERAL,
+    responseDesc: 'W-9 upload url was signed',
+    role: RoleEnum.CREATOR_ONLY,
   })
-  @Post('sign/content')
-  async preSignContent(
+  @Get('sign/upload/w9')
+  async preSignUploadW9(
+    @Req() req: RequestWithUser,
+  ): Promise<GetSignedUrlResponseDto> {
+    const url = await this.contentService.preSignUploadW9(req.user.id)
+    return { url }
+  }
+
+  @ApiEndpoint({
+    summary: 'Get signed url for uploading user content',
+    responseStatus: HttpStatus.OK,
+    responseType: GetSignedUrlResponseDto,
+    responseDesc: 'Content upload url was signed',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('sign/upload/content')
+  async preSignUploadContent(
     @Req() req: RequestWithUser,
     @Body() createContentRequestDto: CreateContentRequestDto,
   ): Promise<GetSignedUrlResponseDto> {
@@ -196,21 +211,6 @@ export class ContentController {
       req.user.id,
       createContentRequestDto,
     )
-    return { url }
-  }
-
-  @ApiEndpoint({
-    summary: 'Get signed url for W-9 form',
-    responseStatus: HttpStatus.OK,
-    responseType: GetSignedUrlResponseDto,
-    responseDesc: 'W-9 url was signed',
-    role: RoleEnum.CREATOR_ONLY,
-  })
-  @Get('sign/w9')
-  async preSignW9(
-    @Req() req: RequestWithUser,
-  ): Promise<GetSignedUrlResponseDto> {
-    const url = await this.contentService.preSignW9(req.user.id)
     return { url }
   }
 

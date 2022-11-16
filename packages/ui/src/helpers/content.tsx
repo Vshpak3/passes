@@ -180,14 +180,14 @@ export class ContentService {
 
   async uploadProfileImage(file: File) {
     return this.uploadFile(
-      (await this.contentApi.preSignProfileImage()).url,
+      (await this.contentApi.preSignUploadProfileImage()).url,
       file
     )
   }
 
   async uploadProfileBanner(file: File) {
     return this.uploadFile(
-      (await this.contentApi.preSignProfileBanner()).url,
+      (await this.contentApi.preSignUploadProfileBanner()).url,
       file
     )
   }
@@ -197,14 +197,14 @@ export class ContentService {
     passId: string,
     type: PassDtoImageTypeEnum | PassDtoAnimationTypeEnum
   ) {
-    const { url } = await this.contentApi.preSignPass({
+    const { url } = await this.contentApi.preSignUploadPass({
       presignPassRequestDto: { passId, type }
     })
     return this.uploadFile(url, file)
   }
 
   async uploadW9(file: File) {
-    return this.uploadFile((await this.contentApi.preSignW9()).url, file)
+    return this.uploadFile((await this.contentApi.preSignUploadW9()).url, file)
   }
 
   /**
@@ -244,7 +244,7 @@ export class ContentService {
         if (!contentType) {
           throw new Error("Invalid file type")
         }
-        const { url } = await this.contentApi.preSignContent({
+        const { url } = await this.contentApi.preSignUploadContent({
           createContentRequestDto: {
             contentType,
             inPost,

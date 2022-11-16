@@ -2,6 +2,7 @@ import path from 'path'
 
 import { isEnv } from '../../../util/env'
 import { ContentFormatEnum } from '../enums/content-format.enum'
+import { ContentSizeEnum } from '../enums/content-size.enum'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
 export type PROFILE_CONTENT_TYPES = 'image' | 'banner'
@@ -19,15 +20,19 @@ function getContentTypeFormat(contentType: ContentTypeEnum) {
 
 // Media/User Content
 
+// UPDATE THIS FUNCTION FOR CUTOVER TO NEW CONTENT
 export function mediaContentPath(
   userId: string,
   contentId: string,
   contentType: ContentTypeEnum,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  contentSize: ContentSizeEnum,
 ) {
   return path.join(
     'media',
     userId,
     `${contentId}.${getContentTypeFormat(contentType)}`,
+    // `${contentId}-${contentSize}.${getContentTypeFormat(contentType)}`,
   )
 }
 

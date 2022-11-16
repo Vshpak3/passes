@@ -6,7 +6,6 @@ import {
   ForbiddenException,
   Injectable,
   InternalServerErrorException,
-  NotFoundException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import ms from 'ms'
@@ -26,13 +25,11 @@ import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 import { PassService } from '../pass/pass.service'
 import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
-import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { ContentBareDto } from './dto/content-bare'
 import { ContentValidationDto } from './dto/content-validation.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
-import { GetContentResponseDto } from './dto/get-content.dto'
 import { GetVaultQueryRequestDto } from './dto/get-vault-query-dto'
 import {
   MarkProcessedProfileImageRequestDto,
@@ -40,6 +37,7 @@ import {
 } from './dto/mark-processed'
 import { MarkUploadedRequestDto } from './dto/mark-uploaded-dto'
 import { ContentEntity } from './entities/content.entity'
+import { ContentSizeEnum } from './enums/content-size.enum'
 import { ContentTypeEnum } from './enums/content-type.enum'
 import { VaultCategoryEnum } from './enums/vault-category.enum'
 import { ContentDeleteError, NoContentError } from './error/content.error'
@@ -73,27 +71,9 @@ export class ContentService {
     this.client = new CloudFrontClient(getAwsConfig(configService))
   }
 
-  private async createContent(
-    userId: string,
-    createContentDto: CreateContentRequestDto,
-  ): Promise<string> {
-    const { contentType, inPost, inMessage } = createContentDto
-    try {
-      const id = uuid.v4()
-      const data = {
-        id,
-        user_id: userId,
-        content_type: contentType,
-        in_post: inPost,
-        in_message: inMessage,
-        processed: isEnv('dev'),
-      }
-      await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
-      return id
-    } catch (error) {
-      throw new InternalServerErrorException(error)
-    }
-  }
+  /*******************************************/
+  /***** Lambda mark processed callbacks *****/
+  /*******************************************/
 
   async markUploaded(
     userId: string,
@@ -144,6 +124,10 @@ export class ContentService {
     )
   }
 
+  /*******************************************/
+  /************ Deleting content *************/
+  /*******************************************/
+
   async deleteContent(
     userId: string,
     deleteContentDto: DeleteContentRequestDto,
@@ -168,6 +152,10 @@ export class ContentService {
     await this.markProfileImageProcessed({ userId, type: 'banner', secret: '' })
   }
 
+  /*******************************************/
+  /******** Checking for processing **********/
+  /*******************************************/
+
   async isAllProcessed(contents: ContentBareDto[]): Promise<boolean> {
     const content = await this.dbReader<ContentEntity>(ContentEntity.table)
       .whereIn(
@@ -178,11 +166,17 @@ export class ContentService {
     return content.every((c) => c.processed)
   }
 
+  // Only checks for medium, which is the default we show
   private async allContentExistsInS3(contents: ContentEntity[]) {
     return await Promise.all(
       contents.map(async (content) => {
         return await this.s3contentService.doesObjectExist(
-          mediaContentPath(content.user_id, content.id, content.content_type),
+          mediaContentPath(
+            content.user_id,
+            content.id,
+            content.content_type,
+            ContentSizeEnum.MEDIUM,
+          ),
         )
       }),
     )
@@ -211,17 +205,9 @@ export class ContentService {
       .update('failed', true)
   }
 
-  async findContent(contentId: string): Promise<GetContentResponseDto> {
-    const content = await this.dbReader<ContentEntity>(ContentEntity.table)
-      .where({ id: contentId })
-      .select('*')
-      .first()
-    if (!content) {
-      throw new NotFoundException(CONTENT_NOT_EXIST)
-    }
-
-    return new GetContentResponseDto(content, '')
-  }
+  /*******************************************/
+  /****************** Vault ******************/
+  /*******************************************/
 
   async getVault(
     userId: string,
@@ -237,7 +223,7 @@ export class ContentService {
       .select('*')
     switch (category) {
       // filter content that has been used in messages
-      case VaultCategoryEnum.MESSAGES: //TOODO
+      case VaultCategoryEnum.MESSAGES:
         query = query.andWhere({ in_message: true })
         break
       // filter content that has been used in posts
@@ -270,20 +256,30 @@ export class ContentService {
     return result.map((content) => new ContentDto(content))
   }
 
-  preSignMediaContent(
-    userId: string,
-    contentId: string,
-    contentType: ContentTypeEnum,
-  ) {
-    return this.s3contentService.signUrlForContentViewing(
-      mediaContentPath(userId, contentId, contentType),
-    )
-  }
+  /*******************************************/
+  /******** Uploading new content ************/
+  /*******************************************/
 
-  preSignMediaContentThumbnail(userId: string, contentId: string) {
-    return this.s3contentService.signUrlForContentViewing(
-      mediaContentThumbnailPath(userId, contentId),
-    )
+  private async createContent(
+    userId: string,
+    createContentDto: CreateContentRequestDto,
+  ): Promise<string> {
+    const { contentType, inPost, inMessage } = createContentDto
+    try {
+      const id = uuid.v4()
+      const data = {
+        id,
+        user_id: userId,
+        content_type: contentType,
+        in_post: inPost,
+        in_message: inMessage,
+        processed: isEnv('dev'),
+      }
+      await this.dbWriter<ContentEntity>(ContentEntity.table).insert(data)
+      return id
+    } catch (error) {
+      throw new InternalServerErrorException(error)
+    }
   }
 
   async preSignUploadContent(
@@ -299,13 +295,13 @@ export class ContentService {
     )
   }
 
-  preSignProfileImage(userId: string, type: PROFILE_CONTENT_TYPES) {
+  preSignUploadProfileImage(userId: string, type: PROFILE_CONTENT_TYPES) {
     return this.s3contentService.signUrlForContentUpload(
       profileImageUploadPath(userId, type),
     )
   }
 
-  async preSignPass(userId: string, passId: string, type: PassMediaEnum) {
+  async preSignUploadPass(userId: string, passId: string, type: PassMediaEnum) {
     const pass = await this.passService.getPass(passId)
     if (pass.creatorId !== userId) {
       throw new ForbiddenException(PASS_NOT_OWNED_BY_USER)
@@ -316,9 +312,13 @@ export class ContentService {
     )
   }
 
-  preSignW9(userId: string) {
+  preSignUploadW9(userId: string) {
     return this.s3contentService.signUrlForContentUpload(w9UploadPath(userId))
   }
+
+  /*******************************************/
+  /*********** Validating content ************/
+  /*******************************************/
 
   async validateContentIds(
     userId: string,
@@ -348,6 +348,27 @@ export class ContentService {
     return { contentsBare: contentBares, isProcessed: !notProcessed }
   }
 
+  /*******************************************/
+  /**** Getting gated content for download ***/
+  /*******************************************/
+
+  private preSignMediaContent(
+    userId: string,
+    contentId: string,
+    contentType: ContentTypeEnum,
+    contentSize: ContentSizeEnum,
+  ) {
+    return this.s3contentService.signUrlForContentViewing(
+      mediaContentPath(userId, contentId, contentType, contentSize),
+    )
+  }
+
+  private preSignMediaContentThumbnail(userId: string, contentId: string) {
+    return this.s3contentService.signUrlForContentViewing(
+      mediaContentThumbnailPath(userId, contentId),
+    )
+  }
+
   getContentDtosFromBare(
     contents: ContentBareDto[],
     accessible: boolean,
@@ -365,6 +386,7 @@ export class ContentService {
               userId,
               content.contentId,
               content.contentType,
+              ContentSizeEnum.MEDIUM,
             )
           : undefined,
         signedThumbnailUrl: needsSignature

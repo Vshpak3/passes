@@ -69,11 +69,11 @@ export interface MarkUserContentProcessedRequest {
     markProcessedUserContentRequestDto: MarkProcessedUserContentRequestDto;
 }
 
-export interface PreSignContentRequest {
+export interface PreSignUploadContentRequest {
     createContentRequestDto: CreateContentRequestDto;
 }
 
-export interface PreSignPassRequest {
+export interface PreSignUploadPassRequest {
     presignPassRequestDto: PresignPassRequestDto;
 }
 
@@ -302,11 +302,11 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get signed url for content
+     * Get signed url for uploading user content
      */
-    async preSignContentRaw(requestParameters: PreSignContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUploadContentRaw(requestParameters: PreSignUploadContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         if (requestParameters.createContentRequestDto === null || requestParameters.createContentRequestDto === undefined) {
-            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling preSignContent.');
+            throw new runtime.RequiredError('createContentRequestDto','Required parameter requestParameters.createContentRequestDto was null or undefined when calling preSignUploadContent.');
         }
 
         const queryParameters: any = {};
@@ -321,7 +321,7 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/sign/content`,
+            path: `/api/content/sign/upload/content`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -332,19 +332,19 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get signed url for content
+     * Get signed url for uploading user content
      */
-    async preSignContent(requestParameters: PreSignContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignContentRaw(requestParameters, initOverrides);
+    async preSignUploadContent(requestParameters: PreSignUploadContentRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUploadContentRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Get pre signed url for pass image
+     * Get pre signed url for uploading a pass
      */
-    async preSignPassRaw(requestParameters: PreSignPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUploadPassRaw(requestParameters: PreSignUploadPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         if (requestParameters.presignPassRequestDto === null || requestParameters.presignPassRequestDto === undefined) {
-            throw new runtime.RequiredError('presignPassRequestDto','Required parameter requestParameters.presignPassRequestDto was null or undefined when calling preSignPass.');
+            throw new runtime.RequiredError('presignPassRequestDto','Required parameter requestParameters.presignPassRequestDto was null or undefined when calling preSignUploadPass.');
         }
 
         const queryParameters: any = {};
@@ -359,7 +359,7 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/sign/pass`,
+            path: `/api/content/sign/upload/pass`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
@@ -370,17 +370,17 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get pre signed url for pass image
+     * Get pre signed url for uploading a pass
      */
-    async preSignPass(requestParameters: PreSignPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignPassRaw(requestParameters, initOverrides);
+    async preSignUploadPass(requestParameters: PreSignUploadPassRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUploadPassRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
-     * Get pre signed url for profile banner
+     * Get pre signed url for uploading a profile banner
      */
-    async preSignProfileBannerRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUploadProfileBannerRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -391,7 +391,7 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/sign/profile/banner`,
+            path: `/api/content/sign/upload/profile-banner`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -401,17 +401,17 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get pre signed url for profile banner
+     * Get pre signed url for uploading a profile banner
      */
-    async preSignProfileBanner(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignProfileBannerRaw(initOverrides);
+    async preSignUploadProfileBanner(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUploadProfileBannerRaw(initOverrides);
         return await response.value();
     }
 
     /**
-     * Get pre signed url for profile image
+     * Get pre signed url for uploading a profile image
      */
-    async preSignProfileImageRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUploadProfileImageRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -422,7 +422,7 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/sign/profile/image`,
+            path: `/api/content/sign/upload/profile-image`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -432,17 +432,17 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get pre signed url for profile image
+     * Get pre signed url for uploading a profile image
      */
-    async preSignProfileImage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignProfileImageRaw(initOverrides);
+    async preSignUploadProfileImage(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUploadProfileImageRaw(initOverrides);
         return await response.value();
     }
 
     /**
-     * Get signed url for W-9 form
+     * Get signed url for uploading a W-9 form
      */
-    async preSignW9Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
+    async preSignUploadW9Raw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetSignedUrlResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -453,7 +453,7 @@ export class ContentApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/content/sign/w9`,
+            path: `/api/content/sign/upload/w9`,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
@@ -463,10 +463,10 @@ export class ContentApi extends runtime.BaseAPI {
     }
 
     /**
-     * Get signed url for W-9 form
+     * Get signed url for uploading a W-9 form
      */
-    async preSignW9(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
-        const response = await this.preSignW9Raw(initOverrides);
+    async preSignUploadW9(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetSignedUrlResponseDto> {
+        const response = await this.preSignUploadW9Raw(initOverrides);
         return await response.value();
     }
 
