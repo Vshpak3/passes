@@ -7,7 +7,6 @@ import { object, SchemaOf } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/settings/Tab"
 import { errorMessage } from "src/helpers/error"
 import { usernameSchema } from "src/helpers/validation/username"
