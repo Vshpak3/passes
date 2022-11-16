@@ -59,18 +59,15 @@ export class ContentService {
     return getUrlPath("nft", passId, passHolderId, `media.${animationType}`)
   }
 
-  static passImagePath(
+  static passMediaPath(
     passId: string,
-    imageType: PassDtoImageTypeEnum
+    imageType: PassDtoImageTypeEnum | PassDtoAnimationTypeEnum
   ): string {
     return getUrlPath("nft", passId, `media.${imageType}`)
   }
 
-  static passAnimationPath(
-    passId: string,
-    animationType: PassDtoAnimationTypeEnum
-  ): string {
-    return getUrlPath("nft", passId, `media.${animationType}`)
+  static passThumbnailPath(passId: string): string {
+    return getUrlPath("nft", passId, `media-thumbnail.jpeg`)
   }
 
   // User Content
@@ -105,6 +102,7 @@ export class ContentService {
     if (isDev) {
       return ContentService.userContentMediaPath(content)
     }
+    // Currently, this should never be used
     if (content.signedThumbnailUrl) {
       return content.signedThumbnailUrl
     }
