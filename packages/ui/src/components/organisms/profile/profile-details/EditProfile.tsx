@@ -127,7 +127,7 @@ export const EditProfile: FC<EditProfileProps> = ({
   useEffect(() => {
     if (!profileImage?.length) {
       if (profileUserId) {
-        setProfileImageUrl(ContentService.profileThumbnailPath(profileUserId))
+        setProfileImageUrl(ContentService.profileImagePath(profileUserId))
       }
     } else {
       setProfileImageUrl(URL.createObjectURL(profileImage[0]))

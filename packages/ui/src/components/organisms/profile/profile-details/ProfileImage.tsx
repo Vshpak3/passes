@@ -5,6 +5,7 @@ import { useGlobalCache } from "src/contexts/GlobalCache"
 import { ContentService } from "src/helpers/content"
 
 type ProfileImageType = "image" | "thumbnail"
+
 interface ProfileImageProps {
   userId: string
   onClick?: () => void
@@ -20,6 +21,14 @@ export const ProfileImage: FC<ProfileImageProps> = ({
 }) => {
   const { profileImages } = useGlobalCache()
   const [loaded, setLoaded] = useState<boolean>(profileImages.has(userId))
+
+  const imagePath = (userId: string) => {
+    if (type === "image") {
+      return ContentService.profileImagePath(userId)
+    } else if (type === "thumbnail") {
+      return ContentService.profileThumbnailPath(userId)
+    }
+  }
 
   useEffect(() => {
     setLoaded(profileImages.has(userId))
@@ -49,7 +58,7 @@ export const ProfileImage: FC<ProfileImageProps> = ({
           profileImages.add(userId)
           setLoaded(true)
         }}
-        src={override ? override : ContentService.profileThumbnailPath(userId)}
+        src={override ? override : imagePath(userId)}
       />
     </div>
   )
