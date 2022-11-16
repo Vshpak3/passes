@@ -128,8 +128,8 @@ const ChatSettings = () => {
             <div className={classNames("relative", isWithoutTip && "hidden")}>
               <span
                 className={classNames(
-                  !errors.minimumTipAmount ? "" : "-bottom-[7px]",
-                  "absolute top-1/2  right-3 -translate-y-1/2 text-[#6B728B]"
+                  "absolute top-1/2  right-3 -translate-y-1/2 text-[#6B728B]",
+                  errors.minimumTipAmount && "-bottom-[7px]"
                 )}
               >
                 Minimum ${MIN_TIP_MESSAGE_PRICE}

@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import classNames from "classnames"
 import { FC, memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
@@ -58,20 +59,23 @@ const Username: FC = () => {
             Username
           </span>
           <div className="relative">
-            <span className="absolute top-1/2 left-3 -translate-y-1/2">@</span>
+            <span
+              className={classNames(
+                "absolute top-1/2  right-3 -translate-y-1/2",
+                errors.username && "-bottom-[7px]"
+              )}
+            >
+              @
+            </span>
             <Input
               className="mt-1.5 !py-4 !pl-[26px]"
+              errors={errors}
               name="username"
               register={register}
               type="text"
             />
           </div>
         </label>
-        {errors.username && (
-          <Text className="mt-1 block text-[red]" fontSize={12}>
-            {errors.username.message}
-          </Text>
-        )}
         <Button
           className="mt-6 w-auto !px-[52px]"
           disabled={
