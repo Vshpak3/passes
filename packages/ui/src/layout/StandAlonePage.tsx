@@ -1,13 +1,12 @@
 import classNames from "classnames"
 import PassesLogoPink from "public/icons/passes-logo-pink.svg"
-import React, { PropsWithChildren } from "react"
+import React, { FC, PropsWithChildren } from "react"
 
 import { WithStandAlonePageLayoutOptions } from "./WithStandAlonePageLayout"
 
-export const StandAlonePage = ({
-  className,
-  children
-}: PropsWithChildren<WithStandAlonePageLayoutOptions>) => (
+export const StandAlonePage: FC<
+  PropsWithChildren<WithStandAlonePageLayoutOptions>
+> = ({ className, children }) => (
   <div className="min-safe-h-screen relative w-full bg-passes-black pb-16 lg:pb-0">
     <div className="background-gradient fixed right-[0vw] top-[0vh] hidden h-[20vh] w-[20vh] blur-[10vh] md:block" />
     <div className="background-gradient fixed right-[5vw] top-[60vh] hidden h-[15vh] w-[15vh] blur-[13vh] md:block" />

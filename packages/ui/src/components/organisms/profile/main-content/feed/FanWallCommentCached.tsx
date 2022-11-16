@@ -12,7 +12,7 @@ export interface FanwallCommentCachedProps {
 export const FanWallCommentCached: FC<FanwallCommentCachedProps> = ({
   fanWallComment,
   ...res
-}: FanwallCommentCachedProps) => {
+}) => {
   const { fanWallComment: cachedFanWallComment, update } = useFanWallComment(
     fanWallComment.fanWallCommentId
   )

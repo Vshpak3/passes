@@ -10,10 +10,7 @@ export interface CommentCachedProps {
   decrementNumComments: () => void
 }
 
-export const CommentCached: FC<CommentCachedProps> = ({
-  comment,
-  ...res
-}: CommentCachedProps) => {
+export const CommentCached: FC<CommentCachedProps> = ({ comment, ...res }) => {
   const { comment: cachedComment, update } = useComment(comment.commentId)
   useEffect(() => {
     if (!cachedComment) {

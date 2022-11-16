@@ -1,23 +1,24 @@
 import Link from "next/link"
 import UnionIcon from "public/icons/union-icon.svg"
+import { FC } from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { Text } from "src/components/atoms/Text"
 import { Cross } from "src/icons/CrossIcon"
 
-interface ICookieBanner {
+interface CookieBannerProps {
   onClose(): void
   onAccept(): void
   onReject(): void
   onManage(): void
 }
 
-export const CookieBanner = ({
+export const CookieBanner: FC<CookieBannerProps> = ({
   onAccept,
   onManage,
   onClose,
   onReject
-}: ICookieBanner) => {
+}) => {
   return (
     <div className="absolute bottom-10 left-0 z-20 w-full">
       <div className="relative mx-auto flex h-[164px] w-full max-w-[1272px] items-center gap-5 rounded-[5px] bg-[#191A1F] py-[53px] px-[58px]">

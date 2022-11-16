@@ -20,6 +20,14 @@ const getUrlPath = (...args: string[]) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
 
+interface UploadUserContentProps {
+  files: ContentFile[]
+  contentType?: ContentDtoContentTypeEnum
+  inPost?: boolean
+  inMessage?: boolean
+  showMessage?: boolean
+}
+
 export class ContentService {
   private readonly contentApi = new ContentApi()
 
@@ -213,13 +221,7 @@ export class ContentService {
     inPost = false,
     inMessage = false,
     showMessage = true
-  }: {
-    files: ContentFile[]
-    contentType?: ContentDtoContentTypeEnum
-    inPost?: boolean
-    inMessage?: boolean
-    showMessage?: boolean
-  }): Promise<ContentBareDto[]> {
+  }: UploadUserContentProps): Promise<ContentBareDto[]> {
     if (!files.length) {
       return await Promise.resolve([])
     }
@@ -271,13 +273,7 @@ export class ContentService {
    */
   async uploadUserContent({
     ...res
-  }: {
-    files: ContentFile[]
-    contentType?: ContentDtoContentTypeEnum
-    inPost?: boolean
-    inMessage?: boolean
-    showMessage?: boolean
-  }): Promise<string[]> {
+  }: UploadUserContentProps): Promise<string[]> {
     return (await this.uploadUserContentBare(res)).map(
       (contentBare) => contentBare.contentId
     )
