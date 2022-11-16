@@ -30,6 +30,7 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
   const [refreshed, setRefreshed] = useState(!refreshUnverifiedToken)
   const [secondsSinceRefresh, setSecondsSinceRefresh] = useState(1)
 
+  // Ensures initial page-load routes to correct the page
   useEffect(() => {
     if (router.isReady && refreshed) {
       const redirected = authRouter(safePush, userClaims, routeOnlyIfAuth)
@@ -38,11 +39,12 @@ const LoginWrapper: FC<PropsWithChildren<LoginWrapperProps>> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, refreshed])
 
+  // Ensures any change to the access token routes to correct the page
   useEffect(() => {
-    if (routeOnTokenChange && accessToken) {
+    if (routeOnTokenChange && ready && accessToken) {
       authRouter(safePush, accessToken)
     }
-  }, [accessToken, safePush, routeOnTokenChange])
+  }, [accessToken, safePush, routeOnTokenChange, ready])
 
   // Unverified Refreshing
   // There can be issues if you are mid-authentition (e.g. on the email or signup
