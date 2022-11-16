@@ -9,6 +9,7 @@ import { Navigation, Pagination } from "swiper"
 import { Swiper, SwiperSlide } from "swiper/react"
 
 import { SlideContent } from "src/components/molecules/content/SlideContent"
+import { ContentLockButton } from "src/components/organisms/content/ContentLockButton"
 import { LockedMedia } from "./LockedMedia"
 
 export interface ContentCarouselProps {
@@ -21,6 +22,7 @@ export interface ContentCarouselProps {
   price?: number
   openBuyModal?: () => void
   messagesView?: boolean
+  isOwner: boolean
 }
 
 export const ContentCarousel: FC<ContentCarouselProps> = ({
@@ -32,53 +34,66 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
   price = 0,
   openBuyModal,
   activeIndex = 0,
-  messagesView = false
+  messagesView = false,
+  isOwner
 }) => {
   const imgRef = useRef<HTMLImageElement>(null)
   const hasAccess = paid || price === 0 || previewIndex >= contents.length
 
   return (
-    <Swiper
-      autoplay={false}
-      initialSlide={activeIndex}
-      modules={[Pagination, Navigation]}
-      navigation
-      pagination={{
-        type: "fraction"
-      }}
-      watchSlidesProgress
-    >
-      {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
-        return hasAccess || index < previewIndex ? (
-          <SwiperSlide key={index}>
-            {({ isActive }) => (
-              <SlideContent
-                autoplayVideo={autoplayVideo}
-                carouselContent={array}
-                content={c}
-                fixedHeight={contents.length > 1}
-                index={index}
-                isActive={isActive}
-                messagesView={messagesView}
-                ref={imgRef}
-              />
-            )}
+    <>
+      <Swiper
+        autoplay={false}
+        initialSlide={activeIndex}
+        modules={[Pagination, Navigation]}
+        navigation
+        pagination={{
+          type: "fraction"
+        }}
+        watchSlidesProgress
+      >
+        {contents.map((c: ContentDto, index: number, array: ContentDto[]) => {
+          return hasAccess || index < previewIndex ? (
+            <SwiperSlide key={index}>
+              {({ isActive }) => (
+                <SlideContent
+                  autoplayVideo={autoplayVideo}
+                  carouselContent={array}
+                  content={c}
+                  fixedHeight={contents.length > 1}
+                  index={index}
+                  isActive={isActive}
+                  messagesView={messagesView}
+                  ref={imgRef}
+                />
+              )}
+            </SwiperSlide>
+          ) : null
+        })}
+        {!hasAccess && openBuyModal && (
+          <SwiperSlide>
+            <LockedMedia
+              contents={contents}
+              fixedHeight={contents.length > 1}
+              messagesView={messagesView}
+              openBuyModal={openBuyModal}
+              paying={paying}
+              previewIndex={previewIndex}
+              price={price}
+            />
           </SwiperSlide>
-        ) : null
-      })}
-      {!hasAccess && openBuyModal && (
-        <SwiperSlide>
-          <LockedMedia
-            contents={contents}
-            fixedHeight={contents.length > 1}
-            messagesView={messagesView}
-            openBuyModal={openBuyModal}
-            paying={paying}
-            previewIndex={previewIndex}
-            price={price}
-          />
-        </SwiperSlide>
+        )}
+      </Swiper>
+      {!!price && !isOwner && (
+        <ContentLockButton
+          contents={contents}
+          openBuyModal={openBuyModal}
+          paid={!!paid}
+          paying={!!paying}
+          previewIndex={previewIndex}
+          price={price}
+        />
       )}
-    </Swiper>
+    </>
   )
 }
