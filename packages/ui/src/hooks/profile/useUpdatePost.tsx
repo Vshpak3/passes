@@ -1,8 +1,7 @@
 import {
   CreatePostRequestDto,
   GetPostsRequestDto,
-  PostApi,
-  UpdatePostRequestDto
+  PostApi
 } from "@passes/api-client"
 
 export const useUpdatePost = () => {
@@ -10,10 +9,6 @@ export const useUpdatePost = () => {
 
   const createPost = async (post: CreatePostRequestDto) => {
     return await api.createPost({ createPostRequestDto: post })
-  }
-
-  const updatePost = async (postId: string, data: UpdatePostRequestDto) => {
-    await api.updatePost({ postId, updatePostRequestDto: data })
   }
 
   const removePost = async (postId: string) => {
@@ -28,5 +23,5 @@ export const useUpdatePost = () => {
     return await api.getPosts({ getPostsRequestDto: req })
   }
 
-  return { createPost, updatePost, removePost, getPosts, hidePost }
+  return { createPost, removePost, getPosts, hidePost }
 }
