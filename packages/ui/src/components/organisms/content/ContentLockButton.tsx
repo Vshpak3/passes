@@ -1,6 +1,6 @@
 import { ContentDto } from "@passes/api-client"
-import LockLockIcon from "public/icons/post-locked-icon.svg"
-import UnlockLockIcon from "public/icons/post-unlocked-icon.svg"
+import LockedIcon from "public/icons/post-locked-icon.svg"
+import UnlockedIcon from "public/icons/post-unlocked-icon.svg"
 import { FC } from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
@@ -26,7 +26,7 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
   openBuyModal
 }) => {
   const { images, video } = contentTypeCounter(contents.slice(previewIndex))
-  const Icon = paid ? LockLockIcon : UnlockLockIcon
+  const Icon = paid ? UnlockedIcon : LockedIcon
   return (
     <div className="mt-4 flex w-full items-center justify-center">
       <Button

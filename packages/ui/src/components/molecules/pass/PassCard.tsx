@@ -76,9 +76,7 @@ export const PassCard: FC<PassCardProps> = ({
           passId={pass.passId}
         />
         <div
-          className={classNames(
-            "flex flex-col items-start pt-4 text-white/90"
-          )}
+          className={classNames("flex flex-col items-start pt-4 text-white/90")}
         >
           <div
             className={classNames(

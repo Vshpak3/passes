@@ -44,7 +44,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           Who is this content for?
         </span>
         <div className="flex flex-col items-start gap-[15px]">
-          <span className="leading-[22px] text-white>
+          <span className="leading-[22px] text-white">
             These membership holders will be able to view your content for free
           </span>
           <PassesSearchBar
