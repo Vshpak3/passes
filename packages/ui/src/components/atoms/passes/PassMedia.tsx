@@ -3,7 +3,7 @@ import {
   PassDtoImageTypeEnum
 } from "@passes/api-client"
 import classNames from "classnames"
-import { FC, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 
 import { ContentService } from "src/helpers/content"
 
@@ -30,6 +30,17 @@ export const PassMedia: FC<PassMediaProps> = ({
     <div className="h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103] pt-[100%]" />
   )
 
+  const refVideo = useRef(null)
+
+  useEffect(() => {
+    if (!refVideo.current) {
+      return
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const v = refVideo.current as unknown as any
+    v.defaultMuted = true
+    v.muted = true
+  }, [refVideo])
   if (animationType) {
     const animationPath = passHolderId
       ? ContentService.passHolderAnimationPath(
@@ -44,8 +55,10 @@ export const PassMedia: FC<PassMediaProps> = ({
           autoPlay
           className={classNames(shouldUsePlaceholder ? "hidden" : "")}
           loop
-          muted
+          // eslint-disable-next-line react/jsx-boolean-value
+          muted={true}
           onLoadedData={handleLoadingAsset}
+          ref={refVideo}
         >
           <source src={animationPath} type="video/mp4" />
         </video>
