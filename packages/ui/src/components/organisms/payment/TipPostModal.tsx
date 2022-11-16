@@ -128,7 +128,7 @@ const TipPostModal: FC<TipPostModalProps> = ({ post, setPost }) => {
               <span>Enter Tip Amount</span>
             </div>
             <NumberInput
-              className="border-0 font-bold"
+              className="border-0 font-bold focus:border-0 focus:ring-0"
               name={TIP_VALUE}
               register={register}
               type="currency"
