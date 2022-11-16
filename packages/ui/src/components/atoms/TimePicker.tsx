@@ -1,5 +1,13 @@
 import classNames from "classnames"
-import { Dispatch, FC, SetStateAction, useRef, useState } from "react"
+import {
+  createRef,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from "react"
 
 import {
   Time,
@@ -21,6 +29,12 @@ export const TimePicker: FC<TimePickerProps> = ({
 }) => {
   const [showDropdown, setShowDropdown] = useState(false)
   const dropdownEl = useRef(null)
+  const hoursRefs = useRef(
+    Array.from({ length: HOURS }, () => createRef<HTMLLIElement>())
+  )
+  const minuteRefs = useRef(
+    Array.from({ length: MINUTES }, () => createRef<HTMLLIElement>())
+  )
 
   useOnClickOutside(dropdownEl, () => {
     setShowDropdown(false)
@@ -38,6 +52,20 @@ export const TimePicker: FC<TimePickerProps> = ({
   }
 
   const padTime = (n: number) => n.toString().padStart(2, "0")
+
+  useEffect(() => {
+    if (!setShowDropdown) {
+      return
+    }
+    hoursRefs.current[
+      time.hours === -1 ? 11 : time.hours
+    ].current?.scrollIntoView({
+      block: "center"
+    })
+    minuteRefs.current[time.minutes]?.current?.scrollIntoView({
+      block: "center"
+    })
+  }, [showDropdown, time])
 
   return (
     <div className="relative">
@@ -91,6 +119,7 @@ export const TimePicker: FC<TimePickerProps> = ({
                 )}
                 key={i}
                 onClick={() => setTime({ hours: i })}
+                ref={hoursRefs.current[i + 1]}
               >
                 {padTime(i + 1)}
               </li>
@@ -105,6 +134,7 @@ export const TimePicker: FC<TimePickerProps> = ({
                 )}
                 key={i}
                 onClick={() => setTime({ minutes: i })}
+                ref={minuteRefs.current[i]}
               >
                 {padTime(i)}
               </li>
