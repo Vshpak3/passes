@@ -20,19 +20,16 @@ function getContentTypeFormat(contentType: ContentTypeEnum) {
 
 // Media/User Content
 
-// UPDATE THIS FUNCTION FOR CUTOVER TO NEW CONTENT
 export function mediaContentPath(
   userId: string,
   contentId: string,
   contentType: ContentTypeEnum,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   contentSize: ContentSizeEnum,
 ) {
   return path.join(
     'media',
     userId,
-    `${contentId}.${getContentTypeFormat(contentType)}`,
-    // `${contentId}-${contentSize}.${getContentTypeFormat(contentType)}`,
+    `${contentId}-${contentSize}.${getContentTypeFormat(contentType)}`,
   )
 }
 
