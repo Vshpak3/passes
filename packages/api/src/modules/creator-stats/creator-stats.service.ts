@@ -1,3 +1,4 @@
+import { Knex } from '@mikro-orm/mysql'
 import { Inject, Injectable } from '@nestjs/common'
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -110,30 +111,29 @@ export class CreatorStatsService {
   }
 
   async updateEarning(
+    trx: Knex.Transaction,
     userId: string,
     earningType: EarningTypeEnum,
     amounts: Record<EarningCategoryEnum, number>,
     multipler = 1,
   ) {
-    await this.dbWriter.transaction(async (trx) => {
-      rejectIfAny(
-        await Promise.allSettled(
-          Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
-            await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
-              .insert({
-                category: category,
-                amount: amounts[category] * multipler,
-                user_id: userId,
-                type: earningType,
-              })
-              .onConflict()
-              .merge({
-                amount: trx.raw('amount + ?', [amounts[category] * multipler]),
-              })
-          }),
-        ),
-      )
-    })
+    rejectIfAny(
+      await Promise.allSettled(
+        Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
+          await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+            .insert({
+              category: category,
+              amount: amounts[category] * multipler,
+              user_id: userId,
+              type: earningType,
+            })
+            .onConflict()
+            .merge({
+              amount: trx.raw('amount + ?', [amounts[category] * multipler]),
+            })
+        }),
+      ),
+    )
   }
 
   async handlePayinSuccess(
@@ -143,29 +143,33 @@ export class CreatorStatsService {
     amounts: Record<EarningCategoryEnum, number>,
   ) {
     // await this.updateEarning(creatorId, EarningTypeEnum.BALANCE, amounts)
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.AVAILABLE_BALANCE,
-      amounts,
-    )
-    await this.updateEarning(creatorId, EarningTypeEnum.TOTAL, amounts)
-    await this.updateEarning(
-      creatorId,
-      this.payinToEarnings(payinCallbackEnum),
-      amounts,
-    )
-    await this.dbWriter<UserSpendingEntity>(UserSpendingEntity.table)
-      .insert({
-        amount: amounts[EarningCategoryEnum.GROSS],
-        user_id: userId,
-        creator_id: creatorId,
-      })
-      .onConflict()
-      .merge({
-        amount: this.dbWriter.raw('amount + ?', [
-          amounts[EarningCategoryEnum.GROSS],
-        ]),
-      })
+    await this.dbWriter.transaction(async (trx) => {
+      await this.updateEarning(
+        trx,
+        creatorId,
+        EarningTypeEnum.AVAILABLE_BALANCE,
+        amounts,
+      )
+      await this.updateEarning(trx, creatorId, EarningTypeEnum.TOTAL, amounts)
+      await this.updateEarning(
+        trx,
+        creatorId,
+        this.payinToEarnings(payinCallbackEnum),
+        amounts,
+      )
+      await trx<UserSpendingEntity>(UserSpendingEntity.table)
+        .insert({
+          amount: amounts[EarningCategoryEnum.GROSS],
+          user_id: userId,
+          creator_id: creatorId,
+        })
+        .onConflict()
+        .merge({
+          amount: this.dbWriter.raw('amount + ?', [
+            amounts[EarningCategoryEnum.GROSS],
+          ]),
+        })
+    })
   }
 
   async handleChargebackSuccess(
@@ -173,42 +177,49 @@ export class CreatorStatsService {
     creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.AVAILABLE_BALANCE,
-      amounts,
-      NEGATE,
-    )
-    // await this.updateEarning(
-    //   creatorId,
-    //   EarningTypeEnum.BALANCE,
-    //   amounts,
-    //   NEGATE,
-    // )
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.CHARGEBACKS,
-      amounts,
-      NEGATE,
-    )
-    await this.dbWriter<UserSpendingEntity>(UserSpendingEntity.table)
-      .where({
-        user_id: userId,
-        creator_id: creatorId,
-      })
-      .decrement('amount', amounts[EarningCategoryEnum.GROSS])
+    await this.dbWriter.transaction(async (trx) => {
+      await this.updateEarning(
+        trx,
+        creatorId,
+        EarningTypeEnum.AVAILABLE_BALANCE,
+        amounts,
+        NEGATE,
+      )
+      // await this.updateEarning(
+      //   creatorId,
+      //   EarningTypeEnum.BALANCE,
+      //   amounts,
+      //   NEGATE,
+      // )
+      await this.updateEarning(
+        trx,
+        creatorId,
+        EarningTypeEnum.CHARGEBACKS,
+        amounts,
+        NEGATE,
+      )
+      await trx<UserSpendingEntity>(UserSpendingEntity.table)
+        .where({
+          user_id: userId,
+          creator_id: creatorId,
+        })
+        .decrement('amount', amounts[EarningCategoryEnum.GROSS])
+    })
   }
 
   async handlePayout(
     creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.updateEarning(
-      creatorId,
-      EarningTypeEnum.AVAILABLE_BALANCE,
-      amounts,
-      NEGATE,
-    )
+    await this.dbWriter.transaction(async (trx) => {
+      await this.updateEarning(
+        trx,
+        creatorId,
+        EarningTypeEnum.AVAILABLE_BALANCE,
+        amounts,
+        NEGATE,
+      )
+    })
   }
 
   // async handlePayoutSuccess(
