@@ -126,7 +126,12 @@ const ChatSettings = () => {
             </label>
 
             <div className={classNames("relative", isWithoutTip && "hidden")}>
-              <span className="absolute top-1/2 right-3 -translate-y-1/2 text-[#6B728B]">
+              <span
+                className={classNames(
+                  !errors.minimumTipAmount ? "" : "-bottom-[7px]",
+                  "absolute top-1/2  right-3 -translate-y-1/2 text-[#6B728B]"
+                )}
+              >
                 Minimum ${MIN_TIP_MESSAGE_PRICE}
               </span>
               <NumberInput
