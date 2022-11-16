@@ -43,32 +43,27 @@ export class ContentService {
 
   // Passes/NFTs
 
-  static passHolderImagePath(
+  static passHolderMediaPath(
     passId: string,
     passHolderId: string,
-    imageType: PassDtoImageTypeEnum
+    imageType: PassDtoImageTypeEnum | PassDtoAnimationTypeEnum
   ): string {
-    return getUrlPath("nft", passId, passHolderId, `media.${imageType}`)
-  }
-
-  static passHolderAnimationPath(
-    passId: string,
-    passHolderId: string,
-    animationType: PassDtoAnimationTypeEnum
-  ): string {
-    return getUrlPath("nft", passId, passHolderId, `media.${animationType}`)
+    // Uses media-sm file
+    return getUrlPath("nft", passId, passHolderId, `media-sm.${imageType}`)
   }
 
   static passMediaPath(
     passId: string,
     imageType: PassDtoImageTypeEnum | PassDtoAnimationTypeEnum
   ): string {
-    return getUrlPath("nft", passId, `media.${imageType}`)
+    // Uses media-sm file
+    return getUrlPath("nft", passId, `media-sm.${imageType}`)
   }
 
-  static passThumbnailPath(passId: string): string {
-    return getUrlPath("nft", passId, `media-thumbnail.jpeg`)
-  }
+  // Not currently supported
+  // static passThumbnailPath(passId: string): string {
+  //   return getUrlPath("nft", passId, `media-thumbnail.jpeg`)
+  // }
 
   // User Content
 

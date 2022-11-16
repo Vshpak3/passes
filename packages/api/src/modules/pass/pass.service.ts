@@ -46,6 +46,7 @@ import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import {
   getCollectionMediaUri,
   getNftMediaUri,
+  PassSize,
 } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { SolService } from '../sol/sol.service'
@@ -284,7 +285,7 @@ export class PassService {
     if (
       !isEnv('dev') &&
       !(await this.s3ContentService.doesObjectExist(
-        getCollectionMediaUri(null, pass.id, pass.image_type),
+        getCollectionMediaUri(null, pass.id, pass.image_type, PassSize.NORMAL),
       ))
     ) {
       throw new NotFoundException('Image is not uploaded')
@@ -293,7 +294,12 @@ export class PassService {
     if (
       pass.animation_type &&
       !(await this.s3ContentService.doesObjectExist(
-        getCollectionMediaUri(null, pass.id, pass.animation_type),
+        getCollectionMediaUri(
+          null,
+          pass.id,
+          pass.animation_type,
+          PassSize.NORMAL,
+        ),
       ))
     ) {
       throw new NotFoundException('Image is not uploaded')
@@ -680,12 +686,22 @@ export class PassService {
       access_type: pass.access_type,
     } as PassHolderEntity
 
-    await this.copyNftObject(
-      pass.id,
-      data.id,
-      pass.image_type,
-      pass.animation_type ?? undefined,
-    )
+    await Promise.all([
+      this.copyNftObject(
+        pass.id,
+        data.id,
+        pass.image_type,
+        pass.animation_type ?? undefined,
+        PassSize.NORMAL,
+      ),
+      this.copyNftObject(
+        pass.id,
+        data.id,
+        pass.image_type,
+        pass.animation_type ?? undefined,
+        PassSize.SMALL,
+      ),
+    ])
 
     switch (pass.chain) {
       case ChainEnum.SOL:
@@ -760,25 +776,28 @@ export class PassService {
     passId: string,
     passHolderId: string,
     imageType: PassImageEnum,
-    animationType?: PassAnimationEnum,
+    animationType: PassAnimationEnum | undefined,
+    size: PassSize,
   ) {
     await this.s3ContentService.copyObject({
       Bucket: this.nftS3Bucket,
-      Key: getNftMediaUri(null, passId, passHolderId, imageType),
+      Key: getNftMediaUri(null, passId, passHolderId, imageType, size),
       CopySource: `/${this.nftS3Bucket}/${getCollectionMediaUri(
         null,
         passId,
         imageType,
+        size,
       )}`,
     })
     if (animationType) {
       await this.s3ContentService.copyObject({
         Bucket: this.nftS3Bucket,
-        Key: getNftMediaUri(null, passId, passHolderId, animationType),
+        Key: getNftMediaUri(null, passId, passHolderId, animationType, size),
         CopySource: `/${this.nftS3Bucket}/${getCollectionMediaUri(
           null,
           passId,
           animationType,
+          size,
         )}`,
       })
     }

@@ -44,11 +44,7 @@ export const PassMedia: FC<PassMediaProps> = ({
 
   if (animationType) {
     const animationPath = passHolderId
-      ? ContentService.passHolderAnimationPath(
-          passId,
-          passHolderId,
-          animationType
-        )
+      ? ContentService.passHolderMediaPath(passId, passHolderId, animationType)
       : ContentService.passMediaPath(passId, animationType)
     return (
       <>
@@ -64,12 +60,11 @@ export const PassMedia: FC<PassMediaProps> = ({
         </video>
 
         {/* TODO: placeholder image will be added as video poster; NFT thumbnail when we they get generated */}
-        {/* ContentService.passThumbnailPath(passId) */}
       </>
     )
   } else {
     const imagePath = passHolderId
-      ? ContentService.passHolderImagePath(passId, passHolderId, imageType)
+      ? ContentService.passHolderMediaPath(passId, passHolderId, imageType)
       : ContentService.passMediaPath(passId, imageType)
     return (
       <>
