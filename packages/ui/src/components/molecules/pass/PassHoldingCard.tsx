@@ -19,6 +19,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
         <PassMedia
           animationType={passHolder.animationType}
           imageType={passHolder.imageType}
+          passHolderId={passHolder.passHolderId}
           passId={passHolder.passId}
         />
       </div>
