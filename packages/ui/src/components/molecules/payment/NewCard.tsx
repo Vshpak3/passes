@@ -226,7 +226,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <NumberInput
             autoComplete="cc-csc"
-            className="mt-2 min-h-[50px] w-[71px]"
+            className="mt-2 min-h-[50px] w-[71px] border-passes-dark-100"
             errors={errors}
             maxInput={999}
             name="cc-csc"

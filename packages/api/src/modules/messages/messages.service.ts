@@ -530,7 +530,8 @@ export class MessagesService {
         text: text,
         channelId: channelId,
         contents: JSON.stringify(
-          await this.contentService.validateContentIds(userId, contentIds),
+          (await this.contentService.validateContentIds(userId, contentIds))
+            .contentsBare,
         ),
         receiverId: channelMember.other_user_id,
         previewIndex,
