@@ -8,7 +8,7 @@ import { useSafeRouter } from "src/hooks/useSafeRouter"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
-  const { auth } = useAuthEvent(false)
+  const { auth } = useAuthEvent()
   const { safePush } = useSafeRouter()
 
   useEffect(() => {
