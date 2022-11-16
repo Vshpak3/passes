@@ -48,7 +48,9 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
         modules={[Pagination, Navigation]}
         navigation
         pagination={{
-          type: "fraction"
+          type: "fraction",
+          formatFractionCurrent: (x) => x,
+          formatFractionTotal: () => contents.length
         }}
         watchSlidesProgress
       >
