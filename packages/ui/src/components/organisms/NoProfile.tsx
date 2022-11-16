@@ -4,7 +4,7 @@ import LogoSmall from "public/icons/logo-small.svg"
 export const NoProfile = () => {
   return (
     <div className="grid w-full grid-cols-7">
-      <div className="col-span-7 flex flex-col items-center px-8 pt-16 text-center lg:col-span-4">
+      <div className="col-span-7 flex flex-col items-center border-passes-gray px-8 pt-16 text-center lg:col-span-4 lg:border-r-[1px]">
         <div className="h-[56px] w-[56px]">
           <LogoSmall />
         </div>
@@ -21,7 +21,7 @@ export const NoProfile = () => {
           </span>
         </Link>
       </div>
-      <div className="col-span-3 h-screen border-passes-gray lg:border-l-[1px]" />
+      <div className="col-span-3 h-screen" />
     </div>
   )
 }

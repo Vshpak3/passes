@@ -35,7 +35,7 @@ export const HomeContentFeed: FC = () => {
 
   return (
     <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
-      <div className="col-span-7 lg:col-span-4">
+      <div className="col-span-7 border-r-[1px] border-passes-gray lg:col-span-4">
         <SectionTitle className="mt-6 ml-4 lg:mt-4">Home</SectionTitle>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
@@ -54,7 +54,7 @@ export const HomeContentFeed: FC = () => {
           loadingElement={FeedLoader}
         />
       </div>
-      <div className="min-safe-h-screen sticky col-span-3 hidden max-w-[500px] flex-col border-l-[1px] border-passes-gray lg:flex lg:px-2 lg:pr-8 xl:pl-8">
+      <div className="min-safe-h-screen sticky col-span-3 hidden max-w-[500px] flex-col lg:flex lg:px-2 lg:pr-8 xl:pl-8">
         <div className="mt-2 hidden items-start md:flex">
           <CreatorSearchBar />
         </div>

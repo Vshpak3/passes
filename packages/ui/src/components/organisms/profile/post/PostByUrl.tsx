@@ -28,10 +28,10 @@ export const PostByUrl: FC<PostByUrlProps> = ({ postId }) => {
         <>
           <Header />
           <div className="grid w-full grid-cols-7">
-            <div className="col-span-7 w-full pt-20 lg:col-span-4">
+            <div className="col-span-7 w-full border-r-[1px] border-passes-gray pt-20 lg:col-span-4">
               <PostCached bordered post={post} postByUrl toUpdate={false} />
             </div>
-            <div className="col-span-3 hidden h-screen border-l-[1px] border-passes-gray lg:block" />
+            <div className="col-span-3 hidden h-screen lg:block" />
           </div>
         </>
       ) : (
