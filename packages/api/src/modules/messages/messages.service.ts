@@ -1474,7 +1474,12 @@ export class MessagesService {
     const updated = await this.dbWriter<PaidMessageEntity>(
       PaidMessageEntity.table,
     )
-      .whereNotNull('unsent_at')
+      .where(function () {
+        return this.whereNotNull('unsent_at').orWhere(
+          'is_welcome_message',
+          true,
+        )
+      })
       .andWhere({ id: paidMessageId, creator_id: userId })
       .update({ hidden_at: new Date() })
     return updated === 1

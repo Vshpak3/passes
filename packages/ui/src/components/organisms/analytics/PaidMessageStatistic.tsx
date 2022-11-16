@@ -110,7 +110,18 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
         <div className="flex h-[72px] flex-1 items-center justify-center">
           <span className="text-[14px] font-[700] text-passes-pink-100">
             {isWelcomeMesage ? (
-              <>Welcome Message</>
+              <div className="flex flex-col">
+                Welcome Message
+                <Button
+                  className="px-[18px]"
+                  onClick={() => {
+                    setHidePaidMessageModelOpen(true)
+                  }}
+                  variant={ButtonVariant.PINK_OUTLINE}
+                >
+                  Remove
+                </Button>
+              </div>
             ) : !unsentAt ? (
               <Button
                 onClick={() => {
