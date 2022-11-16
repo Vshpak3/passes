@@ -498,6 +498,7 @@ export class PostService {
       ),
     }
     await this.redisService.publish('post', JSON.stringify(notification))
+    return post.user_id
   }
 
   async revertPostPurchase(postId: string, payinId: string, earnings: number) {

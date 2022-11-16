@@ -257,12 +257,21 @@ async function purchasePostSuccessfulCallback(
   payService: PaymentService,
   db: DatabaseService['knex'],
 ): Promise<PurchasePostCallbackOutput> {
-  await payService.postService.purchasePost(
+  const creatorId = await payService.postService.purchasePost(
     input.userId,
     input.postId,
     payin.id,
     payin.amount,
   )
+  try {
+    await payService.followService.followCreator(input.userId, creatorId)
+  } catch (err) {
+    if (
+      !(err instanceof BadRequestException || err instanceof ConflictException)
+    ) {
+      payService.sentry.instance().captureException(err)
+    }
+  }
   return { postId: input.postId }
 }
 

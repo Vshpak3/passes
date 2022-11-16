@@ -97,28 +97,31 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               <span className="passes-break whitespace-pre-wrap">
                 {formatText(text)}
               </span>
-              {!!messageContent.length && (
-                <div className="w-[260px] min-w-[50vw] md:min-w-[403px] md:max-w-[403px]">
-                  <MediaContent
-                    contents={messageContent}
-                    isProcessing={!contentProcessed}
-                    key={messageId}
-                    messagesView
-                    openBuyModal={
-                      selectedChannel
-                        ? () => {
-                            setSelectedChannel(selectedChannel)
-                            setMessage(message)
-                          }
-                        : () => null
-                    }
-                    paid={!!paidAt || !!ownsMessage}
-                    paying={paying}
-                    previewIndex={previewIndex}
-                    price={price}
-                  />
-                </div>
-              )}
+              <div className="flex w-full flex-col items-center justify-center">
+                {!!messageContent.length && (
+                  <div className="w-[260px] min-w-[50vw] md:min-w-[403px] md:max-w-[403px]">
+                    <MediaContent
+                      contents={messageContent}
+                      isOwner={ownsMessage}
+                      isProcessing={!contentProcessed}
+                      key={messageId}
+                      messagesView
+                      openBuyModal={
+                        selectedChannel
+                          ? () => {
+                              setSelectedChannel(selectedChannel)
+                              setMessage(message)
+                            }
+                          : () => null
+                      }
+                      paid={!!paidAt || !!ownsMessage}
+                      paying={paying}
+                      previewIndex={previewIndex}
+                      price={price}
+                    />
+                  </div>
+                )}
+              </div>
               {!pending && sentAt && !!price && (
                 <div className="flex items-center justify-end">
                   <div className="flex flex-row items-center text-[11px]">
