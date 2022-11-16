@@ -103,7 +103,7 @@ const navPaths = ["/messages"]
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
-  const [cookieBannerOpen, setCookieBannerOpen] = useState<boolean>(true)
+  const [cookieBannerOpen, setCookieBannerOpen] = useState<boolean>(false)
   const [buyMessage, setBuyMessage] = useState<MessageDto | null>(null)
   const [selectedChannel, setSelectedChannel] =
     useState<ChannelMemberDto | null>(null)
