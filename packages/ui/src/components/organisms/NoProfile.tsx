@@ -11,7 +11,7 @@ export const NoProfile = () => {
         <h1 className="mt-4 text-[32px] font-bold leading-[42px] text-white">
           Profile does not exist
         </h1>
-        <span className="text-[16px] leading-6 text-[#ffffff] opacity-50">
+        <span className="text-[16px] leading-6 text-white opacity-50">
           The profile you are looking for may have expired or been removed. If
           you typed the address, double-check the spelling.
         </span>

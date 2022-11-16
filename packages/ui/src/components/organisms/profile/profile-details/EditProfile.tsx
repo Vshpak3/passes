@@ -145,7 +145,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     <div className="col-span-6 flex items-center" key={key}>
       {!!input?.icon && <input.icon className="mr-3" />}
       <input.type
-        className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-[#ffffff]/90 focus:border-passes-dark-200 focus:ring-0"
+        className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-white/90 focus:border-passes-dark-200 focus:ring-0"
         errors={errors}
         name={key}
         placeholder={input.placeholder}
@@ -202,7 +202,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-[#ffffff]/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-white/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       footer={
         <div className="left-20 mx-0 my-5 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
           <Button

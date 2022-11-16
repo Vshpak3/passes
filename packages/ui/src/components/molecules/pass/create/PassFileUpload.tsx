@@ -49,7 +49,7 @@ export const PassFileUpload: FC<PassFileUploadProps> = ({
       )}
       {isPreview && (
         <div className="mt-4">
-          <span className="text-[#ffff]/30">Upload Preview</span>
+          <span className="text-white/30">Upload Preview</span>
         </div>
       )}
       {fileUploadError && (

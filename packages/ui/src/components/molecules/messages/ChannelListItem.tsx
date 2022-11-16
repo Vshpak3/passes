@@ -34,8 +34,8 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   return (
     <div
       className={classNames(
-        "relative my-2 mx-[4px] w-full cursor-pointer items-center rounded-md p-1 px-3 hover:bg-[#ffffff]/10",
-        isSelected && "bg-[#ffffff]/10"
+        "relative my-2 mx-[4px] w-full cursor-pointer items-center rounded-md p-1 px-3 hover:bg-white/10",
+        isSelected && "bg-white/10"
       )}
       onClick={() => {
         read()
@@ -61,7 +61,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
               isCreator={channel.otherUserIsCreator}
               username={channel.otherUserUsername}
             />
-            <p className="w-[60%] truncate text-[14px] font-medium text-[#ffff]/30">
+            <p className="w-[60%] truncate text-[14px] font-medium text-white/30">
               {preview}
             </p>
           </div>

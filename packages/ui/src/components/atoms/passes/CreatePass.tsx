@@ -60,13 +60,13 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
 }) => (
   <div className="my-2 grid w-fit auto-cols-auto grid-flow-col grid-rows-1">
     <div className="flex w-[100px] items-center md:w-[200px]">
-      <span className="text-[#ffff]/70">{title}</span>
+      <span className="text-white/70">{title}</span>
     </div>
     <div className="grid grid-flow-col">
       <div className="relative flex w-fit items-center justify-start">
         <NumberInput
           className={classNames(
-            "min-h-[50px] max-w-[140px]  border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90",
+            "min-h-[50px] max-w-[140px]  border-passes-dark-200 bg-transparent p-0 text-white/90",
             className
           )}
           name={name}
@@ -75,7 +75,7 @@ export const PassNumberInput: FC<PassNumberInputProps> = ({
           type="integer"
         />
         {!!suffix && (
-          <span className="absolute top-1/2 right-[40px] -translate-y-1/2 text-[#ffff]/90">
+          <span className="absolute top-1/2 right-[40px] -translate-y-1/2 text-white/90">
             {suffix}
           </span>
         )}
@@ -89,7 +89,7 @@ interface PassesSectionTitleProps {
 }
 
 export const PassesSectionTitle: FC<PassesSectionTitleProps> = ({ title }) => (
-  <span className="mb-2 text-lg font-bold text-[#ffff]/90">{title}</span>
+  <span className="mb-2 text-lg font-bold text-white/90">{title}</span>
 )
 
 interface CreatePassButtonProps {
@@ -120,7 +120,7 @@ interface CreatePassHeaderProps {
 export const CreatePassHeader: FC<CreatePassHeaderProps> = ({ title }) => (
   <div className="col-span-12 lg:col-span-10">
     <div className="mb-4 grow justify-center text-center text-[20px] font-bold leading-[25px] md:text-[24px]">
-      <span className="text-[#ffff]/90">{title}</span>
+      <span className="text-white/90">{title}</span>
     </div>
   </div>
 )
@@ -137,7 +137,7 @@ export const PassDescriptionInput: FC<PassDescriptionInputProps> = ({
   <>
     <PassesSectionTitle title="Add description" />
     <Input
-      className="m-0 w-full border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      className="m-0 w-full border-passes-dark-200 bg-transparent p-0 text-white/90"
       name="passDescription"
       placeholder="Type a caption here that describes the pass"
       register={register}
@@ -158,7 +158,7 @@ export const PassNameInput: FC<PassNameInputProps> = ({ register, errors }) => (
   <>
     <PassesSectionTitle title="Name this pass" />
     <Input
-      className="m-0 border-passes-dark-200 bg-transparent p-0 text-[#ffff]/90"
+      className="m-0 border-passes-dark-200 bg-transparent p-0 text-white/90"
       name="passName"
       placeholder="Name of your new pass!"
       register={register}

@@ -49,7 +49,7 @@ export const NewPostEditorFooter: FC<NewPostEditorFooterProps> = ({
         </div>
 
         <Button
-          className="flex items-center justify-center rounded-[5px] bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-[#ffffff]/90"
+          className="flex items-center justify-center rounded-[5px] bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-white/90"
           disabled={disableForm}
           disabledClass="opacity-[0.5]"
           type={ButtonTypeEnum.SUBMIT}

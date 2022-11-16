@@ -60,7 +60,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
           <span className="font-bold text-white">Edit List Name</span>
           <div className="relative text-right">
             <button
-              className="inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+              className="inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-white/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
               data-modal-toggle="popup-modal"
               onClick={handleClose}
               type="button"
@@ -92,7 +92,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
             </Button>
             <Button
               className={classNames(
-                "bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-[#ffffff]",
+                "bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-white",
                 {
                   "!text-[#ffffffeb]": listName === ""
                 }

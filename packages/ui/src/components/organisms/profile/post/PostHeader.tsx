@@ -44,7 +44,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
             <SingleDot className="flex items-center" />
           </>
         )}
-        <div className="flex items-center text-[10px] font-medium tracking-[1px] text-[#FFFFFF]/50 md:text-[12px]">
+        <div className="flex items-center text-[10px] font-medium tracking-[1px] text-white/50 md:text-[12px]">
           <TimeAgo
             className="text-gray-300/60"
             date={createdAt}

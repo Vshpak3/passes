@@ -19,7 +19,7 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
   return (
     <div
       className={classNames(
-        "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-[#ffffff]/90",
+        "grid cursor-pointer grid-flow-col grid-rows-2 place-content-start gap-0 py-3 pr-4 text-white/90",
         disabled
           ? "cursor-not-allowed bg-[#12070E]/100"
           : "hover:bg-[#12070E]/90",
@@ -35,7 +35,7 @@ export const UserSearchResult: FC<UserSearchResultProps> = ({
         {!!displayName && (
           <div className="text-[16px] font-medium">{displayName}</div>
         )}
-        <div className="text-[12px] text-[#ffffff]/60">@{username}</div>
+        <div className="text-[12px] text-white/60">@{username}</div>
       </div>
     </div>
   )

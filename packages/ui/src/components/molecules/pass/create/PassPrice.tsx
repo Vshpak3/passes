@@ -24,11 +24,11 @@ export const PassPrice: FC<PassPriceProps> = ({ register, errors }) => {
     <>
       <hr className="border-passes-dark-200" />
       <div className="flex w-fit items-center justify-start">
-        <span className="w-[250px] text-lg font-bold text-[#ffff]/90 md:text-[15px] md:font-[500]">
+        <span className="w-[250px] text-lg font-bold text-white/90 md:text-[15px] md:font-[500]">
           Set price of the pass
         </span>
         <NumberInput
-          className="ml-2 min-h-[50px] max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-[#ffff]/90"
+          className="ml-2 min-h-[50px] max-w-[140px] border-passes-dark-200 bg-transparent pr-[40px] text-right text-white/90"
           name="price"
           register={register}
           type="currency"

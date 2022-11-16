@@ -114,7 +114,7 @@ export const NewFanwallEditor: FC<NewFanwallEditorProps> = ({
         </div>
         {extended && (
           <Button
-            className="mt-4 ml-auto flex items-center justify-center bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-[#ffffff]/90"
+            className="mt-4 ml-auto flex items-center justify-center bg-passes-pink-100 py-[10px] px-[20px] text-base font-bold text-white/90"
             disabled={isButtonDisabled || disableForm}
             fontSize={16}
             type={ButtonTypeEnum.SUBMIT}

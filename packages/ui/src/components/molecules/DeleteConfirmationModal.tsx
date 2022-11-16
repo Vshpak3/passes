@@ -62,12 +62,12 @@ export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
       }}
     >
       <div
-        className="m-auto w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10"
+        className="m-auto w-[298px] bg-[#100C11] py-3 px-6 md:w-auto md:min-w-[500px] md:border-white/10"
         id="popup-modal"
       >
         <div className="relative text-right">
           <button
-            className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
+            className="top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-white/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white"
             data-modal-toggle="popup-modal"
             onClick={onClose}
             type="button"

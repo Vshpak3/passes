@@ -70,7 +70,7 @@ const ChangePassword = () => {
         <div className="border-b border-passes-dark-200 pb-6">
           <PasswordInput
             autoComplete="current-password"
-            className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+            className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="oldPassword"
             placeholder="Current Password"
@@ -88,7 +88,7 @@ const ChangePassword = () => {
         <div className="mt-6 border-b border-passes-dark-200 pb-6">
           <PasswordInput
             autoComplete="new-password"
-            className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+            className="border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="password"
             placeholder="New Password"
@@ -96,7 +96,7 @@ const ChangePassword = () => {
           />
           <PasswordInput
             autoComplete="new-password"
-            className="mt-6 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-[#ffff]/90 focus:border-passes-secondary-color focus:ring-0"
+            className="mt-6 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color focus:ring-0"
             errors={errors}
             name="confirmPassword"
             placeholder="Confirm Password"

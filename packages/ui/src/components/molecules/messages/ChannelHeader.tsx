@@ -86,10 +86,10 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                 <div className="flex w-full items-center justify-between">
                   <div className="flex w-full items-center justify-start gap-[10px] overflow-x-auto">
                     <div className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md">
-                      <div className="flex w-fit items-center justify-center whitespace-nowrap bg-passes-pink-100 py-[3px] px-[9px] text-sm font-normal text-[#ffff]">
+                      <div className="flex w-fit items-center justify-center whitespace-nowrap bg-passes-pink-100 py-[3px] px-[9px] text-sm font-normal text-white">
                         Total Spent
                       </div>
-                      <div className="flex h-full w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                      <div className="flex h-full w-fit items-center justify-center bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-white">
                         {formatCurrency(amount ?? 0)}
                       </div>
                     </div>
@@ -98,7 +98,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
                         className="m-0 flex cursor-pointer items-center overflow-hidden rounded-md"
                         key={passHolder.passHolderId}
                       >
-                        <span className="flex w-fit items-center justify-center whitespace-nowrap bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-[#ffff]">
+                        <span className="flex w-fit items-center justify-center whitespace-nowrap bg-[#B52A6F40]/25 px-3 py-1 text-sm font-normal text-white">
                           {passHolder.title}
                         </span>
                       </div>

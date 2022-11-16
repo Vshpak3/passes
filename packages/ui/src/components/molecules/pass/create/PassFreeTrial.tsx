@@ -29,7 +29,7 @@ export const PassFreeTrial: FC<PassProps> = ({ register, errors }) => {
         name="free-dm-month-checkbox"
         register={register}
       />
-      <span className="w-[250px] text-lg font-bold text-[#ffff]/90 md:text-[15px] md:font-[500]">
+      <span className="w-[250px] text-lg font-bold text-white/90 md:text-[15px] md:font-[500]">
         Add free trial for first month
       </span>
       {errors?.price?.type === "free-dm-month-checkbox" && (

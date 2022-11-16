@@ -35,7 +35,7 @@ const CreateNewListModal: FC<CreateNewListModalProps> = ({
           </Button>
           <Button
             className={classNames(
-              "bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-[#ffffff]",
+              "bg-[#C943A8] !py-[10px] !px-[18px] font-bold text-white",
               {
                 "!text-[#ffffffeb]": listName === ""
               }

@@ -38,7 +38,7 @@ export const SearchBar = <T,>({
               autoComplete="off"
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={isMobile}
-              className="form-input h-[51px] w-full rounded-md border border-[#ffffff]/10 bg-[#12070E]/50 pl-11 text-[#ffffff] outline-none placeholder:text-[16px] placeholder:text-[#ffffff]/30 focus:border-[#ffffff]/10 focus:ring-0"
+              className="form-input h-[51px] w-full rounded-md border border-white/10 bg-[#12070E]/50 pl-11 text-white outline-none placeholder:text-[16px] placeholder:text-white/30 focus:border-white/10 focus:ring-0"
               id="search"
               name="search"
               onChange={onInputChange}
@@ -48,7 +48,7 @@ export const SearchBar = <T,>({
             />
           </div>
         </Combobox.Button>
-        <Combobox.Options className="absolute top-14 z-20 w-full overflow-y-hidden rounded-md border border-[#ffffff]/10 bg-[#1b141d] outline-none">
+        <Combobox.Options className="absolute top-14 z-20 w-full overflow-y-hidden rounded-md border border-white/10 bg-[#1b141d] outline-none">
           {options.length ? (
             options
           ) : searchValue && loading ? (

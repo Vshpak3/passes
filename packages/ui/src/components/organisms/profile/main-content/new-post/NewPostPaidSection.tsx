@@ -44,7 +44,7 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           Who is this content for?
         </span>
         <div className="flex flex-col items-start gap-[15px]">
-          <span className="leading-[22px] text-[#FFFFFF]">
+          <span className="leading-[22px] text-white>
             These membership holders will be able to view your content for free
           </span>
           <PassesSearchBar
@@ -55,15 +55,15 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
       </div>
       <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
         <div className="flex items-center gap-1 pb-5 sm:gap-4">
-          <span className="text-[#ffff]">
+          <span className="text-white">
             Price (if not an above membership holder)
           </span>
           <div className="relative flex max-w-[140px] justify-between rounded-md shadow-sm">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <span className="text-base font-bold text-[#ffffff]/40">$</span>
+              <span className="text-base font-bold text-white/40">$</span>
             </div>
             <NumberInput
-              className="min-h-[50px] w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+              className="min-h-[50px] w-full rounded-md border-passes-dark-200 bg-[#100C11] px-[18px] py-[10px] text-right text-base font-bold text-white/90"
               name="price"
               register={register}
               type="currency"

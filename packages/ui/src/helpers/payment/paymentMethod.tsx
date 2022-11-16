@@ -38,7 +38,7 @@ export const paymentMethodConfig = (
     case GetPayinMethodResponseDtoMethodEnum.None:
       return (
         <div>
-          <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
+          <span className="mt-[12px] block text-[16px] font-bold text-white/90">
             Set Up Default Payment Method
           </span>
         </div>
@@ -47,11 +47,11 @@ export const paymentMethodConfig = (
       return (
         <>
           <div className="my-4">
-            <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
+            <span className="mt-[12px] block text-[16px] font-bold text-white/90">
               Pay with Card
             </span>
           </div>
-          <div className="flex justify-evenly rounded border border-passes-dark-200 bg-[#100C11] p-2 text-left text-[#ffff]/90">
+          <div className="flex justify-evenly rounded border border-passes-dark-200 bg-[#100C11] p-2 text-left text-white/90">
             <div className="flex flex-1 gap-4 justify-self-start">
               {displayCardIcon(cardInfo?.firstDigit as string, 25, 25)}
               <span>• • • • ‏‎{cardInfo?.fourDigits}</span>
@@ -68,7 +68,7 @@ export const paymentMethodConfig = (
       return (
         <>
           <div className="my-4">
-            <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
+            <span className="mt-[12px] block text-[16px] font-bold text-white/90">
               Pay with Crypto
             </span>
           </div>

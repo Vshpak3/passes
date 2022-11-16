@@ -104,7 +104,7 @@ export const ImageCropDialog: FC<ImageCropDialogProp> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-[#ffffff]/10 bg-[#0c0609] px-[29px] pt-[37px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-white/10 bg-[#0c0609] px-[29px] pt-[37px] transition-all md:max-w-[544px] md:rounded-[15px]"
       footer={
         <div className="left-20 -mb-4 bg-inherit p-4">
           <input

@@ -66,7 +66,7 @@ const BuyPostModal: FC<BuyPostModalProps> = ({ post, setPost }) => {
             </span>
             {!!whitePasessList?.length && (
               <div>
-                <span className="mt-[12px] block text-[16px] font-bold text-[#ffff]/90">
+                <span className="mt-[12px] block text-[16px] font-bold text-white/90">
                   or <br />
                   <span className="my-[12px] block">
                     Verify Whitelisted NFT

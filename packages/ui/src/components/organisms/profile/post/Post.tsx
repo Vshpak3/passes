@@ -140,7 +140,7 @@ const PostUnmemo: FC<PostProps> = ({
               userId={userId}
               username={username}
             />
-            <p className="passes-break whitespace-pre-wrap px-5 text-start text-base font-medium text-[#ffffff]/90 sm:px-10 md:px-10 lg:px-5">
+            <p className="passes-break whitespace-pre-wrap px-5 text-start text-base font-medium text-white/90 sm:px-10 md:px-10 lg:px-5">
               <FormattedText tags={tags} text={text} />
             </p>
             {!!contents?.length && (

@@ -298,11 +298,11 @@ export const InputMessage: FC<InputMessageProps> = ({
               />
               {isPaid ? (
                 <div className="relative flex items-center shadow-sm">
-                  <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-[#ffffff]/40">
+                  <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-white/40">
                     Price
                   </div>
                   <NumberInput
-                    className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-[#ffffff]/90"
+                    className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-white/90"
                     name="price"
                     register={register}
                     type="currency"
@@ -322,7 +322,7 @@ export const InputMessage: FC<InputMessageProps> = ({
             files.length
               ? "focus:border-b-transparent"
               : errors.text && "border-b-red",
-            " w-full resize-none border-x-0 border-b border-transparent bg-transparent px-[10px] text-[#ffffff]/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
+            " w-full resize-none border-x-0 border-b border-transparent bg-transparent px-[10px] text-white/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
           )}
           name="text"
           onInput={resize}

@@ -30,7 +30,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 "group flex cursor-pointer items-center py-3 pr-0 text-left text-base text-[17px] font-[500] tracking-[0.003em]",
                 isItemActive
                   ? "text-passes-primary-color"
-                  : "text-white hover:text-[#ffffff]/50"
+                  : "text-white hover:text-white/50"
               )}
             >
               <item.icon
@@ -38,7 +38,7 @@ export const SidebarDropdown: FC<SidebarDropdownProps> = ({ active, item }) => {
                 className={classNames(
                   isItemActive
                     ? "fill-transparent stroke-passes-primary-color stroke-2"
-                    : "stroke-[#ffffff] group-hover:stroke-[#ffffff]/50",
+                    : "stroke-white group-hover:stroke-white/50",
                   "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
                 )}
               />

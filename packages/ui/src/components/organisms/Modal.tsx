@@ -91,7 +91,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
     >
       <div
         className={classNames(
-          "m-auto rounded p-4 md:w-auto md:min-w-[500px] md:border-[#ffffff]/10",
+          "m-auto rounded p-4 md:w-auto md:min-w-[500px] md:border-white/10",
           modalContainerClassname,
           bare
             ? "bg-transparent md:min-w-fit md:border-transparent"
@@ -109,7 +109,7 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
           >
             <button
               className={classNames(
-                "top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-[#ffff]/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
+                "top-3 right-2.5 ml-auto inline-flex items-center rounded-[15px] bg-transparent p-1.5 text-sm text-white/90 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white",
                 bare && "absolute right-[20px] top-[20px] z-[6]"
               )}
               data-modal-toggle="popup-modal"
