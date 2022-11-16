@@ -44,6 +44,7 @@ export const MediaModal: FC<ModalProps> = ({
       className={modalContainerClassname}
       onClose={() => setOpen(false)}
       open={isOpen}
+      withCloseButton
     >
       {carouselContent && (
         <div className="max-w-[900px]">

@@ -1,7 +1,9 @@
 import { Dialog as HeadlessDialog, Transition } from "@headlessui/react"
 import classNames from "classnames"
+import ExitIcon from "public/icons/exit-icon.svg"
 import { FC, Fragment, PropsWithChildren, useEffect, useState } from "react"
 
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { formatText } from "src/helpers/formatters"
 
 type DialogProps = {
@@ -13,6 +15,7 @@ type DialogProps = {
   media?: boolean
   transition?: boolean
   innerScroll?: boolean
+  withCloseButton?: boolean
 }
 
 export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
@@ -24,7 +27,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
   media,
   children,
   transition = true,
-  innerScroll = false
+  innerScroll = false,
+  withCloseButton = false
 }) => {
   const [isOpen, setIsOpen] = useState(open)
 
@@ -70,6 +74,17 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
         </Transition.Child>
 
         <div className="fixed inset-0">
+          {withCloseButton && (
+            <div className="absolute top-3 left-3">
+              <Button
+                className="rounded-[15px] bg-transparent p-1.5 focus:outline-0 dark:hover:bg-gray-800"
+                onClick={onClose}
+                variant={ButtonVariant.NONE}
+              >
+                <ExitIcon height="25px" width="25px" />
+              </Button>
+            </div>
+          )}
           <div className="flex min-h-full items-center justify-center bg-inherit md:px-4">
             <Transition.Child
               as={Fragment}
@@ -88,7 +103,8 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
                   )}
                   <div
                     className={classNames(
-                      "z-10 h-full w-full bg-passes-black",
+                      media ? "bg-transparent" : "bg-passes-black",
+                      "z-10 h-full w-full",
                       innerScroll ? "overflow-y-scroll" : "overflow-y-visible"
                     )}
                   >
