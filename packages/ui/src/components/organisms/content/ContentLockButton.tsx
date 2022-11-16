@@ -1,5 +1,6 @@
 import { ContentDto } from "@passes/api-client"
-import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
+import LockLockIcon from "public/icons/post-locked-icon.svg"
+import UnlockLockIcon from "public/icons/post-unlocked-icon.svg"
 import { FC } from "react"
 
 import { Button, ButtonVariant } from "src/components/atoms/button/Button"
@@ -25,16 +26,14 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
   openBuyModal
 }) => {
   const { images, video } = contentTypeCounter(contents.slice(previewIndex))
-  // TODO ADD NEW ICON + DESIGN CHANGES
-  // eslint-disable-next-line sonarjs/no-all-duplicated-branches
-  const Icon = paid ? UnlockLockIcon : UnlockLockIcon
+  const Icon = paid ? LockLockIcon : UnlockLockIcon
   return (
-    <div className="mt-4 flex w-full items-center justify-center px-5">
+    <div className="mt-4 flex w-full items-center justify-center">
       <Button
-        className="flex w-full rounded-[5px] border-none py-2 text-center text-base font-medium text-white shadow-sm"
+        className="flex w-full rounded-[4px] border-2 border-[#FF51A8]/50 bg-[#B52A6F]/25 py-2 text-center text-base font-medium text-[#FF51A8] shadow-sm"
         disabled={paying}
         onClick={openBuyModal}
-        variant={ButtonVariant.GRADIENT}
+        variant={ButtonVariant.NONE}
       >
         <Icon className="mr-2 flex h-6 w-6" />
         {paid ? (
