@@ -8,11 +8,13 @@ import { VaultDialog } from "src/components/molecules/vault/VaultDialog"
 interface VaultSelectorProps {
   expanded?: boolean
   selectVaultContent: (contents: ContentDto[]) => void | Promise<void>
+  isMessages?: boolean
 }
 
 export const VaultSelector: FC<VaultSelectorProps> = ({
   selectVaultContent,
-  expanded
+  expanded,
+  isMessages
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   return (
@@ -21,7 +23,8 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
         isOpen || expanded
           ? "bg-passes-primary-color/10"
           : "hover:bg-passes-primary-color/10",
-        "group flex h-full flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-passes-primary-color sm:px-4 sm:py-3"
+        "group flex h-full flex-shrink-0 items-center rounded-[56px] text-sm leading-4 text-passes-primary-color sm:px-4 sm:py-3",
+        isMessages ? "" : "py-2 px-3"
       )}
       onClick={() => setIsOpen(true)}
       type="button"

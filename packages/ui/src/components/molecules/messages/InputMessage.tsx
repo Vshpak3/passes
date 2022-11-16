@@ -366,7 +366,7 @@ export const InputMessage: FC<InputMessageProps> = ({
               selectors={[PhotoSelector, VideoSelector]}
             >
               <div>
-                <VaultSelector selectVaultContent={addContent} />
+                <VaultSelector isMessages selectVaultContent={addContent} />
               </div>
             </MediaSelector>
           ) : (

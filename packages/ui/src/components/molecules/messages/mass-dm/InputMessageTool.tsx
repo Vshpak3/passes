@@ -255,7 +255,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
               selectors={[PhotoSelector, VideoSelector]}
               // setActiveMediaHeader={setActiveMediaHeader}
             >
-              <VaultSelector selectVaultContent={addContent} />
+              <VaultSelector isMessages selectVaultContent={addContent} />
               {schedulable && (
                 <CalendarSelector
                   activeHeader=""
