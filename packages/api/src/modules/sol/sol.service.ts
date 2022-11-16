@@ -37,6 +37,7 @@ import {
   getCollectionMetadataUri,
   getNftMediaUri,
   getNftMetadataUri,
+  PassSize,
 } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -261,6 +262,7 @@ export class SolService {
       passId,
       passHolderId,
       imageType,
+      PassSize.NORMAL,
     )
 
     const jsonMetadata: JsonMetadata = {
@@ -292,6 +294,7 @@ export class SolService {
         passId,
         passHolderId,
         animationType,
+        PassSize.NORMAL,
       )
       jsonMetadata.external_url = animationUrl
       jsonMetadata.properties.category = 'video'
@@ -401,6 +404,7 @@ export class SolService {
       this.cloudfrontUrl,
       passId,
       imageType,
+      PassSize.NORMAL,
     )
 
     const metadataJson: JsonMetadata = {
@@ -432,6 +436,7 @@ export class SolService {
         this.cloudfrontUrl,
         passId,
         animationType,
+        PassSize.NORMAL,
       )
       metadataJson.external_url = animationUrl
       metadataJson.properties.category = 'video'

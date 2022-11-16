@@ -27,7 +27,11 @@ import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { PassAnimationEnum } from '../pass/enum/pass-animation.enum'
 import { PassImageEnum } from '../pass/enum/pass-image.enum'
 import { RedisLockService } from '../redis-lock/redis-lock.service'
-import { getNftMediaUri, getNftMetadataUri } from '../s3content/s3.nft.helper'
+import {
+  getNftMediaUri,
+  getNftMetadataUri,
+  PassSize,
+} from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
@@ -44,6 +48,7 @@ const MAX_TIME_PASS_REFRESH = ms('1 week')
 const SIGNER_ID_PREFIX_PASS = 'pass'
 
 const TOPIC_TOKEN_ID_INDEX = 3
+
 @Injectable()
 export class EthService {
   private alchemy: Alchemy
@@ -251,6 +256,7 @@ export class EthService {
       passHolderId,
       passId,
       imageType,
+      PassSize.NORMAL,
     )
 
     const metadataJson: any = {
@@ -267,6 +273,7 @@ export class EthService {
         passId,
         passHolderId,
         animationType,
+        PassSize.NORMAL,
       )
       metadataJson.animation_url = videoUrl
     }

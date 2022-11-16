@@ -23,7 +23,7 @@ import { createPaginatedQuery } from '../../util/page.util'
 import { PASS_NOT_OWNED_BY_USER } from '../pass/constants/errors'
 import { PassMediaEnum } from '../pass/enum/pass-media.enum'
 import { PassService } from '../pass/pass.service'
-import { getCollectionMediaUri } from '../s3content/s3.nft.helper'
+import { getCollectionMediaUri, PassSize } from '../s3content/s3.nft.helper'
 import { S3ContentService } from '../s3content/s3content.service'
 import { ContentDto } from './dto/content.dto'
 import { ContentBareDto } from './dto/content-bare'
@@ -308,7 +308,7 @@ export class ContentService {
     }
 
     return this.s3contentService.signUrlForContentUpload(
-      getCollectionMediaUri(null, passId, type),
+      getCollectionMediaUri(null, passId, type, PassSize.NORMAL),
     )
   }
 
