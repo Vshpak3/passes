@@ -69,27 +69,21 @@ const SignupEmailPage: FC = () => {
     }
   }, [hasResentEmail, timeLeft])
 
-  // In local development we auto-verify the email
-  useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
-    if (isDev && hasSentEmail) {
-      auth(async () => {
-        const authApi = new AuthApi()
-        return await authApi.verifyUserEmail({
+  const verifyEmail = async (email: string) => {
+    const api = new AuthApi()
+    await api.setUserEmail({ setEmailRequestDto: { email } })
+
+    // In local development we auto-verify the email
+    if (isDev) {
+      await auth(async () => {
+        return await api.verifyUserEmail({
           verifyEmailDto: {
             verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
           }
         })
       })
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router, hasSentEmail])
 
-  const verifyEmail = async (email: string) => {
-    const api = new AuthApi()
-    await api.setUserEmail({ setEmailRequestDto: { email } })
     router.query.email = email
     router.push(router)
   }

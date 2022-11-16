@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { AuthLocalApi } from "@passes/api-client"
+import { AuthApi, AuthLocalApi } from "@passes/api-client"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import EnterIcon from "public/icons/enter-icon.svg"
@@ -22,6 +22,7 @@ import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Text } from "src/components/atoms/Text"
 import { SignupTiles } from "src/components/molecules/SignupTiles"
 import { authRouter } from "src/helpers/authRouter"
+import { isDev } from "src/helpers/env"
 import { errorMessage } from "src/helpers/error"
 import { emailSchema } from "src/helpers/validation/email"
 import { passwordSchema } from "src/helpers/validation/password"
@@ -62,11 +63,25 @@ const SignupInitialPage: FC = () => {
           createLocalUserRequestDto: { email, password }
         })
       },
-      async () => undefined,
-      async (token: string) => {
-        authRouter(safePush, token, false, [["email", email]])
-      }
+      async (token) => {
+        if (!isDev) {
+          authRouter(safePush, token, false, [["email", email]])
+        }
+      },
+      false
     )
+
+    // In local development we auto-verify the email
+    if (isDev) {
+      await auth(async () => {
+        const authApi = new AuthApi()
+        return await authApi.verifyUserEmail({
+          verifyEmailDto: {
+            verificationToken: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+          }
+        })
+      })
+    }
   }
 
   const onSubmit = async (values: SignupInitialPageSchema) => {
@@ -231,7 +246,4 @@ const SignupInitialPage: FC = () => {
   )
 }
 
-export default WithLoginPageLayout(SignupInitialPage, {
-  routeOnTokenChange: false,
-  routeOnlyIfAuth: true
-})
+export default WithLoginPageLayout(SignupInitialPage, { routeOnlyIfAuth: true })

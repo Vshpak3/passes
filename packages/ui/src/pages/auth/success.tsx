@@ -1,15 +1,14 @@
 import { useRouter } from "next/router"
 import { FC, useEffect } from "react"
 
-import { authRouter } from "src/helpers/authRouter"
 import { queryParam } from "src/helpers/query"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
-import { useSafeRouter } from "src/hooks/useSafeRouter"
+import { useUser } from "src/hooks/useUser"
 
 const AuthSuccess: FC = () => {
   const router = useRouter()
+  const { mutate } = useUser()
   const { auth } = useAuthEvent()
-  const { safePush } = useSafeRouter()
 
   useEffect(() => {
     if (!router.isReady) {
@@ -23,9 +22,8 @@ const AuthSuccess: FC = () => {
           refreshToken: queryParam(router.query.refreshToken) as string
         }
       },
-      async () => undefined,
-      async (token: string) => {
-        authRouter(safePush, token)
+      async () => {
+        mutate()
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
