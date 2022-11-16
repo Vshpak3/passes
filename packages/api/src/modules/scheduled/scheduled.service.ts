@@ -107,19 +107,23 @@ export class ScheduledService {
               {},
               createPost.passIds,
             )
-            event.contents = await this.contentService.validateContentIds(
-              userId,
-              createPost.contentIds,
-            )
+            event.contents = (
+              await this.contentService.validateContentIds(
+                userId,
+                createPost.contentIds,
+              )
+            ).contentsBare
             break
           case ScheduledEventTypeEnum.SEND_MESSAGE:
             if (!sendMessage) {
               throw new BadRequestException('send message body is empty')
             }
-            event.contents = await this.contentService.validateContentIds(
-              userId,
-              sendMessage.contentIds,
-            )
+            event.contents = (
+              await this.contentService.validateContentIds(
+                userId,
+                sendMessage.contentIds,
+              )
+            ).contentsBare
             break
           case ScheduledEventTypeEnum.BATCH_MESSAGE:
             if (!batchMessage) {
@@ -129,10 +133,12 @@ export class ScheduledService {
               {},
               batchMessage.passIds,
             )
-            event.contents = await this.contentService.validateContentIds(
-              userId,
-              batchMessage.contentIds,
-            )
+            event.contents = (
+              await this.contentService.validateContentIds(
+                userId,
+                batchMessage.contentIds,
+              )
+            ).contentsBare
             event.lists = await this.listService.getListsForUser(
               userId,
               {

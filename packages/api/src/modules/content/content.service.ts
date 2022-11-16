@@ -29,6 +29,7 @@ import { S3ContentService } from '../s3content/s3content.service'
 import { CONTENT_NOT_EXIST } from './constants/errors'
 import { ContentDto } from './dto/content.dto'
 import { ContentBareDto } from './dto/content-bare'
+import { ContentValidationDto } from './dto/content-validation.dto'
 import { CreateContentRequestDto } from './dto/create-content.dto'
 import { DeleteContentRequestDto } from './dto/delete-content.dto'
 import { GetContentResponseDto } from './dto/get-content.dto'
@@ -322,24 +323,29 @@ export class ContentService {
   async validateContentIds(
     userId: string,
     contentIds: string[],
-  ): Promise<ContentBareDto[]> {
+  ): Promise<ContentValidationDto> {
+    if (contentIds.length === 0) {
+      return { contentsBare: [], isProcessed: true }
+    }
     const filteredContent = await this.dbReader<ContentEntity>(
       ContentEntity.table,
     )
       .whereIn('id', contentIds)
       .andWhere({ user_id: userId })
-      .select('id', 'content_type')
+      .select('id', 'content_type', 'processed')
     const contents: Record<string, ContentTypeEnum> = {}
 
     filteredContent.forEach(
       (content) => (contents[content.id] = content.content_type),
     )
-    return contentIds.map((contentId) => {
+    const notProcessed = filteredContent.some((content) => !content.processed)
+    const contentBares = contentIds.map((contentId) => {
       if (!contents[contentId]) {
         throw new NoContentError('cant find content for user')
       }
       return new ContentBareDto(contentId, contents[contentId])
     })
+    return { contentsBare: contentBares, isProcessed: !notProcessed }
   }
 
   getContentDtosFromBare(

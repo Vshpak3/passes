@@ -303,7 +303,7 @@ export class MessagesService {
     isWelcomeMessage?: boolean,
     override = false,
   ): Promise<{ paidMessageId?: string; contents: string }> {
-    const contents = await this.contentService.validateContentIds(
+    const { contentsBare } = await this.contentService.validateContentIds(
       userId,
       contentIds,
     )
@@ -312,7 +312,7 @@ export class MessagesService {
       creator_id: userId,
       text,
       price,
-      contents: JSON.stringify(contents),
+      contents: JSON.stringify(contentsBare),
       sent_to: sentTo,
       preview_index: previewIndex,
       is_welcome_message: isWelcomeMessage,

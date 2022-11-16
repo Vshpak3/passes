@@ -129,7 +129,10 @@ export class PostService {
 
   async publishPost(userId: string, createPostDto: CreatePostRequestDto) {
     const postId = v4()
-    const contents = await this.validateCreatePost(userId, createPostDto)
+    const { contentsBare, isProcessed } = await this.validateCreatePost(
+      userId,
+      createPostDto,
+    )
     await this.dbWriter
       .transaction(async (trx) => {
         await trx<PostEntity>(PostEntity.table).insert({
@@ -140,8 +143,8 @@ export class PostService {
           price: createPostDto.price ?? 0,
           expires_at: createPostDto.expiresAt,
           pass_ids: JSON.stringify(createPostDto.passIds),
-          contents: JSON.stringify(contents),
-          content_processed: !contents.length || isEnv('dev'),
+          contents: JSON.stringify(contentsBare),
+          content_processed: isProcessed || isEnv('dev'),
           preview_index: createPostDto.previewIndex,
         })
 
@@ -358,22 +361,26 @@ export class PostService {
     postId: string,
     updatePostDto: UpdatePostRequestDto,
   ) {
-    if (
-      (updatePostDto.text && !updatePostDto.tags) ||
-      (!updatePostDto.text && updatePostDto.tags)
-    ) {
+    const { text, tags, price, expiresAt, contentIds, previewIndex } =
+      updatePostDto
+    if ((text && !tags) || (!text && tags)) {
       throw new BadRequestException('needs both text and tags')
     }
-    if (updatePostDto.text && updatePostDto.tags) {
-      verifyTaggedText(updatePostDto.text, updatePostDto.tags)
+    const { contentsBare, isProcessed } =
+      await this.contentService.validateContentIds(userId, contentIds)
+    if (text && tags) {
+      verifyTaggedText(text, tags)
     }
     const updated = await this.dbWriter<PostEntity>(PostEntity.table)
       .where({ id: postId, user_id: userId })
       .update({
-        text: updatePostDto.text,
-        tags: JSON.stringify(updatePostDto.tags),
-        price: updatePostDto.price,
-        expires_at: updatePostDto.expiresAt,
+        text: text,
+        tags: JSON.stringify(tags),
+        price: price,
+        expires_at: expiresAt,
+        content_processed: isProcessed,
+        contents: JSON.stringify(contentsBare),
+        preview_index: previewIndex,
       })
     return updated === 1
   }

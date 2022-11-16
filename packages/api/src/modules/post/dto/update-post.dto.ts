@@ -7,4 +7,6 @@ export class UpdatePostRequestDto extends PickType(CreatePostRequestDto, [
   'tags',
   'price',
   'expiresAt',
+  'contentIds',
+  'previewIndex',
 ] as const) {}
