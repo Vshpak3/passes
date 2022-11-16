@@ -1840,6 +1840,9 @@ export class PaymentService {
                 [EarningCategoryEnum.AGENCY]: creatorShare.amount * rate,
               },
             )
+            await this.dbWriter<CreatorShareEntity>(CreatorShareEntity.table)
+              .where({ id: creatorShare.id })
+              .update({ processed: true })
           }),
         ),
       )
