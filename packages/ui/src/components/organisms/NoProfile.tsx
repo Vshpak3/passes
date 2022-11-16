@@ -8,10 +8,10 @@ export const NoProfile = () => {
         <div className="h-[56px] w-[56px]">
           <LogoSmall />
         </div>
-        <h1 className="mt-4 text-[32px] font-bold leading-[42px] text-white">
+        <h1 className="mt-4 text-3xl font-bold leading-[42px] text-white">
           Profile does not exist
         </h1>
-        <span className="text-[16px] leading-6 text-white opacity-50">
+        <span className="mb-3 text-base leading-6 text-white opacity-50">
           The profile you are looking for may have expired or been removed. If
           you typed the address, double-check the spelling.
         </span>
