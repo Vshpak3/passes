@@ -120,12 +120,13 @@ const LoginPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
               <Input
                 autoComplete="email"
-                className="w-[360px] bg-black text-white"
+                className="w-[360px]"
                 errors={errors}
                 name="email"
-                outlineColor="passes-secondary-color"
+                outlineColor="purple"
                 placeholder="Enter your email"
                 register={register}
+                transparent={false}
                 type="email"
               />
             </div>
@@ -136,12 +137,13 @@ const LoginPage: FC = () => {
               </Text>
               <PasswordInput
                 autoComplete="current-password"
-                className="w-[360px] bg-black text-white"
+                className="w-[360px]"
                 errors={errors}
                 name="password"
-                outlineColor="passes-secondary-color"
+                outlineColor="purple"
                 placeholder="Enter your password"
                 register={register}
+                transparent={false}
               />
             </div>
 

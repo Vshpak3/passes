@@ -164,7 +164,7 @@ const SignupEmailPage: FC = () => {
                 Email address
               </Text>
               <Input
-                className="w-[360px] border-[#34343A60] bg-black text-white"
+                className="w-[360px]"
                 errors={errors}
                 name="email"
                 options={{

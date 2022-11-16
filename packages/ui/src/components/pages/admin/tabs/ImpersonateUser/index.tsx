@@ -104,7 +104,7 @@ export const ImpersonateUser = () => {
                   Admin Secret
                 </Text>
                 <Input
-                  className="w-[360px] border-[#34343A60] bg-black text-white"
+                  className="w-[360px]"
                   errors={errors}
                   name="secret"
                   placeholder="Enter the admin secret"
@@ -117,7 +117,7 @@ export const ImpersonateUser = () => {
                   User ID
                 </Text>
                 <Input
-                  className="w-[360px] border-[#34343A60] bg-black text-white"
+                  className="w-[360px]"
                   errors={errors}
                   name="userId"
                   placeholder="Enter user id or username below"
@@ -130,7 +130,7 @@ export const ImpersonateUser = () => {
                   Username
                 </Text>
                 <Input
-                  className="w-[360px] border-[#34343A60] bg-black text-white"
+                  className="w-[360px]"
                   errors={errors}
                   name="username"
                   placeholder="Enter username or user id above"

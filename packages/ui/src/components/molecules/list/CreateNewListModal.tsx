@@ -22,7 +22,7 @@ const CreateNewListModal: FC<CreateNewListModalProps> = ({
       <span className="absolute top-[20px]">Create New List</span>
       <div className="relative flex flex-col pt-[18px]">
         <input
-          className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px]"
+          className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80"
           onChange={handleChange}
           placeholder="Enter List Name"
         />

@@ -53,10 +53,12 @@ const DisplayName: FC = () => {
   return (
     <Tab title="Change Display Name">
       <form className="mt-6" onSubmit={handleSubmit(onSaveDisplayName)}>
-        <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
-          <span>Display Name</span>
+        <label>
+          <span className="font-medium tracking-[-0.13px] text-gray-300/60">
+            Display Name
+          </span>
           <Input
-            className="mt-1.5 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color"
+            className="mt-1.5 !px-3 !py-4"
             errors={errors}
             name="displayName"
             register={register}

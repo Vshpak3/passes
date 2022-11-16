@@ -53,12 +53,14 @@ const Username: FC = () => {
   return (
     <Tab title="Change Username">
       <form className="mt-6" onSubmit={handleSubmit(onSaveUserName)}>
-        <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
-          <span>Username</span>
+        <label>
+          <span className="font-medium tracking-[-0.13px] text-gray-300/60">
+            Username
+          </span>
           <div className="relative">
             <span className="absolute top-1/2 left-3 -translate-y-1/2">@</span>
             <Input
-              className="mt-1.5 bg-transparent !py-4 !pl-[26px] !pr-3 text-white/90"
+              className="mt-1.5 !py-4 !pl-[26px]"
               name="username"
               register={register}
               type="text"

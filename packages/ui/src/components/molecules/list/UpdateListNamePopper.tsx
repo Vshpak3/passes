@@ -78,7 +78,7 @@ const UpdateListNamePopper: FC<UpdateListNamePopperProps> = ({
 
         <div className="relative flex flex-col pt-[10px]">
           <input
-            className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] text-white"
+            className="rounded-[6px] border border-[#2C282D] bg-[#100C11] p-[10px] text-white focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80"
             onChange={handleChange}
             placeholder="Enter List Name"
             value={listName}

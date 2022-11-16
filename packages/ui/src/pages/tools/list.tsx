@@ -109,7 +109,7 @@ const FanLists: NextPage = () => {
         <div className="relative flex items-center justify-end">
           <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
           <input
-            className="block min-h-[50px] w-full appearance-none rounded-[6px] bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 sm:min-w-[296px]"
+            className="block min-h-[50px] w-full appearance-none rounded-[6px] bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80 sm:min-w-[296px]"
             onChange={handleChangeSearch}
             placeholder="Search list"
             type="text"

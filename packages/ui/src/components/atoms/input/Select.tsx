@@ -97,7 +97,7 @@ export const Select: FC<SelectProps> = ({
           className={classNames(
             "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80",
             className,
-            transparent && "bg-transparent",
+            transparent ? "bg-transparent" : "bg-black",
             errors?.[name] ? "border-red-500" : "border-passes-dark-100",
             { "text-gray-500": !displayedValue && placeholder }
           )}

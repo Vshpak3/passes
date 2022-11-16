@@ -184,9 +184,7 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
             <ArrowRightIcon />
           </div>
         )}
-        <span className="block text-[16px] font-[500] text-white">
-          Card Info
-        </span>
+        <span className="block text-[16px] font-[500]">Card Info</span>
       </div>
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <CreditCardInput control={control as any} name="cc-number" />
