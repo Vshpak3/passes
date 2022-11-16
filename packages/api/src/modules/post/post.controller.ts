@@ -21,6 +21,7 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import { EditPostRequestDto } from './dto/edit-post.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import {
   GetPostBuyersRequestDto,
@@ -33,7 +34,6 @@ import {
 import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
-import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostService } from './post.service'
 
 @ApiTags('post')
@@ -72,20 +72,19 @@ export class PostController {
   }
 
   @ApiEndpoint({
-    summary: 'Updates a post',
+    summary: 'Edits a post',
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
-    responseDesc: 'A post was updated',
+    responseDesc: 'A post was edited',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Patch(':postId')
-  async updatePost(
+  @Patch('edit')
+  async editPost(
     @Req() req: RequestWithUser,
-    @Param('postId') postId: string,
-    @Body() updatePostDto: UpdatePostRequestDto,
+    @Body() editPostDto: EditPostRequestDto,
   ): Promise<BooleanResponseDto> {
     return new BooleanResponseDto(
-      await this.postService.updatePost(req.user.id, postId, updatePostDto),
+      await this.postService.editPost(req.user.id, editPostDto),
     )
   }
 

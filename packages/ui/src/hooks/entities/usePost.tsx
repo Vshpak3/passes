@@ -1,6 +1,9 @@
-import { PostApi, PostDto } from "@passes/api-client"
+import { EditPostRequestDto, PostApi, PostDto } from "@passes/api-client"
 import { useState } from "react"
+import { toast } from "react-toastify"
 import useSWR, { useSWRConfig } from "swr"
+
+import { errorMessage } from "src/helpers/error"
 
 export const CACHE_KEY_POST = "/posts"
 
@@ -28,6 +31,14 @@ export const usePost = (postId: string) => {
       revalidate: false
     })
 
+  const editPost = async (editPost: EditPostRequestDto) => {
+    try {
+      await api.editPost({ editPostRequestDto: editPost })
+      toast.success("Post was succesfully edited")
+    } catch (error) {
+      errorMessage(error)
+    }
+  }
   // For a brief moment during rendering, loadingPost will be set false
   // before the loading begins. This boolean is needed to handle showing the
   // initial state properly before the loading begins.
@@ -39,6 +50,7 @@ export const usePost = (postId: string) => {
     mutatePost,
     hasInitialFetch,
     setHasInitialFetch,
-    update: mutateManual
+    update: mutateManual,
+    editPost
   }
 }

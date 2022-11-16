@@ -1,7 +1,7 @@
 export const MAX_MENTION_LIMIT = 5
 export const MAX_PAID_POST_PRICE = 5000
 export const MAX_PASSES_LIMIT = 10
-export const MAX_PINNED_POST = 3
+export const MAX_PINNED_POST = 5
 export const MAX_POST_BUYERS_PER_REQUEST = 20
 export const MAX_POST_TIP_PRICE = 5000
 export const MIN_PAID_POST_PRICE = 3

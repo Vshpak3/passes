@@ -9,12 +9,14 @@ import { PassesSearchBar } from "./PassesSearchBar"
 import { SelectedPass } from "./SelectedPass"
 
 interface NewPostPaidSectionProps {
+  canEditPasses: boolean
   register: UseFormRegister<NewPostFormProps>
   selectedPasses: PassDto[]
   setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
 }
 
 export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
+  canEditPasses,
   register,
   selectedPasses,
   setSelectedPasses
@@ -43,15 +45,20 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
         <span className="text-base font-normal text-passes-secondary-color">
           Who is this content for?
         </span>
-        <div className="flex flex-col items-start gap-[15px]">
-          <span className="leading-[22px] text-white">
-            These membership holders will be able to view your content for free
-          </span>
-          <PassesSearchBar
-            onSelect={onPassSelect}
-            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
-          />
-        </div>
+        {canEditPasses ? (
+          <div className="flex flex-col items-start gap-[15px]">
+            <span className="leading-[22px] text-white">
+              These membership holders will be able to view your content for
+              free
+            </span>
+            <PassesSearchBar
+              onSelect={onPassSelect}
+              selectedPassIds={selectedPasses.map((pass) => pass.passId)}
+            />
+          </div>
+        ) : (
+          <div>Can&apos;t edit selected passes</div>
+        )}
       </div>
       <div className="block w-full border-b border-passes-dark-200 p-0 pt-[38px] pb-7">
         <div className="flex items-center gap-1 pb-5 sm:gap-4">
@@ -74,7 +81,9 @@ export const NewPostPaidSection: FC<NewPostPaidSectionProps> = ({
           {selectedPasses.map((pass: PassDto) => (
             <SelectedPass
               key={pass.passId}
-              onClick={() => removePass(pass.passId)}
+              onClick={
+                canEditPasses ? () => removePass(pass.passId) : undefined
+              }
               title={formatText(pass.title) as string}
             />
           ))}

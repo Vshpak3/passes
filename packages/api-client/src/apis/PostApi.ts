@@ -18,6 +18,7 @@ import type {
   BooleanResponseDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
+  EditPostRequestDto,
   GetPostBuyersRequestDto,
   GetPostBuyersResponseDto,
   GetPostHistoryRequestDto,
@@ -29,7 +30,6 @@ import type {
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
   TipPostRequestDto,
-  UpdatePostRequestDto,
 } from '../models';
 import {
     BooleanResponseDtoFromJSON,
@@ -38,6 +38,8 @@ import {
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
+    EditPostRequestDtoFromJSON,
+    EditPostRequestDtoToJSON,
     GetPostBuyersRequestDtoFromJSON,
     GetPostBuyersRequestDtoToJSON,
     GetPostBuyersResponseDtoFromJSON,
@@ -60,12 +62,14 @@ import {
     RegisterPayinResponseDtoToJSON,
     TipPostRequestDtoFromJSON,
     TipPostRequestDtoToJSON,
-    UpdatePostRequestDtoFromJSON,
-    UpdatePostRequestDtoToJSON,
 } from '../models';
 
 export interface CreatePostRequest {
     createPostRequestDto: CreatePostRequestDto;
+}
+
+export interface EditPostRequest {
+    editPostRequestDto: EditPostRequestDto;
 }
 
 export interface FindPostRequest {
@@ -112,11 +116,6 @@ export interface UnpinPostRequest {
     postId: string;
 }
 
-export interface UpdatePostRequest {
-    postId: string;
-    updatePostRequestDto: UpdatePostRequestDto;
-}
-
 /**
  * 
  */
@@ -157,6 +156,44 @@ export class PostApi extends runtime.BaseAPI {
      */
     async createPost(requestParameters: CreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePostResponseDto> {
         const response = await this.createPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Edits a post
+     */
+    async editPostRaw(requestParameters: EditPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
+        if (requestParameters.editPostRequestDto === null || requestParameters.editPostRequestDto === undefined) {
+            throw new runtime.RequiredError('editPostRequestDto','Required parameter requestParameters.editPostRequestDto was null or undefined when calling editPost.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/edit`,
+            method: 'PATCH',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EditPostRequestDtoToJSON(requestParameters.editPostRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Edits a post
+     */
+    async editPost(requestParameters: EditPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
+        const response = await this.editPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -558,48 +595,6 @@ export class PostApi extends runtime.BaseAPI {
      */
     async unpinPost(requestParameters: UnpinPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.unpinPostRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     * Updates a post
-     */
-    async updatePostRaw(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
-        if (requestParameters.postId === null || requestParameters.postId === undefined) {
-            throw new runtime.RequiredError('postId','Required parameter requestParameters.postId was null or undefined when calling updatePost.');
-        }
-
-        if (requestParameters.updatePostRequestDto === null || requestParameters.updatePostRequestDto === undefined) {
-            throw new runtime.RequiredError('updatePostRequestDto','Required parameter requestParameters.updatePostRequestDto was null or undefined when calling updatePost.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        const token = window.localStorage.getItem("access-token")
-        if (token) {
-            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
-        }
-
-        const response = await this.request({
-            path: `/api/post/{postId}`.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters.postId))),
-            method: 'PATCH',
-            headers: headerParameters,
-            query: queryParameters,
-            body: UpdatePostRequestDtoToJSON(requestParameters.updatePostRequestDto),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => BooleanResponseDtoFromJSON(jsonValue));
-    }
-
-    /**
-     * Updates a post
-     */
-    async updatePost(requestParameters: UpdatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
-        const response = await this.updatePostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

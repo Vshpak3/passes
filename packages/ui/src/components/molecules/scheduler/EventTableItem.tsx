@@ -8,7 +8,7 @@ import { FC, useState } from "react"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
-import { EditPostPopup } from "./EditPostPopup"
+import { EditScheduledPostPopup } from "./EditScheduledPostPopup"
 import { EventTableItemCachedProps } from "./EventTableItemCached"
 
 type EventTableItemProps = EventTableItemCachedProps
@@ -91,7 +91,7 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   return (
     <>
       {edit && (
-        <EditPostPopup
+        <EditScheduledPostPopup
           isOpen
           onCancel={() => setEdit(false)}
           scheduledEvent={scheduledEvent}

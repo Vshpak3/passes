@@ -6,13 +6,13 @@ import { NewPostEditor } from "src/components/organisms/profile/main-content/new
 import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 import { useScheduledEvents } from "src/hooks/useScheduledEvents"
 
-interface NewPostPopupProps {
+interface NewPostDialogProps {
   isOpen: boolean
   onCancel: () => void
   selectionDate?: Date
 }
 
-export const NewPostPopup: FC<NewPostPopupProps> = ({
+export const NewPostDialog: FC<NewPostDialogProps> = ({
   isOpen,
   onCancel,
   selectionDate

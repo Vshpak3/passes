@@ -3,7 +3,7 @@ import PlusSign from "public/icons/plus-sign.svg"
 import { FC, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
-import { NewPostPopup } from "src/components/molecules/scheduler/NewPostPopup"
+import { NewPostDialog } from "src/components/molecules/scheduler/NewPostDialog"
 
 interface NewPostButtonProps {
   isTablet?: boolean
@@ -13,7 +13,7 @@ export const NewPostButton: FC<NewPostButtonProps> = ({ isTablet = true }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false)
   return (
     <>
-      <NewPostPopup
+      <NewPostDialog
         isOpen={isNewPostModalOpen}
         onCancel={() => setIsNewPostModalOpen(false)}
       />

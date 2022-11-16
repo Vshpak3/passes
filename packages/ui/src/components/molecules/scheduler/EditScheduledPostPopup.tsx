@@ -6,13 +6,13 @@ import { NewPostEditor } from "src/components/organisms/profile/main-content/new
 import { ContentFilesFromBare } from "src/hooks/useMedia"
 import { useUpdateScheduledEvent } from "src/hooks/useUpdateScheduledEvent"
 
-interface EditPostPopupProps {
+interface EditScheduledPostPopupProps {
   isOpen: boolean
   onCancel: () => void
   scheduledEvent: ScheduledEventDto
 }
 
-export const EditPostPopup: FC<EditPostPopupProps> = ({
+export const EditScheduledPostPopup: FC<EditScheduledPostPopupProps> = ({
   isOpen,
   onCancel,
   scheduledEvent

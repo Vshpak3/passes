@@ -61,6 +61,7 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import { EditPostRequestDto } from './dto/edit-post.dto'
 import {
   GetPostBuyersRequestDto,
   PostBuyerDto,
@@ -70,7 +71,6 @@ import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
-import { UpdatePostRequestDto } from './dto/update-post.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
@@ -356,13 +356,9 @@ export class PostService {
     })
   }
 
-  async updatePost(
-    userId: string,
-    postId: string,
-    updatePostDto: UpdatePostRequestDto,
-  ) {
-    const { text, tags, price, expiresAt, contentIds, previewIndex } =
-      updatePostDto
+  async editPost(userId: string, editPostDto: EditPostRequestDto) {
+    const { text, tags, price, expiresAt, contentIds, previewIndex, postId } =
+      editPostDto
     if ((text && !tags) || (!text && tags)) {
       throw new BadRequestException('needs both text and tags')
     }

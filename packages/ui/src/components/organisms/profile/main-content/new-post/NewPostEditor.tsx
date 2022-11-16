@@ -79,7 +79,8 @@ interface NewPostEditorProps {
   handleSavePost: (
     arg: CreatePostRequestDto,
     contents: ContentDto[],
-    passes: PassDto[]
+    passes: PassDto[],
+    newContent: boolean
   ) => void | Promise<void>
   initialData: Partial<NewPostFormProps>
   onlyText?: boolean
@@ -88,6 +89,7 @@ interface NewPostEditorProps {
   popup: boolean
   title?: string
   schedulable?: boolean
+  canEditPasses?: boolean
   showDefaultToast?: boolean
 }
 
@@ -100,7 +102,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   onClose,
   title = "New Post",
   schedulable = true,
-  showDefaultToast = true
+  showDefaultToast = true,
+  canEditPasses = true
 }) => {
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     initialData.files
@@ -170,6 +173,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   const previewIndex = watch("previewIndex")
 
   const onSubmit = async (values: NewPostFormProps) => {
+    const files = values.files
     const contents = await new ContentService().uploadUserContentBare({
       files: values.files,
       inPost: true
@@ -194,7 +198,8 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
       contents.map((content) => {
         return { ...content, userId: user?.userId ?? "" }
       }),
-      selectedPasses
+      selectedPasses,
+      !files.some((file) => file.file)
     )
 
     if (showDefaultToast) {
@@ -310,6 +315,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
           <>
             {isPaid && (
               <NewPostPaidSection
+                canEditPasses={canEditPasses}
                 register={register}
                 selectedPasses={selectedPasses}
                 setSelectedPasses={setSelectedPasses}

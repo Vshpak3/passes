@@ -13,6 +13,7 @@ import {
   DropDownGeneral,
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
+import { EditPostDialog } from "src/components/organisms/profile/main-content/new-post/EditPostDialog"
 import { useBuyPostModal } from "src/hooks/context/useBuyPostModal"
 import { ProfileContext } from "src/pages/[username]"
 import { DeletePostModal } from "./DeletePostModal"
@@ -33,6 +34,7 @@ const PostUnmemo: FC<PostProps> = ({
   update
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
+  const [editPostDialogOpen, setEditPostDialogOpen] = useState(false)
   const { setPost } = useBuyPostModal()
   const router = useRouter()
   const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
@@ -61,9 +63,7 @@ const PostUnmemo: FC<PostProps> = ({
     }
   }, [router, postByUrl, contentProcessed, username])
 
-  const [isRemoved, setIsRemoved] = useState(
-    !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
-  )
+  const isRemoved = !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
 
   const onDelete = () => {
     update({ deletedAt: new Date() })
@@ -73,6 +73,9 @@ const PostUnmemo: FC<PostProps> = ({
   }
 
   const dropdownOptions: DropdownOption[] = [
+    ...DropDownGeneral("Edit", post.isOwner, async () => {
+      setEditPostDialogOpen(true)
+    }),
     ...DropDownReport(!isOwner, {
       username: username,
       userId: userId
@@ -89,8 +92,8 @@ const PostUnmemo: FC<PostProps> = ({
           return
         }
         await pinPost(post)
+        update({ pinnedAt: new Date() })
         toast.success("The post has been pinned")
-        setIsRemoved(true)
       }
     ),
     ...DropDownGeneral(
@@ -98,23 +101,12 @@ const PostUnmemo: FC<PostProps> = ({
       post.isOwner && isPinned && contentProcessed && !!unpinPost,
       async () => {
         await unpinPost(post)
+        update({ pinnedAt: null })
         toast.success("The post has been unpinned")
-        setIsRemoved(true)
       }
     ),
     ...DropDownCopyLink(contentProcessed, username, postId)
   ]
-
-  // When pinning/unpinning we revalidate which causes each post to re-render.
-  // We need this useEffect to ensure the posts are properly removed from their
-  // respective section.
-  useEffect(() => {
-    setIsRemoved(
-      !isPinned &&
-        pinnedPosts &&
-        pinnedPosts.some(({ postId: pinnedPostId }) => pinnedPostId === postId)
-    )
-  }, [isPinned, pinnedPosts, postId])
 
   return (
     <>
@@ -124,6 +116,12 @@ const PostUnmemo: FC<PostProps> = ({
             bordered && "border-b-[0.5px] border-passes-gray"
           )}
         >
+          {editPostDialogOpen && (
+            <EditPostDialog
+              onCancel={() => setEditPostDialogOpen(false)}
+              post={post}
+            />
+          )}
           <div
             className={classNames(
               isPinned && "bg-passes-pink-100/10",

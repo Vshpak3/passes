@@ -14,7 +14,7 @@ import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { SchedulerContext } from "src/pages/tools/scheduler"
 import { DateTimeSelected } from "./DateTimeSelector"
 import { MonthYearPicker } from "./MonthYearPicker"
-import { NewPostPopup } from "./NewPostPopup"
+import { NewPostDialog } from "./NewPostDialog"
 
 export const SchedulerHeader: FC = () => {
   const { month, year, setMonth, setYear } = useContext(SchedulerContext)
@@ -81,7 +81,7 @@ export const SchedulerHeader: FC = () => {
       </Popper>
 
       {/* Create new post */}
-      <NewPostPopup
+      <NewPostDialog
         isOpen={isNewPostModalOpen && !!selectionDate}
         onCancel={() => setIsNewPostModalOpen(false)}
         selectionDate={selectionDate as Date}

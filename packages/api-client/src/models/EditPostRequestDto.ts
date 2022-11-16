@@ -23,51 +23,72 @@ import {
 /**
  * 
  * @export
- * @interface UpdatePostRequestDto
+ * @interface EditPostRequestDto
  */
-export interface UpdatePostRequestDto {
+export interface EditPostRequestDto {
     /**
      * 
      * @type {string}
-     * @memberof UpdatePostRequestDto
+     * @memberof EditPostRequestDto
      */
     text: string;
     /**
      * 
      * @type {Array<TagDto>}
-     * @memberof UpdatePostRequestDto
+     * @memberof EditPostRequestDto
      */
     tags: Array<TagDto>;
     /**
      * 
+     * @type {number}
+     * @memberof EditPostRequestDto
+     */
+    previewIndex: number;
+    /**
+     * 
      * @type {Date}
-     * @memberof UpdatePostRequestDto
+     * @memberof EditPostRequestDto
      */
     expiresAt?: Date | null;
     /**
      * 
      * @type {number}
-     * @memberof UpdatePostRequestDto
+     * @memberof EditPostRequestDto
      */
     price?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof EditPostRequestDto
+     */
+    contentIds: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof EditPostRequestDto
+     */
+    postId: string;
 }
 
 /**
- * Check if a given object implements the UpdatePostRequestDto interface.
+ * Check if a given object implements the EditPostRequestDto interface.
  */
-export function instanceOfUpdatePostRequestDto(value: object): boolean {
+export function instanceOfEditPostRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
+    isInstance = isInstance && "previewIndex" in value;
+    isInstance = isInstance && "contentIds" in value;
+    isInstance = isInstance && "postId" in value;
 
     return isInstance;
 }
 
-export function UpdatePostRequestDtoFromJSON(json: any): UpdatePostRequestDto {
-    return UpdatePostRequestDtoFromJSONTyped(json, false);
+export function EditPostRequestDtoFromJSON(json: any): EditPostRequestDto {
+    return EditPostRequestDtoFromJSONTyped(json, false);
 }
 
-export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): UpdatePostRequestDto {
+export function EditPostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): EditPostRequestDto {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -75,12 +96,15 @@ export function UpdatePostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
+        'previewIndex': json['previewIndex'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
+        'contentIds': json['contentIds'],
+        'postId': json['postId'],
     };
 }
 
-export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null): any {
+export function EditPostRequestDtoToJSON(value?: EditPostRequestDto | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -91,8 +115,11 @@ export function UpdatePostRequestDtoToJSON(value?: UpdatePostRequestDto | null):
         
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
+        'previewIndex': value.previewIndex,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'price': value.price,
+        'contentIds': value.contentIds,
+        'postId': value.postId,
     };
 }
 

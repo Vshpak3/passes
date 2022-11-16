@@ -78,6 +78,7 @@ models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
 models/DeleteScheduledEventRequestDto.ts
 models/EditListNameRequestDto.ts
+models/EditPostRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetBlockedResponseDto.ts
 models/GetChannelMesssageInfoResponseDto.ts
@@ -230,7 +231,6 @@ models/UpdateExternalPassRequestDto.ts
 models/UpdateNotificationSettingsRequestDto.ts
 models/UpdatePassRequestDto.ts
 models/UpdatePasswordRequestDto.ts
-models/UpdatePostRequestDto.ts
 models/UpdateScheduledEventRequestDto.ts
 models/UpdateScheduledTimeRequestDto.ts
 models/UpdateUsernameRequestDto.ts
