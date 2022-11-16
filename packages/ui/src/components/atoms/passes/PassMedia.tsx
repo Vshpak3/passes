@@ -40,7 +40,7 @@ export const PassMedia: FC<PassMediaProps> = ({
       : ContentService.passAnimationPath(passId, animationType)
     return (
       <>
-        {<video
+        <video
           autoPlay
           className={classNames(shouldUsePlaceholder ? "hidden" : "")}
           loop
