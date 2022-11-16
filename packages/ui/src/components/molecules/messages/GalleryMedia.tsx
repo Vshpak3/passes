@@ -140,11 +140,9 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   value={purchased.toString()}
                 />
                 {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
-                <UnlockText
-                  className="flex items-center justify-center px-2 pt-4 text-white"
-                  images={images}
-                  videos={video}
-                />
+                <span className="flex items-center justify-center px-2 pt-4 text-white">
+                  <UnlockText images={images} videos={video} />
+                </span>
               </div>
             )}
           </div>

@@ -55,12 +55,9 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           />
           <div>
             <div className="my-4 flex justify-between">
-              <UnlockText
-                className="flex items-center rounded border border-passes-dark-gray px-2 py-1 text-white"
-                images={images}
-                showUnlock={false}
-                videos={video}
-              />
+              <span className="flex items-center rounded border border-passes-dark-gray px-2 py-1 text-white">
+                <UnlockText images={images} showUnlock={false} videos={video} />
+              </span>
               <span className="flex items-center text-white">
                 Unlock for
                 <span className="ml-3 flex items-center rounded bg-passes-primary-color/30 py-2 px-3 font-bold">

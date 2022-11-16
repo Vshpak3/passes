@@ -59,11 +59,9 @@ export const LockedMedia: FC<LockedMediaProps> = ({
               }
               onClick={openBuyModal}
             />
-            <UnlockText
-              className="text-base font-medium"
-              images={images}
-              videos={video}
-            />
+            <span className="text-base font-medium">
+              <UnlockText images={images} videos={video} />
+            </span>
           </div>
         </div>
       </div>

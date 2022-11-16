@@ -29,7 +29,7 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
   // eslint-disable-next-line sonarjs/no-all-duplicated-branches
   const Icon = paid ? UnlockLockIcon : UnlockLockIcon
   return (
-    <div className="flex w-full items-center justify-center px-5">
+    <div className="mt-4 flex w-full items-center justify-center px-5">
       <Button
         className="flex w-full rounded-[5px] border-none py-2 text-center text-base font-medium text-white shadow-sm"
         disabled={paying}
@@ -43,8 +43,8 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
           "Paying..."
         ) : (
           <>
-            Unlock <UnlockText images={images} videos={video} /> For $
-            {formatCurrency(price ?? 0)}{" "}
+            <UnlockText images={images} videos={video} /> for{" "}
+            {formatCurrency(price)}
           </>
         )}
       </Button>
