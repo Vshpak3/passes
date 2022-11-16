@@ -22,6 +22,7 @@ import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
 import { BlockModalData } from "src/components/organisms/BlockModal"
+import { CookieBanner } from "src/components/organisms/CookieBanner"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import TippedMessageModal from "src/components/organisms/payment/TippedMessageModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
@@ -102,6 +103,7 @@ const navPaths = ["/messages"]
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
+  const [cookieBannerOpen, setCookieBannerOpen] = useState<boolean>(true)
   const [buyMessage, setBuyMessage] = useState<MessageDto | null>(null)
   const [selectedChannel, setSelectedChannel] =
     useState<ChannelMemberDto | null>(null)
@@ -196,6 +198,14 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
         <>
           {gradients()}
           <Component {...pageProps} />
+          {cookieBannerOpen && (
+            <CookieBanner
+              onAccept={() => setCookieBannerOpen(false)}
+              onClose={() => setCookieBannerOpen(false)}
+              onManage={() => setCookieBannerOpen(false)}
+              onReject={() => setCookieBannerOpen(false)}
+            />
+          )}
           {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
           {buyMessage && selectedChannel && (
             <BuyMessageModal
