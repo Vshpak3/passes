@@ -71,7 +71,7 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
             ref={dropProvided.innerRef}
           >
             {listId === "Free" && items.length === 0 ? (
-              <div className="flex h-[85px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-[#FF51A8] bg-[#0F0C10] px-0 md:h-[175px]  md:px-6">
+              <div className="flex h-[85px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-passes-primary-color bg-[#0F0C10] px-0 md:h-[175px]  md:px-6">
                 <BoxIcon />
                 <p className="text-center text-[9px] font-normal text-[#888689] md:text-[12px] md:leading-[16px]">
                   Reorder and drag content here to post as free preview

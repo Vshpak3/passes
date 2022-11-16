@@ -96,7 +96,10 @@ export const CustomMentionEditor: FC<CustomMentionProps> = ({
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
       mentionComponent: ({ mention }) => (
-        <Link className="text-[#FF51A8]" href={`/${mention.username}`}>
+        <Link
+          className="text-passes-primary-color"
+          href={`/${mention.username}`}
+        >
           @{mention.username}
         </Link>
       ),

@@ -123,7 +123,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
           )}
         >
           {isPaid && (
-            <div className="text-[12px] font-medium leading-[24px] text-[#FF51A8]">
+            <div className="text-[12px] font-medium leading-[24px] text-passes-primary-color">
               Free Preview
             </div>
           )}
@@ -145,9 +145,9 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
         </div>
         {isPaid && (
           <>
-            <div className="mx-3 h-[85px] self-end border-r border-[#FF51A8] md:h-[175px]" />
+            <div className="mx-3 h-[85px] self-end border-r border-passes-primary-color md:h-[175px]" />
             <div className="flex w-full min-w-[50%] max-w-[40%] flex-col overflow-hidden md:min-w-[60%]">
-              <div className="text-[12px] font-medium leading-[24px] text-[#FF51A8]">
+              <div className="text-[12px] font-medium leading-[24px] text-passes-primary-color">
                 Pay to View
               </div>
               <div className="flex items-center overflow-x-auto">

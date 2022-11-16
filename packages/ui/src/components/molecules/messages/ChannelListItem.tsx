@@ -43,7 +43,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
       }}
     >
       {!!channel.recent && !!channel.unread && !isSelected && (
-        <div className="absolute left-[1px] top-[calc(50%-4px)] z-50 h-[8px] w-[8px] rounded-[4px] bg-[#FF51A8]" />
+        <div className="absolute left-[1px] top-[calc(50%-4px)] z-50 h-[8px] w-[8px] rounded-[4px] bg-passes-primary-color" />
       )}
       <div className="flex w-full items-start">
         <div className="flex pr-[10px]">
@@ -69,7 +69,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
         {channel?.unreadTip !== 0 && (
-          <span className="absolute top-0 right-[7px] items-center self-end rounded-md border border-[#FF51A8] bg-[#3B1127] p-0.5 text-center text-[11px] font-bold text-[#FF51A8]">
+          <span className="absolute top-0 right-[7px] items-center self-end rounded-md border border-passes-primary-color bg-[#3B1127] p-0.5 text-center text-[11px] font-bold text-passes-primary-color">
             Tip: {formatCurrency(channel?.unreadTip)}
           </span>
         )}

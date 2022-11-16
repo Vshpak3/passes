@@ -30,7 +30,7 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
   return (
     <div className="mt-4 flex w-full items-center justify-center">
       <Button
-        className="flex w-full rounded-[4px] border-2 border-[#FF51A8]/50 bg-[#B52A6F]/25 py-2 text-center text-base font-medium text-[#FF51A8] shadow-sm"
+        className="flex w-full rounded-[4px] border-2 border-passes-primary-color/50 bg-[#B52A6F]/25 py-2 text-center text-base font-medium text-passes-primary-color shadow-sm"
         disabled={paying}
         onClick={openBuyModal}
         variant={ButtonVariant.NONE}

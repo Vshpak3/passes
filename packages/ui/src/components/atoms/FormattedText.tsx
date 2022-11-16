@@ -27,7 +27,7 @@ export const FormattedText: FC<FormattedTextProps> = ({ text, tags }) => {
             (context.usernames[tag.userId] = await getUsername(tag.userId))
           tagMap[
             tag.index
-          ] = `<a href="/${username}" class="text-[#FF51A8]">@${username}</a>`
+          ] = `<a href="/${username}" class="text-passes-primary-color">@${username}</a>`
         })
       )
     )

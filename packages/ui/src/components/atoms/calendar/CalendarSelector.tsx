@@ -33,9 +33,9 @@ export const CalendarSelector: FC<CalendarSelectorProps> = ({
       <span
         className={classNames(
           activeHeader === name || isOpen
-            ? " bg-[#FF51A8]/10 "
-            : "hover:bg-[#FF51A8]/10",
-          "group flex h-full flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-[#FF51A8] sm:px-4 sm:py-3"
+            ? " bg-passes-primary-color/10 "
+            : "hover:bg-passes-primary-color/10",
+          "group flex h-full flex-shrink-0 items-center rounded-[56px] py-2 px-3 text-sm leading-4 text-passes-primary-color sm:px-4 sm:py-3"
         )}
       >
         <span className="flex shrink-0 cursor-pointer items-center gap-1">
