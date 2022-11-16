@@ -47,3 +47,9 @@ select {
 .rdrStaticRangeSelected {
   color: #d6409f !important;
 }
+
+.rdrDayInPreview,
+.rdrDayEndPreview,
+.rdrDayStartPreview {
+  color: #d6409f !important;
+}
