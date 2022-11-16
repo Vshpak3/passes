@@ -828,7 +828,7 @@ export class PostService {
     const postIds = (
       await this.dbWriter<PostEntity>(PostEntity.table)
         .where({ content_processed: false })
-        .andWhere('created_at', '>', new Date(Date.now() - checkProcessedUntil))
+        .andWhere('updated_at', '>', new Date(Date.now() - checkProcessedUntil))
         .select('id')
     ).map((post) => post.id)
     rejectIfAny(
