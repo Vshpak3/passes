@@ -19,8 +19,8 @@ import { object, string } from "yup"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { CreditCardInput } from "src/components/atoms/CreditCardInput"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
+import { NativeSelect } from "src/components/atoms/input/NativeSelect"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { FULL_NAME_REGEX } from "src/config/name"
 import { COUNTRIES, US_STATES } from "src/helpers/countries"
 import { getExpirationYears } from "src/helpers/dates"
@@ -200,12 +200,12 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       <div className="mt-4 flex flex-row gap-4">
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Month</span>
-          <SelectInput
+          <NativeSelect
             autoComplete="cc-exp-month"
             className="mt-2 w-[100px]"
-            control={control}
             errors={errors}
             name="cc-exp-month"
+            register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
             )}
@@ -213,12 +213,12 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         </div>
         <div className="flex flex-col">
           <span className="text-[16px] font-[500] text-[#767676]">Year</span>
-          <SelectInput
+          <NativeSelect
             autoComplete="cc-exp-year"
             className="mt-2 w-[100px]"
-            control={control}
             errors={errors}
             name="cc-exp-year"
+            register={register}
             selectOptions={years}
           />
         </div>
@@ -255,14 +255,14 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         register={register}
         type="text"
       />
-      <SelectInput
+      <NativeSelect
         autoComplete="country"
         className="mt-3"
-        control={control}
         defaultValue={COUNTRIES[0]}
         errors={errors}
         name="country"
         placeholder="Country"
+        register={register}
         selectOptions={COUNTRIES}
       />
       <Input
@@ -276,15 +276,14 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
       />
       <div className="flex gap-4">
         {countrySelected === COUNTRIES[0] ? (
-          <SelectInput
+          <NativeSelect
             autoComplete="address-level1"
             className="mt-3 w-[120px]"
-            control={control}
             errors={errors}
             name="district"
             placeholder="State"
+            register={register}
             selectOptions={US_STATES}
-            showOnTop
           />
         ) : (
           <Input
