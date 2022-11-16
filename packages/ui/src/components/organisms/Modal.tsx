@@ -54,11 +54,12 @@ export const Modal: FC<PropsWithChildren<ModalProps>> = ({
   useEffect(() => {
     ReactModal.setAppElement("body")
 
-    document.body.style.overflow = "hidden"
+    document.body.style.overflow = isOpen ? "hidden" : "auto"
+
     return () => {
       document.body.style.overflow = "unset"
     }
-  }, [])
+  }, [isOpen])
   return (
     <ReactModal
       isOpen={isOpen}
