@@ -48,7 +48,7 @@ preheader: Your Subscription has started!
                 </p>
 
                 <p class="m-0 mb-4 text-base leading-5.5 text-gray-500">
-                  Remember that your subscription expires every 30 days and will be renewed automatically with your default payment method. In the event the payment fails, you will lose access to your creator's exclusive content moving forward but will still be able to access all past content that was unlocked.
+                  Remember that your subscription expires every month and will be renewed automatically with your selected payment method. In the event the payment fails, you will lose access to your creator's exclusive content moving forward but will still be able to access all past content that was unlocked.
                 </p>
 
                 ${SUPPORT}

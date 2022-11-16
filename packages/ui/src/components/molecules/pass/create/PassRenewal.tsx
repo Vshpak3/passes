@@ -12,7 +12,7 @@ export const PassRenewal = () => (
         tooltipText="Renewal time can not be changed"
       />
       <span className="text-lg font-bold text-white/90 md:text-[15px] md:font-[500]">
-        Automatically renews every 30 days
+        Automatically renews every month
       </span>
     </div>
   </div>
