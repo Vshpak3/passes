@@ -199,7 +199,7 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
         return { ...content, userId: user?.userId ?? "" }
       }),
       selectedPasses,
-      !files.some((file) => file.file)
+      files.some((file) => !!file.file)
     )
 
     if (showDefaultToast) {
