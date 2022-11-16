@@ -30,14 +30,14 @@ export const PassMedia: FC<PassMediaProps> = ({
     <div className="h-0 w-full rounded-lg bg-black from-passes-purple-100 via-[#F03368] to-[#F6B103] pt-[100%]" />
   )
 
-  const refVideo = useRef(null)
+  const refVideo = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
     if (!refVideo.current) {
       return
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const v = refVideo.current as unknown as any
+
+    const v = refVideo.current
     v.defaultMuted = true
     v.muted = true
   }, [refVideo])
@@ -53,16 +53,16 @@ export const PassMedia: FC<PassMediaProps> = ({
       <>
         <video
           autoPlay
-          className={classNames(shouldUsePlaceholder ? "hidden" : "")}
           loop
-          // eslint-disable-next-line react/jsx-boolean-value
-          muted={true}
-          onLoadedData={handleLoadingAsset}
+          muted
+          playsInline
+          // poster={animationPath}
           ref={refVideo}
         >
           <source src={animationPath} type="video/mp4" />
         </video>
-        {shouldUsePlaceholder && placeHolder}
+
+        {/* TODO: placeholder image will be added as video poster; NFT thumbnail when we they get generated */}
       </>
     )
   } else {
