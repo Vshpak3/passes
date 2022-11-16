@@ -12,11 +12,12 @@ import {
   POST_TEXT_LENGTH
 } from "@passes/shared-constants"
 import classNames from "classnames"
-import { DragEvent, FC, useEffect, useState } from "react"
+import { FC, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { array, date, object } from "yup"
 
+import { DragDrop } from "src/components/atoms/DragDrop"
 import { CustomMentionEditor } from "src/components/organisms/CustomMentionEditor"
 import { MediaSection } from "src/components/organisms/MediaSection"
 import { NewPostEditorFooter } from "src/components/organisms/profile/new-post/NewPostEditorFooter"
@@ -110,7 +111,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
   )
   const [extended, setExtended] = useState(isExtended)
   const [isReset, setIsReset] = useState(false)
-  const [dragActive, setDragActive] = useState(false)
 
   const [selectedPasses, setSelectedPasses] = useState<PassDto[]>(
     initialData.passes ?? []
@@ -217,30 +217,6 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
     resetEditor()
   }
 
-  const handleDrag = function (event: DragEvent<HTMLDivElement>) {
-    event.preventDefault()
-    event.stopPropagation()
-    if (event.type === "dragenter" || event.type === "dragover") {
-      setDragActive(true)
-    } else if (event.type === "dragleave") {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = function (event: DragEvent<HTMLDivElement>) {
-    event.preventDefault()
-    event.stopPropagation()
-    setDragActive(false)
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      const files = event.dataTransfer.files
-      if (files) {
-        addNewMedia(files)
-      }
-    }
-  }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div
@@ -260,57 +236,64 @@ export const NewPostEditor: FC<NewPostEditorProps> = ({
           />
         )}
 
-        <div
-          className={classNames(
-            "w-full",
-            {
-              "border-b border-[#2B282D] pb-6": extended
-            },
-            dragActive
-              ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
-              : "sm:border sm:border-transparent",
-            ""
-          )}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
+        <DragDrop
+          onChange={(event) => {
+            addNewMedia(event.dataTransfer.files)
+            if (!extended) {
+              setExtended(true)
+            }
+          }}
         >
-          <div
-            className={classNames({ "mt-4": extended }, "w-full")}
-            onClick={() => {
-              if (!extended) {
-                setExtended(true)
-              }
-            }}
-          >
-            <CustomMentionEditor
-              defaultText={initialData.text}
-              isReset={isReset}
-              onInputChange={(params: NewPostTextFormProps) => {
-                setValue("text", params?.text)
-                setValue("tags", params?.tags)
-              }}
-              placeholder="What's on your mind?"
-              setIsReset={setIsReset}
-            />
-          </div>
-          {!onlyText && extended && (
-            <MediaSection
-              addNewMedia={addNewMedia}
-              errors={errors}
-              files={files}
-              isPaid={isPaid}
-              mediaPreviewIndex={previewIndex}
-              onRemove={onRemove}
-              register={register}
-              setFiles={setFiles}
-              setMediaPreviewIndex={(index) => {
-                setValue("previewIndex", index)
-              }}
-            />
+          {({ isDragging }) => (
+            <div
+              className={classNames(
+                "w-full",
+                {
+                  "border-b border-[#2B282D] pb-6": extended
+                },
+                isDragging
+                  ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
+                  : "sm:border sm:border-transparent",
+                ""
+              )}
+            >
+              <div
+                className={classNames({ "mt-4": extended }, "w-full")}
+                onClick={() => {
+                  if (!extended) {
+                    setExtended(true)
+                  }
+                }}
+              >
+                <CustomMentionEditor
+                  defaultText={initialData.text}
+                  isReset={isReset}
+                  onInputChange={(params: NewPostTextFormProps) => {
+                    setValue("text", params?.text)
+                    setValue("tags", params?.tags)
+                  }}
+                  placeholder="What's on your mind?"
+                  setIsReset={setIsReset}
+                />
+              </div>
+              {!onlyText && extended && (
+                <MediaSection
+                  addNewMedia={addNewMedia}
+                  errors={errors}
+                  files={files}
+                  isPaid={isPaid}
+                  mediaPreviewIndex={previewIndex}
+                  onRemove={onRemove}
+                  register={register}
+                  setFiles={setFiles}
+                  setMediaPreviewIndex={(index) => {
+                    setValue("previewIndex", index)
+                  }}
+                />
+              )}
+            </div>
           )}
-        </div>
+        </DragDrop>
         {extended && (
           <>
             {isPaid && (

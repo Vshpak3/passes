@@ -15,7 +15,6 @@ import classNames from "classnames"
 import React, {
   ChangeEvent,
   Dispatch,
-  DragEvent,
   FC,
   KeyboardEvent,
   SetStateAction,
@@ -27,6 +26,7 @@ import { toast } from "react-toastify"
 import { date, object } from "yup"
 
 import { Button } from "src/components/atoms/button/Button"
+import { DragDrop } from "src/components/atoms/DragDrop"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Text } from "src/components/atoms/Text"
@@ -111,7 +111,7 @@ export const InputMessage: FC<InputMessageProps> = ({
     resolver: yupResolver(newMessageFormSchema)
   })
   const [tip, setTip] = useState(0)
-  const [dragActive, setDragActive] = useState(false)
+
   const { files, setFiles, addNewMedia, onRemove, addContent } = useMedia(
     vaultContent.map((content) => new ContentFile(undefined, content))
   )
@@ -243,200 +243,175 @@ export const InputMessage: FC<InputMessageProps> = ({
     }
   }, [channelId, submitData, tip])
 
-  const handleDrag = function (event: DragEvent<HTMLDivElement>) {
-    event.preventDefault()
-    event.stopPropagation()
-    if (event.type === "dragenter" || event.type === "dragover") {
-      setDragActive(true)
-    } else if (event.type === "dragleave") {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = function (event: DragEvent<HTMLDivElement>) {
-    event.preventDefault()
-    event.stopPropagation()
-    setDragActive(false)
-    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //@ts-ignore
-      const files = event.dataTransfer.files
-      if (files) {
-        addNewMedia(files)
-      }
-    }
-  }
   return (
     <form
       className="flex w-full border-t border-passes-gray"
       onSubmit={handleSubmit(submitMessage)}
     >
-      <div
-        className={classNames(
-          dragActive
-            ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
-            : "sm:border sm:border-transparent",
-          "flex w-full flex-col pt-2"
-        )}
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-      >
-        <input className="hidden" multiple name="files" type="file" />
-
-        {isCreator && (
-          <div className="flex w-full items-center justify-between px-[10px] py-1 pb-[10px] md:px-[30px]">
-            <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
-              <Checkbox
-                className="group"
-                errors={errors}
-                label="Pay to View"
-                name="isPaid"
-                register={register}
-                type="toggle"
-              />
-              {isPaid ? (
-                <div className="relative flex items-center shadow-sm">
-                  <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-white/40">
-                    Price
-                  </div>
-                  <NumberInput
-                    className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-white/90"
-                    name="price"
+      <DragDrop onChange={(event) => addNewMedia(event.dataTransfer.files)}>
+        {({ isDragging }) => (
+          <div
+            className={classNames(
+              isDragging
+                ? "sm:border sm:border-dashed sm:border-passes-primary-color sm:backdrop-brightness-125"
+                : "sm:border sm:border-transparent",
+              "flex w-full flex-col pt-2"
+            )}
+          >
+            {isCreator && (
+              <div className="flex w-full items-center justify-between px-[10px] py-1 pb-[10px] md:px-[30px]">
+                <div className="flex h-[30px] items-center justify-start gap-4 pl-[10px] md:pl-0">
+                  <Checkbox
+                    className="group"
+                    errors={errors}
+                    label="Pay to View"
+                    name="isPaid"
                     register={register}
-                    type="currency"
+                    type="toggle"
                   />
+                  {isPaid ? (
+                    <div className="relative flex items-center shadow-sm">
+                      <div className="absolute left-4 text-[14px] font-bold leading-[25px] text-white/40">
+                        Price
+                      </div>
+                      <NumberInput
+                        className="h-[40px] w-[150px] rounded-md border-passes-dark-200 bg-[#100C11] p-0 px-[18px] py-[10px] text-right text-base font-bold text-white/90"
+                        name="price"
+                        register={register}
+                        type="currency"
+                      />
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
-            </div>
-          </div>
-        )}
-
-        <textarea
-          cols={40}
-          placeholder="Send a message.."
-          {...register("text")}
-          autoComplete="off"
-          className={classNames(
-            files.length
-              ? "focus:border-b-transparent"
-              : errors.text && "border-b-red",
-            " w-full resize-none border-x-0 border-b border-transparent bg-transparent px-[10px] text-white/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
-          )}
-          name="text"
-          onInput={resize}
-          onKeyDown={submitOnEnter}
-          // onFocus={() => {
-          //   clearErrors()
-          // }}
-        />
-        {files.length > 0 && (
-          <div className="flex px-2 md:px-5">
-            <MediaSectionReorder
-              addNewMedia={addNewMedia}
-              errors={errors}
-              files={files}
-              isPaid={isPaid}
-              mediaPreviewIndex={mediaPreviewIndex}
-              onRemove={onRemove}
-              register={register}
-              setFiles={setFiles}
-              setMediaPreviewIndex={setMediaPreviewIndex}
-            />
-          </div>
-        )}
-        {Object.values(errors)[0] && (
-          <Text className="mx-5 mt-1 block text-[red]" fontSize={12}>
-            {Object.values(errors)[0]?.message}
-          </Text>
-        )}
-        <div
-          className={classNames(
-            "flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
-            Object.values(errors)[0] && "!pt-0"
-          )}
-        >
-          {isCreator ? (
-            <MediaSelector
-              activeMediaHeader={activeMediaHeader}
-              errors={errors}
-              onChange={onMediaChange}
-              register={register}
-              selectors={[PhotoSelector, VideoSelector]}
-            >
-              <div>
-                <VaultSelector isMessages selectVaultContent={addContent} />
               </div>
-            </MediaSelector>
-          ) : (
-            <div />
-          )}
-          <div className="flex flex-row items-center justify-end gap-[10px] px-[5px] py-1 md:px-[20px]">
-            {otherUserIsCreator && (
-              <div className="relative">
-                <div
-                  className={classNames(
-                    "absolute left-4 text-[14px] font-medium leading-[25px] text-passes-pink-100 ",
-                    blocked === PayinDataDtoBlockedEnum.InsufficientTip ||
-                      tip > MAX_TIP_MESSAGE_PRICE
-                      ? "top-0.5 md:top-1"
-                      : "top-[10px] md:top-2.5"
-                  )}
-                >
-                  Tip
-                </div>
-                {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
-                  <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                    minimum {formatCurrency(minimumTip ?? 0)}
-                  </span>
-                ) : tip > MAX_TIP_MESSAGE_PRICE ? (
-                  <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
-                    maximum {formatCurrency(MAX_TIP_MESSAGE_PRICE ?? 0)}
-                  </span>
-                ) : null}
-                <NumberInput
-                  className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-passes-pink-100 px-3 py-[6px] text-right focus:border-passes-pink-100"
-                  name="tip"
+            )}
+
+            <textarea
+              cols={40}
+              placeholder="Send a message.."
+              {...register("text")}
+              autoComplete="off"
+              className={classNames(
+                files.length
+                  ? "focus:border-b-transparent"
+                  : errors.text && "border-b-red",
+                " w-full resize-none border-x-0 border-b border-transparent bg-transparent px-[10px] text-white/90 focus:border-transparent focus:border-b-passes-primary-color focus:ring-0 md:m-0 md:p-0 md:px-[30px]"
+              )}
+              name="text"
+              onInput={resize}
+              onKeyDown={submitOnEnter}
+              // onFocus={() => {
+              //   clearErrors()
+              // }}
+            />
+            {files.length > 0 && (
+              <div className="flex px-2 md:px-5">
+                <MediaSectionReorder
+                  addNewMedia={addNewMedia}
+                  errors={errors}
+                  files={files}
+                  isPaid={isPaid}
+                  mediaPreviewIndex={mediaPreviewIndex}
+                  onRemove={onRemove}
                   register={register}
-                  type="currency"
+                  setFiles={setFiles}
+                  setMediaPreviewIndex={setMediaPreviewIndex}
                 />
               </div>
             )}
+            {Object.values(errors)[0] && (
+              <Text className="mx-5 mt-1 block text-[red]" fontSize={12}>
+                {Object.values(errors)[0]?.message}
+              </Text>
+            )}
             <div
-              aria-roledescription="button"
-              className="flex h-[45px] flex-col content-center justify-center"
-              role="button"
+              className={classNames(
+                "flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
+                Object.values(errors)[0] && "!pt-0"
+              )}
             >
-              <Button
-                big
-                className="w-[130px]"
-                disabled={
-                  isNaN(tip) ||
-                  !!blocked ||
-                  loading ||
-                  tip > MAX_TIP_MESSAGE_PRICE
-                }
-                disabledClass="cursor-not-allowed"
-                onClick={handleSubmit(submitMessage)}
-              >
-                {loading
-                  ? "Sending..."
-                  : blocked ===
-                    PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
-                  ? "Waiting on Payment"
-                  : blocked === PayinDataDtoBlockedEnum.DoesNotFollow
-                  ? "Not following"
-                  : blocked === PayinDataDtoBlockedEnum.InsufficientTip
-                  ? "Insufficient tip"
-                  : // : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
-                    // ? "No Payment Method (go to settings)"
-                    ` Send Message`}
-              </Button>
+              {isCreator ? (
+                <MediaSelector
+                  activeMediaHeader={activeMediaHeader}
+                  errors={errors}
+                  onChange={onMediaChange}
+                  register={register}
+                  selectors={[PhotoSelector, VideoSelector]}
+                >
+                  <div>
+                    <VaultSelector selectVaultContent={addContent} />
+                  </div>
+                </MediaSelector>
+              ) : (
+                <div />
+              )}
+              <div className="flex flex-row items-center justify-end gap-[10px] px-[5px] py-1 md:px-[20px]">
+                {otherUserIsCreator && (
+                  <div className="relative">
+                    <div
+                      className={classNames(
+                        "absolute left-4 text-[14px] font-medium leading-[25px] text-passes-pink-100 ",
+                        blocked === PayinDataDtoBlockedEnum.InsufficientTip ||
+                          tip > MAX_TIP_MESSAGE_PRICE
+                          ? "top-0.5 md:top-1"
+                          : "top-[10px] md:top-2.5"
+                      )}
+                    >
+                      Tip
+                    </div>
+                    {blocked === PayinDataDtoBlockedEnum.InsufficientTip ? (
+                      <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                        minimum {formatCurrency(minimumTip ?? 0)}
+                      </span>
+                    ) : tip > MAX_TIP_MESSAGE_PRICE ? (
+                      <span className="absolute left-4 top-8 whitespace-nowrap text-[11px] font-normal leading-[13px] text-red-500">
+                        maximum {formatCurrency(MAX_TIP_MESSAGE_PRICE ?? 0)}
+                      </span>
+                    ) : null}
+                    <NumberInput
+                      className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-passes-pink-100 px-3 py-[6px] text-right focus:border-passes-pink-100"
+                      name="tip"
+                      register={register}
+                      type="currency"
+                    />
+                  </div>
+                )}
+                <div
+                  aria-roledescription="button"
+                  className="flex h-[45px] flex-col content-center justify-center"
+                  role="button"
+                >
+                  <Button
+                    big
+                    className="w-[130px]"
+                    disabled={
+                      isNaN(tip) ||
+                      !!blocked ||
+                      loading ||
+                      tip > MAX_TIP_MESSAGE_PRICE
+                    }
+                    disabledClass="cursor-not-allowed"
+                    onClick={handleSubmit(submitMessage)}
+                  >
+                    {loading
+                      ? "Sending..."
+                      : blocked ===
+                        PayinDataDtoBlockedEnum.TooManyPurchasesInProgress
+                      ? "Waiting on Payment"
+                      : blocked === PayinDataDtoBlockedEnum.DoesNotFollow
+                      ? "Not following"
+                      : blocked === PayinDataDtoBlockedEnum.InsufficientTip
+                      ? "Insufficient tip"
+                      : // : blocked === PayinDataDtoBlockedEnum.NoPayinMethod
+                        // ? "No Payment Method (go to settings)"
+                        ` Send Message`}
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        )}
+      </DragDrop>
     </form>
   )
 }
