@@ -75,8 +75,9 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
         )}
         <div
           className={classNames(
-            "mx-2 flex w-full flex-col md:mx-4",
-            ownsMessage ? "items-end" : "items-start"
+            "mx-2 flex flex-col md:mx-4",
+            ownsMessage ? "items-end" : "items-start",
+            !!messageContent.length && "w-full"
           )}
         >
           <div
@@ -87,7 +88,8 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
           >
             <div
               className={classNames(
-                `flex w-full flex-col justify-center gap-1 rounded border border-[#363037] p-2.5`,
+                `flex flex-col justify-center gap-1 rounded border border-[#363037] p-2.5`,
+                !!messageContent.length && "w-full",
                 message.automatic
                   ? `bg-passes-pink-100/[0.32]`
                   : `bg-[#18090E]`,
