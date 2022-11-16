@@ -43,7 +43,7 @@ export const TimePicker: FC<TimePickerProps> = ({
     <div className="relative">
       <div className="flex space-x-2">
         <button
-          className="w-[98px] rounded-lg border border-white bg-[#0E0A0F] px-5 py-2 text-lg leading-6 text-white focus:border-2 focus:border-blue-700"
+          className="w-[98px] rounded-lg border border-white bg-[#0E0A0F] px-5 py-2 text-lg leading-6 text-white focus:border-2 focus:border-passes-pink-100/80"
           onClick={() => setShowDropdown(true)}
           type="button"
         >

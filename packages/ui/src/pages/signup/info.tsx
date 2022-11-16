@@ -157,7 +157,7 @@ const SignupInfoPage: FC = () => {
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Full name</Text>
           <Input
             autoComplete="name"
-            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white"
             errors={errors}
             name="legalFullName"
             options={{
@@ -176,7 +176,7 @@ const SignupInfoPage: FC = () => {
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Username</Text>
           <Input
-            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white"
             errors={errors}
             name="username"
             options={{
@@ -197,7 +197,7 @@ const SignupInfoPage: FC = () => {
             Display Name
           </Text>
           <Input
-            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white"
             errors={errors}
             name="displayName"
             options={{
@@ -220,7 +220,7 @@ const SignupInfoPage: FC = () => {
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
           <SelectInput
             autoComplete="country"
-            className="w-[360px] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+            className="w-[360px] bg-black text-white"
             control={control}
             errors={errors}
             name="countryCode"

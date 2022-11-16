@@ -41,7 +41,7 @@ export const SidebarItem: FC<SidebarItemProps> = ({
               className={classNames(
                 isActive
                   ? "text-fill-transparent stroke-passes-primary-color stroke-2"
-                  : " stroke-white group-hover:stroke-white/50",
+                  : "stroke-white group-hover:stroke-white/50",
                 "mr-4 flex-shrink-0 cursor-pointer fill-transparent stroke-2"
               )}
             />

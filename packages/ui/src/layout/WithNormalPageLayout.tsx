@@ -49,7 +49,7 @@ export const WithNormalPageLayout = (
         className={classNames(
           "bg-passes-black",
           "min-safe-h-screen relative w-full lg:pb-0",
-          !options.noScroll && "pb-16 "
+          !options.noScroll && "pb-16"
         )}
       >
         {background && (

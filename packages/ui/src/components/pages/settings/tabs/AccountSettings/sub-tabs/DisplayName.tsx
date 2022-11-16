@@ -56,7 +56,7 @@ const DisplayName: FC = () => {
         <label className="font-medium tracking-[-0.13px] text-[rgba(179,_190,_231,_0.6)]">
           <span>Display Name</span>
           <Input
-            className="mt-1.5 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color focus:ring-0"
+            className="mt-1.5 border-passes-gray-700/80 bg-transparent !px-3 !py-4 text-white/90 focus:border-passes-secondary-color"
             errors={errors}
             name="displayName"
             register={register}

@@ -88,7 +88,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
           scroll
             ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
             : "grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6",
-          "mt-[25px] grid grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20 "
+          "mt-[25px] grid grid-cols-3 gap-x-[20px] gap-y-[5px] pb-20"
         )}
         emptyElement={
           <>

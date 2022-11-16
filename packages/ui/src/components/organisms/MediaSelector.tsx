@@ -68,7 +68,7 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
                     <button
                       className={classNames(
                         activeMediaHeader === name
-                          ? " bg-passes-primary-color/10 "
+                          ? " bg-passes-primary-color/10"
                           : "hover:bg-passes-primary-color/10",
                         "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-passes-primary-color md:py-3 md:px-4"
                       )}

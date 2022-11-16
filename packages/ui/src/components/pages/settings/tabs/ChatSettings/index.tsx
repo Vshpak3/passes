@@ -130,7 +130,7 @@ const ChatSettings = () => {
                 Minimum ${MIN_TIP_MESSAGE_PRICE}
               </span>
               <NumberInput
-                className="mt-[22px] min-h-[50px] border-passes-gray-700/80 bg-transparent !py-4 !px-3 text-white/90 focus:border-passes-secondary-color focus:ring-0"
+                className="mt-[22px] min-h-[50px] bg-transparent !py-4 !px-3 text-white/90"
                 errors={errors}
                 name="minimumTipAmount"
                 placeholder="Enter Minimum Tip Amount"
@@ -153,11 +153,11 @@ const ChatSettings = () => {
             </label>
 
             {showWelcomeMessageInput && (
-              <div className="relative mt-[22px] rounded-md border border-passes-gray-700/80 !py-4 !px-3 focus:border-passes-secondary-color focus:ring-0">
+              <div className="relative mt-[22px] rounded-md border border-passes-gray-700/80 !py-4 !px-3 focus:border-passes-secondary-color ">
                 <div className="flex w-full flex-row justify-between">
                   <span className="text-gray-400">
                     {welcomeMessage
-                      ? "Default Welcome Message: "
+                      ? "Default Welcome Message:"
                       : "No welcome message selected."}
                   </span>
                   <Button

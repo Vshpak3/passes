@@ -78,7 +78,7 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                 {!!passHolder.expiresAt && (
                   <span className="text-[#767676]">
                     {passHolder.expiresAt < new Date()
-                      ? "Expired on "
+                      ? "Expired on"
                       : "Expires "}
                     {passHolder.expiresAt.toLocaleDateString()}
                   </span>

@@ -86,7 +86,7 @@ const PayoutSettings = () => {
               defaultPayoutMethod.method !== PayoutMethodDtoMethodEnum.None
               ? "flex-col items-start justify-start"
               : "items-center justify-between",
-            "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-4 md:p-6 "
+            "flex w-full gap-2 rounded-[15px] border border-passes-dark-200 bg-[#12070E]/50 bg-[#18090E] p-4 md:p-6"
           )}
         >
           <span className="text-[14px] font-[700]">Default Payout Method:</span>
@@ -190,12 +190,12 @@ const PayoutSettings = () => {
             key={bank.id}
           >
             <div className="flex w-full flex-col justify-between">
-              <div className="flex flex-row justify-between  gap-6 ">
+              <div className="flex flex-row justify-between gap-6 ">
                 <span className="mb-6 font-[700]">
                   {bank.description.split(",")[0]}
                 </span>
                 <div className="flex flex-col">
-                  <div className="flex flex-row justify-between  gap-2 ">
+                  <div className="flex flex-row justify-between gap-2 ">
                     <Button
                       className="w-auto"
                       disabled={defaultBank?.id === bank.id}

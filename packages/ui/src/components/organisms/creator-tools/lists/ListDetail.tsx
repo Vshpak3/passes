@@ -175,7 +175,7 @@ export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
               className={
                 "flex items-center" +
                 (list?.type === GetListResponseDtoTypeEnum.Normal
-                  ? "border-r border-r-[#fff]"
+                  ? "border-r border-r-white"
                   : "")
               }
             >
@@ -194,7 +194,7 @@ export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
             <span className="relative opacity-70 hover:opacity-100">
               <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
               <input
-                className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                className="block min-h-[50px] min-w-[296px] appearance-none rounded-md border bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-passes-pink-100/80 focus:outline-none "
                 onChange={handleChangeSearch}
                 placeholder="Search list"
                 type="text"

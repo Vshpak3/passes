@@ -97,7 +97,7 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
       </td>
       <td className="min-w-[160px] py-3">
         <div
-          className="group flex cursor-pointer justify-center text-[#B8B8B8]"
+          className="group flex cursor-pointer justify-center text-passes-gray-800"
           onClick={() => copyWalletToClipboard(wallet.address)}
         >
           {formatWalletAddress(wallet.address, {

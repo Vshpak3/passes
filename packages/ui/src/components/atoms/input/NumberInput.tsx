@@ -77,7 +77,8 @@ export const NumberInput: FC<NumberInputProps> = ({
         {...register(name)}
         autoComplete={autoComplete}
         className={classNames(
-          "block w-full appearance-none rounded-md border border-passes-dark-100 bg-transparent py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm focus:border-passes-dark-200 focus:ring-0",
+          "focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80",
+          "block w-full appearance-none rounded-md border bg-transparent py-3 px-4 text-left text-sm placeholder-gray-400 shadow-sm",
           className,
           errors[name] !== undefined && "border-red-500"
         )}

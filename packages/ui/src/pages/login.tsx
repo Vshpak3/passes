@@ -120,9 +120,10 @@ const LoginPage: FC = () => {
               <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
               <Input
                 autoComplete="email"
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] bg-black text-white"
                 errors={errors}
                 name="email"
+                outlineColor="passes-secondary-color"
                 placeholder="Enter your email"
                 register={register}
                 type="email"
@@ -135,9 +136,10 @@ const LoginPage: FC = () => {
               </Text>
               <PasswordInput
                 autoComplete="current-password"
-                className="w-[360px] border-[#34343A60] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-[360px] bg-black text-white"
                 errors={errors}
                 name="password"
+                outlineColor="passes-secondary-color"
                 placeholder="Enter your password"
                 register={register}
               />

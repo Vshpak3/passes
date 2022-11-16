@@ -40,7 +40,7 @@ export const MessagesChannelGalleryHeader: FC<
           <BackIcon className="h-4 w-4" onClick={() => setGallery(!gallery)} />
           <div className="flex w-full flex-col items-start justify-center gap-1">
             {paid === undefined ? (
-              <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+              <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-white/80">
                 Content gallery
               </span>
             ) : paid ? (
@@ -48,16 +48,16 @@ export const MessagesChannelGalleryHeader: FC<
                 <span className="pr-1">
                   <CurrencyIcon />
                 </span>
-                <span className="text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+                <span className="text-[16px] font-medium leading-[16px] text-white/80">
                   Purchased content gallery
                 </span>
               </span>
             ) : !paid ? (
-              <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-[#FFF]/80">
+              <span className="flex cursor-pointer items-center justify-start text-[16px] font-medium leading-[16px] text-white/80">
                 Not purchased content gallery
               </span>
             ) : null}
-            <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-[#FFF]/30">
+            <span className="cursor-pointer text-[14px] font-medium leading-[17px] text-white/30">
               with {selectedChannel.otherUserDisplayName}
             </span>
           </div>

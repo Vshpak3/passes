@@ -132,7 +132,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 Routing Number
               </div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="routingNumber"
                 options={{
@@ -148,7 +148,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 Account Number
               </div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="accountNumber"
                 options={{
@@ -164,7 +164,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 Type of Bank Account
               </div>
               <SelectInput
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 control={control}
                 errors={errors}
                 name="bankAccountType"
@@ -178,7 +178,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Country</div>
               <SelectInput
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 control={control}
                 errors={errors}
                 name="bankAddress.country"
@@ -192,7 +192,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">First Name</div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="firstName"
                 options={{
@@ -206,7 +206,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Last Name</div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="lastName"
                 options={{
@@ -220,7 +220,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Business Name</div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="businessName"
                 placeholder="Business (optional)"
@@ -232,7 +232,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div className="text-[#b3bee7] opacity-[0.75]">Email</div>
               <Input
                 autoComplete="email"
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="email"
                 options={{
@@ -251,7 +251,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             <div className="flex flex-col gap-[24px]">
               <div className="text-lg font-bold">Billing Address</div>
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="billingAddress"
                 options={{
@@ -262,7 +262,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 type="text"
               />
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="alternativeAddress"
                 options={{
@@ -273,7 +273,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 type="text"
               />
               <Input
-                className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="city"
                 options={{
@@ -285,7 +285,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               />
               <div className="flex flex-row gap-3">
                 <Input
-                  className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-[#34343ACC] bg-black text-white"
                   errors={errors}
                   name="district"
                   options={{
@@ -296,7 +296,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   type="text"
                 />
                 <Input
-                  className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                  className="w-full border-[#34343ACC] bg-black text-white"
                   errors={errors}
                   name="postalCode"
                   options={{
@@ -325,7 +325,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                     Send email receipts to
                   </div>
                   <Input
-                    className="w-full border-[#34343ACC] bg-black text-white focus:border-[#9C4DC180] focus:ring-[#9C4DC180]"
+                    className="w-full border-[#34343ACC] bg-black text-white"
                     errors={errors}
                     name="emailRecipient"
                     options={{
@@ -343,7 +343,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   <div className="mt-2.5">
                     <label className="flex items-center">
                       <Checkbox
-                        className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1] focus:ring-1 focus:ring-blue-500 dark:focus:ring-blue-600"
+                        className="cursor-pointer rounded border-gray-300 bg-transparent bg-none text-[#9C4DC1]"
                         name="termsAndConditions"
                         register={register}
                         type="checkbox"

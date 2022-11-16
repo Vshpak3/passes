@@ -44,6 +44,7 @@ export type InputProps = {
   value?: string
   onFocus?: (event: Event) => void
   transparent?: boolean
+  outlineColor?: string
 }
 
 export const Input: FC<InputProps> = ({
@@ -61,6 +62,7 @@ export const Input: FC<InputProps> = ({
   textPosition,
   iconMargin = "0",
   transparent = true,
+  outlineColor = "passes-pink-100",
   ...rest
 }) => {
   return (
@@ -74,9 +76,8 @@ export const Input: FC<InputProps> = ({
           <div className="relative text-gray-600">
             <span
               className={classNames(
-                `absolute inset-y-0 ${toLower(
-                  iconAlign
-                )}-0 left-[${iconMargin}px] flex pl-2 pt-3 sm:px-4 sm:pr-3`
+                "absolute inset-y-0 flex pl-2 pt-3 sm:px-4 sm:pr-3",
+                `${toLower(iconAlign)}-0 left-[${iconMargin}px]`
               )}
             >
               {icon}
@@ -91,12 +92,12 @@ export const Input: FC<InputProps> = ({
           {...register(name, options)}
           {...rest}
           className={classNames(
+            `focus:border-${outlineColor}/80 focus:outline-none focus:ring-${outlineColor}/80`,
             transparent && "bg-transparent",
-            `block w-full appearance-none rounded-md border border-passes-dark-100 p-3 ${
-              textPosition === "RIGHT" ? "text-right" : "text-left"
-            } min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 ${
-              icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3"
-            }`,
+            "block w-full appearance-none rounded-md border border-passes-dark-100 p-3",
+            textPosition === "RIGHT" ? "text-right" : "text-left",
+            "min-h-[50px] py-3 px-4 text-sm placeholder-gray-400 shadow-sm read-only:pointer-events-none read-only:bg-gray-200",
+            icon && iconAlign === EIcon.Left ? "pl-[50px]" : "pl-3",
             className,
             errors[name] !== undefined && "border-red-500"
           )}

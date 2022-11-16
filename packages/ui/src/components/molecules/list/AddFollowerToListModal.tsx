@@ -31,7 +31,7 @@ const AddFollowerToListModal: FC<AddFollowerToListModalProps> = ({
           <SearchIcon className="pointer-events-none absolute top-1/2 left-[14px] -translate-y-1/2" />
           <input
             autoComplete="off"
-            className="form-input h-[51px] w-full rounded-md border border-white/10 bg-[#12070E]/50 pl-11 text-white outline-none placeholder:text-[16px] placeholder:text-white/30 focus:border-white/10 focus:ring-0 xs:min-w-[320px] sm:min-w-[360px]"
+            className="form-input h-[51px] w-full rounded-md border border-white/10 bg-[#12070E]/50 pl-11 text-white outline-none placeholder:text-[16px] placeholder:text-white/30 focus:border-white/10  xs:min-w-[320px] sm:min-w-[360px]"
             id="search"
             name="search"
             onChange={onChangeInput}

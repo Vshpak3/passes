@@ -77,14 +77,14 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
             </span>
           </Link>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <Link href={`/${userId}/${postId}`}>
             <span className="text-[12px] font-[500]">
               {contents?.length ?? 0}
             </span>
           </Link>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <Link href={`/${userId}/${postId}`}>
             <span className="text-[12px] font-[500]">
               {formatCurrency(price ?? 0)}
@@ -92,7 +92,7 @@ export const PostStatistic: FC<PostStatisticProps> = ({ post, update }) => {
           </Link>
         </div>
         <div
-          className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8] hover:cursor-pointer"
+          className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800 hover:cursor-pointer"
           onClick={() => setPostBuyerDialogOpen(true)}
         >
           <span className="text-[12px] font-[500]">{numPurchases}</span>

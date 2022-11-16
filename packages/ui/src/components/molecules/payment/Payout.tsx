@@ -79,17 +79,17 @@ export const Payout: FC<PayoutProps> = ({ payout }) => {
           {bankDescription ?? address}
         </span>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+      <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
         <span className="text-[12px] font-[500]">
           {format(createdAt, "LL/dd/yyyy")}
           <br />
           {format(createdAt, "hh:mm a")}
         </span>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+      <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
         <span className="text-[12px] font-[500]">{formatCurrency(amount)}</span>
       </div>
-      <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+      <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
         <span className="text-[12px] font-[500]">{method}</span>
       </div>
       <div className="flex h-[72px] flex-1 items-center justify-center">

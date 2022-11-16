@@ -47,7 +47,7 @@ export const SelectPassFilter: FC<SelectPassFilterProps> = ({
   return (
     <div className="text-label relative mb-5 inline-block" ref={menuEl}>
       <div
-        className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100 md:space-x-14"
+        className="flex cursor-pointer items-center space-x-6 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80 md:space-x-14"
         onClick={() => setShowOptions(!showOptions)}
       >
         <span>

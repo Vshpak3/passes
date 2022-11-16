@@ -33,9 +33,9 @@ export const MobileNavBar: FC<MobileNavBarProps> = ({
                 <navBarItem.icon
                   className={classNames(
                     activeRoute === navBarItem.id
-                      ? " stroke-passes-primary-color stroke-2"
+                      ? "stroke-passes-primary-color stroke-2"
                       : "stroke-white/50",
-                    " stroke-2"
+                    "stroke-2"
                   )}
                 />
               </Link>

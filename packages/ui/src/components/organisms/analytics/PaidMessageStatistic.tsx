@@ -80,17 +80,17 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
         <div className="passes-break flex h-[72px] flex-1 items-center justify-center truncate whitespace-pre-wrap text-[14px] font-[700]">
           {formatText(text)}
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <span className="text-[12px] font-[500]">
             {bareContents?.length ?? 0}
           </span>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <span className="text-[12px] font-[500]">
             {formatCurrency(price)}
           </span>
         </div>
-        <div className="flex h-[72px] flex-1 items-center justify-center text-[#B8B8B8]">
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <span className="text-[12px] font-[500]">{sentTo}</span>
         </div>
         <div

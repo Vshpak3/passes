@@ -63,7 +63,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
     <>
       <div
         className={classNames(
-          "m-2.5 flex  rounded",
+          "m-2.5 flex rounded",
           ownsMessage && "flex-row-reverse self-end",
           inChannel && "max-w-[70%]"
         )}
@@ -81,7 +81,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
         >
           <div
             className={classNames(
-              "relative flex  w-full items-center gap-3 ",
+              "relative flex w-full items-center gap-3 ",
               ownsMessage && "flex-row-reverse self-end"
             )}
           >
@@ -150,13 +150,13 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
             <>
               {isAfter(sentAt, subDays(new Date(), 1)) ? (
                 <TimeAgo
-                  className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30"
+                  className="flex text-[11px] font-medium leading-[17px] text-white/30"
                   date={sentAt ?? ""}
                   key={messageId}
                   minPeriod={30}
                 />
               ) : (
-                <span className="flex text-[11px] font-medium leading-[17px] text-[#fff]/30">
+                <span className="flex text-[11px] font-medium leading-[17px] text-white/30">
                   {sentAt?.toLocaleDateString()}
                 </span>
               )}

@@ -145,7 +145,7 @@ export const EditProfile: FC<EditProfileProps> = ({
     <div className="col-span-6 flex items-center" key={key}>
       {!!input?.icon && <input.icon className="mr-3" />}
       <input.type
-        className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-white/90 focus:border-passes-dark-200 focus:ring-0"
+        className="w-full cursor-pointer rounded-md border-passes-dark-200 bg-[#100C11]/50 text-base font-bold text-white/90 focus:border-passes-dark-200"
         errors={errors}
         name={key}
         placeholder={input.placeholder}

@@ -63,7 +63,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
         >
           <div
             className={classNames(
-              media ? "bg-black" : " bg-black/40",
+              media ? "bg-black" : "bg-black/40",
               "bg-opacity-15 fixed inset-0 bg-transparent"
             )}
           />

@@ -75,9 +75,7 @@ export const PassCard: FC<PassCardProps> = ({
           imageType={pass.imageType}
           passId={pass.passId}
         />
-        <div
-          className={classNames("flex flex-col items-start pt-4 text-white/90")}
-        >
+        <div className="flex flex-col items-start pt-4 text-white/90">
           <div
             className={classNames(
               isPinnedPass

@@ -32,7 +32,7 @@ export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
 }) => (
   <div className="my-3 flex items-center">
     <Checkbox
-      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color focus:ring-1 focus:ring-blue-500 dark:border-passes-gray dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color"
       label={label}
       name={name}
       register={register}

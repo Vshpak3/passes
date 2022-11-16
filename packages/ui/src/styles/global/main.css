@@ -10,12 +10,16 @@
 @import "tosort.css";
 @import "gradients.css";
 
-/* Imports of Per-Component Styling */
+/* Imports of Style Utilities */
+
+@import "../utilities/CheckboxSlider.css";
+@import "../utilities/Text.css";
+
+/* Imports of Style Components */
 
 @import "../components/Calendar.css";
-@import "../components/CheckboxSlider.css";
-@import "../components/Swiper.css";
 @import "../components/DateRangePicker.css";
+@import "../components/Swiper.css";
 
 .Toastify__toast-container {
   z-index: 200000;

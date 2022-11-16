@@ -111,7 +111,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
         </label>
         <label className="cursor-pointer" htmlFor="calender-modal">
           <label
-            className="absolute flex w-fit items-center justify-center rounded-[15px] bg-[#fff]"
+            className="absolute flex w-fit items-center justify-center rounded-[15px] bg-white"
             htmlFor=""
           >
             {isDatePickerOpen && (

@@ -49,7 +49,7 @@ export const ProfileNavigation: FC<ProfileNavigationProps> = ({
               item.id === activeTab
                 ? "border-b-2 text-base font-bold opacity-100"
                 : "opacity-50 group-hover:opacity-80",
-              "inline-flex items-center justify-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-center text-base font-bold text-white/90 "
+              "inline-flex items-center justify-center border border-t-0 border-r-0 border-l-0 border-b-2 border-b-transparent text-center text-base font-bold text-white/90"
             )}
           >
             {item.name}

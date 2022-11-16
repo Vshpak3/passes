@@ -87,7 +87,7 @@ export const RequestPayouts = () => {
             <div className="flex flex-col content-end justify-center gap-[10px] sm:flex-row sm:items-center sm:justify-between">
               <div className="text-label relative inline-block" ref={menuEl}>
                 <div
-                  className="flex cursor-pointer items-center justify-between space-x-14 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-blue-100"
+                  className="flex cursor-pointer items-center justify-between space-x-14 rounded-[6px] border border-passes-dark-200 p-2.5 focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80"
                   onClick={() => setShowOptions(true)}
                 >
                   <div className="flex items-center gap-[5px]">

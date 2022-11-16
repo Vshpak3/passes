@@ -64,7 +64,7 @@ export const Media: FC<MediaProp> = ({
           <div
             className={classNames(
               iconClassName,
-              "z-[5] h-[24px] w-[24px] cursor-pointer "
+              "z-[5] h-[24px] w-[24px] cursor-pointer"
             )}
             onClick={onRemove}
           >

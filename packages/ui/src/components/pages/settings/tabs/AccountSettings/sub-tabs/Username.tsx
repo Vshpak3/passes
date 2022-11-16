@@ -58,7 +58,7 @@ const Username: FC = () => {
           <div className="relative">
             <span className="absolute top-1/2 left-3 -translate-y-1/2">@</span>
             <Input
-              className="mt-1.5 border-passes-gray-700/80 bg-transparent !py-4 !pl-[26px] !pr-3 text-white/90 focus:border-passes-secondary-color focus:ring-0"
+              className="mt-1.5 bg-transparent !py-4 !pl-[26px] !pr-3 text-white/90"
               name="username"
               register={register}
               type="text"

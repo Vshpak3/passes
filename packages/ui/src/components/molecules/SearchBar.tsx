@@ -38,7 +38,7 @@ export const SearchBar = <T,>({
               autoComplete="off"
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus={isMobile}
-              className="form-input h-[51px] w-full rounded-md border border-white/10 bg-[#12070E]/50 pl-11 text-white outline-none placeholder:text-[16px] placeholder:text-white/30 focus:border-white/10 focus:ring-0"
+              className="form-input h-[51px] w-full rounded-md border border-passes-dark-100 bg-[#12070E]/50 pl-11 text-white outline-none placeholder:text-[16px] placeholder:text-white/30 focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80"
               id="search"
               name="search"
               onChange={onInputChange}

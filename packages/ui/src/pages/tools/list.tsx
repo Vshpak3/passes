@@ -109,13 +109,13 @@ const FanLists: NextPage = () => {
         <div className="relative flex items-center justify-end">
           <SearchOutlineIcon className="absolute left-0 top-[8px] z-10" />
           <input
-            className="block min-h-[50px] w-full appearance-none rounded-[6px] border border-[#624256] bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:min-w-[296px]"
+            className="block min-h-[50px] w-full appearance-none rounded-[6px] bg-transparent p-2 py-3 px-4 pl-[33px] text-sm shadow-sm placeholder:text-gray-400 read-only:pointer-events-none read-only:bg-gray-200 sm:min-w-[296px]"
             onChange={handleChangeSearch}
             placeholder="Search list"
             type="text"
           />
           <button
-            className="ml-2 block min-h-[50px] w-full appearance-none rounded-[6px] border border-[#624256] bg-transparent p-2 py-3 px-4 font-bold shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:min-w-[147px]"
+            className="ml-2 block min-h-[50px] w-full appearance-none rounded-[6px] border border-[#624256] bg-transparent p-2 py-3 px-4 font-bold shadow-sm sm:min-w-[147px]"
             onClick={handleCreateNewListModal}
           >
             + New List

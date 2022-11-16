@@ -116,9 +116,9 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
       >
         <div
           className={classNames(
-            "flex  min-h-[85px] flex-col overflow-hidden md:min-h-[175px]",
+            "flex min-h-[85px] flex-col overflow-hidden md:min-h-[175px]",
             isPaid
-              ? " min-w-[40%] max-w-[40%] md:min-w-[35%] md:max-w-[50%]"
+              ? "min-w-[40%] max-w-[40%] md:min-w-[35%] md:max-w-[50%]"
               : "w-full"
           )}
         >
