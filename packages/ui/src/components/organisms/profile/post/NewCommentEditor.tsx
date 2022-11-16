@@ -22,11 +22,13 @@ const newCommentFormSchema = object({
 interface NewCommentProps {
   postId: string
   addComment: (comment: CommentDto) => void
+  focus?: boolean
 }
 
 export const NewCommentEditor: FC<NewCommentProps> = ({
   postId,
-  addComment
+  addComment,
+  focus
 }) => {
   const { user } = useUser()
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
@@ -100,6 +102,7 @@ export const NewCommentEditor: FC<NewCommentProps> = ({
     >
       <div className="hide-scroll block w-full resize-none overflow-auto overflow-y-visible rounded-[5px] border border-passes-gray bg-black/10 p-4">
         <CustomMentionEditor
+          focus={focus}
           isReset={isReset}
           onInputChange={(params: NewPostTextFormProps) => {
             setIsButtonDisabled(!params?.text)

@@ -27,7 +27,6 @@ const PostEngagementUnmemo: FC<PostEngagementProps> = ({ post, update }) => {
   } = post
 
   const [showCommentSection, setShowCommentSection] = useState(false)
-
   const incrementNumComments = useCallback(
     () => update({ numComments: post.numComments + 1 }),
     [post, update]
@@ -42,6 +41,10 @@ const PostEngagementUnmemo: FC<PostEngagementProps> = ({ post, update }) => {
     [post.numComments]
   )
 
+  const handleToggleComment = () => {
+    setShowCommentSection((prev) => !prev)
+  }
+
   return (
     <div className="flex w-full flex-col items-center justify-end px-5 sm:px-10 md:px-10 lg:px-5">
       <div className="flex w-full min-w-[340px] items-center justify-between overflow-x-hidden">
@@ -55,7 +58,7 @@ const PostEngagementUnmemo: FC<PostEngagementProps> = ({ post, update }) => {
           <button
             aria-label="Toggle comments"
             className="flex min-w-[48px] cursor-pointer items-center gap-[5px] stroke-[#A09FA6] p-0 text-passes-gray-100 hover:stroke-white hover:text-white"
-            onClick={() => setShowCommentSection((prev) => !prev)}
+            onClick={() => handleToggleComment()}
             type="button"
           >
             <MessagesIcon />

@@ -1,6 +1,6 @@
 import { CommentDto, PostDto } from "@passes/api-client"
 import classNames from "classnames"
-import { FC, memo, useCallback, useState } from "react"
+import { FC, memo, useCallback, useRef, useState } from "react"
 
 import { CommentFeed } from "src/components/organisms/profile/post/CommentFeed"
 import { CommentCached } from "./CommentCached"
@@ -22,10 +22,12 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
   decrementNumComments
 }) => {
   const [newComments, setNewComments] = useState<CommentDto[]>([])
+  const rootRef = useRef<HTMLDivElement>(null)
   const addNewComment = useCallback(
     (comment: CommentDto) => {
       setNewComments((state) => [comment, ...state])
       incrementNumComments()
+      rootRef?.current?.scrollIntoView({ block: "start", behavior: "smooth" })
     },
     [incrementNumComments]
   )
@@ -33,9 +35,10 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
   return (
     <div
       className={classNames(
-        "mt-10 flex w-full flex-col border-t-[1px] border-t-gray-300/10",
+        "mt-10 flex w-full scroll-mt-20 flex-col border-t-[1px] border-t-gray-300/10",
         hidden && "hidden"
       )}
+      ref={rootRef}
     >
       {newComments.map((comment) => {
         return (
@@ -53,7 +56,11 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
         postId={postId}
       />
       <div className="z-[50]">
-        <NewCommentEditor addComment={addNewComment} postId={postId} />
+        <NewCommentEditor
+          addComment={addNewComment}
+          focus={!hidden}
+          postId={postId}
+        />
       </div>
     </div>
   )

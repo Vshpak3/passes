@@ -57,6 +57,7 @@ interface CustomMentionProps {
   isReset?: boolean
   setIsReset?: (value: boolean) => void
   defaultText?: string
+  focus?: boolean
 }
 
 const emptyContentState = (text: string) =>
@@ -80,7 +81,8 @@ export const CustomMentionEditor: FC<CustomMentionProps> = ({
   onInputChange,
   isReset,
   setIsReset,
-  defaultText = ""
+  defaultText = "",
+  focus
 }): ReactElement => {
   const ref = useRef<Editor>(null)
   const [editorState, setEditorState] = useState(() =>
@@ -143,6 +145,11 @@ export const CustomMentionEditor: FC<CustomMentionProps> = ({
       setIsReset(false)
     }
   }, [isReset, setIsReset])
+  useEffect(() => {
+    if (focus) {
+      ref.current?.focus()
+    }
+  }, [focus])
 
   /** Catch ctrl + enter so it doesn't produce a trailing newline */
   const myKeyBindingFn = useCallback((e: React.KeyboardEvent<Element>) => {
