@@ -331,8 +331,9 @@ export const InputMessage: FC<InputMessageProps> = ({
             )}
             <div
               className={classNames(
-                "flex w-full flex-row items-center justify-between border-b border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
-                Object.values(errors)[0] && "!pt-0"
+                "flex w-full flex-row items-center justify-between border-b  border-passes-gray py-2 pl-1 pt-3 md:mb-0 md:border-0",
+                Object.values(errors)[0] && "!pt-0",
+                otherUserIsCreator ? "gap-1" : "gap-20"
               )}
             >
               {isCreator ? (
@@ -350,7 +351,7 @@ export const InputMessage: FC<InputMessageProps> = ({
               ) : (
                 <div />
               )}
-              <div className="flex flex-row items-center justify-end gap-[10px] px-[5px] py-1 md:px-[20px]">
+              <div className="flex flex-row items-center justify-end gap-[10px] py-1 px-[5px] md:px-[20px]">
                 {otherUserIsCreator && (
                   <div className="relative">
                     <div
@@ -374,7 +375,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                       </span>
                     ) : null}
                     <NumberInput
-                      className="flex h-[45px] min-w-[150px] max-w-[150px] items-center justify-between rounded-[6px] border border-passes-pink-100 px-3 py-[6px] text-right focus:border-passes-pink-100"
+                      className="flex h-[45px] min-w-[123px] max-w-[123px] items-center justify-between rounded-[6px] border border-passes-pink-100 px-3 py-[6px] text-right focus:border-passes-pink-100 md:min-w-[150px] md:max-w-[150px]"
                       name="tip"
                       register={register}
                       type="currency"
@@ -388,7 +389,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 >
                   <Button
                     big
-                    className="w-[130px]"
+                    className="w-[120px] md:w-[150px]"
                     disabled={
                       isNaN(tip) ||
                       !!blocked ||

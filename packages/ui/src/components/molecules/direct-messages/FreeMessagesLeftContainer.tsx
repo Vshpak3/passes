@@ -18,8 +18,8 @@ export const FreeMessagesLeftContainer: FC<FreeMessagesLeftContainerProps> = ({
       className={classNames(
         bannerPopUp
           ? "-translate-y-0 transform transition duration-100"
-          : " -translate-y-7 transform transition duration-100 hover:-translate-y-0 ",
-        "6-b ml-6 flex w-5/6 min-w-[300px]  max-w-xl cursor-pointer items-center justify-between gap-[10px] rounded-b-[8px] border-[#FFFF]/10 bg-gradient-to-r from-[#B52A6F33] to-[#B52A6F33]/20 py-[8px] px-6 backdrop-blur-[25px]"
+          : " -translate-y-7 transform transition duration-100 md:hover:-translate-y-0 ",
+        "ml-6 flex w-5/6 min-w-[300px]  max-w-xl cursor-pointer items-center justify-between gap-[10px] rounded-b-[8px] border-[#FFFF]/10 bg-gradient-to-r from-[#B52A6F33] to-[#B52A6F33]/20 py-[8px] px-6 backdrop-blur-[25px]"
       )}
       onClick={() => setBannerPopUp(!bannerPopUp)}
     >

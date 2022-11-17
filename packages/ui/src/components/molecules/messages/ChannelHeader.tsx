@@ -1,5 +1,5 @@
 import { ChannelMemberDto } from "@passes/api-client/models"
-import PhotosIcon from "public/icons/profile-photos1-icon.svg"
+import SelectPhotoIcon from "public/icons/media/select-photo.svg"
 import { Dispatch, FC, SetStateAction } from "react"
 
 import { NameDisplay } from "src/components/atoms/content/NameDisplay"
@@ -114,7 +114,7 @@ export const ChannelHeader: FC<ChannelHeaderProps> = ({
             className="mr-24 flex cursor-pointer items-center gap-1 rounded-md bg-[#B52A6F40]/10 py-1 px-3 opacity-80 hover:opacity-100"
             onClick={() => setGallery(!gallery)}
           >
-            <PhotosIcon className="flex shrink-0" />
+            <SelectPhotoIcon className="flex shrink-0" />
             <span className="text-sm text-passes-pink-100">Gallery</span>
           </div>
         )}

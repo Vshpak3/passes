@@ -1,6 +1,6 @@
 import { ContentDto } from "@passes/api-client"
 import classNames from "classnames"
-import VaultIcon from "public/icons/messages-vault-icon.svg"
+import SelectVaultIcon from "public/icons/media/select-vault.svg"
 import { FC, useState } from "react"
 
 import { VaultDialog } from "src/components/molecules/vault/VaultDialog"
@@ -28,7 +28,7 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
       type="button"
     >
       <span className="flex shrink-0 cursor-pointer items-center gap-1">
-        <VaultIcon className="flex shrink-0" />
+        <SelectVaultIcon className="flex shrink-0" />
         <span
           className={classNames(
             isOpen || expanded ? "md:block" : "hidden md:group-hover:block"

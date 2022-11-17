@@ -1,6 +1,6 @@
 import classNames from "classnames"
-import Recorder from "public/icons/media-recorder.svg"
-import Photos from "public/icons/profile-photos1-icon.svg"
+import SelectPhotoIcon from "public/icons/media/select-photo.svg"
+import SelectVideoIcon from "public/icons/media/select-video.svg"
 import { ChangeEvent, FC, PropsWithChildren } from "react"
 
 import { FileAccept, FileInput } from "src/components/atoms/input/FileInput"
@@ -12,13 +12,13 @@ import {
 
 export const PhotoSelector = {
   name: "Photo",
-  Icon: Photos,
+  Icon: SelectPhotoIcon,
   accept: [".png", ".jpg", ".jpeg"] as FileAccept,
   multiple: true
 }
 export const VideoSelector = {
   name: "Video",
-  Icon: Recorder,
+  Icon: SelectVideoIcon,
   accept: [".mp4", ".mov", ".qt"] as FileAccept,
   multiple: true
 }
@@ -50,53 +50,49 @@ export const MediaSelector: FC<PropsWithChildren<MediaSelectorProps>> = ({
   children
 }) => {
   return (
-    <div>
-      <div className="relative flex h-full w-full items-center justify-between text-[16px] font-normal">
-        <div className="flex items-center">
-          <div className="flex w-full justify-between gap-1">
-            {selectors.map(({ name, Icon, accept, multiple }) => {
-              return (
-                <FileInput
-                  accept={accept}
-                  errors={errors}
-                  key={`media-header-${name}`}
-                  multiple={multiple}
-                  name={`media-header-${name}`}
-                  options={{ ...options, onChange }}
-                  register={register}
-                  trigger={
-                    <button
+    <div className="relative flex h-full w-full text-[16px] font-normal">
+      <div className="flex w-full items-center justify-around gap-1 xs:justify-start">
+        {selectors.map(({ name, Icon, accept, multiple }) => {
+          return (
+            <FileInput
+              accept={accept}
+              errors={errors}
+              key={`media-header-${name}`}
+              multiple={multiple}
+              name={`media-header-${name}`}
+              options={{ ...options, onChange }}
+              register={register}
+              trigger={
+                <button
+                  className={classNames(
+                    activeMediaHeader === name
+                      ? " bg-passes-primary-color/10"
+                      : "hover:bg-passes-primary-color/10",
+                    "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-passes-primary-color sm:py-3 sm:px-4"
+                  )}
+                  type="button"
+                >
+                  <span className="flex shrink-0 cursor-pointer items-center gap-1">
+                    <Icon className="flex shrink-0" />
+                    <span
                       className={classNames(
                         activeMediaHeader === name
-                          ? " bg-passes-primary-color/10"
-                          : "hover:bg-passes-primary-color/10",
-                        "group flex flex-shrink-0 items-center rounded-[56px] px-1 text-sm leading-4 text-passes-primary-color sm:py-3 sm:px-4"
+                          ? "block"
+                          : "hidden md:group-hover:block",
+                        "block"
                       )}
-                      type="button"
                     >
-                      <span className="flex shrink-0 cursor-pointer items-center gap-1">
-                        <Icon className="flex shrink-0" />
-                        <span
-                          className={classNames(
-                            activeMediaHeader === name
-                              ? "block"
-                              : "hidden md:group-hover:block",
-                            "block"
-                          )}
-                        >
-                          {name}
-                        </span>
-                      </span>
-                    </button>
-                  }
-                  // onBlur={() => setActiveMediaHeader("")}
-                  // there's no way to detect closing event
-                />
-              )
-            })}
-            {children}
-          </div>
-        </div>
+                      {name}
+                    </span>
+                  </span>
+                </button>
+              }
+              // onBlur={() => setActiveMediaHeader("")}
+              // there's no way to detect closing event
+            />
+          )
+        })}
+        {children}
       </div>
     </div>
   )
