@@ -77,7 +77,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   return (
     <button
       className={classNames(
-        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg no-underline transition-colors disabled:opacity-75",
+        "relative inline-flex select-none appearance-none items-center justify-center truncate rounded-lg no-underline transition-colors focus:!outline-0 disabled:opacity-75",
         variantClassName,
         className,
         disabled && "cursor-auto border-[#3333]/80 bg-[#3333]/80",
