@@ -36,7 +36,9 @@ export const HomeContentFeed: FC = () => {
   return (
     <div className="mt-16 grid w-full grid-cols-7 lg:mt-0">
       <div className="col-span-7 border-r-[1px] border-passes-gray lg:col-span-4">
-        <SectionTitle className="mt-6 ml-4 lg:mt-4">Home</SectionTitle>
+        <div className="flex h-16">
+          <SectionTitle className="mt-3 ml-4 pt-1 lg:mt-4">Home</SectionTitle>
+        </div>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
             return <PostCached inHomeFeed post={arg} />
