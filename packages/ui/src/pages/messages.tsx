@@ -27,7 +27,7 @@ const MessagesPage = () => {
       <div className="safe-h-screen max-safe-h-screen flex flex-col overflow-y-hidden">
         <div className="hidden h-16 lg:flex">
           {user?.isCreator ? (
-            <div className="flex flex-1 items-center">
+            <div className="flex flex-1 items-center pt-1">
               {massMessage ? (
                 <div
                   className="ml-4 cursor-pointer"

@@ -43,11 +43,11 @@ const ListUnmemo: FC<ListProps> = ({ list, removable, update }) => {
       </Link>
       {list.type === ListDtoTypeEnum.Normal ? (
         <Button
-          className="flex h-[40px] w-[40px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
+          className="flex h-[45px] w-[45px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
           onClick={() => setDeleteModalOpen(true)}
           variant={ButtonVariant.NONE}
         >
-          <DeleteIcon />
+          <DeleteIcon className="h-[20px] w-[20px]" />
         </Button>
       ) : (
         <div className="flex h-[40px] w-[40px] items-center justify-center">

@@ -16,7 +16,7 @@ import {
   Title,
   Tooltip
 } from "chart.js"
-import { eachDayOfInterval } from "date-fns"
+import { eachDayOfInterval, isSameDay } from "date-fns"
 import { uniqueId } from "lodash"
 import ms from "ms"
 import React, { FC, useRef, useState } from "react"
@@ -93,6 +93,19 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
     // add One to include endDate
     return Math.round((second?.valueOf() - first?.valueOf()) / ONE_DAY) + 1
   }
+  const daysOfInterval = eachDayOfInterval({
+    start: startDate,
+    end: endDate
+  })
+  const lineDataset = daysOfInterval.map((date) => {
+    const matchedEarnings = graphData.filter((earning) =>
+      isSameDay(new Date(earning.createdAt), new Date(date))
+    )
+
+    if (matchedEarnings[0]) {
+      return matchedEarnings[0].amount
+    }
+  })
 
   return (
     <div className="flex flex-col gap-[32px]">
@@ -146,19 +159,16 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
       </div>
       <div className="w-full">
         <Line
-          className="rounded-[15px] border border-[#FFFFFF26] bg-[#12070E80] p-4"
+          className="rounded-lg border border-passes-gray-600 bg-passes-black p-4"
           data={{
-            labels: eachDayOfInterval({
-              start: startDate,
-              end: endDate
-            }).map((item) => item.toLocaleDateString()),
+            labels: daysOfInterval.map((date) => date.toLocaleDateString()),
             datasets: [
               {
                 showLine: true,
                 fill: false,
                 borderColor: "#9C4DC1",
                 pointBackgroundColor: "#9C4DC1",
-                data: graphData.map(({ amount }) => amount)
+                data: lineDataset
               }
             ]
           }}
