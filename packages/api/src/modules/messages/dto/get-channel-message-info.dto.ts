@@ -11,8 +11,17 @@ export class GetChannelMesssageInfoResponseDto {
   @DtoProperty({ type: 'number', nullable: true, optional: true })
   minimumTip?: number | null
 
-  constructor(messages: number | null, minimumTip?: number | null) {
+  @Min(0)
+  @DtoProperty({ type: 'boolean' })
+  requiresTip: boolean
+
+  constructor(
+    messages: number | null,
+    requiresTip: boolean,
+    minimumTip?: number | null,
+  ) {
     this.messages = messages
     this.minimumTip = minimumTip
+    this.requiresTip = requiresTip
   }
 }

@@ -38,6 +38,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
+  const [requiresTip, setRequiresTip] = useState<boolean>(false)
 
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
@@ -59,6 +60,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
           })
           setFreeMessages(freeMessagesResponse.messages)
           setMinimumTip(freeMessagesResponse.minimumTip)
+          setRequiresTip(freeMessagesResponse.requiresTip)
         } else {
           setFreeMessages(undefined)
         }
@@ -93,6 +95,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
                 freeMessages={freeMessages}
                 minimumTip={minimumTip}
                 readAt={selectedChannel?.readAt ?? undefined}
+                requiresTip={requiresTip}
                 selectedChannel={selectedChannel}
                 setBannerPopUp={setBannerPopUp}
               />

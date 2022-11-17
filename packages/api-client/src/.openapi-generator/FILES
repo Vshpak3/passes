@@ -211,6 +211,7 @@ models/RefreshAuthTokenRequestDto.ts
 models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts
 models/RenewPassHolderRequestDto.ts
+models/ReorderPostCategoriesRequestDto.ts
 models/ReportUserDto.ts
 models/ScheduledEventDto.ts
 models/SearchCreatorRequestDto.ts

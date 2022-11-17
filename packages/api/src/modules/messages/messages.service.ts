@@ -665,6 +665,7 @@ export class MessagesService {
         false,
         minimumTip,
       ),
+      !!minimumTip,
       minimumTip ?? MINIMUM_MESSAGE_TIP_AMOUNT,
     )
   }

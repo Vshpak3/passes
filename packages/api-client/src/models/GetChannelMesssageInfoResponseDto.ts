@@ -31,6 +31,12 @@ export interface GetChannelMesssageInfoResponseDto {
      * @memberof GetChannelMesssageInfoResponseDto
      */
     minimumTip?: number | null;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof GetChannelMesssageInfoResponseDto
+     */
+    requiresTip: boolean;
 }
 
 /**
@@ -39,6 +45,7 @@ export interface GetChannelMesssageInfoResponseDto {
 export function instanceOfGetChannelMesssageInfoResponseDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "messages" in value;
+    isInstance = isInstance && "requiresTip" in value;
 
     return isInstance;
 }
@@ -55,6 +62,7 @@ export function GetChannelMesssageInfoResponseDtoFromJSONTyped(json: any, ignore
         
         'messages': json['messages'],
         'minimumTip': !exists(json, 'minimumTip') ? undefined : json['minimumTip'],
+        'requiresTip': json['requiresTip'],
     };
 }
 
@@ -69,6 +77,7 @@ export function GetChannelMesssageInfoResponseDtoToJSON(value?: GetChannelMesssa
         
         'messages': value.messages,
         'minimumTip': value.minimumTip,
+        'requiresTip': value.requiresTip,
     };
 }
 

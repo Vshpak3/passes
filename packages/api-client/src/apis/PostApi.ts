@@ -34,6 +34,7 @@ import type {
   PostToCategoryRequestDto,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
+  ReorderPostCategoriesRequestDto,
   TipPostRequestDto,
 } from '../models';
 import {
@@ -75,6 +76,8 @@ import {
     PurchasePostRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
+    ReorderPostCategoriesRequestDtoFromJSON,
+    ReorderPostCategoriesRequestDtoToJSON,
     TipPostRequestDtoFromJSON,
     TipPostRequestDtoToJSON,
 } from '../models';
@@ -145,6 +148,10 @@ export interface RemovePostRequest {
 
 export interface RemovePostFromCategoryRequest {
     postToCategoryRequestDto: PostToCategoryRequestDto;
+}
+
+export interface ReorderPostCategoriesRequest {
+    reorderPostCategoriesRequestDto: ReorderPostCategoriesRequestDto;
 }
 
 export interface UnpinPostRequest {
@@ -783,6 +790,43 @@ export class PostApi extends runtime.BaseAPI {
      */
     async removePostFromCategory(requestParameters: RemovePostFromCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.removePostFromCategoryRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Reorder post categories
+     */
+    async reorderPostCategoriesRaw(requestParameters: ReorderPostCategoriesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.reorderPostCategoriesRequestDto === null || requestParameters.reorderPostCategoriesRequestDto === undefined) {
+            throw new runtime.RequiredError('reorderPostCategoriesRequestDto','Required parameter requestParameters.reorderPostCategoriesRequestDto was null or undefined when calling reorderPostCategories.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/reoder`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: ReorderPostCategoriesRequestDtoToJSON(requestParameters.reorderPostCategoriesRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Reorder post categories
+     */
+    async reorderPostCategories(requestParameters: ReorderPostCategoriesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.reorderPostCategoriesRaw(requestParameters, initOverrides);
     }
 
     /**

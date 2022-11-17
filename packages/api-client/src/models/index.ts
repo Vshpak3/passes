@@ -184,6 +184,7 @@ export * from './RefreshAuthTokenRequestDto';
 export * from './RegisterPayinResponseDto';
 export * from './RemoveListMembersRequestDto';
 export * from './RenewPassHolderRequestDto';
+export * from './ReorderPostCategoriesRequestDto';
 export * from './ReportUserDto';
 export * from './ScheduledEventDto';
 export * from './SearchCreatorRequestDto';

@@ -29,6 +29,7 @@ interface ChannelStreamProps {
   readAt?: Date
   bannerPopUp: boolean
   setBannerPopUp: Dispatch<SetStateAction<boolean>>
+  requiresTip: boolean
 }
 
 const api = new MessagesApi()
@@ -39,7 +40,8 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   minimumTip,
   readAt,
   bannerPopUp,
-  setBannerPopUp
+  setBannerPopUp,
+  requiresTip
 }) => {
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.1
@@ -227,7 +229,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     <>
       {isConnected ? (
         <div className="relative h-full overflow-y-hidden">
-          {!!minimumTip && freeMessages !== undefined && (
+          {!!minimumTip && freeMessages !== undefined && requiresTip && (
             <div className="absolute z-20 flex w-full justify-center bg-transparent pr-4">
               <FreeMessagesLeftContainer
                 bannerPopUp={bannerPopUp}
