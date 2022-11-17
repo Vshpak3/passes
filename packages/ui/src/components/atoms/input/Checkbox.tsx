@@ -75,7 +75,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
             disabled ? "opacity-50" : "opacity-100",
             errors[name] ? "border-red-500" : "border-gray-300",
             type === "toggle" ? "h-3 w-7" : "",
-            "rounded border placeholder-gray-400 shadow-sm ring-passes-secondary-color focus:border-passes-secondary-color focus:bg-passes-secondary-color focus:text-passes-secondary-color focus:outline-none focus:ring-passes-secondary-color sm:text-sm",
+            "rounded border placeholder-gray-400 shadow-sm ring-passes-primary-color focus:border-passes-primary-color focus:border-transparent focus:bg-passes-primary-color focus:text-passes-primary-color focus:ring-passes-primary-color  sm:text-sm",
             className
           )}
         />
