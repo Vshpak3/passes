@@ -17,7 +17,7 @@ import {
   Tooltip
 } from "chart.js"
 import { eachDayOfInterval, isSameDay } from "date-fns"
-import { debounce, uniqueId } from "lodash"
+import { uniqueId } from "lodash"
 import ms from "ms"
 import React, { FC, useRef, useState } from "react"
 import { Line } from "react-chartjs-2"
