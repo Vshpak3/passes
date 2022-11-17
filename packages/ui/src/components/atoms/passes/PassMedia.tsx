@@ -47,9 +47,10 @@ export const PassMedia: FC<PassMediaProps> = ({
       ? ContentService.passHolderMediaPath(passId, passHolderId, animationType)
       : ContentService.passMediaPath(passId, animationType)
     return (
-      <>
+      <div className="relative h-0 w-full bg-black pt-[100%]">
         <video
           autoPlay
+          className="absolute top-[0] h-full w-full"
           loop
           muted
           playsInline
@@ -60,7 +61,7 @@ export const PassMedia: FC<PassMediaProps> = ({
         </video>
 
         {/* TODO: placeholder image will be added as video poster; NFT thumbnail when we they get generated */}
-      </>
+      </div>
     )
   } else {
     const imagePath = passHolderId
