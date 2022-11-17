@@ -61,14 +61,14 @@ export class PostController {
     responseStatus: HttpStatus.OK,
     responseType: GetPostResponseDto,
     responseDesc: 'A post was retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Get(':postId')
   async findPost(
     @Req() req: RequestWithUser,
     @Param('postId') postId: string,
   ): Promise<GetPostResponseDto> {
-    return await this.postService.findPost(postId, req.user.id)
+    return await this.postService.findPost(postId, req.user?.id ?? '')
   }
 
   @ApiEndpoint({
