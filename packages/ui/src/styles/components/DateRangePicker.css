@@ -48,6 +48,12 @@ select {
   color: #d6409f !important;
 }
 
+@media only screen and (max-width: 768px) {
+  .earnings-date-picker .rdrDefinedRangesWrapper {
+    display: none;
+  }
+}
+
 .rdrDayInPreview,
 .rdrDayEndPreview,
 .rdrDayStartPreview {
