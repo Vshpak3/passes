@@ -8,6 +8,7 @@ import { FC, useState } from "react"
 import { CalendarSelector } from "src/components/atoms/calendar/CalendarSelector"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
 import { formatCurrency, formatText } from "src/helpers/formatters"
+import { EditScheduledMessagePopup } from "./EditScheduledMessagePopup"
 import { EditScheduledPostPopup } from "./EditScheduledPostPopup"
 import { EventTableItemCachedProps } from "./EventTableItemCached"
 
@@ -74,12 +75,10 @@ export const EventTableItem: FC<EventTableItemProps> = ({
               await onChangeTime(scheduledEventId, date)
             }}
           />
-          {type === ScheduledEventDtoTypeEnum.CreatePost && (
-            <EditIcon
-              className="mr-3 cursor-pointer"
-              onClick={() => setEdit(true)}
-            />
-          )}
+          <EditIcon
+            className="mr-3 cursor-pointer"
+            onClick={() => setEdit(true)}
+          />
         </>
       ) : (
         <CheckIcon />
@@ -91,11 +90,21 @@ export const EventTableItem: FC<EventTableItemProps> = ({
   return (
     <>
       {edit && (
-        <EditScheduledPostPopup
-          isOpen
-          onCancel={() => setEdit(false)}
-          scheduledEvent={scheduledEvent}
-        />
+        <>
+          {type === ScheduledEventDtoTypeEnum.CreatePost ? (
+            <EditScheduledPostPopup
+              isOpen
+              onCancel={() => setEdit(false)}
+              scheduledEvent={scheduledEvent}
+            />
+          ) : (
+            <EditScheduledMessagePopup
+              isOpen
+              onCancel={() => setEdit(false)}
+              scheduledEvent={scheduledEvent}
+            />
+          )}
+        </>
       )}
       <div className="mb-8 bg-passes-purple-200 p-5">
         <div className="mb-6 flex items-center justify-between">

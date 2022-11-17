@@ -4,7 +4,7 @@ import { Dispatch, FC, SetStateAction, useCallback } from "react"
 import { PassesSearchBar } from "src/components/organisms/profile/main-content/new-post/PassesSearchBar"
 import { ListsSearchBar } from "./ListsSearchBar"
 
-interface ChannelListsProps {
+interface GroupSelectionDMProps {
   selectedPasses: PassDto[]
   setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
   selectedLists: ListDto[]
@@ -13,7 +13,7 @@ interface ChannelListsProps {
   setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
 }
 
-export const ChannelMassDM: FC<ChannelListsProps> = ({
+export const GroupSelectionDM: FC<GroupSelectionDMProps> = ({
   selectedPasses,
   setSelectedPasses,
   selectedLists,

@@ -51,6 +51,7 @@ export interface InputMessageFormProps {
   price: string
   scheduledAt: Date | null
   tip: string
+  previewIndex: number
 }
 
 interface InputMessageProps {
@@ -69,7 +70,8 @@ export const InputMessageFormDefaults: InputMessageFormProps = {
   isPaid: false,
   price: "",
   scheduledAt: null,
-  tip: ""
+  tip: "",
+  previewIndex: 0
 }
 
 const api = new MessagesApi()
@@ -121,7 +123,8 @@ export const InputMessage: FC<InputMessageProps> = ({
 
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
-  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(0)
+
+  const mediaPreviewIndex = watch("previewIndex")
 
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
@@ -315,7 +318,9 @@ export const InputMessage: FC<InputMessageProps> = ({
                   onRemove={onRemove}
                   register={register}
                   setFiles={setFiles}
-                  setMediaPreviewIndex={setMediaPreviewIndex}
+                  setMediaPreviewIndex={(index) =>
+                    setValue("previewIndex", index)
+                  }
                 />
               </div>
             )}

@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { ContentDto } from "@passes/api-client"
+import { ContentBareDto, ContentDto } from "@passes/api-client"
 import classNames from "classnames"
 import {
   ChangeEvent,
@@ -34,20 +34,21 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
+export type MessageSaveFunction = (
+  text: string,
+  contentIds: string[],
+  price: number,
+  previewIndex: number,
+  contents: ContentBareDto[],
+  scheduledAt?: Date
+) => Promise<void> | void
 interface InputMessageToolProps {
   vaultContent: ContentDto[]
   clear: () => void
-  save: (
-    text: string,
-    contentIds: string[],
-    price: number,
-    previewIndex: number,
-    scheduledAt?: Date
-  ) => Promise<void>
+  save: MessageSaveFunction
   schedulable: boolean
   customButtonText?: string
   initialData?: Partial<InputMessageFormProps>
-  previewIndex?: number
 }
 
 const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
@@ -56,8 +57,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   save,
   schedulable = true,
   customButtonText,
-  initialData,
-  previewIndex = 0
+  initialData
 }) => {
   const {
     register,
@@ -81,7 +81,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
 
   const [activeMediaHeader, setActiveMediaHeader] = useState("Media")
   const isPaid = watch("isPaid")
-  const [mediaPreviewIndex, setMediaPreviewIndex] = useState(previewIndex)
+  const mediaPreviewIndex = watch("previewIndex")
   const onMediaChange = (event: ChangeEvent<HTMLInputElement>) => {
     setActiveMediaHeader("")
     addNewMedia(event.target.files)
@@ -89,7 +89,7 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
   }
 
   const onSubmit = async () => {
-    const contentIds = await new ContentService().uploadUserContent({
+    const contents = await new ContentService().uploadUserContentBare({
       files,
       inMessage: true
     })
@@ -98,9 +98,10 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
     try {
       await save(
         values.text,
-        contentIds,
+        contents.map((content) => content.contentId),
         isPaid ? parseFloat(values.price) : 0,
         isPaid ? mediaPreviewIndex : 0,
+        contents,
         values.scheduledAt ?? undefined
       )
       setFiles([])
@@ -206,7 +207,9 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
                   onRemove={onRemove}
                   register={register}
                   setFiles={setFiles}
-                  setMediaPreviewIndex={setMediaPreviewIndex}
+                  setMediaPreviewIndex={(index) =>
+                    setValue("previewIndex", index)
+                  }
                 />
               </div>
             )}

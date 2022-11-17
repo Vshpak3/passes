@@ -7,10 +7,9 @@ import { InputMessageTool } from "src/components/molecules/messages/mass-dm/Inpu
 import { Tab } from "src/components/pages/settings/Tab"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { useWelcomeMessage } from "src/hooks/settings/useWelcomeMessage"
-import { useUser } from "src/hooks/useUser"
+import { ContentFilesFromBare } from "src/hooks/useMedia"
 
 const WelcomeMessage = () => {
-  const { user } = useUser()
   const { popTabFromStackHandler } = useSettings() as SettingsContextProps
 
   const { createWelcomeMessage, isLoading, welcomeMessage } =
@@ -45,13 +44,11 @@ const WelcomeMessage = () => {
           customButtonText="Save message"
           initialData={{
             text: welcomeMessage?.text,
-            files: welcomeMessage?.bareContents?.map((bare) => {
-              return { content: { ...bare, userId: user?.userId ?? "" } }
-            }),
+            files: ContentFilesFromBare(welcomeMessage?.bareContents),
             isPaid: !!welcomeMessage?.price,
-            price: welcomeMessage?.price.toFixed(0)
+            price: welcomeMessage?.price.toFixed(0),
+            previewIndex: welcomeMessage?.previewIndex ?? 0
           }}
-          previewIndex={welcomeMessage?.previewIndex}
           save={fetch}
           schedulable={false}
           vaultContent={[]}

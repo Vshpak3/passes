@@ -5,7 +5,7 @@ import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
 import { SectionTitle } from "src/components/atoms/SectionTitle"
-import Messages from "src/components/organisms/Messages"
+import Messages from "src/components/organisms/messages/Messages"
 import { useUser } from "src/hooks/useUser"
 import { ArrowLeft } from "src/icons/ArrowLeft"
 import { CreatorSearchBar } from "src/layout/CreatorSearchBar"
