@@ -26,8 +26,7 @@ export const EditPostDialog: FC<EditPostDialogProps> = ({ onCancel, post }) => {
       transition={false}
     >
       <NewPostEditor
-        canEditPasses={false}
-        handleSavePost={(editedPost, contents, _passes, newContent) => {
+        handleSavePost={(editedPost, contents, passes, newContent) => {
           editPost({ ...editedPost, postId: post.postId })
           update({
             ...editedPost,

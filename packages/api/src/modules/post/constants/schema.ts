@@ -5,4 +5,4 @@ export const PASS_IDS_LENGTH = 3000
 
 export const PASS_HOLDER_IDS_LENGTH = 500
 
-export const POST_CATEGORY_NAME_LENGTH = 25
+export const POST_CATEGORY_NAME_LENGTH = 50

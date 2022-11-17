@@ -331,6 +331,20 @@ export class MessagesService {
     }
   }
 
+  async getRemovedUserIds(userIds: string[], contentIds: string[]) {
+    if (!userIds.length || !contentIds.length) {
+      return []
+    }
+    return (
+      await this.dbReader<UserMessageContentEntity>(
+        UserMessageContentEntity.table,
+      )
+        .whereIn('user_id', userIds)
+        .whereIn('content_id', contentIds)
+        .distinct('user_id')
+    ).map((messageContent) => messageContent.user_id)
+  }
+
   async publishBatchMessage(
     userId: string,
     createBatchMessageDto: CreateBatchMessageRequestDto,
@@ -380,14 +394,7 @@ export class MessagesService {
     const userIds = Array.from(include)
 
     const removeUserIds = new Set(
-      (
-        await this.dbReader<UserMessageContentEntity>(
-          UserMessageContentEntity.table,
-        )
-          .whereIn('user_id', userIds)
-          .whereIn('content_id', contentIds)
-          .distinct('user_id')
-      ).map((messageContent) => messageContent.user_id),
+      await this.getRemovedUserIds(userIds, contentIds),
     )
     removeUserIds.add(userId)
 
@@ -472,6 +479,7 @@ export class MessagesService {
     }
   }
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async registerSendMessage(
     userId: string,
     sendMessageDto: SendMessageRequestDto,
@@ -500,7 +508,12 @@ export class MessagesService {
       )
     }
     if (contentIds.length === 0 && price) {
-      throw new MessageSendError('cant give price to messages with no content')
+      throw new MessageSendError("can't give price to messages with no content")
+    }
+
+    const removed = await this.getRemovedUserIds([userId], contentIds)
+    if (removed.length > 0) {
+      throw new MessageSendError("Can't send purchased content")
     }
     const channelMember = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,

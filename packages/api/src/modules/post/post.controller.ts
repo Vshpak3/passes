@@ -21,6 +21,10 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import {
+  CreatePostCategoryRequestDto,
+  CreatePostCategoryResponseDto,
+} from './dto/create-post-category.dto'
 import { EditPostRequestDto } from './dto/edit-post.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import {
@@ -266,6 +270,26 @@ export class PostController {
         getPostsBuyersRequestDto,
       ),
       getPostsBuyersRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Create post category',
+    responseStatus: HttpStatus.OK,
+    responseType: CreatePostCategoryResponseDto,
+    responseDesc: 'Post category created',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/create')
+  async createPostCategory(
+    @Req() req: RequestWithUser,
+    @Body() createPostCategoryRequestDto: CreatePostCategoryRequestDto,
+  ): Promise<CreatePostCategoryResponseDto> {
+    return new CreatePostCategoryResponseDto(
+      await this.postService.createPostCategory(
+        req.user.id,
+        createPostCategoryRequestDto,
+      ),
     )
   }
 }

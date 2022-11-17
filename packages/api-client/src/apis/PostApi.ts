@@ -16,6 +16,8 @@
 import * as runtime from '../runtime';
 import type {
   BooleanResponseDto,
+  CreatePostCategoryRequestDto,
+  CreatePostCategoryResponseDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
   EditPostRequestDto,
@@ -34,6 +36,10 @@ import type {
 import {
     BooleanResponseDtoFromJSON,
     BooleanResponseDtoToJSON,
+    CreatePostCategoryRequestDtoFromJSON,
+    CreatePostCategoryRequestDtoToJSON,
+    CreatePostCategoryResponseDtoFromJSON,
+    CreatePostCategoryResponseDtoToJSON,
     CreatePostRequestDtoFromJSON,
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
@@ -66,6 +72,10 @@ import {
 
 export interface CreatePostRequest {
     createPostRequestDto: CreatePostRequestDto;
+}
+
+export interface CreatePostCategoryRequest {
+    createPostCategoryRequestDto: CreatePostCategoryRequestDto;
 }
 
 export interface EditPostRequest {
@@ -156,6 +166,44 @@ export class PostApi extends runtime.BaseAPI {
      */
     async createPost(requestParameters: CreatePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePostResponseDto> {
         const response = await this.createPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Create post category
+     */
+    async createPostCategoryRaw(requestParameters: CreatePostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreatePostCategoryResponseDto>> {
+        if (requestParameters.createPostCategoryRequestDto === null || requestParameters.createPostCategoryRequestDto === undefined) {
+            throw new runtime.RequiredError('createPostCategoryRequestDto','Required parameter requestParameters.createPostCategoryRequestDto was null or undefined when calling createPostCategory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/create`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreatePostCategoryRequestDtoToJSON(requestParameters.createPostCategoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreatePostCategoryResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Create post category
+     */
+    async createPostCategory(requestParameters: CreatePostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreatePostCategoryResponseDto> {
+        const response = await this.createPostCategoryRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

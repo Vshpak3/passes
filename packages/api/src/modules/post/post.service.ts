@@ -61,6 +61,7 @@ import {
   CreatePostRequestDto,
   CreatePostResponseDto,
 } from './dto/create-post.dto'
+import { CreatePostCategoryRequestDto } from './dto/create-post-category.dto'
 import { EditPostRequestDto } from './dto/edit-post.dto'
 import {
   GetPostBuyersRequestDto,
@@ -71,10 +72,13 @@ import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
+import { PostToCategoryRequestDto } from './dto/post-to-category.dto'
 import { PostEntity } from './entities/post.entity'
+import { PostCategoryEntity } from './entities/post-category.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
 import { PostPassAccessEntity } from './entities/post-pass-access.entity'
 import { PostTipEntity } from './entities/post-tip.entity'
+import { PostToCategoryEntity } from './entities/post-to-category.entity'
 import { PostUserAccessEntity } from './entities/post-user-access.entity'
 import { PostNotificationEnum } from './enum/post.notification.enum'
 import {
@@ -185,13 +189,7 @@ export class PostService {
             }),
           )
         }
-        if (createPostDto.passIds.length) {
-          await trx<PostPassAccessEntity>(PostPassAccessEntity.table).insert(
-            createPostDto.passIds.map((passId) => {
-              return { post_id: postId, pass_id: passId }
-            }),
-          )
-        }
+        await this.updatePassAccess(trx, postId, createPostDto.passIds, false)
         await trx<CreatorStatEntity>(CreatorStatEntity.table)
           .increment('num_posts', 1)
           .where('user_id', userId)
@@ -357,28 +355,67 @@ export class PostService {
   }
 
   async editPost(userId: string, editPostDto: EditPostRequestDto) {
-    const { text, tags, price, expiresAt, contentIds, previewIndex, postId } =
-      editPostDto
+    const {
+      text,
+      tags,
+      price,
+      expiresAt,
+      contentIds,
+      previewIndex,
+      postId,
+      passIds,
+    } = editPostDto
     if ((text && !tags) || (!text && tags)) {
       throw new BadRequestException('needs both text and tags')
     }
+
+    await this.passService.validatePassIds(userId, passIds)
     const { contentsBare, isProcessed } =
       await this.contentService.validateContentIds(userId, contentIds)
     if (text && tags) {
       verifyTaggedText(text, tags)
     }
-    const updated = await this.dbWriter<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId })
-      .update({
-        text: text,
-        tags: JSON.stringify(tags),
-        price: price,
-        expires_at: expiresAt,
-        content_processed: isProcessed,
-        contents: JSON.stringify(contentsBare),
-        preview_index: previewIndex,
-      })
+    let updated = 0
+    await this.dbWriter.transaction(async (trx) => {
+      await this.updatePassAccess(trx, postId, passIds, true)
+      updated = await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId, user_id: userId })
+        .update({
+          text: text,
+          tags: JSON.stringify(tags),
+          price: price,
+          expires_at: expiresAt,
+          content_processed: isProcessed,
+          contents: JSON.stringify(contentsBare),
+          preview_index: previewIndex,
+          pass_ids: JSON.stringify(passIds),
+        })
+    })
     return updated === 1
+  }
+
+  async updatePassAccess(
+    trx: Knex.Transaction,
+    postId: string,
+    passIds: string[],
+    remove: boolean,
+  ) {
+    if (remove) {
+      await trx<PostPassAccessEntity>(PostPassAccessEntity.table)
+        .where({ post_id: postId })
+        .whereNotIn('pass_id', passIds)
+        .delete()
+    }
+    if (passIds.length) {
+      await trx<PostPassAccessEntity>(PostPassAccessEntity.table)
+        .insert(
+          passIds.map((passId) => {
+            return { post_id: postId, pass_id: passId }
+          }),
+        )
+        .onConflict()
+        .ignore()
+    }
   }
 
   async removePost(userId: string, postId: string) {
@@ -921,5 +958,102 @@ export class PostService {
 
     const postBuyers = await query
     return postBuyers.map((postBuyer) => new PostBuyerDto(postBuyer))
+  }
+
+  async createPostCategory(
+    userId: string,
+    createPostCategoryRequestDto: CreatePostCategoryRequestDto,
+  ) {
+    const { name } = createPostCategoryRequestDto
+    const id = v4()
+    await this.dbWriter.transaction(async (trx) => {
+      await trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
+        id,
+        user_id: userId,
+        name,
+        order: -1,
+      })
+      await trx<PostCategoryEntity>(PostCategoryEntity.table)
+        .update(
+          'order',
+          this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
+            .where({
+              user_id: userId,
+            })
+            .count(),
+        )
+        .where({ id })
+    })
+    return id
+  }
+
+  // async deletePostCategory(
+  //   userId: string,
+  //   deletePostCategoryRequestDto: DeletePostCategoryRequestDto,
+  // ) {
+  //   const { name } = createPostCategoryRequestDto
+  //   const id = v4()
+  //   await this.dbWriter.transaction(async (trx) => {
+  //     await trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
+  //       id,
+  //       user_id: userId,
+  //       name,
+  //       order: -1,
+  //     })
+  //     await trx<PostCategoryEntity>(PostCategoryEntity.table)
+  //       .update(
+  //         'order',
+  //         this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
+  //           .where({
+  //             user_id: userId,
+  //           })
+  //           .count(),
+  //       )
+  //       .where({ id })
+  //   })
+  //   return id
+  // }
+
+  async addPostFromCategory(
+    userId: string,
+    postToCategoryRequestDto: PostToCategoryRequestDto,
+  ) {
+    const { postId, postCategoryId } = postToCategoryRequestDto
+
+    const post = await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .select('id')
+      .first()
+
+    if (!post) {
+      throw new BadRequestException(`No post with id ${postId}`)
+    }
+    await this.dbWriter<PostToCategoryEntity>(PostToCategoryEntity.table)
+      .insert({ post_id: postId, post_category_id: postCategoryId })
+      .onConflict()
+      .ignore()
+    return true
+  }
+
+  async removePostFromCategory(
+    userId: string,
+    postToCategoryRequestDto: PostToCategoryRequestDto,
+  ) {
+    const { postId, postCategoryId } = postToCategoryRequestDto
+
+    const post = await this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .select('id')
+      .first()
+
+    if (!post) {
+      throw new BadRequestException(`No post with id ${postId}`)
+    }
+    const update = await this.dbWriter<PostToCategoryEntity>(
+      PostToCategoryEntity.table,
+    )
+      .where({ post_id: postId, post_category_id: postCategoryId })
+      .delete()
+    return update === 1
   }
 }

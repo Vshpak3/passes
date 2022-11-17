@@ -121,34 +121,60 @@ export class PassService {
     this.nftS3Bucket = configService.get('s3_bucket.nft') as string
   }
 
+  validatePassCreation(userId: string, createPassDto: CreatePassRequestDto) {
+    const {
+      title,
+      description,
+      type,
+      price,
+      freetrial,
+      messages,
+      totalSupply,
+      chain,
+      royalties,
+      animationType,
+      imageType,
+      accessType,
+    } = createPassDto
+    if (accessType === AccessTypeEnum.ACCOUNT_ACCESS) {
+      throw new BadPassPropertiesException('account access type is deprecated')
+    }
+    if (chain !== ChainEnum.SOL && chain !== ChainEnum.ETH) {
+      throw new UnsupportedChainPassError(
+        `can not create a pass on chain ${chain}`,
+      )
+    }
+    const duration =
+      createPassDto.duration === undefined && type === PassTypeEnum.SUBSCRIPTION
+        ? DEFAULT_PASS_DURATION_MS
+        : createPassDto.duration
+    return {
+      id: v4(),
+      creator_id: userId,
+      title: title,
+      description: description,
+      type: type,
+      price: price,
+      duration,
+      freetrial: freetrial,
+      messages: messages,
+      total_supply: totalSupply,
+      remaining_supply: totalSupply,
+      chain: chain,
+      symbol: DEFAULT_PASS_SYMBOL,
+      royalties: royalties,
+      animation_type: animationType,
+      image_type: imageType,
+      access_type: accessType,
+      collection_address: '',
+    }
+  }
+
   async manualPass(
     userId: string,
     createPassDto: CreatePassRequestDto,
   ): Promise<CreatePassResponseDto> {
-    const duration =
-      createPassDto.duration === undefined &&
-      createPassDto.type === PassTypeEnum.SUBSCRIPTION
-        ? DEFAULT_PASS_DURATION_MS
-        : createPassDto.duration
-    const data = {
-      id: v4(),
-      creator_id: userId,
-      title: createPassDto.title,
-      description: createPassDto.description,
-      type: createPassDto.type,
-      price: createPassDto.price,
-      duration,
-      freetrial: createPassDto.freetrial,
-      messages: createPassDto.messages,
-      total_supply: createPassDto.totalSupply,
-      remaining_supply: createPassDto.totalSupply,
-      chain: createPassDto.chain,
-      symbol: DEFAULT_PASS_SYMBOL,
-      royalties: createPassDto.royalties,
-      animation_type: createPassDto.animationType,
-      image_type: createPassDto.imageType,
-      access_type: createPassDto.accessType,
-    } as PassEntity
+    const data = this.validatePassCreation(userId, createPassDto)
     switch (data.chain) {
       case ChainEnum.SOL:
         data.collection_address = (
@@ -217,38 +243,7 @@ export class PassService {
       )
     }
 
-    const duration =
-      createPassDto.duration === undefined &&
-      createPassDto.type === PassTypeEnum.SUBSCRIPTION
-        ? DEFAULT_PASS_DURATION_MS
-        : createPassDto.duration
-    const data = {
-      id: v4(),
-      creator_id: userId,
-      title: createPassDto.title,
-      description: createPassDto.description,
-      type: createPassDto.type,
-      price: createPassDto.price,
-      duration,
-      freetrial: createPassDto.freetrial,
-      messages: createPassDto.messages,
-      total_supply: createPassDto.totalSupply,
-      remaining_supply: createPassDto.totalSupply,
-      chain: createPassDto.chain,
-      symbol: DEFAULT_PASS_SYMBOL,
-      royalties: createPassDto.royalties,
-      animation_type: createPassDto.animationType,
-      image_type: createPassDto.imageType,
-      access_type: createPassDto.accessType,
-    }
-    if (
-      createPassDto.chain !== ChainEnum.SOL &&
-      createPassDto.chain !== ChainEnum.ETH
-    ) {
-      throw new UnsupportedChainPassError(
-        `can not create a pass on chain ${createPassDto.chain}`,
-      )
-    }
+    const data = this.validatePassCreation(userId, createPassDto)
     await createOrThrowOnDuplicate(
       () => this.dbWriter<PassEntity>(PassEntity.table).insert(data),
       this.logger,

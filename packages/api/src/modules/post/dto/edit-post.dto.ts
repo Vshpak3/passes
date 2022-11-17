@@ -10,6 +10,7 @@ export class EditPostRequestDto extends PickType(CreatePostRequestDto, [
   'expiresAt',
   'contentIds',
   'previewIndex',
+  'passIds',
 ] as const) {
   @DtoProperty({ type: 'uuid' })
   postId: string

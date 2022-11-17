@@ -39,6 +39,8 @@ export * from './CreateOrUpdateProfileRequestDto';
 export * from './CreatePassHolderRequestDto';
 export * from './CreatePassRequestDto';
 export * from './CreatePassResponseDto';
+export * from './CreatePostCategoryRequestDto';
+export * from './CreatePostCategoryResponseDto';
 export * from './CreatePostRequestDto';
 export * from './CreatePostResponseDto';
 export * from './CreateUnauthenticatedWalletRequestDto';

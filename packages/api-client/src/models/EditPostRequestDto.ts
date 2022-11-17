@@ -46,6 +46,12 @@ export interface EditPostRequestDto {
     previewIndex: number;
     /**
      * 
+     * @type {Array<string>}
+     * @memberof EditPostRequestDto
+     */
+    passIds: Array<string>;
+    /**
+     * 
      * @type {Date}
      * @memberof EditPostRequestDto
      */
@@ -78,6 +84,7 @@ export function instanceOfEditPostRequestDto(value: object): boolean {
     isInstance = isInstance && "text" in value;
     isInstance = isInstance && "tags" in value;
     isInstance = isInstance && "previewIndex" in value;
+    isInstance = isInstance && "passIds" in value;
     isInstance = isInstance && "contentIds" in value;
     isInstance = isInstance && "postId" in value;
 
@@ -97,6 +104,7 @@ export function EditPostRequestDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'text': json['text'],
         'tags': ((json['tags'] as Array<any>).map(TagDtoFromJSON)),
         'previewIndex': json['previewIndex'],
+        'passIds': json['passIds'],
         'expiresAt': !exists(json, 'expiresAt') ? undefined : (json['expiresAt'] === null ? null : new Date(json['expiresAt'])),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'contentIds': json['contentIds'],
@@ -116,6 +124,7 @@ export function EditPostRequestDtoToJSON(value?: EditPostRequestDto | null): any
         'text': value.text,
         'tags': ((value.tags as Array<any>).map(TagDtoToJSON)),
         'previewIndex': value.previewIndex,
+        'passIds': value.passIds,
         'expiresAt': value.expiresAt === undefined ? undefined : (value.expiresAt === null ? null : value.expiresAt.toISOString()),
         'price': value.price,
         'contentIds': value.contentIds,

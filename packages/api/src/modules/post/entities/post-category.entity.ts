@@ -18,6 +18,6 @@ export class PostCategoryEntity extends BaseEntity {
   @Property({ default: 0 })
   count: number
 
-  @Property()
+  @Property({ default: 0 })
   order: number
 }

@@ -66,6 +66,8 @@ models/CreateOrUpdateProfileRequestDto.ts
 models/CreatePassHolderRequestDto.ts
 models/CreatePassRequestDto.ts
 models/CreatePassResponseDto.ts
+models/CreatePostCategoryRequestDto.ts
+models/CreatePostCategoryResponseDto.ts
 models/CreatePostRequestDto.ts
 models/CreatePostResponseDto.ts
 models/CreateUnauthenticatedWalletRequestDto.ts
