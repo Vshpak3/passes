@@ -25,7 +25,9 @@ import {
   CreatePostCategoryRequestDto,
   CreatePostCategoryResponseDto,
 } from './dto/create-post-category.dto'
+import { DeletePostCategoryRequestDto } from './dto/delete-post-category.dto'
 import { EditPostRequestDto } from './dto/edit-post.dto'
+import { EditPostCategoryRequestDto } from './dto/edit-post-category.dto'
 import { GetPostResponseDto } from './dto/get-post.dto'
 import {
   GetPostBuyersRequestDto,
@@ -36,6 +38,7 @@ import {
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
 import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
+import { PostToCategoryRequestDto } from './dto/post-to-category.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { PostService } from './post.service'
@@ -290,6 +293,78 @@ export class PostController {
         req.user.id,
         createPostCategoryRequestDto,
       ),
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Edit post category',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Post category editted',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/edit')
+  async editPostCategory(
+    @Req() req: RequestWithUser,
+    @Body() editPostCategoryRequestDto: EditPostCategoryRequestDto,
+  ): Promise<void> {
+    await this.postService.editPostCategory(
+      req.user.id,
+      editPostCategoryRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Delete post category',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Post category deleted',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/delette')
+  async deletePostCategory(
+    @Req() req: RequestWithUser,
+    @Body() deletePostCategoryRequestDto: DeletePostCategoryRequestDto,
+  ): Promise<void> {
+    await this.postService.deletePostCategory(
+      req.user.id,
+      deletePostCategoryRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Add post to category',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Post added to category',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/post/add')
+  async addPostToCategory(
+    @Req() req: RequestWithUser,
+    @Body() postToCategoryRequestDto: PostToCategoryRequestDto,
+  ): Promise<void> {
+    await this.postService.addPostToCategory(
+      req.user.id,
+      postToCategoryRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Remove post from category',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Post removed from category',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/post/remove')
+  async removePostFromCategory(
+    @Req() req: RequestWithUser,
+    @Body() postToCategoryRequestDto: PostToCategoryRequestDto,
+  ): Promise<void> {
+    await this.postService.removePostFromCategory(
+      req.user.id,
+      postToCategoryRequestDto,
     )
   }
 }

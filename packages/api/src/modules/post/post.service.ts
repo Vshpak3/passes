@@ -19,6 +19,7 @@ import {
   DB_WRITER,
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
+import { createOrThrowOnDuplicate } from '../../util/db-nest.util'
 import { OrderEnum } from '../../util/dto/page.dto'
 import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
@@ -54,6 +55,7 @@ import { POST_NOT_EXIST } from './constants/errors'
 import {
   MAX_PINNED_POST,
   MAX_POST_BUYERS_PER_REQUEST,
+  MAX_POST_CATEGORIES,
   MAX_POSTS_PER_REQUEST,
   MIN_PAID_POST_PRICE,
 } from './constants/limits'
@@ -62,7 +64,9 @@ import {
   CreatePostResponseDto,
 } from './dto/create-post.dto'
 import { CreatePostCategoryRequestDto } from './dto/create-post-category.dto'
+import { DeletePostCategoryRequestDto } from './dto/delete-post-category.dto'
 import { EditPostRequestDto } from './dto/edit-post.dto'
+import { EditPostCategoryRequestDto } from './dto/edit-post-category.dto'
 import {
   GetPostBuyersRequestDto,
   PostBuyerDto,
@@ -922,14 +926,7 @@ export class PostService {
     getPostBuyersRequestDto: GetPostBuyersRequestDto,
   ): Promise<PostBuyerDto[]> {
     const { postId, lastId, paidAt } = getPostBuyersRequestDto
-    const post = await this.dbReader<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId })
-      .select('id')
-      .first()
-    if (!post) {
-      throw new BadRequestException(`No post with id ${postId}`)
-    }
-
+    await this.checkPost(userId, postId)
     let query = this.dbReader<PostUserAccessEntity>(PostUserAccessEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -966,13 +963,30 @@ export class PostService {
   ) {
     const { name } = createPostCategoryRequestDto
     const id = v4()
+    const count = (
+      await this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
+        .where({
+          user_id: userId,
+        })
+        .count()
+    )[0]['count(*)'] as number
+    if (count >= MAX_POST_CATEGORIES) {
+      throw new BadRequestException(
+        `Can't have more than ${MAX_POST_CATEGORIES} post categories`,
+      )
+    }
     await this.dbWriter.transaction(async (trx) => {
-      await trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
-        id,
-        user_id: userId,
-        name,
-        order: -1,
-      })
+      await createOrThrowOnDuplicate(
+        () =>
+          trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
+            id,
+            user_id: userId,
+            name,
+            order: -1,
+          }),
+        this.logger,
+        `Post category ${name} already exists`,
+      )
       await trx<PostCategoryEntity>(PostCategoryEntity.table)
         .update(
           'order',
@@ -987,47 +1001,65 @@ export class PostService {
     return id
   }
 
-  // async deletePostCategory(
-  //   userId: string,
-  //   deletePostCategoryRequestDto: DeletePostCategoryRequestDto,
-  // ) {
-  //   const { name } = createPostCategoryRequestDto
-  //   const id = v4()
-  //   await this.dbWriter.transaction(async (trx) => {
-  //     await trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
-  //       id,
-  //       user_id: userId,
-  //       name,
-  //       order: -1,
-  //     })
-  //     await trx<PostCategoryEntity>(PostCategoryEntity.table)
-  //       .update(
-  //         'order',
-  //         this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
-  //           .where({
-  //             user_id: userId,
-  //           })
-  //           .count(),
-  //       )
-  //       .where({ id })
-  //   })
-  //   return id
-  // }
+  async editPostCategory(
+    userId: string,
+    editPostCategoryRequestDto: EditPostCategoryRequestDto,
+  ) {
+    const { postCategoryId, name } = editPostCategoryRequestDto
+    return await createOrThrowOnDuplicate(
+      () =>
+        this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
+          .where({
+            user_id: userId,
+            id: postCategoryId,
+          })
+          .update({ name }),
+      this.logger,
+      `Post category ${name} already exists`,
+    )
+  }
 
-  async addPostFromCategory(
+  async deletePostCategory(
+    userId: string,
+    deletePostCategoryRequestDto: DeletePostCategoryRequestDto,
+  ) {
+    const { postCategoryId, order } = deletePostCategoryRequestDto
+    await this.checkPostCategory(userId, postCategoryId)
+    let updated = 0
+    await this.dbWriter.transaction(async (trx) => {
+      await trx<PostToCategoryEntity>(PostToCategoryEntity.table)
+        .where({
+          post_category_id: postCategoryId,
+        })
+        .delete()
+      updated = await trx<PostCategoryEntity>(PostCategoryEntity.table)
+        .where({
+          user_id: userId,
+          id: postCategoryId,
+          order,
+        })
+        .delete()
+      if (updated) {
+        await trx<PostCategoryEntity>(PostCategoryEntity.table)
+          .where('order', '>', order)
+          .decrement('order', 1)
+      }
+    })
+    if (!updated) {
+      throw new BadRequestException(
+        'order and name not found for post category',
+      )
+    }
+    return updated
+  }
+
+  async addPostToCategory(
     userId: string,
     postToCategoryRequestDto: PostToCategoryRequestDto,
   ) {
     const { postId, postCategoryId } = postToCategoryRequestDto
-
-    const post = await this.dbWriter<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId })
-      .select('id')
-      .first()
-
-    if (!post) {
-      throw new BadRequestException(`No post with id ${postId}`)
-    }
+    await this.checkPost(userId, postId)
+    await this.checkPostCategory(userId, postCategoryId)
     await this.dbWriter<PostToCategoryEntity>(PostToCategoryEntity.table)
       .insert({ post_id: postId, post_category_id: postCategoryId })
       .onConflict()
@@ -1040,20 +1072,35 @@ export class PostService {
     postToCategoryRequestDto: PostToCategoryRequestDto,
   ) {
     const { postId, postCategoryId } = postToCategoryRequestDto
-
-    const post = await this.dbWriter<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId })
-      .select('id')
-      .first()
-
-    if (!post) {
-      throw new BadRequestException(`No post with id ${postId}`)
-    }
+    await this.checkPost(userId, postId)
+    await this.checkPostCategory(userId, postCategoryId)
     const update = await this.dbWriter<PostToCategoryEntity>(
       PostToCategoryEntity.table,
     )
       .where({ post_id: postId, post_category_id: postCategoryId })
       .delete()
     return update === 1
+  }
+
+  async checkPost(userId: string, postId: string) {
+    if (
+      !(await this.dbWriter<PostEntity>(PostEntity.table)
+        .where({ id: postId, user_id: userId })
+        .select('id')
+        .first())
+    ) {
+      throw new BadRequestException('Post not found')
+    }
+  }
+
+  async checkPostCategory(userId: string, postCategoryId: string) {
+    if (
+      !(await this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
+        .where({ id: postCategoryId, user_id: userId })
+        .select('id')
+        .first())
+    ) {
+      throw new BadRequestException('Post category not found')
+    }
   }
 }

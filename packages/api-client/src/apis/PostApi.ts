@@ -20,6 +20,8 @@ import type {
   CreatePostCategoryResponseDto,
   CreatePostRequestDto,
   CreatePostResponseDto,
+  DeletePostCategoryRequestDto,
+  EditPostCategoryRequestDto,
   EditPostRequestDto,
   GetPostBuyersRequestDto,
   GetPostBuyersResponseDto,
@@ -29,6 +31,7 @@ import type {
   GetPostsRequestDto,
   GetPostsResponseDto,
   PayinDataDto,
+  PostToCategoryRequestDto,
   PurchasePostRequestDto,
   RegisterPayinResponseDto,
   TipPostRequestDto,
@@ -44,6 +47,10 @@ import {
     CreatePostRequestDtoToJSON,
     CreatePostResponseDtoFromJSON,
     CreatePostResponseDtoToJSON,
+    DeletePostCategoryRequestDtoFromJSON,
+    DeletePostCategoryRequestDtoToJSON,
+    EditPostCategoryRequestDtoFromJSON,
+    EditPostCategoryRequestDtoToJSON,
     EditPostRequestDtoFromJSON,
     EditPostRequestDtoToJSON,
     GetPostBuyersRequestDtoFromJSON,
@@ -62,6 +69,8 @@ import {
     GetPostsResponseDtoToJSON,
     PayinDataDtoFromJSON,
     PayinDataDtoToJSON,
+    PostToCategoryRequestDtoFromJSON,
+    PostToCategoryRequestDtoToJSON,
     PurchasePostRequestDtoFromJSON,
     PurchasePostRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
@@ -69,6 +78,10 @@ import {
     TipPostRequestDtoFromJSON,
     TipPostRequestDtoToJSON,
 } from '../models';
+
+export interface AddPostToCategoryRequest {
+    postToCategoryRequestDto: PostToCategoryRequestDto;
+}
 
 export interface CreatePostRequest {
     createPostRequestDto: CreatePostRequestDto;
@@ -78,8 +91,16 @@ export interface CreatePostCategoryRequest {
     createPostCategoryRequestDto: CreatePostCategoryRequestDto;
 }
 
+export interface DeletePostCategoryRequest {
+    deletePostCategoryRequestDto: DeletePostCategoryRequestDto;
+}
+
 export interface EditPostRequest {
     editPostRequestDto: EditPostRequestDto;
+}
+
+export interface EditPostCategoryRequest {
+    editPostCategoryRequestDto: EditPostCategoryRequestDto;
 }
 
 export interface FindPostRequest {
@@ -122,6 +143,10 @@ export interface RemovePostRequest {
     postId: string;
 }
 
+export interface RemovePostFromCategoryRequest {
+    postToCategoryRequestDto: PostToCategoryRequestDto;
+}
+
 export interface UnpinPostRequest {
     postId: string;
 }
@@ -130,6 +155,43 @@ export interface UnpinPostRequest {
  * 
  */
 export class PostApi extends runtime.BaseAPI {
+
+    /**
+     * Add post to category
+     */
+    async addPostToCategoryRaw(requestParameters: AddPostToCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.postToCategoryRequestDto === null || requestParameters.postToCategoryRequestDto === undefined) {
+            throw new runtime.RequiredError('postToCategoryRequestDto','Required parameter requestParameters.postToCategoryRequestDto was null or undefined when calling addPostToCategory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/post/add`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PostToCategoryRequestDtoToJSON(requestParameters.postToCategoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Add post to category
+     */
+    async addPostToCategory(requestParameters: AddPostToCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.addPostToCategoryRaw(requestParameters, initOverrides);
+    }
 
     /**
      * Creates a post
@@ -208,6 +270,43 @@ export class PostApi extends runtime.BaseAPI {
     }
 
     /**
+     * Delete post category
+     */
+    async deletePostCategoryRaw(requestParameters: DeletePostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.deletePostCategoryRequestDto === null || requestParameters.deletePostCategoryRequestDto === undefined) {
+            throw new runtime.RequiredError('deletePostCategoryRequestDto','Required parameter requestParameters.deletePostCategoryRequestDto was null or undefined when calling deletePostCategory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/delette`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: DeletePostCategoryRequestDtoToJSON(requestParameters.deletePostCategoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Delete post category
+     */
+    async deletePostCategory(requestParameters: DeletePostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.deletePostCategoryRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Edits a post
      */
     async editPostRaw(requestParameters: EditPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
@@ -243,6 +342,43 @@ export class PostApi extends runtime.BaseAPI {
     async editPost(requestParameters: EditPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BooleanResponseDto> {
         const response = await this.editPostRaw(requestParameters, initOverrides);
         return await response.value();
+    }
+
+    /**
+     * Edit post category
+     */
+    async editPostCategoryRaw(requestParameters: EditPostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.editPostCategoryRequestDto === null || requestParameters.editPostCategoryRequestDto === undefined) {
+            throw new runtime.RequiredError('editPostCategoryRequestDto','Required parameter requestParameters.editPostCategoryRequestDto was null or undefined when calling editPostCategory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/edit`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: EditPostCategoryRequestDtoToJSON(requestParameters.editPostCategoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Edit post category
+     */
+    async editPostCategory(requestParameters: EditPostCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.editPostCategoryRaw(requestParameters, initOverrides);
     }
 
     /**
@@ -610,6 +746,43 @@ export class PostApi extends runtime.BaseAPI {
      */
     async removePost(requestParameters: RemovePostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.removePostRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Remove post from category
+     */
+    async removePostFromCategoryRaw(requestParameters: RemovePostFromCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.postToCategoryRequestDto === null || requestParameters.postToCategoryRequestDto === undefined) {
+            throw new runtime.RequiredError('postToCategoryRequestDto','Required parameter requestParameters.postToCategoryRequestDto was null or undefined when calling removePostFromCategory.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/category/post/remove`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PostToCategoryRequestDtoToJSON(requestParameters.postToCategoryRequestDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Remove post from category
+     */
+    async removePostFromCategory(requestParameters: RemovePostFromCategoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.removePostFromCategoryRaw(requestParameters, initOverrides);
     }
 
     /**

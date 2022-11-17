@@ -78,8 +78,10 @@ models/CreateWelcomeMessageRequestDto.ts
 models/CreatorEarningDto.ts
 models/DeleteContentRequestDto.ts
 models/DeleteExternalPassAddressRequestDto.ts
+models/DeletePostCategoryRequestDto.ts
 models/DeleteScheduledEventRequestDto.ts
 models/EditListNameRequestDto.ts
+models/EditPostCategoryRequestDto.ts
 models/EditPostRequestDto.ts
 models/FanWallCommentDto.ts
 models/GetBlockedResponseDto.ts
@@ -199,6 +201,7 @@ models/PhantomCircleUSDCEntryResponseDto.ts
 models/PostBuyerDto.ts
 models/PostDto.ts
 models/PostHistoryDto.ts
+models/PostToCategoryRequestDto.ts
 models/PresignPassRequestDto.ts
 models/PurchaseMessageRequestDto.ts
 models/PurchasePostRequestDto.ts
