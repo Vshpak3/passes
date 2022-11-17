@@ -8,6 +8,7 @@ import Link from "next/link"
 import ClockIcon from "public/icons/alarm.svg"
 import ChevronDown from "public/icons/chevron-down.svg"
 import { useCallback, useRef, useState } from "react"
+import { toast } from "react-toastify"
 
 import { Button } from "src/components/atoms/button/Button"
 import { errorMessage } from "src/helpers/error"
@@ -53,6 +54,7 @@ export const RequestPayouts = () => {
     const api = new PaymentApi()
     try {
       await api.payout()
+      toast.success("Payout request sent, please wait as we process.")
     } catch (error: unknown) {
       errorMessage(error, true)
     }

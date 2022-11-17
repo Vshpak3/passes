@@ -21,7 +21,7 @@ export const BecomeCreatorButton: FC<BecomeCreatorButtonProps> = ({
     <div className={classNames({ hidden: isTablet })}>
       <div className="flex px-6">
         <Button
-          className="mt-4 w-full max-w-sm border-none !px-8 !py-5 text-white transition-colors"
+          className="mt-4 w-full max-w-sm border-none !px-6 !py-4 text-white transition-colors"
           onClick={onClick}
         >
           Become a Creator
