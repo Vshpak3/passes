@@ -55,7 +55,7 @@ const CommentSectionUnemo: FC<CommentSectionProps> = ({
         ownsPost={ownsPost}
         postId={postId}
       />
-      <div className="z-[50]">
+      <div>
         <NewCommentEditor
           addComment={addNewComment}
           focus={!hidden}
