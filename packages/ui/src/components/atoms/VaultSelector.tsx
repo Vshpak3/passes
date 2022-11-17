@@ -21,7 +21,8 @@ export const VaultSelector: FC<VaultSelectorProps> = ({
         isOpen || expanded
           ? "bg-passes-primary-color/10"
           : "hover:bg-passes-primary-color/10",
-        "group flex h-full flex-shrink-0 items-center rounded-[56px] text-sm leading-4 text-passes-primary-color sm:px-4 sm:py-3"
+        "group flex h-full flex-shrink-0 items-center rounded-[56px] text-sm leading-4 text-passes-primary-color sm:px-4 sm:py-3",
+        expanded ? "py-2 px-3" : "py-0 px-0"
       )}
       onClick={() => setIsOpen(true)}
       type="button"
