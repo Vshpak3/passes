@@ -100,7 +100,9 @@ export const ManageCookiesModal: FC<ManageCookiesProps> = ({
               fontSize={16}
               type={ButtonTypeEnum.SUBMIT}
             >
-              <span className="text-base font-bold text-white">Save</span>
+              <span className="text-base font-bold text-white">
+                Save and Accept
+              </span>
             </Button>
           </div>
         </form>
