@@ -23,16 +23,19 @@ interface PassFormCheckboxProps {
   label: string
   name: string
   register: FormRegister
+  disabled?: boolean
 }
 
 export const PassFormCheckbox: FC<PassFormCheckboxProps> = ({
   label,
   name,
-  register
+  register,
+  disabled = false
 }) => (
   <div className="my-3 flex items-center">
     <Checkbox
       className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-passes-primary-color"
+      disabled={disabled}
       label={label}
       name={name}
       register={register}

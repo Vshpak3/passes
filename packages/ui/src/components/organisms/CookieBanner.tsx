@@ -47,8 +47,8 @@ export const CookieBanner: FC<CookieBannerProps> = ({
             Reject All
           </Button>
           <Button
-            className="py-[19px] px-[26px] text-base font-bold"
-            icon={<UnionIcon />}
+            className="z-10 py-[19px] px-[26px] text-base font-bold"
+            icon={<UnionIcon className="z-20 mr-[5px] space-y-3" />}
             onClick={() => onAccept()}
           >
             Accept All

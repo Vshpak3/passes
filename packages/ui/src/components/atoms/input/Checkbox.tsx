@@ -22,6 +22,7 @@ type CheckBoxProps = {
   className?: string
   labelClassName?: string
   checked?: boolean
+  disabled?: boolean
 }
 
 export const Checkbox: FC<CheckBoxProps> = ({
@@ -34,6 +35,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
   className = "",
   labelClassName = "",
   checked,
+  disabled,
   ...rest
 }) => (
   <div>
@@ -63,12 +65,14 @@ export const Checkbox: FC<CheckBoxProps> = ({
       >
         <input
           checked={checked}
+          disabled={disabled}
           id={`${name}-${type}`}
           name={name}
           type="checkbox"
           {...(register && register(name))}
           {...rest}
           className={classNames(
+            disabled ? "opacity-50" : "opacity-100",
             errors[name] ? "border-red-500" : "border-gray-300",
             type === "toggle" ? "h-3 w-7" : "",
             "rounded border placeholder-gray-400 shadow-sm ring-passes-secondary-color focus:border-passes-secondary-color focus:bg-passes-secondary-color focus:text-passes-secondary-color focus:outline-none focus:ring-passes-secondary-color sm:text-sm",

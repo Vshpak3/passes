@@ -21,6 +21,7 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { SWRConfig } from "swr"
 
 import { DefaultHead } from "src/components/atoms/Head"
+import { ManageCookiesModal } from "src/components/molecules/ManageCookies"
 import { BlockModalData } from "src/components/organisms/BlockModal"
 import { CookieBanner } from "src/components/organisms/CookieBanner"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
@@ -39,6 +40,12 @@ import { SidebarContext } from "src/contexts/SidebarContext"
 import { ThreeDSContext, useThreeDS } from "src/contexts/ThreeDS"
 import { TippedMessageModalContext } from "src/contexts/TippedMessageModal"
 import { TipPostModalContext } from "src/contexts/TipPostModal"
+import {
+  acceptAllCookies,
+  CookiesProps,
+  rejectAllCookies
+} from "src/helpers/CookieHelpers"
+import { useLocalStorage } from "src/hooks/storage/useLocalStorage"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
 import { gradients } from "src/layout/_gradients"
@@ -103,7 +110,8 @@ const navPaths = ["/messages"]
 // SubApp is to remove the use effect from top level configs
 const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [buyPost, setBuyPost] = useState<PostDto | null>(null)
-  const [cookieBannerOpen, setCookieBannerOpen] = useState<boolean>(false)
+  const [manageCookiesModalOpen, setManageCookiesModalOpen] =
+    useState<boolean>(false)
   const [buyMessage, setBuyMessage] = useState<MessageDto | null>(null)
   const [selectedChannel, setSelectedChannel] =
     useState<ChannelMemberDto | null>(null)
@@ -115,6 +123,8 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const [showBottomNav, setShowBottomNav] = useState<boolean>(true)
   const [showTopNav, setShowTopNav] = useState<boolean>(true)
+  const [cookieSettings, setCookieSettings] =
+    useLocalStorage<CookiesProps | null>("cookieSettings", null)
 
   const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
     null
@@ -162,6 +172,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     }
   }, [router.route])
 
+  const onSetCookies = (cookieSettings: CookiesProps) => {
+    setCookieSettings(cookieSettings)
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const providers: Array<[Provider<any>, Record<string, any>]> = [
     [
@@ -198,12 +212,19 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
         <>
           {gradients()}
           <Component {...pageProps} />
-          {cookieBannerOpen && (
+          {cookieSettings === null ? (
             <CookieBanner
-              onAccept={() => setCookieBannerOpen(false)}
-              onClose={() => setCookieBannerOpen(false)}
-              onManage={() => setCookieBannerOpen(false)}
-              onReject={() => setCookieBannerOpen(false)}
+              onAccept={() => setCookieSettings(acceptAllCookies)}
+              onClose={() => setCookieSettings(rejectAllCookies)}
+              onManage={() => setManageCookiesModalOpen(true)}
+              onReject={() => setCookieSettings(rejectAllCookies)}
+            />
+          ) : null}
+          {manageCookiesModalOpen && (
+            <ManageCookiesModal
+              isOpen
+              onClose={() => setManageCookiesModalOpen(false)}
+              onSetCookies={onSetCookies}
             />
           )}
           {buyPost && <BuyPostModal post={buyPost} setPost={setBuyPost} />}
