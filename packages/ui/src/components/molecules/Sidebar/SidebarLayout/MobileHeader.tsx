@@ -1,6 +1,6 @@
 import { Disclosure } from "@headlessui/react"
 import SearchIcon from "public/icons/messages-search-icon.svg"
-import PassesLogoPink from "public/icons/passes-logo-pink.svg"
+import PassesLogoMobile from "public/icons/passes-logo-mobile.svg"
 import MenuIcon from "public/icons/sidebar/menu.svg"
 import { FC, useRef, useState } from "react"
 
@@ -54,7 +54,7 @@ export const MobileHeader: FC<MobileNavbarProps> = ({ openSidebar }) => {
             ) : (
               <div className="flex w-full flex-1 justify-between">
                 <span className="flex flex-1 justify-center">
-                  <PassesLogoPink />
+                  <PassesLogoMobile />
                 </span>
                 <Button
                   className="mr-3"
