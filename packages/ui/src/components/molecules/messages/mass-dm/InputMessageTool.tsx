@@ -34,7 +34,7 @@ import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { ContentFile, useMedia } from "src/hooks/useMedia"
 
-export type MessageSaveFunction = (
+type MessageSaveFunction = (
   text: string,
   contentIds: string[],
   price: number,
