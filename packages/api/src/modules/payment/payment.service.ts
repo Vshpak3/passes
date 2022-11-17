@@ -11,6 +11,7 @@ import { ModuleRef } from '@nestjs/core'
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
+import IPinfoWrapper from 'node-ipinfo'
 import { v4 } from 'uuid'
 import { Logger } from 'winston'
 
@@ -21,6 +22,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { OrderEnum } from '../../util/dto/page.dto'
+import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { rejectIfAny } from '../../util/promise.util'
 import { AgencyEntity } from '../agency/entities/agency.entity'
@@ -172,6 +174,7 @@ const MIN_THREE_DS_LIMIT = 500 // @share-with-frontend payment
 export class PaymentService {
   private circleConnector: CircleConnector
   private circleMasterWallet: string
+  private ipinfoWrapper: IPinfoWrapper
   public passService: PassService
   public messagesService: MessagesService
   public postService: PostService
@@ -200,6 +203,9 @@ export class PaymentService {
     this.circleMasterWallet = this.configService.get(
       'circle.master_wallet_id',
     ) as string
+    this.ipinfoWrapper = new IPinfoWrapper(
+      this.configService.get('ipinfo.access_token') as string,
+    )
   }
 
   async onModuleInit() {
@@ -1218,7 +1224,17 @@ export class PaymentService {
     payin: PayinDto,
     entryDto: CircleCardPayinEntryRequestDto,
   ): Promise<CircleCardPayinEntryResponseDto> {
-    const threeDS = payin.amount > MIN_THREE_DS_LIMIT
+    let threeDS = payin.amount > MIN_THREE_DS_LIMIT
+    if (!isEnv('dev')) {
+      try {
+        const ipInfo = await this.ipinfoWrapper.lookupIp(entryDto.ip)
+        if (ipInfo.continent.code === 'EU') {
+          threeDS = true
+        }
+      } catch (err) {
+        this.sentry.instance().captureException(err)
+      }
+    }
     // payin.callback === PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS ||
     // payin.callback === PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS
     const status = await this.makeCircleCardPayment(

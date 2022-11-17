@@ -77,6 +77,7 @@ import { PostDto } from './dto/post.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
 import { PostToCategoryRequestDto } from './dto/post-to-category.dto'
+import { ReorderPostCategoriesRequestDto } from './dto/reorder-post-categories.dto'
 import { PostEntity } from './entities/post.entity'
 import { PostCategoryEntity } from './entities/post-category.entity'
 import { PostHistoryEntity } from './entities/post-history.entity'
@@ -1002,6 +1003,22 @@ export class PostService {
     return id
   }
 
+  async reorderPostCategories(
+    userId: string,
+    reorderPostCategoriesRequestDto: ReorderPostCategoriesRequestDto,
+  ) {
+    const { postCategoryIds } = reorderPostCategoriesRequestDto
+    await this.dbWriter.transaction(async (trx) => {
+      await Promise.all(
+        postCategoryIds.map(async (postCategoryId, index) => {
+          await trx<PostCategoryEntity>(PostCategoryEntity.table)
+            .where({ user_id: userId, id: postCategoryId })
+            .update({ order: index })
+        }),
+      )
+    })
+  }
+
   async editPostCategory(
     userId: string,
     editPostCategoryRequestDto: EditPostCategoryRequestDto,
@@ -1040,11 +1057,6 @@ export class PostService {
           order,
         })
         .delete()
-      if (updated) {
-        await trx<PostCategoryEntity>(PostCategoryEntity.table)
-          .where('order', '>', order)
-          .decrement('order', 1)
-      }
     })
     if (!updated) {
       throw new BadRequestException(

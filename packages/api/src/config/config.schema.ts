@@ -84,6 +84,10 @@ export const configValidationSchema = Joi.object({
   BLOCKCHAIN_NETWORKS: Joi.string().required(),
 
   // -----------------------------------------------------------
+
+  IPINFO_ACCESS_TOKEN: Joi.string().required(),
+
+  // -----------------------------------------------------------
 })
 
 export const configConfiguration = async function (): Promise<
@@ -187,6 +191,9 @@ export const configConfiguration = async function (): Promise<
     },
     blockchain: {
       networks: getConfigValue('BLOCKCHAIN_NETWORKS'),
+    },
+    ipinfo: {
+      access_token: getConfigValue('IPINFO_ACCESS_TOKEN'),
     },
   })
 }

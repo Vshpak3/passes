@@ -40,6 +40,7 @@ import {
 import { GetPostsRequestDto, GetPostsResponseDto } from './dto/get-posts.dto'
 import { PostToCategoryRequestDto } from './dto/post-to-category.dto'
 import { PurchasePostRequestDto } from './dto/purchase-post-access.dto'
+import { ReorderPostCategoriesRequestDto } from './dto/reorder-post-categories.dto'
 import { TipPostRequestDto } from './dto/tip-post.dto'
 import { PostService } from './post.service'
 
@@ -311,6 +312,24 @@ export class PostController {
     await this.postService.editPostCategory(
       req.user.id,
       editPostCategoryRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Reorder post categories',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Post category reordered',
+    role: RoleEnum.CREATOR_ONLY,
+  })
+  @Post('category/reoder')
+  async reorderPostCategories(
+    @Req() req: RequestWithUser,
+    @Body() reorderPostCategoriesRequestDto: ReorderPostCategoriesRequestDto,
+  ): Promise<void> {
+    await this.postService.reorderPostCategories(
+      req.user.id,
+      reorderPostCategoriesRequestDto,
     )
   }
 
