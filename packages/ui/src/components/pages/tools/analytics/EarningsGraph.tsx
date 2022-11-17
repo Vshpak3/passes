@@ -16,7 +16,7 @@ import {
   Title,
   Tooltip
 } from "chart.js"
-import { eachDayOfInterval, isSameDay } from "date-fns"
+import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns"
 import { uniqueId } from "lodash"
 import ms from "ms"
 import React, { FC, useRef, useState } from "react"
@@ -92,10 +92,8 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   }, [fetchEarnings])
 
   const dateDiff = (first: Date, second: Date) => {
-    // Take the difference between the dates and divide by milliseconds per day.
-    // Round to nearest whole number to deal with DST.
-    // add One to include endDate
-    return Math.round((second?.valueOf() - first?.valueOf()) / ONE_DAY) + 1
+    // add 1 day to include endDate
+    return differenceInDays(second, first) + 1
   }
   const daysOfInterval = eachDayOfInterval({
     start: startDate,
