@@ -125,7 +125,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [showTopNav, setShowTopNav] = useState<boolean>(true)
   const [cookieSettings, setCookieSettings] =
     useLocalStorage<CookiesProps | null>("cookieSettings", null)
-
+  const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
     null
   )
@@ -164,6 +164,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     reportData,
     blockData
   ])
+
+  useEffect(() => {
+    setShowCookieBanner(!cookieSettings)
+  }, [cookieSettings])
 
   useEffect(() => {
     if (!navPaths.filter((path) => path === router.route).length) {
@@ -212,13 +216,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
         <>
           {gradients()}
           <Component {...pageProps} />
-          {cookieSettings === null ? (
+          {showCookieBanner && (
             <CookieBanner
               onAccept={() => setCookieSettings(acceptAllCookies)}
               onManage={() => setManageCookiesModalOpen(true)}
               onReject={() => setCookieSettings(rejectAllCookies)}
             />
-          ) : null}
+          )}
           {manageCookiesModalOpen && (
             <ManageCookiesModal
               isOpen
