@@ -77,7 +77,7 @@ export const Dialog: FC<PropsWithChildren<DialogProps>> = ({
           {withCloseButton && (
             <div className="absolute top-3 left-3">
               <Button
-                className="rounded-[15px] bg-transparent p-1.5 focus:outline-0 dark:hover:bg-gray-800"
+                className="rounded-[15px] bg-transparent p-1.5 outline-none focus:outline-0 dark:hover:bg-gray-800"
                 onClick={onClose}
                 variant={ButtonVariant.NONE}
               >
