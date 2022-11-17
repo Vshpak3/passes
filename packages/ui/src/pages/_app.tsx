@@ -215,7 +215,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
           {cookieSettings === null ? (
             <CookieBanner
               onAccept={() => setCookieSettings(acceptAllCookies)}
-              onClose={() => setCookieSettings(rejectAllCookies)}
               onManage={() => setManageCookiesModalOpen(true)}
               onReject={() => setCookieSettings(rejectAllCookies)}
             />
