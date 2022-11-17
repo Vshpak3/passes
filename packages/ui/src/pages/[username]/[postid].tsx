@@ -15,4 +15,7 @@ const PostByUrlPage = () => {
   )
 }
 
-export default WithNormalPageLayout(PostByUrlPage, { header: false })
+export default WithNormalPageLayout(PostByUrlPage, {
+  header: false,
+  skipAuth: true
+})
