@@ -26,6 +26,14 @@ export function mediaContentPath(
   contentType: ContentTypeEnum,
   contentSize: ContentSizeEnum,
 ) {
+  // Temporary for videos until we add sizing
+  if (contentType === ContentTypeEnum.VIDEO) {
+    return path.join(
+      'media',
+      userId,
+      `${contentId}.${getContentTypeFormat(contentType)}`,
+    )
+  }
   return path.join(
     'media',
     userId,
