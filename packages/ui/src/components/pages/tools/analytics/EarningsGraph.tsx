@@ -48,8 +48,6 @@ interface EarningsGraphProps {
   userBalance?: number
 }
 
-const DATE_PICKER_DEBOUNCE_MS = 450
-
 export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const datepickerRef = useRef(null)
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false)
@@ -65,16 +63,12 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
   const [graphData, setGraphData] = React.useState<Array<CreatorEarningDto>>([])
   const { startDate, endDate } = dateRange
 
-  const triggerClickAway = debounce(async () => {
-    setIsDatePickerOpen(false)
-  }, DATE_PICKER_DEBOUNCE_MS)
-
   const datePickerModalToggle = (e: React.MouseEvent<HTMLLabelElement>) => {
     e.preventDefault()
     setIsDatePickerOpen((pre) => !pre)
   }
 
-  useOnClickOutside(datepickerRef, triggerClickAway)
+  useOnClickOutside(datepickerRef, () => setIsDatePickerOpen(false))
 
   const handleOnTabClick = (value: CreatorEarningDtoTypeEnum) => {
     setActiveTab(value)
@@ -127,6 +121,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           className="flex cursor-pointer flex-row items-end gap-[24px] font-bold text-[#767676]"
           htmlFor="calender-modal"
           onClick={datePickerModalToggle}
+          onMouseDown={(e) => e.stopPropagation()}
         >
           {getFormattedDate(startDate)} - {getFormattedDate(endDate)}
           <Caret height={15} stroke="#3A444C" width={15} />

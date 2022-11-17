@@ -24,6 +24,8 @@ import { useUser } from "src/hooks/useUser"
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"
 
+const DEBOUNCE_TIMEOUT = 500
+
 interface ChannelListProps {
   selectedChannel?: ChannelMemberDto
   onChannelClicked: (channel: ChannelMemberDto) => void
@@ -43,7 +45,6 @@ export const ChannelList: FC<ChannelListProps> = ({
     { orderType: OrderType.Tip }
   ]
 
-  const DEBOUNCE_TIMEOUT = 500
   const [search, setSearch] = useState<string>("")
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
