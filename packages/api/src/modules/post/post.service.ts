@@ -160,39 +160,40 @@ export class PostService {
           .update({ in_post: true })
           .whereIn('id', createPostDto.contentIds)
 
-        // TODO: schedule access add
-        const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)
-          .whereIn('pass_id', createPostDto.passIds)
-          .andWhere(function () {
-            return this.where('expires_at', '>', new Date()).orWhereNull(
-              'expires_at',
-            )
-          })
-          .andWhere('access_type', AccessTypeEnum.ACCOUNT_ACCESS)
-          .whereNotNull('holder_id')
-          .select('holder_id', 'id')
-        const userToPassHolders = passHolders.reduce((map, passHolder) => {
-          if (!passHolder.holder_id) {
-            return map
-          }
-          if (!map[passHolder.holder_id]) {
-            map[passHolder.holder_id] = []
-          }
-          map[passHolder.holder_id].push(passHolder.id)
-          return map
-        }, {})
-        if (Object.keys(userToPassHolders).length) {
-          await trx<PostUserAccessEntity>(PostUserAccessEntity.table).insert(
-            Object.keys(userToPassHolders).map((userId) => {
-              return {
-                post_id: postId,
-                user_id: userId,
-                pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
-                paid_at: new Date(),
-              }
-            }),
-          )
-        }
+        // DEPRECTED: no acocunt access type
+
+        // const passHolders = await trx<PassHolderEntity>(PassHolderEntity.table)
+        //   .whereIn('pass_id', createPostDto.passIds)
+        //   .andWhere(function () {
+        //     return this.where('expires_at', '>', new Date()).orWhereNull(
+        //       'expires_at',
+        //     )
+        //   })
+        //   .andWhere('access_type', AccessTypeEnum.ACCOUNT_ACCESS)
+        //   .whereNotNull('holder_id')
+        //   .select('holder_id', 'id')
+        // const userToPassHolders = passHolders.reduce((map, passHolder) => {
+        //   if (!passHolder.holder_id) {
+        //     return map
+        //   }
+        //   if (!map[passHolder.holder_id]) {
+        //     map[passHolder.holder_id] = []
+        //   }
+        //   map[passHolder.holder_id].push(passHolder.id)
+        //   return map
+        // }, {})
+        // if (Object.keys(userToPassHolders).length) {
+        //   await trx<PostUserAccessEntity>(PostUserAccessEntity.table).insert(
+        //     Object.keys(userToPassHolders).map((userId) => {
+        //       return {
+        //         post_id: postId,
+        //         user_id: userId,
+        //         pass_holder_ids: JSON.stringify(userToPassHolders[userId]),
+        //         paid_at: new Date(),
+        //       }
+        //     }),
+        //   )
+        // }
         await this.updatePassAccess(trx, postId, createPostDto.passIds, false)
         await trx<CreatorStatEntity>(CreatorStatEntity.table)
           .increment('num_posts', 1)

@@ -65,7 +65,8 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
         className={classNames(
           "m-2.5 flex rounded",
           ownsMessage && "flex-row-reverse self-end",
-          inChannel && "max-w-[70%]"
+          inChannel && "max-w-[70%]",
+          !!messageContent.length && "w-[70%]"
         )}
       >
         {!ownsMessage && (
