@@ -42,8 +42,6 @@ ChartJS.register(
   Legend
 )
 
-const ONE_DAY = ms("1 day")
-
 interface EarningsGraphProps {
   userBalance?: number
 }
