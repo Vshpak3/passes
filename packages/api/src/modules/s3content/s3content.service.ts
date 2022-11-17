@@ -138,7 +138,10 @@ export class S3ContentService {
     })
 
     Object.entries(cookies).forEach(([key, value]) =>
-      res.cookie(key, value, this.cookieOptions),
+      res.cookie(key, value, {
+        ...this.cookieOptions,
+        maxAge: this.signedCookieExpirationTime,
+      }),
     )
     return cookies
   }
