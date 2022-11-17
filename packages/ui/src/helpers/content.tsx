@@ -20,7 +20,7 @@ const getUrlPath = (...args: string[]) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
 
-export enum ContentSizeEnum {
+enum ContentSizeEnum {
   SMALL = "sm",
   MEDIUM = "md",
   LARGE = "lg"
