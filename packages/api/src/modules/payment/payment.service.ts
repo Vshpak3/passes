@@ -1835,6 +1835,7 @@ export class PaymentService {
             const rate = creatorShare.rate ?? 0
             await this.creatorStatsService.handlePayinSuccess(
               payin.user_id,
+              creatorShare.id,
               creatorShare.creator_id,
               payin.callback,
               {
@@ -1843,9 +1844,6 @@ export class PaymentService {
                 [EarningCategoryEnum.AGENCY]: creatorShare.amount * rate,
               },
             )
-            await this.dbWriter<CreatorShareEntity>(CreatorShareEntity.table)
-              .where({ id: creatorShare.id })
-              .update({ processed: true })
           }),
         ),
       )
@@ -1965,23 +1963,6 @@ export class PaymentService {
         PayoutStatusEnum.PENDING,
       ])
       .update({ payout_status: PayoutStatusEnum.FAILED })
-    // check for completed update
-
-    // TODO: consider adding back to balance on failure
-    // if (rows === 1) {
-    //   const payout = await this.dbReader<PayoutEntity>(PayoutEntity.table)
-    //     .where({ id: payoutId })
-    //     .select('amount')
-    //     .first()
-    //   if (!payout) {
-    //     throw new InternalServerErrorException('no amount for payout found')
-    //   }
-    //   await this.creatorStatsService.handlePayoutFail(userId, {
-    //     [EarningCategoryEnum.NET]: payout.amount,
-    //     [EarningCategoryEnum.GROSS]: payout.amount,
-    //     [EarningCategoryEnum.AGENCY]: 0,
-    //   })
-    // }
   }
 
   async completePayout(
@@ -2005,11 +1986,6 @@ export class PaymentService {
       if (!payout) {
         throw new InternalServerErrorException('no amount for payout found')
       }
-      // await this.creatorStatsService.handlePayoutSuccess(userId, {
-      //   [EarningCategoryEnum.NET]: payout.amount,
-      //   [EarningCategoryEnum.GROSS]: payout.amount,
-      //   [EarningCategoryEnum.AGENCY]: 0,
-      // })
     }
   }
 
@@ -2121,9 +2097,9 @@ export class PaymentService {
 
     try {
       await this.creatorStatsService.handlePayout(userId, {
-        [EarningCategoryEnum.NET]: availableBalances.net.amount,
-        [EarningCategoryEnum.GROSS]: availableBalances.gross.amount,
-        [EarningCategoryEnum.AGENCY]: availableBalances.agency.amount,
+        [EarningCategoryEnum.NET]: -availableBalances.net.amount,
+        [EarningCategoryEnum.GROSS]: -availableBalances.gross.amount,
+        [EarningCategoryEnum.AGENCY]: -availableBalances.agency.amount,
       })
       const data = {
         id: v4(),
@@ -2160,11 +2136,6 @@ export class PaymentService {
       await this.lockService.unlock(redisKey)
       this.sentry.instance().captureException(err)
       throw err
-      // await this.creatorStatsService.handlePayoutFail(userId, {
-      //   [EarningCategoryEnum.NET]: availableBalance,
-      //   [EarningCategoryEnum.GROSS]: availableBalance,
-      //   [EarningCategoryEnum.AGENCY]: 0,
-      // })
     }
   }
 
@@ -2596,12 +2567,13 @@ export class PaymentService {
 
       const rate = payin.rate ?? 0
       await this.creatorStatsService.handleChargebackSuccess(
+        chargebackId,
         payin.user_id,
         payin.creator_id,
         {
-          [EarningCategoryEnum.NET]: payin.creator_amount * (1 - rate),
-          [EarningCategoryEnum.GROSS]: payin.amount,
-          [EarningCategoryEnum.AGENCY]: payin.creator_amount * rate,
+          [EarningCategoryEnum.NET]: -(payin.creator_amount * (1 - rate)),
+          [EarningCategoryEnum.GROSS]: -payin.amount,
+          [EarningCategoryEnum.AGENCY]: -(payin.creator_amount * rate),
         },
       )
     }

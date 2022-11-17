@@ -20,4 +20,7 @@ export class CircleChargebackEntity extends BaseEntity {
 
   @Property()
   disputed: boolean | null
+
+  @Property({ default: 0 })
+  processed: number
 }

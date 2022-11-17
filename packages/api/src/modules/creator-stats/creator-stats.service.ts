@@ -1,5 +1,9 @@
 import { Knex } from '@mikro-orm/mysql'
-import { Inject, Injectable } from '@nestjs/common'
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
 import { Logger } from 'winston'
@@ -14,6 +18,8 @@ import { rejectIfAny } from '../../util/promise.util'
 import { ContentEntity } from '../content/entities/content.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
+import { CircleChargebackEntity } from '../payment/entities/circle-chargeback.entity'
+import { CreatorShareEntity } from '../payment/entities/creator-share.entity'
 import { PayinCallbackEnum } from '../payment/enum/payin.callback.enum'
 import { PostEntity } from '../post/entities/post.entity'
 import { CreatorEarningDto } from './dto/creator-earning.dto'
@@ -25,7 +31,7 @@ import { UserSpendingEntity } from './entities/user-spending.entity'
 import { EarningCategoryEnum } from './enum/earning.category.enum'
 import { EarningTypeEnum } from './enum/earning.type.enum'
 
-const NEGATE = -1
+const NUM_CATEGORIES = Object.keys(EarningCategoryEnum).length
 @Injectable()
 export class CreatorStatsService {
   payinToEarnings = (payinCallbackEnum: PayinCallbackEnum) => {
@@ -48,6 +54,17 @@ export class CreatorStatsService {
     }
   }
 
+  stepToCategory = (step: number) => {
+    switch (step) {
+      case 0:
+        return EarningCategoryEnum.NET
+      case 1:
+        return EarningCategoryEnum.AGENCY
+      case 2:
+        return EarningCategoryEnum.GROSS
+    }
+  }
+
   constructor(
     @Inject(WINSTON_MODULE_PROVIDER)
     private readonly logger: Logger,
@@ -58,19 +75,6 @@ export class CreatorStatsService {
     @Database(DB_WRITER)
     private readonly dbWriter: DatabaseService['knex'],
   ) {}
-
-  // async getBalance(userId: string) {
-  //   return new CreatorEarningDto(
-  //     await this.dbReader<CreatorEarningEntity>(CreatorEarningEntity.table)
-  //       .where({
-  //         user_id: userId,
-  //         type: EarningTypeEnum.BALANCE,
-  //         category: EarningCategoryEnum.NET,
-  //       })
-  //       .select('*')
-  //       .first(),
-  //   )
-  // }
 
   async getAvailableBalances(
     userId: string,
@@ -113,98 +117,150 @@ export class CreatorStatsService {
   async updateEarning(
     trx: Knex.Transaction,
     userId: string,
-    earningType: EarningTypeEnum,
-    amounts: Record<EarningCategoryEnum, number>,
-    multipler = 1,
+    earningTypes: EarningTypeEnum[],
+    earningCategory: EarningCategoryEnum,
+    amount: number,
   ) {
-    rejectIfAny(
-      await Promise.allSettled(
-        Object.keys(amounts).map(async (category: EarningCategoryEnum) => {
-          await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
-            .insert({
-              category: category,
-              amount: amounts[category] * multipler,
-              user_id: userId,
-              type: earningType,
-            })
-            .onConflict()
-            .merge({
-              amount: trx.raw('amount + ?', [amounts[category] * multipler]),
-            })
+    await trx<CreatorEarningEntity>(CreatorEarningEntity.table)
+      .insert(
+        earningTypes.map((earningType) => {
+          return {
+            category: earningCategory,
+            amount: amount,
+            user_id: userId,
+            type: earningType,
+          }
         }),
-      ),
+      )
+      .onConflict()
+      .merge({
+        amount: trx.raw('amount + ?', [amount]),
+      })
+  }
+
+  async getCreatorShareStatus(creatorShareId: string) {
+    const processed = await this.dbWriter<CreatorShareEntity>(
+      CreatorShareEntity.table,
     )
+      .where({ id: creatorShareId })
+      .select('processed')
+      .first()
+    return processed?.processed ?? 0
+  }
+
+  async getChargebackStatus(chargebackId: string) {
+    const processed = await this.dbWriter<CircleChargebackEntity>(
+      CircleChargebackEntity.table,
+    )
+      .where({ id: chargebackId })
+      .select('processed')
+      .first()
+    return processed?.processed ?? 0
   }
 
   async handlePayinSuccess(
     userId: string,
+    creatorShareId: string,
     creatorId: string,
     payinCallbackEnum: PayinCallbackEnum,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    // await this.updateEarning(creatorId, EarningTypeEnum.BALANCE, amounts)
-    await this.dbWriter.transaction(async (trx) => {
-      await this.updateEarning(
-        trx,
-        creatorId,
-        EarningTypeEnum.AVAILABLE_BALANCE,
-        amounts,
-      )
-      await this.updateEarning(trx, creatorId, EarningTypeEnum.TOTAL, amounts)
-      await this.updateEarning(
-        trx,
-        creatorId,
-        this.payinToEarnings(payinCallbackEnum),
-        amounts,
-      )
-      await trx<UserSpendingEntity>(UserSpendingEntity.table)
-        .insert({
-          amount: amounts[EarningCategoryEnum.GROSS],
-          user_id: userId,
-          creator_id: creatorId,
+    const types = [
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      this.payinToEarnings(payinCallbackEnum),
+      EarningTypeEnum.TOTAL,
+    ]
+    for (let step = 0; step < NUM_CATEGORIES; ++step) {
+      const category = this.stepToCategory(step)
+      if (!category) {
+        continue
+      }
+      const status = await this.getCreatorShareStatus(creatorShareId)
+      if (status === step) {
+        await this.dbWriter.transaction(async (trx) => {
+          await this.updateEarning(
+            trx,
+            creatorId,
+            types,
+            category,
+            amounts[category],
+          )
+          await trx<CreatorShareEntity>(CreatorShareEntity.table)
+            .where({ id: creatorShareId })
+            .update({ processed: step })
         })
-        .onConflict()
-        .merge({
-          amount: this.dbWriter.raw('amount + ?', [
-            amounts[EarningCategoryEnum.GROSS],
-          ]),
-        })
-    })
+      }
+    }
+
+    const status = await this.getCreatorShareStatus(creatorShareId)
+
+    if (status === NUM_CATEGORIES) {
+      await this.dbWriter.transaction(async (trx) => {
+        await trx<UserSpendingEntity>(UserSpendingEntity.table)
+          .insert({
+            amount: amounts[EarningCategoryEnum.GROSS],
+            user_id: userId,
+            creator_id: creatorId,
+          })
+          .onConflict()
+          .merge({
+            amount: this.dbWriter.raw('amount + ?', [
+              amounts[EarningCategoryEnum.GROSS],
+            ]),
+          })
+        await trx<CreatorShareEntity>(CreatorShareEntity.table)
+          .where({ id: creatorShareId })
+          .update({ processed: NUM_CATEGORIES + 1 })
+      })
+    }
   }
 
   async handleChargebackSuccess(
+    chargebackId: string,
     userId: string,
     creatorId: string,
     amounts: Record<EarningCategoryEnum, number>,
   ) {
-    await this.dbWriter.transaction(async (trx) => {
-      await this.updateEarning(
-        trx,
-        creatorId,
-        EarningTypeEnum.AVAILABLE_BALANCE,
-        amounts,
-        NEGATE,
-      )
-      // await this.updateEarning(
-      //   creatorId,
-      //   EarningTypeEnum.BALANCE,
-      //   amounts,
-      //   NEGATE,
-      // )
-      await this.updateEarning(
-        trx,
-        creatorId,
-        EarningTypeEnum.CHARGEBACKS,
-        amounts,
-        NEGATE,
-      )
-      await trx<UserSpendingEntity>(UserSpendingEntity.table)
-        .where({
-          user_id: userId,
-          creator_id: creatorId,
+    const types = [
+      EarningTypeEnum.AVAILABLE_BALANCE,
+      EarningTypeEnum.CHARGEBACKS,
+    ]
+    for (let step = 0; step < NUM_CATEGORIES; ++step) {
+      const category = this.stepToCategory(step)
+      if (!category) {
+        continue
+      }
+      const status = await this.getChargebackStatus(chargebackId)
+      if (status === step) {
+        await this.dbWriter.transaction(async (trx) => {
+          await this.updateEarning(
+            trx,
+            creatorId,
+            types,
+            category,
+            amounts[category],
+          )
+          await trx<CircleChargebackEntity>(CircleChargebackEntity.table)
+            .where({ id: chargebackId })
+            .update({ processed: step })
         })
-        .decrement('amount', amounts[EarningCategoryEnum.GROSS])
-    })
+      }
+    }
+    const status = await this.getChargebackStatus(chargebackId)
+
+    if (status === NUM_CATEGORIES) {
+      await this.dbWriter.transaction(async (trx) => {
+        await trx<UserSpendingEntity>(UserSpendingEntity.table)
+          .where({
+            user_id: userId,
+            creator_id: creatorId,
+          })
+          .decrement('amount', amounts[EarningCategoryEnum.GROSS])
+        await trx<CircleChargebackEntity>(CircleChargebackEntity.table)
+          .where({ id: chargebackId })
+          .update({ processed: NUM_CATEGORIES + 1 })
+      })
+    }
   }
 
   async handlePayout(
@@ -212,38 +268,21 @@ export class CreatorStatsService {
     amounts: Record<EarningCategoryEnum, number>,
   ) {
     await this.dbWriter.transaction(async (trx) => {
-      await this.updateEarning(
-        trx,
-        creatorId,
-        EarningTypeEnum.AVAILABLE_BALANCE,
-        amounts,
-        NEGATE,
-      )
+      for (let step = 0; step < NUM_CATEGORIES; ++step) {
+        const category = this.stepToCategory(step)
+        if (!category) {
+          throw new InternalServerErrorException('no category')
+        }
+        await this.updateEarning(
+          trx,
+          creatorId,
+          [EarningTypeEnum.AVAILABLE_BALANCE],
+          category,
+          amounts[category],
+        )
+      }
     })
   }
-
-  // async handlePayoutSuccess(
-  //   creatorId: string,
-  //   amounts: Record<EarningCategoryEnum, number>,
-  // ) {
-  //   await this.updateEarning(
-  //     creatorId,
-  //     EarningTypeEnum.BALANCE,
-  //     amounts,
-  //     NEGATE,
-  //   )
-  // }
-
-  // async handlePayoutFail(
-  //   creatorId: string,
-  //   amounts: Record<EarningCategoryEnum, number>,
-  // ) {
-  //   await this.updateEarning(
-  //     creatorId,
-  //     EarningTypeEnum.AVAILABLE_BALANCE,
-  //     amounts,
-  //   )
-  // }
 
   async createEarningHistory() {
     await this.dbWriter

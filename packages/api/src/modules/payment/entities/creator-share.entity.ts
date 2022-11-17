@@ -18,6 +18,6 @@ export class CreatorShareEntity extends BaseEntity {
   @ManyToOne({ entity: () => PayinEntity })
   payin_id: string
 
-  @Property({ default: false })
-  processed: boolean
+  @Property({ default: 0 })
+  processed: number
 }
