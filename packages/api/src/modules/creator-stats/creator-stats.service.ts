@@ -192,7 +192,7 @@ export class CreatorStatsService {
           )
           await trx<CreatorShareEntity>(CreatorShareEntity.table)
             .where({ id: creatorShareId })
-            .update({ processed: step })
+            .update({ processed: step + 1 })
         })
       }
     }
@@ -252,7 +252,7 @@ export class CreatorStatsService {
           )
           await trx<CircleChargebackEntity>(CircleChargebackEntity.table)
             .where({ id: chargebackId })
-            .update({ processed: step })
+            .update({ processed: step + 1 })
         })
       }
     }
