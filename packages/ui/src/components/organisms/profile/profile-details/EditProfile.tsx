@@ -202,19 +202,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen flex-col items-start justify-start border border-white/10 bg-[#000]/60 px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
-      footer={
-        <div className="left-20 mx-0 my-5 flex cursor-pointer self-center xs:mx-5 sm:mx-12 md:mx-0">
-          <Button
-            className="flex w-full items-center justify-center self-center text-center"
-            disabled={isSubmitting}
-            fontSize={16}
-            onClick={handleSubmit(onSubmit)}
-          >
-            Save Profile
-          </Button>
-        </div>
-      }
+      className="flex h-[90vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       onClose={() => setEditProfileModalOpen(false)}
       open
       title={
@@ -229,7 +217,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       }
     >
       <form
-        className="flex flex-col gap-5 px-0 py-6 xs:px-5 sm:px-12 md:p-0"
+        className="flex flex-col gap-5 bg-passes-black px-0 py-6 xs:px-5 sm:px-12 md:p-0"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
@@ -295,7 +283,7 @@ export const EditProfile: FC<EditProfileProps> = ({
               />
             </div>
           }
-          inputUIClass="-mt-24 ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px]"
+          inputUIClass="-mt-24 md:ml-[26px] flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px]"
           name="profileImage"
           register={register}
           setValue={setValue}
@@ -325,6 +313,16 @@ export const EditProfile: FC<EditProfileProps> = ({
               {Object.entries(socialMediaForm).map(renderInput)}
             </div>
           </div>
+        </div>
+        <div className="flex w-full cursor-pointer self-center py-4">
+          <Button
+            className="flex w-full items-center justify-center self-center text-center"
+            disabled={isSubmitting}
+            fontSize={16}
+            onClick={handleSubmit(onSubmit)}
+          >
+            Save Profile
+          </Button>
         </div>
       </form>
     </Dialog>
