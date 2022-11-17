@@ -27,7 +27,7 @@ const MessagesChannelsViewUnmemo: FC<MessagesChannelsViewProps> = ({
 }) => {
   const router = useRouter()
   const [selectedChannel, setSelectedChannel] = useState<ChannelMemberDto>()
-
+  const [bannerPopUp, setBannerPopUp] = useState<boolean>(true)
   const [gallery, setGallery] = useState(false)
   const { user } = useUser()
 
@@ -95,11 +95,13 @@ const MessagesChannelsViewUnmemo: FC<MessagesChannelsViewProps> = ({
       />
       {openChannelView && (
         <ChannelView
+          bannerPopUp={bannerPopUp}
           gallery={gallery}
           isCreator={!!user?.isCreator}
           key={selectedChannel?.channelId}
           onBack={handleOpenChannelView}
           selectedChannel={selectedChannel}
+          setBannerPopUp={setBannerPopUp}
           setGallery={setGallery}
           setVaultContent={setVaultContent}
           vaultContent={vaultContent}

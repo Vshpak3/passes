@@ -1,6 +1,14 @@
 import { ChannelMemberDto, MessageDto, MessagesApi } from "@passes/api-client"
 import ArrowDownIcon from "public/icons/arrow-down.svg"
-import { FC, useCallback, useEffect, useLayoutEffect, useState } from "react"
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react"
 import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
@@ -19,6 +27,8 @@ interface ChannelStreamProps {
   freeMessages?: number | null
   minimumTip?: number | null
   readAt?: Date
+  bannerPopUp: boolean
+  setBannerPopUp: Dispatch<SetStateAction<boolean>>
 }
 
 const api = new MessagesApi()
@@ -27,7 +37,9 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   selectedChannel,
   freeMessages,
   minimumTip,
-  readAt
+  readAt,
+  bannerPopUp,
+  setBannerPopUp
 }) => {
   const [bottomOfChatRef, isBottomOfChatVisible] = useOnScreen({
     threshold: 0.1
@@ -217,7 +229,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
         <div className="relative h-full overflow-y-hidden">
           {!!minimumTip && freeMessages !== undefined && (
             <div className="absolute z-20 flex w-full justify-center bg-transparent pr-4">
-              <FreeMessagesLeftContainer freeMessages={freeMessages} />
+              <FreeMessagesLeftContainer
+                bannerPopUp={bannerPopUp}
+                freeMessages={freeMessages}
+                setBannerPopUp={setBannerPopUp}
+              />
             </div>
           )}
           <div

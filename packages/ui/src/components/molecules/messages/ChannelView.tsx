@@ -16,6 +16,8 @@ interface ChannelViewProps {
   vaultContent: ContentDto[]
   setVaultContent: Dispatch<SetStateAction<ContentDto[]>>
   onBack?(): void
+  bannerPopUp: boolean
+  setBannerPopUp: Dispatch<SetStateAction<boolean>>
 }
 
 const ChannelViewUnmemo: FC<ChannelViewProps> = ({
@@ -25,7 +27,9 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   isCreator,
   vaultContent,
   setVaultContent,
-  onBack
+  onBack,
+  bannerPopUp,
+  setBannerPopUp
 }) => {
   const [paid, setPaid] = useState<boolean | undefined>()
   const [freeMessages, setFreeMessages] = useState<number | null | undefined>(
@@ -34,6 +38,7 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
   const [minimumTip, setMinimumTip] = useState<number | null | undefined>(
     undefined
   )
+
   const removeFree = () => {
     setFreeMessages((freeMessages) =>
       freeMessages ? freeMessages - 1 : freeMessages
@@ -84,10 +89,12 @@ const ChannelViewUnmemo: FC<ChannelViewProps> = ({
           ) : (
             <>
               <ChannelStream
+                bannerPopUp={bannerPopUp}
                 freeMessages={freeMessages}
                 minimumTip={minimumTip}
                 readAt={selectedChannel?.readAt ?? undefined}
                 selectedChannel={selectedChannel}
+                setBannerPopUp={setBannerPopUp}
               />
               {!!selectedChannel.channelId && (
                 <InputMessage
