@@ -20,6 +20,12 @@ const getUrlPath = (...args: string[]) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
 
+export enum ContentSizeEnum {
+  SMALL = "sm",
+  MEDIUM = "md",
+  LARGE = "lg"
+}
+
 interface UploadUserContentProps {
   files: ContentFile[]
   contentType?: ContentDtoContentTypeEnum
@@ -93,10 +99,19 @@ export class ContentService {
         throw new Error("Unsupported media format")
     }
 
+    // Temporary for videos until we add sizing
+    if (extension === "mp4") {
+      return path.join(
+        "media",
+        content.userId,
+        `${content.contentId}.${extension}`
+      )
+    }
+    // Use medium for everything now
     return getUrlPath(
       "media",
       content.userId,
-      `${content.contentId}.${extension}`
+      `${content.contentId}-${ContentSizeEnum.MEDIUM}.${extension}`
     )
   }
 
