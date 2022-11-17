@@ -3,14 +3,14 @@ import "react-date-range/dist/theme/default.css"
 import { PayinMethodDto, PayinMethodDtoMethodEnum } from "@passes/api-client"
 import ms from "ms"
 import CardIcon from "public/icons/bank-card.svg"
-import DeleteIcon from "public/icons/delete-outline.svg"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 import { toast } from "react-toastify"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { SubTabsEnum } from "src/config/settings"
 import { usePayinMethod } from "src/hooks/usePayinMethod"
+import { DeleteIcon } from "src/icons/DeleteIcon"
 import { CreditCardEntry } from "./CreditCardEntry"
 import { buttonName } from "./PaymentSettingsCrypto"
 
@@ -80,12 +80,13 @@ export const PaymentSettingsCreditCard: FC<PaymentSettingsCreditCardProps> = ({
                     </Button>
                   )}
                 </div>
-                <button
-                  className="flex h-[33px] w-[33px] items-center justify-center rounded-full bg-white/10"
+                <Button
+                  className="flex h-[40px] w-[40px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
                   onClick={() => setCardIdDelete(item.id)}
+                  variant={ButtonVariant.NONE}
                 >
-                  <DeleteIcon />
-                </button>
+                  <DeleteIcon className="h-[18px] w-[18px]" />
+                </Button>
               </div>
             </CreditCardEntry>
           </div>
