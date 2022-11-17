@@ -175,6 +175,11 @@ export class CreatorStatsService {
       if (!category) {
         continue
       }
+      if (amounts[category] < 0) {
+        throw new InternalServerErrorException(
+          `can't earn negative amount ${amounts[category]}: creatorShare - ${creatorShareId}`,
+        )
+      }
       const status = await this.getCreatorShareStatus(creatorShareId)
       if (status === step) {
         await this.dbWriter.transaction(async (trx) => {
@@ -230,6 +235,11 @@ export class CreatorStatsService {
       if (!category) {
         continue
       }
+      if (amounts[category] > 0) {
+        throw new InternalServerErrorException(
+          `can't chargeback positive amount ${amounts[category]}: chargebackId - ${chargebackId}`,
+        )
+      }
       const status = await this.getChargebackStatus(chargebackId)
       if (status === step) {
         await this.dbWriter.transaction(async (trx) => {
@@ -272,6 +282,11 @@ export class CreatorStatsService {
         const category = this.stepToCategory(step)
         if (!category) {
           throw new InternalServerErrorException('no category')
+        }
+        if (amounts[category] > 0) {
+          throw new InternalServerErrorException(
+            `can't payout positive amount ${amounts[category]}`,
+          )
         }
         await this.updateEarning(
           trx,
