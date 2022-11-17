@@ -101,7 +101,7 @@ export class ContentService {
 
     // Temporary for videos until we add sizing
     if (extension === "mp4") {
-      return path.join(
+      return getUrlPath(
         "media",
         content.userId,
         `${content.contentId}.${extension}`
