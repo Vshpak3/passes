@@ -860,7 +860,7 @@ export class MessagesService {
       await this.updateStatus(userId, channelId, text)
     }
     if (read) {
-      await this.read(userId, channelId)
+      await this.read(userId, channelId, recieverId)
     }
     await this.redisService.publish(
       'message',
@@ -1038,10 +1038,30 @@ export class MessagesService {
     return !!blockedResult
   }
 
-  async read(userId: string, channelId: string) {
+  async read(userId: string, channelId: string, otherUserId: string) {
+    const date = new Date()
     await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .where({ channel_id: channelId, user_id: userId })
-      .update({ unread: false, unread_tip: 0, read_at: new Date() })
+      .update({ unread: false, unread_tip: 0, read_at: date })
+
+    // near impossible for exact date to milliseconds to be the same
+    // TODO randomize to avoid hitting too often
+    await this.dbWriter<MessageEntity>(MessageEntity.table)
+      .where({ read_at: null, channel_id: channelId, sender_id: otherUserId })
+      .update({ read_at: date })
+    const paidMessageIds = (
+      await this.dbWriter<MessageEntity>(MessageEntity.table)
+        .whereNotNull('paid_message_id')
+        .andWhere({
+          read_at: date,
+          channel_id: channelId,
+          sender_id: otherUserId,
+        })
+        .select('paid_message_id')
+    ).map((message) => message.paid_message_id)
+    await this.dbWriter<PaidMessageEntity>(PaidMessageEntity.table)
+      .whereIn('id', paidMessageIds)
+      .increment('viewed', 1)
   }
 
   async purchaseMessage(

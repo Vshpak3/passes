@@ -201,6 +201,7 @@ models/PresignPassRequestDto.ts
 models/PurchaseMessageRequestDto.ts
 models/PurchasePostRequestDto.ts
 models/RawFacebookDeletionRequestDto.ts
+models/ReadChannelRequestDto.ts
 models/RefreshAuthTokenRequestDto.ts
 models/RegisterPayinResponseDto.ts
 models/RemoveListMembersRequestDto.ts

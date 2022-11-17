@@ -70,4 +70,8 @@ export class MessageEntity extends BaseEntity {
 
   @Property({ default: false })
   automatic: boolean
+
+  @Index()
+  @Property({ length: 3 })
+  read_at: Date | null
 }

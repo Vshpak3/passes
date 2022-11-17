@@ -23,7 +23,10 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
   const read = async () => {
     if (channel.channelId) {
       await api.readMessages({
-        channelId: channel.channelId
+        readChannelRequestDto: {
+          channelId: channel.channelId,
+          otherUserId: channel.otherUserId
+        }
       })
     }
   }

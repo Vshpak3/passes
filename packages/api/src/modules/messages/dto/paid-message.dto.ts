@@ -49,6 +49,9 @@ export class PaidMessageDto {
   @DtoProperty({ type: 'number' })
   sentTo: number
 
+  @DtoProperty({ type: 'number' })
+  viewed: number
+
   constructor(paidMessage: PaidMessageEntity | undefined) {
     if (paidMessage) {
       this.paidMessageId = paidMessage.id
@@ -64,6 +67,7 @@ export class PaidMessageDto {
       this.unsentAt = paidMessage.unsent_at
       this.sentTo = paidMessage.sent_to
       this.hiddenAt = paidMessage.hidden_at
+      this.viewed = paidMessage.viewed
     }
   }
 }

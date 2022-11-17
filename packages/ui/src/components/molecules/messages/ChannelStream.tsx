@@ -33,7 +33,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     threshold: 0.1
   })
   const { user } = useUser()
-  const { channelId } = selectedChannel
+  const { channelId, otherUserId } = selectedChannel
 
   const [messages, setMessages] = useState<MessageDto[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
@@ -174,10 +174,13 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
   const onReadLastMessage = useCallback(async () => {
     if (channelId) {
       await api.readMessages({
-        channelId
+        readChannelRequestDto: {
+          channelId: channelId,
+          otherUserId: otherUserId
+        }
       })
     }
-  }, [channelId])
+  }, [channelId, otherUserId])
 
   const handleScrollToBottom = useCallback(() => {
     bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })

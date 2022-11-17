@@ -104,6 +104,12 @@ export interface PaidMessageDto {
      * @memberof PaidMessageDto
      */
     sentTo: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaidMessageDto
+     */
+    viewed: number;
 }
 
 /**
@@ -123,6 +129,7 @@ export function instanceOfPaidMessageDto(value: object): boolean {
     isInstance = isInstance && "unsentAt" in value;
     isInstance = isInstance && "hiddenAt" in value;
     isInstance = isInstance && "sentTo" in value;
+    isInstance = isInstance && "viewed" in value;
 
     return isInstance;
 }
@@ -150,6 +157,7 @@ export function PaidMessageDtoFromJSONTyped(json: any, ignoreDiscriminator: bool
         'unsentAt': (json['unsentAt'] === null ? null : new Date(json['unsentAt'])),
         'hiddenAt': (json['hiddenAt'] === null ? null : new Date(json['hiddenAt'])),
         'sentTo': json['sentTo'],
+        'viewed': json['viewed'],
     };
 }
 
@@ -175,6 +183,7 @@ export function PaidMessageDtoToJSON(value?: PaidMessageDto | null): any {
         'unsentAt': (value.unsentAt === null ? null : value.unsentAt.toISOString()),
         'hiddenAt': (value.hiddenAt === null ? null : value.hiddenAt.toISOString()),
         'sentTo': value.sentTo,
+        'viewed': value.viewed,
     };
 }
 

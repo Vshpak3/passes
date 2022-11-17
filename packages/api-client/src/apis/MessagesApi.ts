@@ -35,6 +35,7 @@ import type {
   GetWelcomeMessageResponseDto,
   PayinDataDto,
   PurchaseMessageRequestDto,
+  ReadChannelRequestDto,
   RegisterPayinResponseDto,
   SendMessageRequestDto,
   UpdateChannelSettingsRequestDto,
@@ -80,6 +81,8 @@ import {
     PayinDataDtoToJSON,
     PurchaseMessageRequestDtoFromJSON,
     PurchaseMessageRequestDtoToJSON,
+    ReadChannelRequestDtoFromJSON,
+    ReadChannelRequestDtoToJSON,
     RegisterPayinResponseDtoFromJSON,
     RegisterPayinResponseDtoToJSON,
     SendMessageRequestDtoFromJSON,
@@ -137,7 +140,7 @@ export interface MassSendRequest {
 }
 
 export interface ReadMessagesRequest {
-    channelId: string;
+    readChannelRequestDto: ReadChannelRequestDto;
 }
 
 export interface RegisterPurchaseMessageRequest {
@@ -650,13 +653,15 @@ export class MessagesApi extends runtime.BaseAPI {
      * Set status as read
      */
     async readMessagesRaw(requestParameters: ReadMessagesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.channelId === null || requestParameters.channelId === undefined) {
-            throw new runtime.RequiredError('channelId','Required parameter requestParameters.channelId was null or undefined when calling readMessages.');
+        if (requestParameters.readChannelRequestDto === null || requestParameters.readChannelRequestDto === undefined) {
+            throw new runtime.RequiredError('readChannelRequestDto','Required parameter requestParameters.readChannelRequestDto was null or undefined when calling readMessages.');
         }
 
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         const token = window.localStorage.getItem("access-token")
         if (token) {
@@ -664,10 +669,11 @@ export class MessagesApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/messages/read/{channelId}`.replace(`{${"channelId"}}`, encodeURIComponent(String(requestParameters.channelId))),
-            method: 'GET',
+            path: `/api/messages/read`,
+            method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: ReadChannelRequestDtoToJSON(requestParameters.readChannelRequestDto),
         }, initOverrides);
 
         return new runtime.VoidApiResponse(response);

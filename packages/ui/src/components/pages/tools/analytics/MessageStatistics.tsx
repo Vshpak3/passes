@@ -32,6 +32,9 @@ export const MessageStatistics = () => {
           <span className="mb-4 text-[12px] font-[500]">Sent To</span>
         </div>
         <div className="flex flex-1 justify-center">
+          <span className="mb-4 text-[12px] font-[500]">Viewed</span>
+        </div>
+        <div className="flex flex-1 justify-center">
           <span className="mb-4 text-[12px] font-[500]">Purchases</span>
         </div>
         <div className="flex flex-1 justify-center">

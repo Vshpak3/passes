@@ -44,6 +44,7 @@ import {
 } from './dto/get-paid-message-history.dto'
 import { GetWelcomeMessageResponseDto } from './dto/get-welcome-message.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
+import { ReadChannelRequestDto } from './dto/read-channel.dto'
 import { SendMessageRequestDto } from './dto/send-message.dto'
 import { UpdateChannelSettingsRequestDto } from './dto/update-channel-settings.dto'
 import { MessagesService } from './messages.service'
@@ -186,12 +187,16 @@ export class MessagesController {
     responseDesc: 'Status was set as read',
     role: RoleEnum.GENERAL,
   })
-  @Get('read/:channelId')
+  @Post('read')
   async readMessages(
     @Req() req: RequestWithUser,
-    @Param('channelId') channelId: string,
+    @Body() readChannelRequestDto: ReadChannelRequestDto,
   ): Promise<void> {
-    await this.messagesService.read(req.user.id, channelId)
+    await this.messagesService.read(
+      req.user.id,
+      readChannelRequestDto.channelId,
+      readChannelRequestDto.otherUserId,
+    )
   }
 
   @ApiEndpoint({

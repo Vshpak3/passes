@@ -35,7 +35,8 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
     earningsPurchases,
     isWelcomeMesage,
     unsentAt,
-    hiddenAt
+    hiddenAt,
+    viewed
   } = paidMessage
 
   const unsendPaidMessage = async () => {
@@ -92,6 +93,9 @@ export const PaidMessageStatistic: FC<PaidMessageStatisticProps> = ({
         </div>
         <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
           <span className="text-[12px] font-[500]">{sentTo}</span>
+        </div>
+        <div className="flex h-[72px] flex-1 items-center justify-center text-passes-gray-800">
+          <span className="text-[12px] font-[500]">{viewed}</span>
         </div>
         <div
           className="flex h-[72px] flex-1 items-center justify-center hover:cursor-pointer"

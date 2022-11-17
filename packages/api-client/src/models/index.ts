@@ -174,6 +174,7 @@ export * from './PresignPassRequestDto';
 export * from './PurchaseMessageRequestDto';
 export * from './PurchasePostRequestDto';
 export * from './RawFacebookDeletionRequestDto';
+export * from './ReadChannelRequestDto';
 export * from './RefreshAuthTokenRequestDto';
 export * from './RegisterPayinResponseDto';
 export * from './RemoveListMembersRequestDto';
