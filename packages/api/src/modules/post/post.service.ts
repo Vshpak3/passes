@@ -516,7 +516,7 @@ export class PostService {
         .where({ id: postId })
         .increment('earnings_purchases', earnings)
 
-      await Promise.all(
+      await Promise.allSettled(
         contents.map(async (content) => {
           await trx<UserMessageContentEntity>(UserMessageContentEntity.table)
             .insert({

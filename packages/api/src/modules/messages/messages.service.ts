@@ -511,10 +511,6 @@ export class MessagesService {
       throw new MessageSendError("can't give price to messages with no content")
     }
 
-    const removed = await this.getRemovedUserIds([userId], contentIds)
-    if (removed.length > 0) {
-      throw new MessageSendError("Can't send purchased content")
-    }
     const channelMember = await this.dbReader<ChannelMemberEntity>(
       ChannelMemberEntity.table,
     )
@@ -526,6 +522,14 @@ export class MessagesService {
         `channel ${sendMessageDto.channelId} not found for user ${userId}`,
       )
     }
+    const removed = await this.getRemovedUserIds(
+      [channelMember.other_user_id],
+      contentIds,
+    )
+    if (removed.length > 0) {
+      throw new MessageSendError("Can't send purchased content")
+    }
+
     const { blocked, amount } = await this.registerSendMessageData(
       userId,
       sendMessageDto,
