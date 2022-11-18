@@ -39,7 +39,8 @@ const PostUnmemo: FC<PostProps> = ({
   const [addCategoryDialogOpen, setAddCategoryDialogOpen] = useState(false)
   const { setPost } = useBuyPostModal()
   const router = useRouter()
-  const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
+  const { pinPost, unpinPost, pinnedPosts, profileUserId } =
+    useContext(ProfileContext)
   const {
     accessible,
     contents,
@@ -122,12 +123,12 @@ const PostUnmemo: FC<PostProps> = ({
             bordered && "border-b-[0.5px] border-passes-gray"
           )}
         >
-          {addCategoryDialogOpen && (
+          {addCategoryDialogOpen && !!profileUserId && (
             <AddCategoryToPostDialog
-              isOpen
               onCancel={() => setAddCategoryDialogOpen(false)}
               postId={postId}
               selectedPostCategories={postCategories}
+              userId={profileUserId}
             />
           )}
           {editPostDialogOpen && (

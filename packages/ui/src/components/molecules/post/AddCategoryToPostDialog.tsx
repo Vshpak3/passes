@@ -8,27 +8,22 @@ import { Input } from "src/components/atoms/input/GeneralInput"
 import { Dialog } from "src/components/organisms/Dialog"
 import { PostCategoryCached } from "src/components/pages/tools/PostCategoryCached"
 import { usePostCategories } from "src/hooks/posts/usePostCategories"
-import { usePostToCategories } from "src/hooks/posts/usePostToCategories"
-import { useUser } from "src/hooks/useUser"
 import { NewCategoryForm, newCategoryForm } from "./NewPostCategoryDialog"
 
 interface AddCategoryToPostDialogProps {
   selectedPostCategories: PostCategoryDto[]
   postId: string
-  isOpen: boolean
   onCancel: () => void
+  userId: string
 }
 
 export const AddCategoryToPostDialog: FC<AddCategoryToPostDialogProps> = ({
   selectedPostCategories,
   postId,
-  isOpen,
-  onCancel
+  onCancel,
+  userId
 }) => {
-  const { user } = useUser()
-  const { addCategory, postCategories } = usePostCategories(user?.userId ?? "")
-  const { addPostToCategory, removePostFromCategory } =
-    usePostToCategories(postId)
+  const { addCategory, postCategories } = usePostCategories(userId)
   const {
     formState: { isSubmitting },
     register,
@@ -38,16 +33,14 @@ export const AddCategoryToPostDialog: FC<AddCategoryToPostDialogProps> = ({
     resolver: yupResolver(newCategoryForm)
   })
   const onSubmit = async (values: NewCategoryForm) => {
-    if (await addCategory(values.name)) {
-      onCancel()
-    }
+    await addCategory(values.name)
   }
 
   return (
     <Dialog
-      className="w-screen overflow-auto border-[0.5px] border-passes-gray-600 p-5 transition-all md:max-h-[70vh] md:max-w-[40%] lg:max-w-[40%]"
+      className="w-screen overflow-auto border-[0.5px] border-passes-gray bg-passes-black p-5 transition-all md:max-h-[70vh] md:max-w-[40%] lg:max-w-[40%]"
       onClose={onCancel}
-      open={isOpen}
+      open
       transition={false}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -55,14 +48,8 @@ export const AddCategoryToPostDialog: FC<AddCategoryToPostDialogProps> = ({
           {postCategories?.map((postCategory) => (
             <PostCategoryCached
               key={postCategory.postCategoryId}
-              onSelect={async (selected: boolean) => {
-                if (selected) {
-                  await addPostToCategory(postCategory)
-                } else {
-                  await removePostFromCategory(postCategory)
-                }
-              }}
               postCategory={postCategory}
+              postId={postId}
               selected={selectedPostCategories.some(
                 (selectedPostCategory) =>
                   selectedPostCategory.postCategoryId ===
@@ -71,8 +58,14 @@ export const AddCategoryToPostDialog: FC<AddCategoryToPostDialogProps> = ({
             />
           ))}
         </div>
+        <Button
+          className="mt-4 w-full text-[16px] font-[500]"
+          onClick={onCancel}
+        >
+          Done
+        </Button>
         <Input
-          className="mt-4 w-full px-4"
+          className="mt-4 hidden w-full px-4"
           errors={errors}
           name="name"
           placeholder="Category Name"
@@ -80,7 +73,7 @@ export const AddCategoryToPostDialog: FC<AddCategoryToPostDialogProps> = ({
           type="text"
         />
         <Button
-          className="mt-4 w-full text-[16px] font-[500]"
+          className="mt-4 hidden w-full text-[16px] font-[500]"
           type={ButtonTypeEnum.SUBMIT}
         >
           {isSubmitting ? "Saving ..." : "Add"}

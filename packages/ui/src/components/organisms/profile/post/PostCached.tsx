@@ -21,7 +21,6 @@ export const PostCached: FC<PostCachedProps> = ({
   ...res
 }: PostCachedProps) => {
   const { post: cachedPost, update } = usePost(post.postId)
-
   useEffect(() => {
     if (toUpdate) {
       update(post)

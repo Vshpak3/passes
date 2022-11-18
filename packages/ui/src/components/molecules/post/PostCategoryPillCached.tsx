@@ -2,18 +2,18 @@ import { PostCategoryDto } from "@passes/api-client"
 import { FC, useEffect } from "react"
 
 import { usePostCategory } from "src/hooks/entities/usePostCategory"
-import { PostCategory } from "./PostCategory"
+import { PostCategoryPill } from "./PostCategoryPill"
 
-export interface PostCategoryCachedProps {
+export interface PostCategoryPillCachedProps {
   postCategory: PostCategoryDto
-  selected?: boolean
-  postId?: string
+  onClick: (postCategoryId?: string) => void
+  showCount: boolean
 }
 
-export const PostCategoryCached: FC<PostCategoryCachedProps> = ({
+export const PostCategoryPillCached: FC<PostCategoryPillCachedProps> = ({
   postCategory,
   ...res
-}: PostCategoryCachedProps) => {
+}: PostCategoryPillCachedProps) => {
   const { postCategory: cachedPostCategory, update } = usePostCategory(
     postCategory.postCategoryId
   )
@@ -26,6 +26,9 @@ export const PostCategoryCached: FC<PostCategoryCachedProps> = ({
   }, [postCategory])
 
   return (
-    <PostCategory postCategory={cachedPostCategory ?? postCategory} {...res} />
+    <PostCategoryPill
+      postCategory={cachedPostCategory ?? postCategory}
+      {...res}
+    />
   )
 }

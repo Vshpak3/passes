@@ -17,7 +17,6 @@ export const usePostToCategories = (postId: string) => {
       update({
         postCategories: [...(post?.postCategories ?? []), postCategory]
       })
-
       return true
     } catch (err) {
       errorMessage(err, true)

@@ -1145,7 +1145,10 @@ export class PostService {
         .decrement('count', update)
         .where({ id: postCategoryId })
     })
-    return update === 1
+    if (!update) {
+      throw new BadRequestException('Post is not assinged to category')
+    }
+    return true
   }
 
   async checkPost(userId: string, postId: string, allowDeleted: boolean) {

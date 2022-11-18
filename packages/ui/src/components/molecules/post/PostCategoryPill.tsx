@@ -1,22 +1,18 @@
-import { PostCategoryDto } from "@passes/api-client"
 import { FC } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
+import { PostCategoryPillCachedProps } from "./PostCategoryPillCached"
 
-interface PostCateogryPillProps {
-  postCategory?: PostCategoryDto
-  onClick: (postCategoryId?: string) => void
-  count?: number
-}
+type PostCategoryPillProps = PostCategoryPillCachedProps
 
-export const PostCategoryPill: FC<PostCateogryPillProps> = ({
+export const PostCategoryPill: FC<PostCategoryPillProps> = ({
   postCategory,
   onClick,
-  count
-}: PostCateogryPillProps) => {
+  showCount
+}: PostCategoryPillProps) => {
   return (
     <Button onClick={() => onClick(postCategory?.postCategoryId)}>
-      {postCategory?.name ?? "All"} {count !== undefined && count}
+      {postCategory.name} {showCount && postCategory.count}
     </Button>
   )
 }

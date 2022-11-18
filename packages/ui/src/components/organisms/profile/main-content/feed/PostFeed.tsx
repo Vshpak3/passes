@@ -12,13 +12,11 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { PostCategoryPill } from "src/components/molecules/post/PostCategoryPill"
 import { NewPosts } from "src/components/organisms/profile/main-content/new-post/NewPosts"
 import { PostCached } from "src/components/organisms/profile/post/PostCached"
-import { usePostCategories } from "src/hooks/posts/usePostCategories"
-import { useCreatorStats } from "src/hooks/profile/useCreatorStats"
 import { usePostWebhook } from "src/hooks/webhooks/usePostWebhook"
 import { ProfileContext } from "src/pages/[username]"
+import { PostCategoryPills } from "./PostCategoryPills"
 
 interface PostFeedProps {
   profileUserId: string
@@ -36,28 +34,12 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const fetchProps = useMemo(() => {
     return { creatorId: profileUserId, pinned: false, postCategoryId }
   }, [profileUserId, postCategoryId])
-  const { postCategories } = usePostCategories(profileUserId)
-  const { creatorStats } = useCreatorStats(profileUserId)
-  const showCount = creatorStats?.numPosts !== undefined
-
   return (
     <>
-      {!!postCategories?.length && (
-        <div className="flex flex-row justify-center gap-[10px] overflow-x-auto p-5 scrollbar-hide">
-          <PostCategoryPill
-            count={creatorStats?.numPosts}
-            onClick={setPostCategoryId}
-          />
-          {postCategories?.map((postCategory) => (
-            <PostCategoryPill
-              count={showCount ? postCategory.count : undefined}
-              key={postCategory.postCategoryId}
-              onClick={setPostCategoryId}
-              postCategory={postCategory}
-            />
-          ))}
-        </div>
-      )}
+      <PostCategoryPills
+        setPostCategoryId={setPostCategoryId}
+        userId={profileUserId}
+      />
       <div key={postCategoryId}>
         <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {

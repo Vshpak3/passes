@@ -11,7 +11,6 @@ export const usePostCategory = (postCategoryId: string) => {
     postCategoryId ? [CACHE_KEY_POST_CATEGORY, postCategoryId] : null,
     async () => null
   )
-
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: Partial<PostCategoryDto>) =>
     _mutateManual([CACHE_KEY_POST_CATEGORY, postCategoryId], update, {
@@ -37,9 +36,18 @@ export const usePostCategory = (postCategoryId: string) => {
     }
   }
 
+  const updateCount = (delta: number) =>
+    _mutateManual([CACHE_KEY_POST_CATEGORY, postCategoryId], delta, {
+      populateCache: (delta: number, original: PostCategoryDto | undefined) => {
+        return { ...original, count: (original?.count ?? 0) + delta }
+      },
+      revalidate: false
+    })
+
   return {
     postCategory,
     update: mutateManual,
-    editCategory
+    editCategory,
+    updateCount
   }
 }
