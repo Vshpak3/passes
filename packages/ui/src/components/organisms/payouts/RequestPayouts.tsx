@@ -69,11 +69,24 @@ export const RequestPayouts = () => {
     <div className="flex w-full flex-col gap-[24px]">
       <div className="flex flex-col gap-5 md:flex-row">
         <div className="flex min-w-[200px] flex-[0.2] flex-col items-center justify-center rounded-[15px] border border-passes-dark-200 bg-gradient-to-br from-[#12070E]/50 to-[#441E25] p-5">
-          <div className="mb-4 text-[16px] opacity-[50%]">
-            Balance Available
-          </div>
-          <div className="text-[28px] font-[700]">
-            {formatCurrency(userBalance?.amount ?? 0)}
+          <div className="mb-4 w-full text-[16px] opacity-[50%]">Balance</div>
+          <div className="grid grid-cols-2">
+            <div className="mr-[10px] grid-cols-1">
+              <div className="text-[20px] font-[500]">Gross:</div>
+              <div className="text-[20px] font-[500]">Net:</div>
+              <div className="text-[20px] font-[500]">Agency:</div>
+            </div>
+            <div className="grid-cols-1">
+              <div className="text-[20px] font-[500]">
+                {formatCurrency(userBalance?.gross?.amount ?? 0)}
+              </div>
+              <div className="text-[20px] font-[500]">
+                {formatCurrency(userBalance?.net?.amount ?? 0)}
+              </div>
+              <div className="text-[20px] font-[500]">
+                {formatCurrency(userBalance?.agency?.amount ?? 0)}
+              </div>
+            </div>
           </div>
         </div>
         <div className="flex-1">

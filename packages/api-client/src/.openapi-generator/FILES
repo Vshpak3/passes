@@ -84,6 +84,7 @@ models/EditListNameRequestDto.ts
 models/EditPostCategoryRequestDto.ts
 models/EditPostRequestDto.ts
 models/FanWallCommentDto.ts
+models/GetAvailableBalanceResponseDto.ts
 models/GetBlockedResponseDto.ts
 models/GetChannelMesssageInfoResponseDto.ts
 models/GetChannelRequestDto.ts
@@ -95,7 +96,6 @@ models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts
 models/GetCommentsForPostRequestDto.ts
 models/GetCommentsForPostResponseDto.ts
-models/GetCreatorEarningResponseDto.ts
 models/GetCreatorEarningsHistoryRequestDto.ts
 models/GetCreatorEarningsResponseDto.ts
 models/GetCreatorFeeRequestDto.ts

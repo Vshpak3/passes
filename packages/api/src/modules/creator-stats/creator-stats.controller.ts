@@ -13,17 +13,14 @@ import { RequestWithUser } from '../../types/request'
 import { ApiEndpoint } from '../../web/endpoint.web'
 import { RoleEnum } from '../auth/core/auth.role'
 import { CreatorStatsService } from './creator-stats.service'
-import {
-  GetCreatorEarningResponseDto,
-  GetCreatorEarningsResponseDto,
-} from './dto/get-creator-earnings.dto'
+import { GetAvailableBalanceResponseDto } from './dto/get-balance.dto'
+import { GetCreatorEarningsResponseDto } from './dto/get-creator-earnings.dto'
 import { GetCreatorEarningsHistoryRequestDto } from './dto/get-creator-earnings-history.dto'
 import { GetCreatorStatsResponseDto } from './dto/get-creator-stats.dto'
 import {
   GetUserSpendingRequestDto,
   GetUserSpendingResponseDto,
 } from './dto/get-user-spending.entity.dto'
-import { EarningCategoryEnum } from './enum/earning.category.enum'
 
 @ApiTags('creator-stats')
 @Controller('creator-stats')
@@ -47,17 +44,17 @@ export class CreatorStatsController {
   @ApiEndpoint({
     summary: 'Get available balance',
     responseStatus: HttpStatus.OK,
-    responseType: GetCreatorEarningResponseDto,
+    responseType: GetAvailableBalanceResponseDto,
     responseDesc: 'Available Balance was retrieved',
     role: RoleEnum.CREATOR_ONLY,
   })
   @Get('available-balance')
   async getAvailableBalance(
     @Req() req: RequestWithUser,
-  ): Promise<GetCreatorEarningResponseDto> {
-    return (await this.creatorStatsService.getAvailableBalances(req.user.id))[
-      EarningCategoryEnum.NET
-    ]
+  ): Promise<GetAvailableBalanceResponseDto> {
+    return new GetAvailableBalanceResponseDto(
+      await this.creatorStatsService.getAvailableBalances(req.user.id),
+    )
   }
 
   @ApiEndpoint({

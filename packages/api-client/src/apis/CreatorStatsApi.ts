@@ -15,7 +15,7 @@
 
 import * as runtime from '../runtime';
 import type {
-  GetCreatorEarningResponseDto,
+  GetAvailableBalanceResponseDto,
   GetCreatorEarningsHistoryRequestDto,
   GetCreatorEarningsResponseDto,
   GetCreatorStatsResponseDto,
@@ -23,8 +23,8 @@ import type {
   GetUserSpendingResponseDto,
 } from '../models';
 import {
-    GetCreatorEarningResponseDtoFromJSON,
-    GetCreatorEarningResponseDtoToJSON,
+    GetAvailableBalanceResponseDtoFromJSON,
+    GetAvailableBalanceResponseDtoToJSON,
     GetCreatorEarningsHistoryRequestDtoFromJSON,
     GetCreatorEarningsHistoryRequestDtoToJSON,
     GetCreatorEarningsResponseDtoFromJSON,
@@ -57,7 +57,7 @@ export class CreatorStatsApi extends runtime.BaseAPI {
     /**
      * Get available balance
      */
-    async getAvailableBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorEarningResponseDto>> {
+    async getAvailableBalanceRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAvailableBalanceResponseDto>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -74,13 +74,13 @@ export class CreatorStatsApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => GetCreatorEarningResponseDtoFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAvailableBalanceResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get available balance
      */
-    async getAvailableBalance(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetCreatorEarningResponseDto> {
+    async getAvailableBalance(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAvailableBalanceResponseDto> {
         const response = await this.getAvailableBalanceRaw(initOverrides);
         return await response.value();
     }
