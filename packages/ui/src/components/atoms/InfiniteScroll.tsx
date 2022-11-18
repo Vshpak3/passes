@@ -175,7 +175,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   useLayoutEffect(() => {
     checkScroll()
-  }, [checkScroll, data, size])
+  }, [checkScroll, flattenedData, size])
 
   useLayoutEffect(() => {
     window.addEventListener("resize", checkScroll)
