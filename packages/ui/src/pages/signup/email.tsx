@@ -167,9 +167,6 @@ const SignupEmailPage: FC = () => {
                 className="w-[360px]"
                 errors={errors}
                 name="email"
-                options={{
-                  required: true
-                }}
                 placeholder="Enter your email address"
                 register={register}
                 transparent={false}

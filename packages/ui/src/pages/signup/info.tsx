@@ -157,12 +157,6 @@ const SignupInfoPage: FC = () => {
             className="w-[360px]"
             errors={errors}
             name="legalFullName"
-            options={{
-              required: {
-                value: true,
-                message: "Full name is required"
-              }
-            }}
             placeholder="Enter your full name"
             register={register}
             transparent={false}
@@ -176,12 +170,6 @@ const SignupInfoPage: FC = () => {
             className="w-[360px]"
             errors={errors}
             name="username"
-            options={{
-              required: {
-                value: true,
-                message: "Username is required"
-              }
-            }}
             placeholder="Enter your username"
             register={register}
             transparent={false}
@@ -197,12 +185,6 @@ const SignupInfoPage: FC = () => {
             className="w-[360px]"
             errors={errors}
             name="displayName"
-            options={{
-              required: {
-                value: true,
-                message: "Display name is required"
-              }
-            }}
             placeholder="Enter your display name"
             register={register}
             transparent={false}
@@ -221,12 +203,6 @@ const SignupInfoPage: FC = () => {
             control={control}
             errors={errors}
             name="countryCode"
-            options={{
-              required: {
-                value: true,
-                message: "Country is required"
-              }
-            }}
             placeholder="Enter your country"
             selectOptions={COUNTRIES}
             showOnTop

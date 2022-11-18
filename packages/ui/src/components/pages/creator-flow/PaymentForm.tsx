@@ -1,9 +1,11 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 import CheckCircleFilled from "public/icons/check-circle-green.svg"
 import { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { v4 } from "uuid"
+import { object, string } from "yup"
 
 import {
   Button,
@@ -42,6 +44,39 @@ interface PaymentFormFields {
   postalCode: string
 }
 
+const paymentForm = object().shape(
+  {
+    bankAddress: object().shape({
+      country: string().required("country is required")
+    }),
+    bankAccountType: string().required("Bank Account Type is required"),
+    accountNumber: string().required("Account Number is required"),
+    routingNumber: string().when("iban", {
+      is: (iban: string) => !iban || iban.length === 0,
+      then: string().required("Routing Number is required")
+    }),
+    iban: string().when("routingNumber", {
+      is: (routingNumber: string) =>
+        !routingNumber || routingNumber.length === 0,
+      then: string().required("IBAN is required")
+    }),
+    firstName: string().required("First Name is required"),
+    lastName: string().required("Last Name is required"),
+    city: string().required("City is required"),
+    billingAddress: string().required("Billing address is required"),
+    alternativeAddress: string().required("Alternative address is required"),
+    district: string().required("State is required"),
+    postalCode: string()
+      .required("Postal code is required")
+      .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
+    emailRecipient: string()
+      .email("Email is invalid")
+      .required("Recipient email is required"),
+    email: string().email("Email is invalid").required("Email is required")
+  },
+  [["routingNumber", "iban"]]
+)
+
 export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
   // TODO
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -53,7 +88,9 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
     handleSubmit,
     control,
     formState: { errors, isSubmitSuccessful }
-  } = useForm<PaymentFormFields>()
+  } = useForm<PaymentFormFields>({
+    resolver: yupResolver(paymentForm)
+  })
 
   const onSubmit = async (values: PaymentFormFields) => {
     try {
@@ -135,9 +172,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="routingNumber"
-                options={{
-                  required: true
-                }}
                 placeholder="123456789"
                 register={register}
                 type="text"
@@ -151,9 +185,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="accountNumber"
-                options={{
-                  required: true
-                }}
                 placeholder="123456789"
                 register={register}
                 type="text"
@@ -168,9 +199,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 control={control}
                 errors={errors}
                 name="bankAccountType"
-                options={{
-                  required: true
-                }}
                 placeholder="Choose"
                 selectOptions={[{ label: "US", value: "US" }]}
               />
@@ -180,11 +208,8 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <SelectInput
                 className="w-full border-[#34343ACC] bg-black text-white"
                 control={control}
-                errors={errors}
+                errors={errors.bankAddress?.country}
                 name="bankAddress.country"
-                options={{
-                  required: true
-                }}
                 placeholder="Choose Country"
                 selectOptions={[{ label: "USA", value: "US" }]}
               />
@@ -195,9 +220,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="firstName"
-                options={{
-                  required: true
-                }}
                 placeholder="First Name"
                 register={register}
                 type="text"
@@ -209,9 +231,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="lastName"
-                options={{
-                  required: true
-                }}
                 placeholder="Last Name"
                 register={register}
                 type="text"
@@ -235,14 +254,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="email"
-                options={{
-                  required: true,
-                  pattern: {
-                    value:
-                      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/,
-                    message: "Invalid email address"
-                  }
-                }}
                 placeholder="Email Address"
                 register={register}
                 type="email"
@@ -254,9 +265,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="billingAddress"
-                options={{
-                  required: true
-                }}
                 placeholder="Address 1"
                 register={register}
                 type="text"
@@ -265,9 +273,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="alternativeAddress"
-                options={{
-                  required: true
-                }}
                 placeholder="Address 2"
                 register={register}
                 type="text"
@@ -276,9 +281,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                 className="w-full border-[#34343ACC] bg-black text-white"
                 errors={errors}
                 name="city"
-                options={{
-                  required: true
-                }}
                 placeholder="City"
                 register={register}
                 type="text"
@@ -288,9 +290,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   className="w-full border-[#34343ACC] bg-black text-white"
                   errors={errors}
                   name="district"
-                  options={{
-                    required: true
-                  }}
                   placeholder="State"
                   register={register}
                   type="text"
@@ -299,9 +298,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                   className="w-full border-[#34343ACC] bg-black text-white"
                   errors={errors}
                   name="postalCode"
-                  options={{
-                    required: true
-                  }}
                   placeholder="Zip Code"
                   register={register}
                   type="text"
@@ -328,14 +324,6 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
                     className="w-full border-[#34343ACC] bg-black text-white"
                     errors={errors}
                     name="emailRecipient"
-                    options={{
-                      required: true,
-                      pattern: {
-                        value:
-                          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\])|(([a-zA-Z\-\d]+\.)+[a-zA-Z]{2,}))$/,
-                        message: "Invalid email address"
-                      }
-                    }}
                     placeholder=""
                     register={register}
                     type="text"

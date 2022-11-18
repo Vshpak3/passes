@@ -1,3 +1,4 @@
+import { yupResolver } from "@hookform/resolvers/yup"
 import { CircleCreateBankRequestDto, PaymentApi } from "@passes/api-client"
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
@@ -6,6 +7,7 @@ import InfoIcon from "public/icons/info-icon.svg"
 import { memo } from "react"
 import { useForm } from "react-hook-form"
 import { v4 } from "uuid"
+import { object, string } from "yup"
 
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { SelectInput } from "src/components/atoms/input/SelectInput"
@@ -22,8 +24,8 @@ enum BankTypeEnum {
 }
 
 interface BankForm {
-  "account-number": string
-  "routing-number": string
+  "account-number": string // eslint-disable-line sonarjs/no-duplicate-string
+  "routing-number": string // eslint-disable-line sonarjs/no-duplicate-string
   iban: string
   name: string
   city: string
@@ -37,6 +39,41 @@ interface BankForm {
   "bank-country": string // eslint-disable-line sonarjs/no-duplicate-string
 }
 
+const bankForm = object().shape(
+  {
+    "account-number": string().when("bank-country", {
+      is: (country: string) =>
+        country === BankTypeEnum.US || country === BankTypeEnum.NON_IBAN,
+      then: string().required("Account Number is required")
+    }),
+    "routing-number": string().when("iban", {
+      is: (iban: string) => !iban || iban.length === 0,
+      then: string().required("Routing Number is required")
+    }),
+    iban: string().when("routing-number", {
+      is: (routingNumber: string) =>
+        !routingNumber || routingNumber.length === 0,
+      then: string().required("IBAN is required")
+    }),
+    name: string().required("Name is required"),
+    city: string().required("City is required"),
+    country: string(),
+    address1: string().required("Address is required"),
+    address2: string(),
+    district: string().required("State is required"),
+    "postal-code": string()
+      .required("Postal code is required")
+      .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
+    "bank-name": string(),
+    "bank-city": string(),
+    "bank-country": string().required("Country is required")
+  },
+  [
+    ["iban", "routing-number"],
+    ["account-number", "bank-country"]
+  ]
+)
+
 const AddBank = () => {
   const idempotencyKey = v4()
 
@@ -49,7 +86,8 @@ const AddBank = () => {
     control,
     formState: { errors }
   } = useForm<BankForm>({
-    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] }
+    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] },
+    resolver: yupResolver(bankForm)
   })
   const countrySelected = watch("country")
   const bankType = watch("bank-country")
@@ -120,9 +158,6 @@ const AddBank = () => {
           <Input
             errors={errors}
             name="routing-number"
-            options={{
-              required: { message: "Routing number is required", value: true }
-            }}
             placeholder="4444 1902 0192 0100"
             register={register}
             type="text"
@@ -134,9 +169,6 @@ const AddBank = () => {
           <Input
             errors={errors}
             name="account-number"
-            options={{
-              required: { message: "Account number is required", value: true }
-            }}
             placeholder="-"
             register={register}
             type="text"
@@ -150,9 +182,6 @@ const AddBank = () => {
           <Input
             errors={errors}
             name="iban"
-            options={{
-              required: { message: "IBAN is required", value: true }
-            }}
             placeholder="IBAN"
             register={register}
             type="text"
@@ -183,9 +212,6 @@ const AddBank = () => {
         errors={errors}
         name="bank-country"
         onChange={(newValue: string) => setValue("bank-country", newValue)}
-        options={{
-          required: { message: "Country is required", value: true }
-        }}
         selectOptions={COUNTRIES}
       />
 
@@ -195,9 +221,6 @@ const AddBank = () => {
           className="mt-4"
           errors={errors}
           name="name"
-          options={{
-            required: { message: "Name is required", value: true }
-          }}
           placeholder="Name"
           register={register}
           type="text"
@@ -206,9 +229,6 @@ const AddBank = () => {
           className="mt-4"
           errors={errors}
           name="address1"
-          options={{
-            required: { message: "Address is required", value: true }
-          }}
           placeholder="Address 1"
           register={register}
           type="text"
@@ -226,9 +246,6 @@ const AddBank = () => {
           control={control}
           errors={errors}
           name="country"
-          options={{
-            required: { message: "Country is required", value: true }
-          }}
           placeholder="Country"
           selectOptions={COUNTRIES}
         />
@@ -236,9 +253,6 @@ const AddBank = () => {
           className="mt-4"
           errors={errors}
           name="city"
-          options={{
-            required: { message: "City is required", value: true }
-          }}
           placeholder="City"
           register={register}
           type="text"
@@ -250,9 +264,6 @@ const AddBank = () => {
               control={control}
               errors={errors}
               name="district"
-              options={{
-                required: { message: "State is required", value: true }
-              }}
               placeholder="State"
               selectOptions={US_STATES}
               showOnTop
@@ -271,9 +282,6 @@ const AddBank = () => {
               }
               iconAlign={EIcon.Right}
               name="district"
-              options={{
-                required: { message: "State is required", value: true }
-              }}
               placeholder="State/District"
               register={register}
               type="text"
@@ -283,9 +291,6 @@ const AddBank = () => {
             className="mt-4"
             errors={errors}
             name="postal-code"
-            options={{
-              required: { message: "Postal Code is required", value: true }
-            }}
             placeholder="Zip"
             register={register}
             type="text"

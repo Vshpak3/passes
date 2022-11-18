@@ -7,7 +7,6 @@ import {
   FormErrors,
   FormLabel,
   FormName,
-  FormOptions,
   FormPlaceholder,
   FormRegister
 } from "src/components/atoms/input/InputTypes"
@@ -33,7 +32,6 @@ export type InputProps = {
   autoComplete?: FormAutoComplete | "off"
   register: FormRegister
   label?: FormLabel
-  options?: FormOptions
   errors?: FormErrors
   placeholder?: FormPlaceholder
   className?: string
@@ -55,7 +53,6 @@ export const Input: FC<InputProps> = ({
   placeholder = "",
   register,
   errors = {},
-  options = {},
   className = "",
   icon,
   iconAlign,
@@ -67,9 +64,7 @@ export const Input: FC<InputProps> = ({
 }) => {
   return (
     <>
-      {!!label && (
-        <Label errors={errors} label={label} name={name} options={options} />
-      )}
+      {!!label && <Label errors={errors} label={label} name={name} />}
 
       <div className="w-full">
         {!!icon && (
@@ -87,9 +82,8 @@ export const Input: FC<InputProps> = ({
         <input
           autoComplete={autoComplete}
           placeholder={placeholder || label}
-          readOnly={options.readOnly}
           type={type}
-          {...register(name, options)}
+          {...register(name)}
           {...rest}
           className={classNames(
             outlineColor === "pink"
