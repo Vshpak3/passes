@@ -119,7 +119,6 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   useEffect(() => {
     if (mutateOnLoad) {
-      setFlattenedData([])
       mutate()
     }
   }, [fetchProps, mutate, mutateOnLoad, setSize])
@@ -145,8 +144,8 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   }, [data])
 
   const hasMore = useMemo(
-    () => !data || !data.length || !!data[data.length - 1].lastId,
-    [data]
+    () => size === 0 || !data || !data.length || !!data[data.length - 1].lastId,
+    [data, size]
   )
 
   const [isScrollable, setIsScrollable] = useState<boolean>(true)
@@ -171,7 +170,15 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
       return () => clearInterval(interval)
     }
     return () => null
-  }, [isScrollable, hasMore, triggerFetch, checkScroll, renderDebounce, node])
+  }, [
+    isScrollable,
+    hasMore,
+    triggerFetch,
+    checkScroll,
+    renderDebounce,
+    node,
+    size
+  ])
 
   useLayoutEffect(() => {
     checkScroll()

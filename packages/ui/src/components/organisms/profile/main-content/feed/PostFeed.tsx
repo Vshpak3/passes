@@ -58,30 +58,36 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           ))}
         </div>
       )}
-      <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
-        KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-          return <PostCached allowPinned={!!postCategoryId} post={{ ...arg }} />
-        }}
-        emptyElement={<FeedEnd message="No posts are available at this time" />}
-        endElement={
-          <FeedEnd message="No more posts are available at this time" />
-        }
-        fetch={async (req: GetProfileFeedRequestDto) => {
-          return await api.getFeedForCreator({
-            getProfileFeedRequestDto: req
-          })
-        }}
-        fetchProps={fetchProps}
-        keySelector="postId"
-        keyValue={`/pages/feed/creator/${profileUserId}/${postCategoryId}`}
-        loadingElement={FeedLoader}
-      >
-        {ownsProfile && <NewPosts />}
-        {!postCategoryId &&
-          pinnedPosts.map((post) => (
-            <PostCached isPinned key={post.postId} post={post} />
-          ))}
-      </InfiniteScrollPagination>
+      <div key={postCategoryId}>
+        <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
+          KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
+            return (
+              <PostCached allowPinned={!!postCategoryId} post={{ ...arg }} />
+            )
+          }}
+          emptyElement={
+            <FeedEnd message="No posts are available at this time" />
+          }
+          endElement={
+            <FeedEnd message="No more posts are available at this time" />
+          }
+          fetch={async (req: GetProfileFeedRequestDto) => {
+            return await api.getFeedForCreator({
+              getProfileFeedRequestDto: req
+            })
+          }}
+          fetchProps={fetchProps}
+          keySelector="postId"
+          keyValue={`/pages/feed/creator/${profileUserId}/${postCategoryId}`}
+          loadingElement={FeedLoader}
+        >
+          {ownsProfile && <NewPosts />}
+          {!postCategoryId &&
+            pinnedPosts.map((post) => (
+              <PostCached isPinned key={post.postId} post={post} />
+            ))}
+        </InfiniteScrollPagination>
+      </div>
     </>
   )
 }
