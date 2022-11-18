@@ -10,13 +10,12 @@ export const LegalPage: FC<PropsWithChildren<LegalPageProps>> = ({
   children
 }) => {
   return (
-    <div className="bg-white pt-10 text-black dark:bg-black dark:text-white">
-      <div className="mx-10 mt-20 md:mx-20 lg:mx-40 xl:mx-52">
+    <div className="h-full w-full bg-gray-900 text-white">
+      <div className="p-10 md:py-28 md:px-20 xl:py-28 xl:px-52">
         <PassesLogoPink className="mb-7 block h-[50x] w-[50px] fill-current" />
         <h1 className="text-[24px] font-bold">{title}</h1>
         <br />
         {children}
-        <br />
       </div>
     </div>
   )
