@@ -1,7 +1,7 @@
 import classNames from "classnames"
 import UploadPlusIcon from "public/icons/content-upload-icon.svg"
 import BoxIcon from "public/icons/cursor-box-icon.svg"
-import { ChangeEvent, FC, MouseEvent } from "react"
+import { ChangeEvent, FC, MouseEvent, useEffect, useRef } from "react"
 import { Draggable, Droppable } from "react-beautiful-dnd"
 import { FieldErrorsImpl } from "react-hook-form"
 
@@ -53,6 +53,12 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
   errors,
   dragDisabled = false
 }) => {
+  const lastItem = useRef<HTMLElement | null>(null)
+  useEffect(() => {
+    if (lastItem.current) {
+      lastItem.current.scrollLeft = lastItem.current.scrollWidth
+    }
+  }, [items.length])
   return (
     <Droppable
       direction="horizontal"
@@ -68,7 +74,10 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
         >
           <div
             className="flex min-h-[85px] min-w-[85px] gap-[12px] overflow-x-auto md:min-h-[175px] md:min-w-[175px]"
-            ref={dropProvided.innerRef}
+            ref={(e) => {
+              dropProvided.innerRef(e)
+              lastItem.current = e
+            }}
           >
             {listId === "Free" && items.length === 0 ? (
               <div className="flex h-[85px] w-full shrink-0 grow-0 flex-col items-center justify-center gap-2 rounded-[5px] border border-passes-primary-color bg-[#0F0C10] px-0 md:h-[175px]  md:px-6">
