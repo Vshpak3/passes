@@ -52,6 +52,12 @@ export interface GetProfileFeedResponseDto {
     creatorId: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetProfileFeedResponseDto
+     */
+    postCategoryId?: string;
+    /**
+     * 
      * @type {Array<PostDto>}
      * @memberof GetProfileFeedResponseDto
      */
@@ -83,6 +89,7 @@ export function GetProfileFeedResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': json['creatorId'],
+        'postCategoryId': !exists(json, 'postCategoryId') ? undefined : json['postCategoryId'],
         'data': ((json['data'] as Array<any>).map(PostDtoFromJSON)),
     };
 }
@@ -100,6 +107,7 @@ export function GetProfileFeedResponseDtoToJSON(value?: GetProfileFeedResponseDt
         'lastId': value.lastId,
         'pinned': value.pinned,
         'creatorId': value.creatorId,
+        'postCategoryId': value.postCategoryId,
         'data': ((value.data as Array<any>).map(PostDtoToJSON)),
     };
 }

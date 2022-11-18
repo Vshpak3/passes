@@ -43,6 +43,12 @@ export interface GetProfileFeedRequestDto {
      * @memberof GetProfileFeedRequestDto
      */
     creatorId: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetProfileFeedRequestDto
+     */
+    postCategoryId?: string;
 }
 
 /**
@@ -69,6 +75,7 @@ export function GetProfileFeedRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
         'creatorId': json['creatorId'],
+        'postCategoryId': !exists(json, 'postCategoryId') ? undefined : json['postCategoryId'],
     };
 }
 
@@ -85,6 +92,7 @@ export function GetProfileFeedRequestDtoToJSON(value?: GetProfileFeedRequestDto 
         'lastId': value.lastId,
         'pinned': value.pinned,
         'creatorId': value.creatorId,
+        'postCategoryId': value.postCategoryId,
     };
 }
 

@@ -42,6 +42,7 @@ import {
   GetPaidMessageHistoryRequestDto,
   GetPaidMessageHistoryResponseDto,
 } from './dto/get-paid-message-history.dto'
+import { UnreadMessagesResponseDto } from './dto/get-unread-message.dto'
 import { GetWelcomeMessageResponseDto } from './dto/get-welcome-message.dto'
 import { PurchaseMessageRequestDto } from './dto/purchase-message.dto'
 import { ReadChannelRequestDto } from './dto/read-channel.dto'
@@ -196,6 +197,20 @@ export class MessagesController {
       req.user.id,
       readChannelRequestDto.channelId,
       readChannelRequestDto.otherUserId,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get total unread messages',
+    responseStatus: HttpStatus.OK,
+    responseType: UnreadMessagesResponseDto,
+    responseDesc: 'Total unread messages was returned',
+    role: RoleEnum.GENERAL,
+  })
+  @Post('total/unread/messages')
+  async getTotalUnreadMessages(@Req() req: RequestWithUser): Promise<void> {
+    await new UnreadMessagesResponseDto(
+      await this.messagesService.getTotalUnread(req.user.id),
     )
   }
 

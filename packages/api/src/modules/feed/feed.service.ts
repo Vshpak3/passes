@@ -10,6 +10,7 @@ import { PostLikeEntity } from '../likes/entities/like.entity'
 import { PostDto } from '../post/dto/post.dto'
 import { PostEntity } from '../post/entities/post.entity'
 import { PostTipEntity } from '../post/entities/post-tip.entity'
+import { PostToCategoryEntity } from '../post/entities/post-to-category.entity'
 import { PostUserAccessEntity } from '../post/entities/post-user-access.entity'
 import { PostService } from '../post/post.service'
 import { UserEntity } from '../user/entities/user.entity'
@@ -168,7 +169,8 @@ export class FeedService {
     if (!userId) {
       userId = ''
     }
-    const { creatorId, lastId, createdAt, pinned } = getProfileFeedRequestDto
+    const { creatorId, lastId, createdAt, pinned, postCategoryId } =
+      getProfileFeedRequestDto
     const creator = await this.dbReader<UserEntity>(UserEntity.table)
       .where({ id: creatorId })
       .select(['is_active', 'is_creator'])
@@ -230,7 +232,15 @@ export class FeedService {
         )
       })
       .limit(MAX_POST_PER_FEED_REQUEST)
-
+    if (postCategoryId) {
+      query = query
+        .leftJoin(
+          PostToCategoryEntity.table,
+          `${PostToCategoryEntity.table}.post_id`,
+          `${PostEntity.table}.id`,
+        )
+        .where(`${PostToCategoryEntity.table}.post_category_id`, postCategoryId)
+    }
     if (pinned) {
       query = query.whereNotNull(`${PostEntity.table}.pinned_at`)
     }

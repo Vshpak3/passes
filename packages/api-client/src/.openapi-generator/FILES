@@ -199,6 +199,7 @@ models/PayoutMethodDto.ts
 models/PhantomCircleUSDCEntryRequestDto.ts
 models/PhantomCircleUSDCEntryResponseDto.ts
 models/PostBuyerDto.ts
+models/PostCategoryDto.ts
 models/PostDto.ts
 models/PostHistoryDto.ts
 models/PostToCategoryRequestDto.ts
@@ -230,6 +231,7 @@ models/SubmitPersonaInquiryRequestDto.ts
 models/SubscriptionDto.ts
 models/TagDto.ts
 models/TipPostRequestDto.ts
+models/UnreadMessagesResponseDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateChargebackRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts

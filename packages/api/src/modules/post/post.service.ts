@@ -74,6 +74,7 @@ import {
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
+import { PostCategoryDto } from './dto/post-category.dto'
 import { PostHistoryDto } from './dto/post-history.dto'
 import { PostNotificationDto } from './dto/post-notification.dto'
 import { PostToCategoryRequestDto } from './dto/post-to-category.dto'
@@ -338,6 +339,28 @@ export class PostService {
       passAccesses.map((passAccess) => passAccess.post_id),
     )
 
+    const postCategories = await this.dbReader<PostToCategoryEntity>(
+      PostToCategoryEntity.table,
+    )
+      .leftJoin(
+        PostCategoryEntity.table,
+        `${PostCategoryEntity.table}.id`,
+        `${PostToCategoryEntity.table}.post_category_id`,
+      )
+      .whereIn(
+        `${PostToCategoryEntity.table}.post_id`,
+        posts.map((post) => post.id),
+      )
+      .select(
+        `${PostCategoryEntity.table}.*`,
+        `${PostToCategoryEntity.table}.post_id`,
+      )
+    const categoriesMap = new Map<string, PostCategoryDto[]>()
+    posts.forEach((post) => (categoriesMap[post.id] = []))
+    postCategories.forEach((postCategory) => {
+      categoriesMap[postCategory.post_id].add(new PostCategoryDto(postCategory))
+    })
+
     return posts.map((post) => {
       const accessible =
         post.paid_at || // single post purchase
@@ -349,6 +372,7 @@ export class PostService {
         post,
         post.user_id === userId,
         accessible,
+        categoriesMap[post.id],
         this.contentService.getContentDtosFromBare(
           JSON.parse(post.contents),
           accessible,
@@ -1073,10 +1097,22 @@ export class PostService {
     const { postId, postCategoryId } = postToCategoryRequestDto
     await this.checkPost(userId, postId)
     await this.checkPostCategory(userId, postCategoryId)
-    await this.dbWriter<PostToCategoryEntity>(PostToCategoryEntity.table)
-      .insert({ post_id: postId, post_category_id: postCategoryId })
-      .onConflict()
-      .ignore()
+    await this.dbWriter.transaction(async (trx) => {
+      await createOrThrowOnDuplicate(
+        () =>
+          trx<PostToCategoryEntity>(PostToCategoryEntity.table).insert({
+            post_id: postId,
+            post_category_id: postCategoryId,
+          }),
+        this.logger,
+        'Post already exists in category',
+      )
+      await trx<PostCategoryEntity>(PostCategoryEntity.table).increment(
+        'count',
+        1,
+      )
+    })
+
     return true
   }
 
@@ -1087,11 +1123,17 @@ export class PostService {
     const { postId, postCategoryId } = postToCategoryRequestDto
     await this.checkPost(userId, postId)
     await this.checkPostCategory(userId, postCategoryId)
-    const update = await this.dbWriter<PostToCategoryEntity>(
-      PostToCategoryEntity.table,
-    )
-      .where({ post_id: postId, post_category_id: postCategoryId })
-      .delete()
+    let update = 0
+
+    await this.dbWriter.transaction(async (trx) => {
+      update = await trx<PostToCategoryEntity>(PostToCategoryEntity.table)
+        .where({ post_id: postId, post_category_id: postCategoryId })
+        .delete()
+      await trx<PostCategoryEntity>(PostCategoryEntity.table).decrement(
+        'count',
+        update,
+      )
+    })
     return update === 1
   }
 

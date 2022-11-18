@@ -15,6 +15,7 @@ import { UserDto } from '../../user/dto/user.dto'
 import { MAX_PAID_POST_PRICE } from '../constants/limits'
 import { POST_TAG_MAX_COUNT, POST_TEXT_LENGTH } from '../constants/schema'
 import { PostEntity } from '../entities/post.entity'
+import { PostCategoryDto } from './post-category.dto'
 
 export class PostDto extends PickType(UserDto, [
   'userId',
@@ -106,6 +107,9 @@ export class PostDto extends PickType(UserDto, [
   @DtoProperty({ type: 'number' })
   yourTips: number
 
+  @DtoProperty({ custom_type: [PostCategoryDto] })
+  postCategories: PostCategoryDto[]
+
   constructor(
     post:
       | (PostEntity & {
@@ -117,8 +121,9 @@ export class PostDto extends PickType(UserDto, [
           your_tips?: number
         })
       | undefined,
-    isOwner,
-    accessible,
+    isOwner: boolean,
+    accessible: boolean,
+    postCategories: PostCategoryDto[],
     contents?: ContentDto[],
   ) {
     super()
@@ -153,6 +158,7 @@ export class PostDto extends PickType(UserDto, [
         this.earningsPurchases = post.earnings_purchases
         this.numPurchases = post.num_purchases
       }
+      this.postCategories = postCategories
       this.isOwner = isOwner
       this.accessible = accessible
     }

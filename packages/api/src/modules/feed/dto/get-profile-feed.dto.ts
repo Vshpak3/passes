@@ -11,6 +11,9 @@ export class GetProfileFeedRequestDto extends PickType(PageRequestDto, [
 ]) {
   @DtoProperty({ type: 'uuid' })
   creatorId: string
+
+  @DtoProperty({ type: 'uuid', optional: true })
+  postCategoryId?: string
 }
 
 export class GetProfileFeedResponseDto

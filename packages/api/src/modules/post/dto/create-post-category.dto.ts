@@ -1,13 +1,11 @@
-import { Length } from 'class-validator'
+import { PickType } from '@nestjs/swagger'
 
 import { DtoProperty } from '../../../web/dto.web'
-import { POST_CATEGORY_NAME_LENGTH } from '../constants/schema'
+import { PostCategoryDto } from './post-category.dto'
 
-export class CreatePostCategoryRequestDto {
-  @Length(1, POST_CATEGORY_NAME_LENGTH)
-  @DtoProperty({ type: 'string' })
-  name: string
-}
+export class CreatePostCategoryRequestDto extends PickType(PostCategoryDto, [
+  'name',
+]) {}
 
 export class CreatePostCategoryResponseDto {
   @DtoProperty({ type: 'uuid' })

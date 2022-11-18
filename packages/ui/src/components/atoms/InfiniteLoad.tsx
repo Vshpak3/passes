@@ -81,7 +81,6 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
     fetchData,
     newOptions
   )
-
   const triggerFetch = useCallback(() => {
     setSize((size) => size + 1)
   }, [setSize])
@@ -102,10 +101,10 @@ export const InfiniteLoad = <A, T extends PagedData<A>>({
   }, [data])
 
   useEffect(() => {
-    if (size < 2) {
+    if (!isValidating && size < 2) {
       triggerFetch()
     }
-  }, [size, triggerFetch])
+  }, [size, triggerFetch, isValidating])
 
   return (
     <>

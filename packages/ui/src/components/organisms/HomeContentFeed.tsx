@@ -28,6 +28,7 @@ const ContentFeedEmpty = (
   </div>
 )
 
+const fetchProps = {}
 export const HomeContentFeed: FC = () => {
   const api = new FeedApi()
   usePostWebhook()
@@ -50,7 +51,7 @@ export const HomeContentFeed: FC = () => {
           fetch={async (req: GetFeedRequestDto) => {
             return await api.getFeed({ getFeedRequestDto: req })
           }}
-          fetchProps={{}}
+          fetchProps={fetchProps}
           keySelector="postId"
           keyValue="/pages/feed"
           loadingElement={FeedLoader}

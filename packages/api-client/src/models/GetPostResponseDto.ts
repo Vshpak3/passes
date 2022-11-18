@@ -19,6 +19,12 @@ import {
     ContentDtoFromJSONTyped,
     ContentDtoToJSON,
 } from './ContentDto';
+import type { PostCategoryDto } from './PostCategoryDto';
+import {
+    PostCategoryDtoFromJSON,
+    PostCategoryDtoFromJSONTyped,
+    PostCategoryDtoToJSON,
+} from './PostCategoryDto';
 import type { TagDto } from './TagDto';
 import {
     TagDtoFromJSON,
@@ -200,6 +206,12 @@ export interface GetPostResponseDto {
      * @memberof GetPostResponseDto
      */
     yourTips: number;
+    /**
+     * 
+     * @type {Array<PostCategoryDto>}
+     * @memberof GetPostResponseDto
+     */
+    postCategories: Array<PostCategoryDto>;
 }
 
 /**
@@ -226,6 +238,7 @@ export function instanceOfGetPostResponseDto(value: object): boolean {
     isInstance = isInstance && "paying" in value;
     isInstance = isInstance && "contentProcessed" in value;
     isInstance = isInstance && "yourTips" in value;
+    isInstance = isInstance && "postCategories" in value;
 
     return isInstance;
 }
@@ -268,6 +281,7 @@ export function GetPostResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'paying': json['paying'],
         'contentProcessed': json['contentProcessed'],
         'yourTips': json['yourTips'],
+        'postCategories': ((json['postCategories'] as Array<any>).map(PostCategoryDtoFromJSON)),
     };
 }
 
@@ -308,6 +322,7 @@ export function GetPostResponseDtoToJSON(value?: GetPostResponseDto | null): any
         'paying': value.paying,
         'contentProcessed': value.contentProcessed,
         'yourTips': value.yourTips,
+        'postCategories': ((value.postCategories as Array<any>).map(PostCategoryDtoToJSON)),
     };
 }
 

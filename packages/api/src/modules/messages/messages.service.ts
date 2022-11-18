@@ -946,9 +946,18 @@ export class MessagesService {
       .where({ channel_id: channelId })
       .andWhereNot({ user_id: userId })
       .update({ unread: true })
+      .increment('unread_count', 1)
     await this.dbWriter<ChannelEntity>(ChannelEntity.table)
       .where({ id: channelId })
       .update({ recent: new Date(), preview_text: previewText })
+  }
+
+  async getTotalUnread(userId: string) {
+    return (
+      await this.dbReader<ChannelMemberEntity>(ChannelMemberEntity.table)
+        .where({ user_id: userId })
+        .sum('unread_count')
+    )[0]['sum(`unread_count`)']
   }
 
   async deletePendingMessage(messageId: string): Promise<boolean> {
@@ -1060,7 +1069,7 @@ export class MessagesService {
     const date = new Date()
     await this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .where({ channel_id: channelId, user_id: userId })
-      .update({ unread: false, unread_tip: 0, read_at: date })
+      .update({ unread: false, unread_tip: 0, read_at: date, unread_count: 0 })
 
     // near impossible for exact date to milliseconds to be the same
     // TODO randomize to avoid hitting too often

@@ -38,6 +38,7 @@ import type {
   ReadChannelRequestDto,
   RegisterPayinResponseDto,
   SendMessageRequestDto,
+  UnreadMessagesResponseDto,
   UpdateChannelSettingsRequestDto,
 } from '../models';
 import {
@@ -87,6 +88,8 @@ import {
     RegisterPayinResponseDtoToJSON,
     SendMessageRequestDtoFromJSON,
     SendMessageRequestDtoToJSON,
+    UnreadMessagesResponseDtoFromJSON,
+    UnreadMessagesResponseDtoToJSON,
     UpdateChannelSettingsRequestDtoFromJSON,
     UpdateChannelSettingsRequestDtoToJSON,
 } from '../models';
@@ -543,6 +546,37 @@ export class MessagesApi extends runtime.BaseAPI {
      */
     async getPaidMessagesHistory(requestParameters: GetPaidMessagesHistoryRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPaidMessageHistoryResponseDto> {
         const response = await this.getPaidMessagesHistoryRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get total unread messages
+     */
+    async getTotalUnreadMessagesRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UnreadMessagesResponseDto>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/messages/total/unread/messages`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UnreadMessagesResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get total unread messages
+     */
+    async getTotalUnreadMessages(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UnreadMessagesResponseDto> {
+        const response = await this.getTotalUnreadMessagesRaw(initOverrides);
         return await response.value();
     }
 

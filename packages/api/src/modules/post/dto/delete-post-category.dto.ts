@@ -1,9 +1,8 @@
-import { DtoProperty } from '../../../web/dto.web'
+import { PickType } from '@nestjs/swagger'
 
-export class DeletePostCategoryRequestDto {
-  @DtoProperty({ type: 'uuid' })
-  postCategoryId: string
+import { PostCategoryDto } from './post-category.dto'
 
-  @DtoProperty({ type: 'number' })
-  order: number
-}
+export class DeletePostCategoryRequestDto extends PickType(PostCategoryDto, [
+  'postCategoryId',
+  'order',
+]) {}
