@@ -13,6 +13,7 @@ export default {
     'https://www.passes.com/settings/notifications/preferences/email',
   termsUrl: 'https://www.passes.com/terms',
   privacyUrl: 'https://www.passes.com/privacy',
+  cookiesUrl: 'https://www.passes.com/cookies',
   supportEmail: 'support@passes.com',
   year: new Date().getFullYear(),
 }

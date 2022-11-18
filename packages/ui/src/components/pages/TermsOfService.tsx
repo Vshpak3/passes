@@ -1,7 +1,13 @@
+import Link from "next/link"
+import PassesLogoPink from "public/icons/passes-logo-pink.svg"
+
 export const TermsOfService = () => {
   return (
-    <div className="dark:bg-jacarta-900 bg-white pt-10 text-black dark:text-white">
+    <div className="pt-10 text-white dark:bg-white dark:text-black">
       <div className="mx-10 mt-20 md:mx-20 lg:mx-40 xl:mx-52">
+        <Link className="select-none outline-none" href="/home">
+          <PassesLogoPink className="mb-7 block h-[50x] w-[50px] fill-current" />
+        </Link>
         <h1 className="text-[24px] font-bold">Passes Terms of Service</h1>
         <br />
         <p>
