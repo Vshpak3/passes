@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import { FC } from "react"
+import { FC, FormEvent } from "react"
 
 import {
   FormErrors,
@@ -24,12 +24,15 @@ type NativeSelectProps = {
   label?: FormLabel
   name: FormName
   options?: FormOptions
-  register: FormRegister
+  register?: FormRegister
+  onCustomChange?: (value: string) => void
   errors?: FormErrors
   defaultValue?: FormSelectOption
   placeholder?: FormPlaceholder
   selectOptions?: FormSelectOptions
   className?: string
+  transparent?: boolean
+  hasError?: boolean
 }
 
 export const NativeSelect: FC<NativeSelectProps> = ({
@@ -41,8 +44,18 @@ export const NativeSelect: FC<NativeSelectProps> = ({
   options,
   selectOptions,
   placeholder = "",
-  className = ""
+  className = "",
+  onCustomChange,
+  transparent = false,
+  hasError = false
 }) => {
+  const control = onCustomChange
+    ? {
+        onChange: (event: FormEvent<HTMLSelectElement>) =>
+          onCustomChange(event.currentTarget.value)
+      }
+    : register(name, options)
+
   return (
     <div className="relative">
       {!!label && (
@@ -51,13 +64,15 @@ export const NativeSelect: FC<NativeSelectProps> = ({
       <select
         autoComplete={autoComplete}
         className={classNames(
-          "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border bg-passes-black px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80",
           className,
-          errors?.[name] ? "border-red-500" : "border-passes-dark-100"
+          errors?.[name] ? "border-red-500" : "border-passes-dark-100",
+          hasError && "border-red-500",
+          transparent ? "bg-transparent" : "bg-black",
+          "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border bg-passes-black px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80"
         )}
         name={name}
         placeholder={placeholder}
-        {...register(name)}
+        {...control}
       >
         <option disabled selected value="">
           {" "}
@@ -72,7 +87,7 @@ export const NativeSelect: FC<NativeSelectProps> = ({
           </option>
         ))}
       </select>
-      {!!errors?.[name] && (
+      {Boolean(errors?.[name]) && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
     </div>

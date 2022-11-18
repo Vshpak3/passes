@@ -2,7 +2,7 @@ import { getDaysInMonth } from "date-fns"
 import { FC, useEffect, useMemo, useState } from "react"
 import { FieldError } from "react-hook-form"
 
-import { Select } from "src/components/atoms/input/Select"
+import { NativeSelect } from "src/components/atoms/input/NativeSelect"
 
 interface DateSelectorProps {
   onDateChange: (d: Date) => void
@@ -55,35 +55,35 @@ export const DateSelector: FC<DateSelectorProps> = ({
   return (
     <>
       <div className="flex w-full justify-between">
-        <Select
+        <NativeSelect
           autoComplete="bday-month"
           className="w-[140px]"
+          hasError={Boolean(errors)}
           name="month"
-          onChange={(m) => setMonth(selectMonths.indexOf(m))}
+          onCustomChange={(m) => setMonth(selectMonths.indexOf(m))}
           placeholder="Month"
           selectOptions={selectMonths}
-          transparent={false}
         />
-        <Select
+        <NativeSelect
           autoComplete="bday-day"
           className="w-[90px]"
+          hasError={Boolean(errors)}
           name="day"
-          onChange={setDay}
+          onCustomChange={(value) => setDay(parseInt(value))}
           placeholder="Day"
           selectOptions={selectDays}
-          transparent={false}
         />
-        <Select
+        <NativeSelect
           autoComplete="bday-year"
           className="w-[100px]"
+          hasError={Boolean(errors)}
           name="year"
-          onChange={setYear}
+          onCustomChange={(value) => setYear(parseInt(value))}
           placeholder="Year"
           selectOptions={selectYears}
-          transparent={false}
         />
       </div>
-      {errors && (
+      {Boolean(errors) && (
         <span className="mt-1 text-xs text-red-500">{errors?.message}</span>
       )}
     </>

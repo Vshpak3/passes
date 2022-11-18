@@ -14,7 +14,7 @@ import { object, SchemaOf, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
+import { NativeSelect } from "src/components/atoms/input/NativeSelect"
 import { DateSelector } from "src/components/atoms/signup/DateSelector"
 import { SignupFooter } from "src/components/atoms/signup/SignupFooter"
 import { Text } from "src/components/atoms/Text"
@@ -64,7 +64,6 @@ const SignupInfoPage: FC = () => {
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors },
     setError,
     setValue
@@ -146,15 +145,14 @@ const SignupInfoPage: FC = () => {
 
   return (
     <StandAlonePage className="w-[100vw] max-w-[750px]">
-      <Text className="mb-4 w-[360px] text-center font-[500]" fontSize={36}>
+      <Text className="mb-4 text-center font-[500]" fontSize={36}>
         Let&apos;s get to know each other
       </Text>
-      <form className="flex flex-col gap-y-3" onSubmit={handleSubmit(onSubmit)}>
+      <form className="flex flex-col gap-y-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Full name</Text>
+          <Text className="mb-1 text-passes-gray-100">Full name</Text>
           <Input
             autoComplete="name"
-            className="w-[360px]"
             errors={errors}
             name="legalFullName"
             placeholder="Enter your full name"
@@ -165,9 +163,8 @@ const SignupInfoPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Username</Text>
+          <Text className="mb-1 text-passes-gray-100">Username</Text>
           <Input
-            className="w-[360px]"
             errors={errors}
             name="username"
             placeholder="Enter your username"
@@ -178,11 +175,8 @@ const SignupInfoPage: FC = () => {
         </div>
 
         <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-            Display Name
-          </Text>
+          <Text className="mb-1 text-passes-gray-100">Display Name</Text>
           <Input
-            className="w-[360px]"
             errors={errors}
             name="displayName"
             placeholder="Enter your display name"
@@ -192,24 +186,20 @@ const SignupInfoPage: FC = () => {
           />
         </div>
         <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Birthday</Text>
+          <Text className="mb-1 text-passes-gray-100">Birthday</Text>
           <DateSelector errors={errors.birthday} onDateChange={onDateChange} />
         </div>
-        <div className="flex flex-col items-start">
-          <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Country</Text>
-          <SelectInput
+        <div className="mb-4 flex flex-col items-start">
+          <Text className="mb-1 text-passes-gray-100">Country</Text>
+          <NativeSelect
             autoComplete="country"
-            className="w-[360px]"
-            control={control}
             errors={errors}
             name="countryCode"
             placeholder="Enter your country"
+            register={register}
             selectOptions={COUNTRIES}
-            showOnTop
-            transparent={false}
           />
         </div>
-
         <Button
           disabled={isSubmitting}
           disabledClass="opacity-[0.5]"

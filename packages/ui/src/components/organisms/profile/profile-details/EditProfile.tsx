@@ -202,11 +202,11 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-[37px] backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-[90vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-4 backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
       onClose={() => setEditProfileModalOpen(false)}
       open
       title={
-        <div className="flex w-full flex-row justify-end p-[8px] xs:px-[16px] md:hidden">
+        <div className="flex w-full flex-row justify-end p-2 md:hidden">
           <button
             className="h-[30px] w-[30px]"
             onClick={() => setEditProfileModalOpen(false)}
@@ -217,7 +217,7 @@ export const EditProfile: FC<EditProfileProps> = ({
       }
     >
       <form
-        className="flex flex-col gap-5 bg-passes-black px-0 py-6 xs:px-5 sm:px-12 md:p-0"
+        className="flex flex-col gap-5 bg-passes-black px-0 py-3 xs:px-5 sm:px-12 md:p-0"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="relative z-10 flex w-full cursor-pointer flex-col items-center justify-center">
