@@ -51,9 +51,9 @@ const VideoContentUnmemo = ({
             <VideoPlayer
               autoplay={autoplay}
               className="relative z-20 inline-block h-auto max-h-full max-w-full object-contain"
-              content={content}
               poster={videoThumbnail}
               ref={ref}
+              src={ContentService.userContentMediaPath(content)}
             />
           </div>
         </div>

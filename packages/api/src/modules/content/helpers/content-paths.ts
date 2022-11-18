@@ -32,7 +32,7 @@ export function mediaContentPath(
       fileName = `${contentId}-${contentSize}`
       break
     case ContentTypeEnum.VIDEO:
-      fileName = `${contentId}-standalone`
+      fileName = contentId
       break
     case ContentTypeEnum.GIF:
     case ContentTypeEnum.AUDIO:

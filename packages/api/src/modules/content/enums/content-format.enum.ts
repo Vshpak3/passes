@@ -1,6 +1,6 @@
 export enum ContentFormatEnum {
   IMAGE = 'jpeg',
-  VIDEO = 'mp4',
+  VIDEO = 'm3u8',
   GIF = 'mp4',
   AUDIO = 'mp3',
 }
