@@ -123,8 +123,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   const [blockData, setBlockData] = useState<BlockModalData | null>(null)
   const [showBottomNav, setShowBottomNav] = useState<boolean>(true)
   const [showTopNav, setShowTopNav] = useState<boolean>(true)
-  const [cookieSettings, setCookieSettings] =
-    useLocalStorage<CookiesProps | null>("cookieSettings", null)
+  const [cookieSettings, setCookieSettings] = useLocalStorage(
+    "cookieSettings",
+    ""
+  )
   const [showCookieBanner, setShowCookieBanner] = useState(false)
   const [onModalCallback, setOnModalCallback] = useState<(() => void) | null>(
     null
@@ -166,7 +168,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   ])
 
   useEffect(() => {
-    setShowCookieBanner(!cookieSettings)
+    setShowCookieBanner(cookieSettings === "")
   }, [cookieSettings])
 
   useEffect(() => {
@@ -177,7 +179,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
   }, [router.route])
 
   const onSetCookies = (cookieSettings: CookiesProps) => {
-    setCookieSettings(cookieSettings)
+    setCookieSettings(JSON.stringify(cookieSettings))
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -218,9 +220,13 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
           <Component {...pageProps} />
           {showCookieBanner && (
             <CookieBanner
-              onAccept={() => setCookieSettings(acceptAllCookies)}
+              onAccept={() =>
+                setCookieSettings(JSON.stringify(acceptAllCookies))
+              }
               onManage={() => setManageCookiesModalOpen(true)}
-              onReject={() => setCookieSettings(rejectAllCookies)}
+              onReject={() =>
+                setCookieSettings(JSON.stringify(rejectAllCookies))
+              }
             />
           )}
           {manageCookiesModalOpen && (
