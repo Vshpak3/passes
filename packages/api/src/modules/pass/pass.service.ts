@@ -499,7 +499,7 @@ export class PassService {
     getCreatorPassesRequestDto: GetPassesRequestDto,
     passIds?: string[],
   ) {
-    const { createdAt, search, creatorId, lastId, pinned, type } =
+    const { pinnedAt, price, search, creatorId, lastId, pinned, type } =
       getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
       .andWhere({ minted: true })
@@ -524,7 +524,7 @@ export class PassService {
         PassEntity.table,
         pinned ? 'pinned_at' : 'price',
         pinned ? OrderEnum.DESC : OrderEnum.ASC,
-        createdAt,
+        pinned ? pinnedAt : price,
         lastId,
       ).limit(MAX_PASSES_PER_REQUEST)
 

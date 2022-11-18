@@ -119,10 +119,11 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
 
   useEffect(() => {
     if (mutateOnLoad) {
+      setFlattenedData([])
+      setSize(1)
       mutate()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchProps])
+  }, [fetchProps, mutate, mutateOnLoad, setSize])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const triggerFetch = useCallback(

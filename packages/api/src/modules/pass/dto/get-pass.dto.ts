@@ -14,12 +14,16 @@ export class GetPassesRequestDto extends PickType(PageRequestDto, [
   'createdAt',
   'search',
   'pinned',
+  'pinnedAt',
 ]) {
   @DtoProperty({ type: 'uuid', optional: true })
   creatorId?: string
 
   @DtoProperty({ custom_type: PassTypeEnum, optional: true })
   type?: PassTypeEnum
+
+  @DtoProperty({ type: 'currency', optional: true })
+  price?: number
 }
 export class GetPassesResponseDto
   extends GetPassesRequestDto
@@ -38,7 +42,11 @@ export class GetPassesResponseDto
 
     if (passes.length > 0) {
       this.lastId = passes[passes.length - 1].passId
-      this.createdAt = passes[passes.length - 1].createdAt
+      if (this.pinned) {
+        this.pinnedAt = passes[passes.length - 1].pinnedAt ?? new Date()
+      } else {
+        this.price = passes[passes.length - 1].price
+      }
     }
   }
 }

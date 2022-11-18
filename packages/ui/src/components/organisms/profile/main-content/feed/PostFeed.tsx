@@ -74,13 +74,14 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
         }}
         fetchProps={fetchProps}
         keySelector="postId"
-        keyValue={`/pages/feed/creator/${profileUserId}`}
+        keyValue={`/pages/feed/creator/${profileUserId}/${postCategoryId}`}
         loadingElement={FeedLoader}
       >
         {ownsProfile && <NewPosts />}
-        {pinnedPosts.map((post) => (
-          <PostCached isPinned key={post.postId} post={post} />
-        ))}
+        {!postCategoryId &&
+          pinnedPosts.map((post) => (
+            <PostCached isPinned key={post.postId} post={post} />
+          ))}
       </InfiniteScrollPagination>
     </>
   )

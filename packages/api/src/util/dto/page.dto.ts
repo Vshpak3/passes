@@ -28,6 +28,9 @@ export class PageRequestDto {
 
   @DtoProperty({ type: 'boolean', optional: true })
   pinned?: boolean
+
+  @DtoProperty({ type: 'date', optional: true })
+  pinnedAt?: Date
 }
 
 export interface PageResponseDto<DataDto> {

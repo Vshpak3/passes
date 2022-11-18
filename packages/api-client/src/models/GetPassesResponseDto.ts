@@ -52,6 +52,12 @@ export interface GetPassesResponseDto {
     pinned?: boolean;
     /**
      * 
+     * @type {Date}
+     * @memberof GetPassesResponseDto
+     */
+    pinnedAt?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof GetPassesResponseDto
      */
@@ -62,6 +68,12 @@ export interface GetPassesResponseDto {
      * @memberof GetPassesResponseDto
      */
     type?: GetPassesResponseDtoTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPassesResponseDto
+     */
+    price?: number;
     /**
      * 
      * @type {Array<PassDto>}
@@ -106,8 +118,10 @@ export function GetPassesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'type': !exists(json, 'type') ? undefined : json['type'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
         'data': ((json['data'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
@@ -125,8 +139,10 @@ export function GetPassesResponseDtoToJSON(value?: GetPassesResponseDto | null):
         'lastId': value.lastId,
         'search': value.search,
         'pinned': value.pinned,
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
         'creatorId': value.creatorId,
         'type': value.type,
+        'price': value.price,
         'data': ((value.data as Array<any>).map(PassDtoToJSON)),
     };
 }

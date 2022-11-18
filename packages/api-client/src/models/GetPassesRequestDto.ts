@@ -45,6 +45,12 @@ export interface GetPassesRequestDto {
     pinned?: boolean;
     /**
      * 
+     * @type {Date}
+     * @memberof GetPassesRequestDto
+     */
+    pinnedAt?: Date;
+    /**
+     * 
      * @type {string}
      * @memberof GetPassesRequestDto
      */
@@ -55,6 +61,12 @@ export interface GetPassesRequestDto {
      * @memberof GetPassesRequestDto
      */
     type?: GetPassesRequestDtoTypeEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPassesRequestDto
+     */
+    price?: number;
 }
 
 
@@ -92,8 +104,10 @@ export function GetPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'type': !exists(json, 'type') ? undefined : json['type'],
+        'price': !exists(json, 'price') ? undefined : json['price'],
     };
 }
 
@@ -110,8 +124,10 @@ export function GetPassesRequestDtoToJSON(value?: GetPassesRequestDto | null): a
         'lastId': value.lastId,
         'search': value.search,
         'pinned': value.pinned,
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
         'creatorId': value.creatorId,
         'type': value.type,
+        'price': value.price,
     };
 }
 
