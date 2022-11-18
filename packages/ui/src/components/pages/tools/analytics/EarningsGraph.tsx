@@ -19,16 +19,12 @@ import {
 import { differenceInDays, eachDayOfInterval, isSameDay } from "date-fns"
 import { uniqueId } from "lodash"
 import ms from "ms"
-import React, { FC, useRef, useState } from "react"
+import React, { useRef, useState } from "react"
 import { Line } from "react-chartjs-2"
 import { DateRangePicker } from "react-date-range"
 
 import { TabButton } from "src/components/atoms/button/TabButton"
-import {
-  formatCurrency,
-  getFormattedDate,
-  getNYearsAgoDate
-} from "src/helpers/formatters"
+import { getFormattedDate, getNYearsAgoDate } from "src/helpers/formatters"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 import { Caret } from "src/icons/Caret"
 
@@ -42,11 +38,7 @@ ChartJS.register(
   Legend
 )
 
-interface EarningsGraphProps {
-  userBalance?: number
-}
-
-export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
+export const EarningsGraph = () => {
   const datepickerRef = useRef(null)
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false)
 
@@ -155,9 +147,7 @@ export const EarningsGraph: FC<EarningsGraphProps> = ({ userBalance }) => {
           />
         ))}
       </div>
-      <div className="text-2xl font-bold">
-        {formatCurrency(userBalance || 0)}
-      </div>
+
       <div className="w-full">
         <Line
           className="rounded-lg border border-passes-gray-600 bg-passes-black p-4"

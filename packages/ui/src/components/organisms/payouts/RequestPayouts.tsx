@@ -78,13 +78,13 @@ export const RequestPayouts = () => {
             </div>
             <div className="grid-cols-1">
               <div className="text-[20px] font-[500]">
-                {formatCurrency(userBalance?.gross?.amount ?? 0)}
+                {formatCurrency(userBalance?.gross.amount ?? 0)}
               </div>
               <div className="text-[20px] font-[500]">
-                {formatCurrency(userBalance?.net?.amount ?? 0)}
+                {formatCurrency(userBalance?.net.amount ?? 0)}
               </div>
               <div className="text-[20px] font-[500]">
-                {formatCurrency(userBalance?.agency?.amount ?? 0)}
+                {formatCurrency(userBalance?.agency.amount ?? 0)}
               </div>
             </div>
           </div>

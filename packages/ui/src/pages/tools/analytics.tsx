@@ -6,7 +6,6 @@ import { AnalyticsHeader } from "src/components/pages/tools/analytics/AnalyticsH
 import { EarningsGraph } from "src/components/pages/tools/analytics/EarningsGraph"
 import { MessageStatistics } from "src/components/pages/tools/analytics/MessageStatistics"
 import { PostStatistics } from "src/components/pages/tools/analytics/PostStatistics"
-import { useCreatorBalance } from "src/hooks/useAnalytics"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const Analytics: NextPage = () => {
@@ -16,7 +15,6 @@ const Analytics: NextPage = () => {
   }
 
   const [analyticsTab, setAnalyticsTab] = useState(tab)
-  const { userBalance } = useCreatorBalance()
   useEffect(() => {
     history.replaceState(window.history.state, "", `#${analyticsTab}`)
   }, [analyticsTab])
@@ -27,7 +25,7 @@ const Analytics: NextPage = () => {
 
   return (
     <div className="my-4 flex flex-col gap-[24px] overflow-hidden px-6">
-      <AnalyticsHeader balance={userBalance?.amount} />
+      <AnalyticsHeader />
       <div className="flex flex-row gap-[16px] overflow-hidden">
         {ANALYTICS_OPTIONS.map((tab) => (
           <TabButton
@@ -40,7 +38,7 @@ const Analytics: NextPage = () => {
         ))}
       </div>
       {analyticsTab === AnalyticsNavigationOptions.EARNINGS && (
-        <EarningsGraph userBalance={userBalance?.amount} />
+        <EarningsGraph />
       )}
       {analyticsTab === AnalyticsNavigationOptions.POSTS && <PostStatistics />}
 
