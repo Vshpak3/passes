@@ -16,6 +16,4 @@ export const MAX_POSTS_PER_REQUEST = 20 // @share-with-frontend
 
 export const MAX_POST_BUYERS_PER_REQUEST = 20 // @share-with-frontend post
 
-export const MAX_POST_CATEGORIES = 100 // @share-with-frontend
-
-export const MAX_POST_CATEGORIES_PER_REQUEST = 10 // @share-with-frontend post
+export const MAX_POST_CATEGORIES = 30 // @share-with-frontend

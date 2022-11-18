@@ -56,7 +56,7 @@ export const MediaModal: FC<ModalProps> = ({
       )}
       {file.file && !carouselContent && (
         <MediaFile
-          className="m-0 rounded-[6px] p-0"
+          className="m-0 p-0"
           contentHeight={height}
           contentWidth={width}
           file={file.file}
@@ -66,7 +66,7 @@ export const MediaModal: FC<ModalProps> = ({
       )}
       {file.content && !carouselContent && (
         <Media
-          className="m-0 rounded-[6px] p-0"
+          className="m-0 p-0"
           contentHeight={height}
           contentWidth={width}
           objectFit="contain"

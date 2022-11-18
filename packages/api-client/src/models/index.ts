@@ -120,6 +120,8 @@ export * from './GetPayoutsResponseDto';
 export * from './GetPersonaStatusResponseDto';
 export * from './GetPostBuyersRequestDto';
 export * from './GetPostBuyersResponseDto';
+export * from './GetPostCategoriesRequestDto';
+export * from './GetPostCategoriesResponseDto';
 export * from './GetPostHistoryRequestDto';
 export * from './GetPostHistoryResponseDto';
 export * from './GetPostResponseDto';

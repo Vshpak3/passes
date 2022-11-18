@@ -34,6 +34,10 @@ import {
   GetPostBuyersResponseDto,
 } from './dto/get-post-buyers.dto'
 import {
+  GetPostCategoriesRequestDto,
+  GetPostCategoriesResponseDto,
+} from './dto/get-post-categories.dto'
+import {
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
 } from './dto/get-post-history.dto'
@@ -274,6 +278,22 @@ export class PostController {
         getPostsBuyersRequestDto,
       ),
       getPostsBuyersRequestDto,
+    )
+  }
+
+  @ApiEndpoint({
+    summary: 'Get post categories',
+    responseStatus: HttpStatus.OK,
+    responseType: GetPostCategoriesResponseDto,
+    responseDesc: 'Post category returned',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('categories')
+  async getPostCategories(
+    @Body() getPostCategoriesRequestDto: GetPostCategoriesRequestDto,
+  ): Promise<GetPostCategoriesResponseDto> {
+    return new GetPostCategoriesResponseDto(
+      await this.postService.getPostCategories(getPostCategoriesRequestDto),
     )
   }
 

@@ -71,6 +71,7 @@ import {
   GetPostBuyersRequestDto,
   PostBuyerDto,
 } from './dto/get-post-buyers.dto'
+import { GetPostCategoriesRequestDto } from './dto/get-post-categories.dto'
 import { GetPostHistoryRequestDto } from './dto/get-post-history.dto'
 import { GetPostsRequestDto } from './dto/get-posts.dto'
 import { PostDto } from './dto/post.dto'
@@ -983,6 +984,17 @@ export class PostService {
     return postBuyers.map((postBuyer) => new PostBuyerDto(postBuyer))
   }
 
+  async getPostCategories(
+    getPostCategoriesRequestDto: GetPostCategoriesRequestDto,
+  ) {
+    const { userId } = getPostCategoriesRequestDto
+    return (
+      await this.dbReader<PostCategoryEntity>(PostCategoryEntity.table)
+        .where({ user_id: userId })
+        .select('*')
+    ).map((postCategory) => new PostCategoryDto(postCategory))
+  }
+
   async createPostCategory(
     userId: string,
     createPostCategoryRequestDto: CreatePostCategoryRequestDto,
@@ -1065,7 +1077,7 @@ export class PostService {
     userId: string,
     deletePostCategoryRequestDto: DeletePostCategoryRequestDto,
   ) {
-    const { postCategoryId, order } = deletePostCategoryRequestDto
+    const { postCategoryId } = deletePostCategoryRequestDto
     await this.checkPostCategory(userId, postCategoryId)
     let updated = 0
     await this.dbWriter.transaction(async (trx) => {
@@ -1078,7 +1090,6 @@ export class PostService {
         .where({
           user_id: userId,
           id: postCategoryId,
-          order,
         })
         .delete()
     })

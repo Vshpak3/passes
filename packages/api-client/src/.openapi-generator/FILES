@@ -147,6 +147,8 @@ models/GetPayoutsResponseDto.ts
 models/GetPersonaStatusResponseDto.ts
 models/GetPostBuyersRequestDto.ts
 models/GetPostBuyersResponseDto.ts
+models/GetPostCategoriesRequestDto.ts
+models/GetPostCategoriesResponseDto.ts
 models/GetPostHistoryRequestDto.ts
 models/GetPostHistoryResponseDto.ts
 models/GetPostResponseDto.ts

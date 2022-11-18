@@ -25,6 +25,8 @@ import type {
   EditPostRequestDto,
   GetPostBuyersRequestDto,
   GetPostBuyersResponseDto,
+  GetPostCategoriesRequestDto,
+  GetPostCategoriesResponseDto,
   GetPostHistoryRequestDto,
   GetPostHistoryResponseDto,
   GetPostResponseDto,
@@ -58,6 +60,10 @@ import {
     GetPostBuyersRequestDtoToJSON,
     GetPostBuyersResponseDtoFromJSON,
     GetPostBuyersResponseDtoToJSON,
+    GetPostCategoriesRequestDtoFromJSON,
+    GetPostCategoriesRequestDtoToJSON,
+    GetPostCategoriesResponseDtoFromJSON,
+    GetPostCategoriesResponseDtoToJSON,
     GetPostHistoryRequestDtoFromJSON,
     GetPostHistoryRequestDtoToJSON,
     GetPostHistoryResponseDtoFromJSON,
@@ -112,6 +118,10 @@ export interface FindPostRequest {
 
 export interface GetPostBuyersRequest {
     getPostBuyersRequestDto: GetPostBuyersRequestDto;
+}
+
+export interface GetPostCategoriesRequest {
+    getPostCategoriesRequestDto: GetPostCategoriesRequestDto;
 }
 
 export interface GetPostHistoryRequest {
@@ -459,6 +469,45 @@ export class PostApi extends runtime.BaseAPI {
      */
     async getPostBuyers(requestParameters: GetPostBuyersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostBuyersResponseDto> {
         const response = await this.getPostBuyersRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Get post categories
+     */
+    async getPostCategoriesRaw(requestParameters: GetPostCategoriesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetPostCategoriesResponseDto>> {
+        if (requestParameters.getPostCategoriesRequestDto === null || requestParameters.getPostCategoriesRequestDto === undefined) {
+            throw new runtime.RequiredError('getPostCategoriesRequestDto','Required parameter requestParameters.getPostCategoriesRequestDto was null or undefined when calling getPostCategories.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/post/categories`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: GetPostCategoriesRequestDtoToJSON(requestParameters.getPostCategoriesRequestDto),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetPostCategoriesResponseDtoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get post categories
+     */
+    async getPostCategories(requestParameters: GetPostCategoriesRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetPostCategoriesResponseDto> {
+        const response = await this.getPostCategoriesRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
