@@ -61,7 +61,8 @@ export const NewPosts: FC = () => {
       isOwner: true,
       paying: false,
       paidAt: null,
-      yourTips: 0
+      yourTips: 0,
+      postCategories: []
     }
     if (res.postId) {
       await mutateManualCreatorStats({ field: "numPosts", event: "increment" })
