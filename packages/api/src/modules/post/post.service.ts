@@ -1120,10 +1120,9 @@ export class PostService {
         this.logger,
         'Post already exists in category',
       )
-      await trx<PostCategoryEntity>(PostCategoryEntity.table).increment(
-        'count',
-        1,
-      )
+      await trx<PostCategoryEntity>(PostCategoryEntity.table)
+        .increment('count', 1)
+        .where({ id: postCategoryId })
     })
 
     return true
@@ -1142,10 +1141,9 @@ export class PostService {
       update = await trx<PostToCategoryEntity>(PostToCategoryEntity.table)
         .where({ post_id: postId, post_category_id: postCategoryId })
         .delete()
-      await trx<PostCategoryEntity>(PostCategoryEntity.table).decrement(
-        'count',
-        update,
-      )
+      await trx<PostCategoryEntity>(PostCategoryEntity.table)
+        .decrement('count', update)
+        .where({ id: postCategoryId })
     })
     return update === 1
   }

@@ -7,8 +7,7 @@ import { Post } from "./Post"
 export interface PostCachedProps {
   post: PostDto
   postByUrl?: boolean
-  // Whether or not the post is from shown in the non-profile home feed
-  inHomeFeed?: boolean
+  allowPinned?: boolean
   // Whether or not the post was from returned from the feed API
   isPinned?: boolean
   bordered?: boolean

@@ -42,7 +42,7 @@ export const HomeContentFeed: FC = () => {
         </div>
         <InfiniteScrollPagination<PostDto, GetFeedResponseDto>
           KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-            return <PostCached inHomeFeed post={arg} />
+            return <PostCached allowPinned post={arg} />
           }}
           emptyElement={ContentFeedEmpty}
           endElement={

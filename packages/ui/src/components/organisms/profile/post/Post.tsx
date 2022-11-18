@@ -28,7 +28,7 @@ interface PostProps extends PostCachedProps {
 
 const PostUnmemo: FC<PostProps> = ({
   post,
-  inHomeFeed = false,
+  allowPinned = false,
   postByUrl = false,
   isPinned = false,
   bordered = false,
@@ -66,7 +66,7 @@ const PostUnmemo: FC<PostProps> = ({
     }
   }, [router, postByUrl, contentProcessed, username])
 
-  const isRemoved = !!pinnedAt !== isPinned && !postByUrl && !inHomeFeed
+  const isRemoved = !!pinnedAt !== isPinned && !postByUrl && !allowPinned
 
   const onDelete = () => {
     update({ deletedAt: new Date() })

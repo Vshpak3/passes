@@ -120,7 +120,7 @@ export const InfiniteScrollPagination = <A, T extends PagedData<A>>({
   useEffect(() => {
     if (mutateOnLoad) {
       setFlattenedData([])
-      setSize(1)
+      setSize(0)
       mutate()
     }
   }, [fetchProps, mutate, mutateOnLoad, setSize])

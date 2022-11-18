@@ -39,7 +39,6 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   const { postCategories } = usePostCategories(profileUserId)
   const { creatorStats } = useCreatorStats(profileUserId)
   const showCount = creatorStats?.numPosts !== undefined
-  PostCategoryPill
 
   return (
     <>
@@ -61,7 +60,7 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
       )}
       <InfiniteScrollPagination<PostDto, GetProfileFeedResponseDto>
         KeyedComponent={({ arg }: ComponentArg<PostDto>) => {
-          return <PostCached post={{ ...arg }} />
+          return <PostCached allowPinned={!!postCategoryId} post={{ ...arg }} />
         }}
         emptyElement={<FeedEnd message="No posts are available at this time" />}
         endElement={
