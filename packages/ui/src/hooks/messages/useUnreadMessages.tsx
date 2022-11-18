@@ -3,7 +3,8 @@ import useSWR from "swr"
 
 const api = new MessagesApi()
 const TOTAL_UNREAD_MESSAGES_KEY = "/total/unread/messages"
-export const useCreatorBalance = () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const useUnreadMessages = () => {
   const { data: count, mutate } = useSWR(
     TOTAL_UNREAD_MESSAGES_KEY,
     async () => {
