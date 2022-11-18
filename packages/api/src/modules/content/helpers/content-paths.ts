@@ -26,18 +26,22 @@ export function mediaContentPath(
   contentType: ContentTypeEnum,
   contentSize: ContentSizeEnum,
 ) {
-  // Temporary for videos until we add sizing
-  if (contentType === ContentTypeEnum.VIDEO) {
-    return path.join(
-      'media',
-      userId,
-      `${contentId}.${getContentTypeFormat(contentType)}`,
-    )
+  let fileName = ''
+  switch (contentType) {
+    case ContentTypeEnum.IMAGE:
+      fileName = `${contentId}-${contentSize}`
+      break
+    case ContentTypeEnum.VIDEO:
+      fileName = `${contentId}-standalone`
+      break
+    case ContentTypeEnum.GIF:
+    case ContentTypeEnum.AUDIO:
+      throw new Error('Not yet implemented')
   }
   return path.join(
     'media',
     userId,
-    `${contentId}-${contentSize}.${getContentTypeFormat(contentType)}`,
+    `${fileName}.${getContentTypeFormat(contentType)}`,
   )
 }
 

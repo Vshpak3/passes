@@ -20,10 +20,19 @@ const getUrlPath = (...args: string[]) => {
   return `${process.env.NEXT_PUBLIC_CDN_URL}/${path.join(...args)}`
 }
 
+// These enums are borrowed from the backend
+
 enum ContentSizeEnum {
   SMALL = "sm",
   MEDIUM = "md",
   LARGE = "lg"
+}
+
+const contentTypeToFormat = {
+  [ContentDtoContentTypeEnum.Image]: "jpeg",
+  [ContentDtoContentTypeEnum.Video]: "mp4",
+  [ContentDtoContentTypeEnum.Gif]: "mp4",
+  [ContentDtoContentTypeEnum.Audio]: "mp3"
 }
 
 interface UploadUserContentProps {
@@ -86,32 +95,24 @@ export class ContentService {
       return content.signedUrl
     }
 
-    let extension: string
+    let fileName = ""
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
-        extension = "jpeg"
+        // Use medium for all images for now (TODO)
+        fileName = `${content.contentId}-${ContentSizeEnum.MEDIUM}`
         break
       case ContentDtoContentTypeEnum.Video:
-        extension = "mp4"
+        fileName = `${content.contentId}-standalone`
         break
       case ContentDtoContentTypeEnum.Gif:
       case ContentDtoContentTypeEnum.Audio:
         throw new Error("Unsupported media format")
     }
 
-    // Temporary for videos until we add sizing
-    if (extension === "mp4") {
-      return getUrlPath(
-        "media",
-        content.userId,
-        `${content.contentId}.${extension}`
-      )
-    }
-    // Use medium for everything now
     return getUrlPath(
       "media",
       content.userId,
-      `${content.contentId}-${ContentSizeEnum.MEDIUM}.${extension}`
+      `${fileName}.${contentTypeToFormat[content.contentType]}`
     )
   }
 
