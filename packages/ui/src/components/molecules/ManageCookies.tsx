@@ -48,10 +48,10 @@ export const ManageCookiesModal: FC<ManageCookiesProps> = ({
           className="flex flex-col items-start justify-start"
           onSubmit={handleSubmit(setCookies)}
         >
-          <span className="w-full border-b border-[#3a444c]/30 pb-4 text-xl font-bold text-white">
+          <span className="w-full border-b border-[#3a444c]/30 pb-4 text-base font-bold text-white md:text-xl">
             Cookie preferences
           </span>
-          <p className="pt-4 text-justify text-sm font-normal text-[#9D9D9D]">
+          <p className="pt-4 text-justify text-xs font-normal text-[#9D9D9D] md:text-sm">
             The use of the following cookies is not required to visit or browse
             our website, except for those that we use to provide the content and
             functionality of this site (strictly necessary cookies). Blocking
@@ -61,22 +61,24 @@ export const ManageCookiesModal: FC<ManageCookiesProps> = ({
             associated category of cookie. Read our Cookie Notice for more
             information.
           </p>
-          <div className="flex flex-col items-start pt-6">
-            <span className="text-base font-bold text-white">
+          <div className="flex w-full flex-col items-start pt-6">
+            <span className=" text-sm font-bold text-white md:text-base">
               Manage Cookies:
             </span>
-            <div className="flex pt-3">
+            <div className="flex w-full justify-between pt-3 md:justify-start">
               <div className="md:pr-12">
                 <PassFormCheckbox
                   disabled
                   label="Strictly Necessary Cookies"
                   name="necessary"
                   register={register}
+                  textClassName="!ml-2 text-[11px] md:text-sm md:!ml-3"
                 />
                 <PassFormCheckbox
                   label="Performance Cookies"
                   name="performance"
                   register={register}
+                  textClassName="!ml-2 text-[11px] md:text-sm md:!ml-3"
                 />
               </div>
               <div>
@@ -84,12 +86,14 @@ export const ManageCookiesModal: FC<ManageCookiesProps> = ({
                   label="Functional Cookies"
                   name="functional"
                   register={register}
+                  textClassName="!ml-2 text-[11px] md:text-sm md:!ml-3"
                 />
 
                 <PassFormCheckbox
                   label="Targeting Cookies"
                   name="targeting"
                   register={register}
+                  textClassName="!ml-2 text-[11px] md:text-sm md:!ml-3"
                 />
               </div>
             </div>
@@ -100,7 +104,7 @@ export const ManageCookiesModal: FC<ManageCookiesProps> = ({
               fontSize={16}
               type={ButtonTypeEnum.SUBMIT}
             >
-              <span className="text-base font-bold text-white">
+              <span className="text-sm font-bold text-white md:text-base">
                 Save and Accept
               </span>
             </Button>

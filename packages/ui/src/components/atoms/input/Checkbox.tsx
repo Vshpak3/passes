@@ -23,6 +23,7 @@ type CheckBoxProps = {
   labelClassName?: string
   checked?: boolean
   disabled?: boolean
+  textClassName?: string
 }
 
 export const Checkbox: FC<CheckBoxProps> = ({
@@ -36,13 +37,15 @@ export const Checkbox: FC<CheckBoxProps> = ({
   labelClassName = "",
   checked,
   disabled,
+  textClassName = "",
   ...rest
 }) => (
   <div>
     <div
       className={classNames(
+        textClassName ? "items-center" : "items-start",
         textPosition === "Special" ? "justify-between" : "",
-        "relative flex items-start"
+        "relative flex"
       )}
     >
       {!!textPosition && (
@@ -89,7 +92,7 @@ export const Checkbox: FC<CheckBoxProps> = ({
         )}
       </label>
       {!textPosition && (
-        <div className="ml-3 text-sm">
+        <div className={classNames(textClassName, "ml-3 text-sm")}>
           {!!label && (
             <Label
               className={labelClassName}
