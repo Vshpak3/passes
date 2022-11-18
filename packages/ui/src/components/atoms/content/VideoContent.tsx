@@ -41,7 +41,7 @@ const VideoContentUnmemo = ({
         <div className="relative h-full overflow-hidden">
           <div
             className={classNames(
-              "absolute inset-0 inset-x-4 z-10 h-auto max-h-[800px] bg-cover bg-center [filter:blur(10px)opacity(80%)]"
+              "absolute inset-0 inset-x-4 z-10 h-auto bg-cover bg-center [filter:blur(10px)opacity(80%)]"
             )}
             style={{
               backgroundImage: `url(${videoThumbnail})`
