@@ -7,6 +7,7 @@ import { PostCategory } from "./PostCategory"
 export interface PostCategoryCachedProps {
   postCategory: PostCategoryDto
   selected?: boolean
+  onDelete?: (postCategoryId: string) => void
   postId?: string
 }
 

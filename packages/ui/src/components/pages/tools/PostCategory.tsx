@@ -17,6 +17,7 @@ interface PostCategoryProps extends PostCategoryCachedProps {
 export const PostCategory: FC<PostCategoryProps> = ({
   postCategory,
   postId,
+  onDelete,
   selected = false
 }) => {
   const [deletePostCategoryModalOpen, setDeletePostCategoryModalOpen] =

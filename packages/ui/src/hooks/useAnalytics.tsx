@@ -19,7 +19,6 @@ export const useCreatorBalance = () => {
     },
     { revalidateOnMount: true, refreshInterval: ms("3 seconds") }
   )
-  console.log(userBalance)
 
   return { userBalance }
 }
