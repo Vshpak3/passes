@@ -5,6 +5,7 @@ import { PostCategoryDto } from './post-category.dto'
 
 export class CreatePostCategoryRequestDto extends PickType(PostCategoryDto, [
   'name',
+  'order',
 ]) {}
 
 export class CreatePostCategoryResponseDto {

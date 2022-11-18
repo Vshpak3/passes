@@ -15,11 +15,15 @@ export class PostCategoryDto {
   @DtoProperty({ type: 'number' })
   order: number
 
+  @DtoProperty({ type: 'number' })
+  count: number
+
   constructor(postCategory: PostCategoryEntity) {
     if (postCategory) {
       this.postCategoryId = postCategory.id
       this.name = postCategory.name
       this.order = postCategory.order
+      this.count = postCategory.count
     }
   }
 }

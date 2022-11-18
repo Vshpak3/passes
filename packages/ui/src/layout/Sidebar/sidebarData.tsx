@@ -32,6 +32,12 @@ const sidebarCreatorToolItems: SidebarNavigation[] = [
     creatorOnly: true
   },
   {
+    id: "post-categories",
+    name: "Post Categories",
+    href: "/tools/post-categories",
+    creatorOnly: true
+  },
+  {
     id: "analytics",
     name: "Analytics",
     href: "/tools/analytics",

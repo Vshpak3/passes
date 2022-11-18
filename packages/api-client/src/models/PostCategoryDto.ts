@@ -37,6 +37,12 @@ export interface PostCategoryDto {
      * @memberof PostCategoryDto
      */
     order: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostCategoryDto
+     */
+    count: number;
 }
 
 /**
@@ -47,6 +53,7 @@ export function instanceOfPostCategoryDto(value: object): boolean {
     isInstance = isInstance && "postCategoryId" in value;
     isInstance = isInstance && "name" in value;
     isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "count" in value;
 
     return isInstance;
 }
@@ -64,6 +71,7 @@ export function PostCategoryDtoFromJSONTyped(json: any, ignoreDiscriminator: boo
         'postCategoryId': json['postCategoryId'],
         'name': json['name'],
         'order': json['order'],
+        'count': json['count'],
     };
 }
 
@@ -79,6 +87,7 @@ export function PostCategoryDtoToJSON(value?: PostCategoryDto | null): any {
         'postCategoryId': value.postCategoryId,
         'name': value.name,
         'order': value.order,
+        'count': value.count,
     };
 }
 

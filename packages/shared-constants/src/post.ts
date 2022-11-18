@@ -6,6 +6,7 @@ export const MAX_POST_BUYERS_PER_REQUEST = 20
 export const MAX_POST_TIP_PRICE = 5000
 export const MIN_PAID_POST_PRICE = 3
 export const MIN_POST_TIP_PRICE = 3
+export const POST_CATEGORY_NAME_LENGTH = 50
 export const POST_TAGS_LENGTH = 350
 export const POST_TAG_MAX_COUNT = 5
 export const POST_TEXT_LENGTH = 10000

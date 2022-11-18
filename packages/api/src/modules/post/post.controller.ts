@@ -342,7 +342,7 @@ export class PostController {
     responseDesc: 'Post category reordered',
     role: RoleEnum.CREATOR_ONLY,
   })
-  @Post('category/reoder')
+  @Post('category/reorder')
   async reorderPostCategories(
     @Req() req: RequestWithUser,
     @Body() reorderPostCategoriesRequestDto: ReorderPostCategoriesRequestDto,

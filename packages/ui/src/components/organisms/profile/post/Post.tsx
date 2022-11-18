@@ -7,6 +7,7 @@ import { toast } from "react-toastify"
 
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { MediaContent } from "src/components/molecules/content/MediaContent"
+import { AddCategoryToPostDialog } from "src/components/molecules/post/AddCategoryToPostDialog"
 import { DropdownOption } from "src/components/organisms/profile/drop-down/Dropdown"
 import {
   DropDownCopyLink,
@@ -35,6 +36,7 @@ const PostUnmemo: FC<PostProps> = ({
 }) => {
   const [deletePostModelOpen, setDeletePostModelOpen] = useState(false)
   const [editPostDialogOpen, setEditPostDialogOpen] = useState(false)
+  const [addCategoryDialogOpen, setAddCategoryDialogOpen] = useState(false)
   const { setPost } = useBuyPostModal()
   const router = useRouter()
   const { pinPost, unpinPost, pinnedPosts } = useContext(ProfileContext)
@@ -54,7 +56,8 @@ const PostUnmemo: FC<PostProps> = ({
     contentProcessed,
     paidAt,
     previewIndex,
-    price
+    price,
+    postCategories
   } = post
 
   useEffect(() => {
@@ -75,6 +78,9 @@ const PostUnmemo: FC<PostProps> = ({
   const dropdownOptions: DropdownOption[] = [
     ...DropDownGeneral("Edit", post.isOwner, async () => {
       setEditPostDialogOpen(true)
+    }),
+    ...DropDownGeneral("Categories", post.isOwner, async () => {
+      setAddCategoryDialogOpen(true)
     }),
     ...DropDownReport(!isOwner, {
       username: username,
@@ -116,6 +122,14 @@ const PostUnmemo: FC<PostProps> = ({
             bordered && "border-b-[0.5px] border-passes-gray"
           )}
         >
+          {addCategoryDialogOpen && (
+            <AddCategoryToPostDialog
+              isOpen
+              onCancel={() => setAddCategoryDialogOpen(false)}
+              postId={postId}
+              selectedPostCategories={postCategories}
+            />
+          )}
           {editPostDialogOpen && (
             <EditPostDialog
               onCancel={() => setEditPostDialogOpen(false)}

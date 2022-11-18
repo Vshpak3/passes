@@ -1,10 +1,12 @@
-import { PostCategoryDto } from "@passes/api-client"
+import { PostApi, PostCategoryDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
+
+import { errorMessage } from "src/helpers/error"
 
 const CACHE_KEY_POST_CATEGORY = "/post-category"
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const usePostCategory = (postCategoryId: string) => {
+const api = new PostApi()
+export const usePostCategory = (postCategoryId: string) => {
   const { data: postCategory } = useSWR(
     postCategoryId ? [CACHE_KEY_POST_CATEGORY, postCategoryId] : null,
     async () => null
@@ -22,8 +24,22 @@ const usePostCategory = (postCategoryId: string) => {
       revalidate: false
     })
 
+  const editCategory = async (name: string) => {
+    try {
+      await api.editPostCategory({
+        editPostCategoryRequestDto: { postCategoryId, name }
+      })
+      mutateManual({ name })
+      return true
+    } catch (err) {
+      errorMessage(err, true)
+      return false
+    }
+  }
+
   return {
     postCategory,
-    update: mutateManual
+    update: mutateManual,
+    editCategory
   }
 }

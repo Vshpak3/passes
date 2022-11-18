@@ -25,6 +25,12 @@ export interface CreatePostCategoryRequestDto {
      * @memberof CreatePostCategoryRequestDto
      */
     name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreatePostCategoryRequestDto
+     */
+    order: number;
 }
 
 /**
@@ -33,6 +39,7 @@ export interface CreatePostCategoryRequestDto {
 export function instanceOfCreatePostCategoryRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "name" in value;
+    isInstance = isInstance && "order" in value;
 
     return isInstance;
 }
@@ -48,6 +55,7 @@ export function CreatePostCategoryRequestDtoFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'name': json['name'],
+        'order': json['order'],
     };
 }
 
@@ -61,6 +69,7 @@ export function CreatePostCategoryRequestDtoToJSON(value?: CreatePostCategoryReq
     return {
         
         'name': value.name,
+        'order': value.order,
     };
 }
 

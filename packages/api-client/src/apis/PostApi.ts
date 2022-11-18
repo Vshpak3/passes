@@ -861,7 +861,7 @@ export class PostApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/post/category/reoder`,
+            path: `/api/post/category/reorder`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,

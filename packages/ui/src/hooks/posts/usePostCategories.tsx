@@ -6,9 +6,8 @@ import { errorMessage } from "src/helpers/error"
 const CACHE_KEY_POST_CATEGORIES = "/post-categories"
 
 const api = new PostApi()
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const usePostCategories = (userId?: string) => {
-  const { data: postCategories } = useSWR<PostCategoryDto[]>(
+export const usePostCategories = (userId?: string) => {
+  const { data: postCategories, mutate } = useSWR<PostCategoryDto[]>(
     userId ? [CACHE_KEY_POST_CATEGORIES, userId] : null,
     async () => {
       return (
@@ -28,6 +27,7 @@ const usePostCategories = (userId?: string) => {
       },
       revalidate: false
     })
+
   const addManual = (update: PostCategoryDto) =>
     _mutateManual([CACHE_KEY_POST_CATEGORIES, userId], update, {
       populateCache: (
@@ -38,8 +38,13 @@ const usePostCategories = (userId?: string) => {
       },
       revalidate: false
     })
-  const reorder = async (newOrder: PostCategoryDto[]) => {
+
+  const reorder = async (
+    oldOrder: PostCategoryDto[],
+    newOrder: PostCategoryDto[]
+  ) => {
     try {
+      setManual(newOrder)
       await api.reorderPostCategories({
         reorderPostCategoriesRequestDto: {
           postCategoryIds: newOrder.map(
@@ -47,39 +52,52 @@ const usePostCategories = (userId?: string) => {
           )
         }
       })
-      setManual(newOrder)
+      return true
     } catch (err) {
-      errorMessage(err)
+      setManual(oldOrder)
+      errorMessage(err, true)
+      mutate()
+      return false
     }
   }
 
   const addCategory = async (name: string) => {
     try {
       const id = await api.createPostCategory({
-        createPostCategoryRequestDto: { name }
+        createPostCategoryRequestDto: {
+          name,
+          order: postCategories?.length ?? 0
+        }
       })
       addManual({
         ...id,
         name,
-        order: (postCategories?.length ?? -1) + 1
+        order: (postCategories?.length ?? -1) + 1,
+        count: 0
       })
+      return true
     } catch (err) {
-      errorMessage(err)
+      errorMessage(err, true)
+      mutate()
+      return false
     }
   }
 
-  const deleteCategory = async (postCategoryId: string, order: number) => {
+  const deleteCategory = async (postCategoryId: string) => {
     try {
       await api.deletePostCategory({
-        deletePostCategoryRequestDto: { postCategoryId, order }
+        deletePostCategoryRequestDto: { postCategoryId }
       })
       setManual(
         postCategories?.filter(
           (postCategory) => postCategory.postCategoryId !== postCategoryId
         ) ?? []
       )
+      return true
     } catch (err) {
-      errorMessage(err)
+      errorMessage(err, true)
+      mutate()
+      return false
     }
   }
 

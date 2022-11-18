@@ -1,6 +1,6 @@
 import { ContentBareDto, ContentDto } from "@passes/api-client"
 import { useRouter } from "next/router"
-import MessagesPlusIcon from "public/icons/messages-plus-icon.svg"
+import SquarePlusIcon from "public/icons/square-plus-icon.svg"
 import { memo, Suspense, useState } from "react"
 
 import { CenterLoader } from "src/components/atoms/CenterLoader"
@@ -42,7 +42,7 @@ const MessagesPage = () => {
                 </SectionTitle>
                 {!!user.isCreator && !massMessage && (
                   <div className="mx-6 cursor-pointer lg:mr-0">
-                    <MessagesPlusIcon onClick={() => setMassMessage(true)} />
+                    <SquarePlusIcon onClick={() => setMassMessage(true)} />
                   </div>
                 )}
               </div>

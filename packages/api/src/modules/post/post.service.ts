@@ -359,7 +359,9 @@ export class PostService {
     const categoriesMap = new Map<string, PostCategoryDto[]>()
     posts.forEach((post) => (categoriesMap[post.id] = []))
     postCategories.forEach((postCategory) => {
-      categoriesMap[postCategory.post_id].add(new PostCategoryDto(postCategory))
+      categoriesMap[postCategory.post_id].push(
+        new PostCategoryDto(postCategory),
+      )
     })
 
     return posts.map((post) => {
@@ -450,12 +452,23 @@ export class PostService {
   }
 
   async removePost(userId: string, postId: string) {
-    const updated = await this.dbWriter<PostEntity>(PostEntity.table)
-      .where({ id: postId, user_id: userId, deleted_at: null })
-      .update({ deleted_at: new Date(), pinned_at: null })
-    await this.dbWriter<CreatorStatEntity>(CreatorStatEntity.table)
-      .where({ user_id: userId })
-      .decrement('num_posts', updated)
+    let updated = 0
+    await this.dbWriter.transaction(async (trx) => {
+      updated = await trx<PostEntity>(PostEntity.table)
+        .where({ id: postId, user_id: userId, deleted_at: null })
+        .update({ deleted_at: new Date(), pinned_at: null })
+      await trx<CreatorStatEntity>(CreatorStatEntity.table)
+        .where({ user_id: userId })
+        .decrement('num_posts', updated)
+      await trx<PostCategoryEntity>(PostCategoryEntity.table)
+        .leftJoin(
+          PostToCategoryEntity.table,
+          `${PostToCategoryEntity.table}.post_category_id`,
+          `${PostCategoryEntity.table}.id`,
+        )
+        .where(`${PostToCategoryEntity.table}.post_id`, postId)
+        .decrement(`${PostCategoryEntity.table}.count`, 1)
+    })
     return updated === 1
   }
 
@@ -953,7 +966,7 @@ export class PostService {
     getPostBuyersRequestDto: GetPostBuyersRequestDto,
   ): Promise<PostBuyerDto[]> {
     const { postId, lastId, paidAt } = getPostBuyersRequestDto
-    await this.checkPost(userId, postId)
+    await this.checkPost(userId, postId, true)
     let query = this.dbReader<PostUserAccessEntity>(PostUserAccessEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -992,6 +1005,7 @@ export class PostService {
       await this.dbReader<PostCategoryEntity>(PostCategoryEntity.table)
         .where({ user_id: userId })
         .select('*')
+        .orderBy('order', 'asc')
     ).map((postCategory) => new PostCategoryDto(postCategory))
   }
 
@@ -999,7 +1013,7 @@ export class PostService {
     userId: string,
     createPostCategoryRequestDto: CreatePostCategoryRequestDto,
   ) {
-    const { name } = createPostCategoryRequestDto
+    const { name, order } = createPostCategoryRequestDto
     const id = v4()
     const count = (
       await this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
@@ -1013,29 +1027,17 @@ export class PostService {
         `Can't have more than ${MAX_POST_CATEGORIES} post categories`,
       )
     }
-    await this.dbWriter.transaction(async (trx) => {
-      await createOrThrowOnDuplicate(
-        () =>
-          trx<PostCategoryEntity>(PostCategoryEntity.table).insert({
-            id,
-            user_id: userId,
-            name,
-            order: -1,
-          }),
-        this.logger,
-        `Post category ${name} already exists`,
-      )
-      await trx<PostCategoryEntity>(PostCategoryEntity.table)
-        .update(
-          'order',
-          this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table)
-            .where({
-              user_id: userId,
-            })
-            .count(),
-        )
-        .where({ id })
-    })
+    await createOrThrowOnDuplicate(
+      () =>
+        this.dbWriter<PostCategoryEntity>(PostCategoryEntity.table).insert({
+          id,
+          user_id: userId,
+          name,
+          order,
+        }),
+      this.logger,
+      `Post category ${name} already exists`,
+    )
     return id
   }
 
@@ -1106,7 +1108,7 @@ export class PostService {
     postToCategoryRequestDto: PostToCategoryRequestDto,
   ) {
     const { postId, postCategoryId } = postToCategoryRequestDto
-    await this.checkPost(userId, postId)
+    await this.checkPost(userId, postId, false)
     await this.checkPostCategory(userId, postCategoryId)
     await this.dbWriter.transaction(async (trx) => {
       await createOrThrowOnDuplicate(
@@ -1132,7 +1134,7 @@ export class PostService {
     postToCategoryRequestDto: PostToCategoryRequestDto,
   ) {
     const { postId, postCategoryId } = postToCategoryRequestDto
-    await this.checkPost(userId, postId)
+    await this.checkPost(userId, postId, false)
     await this.checkPostCategory(userId, postCategoryId)
     let update = 0
 
@@ -1148,13 +1150,15 @@ export class PostService {
     return update === 1
   }
 
-  async checkPost(userId: string, postId: string) {
-    if (
-      !(await this.dbWriter<PostEntity>(PostEntity.table)
-        .where({ id: postId, user_id: userId })
-        .select('id')
-        .first())
-    ) {
+  async checkPost(userId: string, postId: string, allowDeleted: boolean) {
+    let query = this.dbWriter<PostEntity>(PostEntity.table)
+      .where({ id: postId, user_id: userId })
+      .select('id')
+      .first()
+    if (!allowDeleted) {
+      query = query.andWhere({ deleted_at: null })
+    }
+    if (!(await query)) {
       throw new BadRequestException('Post not found')
     }
   }

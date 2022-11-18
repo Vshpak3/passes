@@ -25,12 +25,6 @@ export interface DeletePostCategoryRequestDto {
      * @memberof DeletePostCategoryRequestDto
      */
     postCategoryId: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof DeletePostCategoryRequestDto
-     */
-    order: number;
 }
 
 /**
@@ -39,7 +33,6 @@ export interface DeletePostCategoryRequestDto {
 export function instanceOfDeletePostCategoryRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "postCategoryId" in value;
-    isInstance = isInstance && "order" in value;
 
     return isInstance;
 }
@@ -55,7 +48,6 @@ export function DeletePostCategoryRequestDtoFromJSONTyped(json: any, ignoreDiscr
     return {
         
         'postCategoryId': json['postCategoryId'],
-        'order': json['order'],
     };
 }
 
@@ -69,7 +61,6 @@ export function DeletePostCategoryRequestDtoToJSON(value?: DeletePostCategoryReq
     return {
         
         'postCategoryId': value.postCategoryId,
-        'order': value.order,
     };
 }
 
