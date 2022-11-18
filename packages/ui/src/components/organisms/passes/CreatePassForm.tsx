@@ -47,7 +47,7 @@ export const CreatePassForm: FC<CreatePassFormProps> = ({ passType }) => {
   } Pass`
 
   return (
-    <div className="mx-auto mt-[-160px] grid grid-cols-10 justify-center gap-5 md:w-[653px] md:px-4 lg:w-[900px] lg:px-0">
+    <div className="mx-auto mt-4 grid grid-cols-10 justify-center gap-5 md:w-[653px] md:px-4 lg:w-[900px] lg:px-0">
       <CreatePassHeader title={createPassHeader} />
       {!isSubmitSuccessful && (
         <ConfirmationDialog

@@ -109,7 +109,7 @@ export const CreatePassButton: FC<CreatePassButtonProps> = ({
 }) => (
   <div className="my-6 flex justify-end md:my-0">
     <Button
-      className="w-full border-none !py-4 text-black transition-colors hover:bg-mauve-mauve12 hover:text-white md:w-[195px]"
+      className="w-full border-none !py-4 md:w-[195px]"
       disabled={isDisabled}
       fontSize={16}
       onClick={onCreateHandler}

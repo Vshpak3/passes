@@ -24,7 +24,7 @@ export const SelectPassType: FC<SelectPassTypeProps> = ({
     router.push(`/tools/manage-passes/create?passType=${type}`)
 
   return (
-    <div className="mx-auto mt-[-160px] w-full max-w-[1000px] grid-cols-10 justify-center gap-5 px-4 md:grid lg:px-0">
+    <div className="mx-auto mt-4 w-full max-w-[1000px] grid-cols-10 justify-center gap-5 px-4 md:grid lg:px-0">
       <CreatePassHeader title={createPassTitle} />
       <CreatePassOption
         colStyle="lg:col-[3_/_span_3]"
