@@ -29,7 +29,7 @@ const ListUnmemo: FC<ListProps> = ({ list, removable, update }) => {
     >
       <Link
         className="flex-1"
-        href={`/tools/list-members/${list.listId}`}
+        href={`/tools/list/list-members/${list.listId}`}
         key={list.listId}
       >
         <div className="flex flex-1 flex-col gap-[10px]">
