@@ -39,6 +39,12 @@ export interface GetPassesRequestDto {
     search?: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetPassesRequestDto
+     */
+    order: GetPassesRequestDtoOrderEnum;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetPassesRequestDto
      */
@@ -48,7 +54,7 @@ export interface GetPassesRequestDto {
      * @type {Date}
      * @memberof GetPassesRequestDto
      */
-    pinnedAt?: Date;
+    pinnedAt?: Date | null;
     /**
      * 
      * @type {string}
@@ -67,8 +73,23 @@ export interface GetPassesRequestDto {
      * @memberof GetPassesRequestDto
      */
     price?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetPassesRequestDto
+     */
+    orderType: GetPassesRequestDtoOrderTypeEnum;
 }
 
+
+/**
+ * @export
+ */
+export const GetPassesRequestDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetPassesRequestDtoOrderEnum = typeof GetPassesRequestDtoOrderEnum[keyof typeof GetPassesRequestDtoOrderEnum];
 
 /**
  * @export
@@ -80,12 +101,24 @@ export const GetPassesRequestDtoTypeEnum = {
 } as const;
 export type GetPassesRequestDtoTypeEnum = typeof GetPassesRequestDtoTypeEnum[keyof typeof GetPassesRequestDtoTypeEnum];
 
+/**
+ * @export
+ */
+export const GetPassesRequestDtoOrderTypeEnum = {
+    Price: 'price',
+    CreatedAt: 'created at',
+    PinnedAt: 'pinned at'
+} as const;
+export type GetPassesRequestDtoOrderTypeEnum = typeof GetPassesRequestDtoOrderTypeEnum[keyof typeof GetPassesRequestDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetPassesRequestDto interface.
  */
 export function instanceOfGetPassesRequestDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "orderType" in value;
 
     return isInstance;
 }
@@ -103,11 +136,13 @@ export function GetPassesRequestDtoFromJSONTyped(json: any, ignoreDiscriminator:
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
-        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'type': !exists(json, 'type') ? undefined : json['type'],
         'price': !exists(json, 'price') ? undefined : json['price'],
+        'orderType': json['orderType'],
     };
 }
 
@@ -123,11 +158,13 @@ export function GetPassesRequestDtoToJSON(value?: GetPassesRequestDto | null): a
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'search': value.search,
+        'order': value.order,
         'pinned': value.pinned,
-        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
         'creatorId': value.creatorId,
         'type': value.type,
         'price': value.price,
+        'orderType': value.orderType,
     };
 }
 

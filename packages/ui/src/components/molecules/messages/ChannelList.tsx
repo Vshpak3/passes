@@ -10,11 +10,13 @@ import classNames from "classnames"
 import { debounce } from "lodash"
 import ms from "ms"
 import React, { FC, useCallback, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { Checkbox } from "src/components/atoms/input/Checkbox"
 import {
   orderTypeDisplayNames,
   SortDropdown,
@@ -39,10 +41,12 @@ export const ChannelList: FC<ChannelListProps> = ({
 }) => {
   const [channelOrderType, setChannelOrderType] = useState<OrderType>("recent")
   const { user } = useUser()
-
+  const { register, watch } = useForm({ defaultValues: { unreadOnly: false } })
+  const unreadOnly = watch("unreadOnly")
   const sortOptions: SortOption<OrderType>[] = [
     { orderType: OrderType.Recent },
-    { orderType: OrderType.Tip }
+    { orderType: OrderType.Tip },
+    { orderType: OrderType.Spent }
   ]
 
   const [search, setSearch] = useState<string>("")
@@ -66,12 +70,12 @@ export const ChannelList: FC<ChannelListProps> = ({
 
   const fetchProps = useMemo(() => {
     return {
-      unreadOnly: false,
       order: GetChannelsRequestDtoOrderEnum.Desc,
       orderType: channelOrderType,
-      search
+      search,
+      unreadOnly
     }
-  }, [channelOrderType, search])
+  }, [channelOrderType, search, unreadOnly])
 
   return (
     <div
@@ -94,8 +98,16 @@ export const ChannelList: FC<ChannelListProps> = ({
             />
           </div>
           <div className="flex justify-between py-3 pr-3">
-            <div className="ml-auto mr-0">
-              {!!user?.isCreator && (
+            {!!user?.isCreator && (
+              <>
+                <div className="flex flex-row gap-2 px-4">
+                  Unread
+                  <Checkbox
+                    name="unreadOnly"
+                    register={register}
+                    type="toggle"
+                  />
+                </div>
                 <div className="flex items-start gap-[5px]">
                   <SortDropdown
                     onSelect={onSortSelect}
@@ -104,8 +116,8 @@ export const ChannelList: FC<ChannelListProps> = ({
                   />
                   {orderTypeDisplayNames[channelOrderType]}
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
 
           <InfiniteScrollPagination<ChannelMemberDto, GetChannelsResponseDto>

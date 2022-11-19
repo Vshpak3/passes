@@ -297,7 +297,7 @@ export interface RequestOpts {
 
 export function exists(json: any, key: string) {
     const value = json[key];
-    return value !== null && value !== undefined;
+    return value !== undefined;
 }
 
 export function querystring(params: HTTPQuery, prefix: string = ''): string {

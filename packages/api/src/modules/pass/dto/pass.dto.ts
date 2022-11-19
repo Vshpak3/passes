@@ -96,6 +96,9 @@ export class PassDto {
   @DtoProperty({ type: 'number', nullable: true })
   totalMessages: number | null
 
+  @DtoProperty({ type: 'number', optional: true })
+  amountMinted?: number
+
   constructor(
     pass:
       | (PassEntity & {
@@ -103,6 +106,7 @@ export class PassDto {
           creator_display_name?: string
         })
       | undefined,
+    isOwner?: boolean,
   ) {
     if (pass) {
       this.passId = pass.id
@@ -129,6 +133,9 @@ export class PassDto {
 
       this.creatorUsername = pass.creator_username
       this.creatorDisplayName = pass.creator_display_name
+      if (isOwner) {
+        this.amountMinted = pass.amount_minted
+      }
     }
   }
 }

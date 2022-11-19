@@ -8,10 +8,15 @@ type PostCategoryPillProps = PostCategoryPillCachedProps
 export const PostCategoryPill: FC<PostCategoryPillProps> = ({
   postCategory,
   onClick,
-  showCount
+  showCount,
+  selected
 }: PostCategoryPillProps) => {
   return (
-    <Button onClick={() => onClick(postCategory?.postCategoryId)}>
+    <Button
+      onClick={() =>
+        onClick(selected ? undefined : postCategory?.postCategoryId)
+      }
+    >
       {postCategory.name} {showCount && postCategory.count}
     </Button>
   )

@@ -26,6 +26,12 @@ const sidebarCreatorToolItems: SidebarNavigation[] = [
     creatorOnly: true
   },
   {
+    id: "pass-holder",
+    name: "Pass Holders",
+    href: "/tools/pass-holder",
+    creatorOnly: true
+  },
+  {
     id: "vault",
     name: "Vault",
     href: "/tools/vault",

@@ -8,6 +8,7 @@ export interface PostCategoryPillCachedProps {
   postCategory: PostCategoryDto
   onClick: (postCategoryId?: string) => void
   showCount: boolean
+  selected: boolean
 }
 
 export const PostCategoryPillCached: FC<PostCategoryPillCachedProps> = ({

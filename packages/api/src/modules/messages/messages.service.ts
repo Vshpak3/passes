@@ -26,6 +26,7 @@ import { ContentBareDto } from '../content/dto/content-bare'
 import { ContentEntity } from '../content/entities/content.entity'
 import { MINIMUM_MESSAGE_TIP_AMOUNT } from '../creator-settings/creator-settings.service'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { FollowEntity } from '../follow/entities/follow.entity'
 import { FollowBlockEntity } from '../follow/entities/follow-block.entity'
 import { ListService } from '../list/list.service'
@@ -223,7 +224,7 @@ export class MessagesService {
     userId: string,
     getChannelsRequestDto: GetChannelsRequestDto,
   ) {
-    const { lastId, search, order, recent, tip, orderType, unreadOnly } =
+    const { lastId, search, order, recent, tip, orderType, unreadOnly, spent } =
       getChannelsRequestDto
     let query = this.dbWriter<ChannelMemberEntity>(ChannelMemberEntity.table)
       .innerJoin(
@@ -268,6 +269,30 @@ export class MessagesService {
           'unread_tip',
           order,
           tip,
+          lastId,
+        )
+        break
+      case ChannelOrderTypeEnum.SPENT:
+        query = query
+          .leftJoin(
+            UserSpendingEntity.table,
+            `${UserSpendingEntity.table}.user_id`,
+            `${ChannelMemberEntity.table}.other_user_id`,
+          )
+          .where(function () {
+            return this.where(
+              `${UserSpendingEntity.table}.creator_id`,
+              userId,
+            ).orWhereNull(`${UserSpendingEntity.table}.creator_id`)
+          })
+          .select(`${UserSpendingEntity.table}.amount as spent`)
+        query = createPaginatedQuery(
+          query,
+          UserSpendingEntity.table,
+          ChannelMemberEntity.table,
+          'amount',
+          order,
+          spent,
           lastId,
         )
         break

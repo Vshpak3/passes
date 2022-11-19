@@ -102,7 +102,7 @@ export const InputMessage: FC<InputMessageProps> = ({
   const channelId = selectedChannel.channelId ?? ""
   const {
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
     setValue,
@@ -394,7 +394,8 @@ export const InputMessage: FC<InputMessageProps> = ({
                       isNaN(tip) ||
                       !!blocked ||
                       loading ||
-                      tip > MAX_TIP_MESSAGE_PRICE
+                      tip > MAX_TIP_MESSAGE_PRICE ||
+                      isSubmitting
                     }
                     disabledClass="cursor-not-allowed"
                     onClick={handleSubmit(submitMessage)}

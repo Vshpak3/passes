@@ -109,6 +109,12 @@ export interface ChannelMemberDto {
      * @memberof ChannelMemberDto
      */
     otherUserIsCreator: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChannelMemberDto
+     */
+    spent?: number | null;
 }
 
 /**
@@ -159,6 +165,7 @@ export function ChannelMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: bo
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
         'otherUserIsCreator': json['otherUserIsCreator'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
     };
 }
 
@@ -186,6 +193,7 @@ export function ChannelMemberDtoToJSON(value?: ChannelMemberDto | null): any {
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
         'otherUserIsCreator': value.otherUserIsCreator,
+        'spent': value.spent,
     };
 }
 

@@ -74,6 +74,7 @@ import { UserExternalPassEntity } from './entities/user-external-pass.entity'
 import { AccessTypeEnum } from './enum/access.enum'
 import { PassTypeEnum } from './enum/pass.enum'
 import { PassNotificationEnum } from './enum/pass.notification.enum'
+import { PassOrderTypeEnum } from './enum/pass.order.enum'
 import { PassAnimationEnum } from './enum/pass-animation.enum'
 import { PassImageEnum } from './enum/pass-image.enum'
 import {
@@ -499,10 +500,21 @@ export class PassService {
 
   async getCreatorPasses(
     getCreatorPassesRequestDto: GetPassesRequestDto,
+    userId?: string,
     passIds?: string[],
   ) {
-    const { pinnedAt, price, search, creatorId, lastId, pinned, type } =
-      getCreatorPassesRequestDto
+    const {
+      pinnedAt,
+      price,
+      search,
+      creatorId,
+      lastId,
+      pinned,
+      type,
+      orderType,
+      order,
+      createdAt,
+    } = getCreatorPassesRequestDto
     let query = this.dbReader<PassEntity>(PassEntity.table)
       .andWhere({ minted: true })
       .select('*')
@@ -520,15 +532,42 @@ export class PassService {
     if (passIds) {
       query = query.whereIn('id', passIds)
     } else {
-      query = createPaginatedQuery(
-        query,
-        PassEntity.table,
-        PassEntity.table,
-        pinned ? 'pinned_at' : 'price',
-        pinned ? OrderEnum.DESC : OrderEnum.ASC,
-        pinned ? pinnedAt : price,
-        lastId,
-      ).limit(MAX_PASSES_PER_REQUEST)
+      switch (orderType) {
+        case PassOrderTypeEnum.CREATED_AT:
+          query = createPaginatedQuery(
+            query,
+            PassEntity.table,
+            PassEntity.table,
+            'created_at',
+            order,
+            createdAt,
+            lastId,
+          )
+          break
+        case PassOrderTypeEnum.PRICE:
+          query = createPaginatedQuery(
+            query,
+            PassEntity.table,
+            PassEntity.table,
+            'price',
+            order,
+            price,
+            lastId,
+          )
+          break
+        case PassOrderTypeEnum.PINNED_AT:
+          query = createPaginatedQuery(
+            query,
+            PassEntity.table,
+            PassEntity.table,
+            'pinned_at',
+            order,
+            pinnedAt,
+            lastId,
+          )
+          break
+      }
+      query = query.limit(MAX_PASSES_PER_REQUEST)
 
       if (search && search.length) {
         // const strippedSearch = search.replace(/\W/g, '')
@@ -542,7 +581,7 @@ export class PassService {
       }
     }
     const passes = await query
-    return passes.map((pass) => new PassDto(pass))
+    return passes.map((pass) => new PassDto(pass, userId === pass.creator_id))
   }
 
   async getExternalPasses(getExternalPassesRequestDto: GetPassesRequestDto) {
@@ -752,7 +791,12 @@ export class PassService {
         )
     }
 
-    await this.dbWriter<PassHolderEntity>(PassHolderEntity.table).insert(data)
+    await this.dbWriter.transaction(async (trx) => {
+      await trx<PassHolderEntity>(PassHolderEntity.table).insert(data)
+      await trx<PassEntity>(PassEntity.table)
+        .where({ id: pass.id })
+        .increment('amount_minted')
+    })
     await this.passPurchased(userId, passId)
     const notification: PassHolderNotificationDto =
       new PassHolderNotificationDto(

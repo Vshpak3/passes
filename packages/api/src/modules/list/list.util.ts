@@ -21,7 +21,7 @@ export function createGetMemberQuery(
     search,
     lastId,
     metadataNumber,
-    amount,
+    spent,
   } = getListMembersRequestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
@@ -75,7 +75,7 @@ export function createGetMemberQuery(
         memberTable,
         'amount',
         order,
-        amount,
+        spent,
         lastId,
       )
       break

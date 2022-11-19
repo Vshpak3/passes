@@ -55,12 +55,16 @@ export class ChannelMemberDto extends ChannelDto {
   @DtoProperty({ type: 'boolean' })
   otherUserIsCreator: boolean
 
+  @DtoProperty({ type: 'number', optional: true, nullable: true })
+  spent?: number | null
+
   constructor(
     channelMember: ChannelMemberEntity &
       ChannelEntity & {
         other_user_username: string
         other_user_display_name: string
         other_user_is_creator: boolean
+        spent?: number | null
       },
   ) {
     super(channelMember)
@@ -80,6 +84,8 @@ export class ChannelMemberDto extends ChannelDto {
       this.otherUserUsername = channelMember.other_user_username
       this.otherUserDisplayName = channelMember.other_user_display_name
       this.otherUserIsCreator = channelMember.other_user_is_creator
+
+      this.spent = channelMember.spent
     }
   }
 }

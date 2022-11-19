@@ -46,6 +46,12 @@ export interface GetPassesResponseDto {
     search?: string;
     /**
      * 
+     * @type {string}
+     * @memberof GetPassesResponseDto
+     */
+    order: GetPassesResponseDtoOrderEnum;
+    /**
+     * 
      * @type {boolean}
      * @memberof GetPassesResponseDto
      */
@@ -55,7 +61,7 @@ export interface GetPassesResponseDto {
      * @type {Date}
      * @memberof GetPassesResponseDto
      */
-    pinnedAt?: Date;
+    pinnedAt?: Date | null;
     /**
      * 
      * @type {string}
@@ -76,12 +82,27 @@ export interface GetPassesResponseDto {
     price?: number;
     /**
      * 
+     * @type {string}
+     * @memberof GetPassesResponseDto
+     */
+    orderType: GetPassesResponseDtoOrderTypeEnum;
+    /**
+     * 
      * @type {Array<PassDto>}
      * @memberof GetPassesResponseDto
      */
     data: Array<PassDto>;
 }
 
+
+/**
+ * @export
+ */
+export const GetPassesResponseDtoOrderEnum = {
+    Asc: 'asc',
+    Desc: 'desc'
+} as const;
+export type GetPassesResponseDtoOrderEnum = typeof GetPassesResponseDtoOrderEnum[keyof typeof GetPassesResponseDtoOrderEnum];
 
 /**
  * @export
@@ -93,12 +114,24 @@ export const GetPassesResponseDtoTypeEnum = {
 } as const;
 export type GetPassesResponseDtoTypeEnum = typeof GetPassesResponseDtoTypeEnum[keyof typeof GetPassesResponseDtoTypeEnum];
 
+/**
+ * @export
+ */
+export const GetPassesResponseDtoOrderTypeEnum = {
+    Price: 'price',
+    CreatedAt: 'created at',
+    PinnedAt: 'pinned at'
+} as const;
+export type GetPassesResponseDtoOrderTypeEnum = typeof GetPassesResponseDtoOrderTypeEnum[keyof typeof GetPassesResponseDtoOrderTypeEnum];
+
 
 /**
  * Check if a given object implements the GetPassesResponseDto interface.
  */
 export function instanceOfGetPassesResponseDto(value: object): boolean {
     let isInstance = true;
+    isInstance = isInstance && "order" in value;
+    isInstance = isInstance && "orderType" in value;
     isInstance = isInstance && "data" in value;
 
     return isInstance;
@@ -117,11 +150,13 @@ export function GetPassesResponseDtoFromJSONTyped(json: any, ignoreDiscriminator
         'createdAt': !exists(json, 'createdAt') ? undefined : (new Date(json['createdAt'])),
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
+        'order': json['order'],
         'pinned': !exists(json, 'pinned') ? undefined : json['pinned'],
-        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (new Date(json['pinnedAt'])),
+        'pinnedAt': !exists(json, 'pinnedAt') ? undefined : (json['pinnedAt'] === null ? null : new Date(json['pinnedAt'])),
         'creatorId': !exists(json, 'creatorId') ? undefined : json['creatorId'],
         'type': !exists(json, 'type') ? undefined : json['type'],
         'price': !exists(json, 'price') ? undefined : json['price'],
+        'orderType': json['orderType'],
         'data': ((json['data'] as Array<any>).map(PassDtoFromJSON)),
     };
 }
@@ -138,11 +173,13 @@ export function GetPassesResponseDtoToJSON(value?: GetPassesResponseDto | null):
         'createdAt': value.createdAt === undefined ? undefined : (value.createdAt.toISOString()),
         'lastId': value.lastId,
         'search': value.search,
+        'order': value.order,
         'pinned': value.pinned,
-        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt.toISOString()),
+        'pinnedAt': value.pinnedAt === undefined ? undefined : (value.pinnedAt === null ? null : value.pinnedAt.toISOString()),
         'creatorId': value.creatorId,
         'type': value.type,
         'price': value.price,
+        'orderType': value.orderType,
         'data': ((value.data as Array<any>).map(PassDtoToJSON)),
     };
 }

@@ -105,6 +105,11 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
     }
   }, [isConnected, attempts, socket])
 
+  const handleScrollToBottom = useCallback(() => {
+    bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
+    setUnreadCount(0)
+  }, [bottomOfChatRef])
+
   useEffect(() => {
     if (socket) {
       socket.on("message", (data) => {
@@ -195,11 +200,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       })
     }
   }, [channelId, otherUserId])
-
-  const handleScrollToBottom = useCallback(() => {
-    bottomOfChatRef.current?.scrollIntoView({ behavior: "smooth" })
-    setUnreadCount(0)
-  }, [bottomOfChatRef])
 
   useLayoutEffect(() => {
     // if you scroll to the bottom, get rid of unread message IDs

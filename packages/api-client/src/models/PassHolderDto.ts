@@ -153,6 +153,12 @@ export interface PassHolderDto {
     totalMessages: number | null;
     /**
      * 
+     * @type {number}
+     * @memberof PassHolderDto
+     */
+    amountMinted?: number;
+    /**
+     * 
      * @type {string}
      * @memberof PassHolderDto
      */
@@ -318,6 +324,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'animationType': json['animationType'],
         'accessType': json['accessType'],
         'totalMessages': json['totalMessages'],
+        'amountMinted': !exists(json, 'amountMinted') ? undefined : json['amountMinted'],
         'passHolderId': json['passHolderId'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'walletId': !exists(json, 'walletId') ? undefined : json['walletId'],
@@ -361,6 +368,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'animationType': value.animationType,
         'accessType': value.accessType,
         'totalMessages': value.totalMessages,
+        'amountMinted': value.amountMinted,
         'passHolderId': value.passHolderId,
         'holderId': value.holderId,
         'walletId': value.walletId,

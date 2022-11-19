@@ -68,6 +68,9 @@ export class PassEntity extends BaseEntity {
   @Property()
   remaining_supply: number | null
 
+  @Property({ default: 0 })
+  amount_minted: number
+
   // null means unlimited
   @Property({ default: 0 })
   messages: number | null

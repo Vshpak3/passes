@@ -48,7 +48,7 @@ export interface SearchFollowRequestDto {
      * @type {number}
      * @memberof SearchFollowRequestDto
      */
-    amount?: number;
+    spent?: number | null;
     /**
      * 
      * @type {string}
@@ -129,7 +129,7 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
-        'amount': !exists(json, 'amount') ? undefined : json['amount'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
@@ -151,7 +151,7 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
-        'amount': value.amount,
+        'spent': value.spent,
         'username': value.username,
         'displayName': value.displayName,
         'metadataNumber': value.metadataNumber,

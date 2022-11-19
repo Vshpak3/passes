@@ -18,6 +18,7 @@ import { ContentService } from '../content/content.service'
 import { ListOrderTypeEnum } from '../list/enum/list.order.enum'
 import { ListService } from '../list/list.service'
 import { MessagesService } from '../messages/messages.service'
+import { PassOrderTypeEnum } from '../pass/enum/pass.order.enum'
 import { PassService } from '../pass/pass.service'
 import { PostService } from '../post/post.service'
 import { SCHEDULE_MINUTE_LIMIT } from './constants/limits'
@@ -31,6 +32,11 @@ import { checkScheduledAt } from './scheduled.util'
 
 const EXECUTION_TIME_BUFFER = ms('45 minutes')
 const NO_EVENT_TYPE_ERROR = 'no type in event'
+
+const DEFAULT_PASS_QUERY = {
+  orderType: PassOrderTypeEnum.CREATED_AT,
+  order: OrderEnum.DESC,
+}
 @Injectable()
 export class ScheduledService {
   constructor(
@@ -104,7 +110,8 @@ export class ScheduledService {
             }
             await this.postService.validateCreatePost(userId, createPost)
             event.passes = await this.passService.getCreatorPasses(
-              {},
+              DEFAULT_PASS_QUERY,
+              userId,
               createPost.passIds,
             )
             event.contents = (
@@ -130,7 +137,8 @@ export class ScheduledService {
               throw new BadRequestException('batch message body is empty')
             }
             event.passes = await this.passService.getCreatorPasses(
-              {},
+              DEFAULT_PASS_QUERY,
+              userId,
               batchMessage.passIds,
             )
             event.contents = (

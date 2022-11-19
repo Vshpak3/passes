@@ -1,4 +1,9 @@
-import { PassApi, PassDto } from "@passes/api-client"
+import {
+  GetPassesRequestDtoOrderEnum,
+  GetPassesRequestDtoOrderTypeEnum,
+  PassApi,
+  PassDto
+} from "@passes/api-client"
 import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -13,7 +18,12 @@ export const useCreatorPasses = (creatorId?: string) => {
     async () => {
       return (
         await api.getCreatorPasses({
-          getPassesRequestDto: { creatorId, pinned: true }
+          getPassesRequestDto: {
+            creatorId,
+            pinned: true,
+            orderType: GetPassesRequestDtoOrderTypeEnum.PinnedAt,
+            order: GetPassesRequestDtoOrderEnum.Desc
+          }
         })
       ).data
     },
@@ -26,7 +36,11 @@ export const useCreatorPasses = (creatorId?: string) => {
     async () => {
       return (
         await api.getCreatorPasses({
-          getPassesRequestDto: { creatorId }
+          getPassesRequestDto: {
+            creatorId,
+            orderType: GetPassesRequestDtoOrderTypeEnum.CreatedAt,
+            order: GetPassesRequestDtoOrderEnum.Desc
+          }
         })
       ).data
     },

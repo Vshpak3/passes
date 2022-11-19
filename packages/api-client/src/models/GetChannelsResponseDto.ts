@@ -46,6 +46,12 @@ export interface GetChannelsResponseDto {
     order: GetChannelsResponseDtoOrderEnum;
     /**
      * 
+     * @type {number}
+     * @memberof GetChannelsResponseDto
+     */
+    spent?: number | null;
+    /**
+     * 
      * @type {Date}
      * @memberof GetChannelsResponseDto
      */
@@ -91,7 +97,8 @@ export type GetChannelsResponseDtoOrderEnum = typeof GetChannelsResponseDtoOrder
  */
 export const GetChannelsResponseDtoOrderTypeEnum = {
     Recent: 'recent',
-    Tip: 'tip'
+    Tip: 'tip',
+    Spent: 'spent'
 } as const;
 export type GetChannelsResponseDtoOrderTypeEnum = typeof GetChannelsResponseDtoOrderTypeEnum[keyof typeof GetChannelsResponseDtoOrderTypeEnum];
 
@@ -122,6 +129,7 @@ export function GetChannelsResponseDtoFromJSONTyped(json: any, ignoreDiscriminat
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
         'recent': !exists(json, 'recent') ? undefined : (new Date(json['recent'])),
         'tip': !exists(json, 'tip') ? undefined : json['tip'],
         'orderType': json['orderType'],
@@ -142,6 +150,7 @@ export function GetChannelsResponseDtoToJSON(value?: GetChannelsResponseDto | nu
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'spent': value.spent,
         'recent': value.recent === undefined ? undefined : (value.recent.toISOString()),
         'tip': value.tip,
         'orderType': value.orderType,

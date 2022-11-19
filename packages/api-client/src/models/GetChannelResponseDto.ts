@@ -109,6 +109,12 @@ export interface GetChannelResponseDto {
      * @memberof GetChannelResponseDto
      */
     otherUserIsCreator: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetChannelResponseDto
+     */
+    spent?: number | null;
 }
 
 /**
@@ -159,6 +165,7 @@ export function GetChannelResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'otherUserUsername': json['otherUserUsername'],
         'otherUserDisplayName': json['otherUserDisplayName'],
         'otherUserIsCreator': json['otherUserIsCreator'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
     };
 }
 
@@ -186,6 +193,7 @@ export function GetChannelResponseDtoToJSON(value?: GetChannelResponseDto | null
         'otherUserUsername': value.otherUserUsername,
         'otherUserDisplayName': value.otherUserDisplayName,
         'otherUserIsCreator': value.otherUserIsCreator,
+        'spent': value.spent,
     };
 }
 

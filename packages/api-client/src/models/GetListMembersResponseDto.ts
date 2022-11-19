@@ -55,7 +55,7 @@ export interface GetListMembersResponseDto {
      * @type {number}
      * @memberof GetListMembersResponseDto
      */
-    amount?: number;
+    spent?: number | null;
     /**
      * 
      * @type {string}
@@ -144,7 +144,7 @@ export function GetListMembersResponseDtoFromJSONTyped(json: any, ignoreDiscrimi
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
-        'amount': !exists(json, 'amount') ? undefined : json['amount'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -167,7 +167,7 @@ export function GetListMembersResponseDtoToJSON(value?: GetListMembersResponseDt
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
-        'amount': value.amount,
+        'spent': value.spent,
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,

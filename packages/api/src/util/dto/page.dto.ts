@@ -29,11 +29,11 @@ export class PageRequestDto {
   @DtoProperty({ type: 'boolean', optional: true })
   pinned?: boolean
 
-  @DtoProperty({ type: 'date', optional: true })
-  pinnedAt?: Date
+  @DtoProperty({ type: 'date', optional: true, nullable: true })
+  pinnedAt?: Date | null
 
-  @DtoProperty({ type: 'currency', optional: true })
-  amount?: number
+  @DtoProperty({ type: 'currency', optional: true, nullable: true })
+  spent?: number | null
 }
 
 export interface PageResponseDto<DataDto> {

@@ -1,5 +1,7 @@
 import {
   GetPassesRequestDto,
+  GetPassesRequestDtoOrderEnum,
+  GetPassesRequestDtoOrderTypeEnum,
   GetPassesResponseDto,
   PassApi,
   PassDto
@@ -26,7 +28,12 @@ export const PassesFeed: FC<PassesFeedProps> = ({ creatorId }) => {
   usePassWebhook()
 
   const fetchProps = useMemo(() => {
-    return { creatorId, type: selectedPassType }
+    return {
+      creatorId,
+      type: selectedPassType,
+      orderType: GetPassesRequestDtoOrderTypeEnum.Price,
+      order: GetPassesRequestDtoOrderEnum.Asc
+    }
   }, [creatorId, selectedPassType])
 
   return (

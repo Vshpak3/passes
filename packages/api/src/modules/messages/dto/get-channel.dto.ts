@@ -16,6 +16,7 @@ export class GetChannelsRequestDto extends PickType(PageRequestDto, [
   'lastId',
   'search',
   'order',
+  'spent',
 ]) {
   @DtoProperty({ type: 'date', optional: true })
   recent?: Date
@@ -56,6 +57,9 @@ export class GetChannelsResponseDto
           break
         case ChannelOrderTypeEnum.TIP:
           this.tip = channelMembers[channelMembers.length - 1].unreadTip
+          break
+        case ChannelOrderTypeEnum.SPENT:
+          this.spent = channelMembers[channelMembers.length - 1].spent
           break
       }
     }

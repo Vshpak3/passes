@@ -151,6 +151,12 @@ export interface GetPassResponseDto {
      * @memberof GetPassResponseDto
      */
     totalMessages: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetPassResponseDto
+     */
+    amountMinted?: number;
 }
 
 
@@ -262,6 +268,7 @@ export function GetPassResponseDtoFromJSONTyped(json: any, ignoreDiscriminator: 
         'animationType': json['animationType'],
         'accessType': json['accessType'],
         'totalMessages': json['totalMessages'],
+        'amountMinted': !exists(json, 'amountMinted') ? undefined : json['amountMinted'],
     };
 }
 
@@ -296,6 +303,7 @@ export function GetPassResponseDtoToJSON(value?: GetPassResponseDto | null): any
         'animationType': value.animationType,
         'accessType': value.accessType,
         'totalMessages': value.totalMessages,
+        'amountMinted': value.amountMinted,
     };
 }
 

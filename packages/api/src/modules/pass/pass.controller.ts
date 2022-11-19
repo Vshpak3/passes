@@ -98,10 +98,14 @@ export class PassController {
   })
   @Post('creator-passes')
   async getCreatorPasses(
+    @Req() req: RequestWithUser,
     @Body() getPassesRequestDto: GetPassesRequestDto,
   ): Promise<GetPassesResponseDto> {
     return new GetPassesResponseDto(
-      await this.passService.getCreatorPasses(getPassesRequestDto),
+      await this.passService.getCreatorPasses(
+        getPassesRequestDto,
+        req.user?.id,
+      ),
       getPassesRequestDto,
     )
   }

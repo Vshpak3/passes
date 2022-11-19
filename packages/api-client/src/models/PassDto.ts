@@ -151,6 +151,12 @@ export interface PassDto {
      * @memberof PassDto
      */
     totalMessages: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PassDto
+     */
+    amountMinted?: number;
 }
 
 
@@ -262,6 +268,7 @@ export function PassDtoFromJSONTyped(json: any, ignoreDiscriminator: boolean): P
         'animationType': json['animationType'],
         'accessType': json['accessType'],
         'totalMessages': json['totalMessages'],
+        'amountMinted': !exists(json, 'amountMinted') ? undefined : json['amountMinted'],
     };
 }
 
@@ -296,6 +303,7 @@ export function PassDtoToJSON(value?: PassDto | null): any {
         'animationType': value.animationType,
         'accessType': value.accessType,
         'totalMessages': value.totalMessages,
+        'amountMinted': value.amountMinted,
     };
 }
 

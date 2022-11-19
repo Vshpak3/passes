@@ -1,4 +1,9 @@
-import { PassApi, PassDto } from "@passes/api-client"
+import {
+  GetPassesRequestDtoOrderEnum,
+  GetPassesRequestDtoOrderTypeEnum,
+  PassApi,
+  PassDto
+} from "@passes/api-client"
 import { useMemo } from "react"
 
 import { useSearch } from "src/hooks/search/useSearch"
@@ -12,7 +17,9 @@ export const usePassesSearch = (creatorId?: string) => {
         await api.getCreatorPasses({
           getPassesRequestDto: {
             creatorId,
-            search: searchValue
+            search: searchValue,
+            orderType: GetPassesRequestDtoOrderTypeEnum.CreatedAt,
+            order: GetPassesRequestDtoOrderEnum.Desc
           }
         })
       ).data
