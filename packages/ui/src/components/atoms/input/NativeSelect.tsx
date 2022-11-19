@@ -29,7 +29,7 @@ type NativeSelectProps = {
   errors?: FormErrors
   defaultValue?: FormSelectOption
   placeholder?: FormPlaceholder
-  selectOptions?: FormSelectOptions
+  selectOptions: FormSelectOptions
   className?: string
   transparent?: boolean
   hasError?: boolean
@@ -46,7 +46,7 @@ export const NativeSelect: FC<NativeSelectProps> = ({
   placeholder = "",
   className = "",
   onCustomChange,
-  transparent = false,
+  transparent = true,
   hasError = false
 }) => {
   const control = onCustomChange
@@ -55,6 +55,7 @@ export const NativeSelect: FC<NativeSelectProps> = ({
           onCustomChange(event.currentTarget.value)
       }
     : register(name, options)
+  const emptyOption = { value: "", label: "" }
 
   return (
     <div className="relative">
@@ -74,10 +75,7 @@ export const NativeSelect: FC<NativeSelectProps> = ({
         placeholder={placeholder}
         {...control}
       >
-        <option disabled selected value="">
-          {" "}
-        </option>
-        {selectOptions?.map((option) => (
+        {[emptyOption, ...selectOptions]?.map((option) => (
           <option
             className="block cursor-pointer p-2 py-1 px-4"
             key={typeof option === "string" ? option : option.value}
