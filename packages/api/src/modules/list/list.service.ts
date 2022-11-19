@@ -277,7 +277,12 @@ export class ListService {
           `${ListMemberEntity.table}.meta_number`,
           `${UserSpendingEntity.table}.amount as spent`,
         ])
-        .where(`${UserSpendingEntity.table}.creator_id`, userId)
+        .where(function () {
+          return this.where(
+            `${UserSpendingEntity.table}.creator_id`,
+            userId,
+          ).orWhereNull(`${UserSpendingEntity.table}.creator_id`)
+        })
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,

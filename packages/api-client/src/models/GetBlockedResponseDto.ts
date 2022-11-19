@@ -52,6 +52,12 @@ export interface GetBlockedResponseDto {
     order: GetBlockedResponseDtoOrderEnum;
     /**
      * 
+     * @type {number}
+     * @memberof GetBlockedResponseDto
+     */
+    amount?: number;
+    /**
+     * 
      * @type {string}
      * @memberof GetBlockedResponseDto
      */
@@ -105,6 +111,7 @@ export const GetBlockedResponseDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at',
+    Spent: 'spent',
     Metadata: 'metadata'
 } as const;
 export type GetBlockedResponseDtoOrderTypeEnum = typeof GetBlockedResponseDtoOrderTypeEnum[keyof typeof GetBlockedResponseDtoOrderTypeEnum];
@@ -137,6 +144,7 @@ export function GetBlockedResponseDtoFromJSONTyped(json: any, ignoreDiscriminato
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -159,6 +167,7 @@ export function GetBlockedResponseDtoToJSON(value?: GetBlockedResponseDto | null
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'amount': value.amount,
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,

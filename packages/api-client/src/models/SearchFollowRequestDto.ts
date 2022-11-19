@@ -45,6 +45,12 @@ export interface SearchFollowRequestDto {
     order: SearchFollowRequestDtoOrderEnum;
     /**
      * 
+     * @type {number}
+     * @memberof SearchFollowRequestDto
+     */
+    amount?: number;
+    /**
+     * 
      * @type {string}
      * @memberof SearchFollowRequestDto
      */
@@ -92,6 +98,7 @@ export const SearchFollowRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at',
+    Spent: 'spent',
     Metadata: 'metadata'
 } as const;
 export type SearchFollowRequestDtoOrderTypeEnum = typeof SearchFollowRequestDtoOrderTypeEnum[keyof typeof SearchFollowRequestDtoOrderTypeEnum];
@@ -122,6 +129,7 @@ export function SearchFollowRequestDtoFromJSONTyped(json: any, ignoreDiscriminat
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'metadataNumber': !exists(json, 'metadataNumber') ? undefined : json['metadataNumber'],
@@ -143,6 +151,7 @@ export function SearchFollowRequestDtoToJSON(value?: SearchFollowRequestDto | nu
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'amount': value.amount,
         'username': value.username,
         'displayName': value.displayName,
         'metadataNumber': value.metadataNumber,

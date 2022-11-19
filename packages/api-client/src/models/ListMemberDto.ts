@@ -67,6 +67,12 @@ export interface ListMemberDto {
      * @memberof ListMemberDto
      */
     metaDate?: Date | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ListMemberDto
+     */
+    spent?: number | null;
 }
 
 /**
@@ -101,6 +107,7 @@ export function ListMemberDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'createdAt': (new Date(json['createdAt'])),
         'metaNumber': !exists(json, 'metaNumber') ? undefined : json['metaNumber'],
         'metaDate': !exists(json, 'metaDate') ? undefined : (json['metaDate'] === null ? null : new Date(json['metaDate'])),
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
     };
 }
 
@@ -121,6 +128,7 @@ export function ListMemberDtoToJSON(value?: ListMemberDto | null): any {
         'createdAt': (value.createdAt.toISOString()),
         'metaNumber': value.metaNumber,
         'metaDate': value.metaDate === undefined ? undefined : (value.metaDate === null ? null : value.metaDate.toISOString()),
+        'spent': value.spent,
     };
 }
 

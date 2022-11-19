@@ -64,7 +64,14 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
               isCreator={channel.otherUserIsCreator}
               username={channel.otherUserUsername}
             />
-            <p className="w-[60%] truncate text-[14px] font-medium text-white/30">
+            <p
+              className={classNames(
+                channel.unread
+                  ? "font-bold text-white/60"
+                  : "font-medium text-white/30",
+                "w-[60%] truncate text-[14px]"
+              )}
+            >
               {preview}
             </p>
           </div>
@@ -78,7 +85,12 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
         )}
       </div>
       <TimeAgo
-        className="absolute right-4 bottom-1 self-end text-[11px] font-medium leading-[17px] text-white/30"
+        className={classNames(
+          channel.unread
+            ? "font-bold text-white/60"
+            : "font-medium text-white/30",
+          "absolute right-4 bottom-1 self-end text-[11px] leading-[17px]"
+        )}
         date={channel?.recent ? channel.recent : ""}
         key={channel.channelId}
         minPeriod={30}

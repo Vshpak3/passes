@@ -45,6 +45,12 @@ export interface GetListMembersRequestDto {
     order: GetListMembersRequestDtoOrderEnum;
     /**
      * 
+     * @type {number}
+     * @memberof GetListMembersRequestDto
+     */
+    amount?: number;
+    /**
+     * 
      * @type {string}
      * @memberof GetListMembersRequestDto
      */
@@ -92,6 +98,7 @@ export const GetListMembersRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at',
+    Spent: 'spent',
     Metadata: 'metadata'
 } as const;
 export type GetListMembersRequestDtoOrderTypeEnum = typeof GetListMembersRequestDtoOrderTypeEnum[keyof typeof GetListMembersRequestDtoOrderTypeEnum];
@@ -123,6 +130,7 @@ export function GetListMembersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'amount': !exists(json, 'amount') ? undefined : json['amount'],
         'listId': json['listId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
@@ -144,6 +152,7 @@ export function GetListMembersRequestDtoToJSON(value?: GetListMembersRequestDto 
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'amount': value.amount,
         'listId': value.listId,
         'username': value.username,
         'displayName': value.displayName,

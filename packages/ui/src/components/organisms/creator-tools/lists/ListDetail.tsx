@@ -200,7 +200,7 @@ export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                 type="text"
               />
             </span>
-            {list && list.type === GetListResponseDtoTypeEnum.TopSpenders ? (
+            {list && list.type !== GetListResponseDtoTypeEnum.TopSpenders ? (
               <SortDropdown
                 onSelect={onSortSelect}
                 options={[
@@ -218,6 +218,10 @@ export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
                   },
                   {
                     orderType: OrderType.CreatedAt,
+                    order: "desc"
+                  },
+                  {
+                    orderType: OrderType.Spent,
                     order: "desc"
                   }
                 ]}

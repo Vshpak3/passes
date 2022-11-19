@@ -20,6 +20,7 @@ import { rejectIfAny } from '../../util/promise.util'
 import { CommentEntity } from '../comment/entities/comment.entity'
 import { CreatorSettingsEntity } from '../creator-settings/entities/creator-settings.entity'
 import { CreatorStatEntity } from '../creator-stats/entities/creator-stat.entity'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { FanWallCommentEntity } from '../fan-wall/entities/fan-wall-comment.entity'
 import { ListMemberDto } from '../list/dto/list-member.dto'
 import { ListMemberEntity } from '../list/entities/list-member.entity'
@@ -180,6 +181,11 @@ export class FollowService {
     searchFanDto: SearchFollowRequestDto,
   ): Promise<ListMemberDto[]> {
     let query = this.dbReader<FollowEntity>(FollowEntity.table)
+      .leftJoin(
+        UserSpendingEntity.table,
+        `${UserSpendingEntity.table}.user_id`,
+        `${FollowEntity.table}.follower_id`,
+      )
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -192,6 +198,12 @@ export class FollowService {
         `${FollowEntity.table}.id as follow`,
         `${FollowEntity.table}.created_at`,
       )
+      .where(function () {
+        return this.where(
+          `${UserSpendingEntity.table}.creator_id`,
+          userId,
+        ).orWhereNull(`${UserSpendingEntity.table}.creator_id`)
+      })
       .andWhere(`${FollowEntity.table}.creator_id`, userId)
     if (searchFanDto.excludeListId) {
       query = query.whereNotIn(
@@ -218,6 +230,11 @@ export class FollowService {
     searchFollowingDto: SearchFollowRequestDto,
   ): Promise<ListMemberDto[]> {
     let query = this.dbReader<FollowEntity>(FollowEntity.table)
+      .leftJoin(
+        UserSpendingEntity.table,
+        `${UserSpendingEntity.table}.user_id`,
+        `${FollowEntity.table}.creator_id`,
+      )
       .innerJoin(
         UserEntity.table,
         `${UserEntity.table}.id`,
@@ -230,6 +247,12 @@ export class FollowService {
         `${FollowEntity.table}.id as follow`,
         `${FollowEntity.table}.created_at`,
       )
+      .where(function () {
+        return this.where(
+          `${UserSpendingEntity.table}.creator_id`,
+          userId,
+        ).orWhereNull(`${UserSpendingEntity.table}.creator_id`)
+      })
       .andWhere(`${FollowEntity.table}.follower_id`, userId)
 
     query = createGetMemberQuery(

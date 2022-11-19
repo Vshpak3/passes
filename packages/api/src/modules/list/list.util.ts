@@ -73,7 +73,7 @@ export function createGetMemberQuery(
         query,
         UserSpendingEntity.table,
         memberTable,
-        'spent',
+        'amount',
         order,
         amount,
         lastId,

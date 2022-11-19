@@ -15,7 +15,8 @@ export const orderTypeDisplayNames: Record<string, string> = {
   oldest: "Oldest",
   tip: "Recent tip",
   purchased: "Purchased",
-  notPurchased: "Not purchased"
+  notPurchased: "Not purchased",
+  spent: "Spent"
 }
 
 const sortPopperId = "sort-popper"
