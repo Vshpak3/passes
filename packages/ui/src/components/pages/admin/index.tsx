@@ -58,8 +58,8 @@ export const Admin = () => {
   return (
     <>
       {ready && (
-        <div className="flex h-screen w-full flex-col">
-          <div className="flex w-full items-center justify-between p-4">
+        <div className="flex h-screen w-full flex-col overflow-hidden">
+          <div className="flex w-full items-center justify-between px-8 py-4">
             <span className="text-xl font-bold">Admin</span>
           </div>
           <div className=" flex flex-1 flex-row border-t-[1px] border-passes-dark-200">
