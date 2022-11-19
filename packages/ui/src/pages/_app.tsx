@@ -132,6 +132,10 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     null
   )
 
+  if (typeof cookieSettings === "object") {
+    setCookieSettings(JSON.stringify(cookieSettings))
+  }
+
   const { hasRefreshed, router, user } = useTokenRefresh()
   const { setPayin, complete, reset } = useThreeDS()
 
