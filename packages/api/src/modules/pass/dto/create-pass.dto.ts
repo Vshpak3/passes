@@ -48,8 +48,8 @@ export class CreatePassRequestDto {
 
   @Min(PASS_MIN_ROYALTIES)
   @Max(PASS_MAX_ROYALTIES)
-  @DtoProperty({ type: 'number' })
-  royalties: number
+  @DtoProperty({ type: 'number', optional: true })
+  royalties?: number
 
   @DtoProperty({
     custom_type: PassAnimationEnum,
@@ -58,8 +58,8 @@ export class CreatePassRequestDto {
   })
   animationType?: PassAnimationEnum | null
 
-  @DtoProperty({ custom_type: PassImageEnum })
-  imageType: PassImageEnum
+  @DtoProperty({ custom_type: PassImageEnum, optional: true })
+  imageType?: PassImageEnum
 
   @DtoProperty({ custom_type: AccessTypeEnum })
   accessType: AccessTypeEnum

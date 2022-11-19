@@ -31,6 +31,9 @@ export class PageRequestDto {
 
   @DtoProperty({ type: 'date', optional: true })
   pinnedAt?: Date
+
+  @DtoProperty({ type: 'currency', optional: true })
+  amount?: number
 }
 
 export interface PageResponseDto<DataDto> {

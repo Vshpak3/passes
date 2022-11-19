@@ -93,6 +93,7 @@ export const MAX_PASSHOLDERS_PER_REQUEST = 20
 const MAX_PASSES_PER_CREATOR = 1000
 const MAX_PINNED_PASSES = 3 // @share-with-frontend pass
 const MAX_PASSES_PER_WEEK = 5
+const DEFAULT_ROYALTIES_AMOUNT = 2000
 
 @Injectable()
 export class PassService {
@@ -162,10 +163,11 @@ export class PassService {
       remaining_supply: totalSupply,
       chain: chain,
       symbol: DEFAULT_PASS_SYMBOL,
-      royalties: royalties,
-      animation_type: animationType,
-      image_type: imageType,
-      access_type: accessType,
+      royalties: royalties === undefined ? DEFAULT_ROYALTIES_AMOUNT : royalties,
+      animation_type:
+        animationType === undefined ? PassAnimationEnum.MP4 : animationType,
+      image_type: imageType === undefined ? PassImageEnum.PNG : imageType,
+      access_type: AccessTypeEnum.PASS_ACCESS,
       collection_address: '',
     }
   }
@@ -184,8 +186,8 @@ export class PassService {
             data.title,
             'PASS',
             data.description,
-            createPassDto.imageType,
-            createPassDto.animationType ?? undefined,
+            data.image_type,
+            data.animation_type ?? undefined,
           )
         ).passPubKey
         break

@@ -253,6 +253,11 @@ export class ListService {
           `${ListMemberEntity.table}.user_id`,
           `${UserEntity.table}.id`,
         )
+        .leftJoin(
+          UserSpendingEntity.table,
+          `${UserSpendingEntity.table}.user_id`,
+          `${ListMemberEntity.table}.user_id`,
+        )
         .leftJoin(FollowEntity.table, function () {
           this.on(
             `${ListMemberEntity.table}.user_id`,
@@ -270,7 +275,9 @@ export class ListService {
           `${ListMemberEntity.table}.id`,
           `${ListMemberEntity.table}.created_at`,
           `${ListMemberEntity.table}.meta_number`,
+          `${UserSpendingEntity.table}.amount as spent`,
         ])
+        .where(`${UserSpendingEntity.table}.creator_id`, userId)
         .where(
           `${ListMemberEntity.table}.list_id`,
           getListMembersRequestDto.listId,

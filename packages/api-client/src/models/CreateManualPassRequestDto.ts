@@ -78,7 +78,7 @@ export interface CreateManualPassRequestDto {
      * @type {number}
      * @memberof CreateManualPassRequestDto
      */
-    royalties: number;
+    royalties?: number;
     /**
      * 
      * @type {string}
@@ -90,7 +90,7 @@ export interface CreateManualPassRequestDto {
      * @type {string}
      * @memberof CreateManualPassRequestDto
      */
-    imageType: CreateManualPassRequestDtoImageTypeEnum;
+    imageType?: CreateManualPassRequestDtoImageTypeEnum;
     /**
      * 
      * @type {string}
@@ -179,8 +179,6 @@ export function instanceOfCreateManualPassRequestDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "chain" in value;
-    isInstance = isInstance && "royalties" in value;
-    isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "accessType" in value;
     isInstance = isInstance && "secret" in value;
 
@@ -206,9 +204,9 @@ export function CreateManualPassRequestDtoFromJSONTyped(json: any, ignoreDiscrim
         'freetrial': !exists(json, 'freetrial') ? undefined : json['freetrial'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
         'chain': json['chain'],
-        'royalties': json['royalties'],
+        'royalties': !exists(json, 'royalties') ? undefined : json['royalties'],
         'animationType': !exists(json, 'animationType') ? undefined : json['animationType'],
-        'imageType': json['imageType'],
+        'imageType': !exists(json, 'imageType') ? undefined : json['imageType'],
         'accessType': json['accessType'],
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
         'username': !exists(json, 'username') ? undefined : json['username'],

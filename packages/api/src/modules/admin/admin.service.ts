@@ -264,6 +264,12 @@ export class AdminService {
   }
 
   async manualPass(createManualPassRequestDto: CreateManualPassRequestDto) {
+    const { userId, username } = createManualPassRequestDto
+    if (!userId) {
+      createManualPassRequestDto.userId = (
+        await this.findUser(userId, username)
+      ).userId
+    }
     if (!createManualPassRequestDto.userId) {
       throw new BadRequestException('no user for pass creation selected')
     }

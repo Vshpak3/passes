@@ -1,6 +1,7 @@
 import { Knex } from '@mikro-orm/mysql'
 
 import { createPaginatedQuery } from '../../util/page.util'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { SearchFollowRequestDto } from '../follow/dto/search-follow.dto'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetListMembersRequestDto } from './dto/get-list-members.dto'
@@ -20,6 +21,7 @@ export function createGetMemberQuery(
     search,
     lastId,
     metadataNumber,
+    amount,
   } = getListMembersRequestDto
   switch (orderType) {
     case ListMemberOrderTypeEnum.CREATED_AT:
@@ -63,6 +65,17 @@ export function createGetMemberQuery(
         'meta_number',
         order,
         metadataNumber,
+        lastId,
+      )
+      break
+    case ListMemberOrderTypeEnum.SPENT:
+      query = createPaginatedQuery(
+        query,
+        UserSpendingEntity.table,
+        memberTable,
+        'spent',
+        order,
+        amount,
         lastId,
       )
       break

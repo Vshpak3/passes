@@ -15,6 +15,7 @@ export class GetListMembersRequestDto extends PickType(PageRequestDto, [
   'createdAt',
   'order',
   'search',
+  'amount',
 ]) {
   @DtoProperty({ type: 'uuid' })
   listId: string
@@ -69,6 +70,9 @@ export class GetListMembersResponseDto
           break
         case ListMemberOrderTypeEnum.METADATA:
           this.metadataNumber = listMembers[listMembers.length - 1].metaNumber
+          break
+        case ListMemberOrderTypeEnum.SPENT:
+          this.amount = listMembers[listMembers.length - 1].spent ?? undefined
           break
       }
     }

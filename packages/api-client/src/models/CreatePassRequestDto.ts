@@ -78,7 +78,7 @@ export interface CreatePassRequestDto {
      * @type {number}
      * @memberof CreatePassRequestDto
      */
-    royalties: number;
+    royalties?: number;
     /**
      * 
      * @type {string}
@@ -90,7 +90,7 @@ export interface CreatePassRequestDto {
      * @type {string}
      * @memberof CreatePassRequestDto
      */
-    imageType: CreatePassRequestDtoImageTypeEnum;
+    imageType?: CreatePassRequestDtoImageTypeEnum;
     /**
      * 
      * @type {string}
@@ -161,8 +161,6 @@ export function instanceOfCreatePassRequestDto(value: object): boolean {
     isInstance = isInstance && "price" in value;
     isInstance = isInstance && "totalSupply" in value;
     isInstance = isInstance && "chain" in value;
-    isInstance = isInstance && "royalties" in value;
-    isInstance = isInstance && "imageType" in value;
     isInstance = isInstance && "accessType" in value;
 
     return isInstance;
@@ -187,9 +185,9 @@ export function CreatePassRequestDtoFromJSONTyped(json: any, ignoreDiscriminator
         'freetrial': !exists(json, 'freetrial') ? undefined : json['freetrial'],
         'messages': !exists(json, 'messages') ? undefined : json['messages'],
         'chain': json['chain'],
-        'royalties': json['royalties'],
+        'royalties': !exists(json, 'royalties') ? undefined : json['royalties'],
         'animationType': !exists(json, 'animationType') ? undefined : json['animationType'],
-        'imageType': json['imageType'],
+        'imageType': !exists(json, 'imageType') ? undefined : json['imageType'],
         'accessType': json['accessType'],
     };
 }
