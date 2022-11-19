@@ -132,10 +132,6 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
     null
   )
 
-  if (typeof cookieSettings === "object") {
-    setCookieSettings(JSON.stringify(cookieSettings))
-  }
-
   const { hasRefreshed, router, user } = useTokenRefresh()
   const { setPayin, complete, reset } = useThreeDS()
 
@@ -173,7 +169,11 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
 
   useEffect(() => {
     setShowCookieBanner(cookieSettings === "")
-  }, [cookieSettings])
+
+    if (typeof cookieSettings === "object") {
+      setCookieSettings(JSON.stringify(cookieSettings))
+    }
+  }, [cookieSettings, setCookieSettings])
 
   useEffect(() => {
     if (!navPaths.filter((path) => path === router.route).length) {
