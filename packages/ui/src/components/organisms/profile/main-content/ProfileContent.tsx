@@ -17,6 +17,9 @@ const UnMemoizedProfileContent: FC<ProfileContentProps> = ({ tab }) => {
 
   const [activeTab, setActiveTab] = useState(tab)
   useEffect(() => {
+    if (activeTab === ProfileNavigationOptions.POST) {
+      return history.replaceState(window.history.state, "", " ")
+    }
     history.replaceState(window.history.state, "", `#${activeTab}`)
   }, [activeTab])
   return (
