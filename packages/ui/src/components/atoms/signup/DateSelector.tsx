@@ -63,7 +63,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
           onCustomChange={(m) => setMonth(selectMonths.indexOf(m))}
           placeholder="Month"
           selectOptions={selectMonths}
-          transparent
+          transparent={false}
         />
         <NativeSelect
           autoComplete="bday-day"
@@ -73,7 +73,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
           onCustomChange={(value) => setDay(parseInt(value))}
           placeholder="Day"
           selectOptions={selectDays}
-          transparent
+          transparent={false}
         />
         <NativeSelect
           autoComplete="bday-year"
@@ -83,7 +83,7 @@ export const DateSelector: FC<DateSelectorProps> = ({
           onCustomChange={(value) => setYear(parseInt(value))}
           placeholder="Year"
           selectOptions={selectYears}
-          transparent
+          transparent={false}
         />
       </div>
       {Boolean(errors) && (

@@ -198,6 +198,7 @@ const SignupInfoPage: FC = () => {
             placeholder="Enter your country"
             register={register}
             selectOptions={COUNTRIES}
+            transparent={false}
           />
         </div>
         <Button
