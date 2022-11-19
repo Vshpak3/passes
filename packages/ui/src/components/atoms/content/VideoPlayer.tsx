@@ -1,6 +1,7 @@
 import classNames from "classnames"
 import Hls from "hls.js"
 import { forwardRef, useEffect } from "react"
+import { toast } from "react-toastify"
 
 interface VideoPlayerProps {
   src: string
@@ -19,14 +20,16 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         return
       }
 
-      // First check for native browser HLS support
+      // Check for native browser HLS support and if not then check if HLS.js is supported
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = src
-        // If no native HLS support, check if HLS.js is supported
       } else if (Hls.isSupported()) {
-        const hls = new Hls()
+        // TODO: For some reason the worker is not working
+        const hls = new Hls({ enableWorker: false })
         hls.loadSource(src)
         hls.attachMedia(video)
+      } else {
+        console.error("No HLS support")
       }
     }, [src, ref])
 
