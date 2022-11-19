@@ -113,7 +113,7 @@ const SignupEmailPage: FC = () => {
   }
 
   return (
-    <StandAlonePage className="h-[30vh] w-[100vw] max-w-[750px]">
+    <StandAlonePage className="mt-24 w-[100vw] max-w-[750px] lg:mt-0">
       {hasSentEmail ? (
         <>
           <Text
@@ -122,7 +122,7 @@ const SignupEmailPage: FC = () => {
           >
             Email sent!
           </Text>
-          <Text className="mx-1 pb-2 text-[#b3bee7] opacity-[0.75]">
+          <Text className="mx-1 pb-2 text-passes-gray-100">
             We have sent an email to you to verify your email address. <br />
             Please click in the link your email to continue.
           </Text>
@@ -141,7 +141,7 @@ const SignupEmailPage: FC = () => {
             </Text>
           </Button>
           {hasResentEmail && (
-            <Text className="my-3 text-[#b3bee7] opacity-[0.75]">
+            <Text className="my-3 text-passes-gray-100">
               We have resent an email to you to verify your email address.
             </Text>
           )}
@@ -160,9 +160,7 @@ const SignupEmailPage: FC = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col items-start">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Email address
-              </Text>
+              <Text className="mb-1 text-passes-gray-100  ">Email address</Text>
               <Input
                 className="w-[360px]"
                 errors={errors}
