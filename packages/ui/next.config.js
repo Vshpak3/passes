@@ -17,7 +17,9 @@ const ContentSecurityPolicy = [
   // TODO: not sure why unsafe-* is needed; I think it is some script from Next.js
   `script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.segment.com app.intercom.io js.intercomcdn.com widget.intercom.io cdn.withpersona.com;`,
   // Allows style from self and unsafe inline because of Tailwind
-  `style-src 'self' 'unsafe-inline';`
+  `style-src 'self' 'unsafe-inline';`,
+  // Necessary for playing HLS videos using hls.js
+  `worker-src 'self' blob:;`
 ]
 
 // Adjust the CSP in dev
