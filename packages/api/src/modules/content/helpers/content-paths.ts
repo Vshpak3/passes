@@ -1,11 +1,19 @@
 import path from 'path'
 
 import { isEnv } from '../../../util/env'
-import { ContentFormatEnum } from '../enums/content-format.enum'
 import { ContentSizeEnum } from '../enums/content-size.enum'
 import { ContentTypeEnum } from '../enums/content-type.enum'
 
 export type PROFILE_CONTENT_TYPES = 'image' | 'banner'
+
+// The video type is mp4 or m3u8 depending on upload vs download
+enum ContentFormatEnum {
+  IMAGE = 'jpeg',
+  VIDEO = 'm3u8',
+  VIDEO_UPLOAD = 'mp4',
+  GIF = 'mp4',
+  AUDIO = 'mp3',
+}
 
 const contentTypeFormatMap = {
   [ContentTypeEnum.IMAGE]: ContentFormatEnum.IMAGE,
@@ -58,11 +66,15 @@ export function mediaContentUploadPath(
   contentId: string,
   contentType: ContentTypeEnum,
 ) {
+  const extension =
+    contentType === ContentTypeEnum.VIDEO
+      ? ContentFormatEnum.VIDEO_UPLOAD
+      : getContentTypeFormat(contentType)
   return path.join(
     'upload',
     !isEnv('dev') ? contentType : '',
     userId,
-    `${contentId}.${getContentTypeFormat(contentType)}`,
+    `${contentId}.${extension}`,
   )
 }
 
