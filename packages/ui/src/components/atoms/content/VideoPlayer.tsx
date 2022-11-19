@@ -1,7 +1,6 @@
 import classNames from "classnames"
 import Hls from "hls.js"
 import { forwardRef, useEffect } from "react"
-import { toast } from "react-toastify"
 
 interface VideoPlayerProps {
   src: string
