@@ -4,7 +4,7 @@ import {
   MessageBuyerDto,
   MessagesApi
 } from "@passes/api-client"
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import {
@@ -26,6 +26,12 @@ export const MessageBuyerDialog: FC<MessageBuyerDialogProps> = ({
   const ref = useCallback((node: HTMLDivElement) => {
     setNode(node)
   }, [])
+
+  const fetchProps = useMemo(() => {
+    return {
+      paidMessageId
+    }
+  }, [paidMessageId])
 
   return (
     <Dialog
@@ -65,7 +71,7 @@ export const MessageBuyerDialog: FC<MessageBuyerDialogProps> = ({
               getMessageBuyersRequestDto: req
             })
           }}
-          fetchProps={{ paidMessageId }}
+          fetchProps={fetchProps}
           keySelector="messageId"
           keyValue={`/message-buyer/${paidMessageId}`}
           node={node}

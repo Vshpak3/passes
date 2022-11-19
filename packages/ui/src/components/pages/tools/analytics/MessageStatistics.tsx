@@ -12,6 +12,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { PaidMessageStatisticCached } from "src/components/organisms/analytics/PaidMessageStatisticCached"
 
+const fetchProps = {}
 export const MessageStatistics = () => {
   return (
     <div className="flex flex-col">
@@ -58,7 +59,7 @@ export const MessageStatistics = () => {
             getPaidMessagesRequestDto: req
           })
         }}
-        fetchProps={{}}
+        fetchProps={fetchProps}
         keySelector="paidMessageId"
         keyValue="/pages/paid-messages/statistics"
       />

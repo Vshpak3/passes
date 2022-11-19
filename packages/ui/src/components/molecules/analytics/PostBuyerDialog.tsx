@@ -4,7 +4,7 @@ import {
   PostApi,
   PostBuyerDto
 } from "@passes/api-client"
-import React, { FC, useCallback, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import {
@@ -26,6 +26,11 @@ export const PostBuyerDialog: FC<PostBuyerDialogProps> = ({
   const ref = useCallback((node: HTMLDivElement) => {
     setNode(node)
   }, [])
+  const fetchProps = useMemo(() => {
+    return {
+      postId
+    }
+  }, [postId])
 
   return (
     <Dialog
@@ -65,7 +70,7 @@ export const PostBuyerDialog: FC<PostBuyerDialogProps> = ({
               getPostBuyersRequestDto: req
             })
           }}
-          fetchProps={{ postId }}
+          fetchProps={fetchProps}
           keySelector="postUserAccessId"
           keyValue={`/post-buyer/${postId}`}
           node={node}

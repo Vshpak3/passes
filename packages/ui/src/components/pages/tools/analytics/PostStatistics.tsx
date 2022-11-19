@@ -7,6 +7,7 @@ import {
 import PostStatisticCached from "src/components/organisms/analytics/PostStatisticCached"
 import { useUpdatePost } from "src/hooks/profile/useUpdatePost"
 
+const fetchProps = {}
 export const PostStatistics = () => {
   const { getPosts } = useUpdatePost()
 
@@ -44,7 +45,7 @@ export const PostStatistics = () => {
         }}
         emptyElement={<span>No posts to show</span>}
         fetch={getPosts}
-        fetchProps={{}}
+        fetchProps={fetchProps}
         keySelector="postId"
         keyValue="/pages/posts/statistics"
       />

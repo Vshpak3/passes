@@ -15,6 +15,10 @@ import {
 import { BlockedUser } from "src/components/molecules/privacy/BlockedUser"
 import { Tab } from "src/components/pages/settings/Tab"
 
+const fetchProps = {
+  orderType: SearchFollowingResponseDtoOrderTypeEnum.CreatedAt,
+  order: SearchFollowRequestDtoOrderEnum.Desc
+}
 const BlockedRestrictedAccounts = () => {
   return (
     <Tab
@@ -34,10 +38,7 @@ const BlockedRestrictedAccounts = () => {
               searchFollowRequestDto: req
             })
           }}
-          fetchProps={{
-            orderType: SearchFollowingResponseDtoOrderTypeEnum.CreatedAt,
-            order: SearchFollowRequestDtoOrderEnum.Desc
-          }}
+          fetchProps={fetchProps}
           keySelector="userId"
           keyValue="/pages/blocked"
         />
