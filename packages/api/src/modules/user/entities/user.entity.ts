@@ -69,4 +69,7 @@ export class UserEntity extends BaseEntity {
 
   @Property({ default: 0 })
   featured: number
+
+  @Property({ default: true })
+  public: boolean
 }

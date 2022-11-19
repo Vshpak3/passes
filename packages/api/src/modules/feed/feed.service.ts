@@ -79,6 +79,7 @@ export class FeedService {
         )
       })
       .andWhere(`${PostEntity.table}.content_processed`, true)
+      .andWhere(`${UserEntity.table}.public`, true)
       .limit(MAX_POST_PER_FEED_REQUEST)
     query = createPaginatedQuery(
       query,
