@@ -33,9 +33,9 @@ export const ViewCovetedMembers = () => {
     <div className="flex w-full flex-col">
       <Tab
         isSubmitting={isSubmitSuccessful}
-        label="Impersonate"
+        label="View"
         onSubmit={handleSubmit(getCovetedMembers)}
-        title="Impersonate a user"
+        title="View Coveted Members"
       >
         <div className="flex w-full flex-col">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
