@@ -24,9 +24,11 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         video.src = src
       } else if (Hls.isSupported()) {
         const hls = new Hls({
-          autoStartLoad: false, // TODO: disable and use
+          // TODO: disable and use this instead to start loading when the rest of the page has loaded
           // https://github.com/video-dev/hls.js/blob/master/docs/API.md#network-loading-control-api
-          enableWorker: true, // TODO: For some reason the worker is not working
+          autoStartLoad: true,
+          // TODO: For some reason the worker is not working
+          enableWorker: false,
           xhrSetup: function (xhr) {
             xhr.withCredentials = true // Send cookies (necessary for creators)
           }
