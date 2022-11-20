@@ -44,6 +44,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}
+        src={src}
       />
     )
   }
