@@ -22,7 +22,11 @@ export const ViewCovetedMembers = () => {
     try {
       const api = new AdminApi()
       setMembers(
-        (await api.getCovetedMembers({ adminDto: { ...values } })).data
+        (
+          await api.getCovetedMembers({
+            adminDto: { ...values, username: "username" }
+          })
+        ).data
       )
       toast.success("Coveted members retrieved")
     } catch (error: unknown) {
