@@ -8,7 +8,6 @@ import {
   InternalServerErrorException,
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import ms from 'ms'
 import * as uuid from 'uuid'
 
 import {
