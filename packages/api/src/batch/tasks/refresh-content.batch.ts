@@ -7,7 +7,8 @@ import { sleep } from '../../util/sleep.util'
 import { BatchTask } from '../batch.interface'
 
 const CHECK_PROCESSED_UNTIL = ms('24 hours') // Temporary
-const FAILED_TIMEOUT = ms('20 minutes')
+const FAILED_TIMEOUT = ms('1 hour')
+
 const RUNTIME = ms('3 minutes')
 const REFERSH_TIME = ms('10 second')
 const REFRESH_RETRIES = RUNTIME / REFERSH_TIME
