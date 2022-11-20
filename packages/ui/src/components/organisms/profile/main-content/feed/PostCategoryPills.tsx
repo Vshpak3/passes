@@ -6,7 +6,7 @@ import { usePostCategories } from "src/hooks/posts/usePostCategories"
 interface PostCategoryPillsProp {
   setPostCategoryId: (postCategoryId?: string) => void
   userId: string
-  postCategoryId: string
+  postCategoryId?: string
 }
 
 const PostCategoryPillsUnmemo = ({

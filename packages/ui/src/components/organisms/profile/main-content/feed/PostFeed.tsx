@@ -37,6 +37,7 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
   return (
     <>
       <PostCategoryPills
+        postCategoryId={postCategoryId}
         setPostCategoryId={setPostCategoryId}
         userId={profileUserId}
       />
