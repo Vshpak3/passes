@@ -29,7 +29,7 @@ export const AdminUserPage = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields, isSubmitSuccessful }
+    formState: { errors, dirtyFields, isSubmitting }
   } = useForm<AdminFormSchema>({
     resolver: yupResolver(adminFormSchema)
   })
@@ -40,7 +40,7 @@ export const AdminUserPage = ({
   }
   return (
     <Tab
-      isSubmitting={isSubmitSuccessful}
+      isSubmitting={isSubmitting}
       label={label}
       onSubmit={handleSubmit(onSubmit)}
       title={title}

@@ -14,7 +14,7 @@ export const ViewCovetedMembers = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful }
+    formState: { errors, isSubmitting }
   } = useForm<{ secret: string }>()
   const [members, setMembers] = useState<AgencyMemberDto[]>([])
 
@@ -32,7 +32,7 @@ export const ViewCovetedMembers = () => {
   return (
     <div className="flex w-full flex-col">
       <Tab
-        isSubmitting={isSubmitSuccessful}
+        isSubmitting={isSubmitting}
         label="View"
         onSubmit={handleSubmit(getCovetedMembers)}
         title="View Coveted Members"

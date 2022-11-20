@@ -43,7 +43,7 @@ export const UpdatedCovetedMember = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields, isSubmitSuccessful }
+    formState: { errors, dirtyFields, isSubmitting }
   } = useForm<UpdateCovetedMemberSchema>({
     resolver: yupResolver(adminFormSchema)
   })
@@ -62,7 +62,7 @@ export const UpdatedCovetedMember = () => {
   }
   return (
     <Tab
-      isSubmitting={isSubmitSuccessful}
+      isSubmitting={isSubmitting}
       label="Update"
       onSubmit={handleSubmit(updateCovetedMember)}
       title="Update Coveted Member"
