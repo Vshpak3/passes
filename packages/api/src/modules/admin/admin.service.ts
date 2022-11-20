@@ -92,6 +92,46 @@ export class AdminService {
     await this.profileService.createOrUpdateProfile(userId, {})
   }
 
+  async markPublic(userId?: string, username?: string): Promise<void> {
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).userId
+    }
+
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .update({ public: true })
+  }
+
+  async removePublic(userId?: string, username?: string): Promise<void> {
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).userId
+    }
+
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .update({ public: false })
+  }
+
+  async markSuggested(userId?: string, username?: string): Promise<void> {
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).userId
+    }
+
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .update({ featured: 1 })
+  }
+
+  async removeSuggested(userId?: string, username?: string): Promise<void> {
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).userId
+    }
+
+    await this.dbWriter<UserEntity>(UserEntity.table)
+      .where({ id: userId })
+      .update({ featured: 0 })
+  }
+
   async addExternalPass(
     createPassDto: CreateExternalPassRequestDto,
   ): Promise<boolean> {
@@ -284,16 +324,16 @@ export class AdminService {
 
   async updateCovetedMember(updateCreatorAgency: UpdateAgencyMemberDto) {
     // eslint-disable-next-line prefer-const
-    let { userId, username, creatorId, rate } = updateCreatorAgency
+    let { userId, username, rate } = updateCreatorAgency
     const agencyId = await this.agencyService.getCovetedAgency()
     if (!userId) {
       userId = (await this.findUser(userId, username)).userId
     }
 
     if (rate === 0) {
-      await this.agencyService.removeCreator(creatorId, agencyId)
+      await this.agencyService.removeCreator(userId, agencyId)
     } else {
-      await this.agencyService.addCreator(creatorId, agencyId, rate)
+      await this.agencyService.addCreator(userId, agencyId, rate)
     }
   }
 

@@ -1,24 +1,31 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable sonarjs/no-small-switch */
+
+import { AdminApi } from "@passes/api-client"
 import classNames from "classnames"
 import _ from "lodash"
 import { useRouter } from "next/router"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { useCallback, useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { AdminTabProps, AdminTabs, AdminTabsEnum } from "src/config/admin"
+import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { SettingsSearchBar } from "./SettingsSearchBar"
-import { ImpersonateUser } from "./tabs/ImpersonateUser"
+import { AdminFormSchema, AdminUserPage } from "./tabs/AdminUser"
+import { UpdatedCovetedMember } from "./tabs/UpdateCovetedMember"
+import { ViewCovetedMembers } from "./tabs/ViewCovetedMembers"
 
 const ADMIN_EMAIL = "@passes.com"
 
 export const Admin = () => {
-  const { loading, user } = useUser()
+  const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
   const [ready, setReady] = useState(false)
-  const [activeTab, setActiveTab] = useState<AdminTabsEnum>(0)
+  const [activeTab, setActiveTab] = useState<AdminTabsEnum>(
+    AdminTabsEnum.ImpersonateUser
+  )
   const [tabs, setTabs] = useState<Array<AdminTabProps>>(AdminTabs)
   const [searchText, setSearchText] = useState<string>("")
 
@@ -45,10 +52,158 @@ export const Admin = () => {
     setActiveTab(id)
   }
 
+  const impersonateUser = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      const res = await api.impersonateUser({
+        impersonateUserRequestDto: { ...values }
+      })
+
+      setAccessToken(res.accessToken)
+      refreshUser()
+
+      router.push("/home")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const flagAsAdult = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.flagAsAdult({
+        adminDto: { ...values }
+      })
+      toast.success("Creator marked as adult")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const setupCreator = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.setupCreator({
+        adminDto: { ...values }
+      })
+      toast.success(
+        "Made user a creator (make sure to re login the creator's account to see changes)"
+      )
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const markPublic = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.markPublic({
+        adminDto: { ...values }
+      })
+      toast.success("Added to home feed")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const removePublic = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.removePublic({
+        adminDto: { ...values }
+      })
+      toast.success("Removed from home feed")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const markSuggested = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.markSuggested({
+        adminDto: { ...values }
+      })
+      toast.success("Added to suggetsed")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
+  const removeSuggested = async (values: AdminFormSchema) => {
+    try {
+      const api = new AdminApi()
+      await api.removeSuggested({
+        adminDto: { ...values }
+      })
+      toast.success("Removed from suggetsed")
+    } catch (error: unknown) {
+      errorMessage(error, true)
+    }
+  }
+
   const renderTab = () => {
     switch (activeTab) {
-      case AdminTabsEnum.ImpersonateUsers:
-        return <ImpersonateUser />
+      case AdminTabsEnum.ImpersonateUser:
+        return (
+          <AdminUserPage
+            action={impersonateUser}
+            label="Impersonate"
+            title="Impersonate a user"
+          />
+        )
+      case AdminTabsEnum.MakeAdult:
+        return (
+          <AdminUserPage
+            action={flagAsAdult}
+            label="Update"
+            title="Make a creator as adult"
+          />
+        )
+      case AdminTabsEnum.MakeCreator:
+        return (
+          <AdminUserPage
+            action={setupCreator}
+            label="Update"
+            title="Make a user a creator"
+          />
+        )
+      case AdminTabsEnum.MakePublic:
+        return (
+          <AdminUserPage
+            action={markPublic}
+            label="Update"
+            title="Make public (add to home feed)"
+          />
+        )
+      case AdminTabsEnum.MakePrivate:
+        return (
+          <AdminUserPage
+            action={removePublic}
+            label="Update"
+            title="Make private (remove from home feed)"
+          />
+        )
+      case AdminTabsEnum.MakeSuggested:
+        return (
+          <AdminUserPage
+            action={markSuggested}
+            label="Update"
+            title="Add to Suggested"
+          />
+        )
+      case AdminTabsEnum.RemoveSuggested:
+        return (
+          <AdminUserPage
+            action={removeSuggested}
+            label="Update"
+            title="Remove from Suggested"
+          />
+        )
+      case AdminTabsEnum.UpdateCovetedMember:
+        return <UpdatedCovetedMember />
+      case AdminTabsEnum.ViewCovetedMember:
+        return <ViewCovetedMembers />
       default: {
         return <></>
       }

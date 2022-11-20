@@ -31,6 +31,7 @@ models/AccessTokensResponseDto.ts
 models/AddExternalPassAddressRequestDto.ts
 models/AddListMembersRequestDto.ts
 models/AdminDto.ts
+models/AgencyMemberDto.ts
 models/AuthWalletRequestDto.ts
 models/AuthWalletResponseDto.ts
 models/BillingDetailsDto.ts
@@ -84,6 +85,7 @@ models/EditListNameRequestDto.ts
 models/EditPostCategoryRequestDto.ts
 models/EditPostRequestDto.ts
 models/FanWallCommentDto.ts
+models/GetAgencyMembersResponseDto.ts
 models/GetAvailableBalanceResponseDto.ts
 models/GetBlockedResponseDto.ts
 models/GetChannelMesssageInfoResponseDto.ts

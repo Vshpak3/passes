@@ -91,7 +91,7 @@ const AddBank = () => {
     resolver: yupResolver(bankForm)
   })
   const countrySelected = watch("country")
-  const bankType = watch("bank-country")
+  const bankType = watch("bank-type")
 
   const onSubmit = async (values: BankForm) => {
     try {

@@ -89,6 +89,54 @@ export class AdminController {
   }
 
   @ApiEndpoint({
+    summary: 'Make creator public',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Creator was made public',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('public')
+  async markPublic(@Body() body: AdminDto): Promise<void> {
+    await this.adminService.markPublic(body.userId, body.username)
+  }
+
+  @ApiEndpoint({
+    summary: 'Make creator private',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Creator was made private',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('private')
+  async removePublic(@Body() body: AdminDto): Promise<void> {
+    await this.adminService.removePublic(body.userId, body.username)
+  }
+
+  @ApiEndpoint({
+    summary: 'Make creator suggested',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Creator was made suggested',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('suggested')
+  async markSuggested(@Body() body: AdminDto): Promise<void> {
+    await this.adminService.markSuggested(body.userId, body.username)
+  }
+
+  @ApiEndpoint({
+    summary: 'Make creator unsuggetsed',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Creator was made unsuggested',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('unsuggested')
+  async removeSuggested(@Body() body: AdminDto): Promise<void> {
+    await this.adminService.removeSuggested(body.userId, body.username)
+  }
+
+  @ApiEndpoint({
     summary: 'Add external pass',
     responseStatus: HttpStatus.OK,
     responseType: BooleanResponseDto,
@@ -274,7 +322,7 @@ export class AdminController {
     responseDesc: 'Coveted member updated',
     role: RoleEnum.NO_AUTH,
   })
-  @Post('coveted/member')
+  @Post('coveted/member/update')
   async updateCovetedMember(
     @Body() updateAgencyMemberDto: UpdateAgencyMemberDto,
   ): Promise<void> {
@@ -284,12 +332,15 @@ export class AdminController {
   @ApiEndpoint({
     summary: 'Update coveted member',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: GetAgencyMembersResponseDto,
     responseDesc: 'Coveted member updated',
     role: RoleEnum.NO_AUTH,
   })
-  @Post('coveted/member')
-  async getCovetedMembers(): Promise<GetAgencyMembersResponseDto> {
+  @Post('coveted/members')
+  async getCovetedMembers(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() body: AdminDto,
+  ): Promise<GetAgencyMembersResponseDto> {
     return new GetAgencyMembersResponseDto(
       await this.adminService.getCovetedMembers(),
     )

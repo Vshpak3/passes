@@ -308,7 +308,6 @@ export class UserService {
       .andWhere({
         is_creator: true,
         is_active: true,
-        public: true,
       })
       .orderByRaw(
         `

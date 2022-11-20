@@ -12,7 +12,7 @@ import {
 import { isCurrency } from "src/helpers/formatters"
 import { preventNegative } from "src/helpers/keyboard"
 
-type NumberFormType = "integer" | "currency"
+type NumberFormType = "integer" | "currency" | "float"
 
 // No min/max; should be handled by yup
 type NumberInputProps = {
@@ -68,6 +68,8 @@ export const NumberInput: FC<NumberInputProps> = ({
     placeholder === undefined
       ? type === "currency"
         ? "0.00"
+        : type === "float"
+        ? "0.0"
         : "0"
       : placeholder
 
@@ -85,7 +87,9 @@ export const NumberInput: FC<NumberInputProps> = ({
         onInput={validate}
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
-        step={type === "currency" ? ".01" : "1"}
+        step={
+          type === "currency" ? ".01" : type === "integer" ? "1" : undefined
+        }
         type="number"
       />
       {errors && !!errors[name] && (

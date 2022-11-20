@@ -42,13 +42,7 @@ export interface UpdateAgencyMemberDto {
      * @type {string}
      * @memberof UpdateAgencyMemberDto
      */
-    agencyId: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAgencyMemberDto
-     */
-    creatorId: string;
+    agencyId?: string;
     /**
      * 
      * @type {number}
@@ -63,8 +57,6 @@ export interface UpdateAgencyMemberDto {
 export function instanceOfUpdateAgencyMemberDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "secret" in value;
-    isInstance = isInstance && "agencyId" in value;
-    isInstance = isInstance && "creatorId" in value;
     isInstance = isInstance && "rate" in value;
 
     return isInstance;
@@ -83,8 +75,7 @@ export function UpdateAgencyMemberDtoFromJSONTyped(json: any, ignoreDiscriminato
         'userId': !exists(json, 'userId') ? undefined : json['userId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'secret': json['secret'],
-        'agencyId': json['agencyId'],
-        'creatorId': json['creatorId'],
+        'agencyId': !exists(json, 'agencyId') ? undefined : json['agencyId'],
         'rate': json['rate'],
     };
 }
@@ -102,7 +93,6 @@ export function UpdateAgencyMemberDtoToJSON(value?: UpdateAgencyMemberDto | null
         'username': value.username,
         'secret': value.secret,
         'agencyId': value.agencyId,
-        'creatorId': value.creatorId,
         'rate': value.rate,
     };
 }

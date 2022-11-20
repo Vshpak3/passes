@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
@@ -30,6 +31,11 @@ export class AgencyService {
   ) {}
 
   async addCreator(creatorId: string, agencyId: string, rate: number) {
+    if (rate < 0 || rate > 1) {
+      throw new BadRequestException(
+        'Invalid rate for agency member, please input a value between 0 and 1',
+      )
+    }
     await this.dbWriter<CreatorAgencyEntity>(CreatorAgencyEntity.table)
       .insert({
         creator_id: creatorId,

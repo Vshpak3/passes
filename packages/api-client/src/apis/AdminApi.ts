@@ -23,10 +23,12 @@ import type {
   CreateManualPassRequestDto,
   CreatePassResponseDto,
   DeleteExternalPassAddressRequestDto,
+  GetAgencyMembersResponseDto,
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
   ImpersonateUserRequestDto,
   SetCreatorFeeRequestDto,
+  UpdateAgencyMemberDto,
   UpdateChargebackRequestDto,
   UpdateExternalPassRequestDto,
   UserExternalPassRequestDto,
@@ -48,6 +50,8 @@ import {
     CreatePassResponseDtoToJSON,
     DeleteExternalPassAddressRequestDtoFromJSON,
     DeleteExternalPassAddressRequestDtoToJSON,
+    GetAgencyMembersResponseDtoFromJSON,
+    GetAgencyMembersResponseDtoToJSON,
     GetCreatorFeeRequestDtoFromJSON,
     GetCreatorFeeRequestDtoToJSON,
     GetCreatorFeeResponseDtoFromJSON,
@@ -56,6 +60,8 @@ import {
     ImpersonateUserRequestDtoToJSON,
     SetCreatorFeeRequestDtoFromJSON,
     SetCreatorFeeRequestDtoToJSON,
+    UpdateAgencyMemberDtoFromJSON,
+    UpdateAgencyMemberDtoToJSON,
     UpdateChargebackRequestDtoFromJSON,
     UpdateChargebackRequestDtoToJSON,
     UpdateExternalPassRequestDtoFromJSON,
@@ -96,6 +102,10 @@ export interface FlagAsAdultRequest {
     adminDto: AdminDto;
 }
 
+export interface GetCovetedMembersRequest {
+    adminDto: AdminDto;
+}
+
 export interface GetCreatorFeeRequest {
     getCreatorFeeRequestDto: GetCreatorFeeRequestDto;
 }
@@ -108,6 +118,22 @@ export interface ImpersonateUserRequest {
     impersonateUserRequestDto: ImpersonateUserRequestDto;
 }
 
+export interface MarkPublicRequest {
+    adminDto: AdminDto;
+}
+
+export interface MarkSuggestedRequest {
+    adminDto: AdminDto;
+}
+
+export interface RemovePublicRequest {
+    adminDto: AdminDto;
+}
+
+export interface RemoveSuggestedRequest {
+    adminDto: AdminDto;
+}
+
 export interface SetCreatorFeeRequest {
     setCreatorFeeRequestDto: SetCreatorFeeRequestDto;
 }
@@ -118,6 +144,10 @@ export interface SetupCreatorRequest {
 
 export interface UpdateChargebackRequest {
     updateChargebackRequestDto: UpdateChargebackRequestDto;
+}
+
+export interface UpdateCovetedMemberRequest {
+    updateAgencyMemberDto: UpdateAgencyMemberDto;
 }
 
 export interface UpdateExternalPassRequest {
@@ -443,10 +473,16 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Update coveted member
      */
-    async getCovetedMembersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async getCovetedMembersRaw(requestParameters: GetCovetedMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetAgencyMembersResponseDto>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling getCovetedMembers.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         /* No auth for endpoint but always send access token */
         const token = window.localStorage.getItem("access-token")
@@ -455,20 +491,22 @@ export class AdminApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/admin/coveted/member`,
+            path: `/api/admin/coveted/members`,
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetAgencyMembersResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Update coveted member
      */
-    async getCovetedMembers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getCovetedMembersRaw(initOverrides);
+    async getCovetedMembers(requestParameters: GetCovetedMembersRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetAgencyMembersResponseDto> {
+        const response = await this.getCovetedMembersRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**
@@ -588,6 +626,158 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Make creator public
+     */
+    async markPublicRaw(requestParameters: MarkPublicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling markPublic.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/public`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Make creator public
+     */
+    async markPublic(requestParameters: MarkPublicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markPublicRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Make creator suggested
+     */
+    async markSuggestedRaw(requestParameters: MarkSuggestedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling markSuggested.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/suggested`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Make creator suggested
+     */
+    async markSuggested(requestParameters: MarkSuggestedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.markSuggestedRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Make creator private
+     */
+    async removePublicRaw(requestParameters: RemovePublicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling removePublic.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/private`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Make creator private
+     */
+    async removePublic(requestParameters: RemovePublicRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.removePublicRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Make creator unsuggetsed
+     */
+    async removeSuggestedRaw(requestParameters: RemoveSuggestedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
+            throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling removeSuggested.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/unsuggested`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: AdminDtoToJSON(requestParameters.adminDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Make creator unsuggetsed
+     */
+    async removeSuggested(requestParameters: RemoveSuggestedRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.removeSuggestedRaw(requestParameters, initOverrides);
+    }
+
+    /**
      * Set creator fee
      */
     async setCreatorFeeRaw(requestParameters: SetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BooleanResponseDto>> {
@@ -700,6 +890,44 @@ export class AdminApi extends runtime.BaseAPI {
      */
     async updateChargeback(requestParameters: UpdateChargebackRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
         await this.updateChargebackRaw(requestParameters, initOverrides);
+    }
+
+    /**
+     * Update coveted member
+     */
+    async updateCovetedMemberRaw(requestParameters: UpdateCovetedMemberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        if (requestParameters.updateAgencyMemberDto === null || requestParameters.updateAgencyMemberDto === undefined) {
+            throw new runtime.RequiredError('updateAgencyMemberDto','Required parameter requestParameters.updateAgencyMemberDto was null or undefined when calling updateCovetedMember.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/coveted/member/update`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: UpdateAgencyMemberDtoToJSON(requestParameters.updateAgencyMemberDto),
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update coveted member
+     */
+    async updateCovetedMember(requestParameters: UpdateCovetedMemberRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.updateCovetedMemberRaw(requestParameters, initOverrides);
     }
 
     /**
