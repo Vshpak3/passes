@@ -23,8 +23,10 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
         video.src = src
       } else if (Hls.isSupported()) {
-        // TODO: For some reason the worker is not working
-        const hls = new Hls({ enableWorker: false })
+        const hls = new Hls({
+          autoStartLoad: false,
+          enableWorker: false // TODO: For some reason the worker is not working
+        })
         hls.loadSource(src)
         hls.attachMedia(video)
       } else {
