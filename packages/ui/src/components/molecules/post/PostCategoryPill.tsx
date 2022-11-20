@@ -1,6 +1,6 @@
 import { FC } from "react"
 
-import { Button } from "src/components/atoms/button/Button"
+import { Button, ButtonVariant } from "src/components/atoms/button/Button"
 import { PostCategoryPillCachedProps } from "./PostCategoryPillCached"
 
 type PostCategoryPillProps = PostCategoryPillCachedProps
@@ -16,6 +16,7 @@ export const PostCategoryPill: FC<PostCategoryPillProps> = ({
       onClick={() =>
         onClick(selected ? undefined : postCategory?.postCategoryId)
       }
+      variant={selected ? ButtonVariant.PINK : ButtonVariant.PINK_OUTLINE}
     >
       {postCategory.name} {showCount && postCategory.count}
     </Button>

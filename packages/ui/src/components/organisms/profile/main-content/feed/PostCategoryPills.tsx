@@ -19,7 +19,7 @@ const PostCategoryPillsUnmemo = ({
   return (
     <>
       {!!postCategories?.length && (
-        <div className="flex flex-row justify-center gap-[10px] overflow-x-auto p-5 scrollbar-hide">
+        <div className="flex flex-row justify-start gap-[10px] overflow-x-auto p-5 scrollbar-hide">
           {/* <Button onClick={() => setPostCategoryId(undefined)}>
             All {showCount && numPosts}
           </Button> */}

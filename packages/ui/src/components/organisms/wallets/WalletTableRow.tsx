@@ -157,7 +157,9 @@ export const WalletTableRow: FC<WalletListItemProps> = ({
             onClick={onDeleteHandler}
             variant={ButtonVariant.PINK_OUTLINE}
           >
-            {wallet.custodial ? <LockOutlineIcon /> : <DeleteOutlineIcon />}
+            <div className="w-[18px]">
+              {wallet.custodial ? <LockOutlineIcon /> : <DeleteOutlineIcon />}
+            </div>
           </Button>
         </div>
       </td>
