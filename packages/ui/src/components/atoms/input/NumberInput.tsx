@@ -88,7 +88,7 @@ export const NumberInput: FC<NumberInputProps> = ({
         onKeyPress={onKeyPress}
         placeholder={_placeholder}
         step={
-          type === "currency" ? ".01" : type === "integer" ? "1" : undefined
+          type === "currency" ? ".01" : type === "integer" ? "1" : "0.00001"
         }
         type="number"
       />
