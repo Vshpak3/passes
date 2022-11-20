@@ -182,9 +182,11 @@ export class ContentService {
     )
   }
 
-  async checkProcessed(): Promise<void> {
+  async checkProcessed(failedTimeout: number): Promise<void> {
     const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
-      .where({ processed: false, failed: false })
+      // For now we ignore the concept of "failed" and check everything
+      // .where({ processed: false, failed: false })
+      .where({ processed: false })
       .select('*')
     const checks = await this.allContentExistsInS3(contents)
     const now = Date.now()
@@ -193,11 +195,11 @@ export class ContentService {
       .map((content) => content.id)
     await this.dbWriter<ContentEntity>(ContentEntity.table)
       .whereIn('id', successfulIds)
-      .update('processed', true)
+      .update({ processed: true, failed: false })
     const failedIds = contents
       .filter(
         (content, ind) =>
-          !checks[ind] && content.created_at.valueOf() + ms('20 minutes') < now,
+          !checks[ind] && content.created_at.valueOf() + failedTimeout < now,
       )
       .map((content) => content.id)
     await this.dbWriter<ContentEntity>(ContentEntity.table)
