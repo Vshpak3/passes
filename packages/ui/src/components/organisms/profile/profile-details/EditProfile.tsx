@@ -34,9 +34,7 @@ import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
   ...displayNameSchema,
-  description: string()
-    .transform((name) => name.trim())
-    .optional(),
+  description: string().nullable().optional(),
   ...socialMediaUsernameSchema
 })
 
