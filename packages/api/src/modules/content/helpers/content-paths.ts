@@ -9,7 +9,7 @@ export type PROFILE_CONTENT_TYPES = 'image' | 'banner'
 // The video type is mp4 or m3u8 depending on upload vs download
 enum ContentFormatEnum {
   IMAGE = 'jpeg',
-  VIDEO = 'm3u8',
+  VIDEO = 'mp4',
   VIDEO_UPLOAD = 'mp4',
   GIF = 'mp4',
   AUDIO = 'mp3',
@@ -40,7 +40,7 @@ export function mediaContentPath(
       fileName = `${contentId}-${contentSize}`
       break
     case ContentTypeEnum.VIDEO:
-      fileName = contentId
+      fileName = `${contentId}-standalone`
       break
     case ContentTypeEnum.GIF:
     case ContentTypeEnum.AUDIO:

@@ -12,6 +12,9 @@ interface VideoPlayerProps {
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
   ({ src, autoplay = false, className = "", poster = "" }, ref) => {
     useEffect(() => {
+      // Temp disabled
+      return
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const video = ref?.current
