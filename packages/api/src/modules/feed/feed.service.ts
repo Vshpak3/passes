@@ -17,7 +17,7 @@ import { UserEntity } from '../user/entities/user.entity'
 import { GetFeedRequestDto } from './dto/get-feed-dto'
 import { GetProfileFeedRequestDto } from './dto/get-profile-feed.dto'
 
-const MAX_POST_PER_FEED_REQUEST = 10
+const MAX_POST_PER_FEED_REQUEST = 6
 
 @Injectable()
 export class FeedService {
