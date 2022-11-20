@@ -30,7 +30,7 @@ enum ContentSizeEnum {
 
 const contentTypeToFormat = {
   [ContentDtoContentTypeEnum.Image]: "jpeg",
-  [ContentDtoContentTypeEnum.Video]: "mp4",
+  [ContentDtoContentTypeEnum.Video]: "m3u8",
   [ContentDtoContentTypeEnum.Gif]: "mp4",
   [ContentDtoContentTypeEnum.Audio]: "mp3"
 }
@@ -102,7 +102,7 @@ export class ContentService {
         fileName = `${content.contentId}-${ContentSizeEnum.MEDIUM}`
         break
       case ContentDtoContentTypeEnum.Video:
-        fileName = `${content.contentId}-standalone`
+        fileName = content.contentId
         break
       case ContentDtoContentTypeEnum.Gif:
       case ContentDtoContentTypeEnum.Audio:
