@@ -26,7 +26,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         const hls = new Hls({
           // TODO: PASS-1396
           autoStartLoad: true,
-          enableWorker: true,
+          // Broken until 1.2.8: https://github.com/video-dev/hls.js/issues/5015
+          enableWorker: false,
           // Send cookies (necessary for creators)
           xhrSetup: function (xhr) {
             xhr.withCredentials = true
