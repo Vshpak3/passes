@@ -89,7 +89,7 @@ export const PassCard: FC<PassCardProps> = ({
                 "flex w-full flex-row items-center"
               )}
             >
-              <div className="text-lg font-[500]">{pass.title}</div>
+              <div className="text-center text-lg font-[500]">{pass.title}</div>
             </div>
             <div
               className={classNames(

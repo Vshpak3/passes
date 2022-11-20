@@ -27,7 +27,9 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
         <div className="flex min-h-[300px] grow flex-col justify-between rounded-xl drop-shadow transition-colors">
           <div className="flex h-full flex-col items-start justify-between pt-[20px] text-white/90">
             <div className="flex w-full flex-row items-center justify-between">
-              <div className="text-[16px] font-[700]">{passHolder.title}</div>
+              <div className="text-center text-[16px] font-[700]">
+                {passHolder.title}
+              </div>
             </div>
             <div className="mt-[9px] w-full border-y border-y-[#2C282D] py-[12px]">
               <span className="w-full whitespace-pre-wrap text-[12px] font-bold text-[#ffffff76]">

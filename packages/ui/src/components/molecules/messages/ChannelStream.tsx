@@ -85,6 +85,7 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
       socket.on("disconnect", () => {
         setIsConnected(false)
         setPendingMessages([])
+        setMessages([])
       })
       socket.connect()
       return () => {
