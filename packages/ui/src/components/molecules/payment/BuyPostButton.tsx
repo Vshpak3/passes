@@ -1,4 +1,8 @@
-import { PayinMethodDto, PostApi } from "@passes/api-client"
+import {
+  PayinMethodDto,
+  PayinMethodDtoMethodEnum,
+  PostApi
+} from "@passes/api-client"
 import React, { FC, useCallback } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
@@ -19,6 +23,8 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
   onSuccess,
   isDisabled = false
 }) => {
+  const hasNoPaymentMethod =
+    payinMethod?.method === PayinMethodDtoMethodEnum.None
   const register = useCallback(async () => {
     return await api.registerPurchasePost({
       purchasePostRequestDto: {
@@ -46,7 +52,7 @@ export const BuyPostButton: FC<BuyPostButtonProps> = ({
   return (
     <Button
       big
-      disabled={!!blocked || loading || isDisabled}
+      disabled={!!blocked || loading || isDisabled || hasNoPaymentMethod}
       fontSize={16}
       onClick={submit}
     >

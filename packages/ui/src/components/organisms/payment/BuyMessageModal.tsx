@@ -1,7 +1,8 @@
 import {
   ChannelMemberDto,
   MessageDto,
-  PayinMethodDto
+  PayinMethodDto,
+  PayinMethodDtoMethodEnum
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
@@ -77,6 +78,7 @@ export const BuyMessageModal: FC<BuyMessageModalProps> = ({
           </div>
           <PaymentModalFooter onClose={() => setMessage(null)}>
             <BuyMessageButton
+              isDisabled={payinMethod?.method === PayinMethodDtoMethodEnum.None}
               messageId={message.messageId}
               onSuccess={() => setMessage(null)}
               payinMethod={payinMethod}

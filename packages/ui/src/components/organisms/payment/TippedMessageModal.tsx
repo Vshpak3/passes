@@ -1,6 +1,7 @@
 import {
   ChannelMemberDto,
   PayinMethodDto,
+  PayinMethodDtoMethodEnum,
   SendMessageRequestDto
 } from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useCallback, useState } from "react"
@@ -65,6 +66,7 @@ const TippedMessageModal: FC<TippedMessageModalProps> = ({
           />
           <PaymentModalFooter onClose={() => setMessageRequest(null)}>
             <TippedMessageButton
+              isDisabled={payinMethod?.method === PayinMethodDtoMethodEnum.None}
               messageRequest={{ ...messageRequest, payinMethod }}
               onSuccess={onSuccessHandler}
             />

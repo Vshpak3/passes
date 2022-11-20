@@ -1,4 +1,9 @@
-import { PassDto, PassDtoTypeEnum, PayinMethodDto } from "@passes/api-client"
+import {
+  PassDto,
+  PassDtoTypeEnum,
+  PayinMethodDto,
+  PayinMethodDtoMethodEnum
+} from "@passes/api-client"
 import { Dispatch, FC, SetStateAction, useState } from "react"
 
 import { getPassType } from "src/components/molecules/pass/PassCard"
@@ -90,7 +95,9 @@ const BuyPassModal: FC<BuyPassModalProps> = ({ pass, setPass }) => {
           />
           <PaymentModalFooter onClose={() => setPass(null)}>
             <BuyPassButton
-              isDisabled={loading}
+              isDisabled={
+                loading || payinMethod?.method === PayinMethodDtoMethodEnum.None
+              }
               onSuccess={() => {
                 setPass(null)
               }}
