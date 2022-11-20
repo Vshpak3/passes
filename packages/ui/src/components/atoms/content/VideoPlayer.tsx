@@ -25,7 +25,10 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       } else if (Hls.isSupported()) {
         const hls = new Hls({
           autoStartLoad: true, // TODO: we want this off but it breaks video load
-          enableWorker: false // TODO: For some reason the worker is not working
+          enableWorker: false, // TODO: For some reason the worker is not working
+          xhrSetup: function (xhr) {
+            xhr.withCredentials = true // Send cookies (necessary for creators)
+          }
         })
         hls.loadSource(src)
         hls.attachMedia(video)
