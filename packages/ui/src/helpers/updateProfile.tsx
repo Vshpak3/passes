@@ -4,7 +4,6 @@ import {
   ProfileApi,
   UserApi
 } from "@passes/api-client"
-import { pickBy } from "lodash"
 
 import { ContentService } from "src/helpers/content"
 import { rejectIfAny } from "./promise"
@@ -73,11 +72,9 @@ export async function updateProfile(
         ? contentApi.deleteProfileBanner()
         : undefined,
 
-      Object.values(rest).some((x) => x?.trim())
+      Object.keys(rest).length > 0
         ? profileApi.createOrUpdateProfile({
-            createOrUpdateProfileRequestDto: {
-              ...pickBy(rest, (v) => v && v.trim())
-            }
+            createOrUpdateProfileRequestDto: rest
           })
         : undefined
     ])

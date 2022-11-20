@@ -34,7 +34,10 @@ import { SocialUsernames, socialUsernameToIcon } from "./ProfileSocialMedia"
 
 const editProfileSchema = object({
   ...displayNameSchema,
-  description: string().nullable().optional(),
+  description: string()
+    .optional()
+    .nullable()
+    .transform((value) => (!value || !value.trim() ? null : value.trim())),
   ...socialMediaUsernameSchema
 })
 
@@ -156,7 +159,8 @@ export const EditProfile: FC<EditProfileProps> = ({
   const onSubmitEditProfile = async (values: Partial<ProfileUpdate>) => {
     await updateProfile(values)
 
-    // TODO: this ends up adding on some extra properties like profile image
+    // Note, this ends up adding on some extra properties not in the
+    // initial profile object like profile image
     mutateManualProfile(values)
 
     toast.success("Successfully updated your profile")

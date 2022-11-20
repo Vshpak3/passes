@@ -37,6 +37,7 @@ export const socialMediaUsernameSchema = Object.fromEntries(
     string()
       .optional()
       .nullable()
+      .transform((value) => (!value || !value.trim() ? null : value.trim()))
       .test(k, `Please enter a valid ${v.name} username`, (value) => {
         return !value || v.regex.test(value)
       })
