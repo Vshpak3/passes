@@ -234,6 +234,7 @@ models/SubscriptionDto.ts
 models/TagDto.ts
 models/TipPostRequestDto.ts
 models/UnreadMessagesResponseDto.ts
+models/UpdateAgencyMemberDto.ts
 models/UpdateChannelSettingsRequestDto.ts
 models/UpdateChargebackRequestDto.ts
 models/UpdateCreatorSettingsRequestDto.ts

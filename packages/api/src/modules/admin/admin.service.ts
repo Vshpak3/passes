@@ -8,6 +8,7 @@ import {
 } from '../../database/database.decorator'
 import { DatabaseService } from '../../database/database.service'
 import { createTokens } from '../../util/auth.util'
+import { AgencyService } from '../agency/agency.service'
 import { AuthRecord } from '../auth/core/auth-record'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens.dto'
 import { JwtService } from '../auth/jwt/jwt.service'
@@ -30,6 +31,7 @@ import { CreateManualPassRequestDto } from './dto/create-manual-pass.dto'
 import { CreatorFeeDto } from './dto/creator-fee.dto'
 import { ExternalPassAddressRequestDto } from './dto/external-pass-address.dto'
 import { GetCreatorFeeRequestDto } from './dto/get-creator-fee.dto'
+import { UpdateAgencyMemberDto } from './dto/update-agency-member.dto'
 import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
@@ -47,6 +49,7 @@ export class AdminService {
     private readonly s3contentService: S3ContentService,
     private readonly paymentService: PaymentService,
     private readonly passService: PassService,
+    private readonly agencyService: AgencyService,
   ) {}
 
   async findUser(userId?: string, username?: string): Promise<UserDto> {
@@ -277,5 +280,25 @@ export class AdminService {
       createManualPassRequestDto.userId,
       createManualPassRequestDto,
     )
+  }
+
+  async updateCovetedMember(updateCreatorAgency: UpdateAgencyMemberDto) {
+    // eslint-disable-next-line prefer-const
+    let { userId, username, creatorId, rate } = updateCreatorAgency
+    const agencyId = await this.agencyService.getCovetedAgency()
+    if (!userId) {
+      userId = (await this.findUser(userId, username)).userId
+    }
+
+    if (rate === 0) {
+      await this.agencyService.removeCreator(creatorId, agencyId)
+    } else {
+      await this.agencyService.addCreator(creatorId, agencyId, rate)
+    }
+  }
+
+  async getCovetedMembers() {
+    const agencyId = await this.agencyService.getCovetedAgency()
+    return await this.agencyService.getMembers(agencyId)
   }
 }

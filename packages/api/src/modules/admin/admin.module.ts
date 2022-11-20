@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common'
 
+import { AgencyModule } from '../agency/agency.module'
 import { JwtModule } from '../auth/jwt/jwt.module'
 import { PassModule } from '../pass/pass.module'
 import { PaymentModule } from '../payment/payment.module'
@@ -17,6 +18,7 @@ import { AdminService } from './admin.service'
     S3ContentModule,
     UserModule,
     PassModule,
+    AgencyModule,
   ],
   controllers: [AdminController],
   providers: [AdminService],

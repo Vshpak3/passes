@@ -441,6 +441,37 @@ export class AdminApi extends runtime.BaseAPI {
     }
 
     /**
+     * Update coveted member
+     */
+    async getCovetedMembersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        /* No auth for endpoint but always send access token */
+        const token = window.localStorage.getItem("access-token")
+        if (token) {
+            headerParameters["Authorization"] = `Bearer ${JSON.parse(token)}`;
+        }
+
+        const response = await this.request({
+            path: `/api/admin/coveted/member`,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.VoidApiResponse(response);
+    }
+
+    /**
+     * Update coveted member
+     */
+    async getCovetedMembers(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
+        await this.getCovetedMembersRaw(initOverrides);
+    }
+
+    /**
      * Get creator fee
      */
     async getCreatorFeeRaw(requestParameters: GetCreatorFeeRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetCreatorFeeResponseDto>> {

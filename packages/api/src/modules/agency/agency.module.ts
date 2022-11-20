@@ -7,6 +7,6 @@ import { AgencyService } from './agency.service'
   imports: [],
   controllers: [AgencyController],
   providers: [AgencyService],
-  exports: [],
+  exports: [AgencyService],
 })
 export class AgencyModule {}

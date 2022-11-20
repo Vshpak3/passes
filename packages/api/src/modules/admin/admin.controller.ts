@@ -12,6 +12,7 @@ import { Response } from 'express'
 import { MetricsService } from '../../monitoring/metrics/metric.service'
 import { BooleanResponseDto } from '../../util/dto/boolean.dto'
 import { ApiEndpoint } from '../../web/endpoint.web'
+import { GetAgencyMembersResponseDto } from '../agency/dto/get-agency-members.dto'
 import { RoleEnum } from '../auth/core/auth.role'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens.dto'
 import { JwtGeneralGuard } from '../auth/jwt/general/jwt-general.guard'
@@ -29,6 +30,7 @@ import {
 } from './dto/get-creator-fee.dto'
 import { ImpersonateUserRequestDto } from './dto/impersonate-user.dto'
 import { SetCreatorFeeRequestDto } from './dto/set-creator-fee.dto'
+import { UpdateAgencyMemberDto } from './dto/update-agency-member.dto'
 import { UpdateChargebackRequestDto } from './dto/update-chargeback.dto'
 import { UpdateExternalPassRequestDto } from './dto/update-external-pass.dto'
 import { UserExternalPassRequestDto } from './dto/user-external-pass.dto'
@@ -263,5 +265,33 @@ export class AdminController {
     @Body() createManualPassDto: CreateManualPassRequestDto,
   ): Promise<CreatePassResponseDto> {
     return await this.adminService.manualPass(createManualPassDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Update coveted member',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Coveted member updated',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('coveted/member')
+  async updateCovetedMember(
+    @Body() updateAgencyMemberDto: UpdateAgencyMemberDto,
+  ): Promise<void> {
+    await this.adminService.updateCovetedMember(updateAgencyMemberDto)
+  }
+
+  @ApiEndpoint({
+    summary: 'Update coveted member',
+    responseStatus: HttpStatus.OK,
+    responseType: undefined,
+    responseDesc: 'Coveted member updated',
+    role: RoleEnum.NO_AUTH,
+  })
+  @Post('coveted/member')
+  async getCovetedMembers(): Promise<GetAgencyMembersResponseDto> {
+    return new GetAgencyMembersResponseDto(
+      await this.adminService.getCovetedMembers(),
+    )
   }
 }

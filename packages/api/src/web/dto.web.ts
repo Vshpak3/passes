@@ -7,6 +7,7 @@ import {
   IsDate,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
@@ -56,6 +57,8 @@ type TypeOptions =
   | 'date[]'
   | 'number'
   | 'number[]'
+  | 'float'
+  | 'float[]'
   | 'string'
   | 'string[]'
   | 'uuid'
@@ -66,6 +69,7 @@ const decoratorMap = {
   currency: IsCurrencyNumber,
   date: IsDate,
   number: IsInt,
+  float: IsNumber,
   string: IsString,
   uuid: IsUUID,
 }
@@ -114,6 +118,9 @@ export function DtoProperty(options: DtoOptions) {
         break
       case 'number':
         apiProperties.type = 'integer'
+        break
+      case 'float':
+        apiProperties.type = 'number'
         break
       case 'uuid':
         apiProperties.type = 'string'

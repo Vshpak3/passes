@@ -207,6 +207,7 @@ export * from './SubscriptionDto';
 export * from './TagDto';
 export * from './TipPostRequestDto';
 export * from './UnreadMessagesResponseDto';
+export * from './UpdateAgencyMemberDto';
 export * from './UpdateChannelSettingsRequestDto';
 export * from './UpdateChargebackRequestDto';
 export * from './UpdateCreatorSettingsRequestDto';
