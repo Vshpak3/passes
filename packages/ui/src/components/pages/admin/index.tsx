@@ -8,16 +8,36 @@ import { useRouter } from "next/router"
 import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
+import { string } from "yup"
 
 import { AdminTabProps, AdminTabs, AdminTabsEnum } from "src/config/admin"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { SettingsSearchBar } from "./SettingsSearchBar"
-import { AdminFormSchema, AdminUserPage } from "./tabs/AdminUser"
+import { AdminUserPage } from "./tabs/AdminUser"
 import { UpdatedCovetedMember } from "./tabs/UpdateCovetedMember"
 import { ViewCovetedMembers } from "./tabs/ViewCovetedMembers"
 
 const ADMIN_EMAIL = "@passes.com"
+
+export interface AdminFormSchema {
+  secret: string
+  userId?: string
+  username?: string
+}
+export const adminFormBase = {
+  secret: string().required("The secret is required"),
+  userId: string().when("username", {
+    is: "",
+    then: string().required("Please enter a username or userId"),
+    otherwise: string()
+  }),
+  username: string().when("userId", {
+    is: "",
+    then: string().required("Please enter a username or userId"),
+    otherwise: string()
+  })
+}
 
 export const Admin = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()

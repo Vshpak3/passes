@@ -1,5 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { AdminApi } from "@passes/api-client/apis"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "react-toastify"
 import { object, string } from "yup"
@@ -10,29 +11,35 @@ import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/admin/AdminTab"
 import { errorMessage } from "src/helpers/error"
 import { dirtyValues } from "src/helpers/form"
-import { adminFormBase, AdminFormSchema } from "./AdminUser"
+import { adminFormBase, AdminFormSchema } from ".."
 
 interface UpdateCovetedMemberSchema extends AdminFormSchema {
   rate: string
 }
 
-const adminFormSchema = object().shape({
-  ...adminFormBase,
-  rate: string()
-    .required("rate is required")
-    .test(
-      "min",
-      "rate can't be less than 0",
-      (value) => parseFloat(value || "") >= 0
-    )
-    .test(
-      "max",
-      "rate can't be more than 1",
-      (value) => parseFloat(value || "") <= 1
-    )
-})
-
 export const UpdatedCovetedMember = () => {
+  const adminFormSchema = useMemo(
+    () =>
+      object().shape(
+        {
+          ...adminFormBase,
+          rate: string()
+            .required("rate is required")
+            .test(
+              "min",
+              "rate can't be less than 0",
+              (value) => parseFloat(value || "") >= 0
+            )
+            .test(
+              "max",
+              "rate can't be more than 1",
+              (value) => parseFloat(value || "") <= 1
+            )
+        },
+        [["userId", "username"]]
+      ),
+    []
+  )
   const {
     register,
     handleSubmit,

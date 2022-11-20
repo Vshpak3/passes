@@ -30,7 +30,7 @@ export const ViewCovetedMembers = () => {
     }
   }
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <Tab
         isSubmitting={isSubmitSuccessful}
         label="Impersonate"

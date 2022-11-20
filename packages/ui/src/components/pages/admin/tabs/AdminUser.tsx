@@ -1,32 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useMemo } from "react"
 import { useForm } from "react-hook-form"
-import { object, string } from "yup"
+import { object } from "yup"
 
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Tab } from "src/components/pages/admin/AdminTab"
 import { dirtyValues } from "src/helpers/form"
-
-export interface AdminFormSchema {
-  secret: string
-  userId?: string
-  username?: string
-}
-export const adminFormBase = {
-  secret: string().required("The secret is required"),
-  userId: string().when("username", {
-    is: "",
-    then: string().required("Please enter a username or userId"),
-    otherwise: string()
-  }),
-  username: string().when("userId", {
-    is: "",
-    then: string().required("Please enter a username or userId"),
-    otherwise: string()
-  })
-}
-
-const adminFormSchema = object().shape(adminFormBase)
+import { adminFormBase, AdminFormSchema } from ".."
 
 interface AdminUserPageProps {
   action: (values: AdminFormSchema) => void
@@ -41,6 +22,10 @@ export const AdminUserPage = ({
   title,
   description
 }: AdminUserPageProps) => {
+  const adminFormSchema = useMemo(
+    () => object().shape(adminFormBase, [["userId", "username"]]),
+    []
+  )
   const {
     register,
     handleSubmit,

@@ -1,6 +1,6 @@
 import {
-  GetPassesRequestDtoOrderEnum,
-  GetPassesRequestDtoOrderTypeEnum,
+  GetExternalPassesResponseDtoOrderEnum,
+  GetExternalPassesResponseDtoOrderTypeEnum,
   PassApi
 } from "@passes/api-client"
 import useSWR from "swr"
@@ -19,8 +19,8 @@ export const useExternalPasses = () => {
         await api.getExternalPasses({
           getPassesRequestDto: {
             creatorId: user?.userId,
-            order: GetPassesRequestDtoOrderEnum.Asc,
-            orderType: GetPassesRequestDtoOrderTypeEnum.CreatedAt
+            orderType: GetExternalPassesResponseDtoOrderTypeEnum.CreatedAt,
+            order: GetExternalPassesResponseDtoOrderEnum.Desc
           }
         })
       ).data
