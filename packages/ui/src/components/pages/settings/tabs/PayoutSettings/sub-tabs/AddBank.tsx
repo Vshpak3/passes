@@ -36,7 +36,9 @@ interface BankForm {
   "postal-code": string
   "bank-name": string
   "bank-city": string
-  "bank-country": string // eslint-disable-line sonarjs/no-duplicate-string
+  // eslint-disable-next-line sonarjs/no-duplicate-string
+  "bank-country": string
+  "bank-type": string
 }
 
 const bankForm = object().shape(
@@ -81,7 +83,6 @@ const AddBank = () => {
   const {
     handleSubmit,
     register,
-    setValue,
     watch,
     control,
     formState: { errors }
@@ -139,7 +140,8 @@ const AddBank = () => {
           control={control}
           defaultValue={bankType}
           errors={errors}
-          name="bank-country"
+          name="bank-type"
+          placeholder="Bank Type"
           selectOptions={[
             { label: "US Bank", value: BankTypeEnum.US },
             { label: "International Bank - IBAN", value: BankTypeEnum.IBAN },
@@ -211,7 +213,10 @@ const AddBank = () => {
         control={control}
         errors={errors}
         name="bank-country"
-        onChange={(newValue: string) => setValue("bank-country", newValue)}
+        options={{
+          required: { message: "Country is required", value: true }
+        }}
+        placeholder="Bank Country"
         selectOptions={COUNTRIES}
       />
 
