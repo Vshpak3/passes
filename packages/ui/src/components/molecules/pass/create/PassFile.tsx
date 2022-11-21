@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from "react"
 
-import { MediaFile } from "src/components/organisms/profile/main-content/new-post/MediaFile"
+import { Media } from "src/components/organisms/profile/main-content/new-post/Media"
 
 interface PassFileProps {
   file: File
@@ -10,11 +10,11 @@ interface PassFileProps {
 
 export const PassFile: FC<PassFileProps> = ({ onRemove, file, gridLayout }) => (
   <div className={`col-span-12 ${gridLayout}`}>
-    <MediaFile
+    <Media
       className="ml-[30px]"
+      contentFile={{ file: file }}
       contentHeight={200}
       contentWidth={130}
-      file={file}
       isPassUpload
       onRemove={onRemove}
     />

@@ -5,13 +5,12 @@ import DeleteIcon from "public/icons/media-delete-icon.svg"
 import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import { FC, MouseEventHandler } from "react"
 
-import { VideoPlayer } from "src/components/atoms/content/VideoPlayer"
-import { useVideoPlayer } from "src/hooks/useVideoPlayer"
+import { VideoContent } from "src/components/atoms/content/VideoContent"
+import { ContentService } from "src/helpers/content"
+import { ContentFile } from "src/hooks/useMedia"
 import { CrossIcon } from "src/icons/CrossIcon"
 
 type MediaProp = {
-  src: string
-  type: ContentDtoContentTypeEnum
   className?: string
   iconClassName?: string
   onRemove?: MouseEventHandler
@@ -23,13 +22,11 @@ type MediaProp = {
   isPassUpload?: boolean
   objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
   noRender?: boolean
-  poster?: string
   noRenderString?: string
+  contentFile: ContentFile
 }
 
 export const Media: FC<MediaProp> = ({
-  src,
-  type,
   className,
   iconClassName,
   onRemove,
@@ -41,11 +38,28 @@ export const Media: FC<MediaProp> = ({
   isPassUpload,
   objectFit = "cover",
   noRender,
-  poster,
-  noRenderString
+  noRenderString,
+  contentFile
 }) => {
   const fitContent = "fit-content"
-  const { ref } = useVideoPlayer()
+  const { file, content } = contentFile
+  let src = ""
+  let type: ContentDtoContentTypeEnum = ContentDtoContentTypeEnum.Image
+  if (file) {
+    src = URL.createObjectURL(file)
+    if (file.type.startsWith("image/")) {
+      type = "image"
+    }
+    if (file.type.startsWith("video/")) {
+      type = "video"
+    }
+    if (file.type.startsWith("audio/")) {
+      type = "audio"
+    }
+  } else if (content) {
+    src = ContentService.userContentMediaPath(content)
+    type = content.contentType
+  }
 
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
@@ -61,13 +75,7 @@ export const Media: FC<MediaProp> = ({
             </span>
           </div>
         ) : (
-          <VideoPlayer
-            autoplay={false}
-            className="relative z-20 inline-block h-auto max-h-full max-w-full object-contain"
-            poster={poster}
-            ref={ref}
-            src={src}
-          />
+          <VideoContent autoplay={false} contentFile={contentFile} isActive />
         )}
         {onExpand && (
           <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">
@@ -144,5 +152,6 @@ export const Media: FC<MediaProp> = ({
       </>
     )
   }
-  return media[type] ?? null
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  return media[type!] ?? null
 }

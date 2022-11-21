@@ -172,7 +172,7 @@ export const MediaSectionReorder: FC<MediaSectionReorderProps> = ({
 
       {!!selectedMedia?.file && (
         <MediaModal
-          file={selectedMedia}
+          contentFile={selectedMedia}
           isOpen={isNewPostModalOpen}
           modalContainerClassname="p-0"
           setOpen={setIsNewPostModalOpen}

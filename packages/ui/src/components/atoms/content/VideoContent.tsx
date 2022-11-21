@@ -7,17 +7,17 @@ import { useVideoPlayer } from "src/hooks/useVideoPlayer"
 import { VideoPlayer } from "./VideoPlayer"
 
 const VideoContentUnmemo = ({
-  content,
+  contentFile,
   isActive,
   autoplay
 }: {
-  content: ContentFile
+  contentFile: ContentFile
   isActive: boolean
   autoplay?: boolean
 }) => {
   const { ref, pause } = useVideoPlayer()
-  const videoThumbnail = content.content
-    ? ContentService.userContentThumbnailPath(content.content)
+  const videoThumbnail = contentFile.content
+    ? ContentService.userContentThumbnailPath(contentFile.content)
     : undefined
   useEffect(() => {
     if (!isActive) {
@@ -41,10 +41,10 @@ const VideoContentUnmemo = ({
           poster={videoThumbnail}
           ref={ref}
           src={
-            content.content
-              ? ContentService.userContentMediaPath(content.content)
-              : content.file
-              ? URL.createObjectURL(content.file)
+            contentFile.content
+              ? ContentService.userContentMediaPath(contentFile.content)
+              : contentFile.file
+              ? URL.createObjectURL(contentFile.file)
               : ""
           }
         />

@@ -62,7 +62,7 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
               <MediaModal
                 activeIndex={activeIndex}
                 carouselContent={carouselContent}
-                file={{ content }}
+                contentFile={{ content }}
                 isOpen={openModal}
                 modalContainerClassname="p-0"
                 setOpen={setOpenModal}
@@ -75,7 +75,7 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
         media = (
           <VideoContent
             autoplay={autoplayVideo}
-            content={{ content }}
+            contentFile={{ content }}
             isActive={isActive}
           />
         )

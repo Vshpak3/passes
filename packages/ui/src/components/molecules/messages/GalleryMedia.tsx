@@ -99,7 +99,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                 } else if (c.contentType === ContentDtoContentTypeEnum.Video) {
                   return (
                     <VideoContent
-                      content={{ content: c }}
+                      contentFile={{ content: c }}
                       isActive={false}
                       key={c.contentId}
                     />
@@ -171,7 +171,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   ) {
                     return (
                       <VideoContent
-                        content={{ content: c }}
+                        contentFile={{ content: c }}
                         isActive={false}
                         key={c.contentId}
                       />

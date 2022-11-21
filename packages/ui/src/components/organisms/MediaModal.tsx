@@ -4,14 +4,12 @@ import React, { Dispatch, FC, SetStateAction, useEffect, useState } from "react"
 import { ContentCarousel } from "src/components/organisms/content/ContentCarousel"
 import { Dialog } from "src/components/organisms/Dialog"
 import { Media } from "src/components/organisms/profile/main-content/new-post/Media"
-import { MediaFile } from "src/components/organisms/profile/main-content/new-post/MediaFile"
-import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 
 interface ModalProps {
   isOpen: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
-  file: ContentFile
+  contentFile: ContentFile
   modalContainerClassname?: string
   carouselContent?: ContentDto[]
   activeIndex?: number
@@ -20,7 +18,7 @@ interface ModalProps {
 export const MediaModal: FC<ModalProps> = ({
   isOpen,
   setOpen,
-  file,
+  contentFile,
   modalContainerClassname,
   carouselContent,
   activeIndex = 0
@@ -54,25 +52,14 @@ export const MediaModal: FC<ModalProps> = ({
           />
         </div>
       )}
-      {file.file && !carouselContent && (
-        <MediaFile
-          className="m-0 p-0"
-          contentHeight={height}
-          contentWidth={width}
-          file={file.file}
-          objectFit="contain"
-          preview
-        />
-      )}
-      {file.content && !carouselContent && (
+      {!carouselContent && (
         <Media
           className="m-0 p-0"
+          contentFile={contentFile}
           contentHeight={height}
           contentWidth={width}
           objectFit="contain"
           preview
-          src={ContentService.userContentMediaPath(file.content)}
-          type={file.content.contentType}
         />
       )}
     </Dialog>

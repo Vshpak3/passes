@@ -66,7 +66,7 @@ export const VaultMediaGrid: FC<VaultMediaGridProps> = ({
       ref={ref}
     >
       <MediaModal
-        file={{ content }}
+        contentFile={{ content }}
         isOpen={isViewMediaModal}
         modalContainerClassname="p-0"
         setOpen={setIsViewMediaModal}

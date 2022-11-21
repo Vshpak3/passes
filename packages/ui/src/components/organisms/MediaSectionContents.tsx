@@ -8,11 +8,9 @@ import { FieldErrorsImpl } from "react-hook-form"
 import { FileInput } from "src/components/atoms/input/FileInput"
 import { FormRegister } from "src/components/atoms/input/InputTypes"
 import { ACCEPTED_MEDIA_TYPES } from "src/config/media-limits"
-import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 import { MediaModal } from "./MediaModal"
 import { Media } from "./profile/main-content/new-post/Media"
-import { MediaFile } from "./profile/main-content/new-post/MediaFile"
 
 type ContentFileWithId = ContentFile & { _id: string }
 
@@ -65,7 +63,7 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
     <>
       {openMediaModal && (
         <MediaModal
-          file={openMediaModal}
+          contentFile={openMediaModal}
           isOpen
           setOpen={() => setOpenMediaModal(undefined)}
         />
@@ -111,47 +109,30 @@ export const MediaSectionContents: FC<MediaSectionContentsProps> = ({
                         {...dragProvided.draggableProps}
                         ref={dragProvided.innerRef}
                       >
-                        {item.content ? (
-                          <Media
-                            className={classNames(
-                              snapshot.isDragging
-                                ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                                : getMediaClassname(item.content.contentType),
-                              dragDisabled && "!cursor-pointer"
-                            )}
-                            iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
-                            noRender
-                            noRenderString={`Vault Video content #${index}`}
-                            objectFit="cover"
-                            onExpand={() => setOpenMediaModal(item)}
-                            onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                              onRemove(index, e)
-                            }
-                            onSelect={() => onMediaFileSelect(item)}
-                            src={ContentService.userContentMediaPath(
-                              item.content
-                            )}
-                            type={item.content.contentType}
-                          />
-                        ) : item.file ? (
-                          <MediaFile
-                            className={classNames(
-                              snapshot.isDragging
-                                ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
-                                : getMediaClassname(item.file.type),
-                              dragDisabled && "!cursor-pointer"
-                            )}
-                            file={item.file}
-                            iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
-                            noRender
-                            noRenderString={item.file.name}
-                            objectFit="cover"
-                            onRemove={(e: MouseEvent<HTMLDivElement>) =>
-                              onRemove(index, e)
-                            }
-                            onSelect={() => onMediaFileSelect(item)}
-                          />
-                        ) : null}
+                        <Media
+                          className={classNames(
+                            snapshot.isDragging
+                              ? "min-w-[85px] !cursor-grabbing select-none md:min-w-[175px]"
+                              : getMediaClassname(
+                                  item.content?.contentType ??
+                                    item.file?.type ??
+                                    ""
+                                ),
+                            dragDisabled && "!cursor-pointer"
+                          )}
+                          contentFile={item}
+                          iconClassName="z-[100] absolute top-[5px] left-[55px] md:left-[140px] mix-blend-difference"
+                          noRender
+                          noRenderString={
+                            item.file?.name ?? `Vault Video content #${index}`
+                          }
+                          objectFit="cover"
+                          onExpand={() => setOpenMediaModal(item)}
+                          onRemove={(e: MouseEvent<HTMLDivElement>) =>
+                            onRemove(index, e)
+                          }
+                          onSelect={() => onMediaFileSelect(item)}
+                        />
                       </div>
                     )}
                   </Draggable>
