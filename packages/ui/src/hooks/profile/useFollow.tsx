@@ -61,8 +61,7 @@ export const useFollow = (creatorId?: string) => {
     if (isFollowing === undefined && creatorId) {
       mutate()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [creatorId, mutate])
+  }, [creatorId, isFollowing, mutate])
 
   return {
     isFollowing,

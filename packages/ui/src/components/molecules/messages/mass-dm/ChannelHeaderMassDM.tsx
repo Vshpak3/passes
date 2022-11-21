@@ -1,42 +1,46 @@
-import { ListDto, PassDto } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction, useCallback } from "react"
+import { FC, useCallback } from "react"
 
+import { MassDmSelectionProps } from "src/components/organisms/messages/MessagesMassDMView"
 import { SelectedBadge } from "./SelectedBadge"
 
-interface ChannelHeaderProps {
-  selectedLists: ListDto[]
-  setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
-  selectedPasses: PassDto[]
-  setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
-  excludedLists: ListDto[]
-  setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-}
+type ChannelHeaderProps = MassDmSelectionProps
 
 export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
-  selectedPasses,
-  setSelectedPasses,
-  selectedLists,
-  setSelectedLists,
+  includedPasses,
+  setIncludedPasses,
+  excludedPasses,
+  setExcludedPasses,
+  includedLists,
+  setIncludedLists,
   excludedLists,
   setExcludedLists
 }) => {
-  const removePass = useCallback(
+  const removeIncludedPass = useCallback(
     (idToRemove: string) => {
-      setSelectedPasses((state) =>
+      setIncludedPasses((state) =>
         state.filter((pass) => pass.passId !== idToRemove)
       )
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+
+    [setIncludedPasses]
   )
-  const removeList = useCallback(
+  const removeIncludedList = useCallback(
     (idToRemove: string) => {
-      setSelectedLists((state) =>
+      setIncludedLists((state) =>
         state.filter((list) => list.listId !== idToRemove)
       )
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+
+    [setIncludedLists]
+  )
+  const removeExludedPass = useCallback(
+    (idToRemove: string) => {
+      setExcludedPasses((state) =>
+        state.filter((pass) => pass.passId !== idToRemove)
+      )
+    },
+
+    [setExcludedPasses]
   )
   const removeExcludedList = useCallback(
     (idToRemove: string) => {
@@ -44,8 +48,8 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
         state.filter((list) => list.listId !== idToRemove)
       )
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+
+    [setExcludedLists]
   )
   return (
     <div className="flex flex-col items-start bg-[#12070E]/50 backdrop-blur-[50px]">
@@ -54,21 +58,21 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
           Selected audience
         </span>
         <div className="flex gap-[10px]">
-          {selectedLists.map((list) => (
+          {includedLists.map((list) => (
             <SelectedBadge
               id={list.listId}
               key={list.listId}
               name={list.name ?? ""}
-              removeProp={removeList}
+              removeProp={removeIncludedList}
               type="list"
             />
           ))}
-          {selectedPasses.map((pass) => (
+          {includedPasses.map((pass) => (
             <SelectedBadge
               id={pass.passId}
               key={pass.passId}
               name={pass.title}
-              removeProp={removePass}
+              removeProp={removeIncludedPass}
               type="pass"
             />
           ))}
@@ -85,6 +89,15 @@ export const ChannelHeaderMassDM: FC<ChannelHeaderProps> = ({
               key={list.listId}
               name={list.name ?? ""}
               removeProp={removeExcludedList}
+              type="list"
+            />
+          ))}
+          {excludedPasses.map((pass) => (
+            <SelectedBadge
+              id={pass.passId}
+              key={pass.passId}
+              name={pass.title}
+              removeProp={removeExludedPass}
               type="list"
             />
           ))}

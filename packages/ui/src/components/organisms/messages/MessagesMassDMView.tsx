@@ -1,5 +1,5 @@
 import { ListDto, PassDto } from "@passes/api-client/models"
-import { FC, memo, useState } from "react"
+import { Dispatch, FC, memo, SetStateAction, useState } from "react"
 
 import { InputMessageFormProps } from "src/components/molecules/messages/InputMessage"
 import { GroupSelectionDM } from "src/components/molecules/messages/mass-dm/GroupSelectionDM"
@@ -14,51 +14,66 @@ export interface MessagesMassDMViewProps
     MessagesProps,
     "vaultContent" | "setVaultContent" | "setMassMessage"
   > {
-  initPasses?: PassDto[]
-  initLists?: ListDto[]
+  initIncludedPasses?: PassDto[]
+  initExcludedPasses?: PassDto[]
+  initIncludedLists?: ListDto[]
   initExcludedLists?: ListDto[]
   initialData?: Partial<InputMessageFormProps>
   save?: MassMessageSaveFunction
   schedulable?: boolean
+}
+export interface MassDmSelectionProps {
+  includedPasses: PassDto[]
+  setIncludedPasses: Dispatch<SetStateAction<PassDto[]>>
+  excludedPasses: PassDto[]
+  setExcludedPasses: Dispatch<SetStateAction<PassDto[]>>
+  includedLists: ListDto[]
+  setIncludedLists: Dispatch<SetStateAction<ListDto[]>>
+  excludedLists: ListDto[]
+  setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
 }
 
 const MessagesMassDMViewUnmemo: FC<MessagesMassDMViewProps> = ({
   vaultContent,
   setVaultContent,
   setMassMessage,
-  initPasses = [],
-  initLists = [],
+  initIncludedPasses = [],
+  initExcludedPasses = [],
+  initIncludedLists = [],
   initExcludedLists = [],
   initialData = {},
   save,
   schedulable
 }) => {
-  const [selectedPasses, setSelectedPasses] = useState<PassDto[]>(initPasses)
-  const [selectedLists, setSelectedLists] = useState<ListDto[]>(initLists)
+  const [includedPasses, setIncludedPasses] =
+    useState<PassDto[]>(initIncludedPasses)
+  const [excludedPasses, setExcludedPasses] =
+    useState<PassDto[]>(initExcludedPasses)
+  const [includedLists, setIncludedLists] =
+    useState<ListDto[]>(initIncludedLists)
   const [excludedLists, setExcludedLists] =
     useState<ListDto[]>(initExcludedLists)
 
+  const props = {
+    includedPasses,
+    setIncludedPasses,
+    excludedPasses,
+    setExcludedPasses,
+    includedLists,
+    setIncludedLists,
+    excludedLists,
+    setExcludedLists
+  }
+
   return (
     <>
-      <GroupSelectionDM
-        excludedLists={excludedLists}
-        selectedLists={selectedLists}
-        selectedPasses={selectedPasses}
-        setExcludedLists={setExcludedLists}
-        setSelectedLists={setSelectedLists}
-        setSelectedPasses={setSelectedPasses}
-      />
+      <GroupSelectionDM {...props} />
       <MassDMMessage
-        excludedLists={excludedLists}
+        {...props}
         initialData={initialData}
         save={save}
         schedulable={schedulable}
-        selectedLists={selectedLists}
-        selectedPasses={selectedPasses}
-        setExcludedLists={setExcludedLists}
         setMassMessage={setMassMessage}
-        setSelectedLists={setSelectedLists}
-        setSelectedPasses={setSelectedPasses}
         setVaultContent={setVaultContent}
         vaultContent={vaultContent}
       />

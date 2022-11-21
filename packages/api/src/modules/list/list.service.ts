@@ -434,11 +434,9 @@ export class ListService {
           .select('creator_id')
       ).forEach((follow) => userIdsSet.add(follow.creator_id))
     }
-    return new Set(
-      followers
-        .map((follower) => follower.follower_id)
-        .filter((userId) => userIdsSet.has(userId)),
-    )
+    return followers
+      .map((follower) => follower.follower_id)
+      .filter((userId) => userIdsSet.has(userId))
   }
 
   async updateAsyncLists() {

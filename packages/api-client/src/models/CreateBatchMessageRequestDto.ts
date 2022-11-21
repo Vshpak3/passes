@@ -66,7 +66,13 @@ export interface CreateBatchMessageRequestDto {
      * @type {Array<string>}
      * @memberof CreateBatchMessageRequestDto
      */
-    passIds: Array<string>;
+    includePassIds: Array<string>;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof CreateBatchMessageRequestDto
+     */
+    excludePassIds: Array<string>;
 }
 
 /**
@@ -79,7 +85,8 @@ export function instanceOfCreateBatchMessageRequestDto(value: object): boolean {
     isInstance = isInstance && "previewIndex" in value;
     isInstance = isInstance && "includeListIds" in value;
     isInstance = isInstance && "excludeListIds" in value;
-    isInstance = isInstance && "passIds" in value;
+    isInstance = isInstance && "includePassIds" in value;
+    isInstance = isInstance && "excludePassIds" in value;
 
     return isInstance;
 }
@@ -101,7 +108,8 @@ export function CreateBatchMessageRequestDtoFromJSONTyped(json: any, ignoreDiscr
         'scheduledAt': !exists(json, 'scheduledAt') ? undefined : (new Date(json['scheduledAt'])),
         'includeListIds': json['includeListIds'],
         'excludeListIds': json['excludeListIds'],
-        'passIds': json['passIds'],
+        'includePassIds': json['includePassIds'],
+        'excludePassIds': json['excludePassIds'],
     };
 }
 
@@ -121,7 +129,8 @@ export function CreateBatchMessageRequestDtoToJSON(value?: CreateBatchMessageReq
         'scheduledAt': value.scheduledAt === undefined ? undefined : (value.scheduledAt.toISOString()),
         'includeListIds': value.includeListIds,
         'excludeListIds': value.excludeListIds,
-        'passIds': value.passIds,
+        'includePassIds': value.includePassIds,
+        'excludePassIds': value.excludePassIds,
     };
 }
 

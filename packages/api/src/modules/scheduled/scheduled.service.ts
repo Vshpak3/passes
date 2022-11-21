@@ -139,7 +139,7 @@ export class ScheduledService {
             event.passes = await this.passService.getCreatorPasses(
               DEFAULT_PASS_QUERY,
               userId,
-              batchMessage.passIds,
+              [...batchMessage.includePassIds, ...batchMessage.excludePassIds],
             )
             event.contents = (
               await this.contentService.validateContentIds(

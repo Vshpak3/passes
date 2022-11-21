@@ -5,29 +5,16 @@ import {
   MessagesApi,
   PassDto
 } from "@passes/api-client"
-import React, {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useCallback,
-  useMemo
-} from "react"
+import React, { FC, useCallback, useMemo } from "react"
 
-import { InputMessageFormProps } from "src/components/molecules/messages/InputMessage"
-import { MessagesMassDMViewProps } from "src/components/organisms/messages/MessagesMassDMView"
+import {
+  MassDmSelectionProps,
+  MessagesMassDMViewProps
+} from "src/components/organisms/messages/MessagesMassDMView"
 import { ChannelHeaderMassDM } from "./ChannelHeaderMassDM"
 import { InputMessageTool } from "./InputMessageTool"
 
-interface MassDMMessageProps extends MessagesMassDMViewProps {
-  selectedPasses: PassDto[]
-  setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
-  selectedLists: ListDto[]
-  setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
-  excludedLists: ListDto[]
-  setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-  initialData: Partial<InputMessageFormProps>
-  schedulable?: boolean
-}
+type MassDMMessageProps = MessagesMassDMViewProps & MassDmSelectionProps
 
 export type MassMessageSaveFunction = (
   batchMessage: CreateBatchMessageRequestDto,
@@ -39,21 +26,27 @@ export type MassMessageSaveFunction = (
 export const MassDMMessage: FC<MassDMMessageProps> = ({
   vaultContent,
   setVaultContent,
-  selectedPasses,
-  setSelectedPasses,
-  selectedLists,
-  setSelectedLists,
-  excludedLists,
-  setExcludedLists,
   setMassMessage,
   initialData,
   save: initSave,
-  schedulable = true
+  schedulable = true,
+  ...props
 }) => {
+  const {
+    includedPasses,
+    setIncludedPasses,
+    excludedPasses,
+    setExcludedPasses,
+    includedLists,
+    setIncludedLists,
+    excludedLists,
+    setExcludedLists
+  } = props
   const clear = () => {
     setVaultContent([])
-    setSelectedLists([])
-    setSelectedPasses([])
+    setIncludedPasses([])
+    setIncludedLists([])
+    setExcludedPasses([])
     setExcludedLists([])
     setMassMessage(false)
   }
@@ -77,9 +70,10 @@ export const MassDMMessage: FC<MassDMMessageProps> = ({
       content: ContentBareDto[],
       scheduledAt?: Date
     ) => {
-      const includeListIds = selectedLists.map((s) => s.listId)
-      const passIds = selectedPasses.map((s) => s.passId)
+      const includeListIds = includedLists.map((s) => s.listId)
+      const includePassIds = includedPasses.map((s) => s.passId)
       const excludeListIds = excludedLists.map((s) => s.listId)
+      const excludePassIds = excludedPasses.map((s) => s.passId)
       await massMessageSave(
         {
           text,
@@ -88,26 +82,26 @@ export const MassDMMessage: FC<MassDMMessageProps> = ({
           previewIndex,
           includeListIds,
           excludeListIds,
-          passIds,
+          includePassIds,
+          excludePassIds,
           scheduledAt
         },
         content,
-        selectedPasses,
-        [...selectedLists, ...excludedLists]
+        [...includedPasses, ...excludedPasses],
+        [...includedLists, ...excludedLists]
       )
     },
-    [excludedLists, massMessageSave, selectedLists, selectedPasses]
+    [
+      excludedLists,
+      excludedPasses,
+      includedLists,
+      includedPasses,
+      massMessageSave
+    ]
   )
   return (
     <div className="col-span-9 flex max-h-[90vh] flex-1 flex-col lg:col-span-6">
-      <ChannelHeaderMassDM
-        excludedLists={excludedLists}
-        selectedLists={selectedLists}
-        selectedPasses={selectedPasses}
-        setExcludedLists={setExcludedLists}
-        setSelectedLists={setSelectedLists}
-        setSelectedPasses={setSelectedPasses}
-      />
+      <ChannelHeaderMassDM {...props} />
       <div className="flex h-full flex-1 flex-col overflow-y-scroll" />
       {/* TODO:  after submit successful batch message the massMessage Components are disabled and redirected to messages as onlufans so there is no need for chat stream */}
       <InputMessageTool

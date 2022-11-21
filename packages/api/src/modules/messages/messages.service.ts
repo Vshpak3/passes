@@ -377,7 +377,8 @@ export class MessagesService {
     const {
       includeListIds,
       excludeListIds,
-      passIds,
+      includePassIds,
+      excludePassIds,
       contentIds,
       price,
       text,
@@ -387,45 +388,27 @@ export class MessagesService {
       throw new MessageSendError('cant give price to messages with no content')
     }
 
-    await this.passService.validatePassIds(userId, passIds)
+    await this.passService.validatePassIds(userId, [
+      ...includePassIds,
+      ...excludePassIds,
+    ])
 
-    const include = await this.listService.getAllListMembers(
-      userId,
-      includeListIds,
-    )
-
-    ;(
-      await this.dbReader<PassHolderEntity>(PassHolderEntity.table)
-        .whereIn('pass_id', passIds)
-        .andWhere(function () {
-          return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
-            `${PassHolderEntity.table}.expires_at`,
-            '>',
-            new Date(),
-          )
-        })
-        .distinct('holder_id')
-    ).forEach((passHolder) => {
-      if (passHolder.holder_id) {
-        include.add(passHolder.holder_id)
-      }
-    })
-
-    const exclude = await this.listService.getAllListMembers(
-      userId,
-      excludeListIds,
-    )
+    const include = new Set([
+      ...(await this.listService.getAllListMembers(userId, includeListIds)),
+      ...(await this.passService.getAllPassHolders(includePassIds)),
+    ])
 
     const userIds = Array.from(include)
 
-    const removeUserIds = new Set(
-      await this.getRemovedUserIds(userIds, contentIds),
-    )
-    removeUserIds.add(userId)
+    const exclude = new Set([
+      ...(await this.listService.getAllListMembers(userId, excludeListIds)),
+      ...(await this.passService.getAllPassHolders(excludePassIds)),
+      ...(await this.getRemovedUserIds(userIds, contentIds)),
+      userId,
+    ])
 
-    const finalUserIds = userIds.filter(
-      (userId) => !removeUserIds.has(userId) && !exclude.has(userId),
-    )
+    const finalUserIds = userIds.filter((userId) => !exclude.has(userId))
+
     const { paidMessageId, contents } = await this.createPaidMessage(
       userId,
       text,
@@ -474,7 +457,7 @@ export class MessagesService {
   ): Promise<void> {
     if (
       createBatchMessageDto.includeListIds.length +
-        createBatchMessageDto.passIds.length ===
+        createBatchMessageDto.includePassIds.length ===
       0
     ) {
       throw new BadRequestException('Must select a list or pass')

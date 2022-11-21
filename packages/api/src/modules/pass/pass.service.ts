@@ -1344,4 +1344,20 @@ export class PassService {
       }),
     )
   }
+
+  async getAllPassHolders(passIds: string[]): Promise<string[]> {
+    return (
+      await this.dbReader<PassHolderEntity>(PassHolderEntity.table)
+        .whereIn('pass_id', passIds)
+        .andWhere(function () {
+          return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+            `${PassHolderEntity.table}.expires_at`,
+            '>',
+            new Date(),
+          )
+        })
+        .whereNotNull('holder_id')
+        .distinct('holder_id')
+    ).map((passHolder) => passHolder.holder_id ?? '')
+  }
 }

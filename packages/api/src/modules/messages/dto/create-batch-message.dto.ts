@@ -14,5 +14,8 @@ export class CreateBatchMessageRequestDto extends PickType(
   excludeListIds: string[]
 
   @DtoProperty({ type: 'uuid[]' })
-  passIds: string[]
+  includePassIds: string[]
+
+  @DtoProperty({ type: 'uuid[]' })
+  excludePassIds: string[]
 }

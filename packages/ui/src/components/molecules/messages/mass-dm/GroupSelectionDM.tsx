@@ -1,46 +1,46 @@
 import { ListDto, PassDto } from "@passes/api-client"
-import { Dispatch, FC, SetStateAction, useCallback } from "react"
+import { FC, useCallback } from "react"
 
+import { MassDmSelectionProps } from "src/components/organisms/messages/MessagesMassDMView"
 import { PassesSearchBar } from "src/components/organisms/profile/main-content/new-post/PassesSearchBar"
 import { ListsSearchBar } from "./ListsSearchBar"
 
-interface GroupSelectionDMProps {
-  selectedPasses: PassDto[]
-  setSelectedPasses: Dispatch<SetStateAction<PassDto[]>>
-  selectedLists: ListDto[]
-  setSelectedLists: Dispatch<SetStateAction<ListDto[]>>
-  excludedLists: ListDto[]
-  setExcludedLists: Dispatch<SetStateAction<ListDto[]>>
-}
+type GroupSelectionDMProps = MassDmSelectionProps
 
 export const GroupSelectionDM: FC<GroupSelectionDMProps> = ({
-  selectedPasses,
-  setSelectedPasses,
-  selectedLists,
-  setSelectedLists,
+  includedPasses,
+  setIncludedPasses,
+  excludedPasses,
+  setExcludedPasses,
+  includedLists,
+  setIncludedLists,
   excludedLists,
   setExcludedLists
 }) => {
-  const onPassSelect = useCallback(
+  const onIncludePassSelect = useCallback(
     (pass: PassDto) => {
-      setSelectedPasses((state) => [...state, pass])
+      setIncludedPasses((state) => [...state, pass])
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [setIncludedPasses]
   )
-  const onListSelect = useCallback(
+  const onIncludeListSelect = useCallback(
     (list: ListDto) => {
-      setSelectedLists((state) => [...state, list])
+      setIncludedLists((state) => [...state, list])
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+
+    [setIncludedLists]
   )
   const onExcludeListSelect = useCallback(
     (list: ListDto) => {
       setExcludedLists((state) => [...state, list])
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [setExcludedLists]
+  )
+  const onExcludePassSelect = useCallback(
+    (pass: PassDto) => {
+      setExcludedPasses((state) => [...state, pass])
+    },
+    [setExcludedPasses]
   )
 
   return (
@@ -51,17 +51,17 @@ export const GroupSelectionDM: FC<GroupSelectionDMProps> = ({
             Include Lists
           </span>
           <ListsSearchBar
-            onSelect={onListSelect}
-            selectedListIds={selectedLists.map((list) => list.listId)}
+            onSelect={onIncludeListSelect}
+            selectedListIds={includedLists.map((list) => list.listId)}
           />
         </div>
         <div className="flex flex-col gap-7 border-b border-passes-gray pb-6">
           <span className="text-[16px] font-medium leading-[24px]">
-            Include Passes
+            Include Memberships
           </span>
           <PassesSearchBar
-            onSelect={onPassSelect}
-            selectedPassIds={selectedPasses.map((pass) => pass.passId)}
+            onSelect={onIncludePassSelect}
+            selectedPassIds={includedPasses.map((pass) => pass.passId)}
           />
         </div>
         <div className="flex flex-col gap-7 border-b border-passes-gray pb-6">
@@ -71,6 +71,15 @@ export const GroupSelectionDM: FC<GroupSelectionDMProps> = ({
           <ListsSearchBar
             onSelect={onExcludeListSelect}
             selectedListIds={excludedLists.map((list) => list.listId)}
+          />
+        </div>
+        <div className="flex flex-col gap-7 border-b border-passes-gray pb-6">
+          <span className="text-[16px] font-medium leading-[24px]">
+            Exclude Memberships
+          </span>
+          <PassesSearchBar
+            onSelect={onExcludePassSelect}
+            selectedPassIds={excludedPasses.map((pass) => pass.passId)}
           />
         </div>
       </div>
