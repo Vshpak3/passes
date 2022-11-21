@@ -3,7 +3,7 @@ import {
   GetWelcomeMessageResponseDto,
   MessagesApi
 } from "@passes/api-client"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { toast } from "react-toastify"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -11,9 +11,9 @@ import { errorMessage } from "src/helpers/error"
 
 const CACHE_KEY_WELCOME_MESSAGE = "/welcome_message"
 
-const api = new MessagesApi()
-
 export const useWelcomeMessage = () => {
+  const api = new MessagesApi()
+
   const {
     data: welcomeMessage,
     isValidating: isLoading,
@@ -22,8 +22,7 @@ export const useWelcomeMessage = () => {
     CACHE_KEY_WELCOME_MESSAGE,
     async () => {
       return await api.getWelcomeMessage()
-    },
-    { revalidateOnMount: true }
+    }
   )
 
   const { mutate: _mutateManual } = useSWRConfig()
@@ -43,20 +42,13 @@ export const useWelcomeMessage = () => {
   )
 
   const createWelcomeMessage = useCallback(
-    async (
-      newWelcomeMessage: CreateWelcomeMessageRequestDto,
-      successToastMessage = ""
-    ) => {
+    async (newWelcomeMessage: CreateWelcomeMessageRequestDto) => {
       try {
         const result = await api.createWelcomeMessage({
           createWelcomeMessageRequestDto: newWelcomeMessage
         })
-
         if (result.value) {
-          if (successToastMessage) {
-            mutateManual(newWelcomeMessage)
-            toast.success(successToastMessage)
-          }
+          mutateManual(newWelcomeMessage)
         } else {
           toast.error("Failed to update")
         }
@@ -64,13 +56,20 @@ export const useWelcomeMessage = () => {
         errorMessage(error, true)
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [mutateManual]
   )
+
+  useEffect(() => {
+    if (!welcomeMessage) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return {
     isLoading,
     welcomeMessage,
-    getWelcomeMessage: mutate,
     createWelcomeMessage
   }
 }

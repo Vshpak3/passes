@@ -46,7 +46,7 @@ const DisplayName: FC = () => {
       await updateDisplayName(displayName)
       toast.success("Your display name has been updated successfully")
     } catch (error) {
-      const message = await errorMessage(error, true)
+      const message = await errorMessage(error)
       setError("displayName", { type: "value", message }, { shouldFocus: true })
     }
   }

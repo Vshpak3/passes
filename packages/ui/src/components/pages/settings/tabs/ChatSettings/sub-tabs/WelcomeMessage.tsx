@@ -7,22 +7,27 @@ import { InputMessageTool } from "src/components/molecules/messages/mass-dm/Inpu
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
+import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 import { useWelcomeMessage } from "src/hooks/settings/useWelcomeMessage"
 import { ContentFilesFromBare } from "src/hooks/useMedia"
 
 const WelcomeMessage = () => {
   const { addOrPopStackHandler } = useSettings() as SettingsContextProps
 
+  const { updateCreatorSettings } = useCreatorSettings()
   const { createWelcomeMessage, isLoading, welcomeMessage } =
     useWelcomeMessage()
 
   const saveWelcomeMessageHandler = useCallback(
     async (welcomeMessageData: CreateWelcomeMessageRequestDto) => {
-      await createWelcomeMessage(welcomeMessageData)
+      await Promise.all([
+        await createWelcomeMessage(welcomeMessageData),
+        await updateCreatorSettings({ welcomeMessage: true })
+      ])
       addOrPopStackHandler(SubTabsEnum.ChatSettings)
       toast.success("Successfully added welcome message")
     },
-    [createWelcomeMessage, addOrPopStackHandler]
+    [createWelcomeMessage, updateCreatorSettings, addOrPopStackHandler]
   )
 
   const fetch = useCallback(

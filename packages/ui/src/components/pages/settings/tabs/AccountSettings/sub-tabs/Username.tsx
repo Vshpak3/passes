@@ -46,7 +46,7 @@ const Username: FC = () => {
       await updateUsername(username)
       toast.success("Username has been changed successfully.")
     } catch (error) {
-      const message = await errorMessage(error, true)
+      const message = await errorMessage(error)
       setError("username", { type: "value", message }, { shouldFocus: true })
     }
   }

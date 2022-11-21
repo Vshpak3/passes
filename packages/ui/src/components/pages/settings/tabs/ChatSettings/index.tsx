@@ -5,7 +5,7 @@ import {
   MIN_TIP_MESSAGE_PRICE
 } from "@passes/shared-constants"
 import classNames from "classnames"
-import { memo, useEffect } from "react"
+import { memo, useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { boolean, mixed, number, object, SchemaOf } from "yup"
 
@@ -25,13 +25,11 @@ import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 import { useWelcomeMessage } from "src/hooks/settings/useWelcomeMessage"
 import { useUser } from "src/hooks/useUser"
 
-const defaultValues = {
-  isWithoutTip: false,
-  showWelcomeMessageInput: false,
-  minimumTipAmount: ""
+interface ChatSettingsFormProps {
+  isWithoutTip: boolean
+  minimumTipAmount: string
+  showWelcomeMessageInput: boolean
 }
-
-type ChatSettingsFormProps = typeof defaultValues
 
 const chatSettingsSchema: SchemaOf<ChatSettingsFormProps> = object({
   isWithoutTip: boolean().required(),
@@ -74,7 +72,6 @@ const ChatSettings = () => {
     formState: { errors, isDirty, isSubmitting },
     watch
   } = useForm<ChatSettingsFormProps>({
-    defaultValues,
     resolver: yupResolver(chatSettingsSchema)
   })
 
@@ -90,11 +87,10 @@ const ChatSettings = () => {
       data,
       "Chat settings have been updated successfully"
     )
-    reset(undefined, { keepValues: true })
+    reset(values)
   }
 
   useEffect(() => {
-    // inject already saved values in fields
     if (isCreatorSettingsLoading) {
       return
     }

@@ -1,17 +1,18 @@
-import { memo, useEffect } from "react"
+import { memo, useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
+import {
+  CreatorSettingsDto,
+  useCreatorSettings
+} from "src/hooks/settings/useCreatorSettings"
 
-const defaultValues = {
-  enableComments: false
-}
-
-type PostSettingsForm = typeof defaultValues
+type PostSettingsForm = Required<
+  Pick<CreatorSettingsDto, "allowCommentsOnPosts">
+>
 
 const PostsSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
@@ -20,29 +21,32 @@ const PostsSettings = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    reset: _reset,
     formState: { isDirty }
-  } = useForm<PostSettingsForm>({
-    defaultValues
-  })
+  } = useForm<PostSettingsForm>()
+
+  const reset = useCallback(
+    (settings?: CreatorSettingsDto) => {
+      _reset({ allowCommentsOnPosts: !!settings?.allowCommentsOnPosts })
+    },
+    [_reset]
+  )
 
   const onSubmit = async (values: PostSettingsForm) => {
     await updateCreatorSettings(
-      { allowCommentsOnPosts: values.enableComments },
+      { allowCommentsOnPosts: values.allowCommentsOnPosts },
       `comments has been ${
-        values.enableComments ? "allowed" : "disallowed"
+        values.allowCommentsOnPosts ? "allowed" : "disallowed"
       } for post`
     )
-    reset(undefined, { keepValues: true })
+    reset(values)
   }
 
   useEffect(() => {
     if (isLoading) {
       return
     }
-    reset({
-      enableComments: !!creatorSettings?.allowCommentsOnPosts
-    })
+    reset(creatorSettings)
   }, [creatorSettings, isLoading, reset])
 
   return (
@@ -51,7 +55,11 @@ const PostsSettings = () => {
         <div className="mt-[32px] space-y-[32px]">
           <label className="flex cursor-pointer items-center justify-between">
             <span className="text-label">Enable Comments</span>
-            <Checkbox name="enableComments" register={register} type="toggle" />
+            <Checkbox
+              name="allowCommentsOnPosts"
+              register={register}
+              type="toggle"
+            />
           </label>
         </div>
 

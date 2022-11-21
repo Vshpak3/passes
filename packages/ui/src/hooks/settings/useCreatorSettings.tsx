@@ -11,7 +11,7 @@ import useSWR, { useSWRConfig } from "swr"
 
 import { errorMessage } from "src/helpers/error"
 
-type CreatorSettingsDto =
+export type CreatorSettingsDto =
   | GetCreatorSettingsResponseDto
   | UpdateCreatorSettingsRequestDto
 
@@ -19,7 +19,7 @@ export type PayoutFrequencyEnum =
   | GetCreatorSettingsResponseDtoPayoutFrequencyEnum
   | UpdateCreatorSettingsRequestDtoPayoutFrequencyEnum
 
-const CACHE_KEY_NOTIFICATIONS = "/creator-settings"
+const CACHE_KEY_CREATOR_SETTINGS = "/settings/creator"
 
 export const useCreatorSettings = () => {
   const api = new CreatorSettingsApi()
@@ -28,18 +28,14 @@ export const useCreatorSettings = () => {
     data: creatorSettings,
     isValidating: isLoading,
     mutate
-  } = useSWR<CreatorSettingsDto>(
-    CACHE_KEY_NOTIFICATIONS,
-    async () => {
-      return await api.getCreatorSettings()
-    },
-    { revalidateOnMount: true }
-  )
+  } = useSWR<CreatorSettingsDto>(CACHE_KEY_CREATOR_SETTINGS, async () => {
+    return await api.getCreatorSettings()
+  })
 
   const { mutate: _mutateManual } = useSWRConfig()
 
   const mutateManual = (update: UpdateCreatorSettingsRequestDto) =>
-    _mutateManual(CACHE_KEY_NOTIFICATIONS, update, {
+    _mutateManual(CACHE_KEY_CREATOR_SETTINGS, update, {
       populateCache: (
         update: UpdateCreatorSettingsRequestDto,
         original: GetCreatorSettingsResponseDto
@@ -59,8 +55,8 @@ export const useCreatorSettings = () => {
       })
 
       if (result.value) {
+        mutateManual(newSettings)
         if (successToastMessage) {
-          mutateManual(newSettings)
           toast.success(successToastMessage)
         }
       } else {
@@ -81,7 +77,6 @@ export const useCreatorSettings = () => {
   return {
     isLoading,
     creatorSettings,
-    getCreatorSettings: mutate,
     updateCreatorSettings
   }
 }

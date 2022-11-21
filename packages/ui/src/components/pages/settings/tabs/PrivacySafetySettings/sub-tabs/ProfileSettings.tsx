@@ -1,19 +1,18 @@
-import { memo, useEffect } from "react"
+import { memo, useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
-import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
+import {
+  CreatorSettingsDto,
+  useCreatorSettings
+} from "src/hooks/settings/useCreatorSettings"
 
-const defaultValues = {
-  // fullPrivateProfile: true,
-  showLikeCount: true,
-  showPostCount: true
-}
-
-type ProfileSettingsForm = typeof defaultValues
+type ProfileSettingsForm = Required<
+  Pick<CreatorSettingsDto, "showLikeCount" | "showPostCount">
+>
 
 const ProfileSettings = () => {
   const { creatorSettings, isLoading, updateCreatorSettings } =
@@ -22,25 +21,30 @@ const ProfileSettings = () => {
   const {
     register,
     handleSubmit,
-    reset,
+    reset: _reset,
     formState: { isDirty }
-  } = useForm<ProfileSettingsForm>({
-    defaultValues
-  })
+  } = useForm<ProfileSettingsForm>()
+
+  const reset = useCallback(
+    (settings?: CreatorSettingsDto) => {
+      _reset({
+        showLikeCount: !!settings?.showLikeCount,
+        showPostCount: !!settings?.showPostCount
+      })
+    },
+    [_reset]
+  )
 
   const onSubmit = async (values: ProfileSettingsForm) => {
     await updateCreatorSettings(values, "Profile settings has been changed")
-    reset(undefined, { keepValues: true })
+    reset(values)
   }
 
   useEffect(() => {
     if (isLoading) {
       return
     }
-    reset({
-      showLikeCount: !!creatorSettings?.showLikeCount,
-      showPostCount: !!creatorSettings?.showPostCount
-    })
+    reset(creatorSettings)
   }, [creatorSettings, isLoading, reset])
 
   return (

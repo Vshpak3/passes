@@ -3,6 +3,7 @@ import {
   NotificationsApi,
   UpdateNotificationSettingsRequestDto
 } from "@passes/api-client"
+import { useEffect } from "react"
 import useSWR, { useSWRConfig } from "swr"
 
 const CACHE_KEY_NOTIFICATIONS = "/settings/notification/"
@@ -12,14 +13,11 @@ export const useNotificationSettings = () => {
 
   const {
     data: notificationSettings,
-    isValidating: loadingNotificationSettings
-  } = useSWR(
-    CACHE_KEY_NOTIFICATIONS,
-    async () => {
-      return await api.getNotificationSettings()
-    },
-    { revalidateOnMount: true }
-  )
+    isValidating: loadingNotificationSettings,
+    mutate
+  } = useSWR(CACHE_KEY_NOTIFICATIONS, async () => {
+    return await api.getNotificationSettings()
+  })
 
   const { mutate: _mutateManual } = useSWRConfig()
   const mutateManual = (update: UpdateNotificationSettingsRequestDto) =>
@@ -41,6 +39,13 @@ export const useNotificationSettings = () => {
     })
     mutateManual(updatedNotifications)
   }
+
+  useEffect(() => {
+    if (!notificationSettings) {
+      mutate()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return {
     notificationSettings,

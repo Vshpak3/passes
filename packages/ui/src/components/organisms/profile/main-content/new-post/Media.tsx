@@ -88,7 +88,7 @@ export const Media: FC<MediaProp> = ({
         )}
         {onExpand && (
           <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">
-            <ExpandIcon classname="h-full w-full" onClick={onExpand} />
+            <ExpandIcon className="h-full w-full" onClick={onExpand} />
           </div>
         )}
         {!preview && (
@@ -119,7 +119,7 @@ export const Media: FC<MediaProp> = ({
         />
         {onExpand && (
           <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">
-            <ExpandIcon classname="h-full w-full" onClick={onExpand} />
+            <ExpandIcon className="h-full w-full" onClick={onExpand} />
           </div>
         )}
         {!preview && (
