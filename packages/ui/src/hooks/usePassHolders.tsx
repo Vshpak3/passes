@@ -19,7 +19,7 @@ export const usePassHolders = (userId?: string, passId?: string) => {
           passId,
           order: GetPassHoldersRequestDtoOrderEnum.Desc,
           orderType: GetPassHoldersRequestDtoOrderTypeEnum.CreatedAt,
-          activeOnly: true
+          active: true
         }
       })
       return res.data

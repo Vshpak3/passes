@@ -100,7 +100,6 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   return (
                     <VideoContent
                       content={{ content: c }}
-                      fixedHeight
                       isActive={false}
                       key={c.contentId}
                     />
@@ -174,7 +173,6 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                     return (
                       <VideoContent
                         content={{ content: c }}
-                        fixedHeight
                         isActive={false}
                         key={c.contentId}
                       />
