@@ -193,12 +193,10 @@ export const PrivacyPolicy = () => {
       <ul className="list-disc pl-16">
         <li>
           develop, provide, operate and improve our Services and our business;
-          <li>
-            {" "}
-            establish, maintain and service your user profile for our Services;{" "}
-          </li>
         </li>
-
+        <li>
+          establish, maintain and service your user profile for our Services;{" "}
+        </li>
         <li>verify or maintain the quality or safety of the Services; </li>
 
         <li>
