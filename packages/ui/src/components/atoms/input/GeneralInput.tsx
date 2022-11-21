@@ -68,7 +68,6 @@ export const Input: FC<InputProps> = ({
 }) => (
   <>
     {!!label && <Label errors={errors} label={label} name={name} />}
-
     <div className={outerClassName}>
       {!!icon && (
         <div className="relative text-white">

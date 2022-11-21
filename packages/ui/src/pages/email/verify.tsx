@@ -58,12 +58,12 @@ const VerifyEmailPage = () => {
             verifyEmailDto: { verificationToken: id }
           })
         },
+        async () => undefined,
         async (token) => {
           // Route manually so we can show the confirmation screen before routing
           await sleep("4 seconds")
           authRouter(safePush, token)
-        },
-        false
+        }
       )
     } catch (error: unknown) {
       console.error(error)
