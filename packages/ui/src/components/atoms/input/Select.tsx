@@ -15,7 +15,7 @@ import { Label } from "src/components/atoms/Label"
 import { ChevronDown } from "src/icons/ChevronDown"
 
 export type SelectOption = {
-  value: string | number
+  value: string | number | undefined | boolean
   label: string | JSX.Element
 }
 
@@ -125,7 +125,7 @@ export const Select: FC<SelectProps> = ({
                     "bg-[#12070E]/90 text-passes-primary-color": active
                   })
                 }
-                key={typeof option === "string" ? option : option.value}
+                key={typeof option === "string" ? option : option.value + ""}
                 value={option}
               >
                 <span>

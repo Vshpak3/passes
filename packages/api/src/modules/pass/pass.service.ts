@@ -492,11 +492,17 @@ export class PassService {
 
     if (active !== undefined) {
       query = query.andWhere(function () {
-        return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
+        let innerQuery = this.where(
           `${PassHolderEntity.table}.expires_at`,
           active ? '>' : '<=',
           new Date(),
         )
+        if (active) {
+          innerQuery = innerQuery.orWhereNull(
+            `${PassHolderEntity.table}.expires_at`,
+          )
+        }
+        return innerQuery
       })
     }
 

@@ -10,11 +10,13 @@ import { debounce } from "lodash"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { FC, useCallback, useEffect, useMemo, useState } from "react"
+import { useForm } from "react-hook-form"
 
 import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
+import { Select } from "src/components/atoms/input/Select"
 import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { formatText } from "src/helpers/formatters"
 import { usePass } from "src/hooks/entities/usePass"
@@ -37,19 +39,26 @@ export const PassHolders: FC<PassHoldersProps> = ({ passId }) => {
 
   const { pass, mutate } = usePass(passId)
 
+  const { register, watch, setValue } = useForm<{ active?: boolean }>({
+    defaultValues: { active: undefined }
+  })
+
   useEffect(() => {
     mutate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const active = watch("active")
 
   const fetchProps = useMemo(() => {
     return {
       order,
       orderType,
       search,
-      passId
+      passId,
+      active
     }
-  }, [order, orderType, search, passId])
+  }, [order, orderType, search, passId, active])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
@@ -100,6 +109,27 @@ export const PassHolders: FC<PassHoldersProps> = ({ passId }) => {
                 type="text"
               />
             </span>
+            <Select
+              className="min-w-[100px] border-gray-500"
+              defaultValue="None"
+              name="active"
+              onChange={(value) => setValue("active", value)}
+              register={register}
+              selectOptions={[
+                {
+                  value: undefined,
+                  label: "None"
+                },
+                {
+                  value: true,
+                  label: "Active"
+                },
+                {
+                  value: false,
+                  label: "Expired"
+                }
+              ]}
+            />
             <SortDropdown
               onSelect={onSortSelect}
               options={[
