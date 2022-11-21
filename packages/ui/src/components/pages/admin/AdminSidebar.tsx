@@ -29,9 +29,9 @@ export const AdminSidebar = ({
     return <></>
   }
   return (
-    <div className="absolute z-20 h-full w-full overflow-x-hidden border-passes-dark-200 bg-passes-black md:block md:w-[400px] md:overflow-y-auto md:border-r">
+    <div className="absolute z-20 h-full w-full overflow-x-hidden border-passes-dark-200 bg-passes-black lg:relative lg:w-[400px] lg:overflow-y-auto lg:border-r">
       <SettingsSearchBar setValue={setSearchText} value={searchText} />
-      <div className="mx-auto h-full w-full ">
+      <div className="mx-auto h-fit w-full ">
         <ul className="">
           {tabs.map(({ name, id }) => (
             <li

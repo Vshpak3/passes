@@ -32,7 +32,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             {isTablet && (
-              <button className="mr-4 md:hidden" onClick={handleBack}>
+              <button className="mr-4" onClick={handleBack}>
                 <ArrowRightIcon />
               </button>
             )}
@@ -44,7 +44,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
       </div>
       <div className="flex w-full justify-center overflow-x-scroll md:h-[calc(100vh-156px)]">
         <form
-          className="flex w-full flex-col gap-y-5 p-8 md:w-[800px]"
+          className="flex w-full flex-col gap-y-5 p-8 md:w-[600px]"
           onSubmit={onSubmit}
         >
           {children}

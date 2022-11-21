@@ -60,7 +60,6 @@ export const Admin = () => {
     if (!router.isReady || loading) {
       return
     }
-    setReady(true)
     if (!user || !user.email.endsWith(ADMIN_EMAIL)) {
       router.push("/home")
     } else {
