@@ -43,6 +43,7 @@ export type InputProps = {
   onFocus?: (event: Event) => void
   transparent?: boolean
   outlineColor?: string
+  outerClassName?: string
 }
 
 export const Input: FC<InputProps> = ({
@@ -60,13 +61,14 @@ export const Input: FC<InputProps> = ({
   iconMargin = "0",
   transparent = true,
   outlineColor = "pink",
+  outerClassName = "w-full",
   ...rest
 }) => {
   return (
     <>
       {!!label && <Label errors={errors} label={label} name={name} />}
 
-      <div className="w-full">
+      <div className={outerClassName}>
         {!!icon && (
           <div className="relative text-white">
             <span

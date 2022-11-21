@@ -91,7 +91,7 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       {...restOfProps}
     >
       <Text
-        className="passes-break flex flex-row flex-wrap items-center justify-center gap-2 space-x-2 whitespace-pre-wrap"
+        className="flex flex-row flex-wrap items-center justify-center gap-2 space-x-2 whitespace-pre-wrap"
         fontSize={fontSize}
         style={{ lineHeight: 1 }}
       >

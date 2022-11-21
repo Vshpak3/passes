@@ -165,7 +165,10 @@ export const Wallets = () => {
           </div>
         </div>
       </Dialog>
-      <div className="mt-4 flex w-full flex-col items-start justify-start xl:flex-row">
+      <form
+        className="mt-4 flex w-full flex-row flex-wrap items-start justify-start gap-2"
+        onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
+      >
         <div>
           <Button
             className="mt-1 rounded-md"
@@ -180,20 +183,18 @@ export const Wallets = () => {
           </Button>
         </div>
         {!!user?.isCreator && (
-          <form
-            className="flex w-full flex-col items-stretch xl:flex-row"
-            onSubmit={handleSubmit(confirmNewPayoutAddressOnSubmit)}
-          >
+          <>
             <span className="m-2 mt-3 block text-[16px] font-bold md:my-3 xl:mx-4">
               or
             </span>
-            <div className="flex h-full w-full flex-row md:basis-1">
-              <div className="mr-2 basis-4/5 md:basis-1">
+            <div className="flex h-full w-full basis-1 flex-row">
+              <div className="mr-2 basis-1">
                 <Input
-                  className="border-[#3A444C]/30 bg-[#18090E] pl-[45px] md:w-[250px]"
+                  className="w-[250px] border-[#3A444C]/30 bg-[#18090E] pl-[45px]"
                   errors={errors}
                   icon={<Wallet />}
                   name="walletAddress"
+                  outerClassName=""
                   placeholder="Insert your Payout Address"
                   register={register}
                   type="text"
@@ -215,9 +216,9 @@ export const Wallets = () => {
                 Confirm
               </Button>
             </div>
-          </form>
+          </>
         )}
-      </div>
+      </form>
       <div className="mt-8 min-h-[200px] overflow-x-auto">
         <table className="min-w-full pb-6 md:overflow-x-auto">
           <thead>
