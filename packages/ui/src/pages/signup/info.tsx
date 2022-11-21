@@ -165,6 +165,7 @@ const SignupInfoPage: FC = () => {
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-passes-gray-100">Username</Text>
           <Input
+            disableInputCorrects
             errors={errors}
             name="username"
             placeholder="Enter your username"
@@ -177,6 +178,7 @@ const SignupInfoPage: FC = () => {
         <div className="flex flex-col items-start">
           <Text className="mb-1 text-passes-gray-100">Display Name</Text>
           <Input
+            disableInputCorrects
             errors={errors}
             name="displayName"
             placeholder="Enter your display name"

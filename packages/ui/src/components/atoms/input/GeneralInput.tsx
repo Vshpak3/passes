@@ -40,6 +40,7 @@ export type InputProps = {
   iconAlign?: EIcon
   textPosition?: string
   value?: string
+  disableInputCorrects?: boolean
   onFocus?: (event: Event) => void
   transparent?: boolean
   outlineColor?: string
@@ -58,12 +59,21 @@ export const Input: FC<InputProps> = ({
   icon,
   iconAlign,
   textPosition,
+  disableInputCorrects = false,
   iconMargin = "0",
   transparent = true,
   outlineColor = "pink",
   outerClassName = "w-full",
   ...rest
 }) => {
+  const extras = disableInputCorrects
+    ? {}
+    : {
+        autocorrect: "off",
+        autocapitalize: "off",
+        spellcheck: "false"
+      }
+
   return (
     <>
       {!!label && <Label errors={errors} label={label} name={name} />}
@@ -86,6 +96,7 @@ export const Input: FC<InputProps> = ({
           placeholder={placeholder || label}
           type={type}
           {...register(name)}
+          {...extras}
           {...rest}
           className={classNames(
             outlineColor === "pink"

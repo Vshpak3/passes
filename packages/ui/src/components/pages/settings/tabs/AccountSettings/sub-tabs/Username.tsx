@@ -71,6 +71,7 @@ const Username: FC = () => {
             </span>
             <Input
               className="mt-1.5 !py-4 !pl-[26px]"
+              disableInputCorrects
               errors={errors}
               name="username"
               register={register}

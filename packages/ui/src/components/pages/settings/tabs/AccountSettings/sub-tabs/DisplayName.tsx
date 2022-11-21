@@ -63,6 +63,7 @@ const DisplayName: FC = () => {
           </span>
           <Input
             className="mt-1.5 !px-3 !py-4"
+            disableInputCorrects
             errors={errors}
             name="displayName"
             register={register}
