@@ -62,22 +62,22 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                     parseInt(passHolder.tokenId ?? "0x0", 16).toString()
                   }
                 >
-                  <Button className="h-[44px] w-full rounded-full py-2 text-center">
+                  <Button className="h-[38px] w-full text-center">
                     View on Etherscan
                   </Button>
                 </Link>
               ) : (
                 passHolder.chain === PassHolderDtoChainEnum.Sol && (
                   <Link href={"https://solscan.io/token/" + passHolder.address}>
-                    <Button className="h-[44px] w-full rounded-full py-[10px] text-center">
+                    <Button className="h-[38px] w-full text-center">
                       View on SolanaScan
                     </Button>
                   </Link>
                 )
               )}
             </div>
-            <div className="flex w-full items-center justify-between">
-              <div className="mt-[12px] w-full">
+            <div className="mt-[6px] flex w-full items-center justify-between">
+              <div className="w-full">
                 {!!passHolder.expiresAt && (
                   <span className="text-[#767676]">
                     {passHolder.expiresAt < new Date()
@@ -87,18 +87,17 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                   </span>
                 )}
               </div>
-              <div className="mt-[12px]">
-                <IconTooltip
-                  icon={InfoIcon}
-                  position="top"
-                  tooltipClassName="w-[80px] text-center"
-                  tooltipText={
-                    <>
-                      {/* Chain: */}
-                      {passHolder.chain === PassHolderDtoChainEnum.Sol
-                        ? " Solana"
-                        : " Ethereum"}
-                      {/* <br />
+              <IconTooltip
+                icon={InfoIcon}
+                position="top"
+                tooltipClassName="w-[80px] text-center"
+                tooltipText={
+                  <>
+                    {/* Chain: */}
+                    {passHolder.chain === PassHolderDtoChainEnum.Sol
+                      ? " Solana"
+                      : " Ethereum"}
+                    {/* <br />
                       <br />
                       {passHolder.chain === PassHolderDtoChainEnum.Sol && (
                         <>
@@ -114,10 +113,9 @@ export const PassHoldingCard: FC<PassHoldingCardProps> = ({ passHolder }) => {
                           TokenId: {parseInt(passHolder.tokenId, 16)} <br />
                         </>
                       )} */}
-                    </>
-                  }
-                />
-              </div>
+                  </>
+                }
+              />
             </div>
           </div>
         </div>

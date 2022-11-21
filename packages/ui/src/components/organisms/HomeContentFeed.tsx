@@ -72,7 +72,7 @@ export const HomeContentFeed: FC = () => {
                 <ProfileWidget isCreator user={creator} />
               </div>
               <FollowButton
-                className="min-w-[89px]"
+                className="min-w-[89px] px-0"
                 creatorId={creator.userId}
                 unfollowText="Following"
               />
