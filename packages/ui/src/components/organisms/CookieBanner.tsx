@@ -1,3 +1,4 @@
+import Link from "next/link"
 import UnionIcon from "public/icons/union-icon.svg"
 import { FC } from "react"
 
@@ -23,7 +24,12 @@ export const CookieBanner: FC<CookieBannerProps> = ({
       >
         <Text className="text-passes-gray-100 lg:flex-1">
           We use our own and third-party cookies to analyze traffic, enhance
-          your experience, and for security and marketing.
+          your experience, and for security and marketing. For more information,
+          read our{" "}
+          <Link className="underline" href="/cookies">
+            Cookie Notice
+          </Link>
+          .
         </Text>
         <div className="flex flex-row-reverse items-center justify-between gap-2 lg:flex-row lg:gap-4">
           <div className="flex flex-col items-start lg:flex-row lg:items-center">
