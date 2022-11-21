@@ -1674,11 +1674,11 @@ export class PaymentService {
       .where(`${UserEntity.table}.id`, creatorId)
       .select([
         `${UserEntity.table}.id`,
-        'is_creator',
-        'fiat_rate',
-        'fiat_flat',
-        'crypto_rate',
-        'crypto_flat',
+        `${UserEntity.table}.is_creator`,
+        `${CreatorFeeEntity.table}.fiat_rate`,
+        `${CreatorFeeEntity.table}.fiat_flat`,
+        `${CreatorFeeEntity.table}.crypto_rate`,
+        `${CreatorFeeEntity.table}.crypto_flat`,
       ])
       .first()
 
@@ -1690,7 +1690,7 @@ export class PaymentService {
     // calculate creator share of payin
     if (payinMethod.method === PayinMethodEnum.CIRCLE_CARD) {
       if (creator.fiat_rate && creator.fiat_flat) {
-        shareAmount = shareAmount * (1 - creator.fiat_rate) - creator.flat
+        shareAmount = shareAmount * (1 - creator.fiat_rate) - creator.fiat_flat
       } else {
         shareAmount =
           shareAmount * (1 - DEFAULT_FIAT_FEE_RATE) - DEFAULT_FIAT_FEE_FLAT
