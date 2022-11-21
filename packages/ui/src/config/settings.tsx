@@ -1,4 +1,4 @@
-export enum TabsEnum {
+enum TabsEnum {
   "AccountSettings",
   "ChatSettings",
   "NotificationEmailSettings",
@@ -41,20 +41,6 @@ export const tabs = [
     creatorOnly: true
   }
 ]
-
-export const tabToPath: Record<TabsEnum, string> = {
-  [TabsEnum.AccountSettings]: "account",
-  [TabsEnum.ChatSettings]: "chat",
-  [TabsEnum.NotificationEmailSettings]: "notifications",
-  [TabsEnum.PrivacySafetySettings]: "privacy",
-  [TabsEnum.PaymentSettings]: "payment",
-  [TabsEnum.WalletSettings]: "wallet",
-  [TabsEnum.PayoutSettings]: "payout"
-}
-
-export const pathToTab: Record<string, TabsEnum> = Object.fromEntries(
-  Object.entries(tabToPath).map(([k, v]) => [v, parseInt(k)])
-)
 
 export enum SubTabsEnum {
   // Navigation
