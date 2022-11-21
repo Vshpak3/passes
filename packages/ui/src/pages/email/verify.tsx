@@ -1,8 +1,8 @@
 import { AuthApi } from "@passes/api-client/apis"
 import { useRouter } from "next/router"
-import PassesLogoPink from "public/icons/passes-logo-pink.svg"
 import { useEffect, useState } from "react"
 
+import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Text } from "src/components/atoms/Text"
 import {
   authRouter,
@@ -14,6 +14,7 @@ import { sleep } from "src/helpers/sleep"
 import { useAuthEvent } from "src/hooks/useAuthEvent"
 import { useSafeRouter } from "src/hooks/useSafeRouter"
 import { useUser } from "src/hooks/useUser"
+import { WithStandAlonePageLayout } from "src/layout/WithStandAlonePageLayout"
 
 const VerifyEmailPage = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -75,63 +76,54 @@ const VerifyEmailPage = () => {
   }
 
   return (
-    <div className="flex h-screen flex-1 flex-col bg-black px-0 pt-6 lg:px-20">
-      <div className="z-10 my-auto flex justify-center">
-        <div className="mt-20 flex flex-col items-center gap-y-5 rounded-[28px] border-[#34343a] bg-black opacity-[60] md:border md:py-8 md:px-24 lg:py-16 lg:px-48">
-          <div className="p-4">
-            <PassesLogoPink />
-          </div>
-          {isLoading ? (
-            <>
-              <Text
-                className="mb-4 w-[360px] text-center font-[500] text-white"
-                fontSize={36}
-              >
-                Verifying...
-              </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Please wait, while we verify your email address.
-              </Text>
-            </>
-          ) : error ? (
-            <>
-              <Text
-                className="mb-4 w-[360px] text-center font-[500] text-white"
-                fontSize={36}
-              >
-                Verification Failed.
-              </Text>
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                {error}
-              </Text>
-            </>
-          ) : (
-            <>
-              <Text
-                className="mb-4 w-[420px] text-center font-[500] text-white"
-                fontSize={36}
-              >
-                Thank you for verifying!
-              </Text>
-              <Text className="mb-1 w-[420px] text-center text-[#b3bee7] opacity-[0.75]">
-                Your email address has been successfully verified. You may now
-                proceed to the website.
-              </Text>
-              <button
-                className="z-10 flex h-[44px] w-[360px] flex-row items-center justify-center gap-1 rounded-[8px] bg-gradient-to-r from-passes-blue-100 to-passes-purple-100 text-white shadow-md shadow-purple-purple9/30 transition-all active:bg-purple-purple9/90 active:shadow-sm dark:from-pinkDark-pink9 dark:via-purple-900 dark:to-plumDark-plum9"
-                onClick={() => authRouter(safePush, userClaims)}
-                type="submit"
-              >
-                <Text className="font-medium" fontSize={16}>
-                  Continue
-                </Text>
-              </button>
-            </>
-          )}
-        </div>
-      </div>
+    <div className="z-10 flex w-screen max-w-[750px] flex-col items-center justify-center px-8">
+      {isLoading ? (
+        <>
+          <Text
+            className="mb-4 text-center font-[500] text-white"
+            fontSize={36}
+          >
+            Verifying...
+          </Text>
+          <Text className="mb-4 text-passes-gray-100">
+            Please wait, while we verify your email address.
+          </Text>
+        </>
+      ) : error ? (
+        <>
+          <Text
+            className="mb-4 text-center font-[500] text-white"
+            fontSize={36}
+          >
+            Verification Failed.
+          </Text>
+          <Text className="mb-4 text-passes-gray-100">{error}</Text>
+        </>
+      ) : (
+        <>
+          <Text
+            className="mb-4 w-[420px] text-center font-[500] text-white"
+            fontSize={36}
+          >
+            Thank you for verifying!
+          </Text>
+          <Text className="mb-4 text-center text-passes-gray-100">
+            Your email address has been successfully verified. You may now
+            proceed to the website.
+          </Text>
+          <Button
+            className="h-[44px] w-[360px]"
+            onClick={() => authRouter(safePush, userClaims)}
+            type={ButtonTypeEnum.SUBMIT}
+          >
+            Continue
+          </Button>
+        </>
+      )}
     </div>
   )
 }
 
-export default VerifyEmailPage // no WithNormalPageLayout
+export default WithStandAlonePageLayout(VerifyEmailPage, {
+  className: "h-screen my-[20vh]"
+})

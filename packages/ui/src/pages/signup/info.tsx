@@ -144,7 +144,7 @@ const SignupInfoPage: FC = () => {
   }
 
   return (
-    <StandAlonePage className="w-[100vw] max-w-[750px]">
+    <StandAlonePage className="w-screen max-w-[750px]">
       <Text className="mb-4 text-center font-[500]" fontSize={36}>
         Let&apos;s get to know each other
       </Text>
