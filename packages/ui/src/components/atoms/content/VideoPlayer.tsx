@@ -1,16 +1,17 @@
 import classNames from "classnames"
 import Hls from "hls.js"
-import { forwardRef, useEffect, useState } from "react"
+import { CSSProperties, forwardRef, useEffect, useState } from "react"
 
 interface VideoPlayerProps {
   src: string
   autoplay?: boolean
   className?: string
   poster?: string
+  style?: CSSProperties
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  ({ src, autoplay = false, className = "", poster = "" }, ref) => {
+  ({ src, autoplay = false, className = "", poster = "", style }, ref) => {
     useEffect(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -61,6 +62,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}
+        style={style}
       />
     )
   }

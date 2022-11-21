@@ -75,7 +75,16 @@ export const Media: FC<MediaProp> = ({
             </span>
           </div>
         ) : (
-          <VideoContent autoplay={false} contentFile={contentFile} isActive />
+          <VideoContent
+            autoplay={false}
+            contentFile={contentFile}
+            isActive
+            style={{
+              objectFit,
+              maxHeight: contentHeight || fitContent,
+              maxWidth: contentWidth || fitContent
+            }}
+          />
         )}
         {onExpand && (
           <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">

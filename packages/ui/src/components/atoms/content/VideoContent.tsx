@@ -1,20 +1,24 @@
 import classNames from "classnames"
-import { memo, useEffect } from "react"
+import { CSSProperties, memo, useEffect } from "react"
 
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
 import { useVideoPlayer } from "src/hooks/useVideoPlayer"
 import { VideoPlayer } from "./VideoPlayer"
 
-const VideoContentUnmemo = ({
-  contentFile,
-  isActive,
-  autoplay
-}: {
+interface VideoContentProps {
   contentFile: ContentFile
   isActive: boolean
   autoplay?: boolean
-}) => {
+  style?: CSSProperties
+}
+
+const VideoContentUnmemo = ({
+  contentFile,
+  isActive,
+  autoplay,
+  style
+}: VideoContentProps) => {
   const { ref, pause } = useVideoPlayer()
   const videoThumbnail = contentFile.content
     ? ContentService.userContentThumbnailPath(contentFile.content)
@@ -47,6 +51,7 @@ const VideoContentUnmemo = ({
               ? URL.createObjectURL(contentFile.file)
               : ""
           }
+          style={style}
         />
       </div>
     </>
