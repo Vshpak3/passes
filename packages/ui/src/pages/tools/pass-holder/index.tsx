@@ -1,6 +1,10 @@
 import {
+  GetPassesRequestDto,
   GetPassesRequestDtoOrderEnum as Order,
-  GetPassesRequestDtoOrderTypeEnum as OrderType
+  GetPassesRequestDtoOrderTypeEnum as OrderType,
+  GetPassesResponseDto,
+  PassApi,
+  PassDto
 } from "@passes/api-client"
 import { debounce } from "lodash"
 import { NextPage } from "next"
@@ -8,13 +12,16 @@ import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
 import React, { useCallback, useMemo, useState } from "react"
 
 import {
-  SortDropdown,
-  SortOption
-} from "src/components/organisms/creator-tools/lists/SortDropdown"
+  ComponentArg,
+  InfiniteScrollPagination
+} from "src/components/atoms/InfiniteScroll"
+import { PassListCached } from "src/components/organisms/creator-tools/pass-holders/PassListCached"
+import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const DEBOUNCE_TIMEOUT = 500
 
+const api = new PassApi()
 const PassHoldersLists: NextPage = () => {
   const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
   const [order, setOrder] = useState<Order>(Order.Desc)
@@ -29,7 +36,6 @@ const PassHoldersLists: NextPage = () => {
     [setSearch]
   )
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const fetchProps = useMemo(() => {
     return {
       order,
@@ -46,9 +52,9 @@ const PassHoldersLists: NextPage = () => {
     setOrder(order || "desc")
   }
 
-  // const keyedComponent = useCallback(({ arg }: ComponentArg<ListDto>) => {
-  //   return <ListCached list={arg} removable />
-  // }, [])
+  const keyedComponent = useCallback(({ arg }: ComponentArg<PassDto>) => {
+    return <PassListCached pass={arg} />
+  }, [])
 
   return (
     <div className="my-4 text-white">
@@ -68,7 +74,7 @@ const PassHoldersLists: NextPage = () => {
         <li className="flex items-center justify-between py-5">
           <div className="flex flex-row justify-between gap-[32px] border-b border-[#2C282D]">
             <span className="cursor-pointer border-b-[3px] border-b-passes-pink-100 py-[16px] px-[12px] text-base font-bold">
-              Created List
+              Passes
             </span>
           </div>
           <div className="flex items-center justify-center gap-3 opacity-70 hover:opacity-100">
@@ -96,6 +102,15 @@ const PassHoldersLists: NextPage = () => {
             />
           </div>
         </li>
+        <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
+          KeyedComponent={keyedComponent}
+          fetch={async (req: GetPassesRequestDto) => {
+            return await api.getCreatorPasses({ getPassesRequestDto: req })
+          }}
+          fetchProps={fetchProps}
+          keySelector="passId"
+          keyValue="/pages/passes"
+        />
       </ul>
     </div>
   )

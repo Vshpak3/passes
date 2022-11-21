@@ -3,11 +3,11 @@ import { Length } from 'class-validator'
 
 import { PageRequestDto, PageResponseDto } from '../../../util/dto/page.dto'
 import { DtoProperty } from '../../../web/dto.web'
-import { ListMemberOrderTypeEnum } from '../../list/enum/list-member.order.enum'
 import {
   USER_DISPLAY_NAME_LENGTH,
   USER_USERNAME_LENGTH,
 } from '../../user/constants/schema'
+import { PassHolderOrderTypeEnum } from '../enum/pass-holder.order.enum'
 import { PassHolderDto } from './pass-holder.dto'
 
 export class GetPassHoldersRequestDto extends PickType(PageRequestDto, [
@@ -15,6 +15,7 @@ export class GetPassHoldersRequestDto extends PickType(PageRequestDto, [
   'createdAt',
   'order',
   'search',
+  'spent',
 ]) {
   @DtoProperty({ type: 'uuid', optional: true })
   holderId?: string
@@ -30,11 +31,11 @@ export class GetPassHoldersRequestDto extends PickType(PageRequestDto, [
   @DtoProperty({ type: 'string', optional: true })
   displayName?: string
 
-  @DtoProperty({ custom_type: ListMemberOrderTypeEnum })
-  orderType: ListMemberOrderTypeEnum
+  @DtoProperty({ custom_type: PassHolderOrderTypeEnum })
+  orderType: PassHolderOrderTypeEnum
 
-  @DtoProperty({ type: 'boolean' })
-  activeOnly: boolean
+  @DtoProperty({ type: 'boolean', optional: true })
+  active?: boolean
 }
 
 export class GetPassHolderResponseDto extends PassHolderDto {}
@@ -59,13 +60,13 @@ export class GetPassHoldersResponseDto
     if (passHolders.length > 0) {
       this.lastId = passHolders[passHolders.length - 1].passHolderId
       switch (requestDto.orderType) {
-        case ListMemberOrderTypeEnum.CREATED_AT:
+        case PassHolderOrderTypeEnum.CREATED_AT:
           this.createdAt = passHolders[passHolders.length - 1].createdAt
           break
-        case ListMemberOrderTypeEnum.USERNAME:
+        case PassHolderOrderTypeEnum.USERNAME:
           this.username = passHolders[passHolders.length - 1].holderUsername
           break
-        case ListMemberOrderTypeEnum.DISPLAY_NAME:
+        case PassHolderOrderTypeEnum.DISPLAY_NAME:
           this.displayName =
             passHolders[passHolders.length - 1].holderDisplayName
           break

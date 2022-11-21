@@ -13,6 +13,7 @@ export const PostCategoryPill: FC<PostCategoryPillProps> = ({
 }: PostCategoryPillProps) => {
   return (
     <Button
+      className="shrink-0"
       onClick={() =>
         onClick(selected ? undefined : postCategory?.postCategoryId)
       }

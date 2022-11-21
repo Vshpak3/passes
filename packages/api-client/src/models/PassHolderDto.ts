@@ -211,6 +211,12 @@ export interface PassHolderDto {
      * @memberof PassHolderDto
      */
     tokenId?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof PassHolderDto
+     */
+    spent?: number | null;
 }
 
 
@@ -334,6 +340,7 @@ export function PassHolderDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'holderDisplayName': !exists(json, 'holderDisplayName') ? undefined : json['holderDisplayName'],
         'address': json['address'],
         'tokenId': !exists(json, 'tokenId') ? undefined : json['tokenId'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
     };
 }
 
@@ -378,6 +385,7 @@ export function PassHolderDtoToJSON(value?: PassHolderDto | null): any {
         'holderDisplayName': value.holderDisplayName,
         'address': value.address,
         'tokenId': value.tokenId,
+        'spent': value.spent,
     };
 }
 

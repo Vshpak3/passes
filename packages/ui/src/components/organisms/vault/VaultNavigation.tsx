@@ -15,10 +15,7 @@ import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirma
 import { VaultAddButton } from "src/components/molecules/vault/VaultAddButton"
 import { VaultAddToDropdown } from "src/components/molecules/vault/VaultAddTo"
 import { VaultFilterContainer } from "src/components/molecules/vault/VaultFilter"
-import {
-  SortDropdown,
-  SortOption
-} from "src/components/organisms/creator-tools/lists/SortDropdown"
+import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { VaultCategory, VaultType } from "src/components/pages/tools/Vault"
 import { MAX_FILE_COUNT } from "src/config/media-limits"
 import { plural } from "src/helpers/plural"

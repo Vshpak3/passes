@@ -1,21 +1,30 @@
 import { Knex } from '@mikro-orm/mysql'
 
 import { createPaginatedQuery } from '../../util/page.util'
-import { ListMemberOrderTypeEnum } from '../list/enum/list-member.order.enum'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { UserEntity } from '../user/entities/user.entity'
 import { GetPassHoldersRequestDto } from './dto/get-pass-holders.dto'
 import { PassEntity } from './entities/pass.entity'
 import { PassHolderEntity } from './entities/pass-holder.entity'
+import { PassHolderOrderTypeEnum } from './enum/pass-holder.order.enum'
 import { MAX_PASSHOLDERS_PER_REQUEST } from './pass.service'
 
 export function createPassHolderQuery(
   query: Knex.QueryBuilder,
   requestDto: GetPassHoldersRequestDto,
 ): Knex.QueryBuilder {
-  const { username, displayName, orderType, createdAt, order, search, lastId } =
-    requestDto
+  const {
+    username,
+    displayName,
+    orderType,
+    createdAt,
+    order,
+    search,
+    lastId,
+    spent,
+  } = requestDto
   switch (orderType) {
-    case ListMemberOrderTypeEnum.CREATED_AT:
+    case PassHolderOrderTypeEnum.CREATED_AT:
       query = createPaginatedQuery(
         query,
         PassHolderEntity.table,
@@ -26,7 +35,7 @@ export function createPassHolderQuery(
         lastId,
       )
       break
-    case ListMemberOrderTypeEnum.USERNAME:
+    case PassHolderOrderTypeEnum.USERNAME:
       query = createPaginatedQuery(
         query,
         UserEntity.table,
@@ -37,7 +46,7 @@ export function createPassHolderQuery(
         lastId,
       )
       break
-    case ListMemberOrderTypeEnum.DISPLAY_NAME:
+    case PassHolderOrderTypeEnum.DISPLAY_NAME:
       query = createPaginatedQuery(
         query,
         UserEntity.table,
@@ -45,6 +54,17 @@ export function createPassHolderQuery(
         'display_name',
         order,
         displayName,
+        lastId,
+      )
+      break
+    case PassHolderOrderTypeEnum.SPENT:
+      query = createPaginatedQuery(
+        query,
+        UserSpendingEntity.table,
+        PassHolderEntity.table,
+        'amount',
+        order,
+        spent,
         lastId,
       )
       break

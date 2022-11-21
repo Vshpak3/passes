@@ -27,6 +27,7 @@ import { isEnv } from '../../util/env'
 import { createPaginatedQuery } from '../../util/page.util'
 import { rejectIfAny } from '../../util/promise.util'
 import { validateAddress } from '../../util/wallet.util'
+import { UserSpendingEntity } from '../creator-stats/entities/user-spending.entity'
 import { EthService } from '../eth/eth.service'
 import {
   CreateNftPassPayinCallbackInput,
@@ -450,7 +451,7 @@ export class PassService {
     userId: string,
     getPassHoldersRequest: GetPassHoldersRequestDto,
   ): Promise<PassHolderDto[]> {
-    const { holderId, passId, activeOnly } = getPassHoldersRequest
+    const { holderId, passId, active } = getPassHoldersRequest
     let query = this.dbReader<PassHolderEntity>(PassHolderEntity.table)
       .innerJoin(
         UserEntity.table,
@@ -462,7 +463,18 @@ export class PassService {
         `${PassEntity.table}.id`,
         `${PassHolderEntity.table}.pass_id`,
       )
+      .leftJoin(
+        UserSpendingEntity.table,
+        `${UserSpendingEntity.table}.user_id`,
+        `${PassHolderEntity.table}.holder_id`,
+      )
       .where(`${PassEntity.table}.creator_id`, userId)
+      .andWhere(function () {
+        return this.where(
+          `${UserSpendingEntity.table}.creator_id`,
+          userId,
+        ).orWhereNull(`${UserSpendingEntity.table}.creator_id`)
+      })
       .select([
         `${PassHolderEntity.table}.*`,
         `${PassEntity.table}.messages as total_messages`,
@@ -475,17 +487,19 @@ export class PassService {
         `${PassEntity.table}.type`,
         `${UserEntity.table}.username as holder_username`,
         `${UserEntity.table}.display_name as holder_display_name`,
+        `${UserSpendingEntity.table}.amount as spent`,
       ])
 
-    if (activeOnly) {
+    if (active !== undefined) {
       query = query.andWhere(function () {
         return this.whereNull(`${PassHolderEntity.table}.expires_at`).orWhere(
           `${PassHolderEntity.table}.expires_at`,
-          '>',
+          active ? '>' : '<=',
           new Date(),
         )
       })
     }
+
     if (passId) {
       query = query.andWhere(`${PassEntity.table}.id`, passId)
     }

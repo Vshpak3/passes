@@ -8,6 +8,7 @@ import {
   ListDtoTypeEnum,
   ListMemberDto
 } from "@passes/api-client"
+import classNames from "classnames"
 import { debounce } from "lodash"
 import { useRouter } from "next/router"
 import SearchOutlineIcon from "public/icons/search-outline-icon.svg"
@@ -20,6 +21,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { AddFollowerToListModal } from "src/components/molecules/list/AddFollowerToListModal"
 import { UpdateListNamePopper } from "src/components/molecules/list/UpdateListNamePopper"
+import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { errorMessage } from "src/helpers/error"
 import { formatText } from "src/helpers/formatters"
 import { useList } from "src/hooks/entities/useList"
@@ -27,7 +29,6 @@ import { AddIcon } from "src/icons/AddIcon"
 import { ArrowLeft } from "src/icons/ArrowLeft"
 import { InfoIconOutlined } from "src/icons/InfoIconOutlined"
 import { ListMember } from "./ListMember"
-import { SortDropdown, SortOption } from "./SortDropdown"
 
 type ListDetailProps = {
   listId: string
@@ -172,12 +173,12 @@ export const ListDetail: FC<ListDetailProps> = ({ listId }) => {
         <li className="flex flex-wrap items-center justify-between gap-[20px] border-b-2 border-gray-500 py-5">
           <div className="flex flex-wrap items-center gap-[10px]">
             <div
-              className={
-                "flex items-center" +
-                (list?.type === GetListResponseDtoTypeEnum.Normal
+              className={classNames(
+                "flex items-center",
+                list?.type === GetListResponseDtoTypeEnum.Normal
                   ? "border-r border-r-white"
-                  : "")
-              }
+                  : ""
+              )}
             >
               <h2 className="whitespace-pre-wrap pr-[10px] text-2xl font-bold">
                 {formatText(list?.name)}

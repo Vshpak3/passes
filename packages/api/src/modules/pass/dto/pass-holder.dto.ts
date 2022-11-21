@@ -45,6 +45,9 @@ export class PassHolderDto extends PassDto {
   @DtoProperty({ type: 'uuid', nullable: true, optional: true })
   tokenId?: string | null
 
+  @DtoProperty({ type: 'currency', nullable: true, optional: true })
+  spent?: number | null
+
   constructor(
     passHolder:
       | (PassHolderEntity &
@@ -52,6 +55,7 @@ export class PassHolderDto extends PassDto {
             holder_username?: string
             holder_display_name?: string
             total_messages: number | null
+            spent?: number | null
           })
       | undefined,
   ) {
@@ -70,6 +74,8 @@ export class PassHolderDto extends PassDto {
 
       this.holderUsername = passHolder.holder_username
       this.holderDisplayName = passHolder.holder_display_name
+
+      this.spent = passHolder.spent
     }
   }
 }

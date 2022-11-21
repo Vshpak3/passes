@@ -50,21 +50,12 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
       setActiveIndex(index)
     }
 
+    let media: JSX.Element | undefined = undefined
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:
-        return (
+        media = (
           <>
-            <button
-              className={classNames(
-                messagesView && fixedHeight
-                  ? "max-h-[400px]"
-                  : fixedHeight
-                  ? "max-h-[55vh] sm:max-h-[75vh]"
-                  : "",
-                "h-full w-full"
-              )}
-              onClick={onImgClickHandler}
-            >
+            <button onClick={onImgClickHandler}>
               <SlideImage content={content} ref={ref} />
             </button>
             {openModal && (
@@ -79,18 +70,30 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
             )}
           </>
         )
+        break
       case ContentDtoContentTypeEnum.Video:
-        return (
+        media = (
           <VideoContent
             autoplay={autoplayVideo}
-            content={content}
-            fixedHeight={fixedHeight}
+            content={{ content }}
             isActive={isActive}
-            messagesView={messagesView}
           />
         )
     }
-    return null
+    return (
+      <div
+        className={classNames(
+          messagesView && fixedHeight
+            ? "max-h-[45vh] md:max-h-[55vh]"
+            : fixedHeight
+            ? "max-h-[55vh] sm:max-h-[75vh]"
+            : "",
+          "h-full w-full"
+        )}
+      >
+        {media}
+      </div>
+    )
   }
 )
 

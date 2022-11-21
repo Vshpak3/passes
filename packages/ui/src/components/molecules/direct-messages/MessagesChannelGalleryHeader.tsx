@@ -3,10 +3,7 @@ import BackIcon from "public/icons/chevron-left-icon.svg"
 import CurrencyIcon from "public/icons/messages-currency-icon.svg"
 import React, { Dispatch, FC, SetStateAction, useCallback } from "react"
 
-import {
-  SortDropdown,
-  SortOption
-} from "src/components/organisms/creator-tools/lists/SortDropdown"
+import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 
 type OrderType = "purchased" | "notPurchased"
 

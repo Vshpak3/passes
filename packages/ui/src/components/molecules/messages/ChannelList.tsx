@@ -21,7 +21,7 @@ import {
   orderTypeDisplayNames,
   SortDropdown,
   SortOption
-} from "src/components/organisms/creator-tools/lists/SortDropdown"
+} from "src/components/organisms/SortDropdown"
 import { useUser } from "src/hooks/useUser"
 import { ChannelListItem } from "./ChannelListItem"
 import { ChannelSearchInput } from "./ChannelSearchInput"

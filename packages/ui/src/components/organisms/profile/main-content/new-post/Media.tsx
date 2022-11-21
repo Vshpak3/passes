@@ -5,6 +5,8 @@ import DeleteIcon from "public/icons/media-delete-icon.svg"
 import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import { FC, MouseEventHandler } from "react"
 
+import { VideoPlayer } from "src/components/atoms/content/VideoPlayer"
+import { useVideoPlayer } from "src/hooks/useVideoPlayer"
 import { CrossIcon } from "src/icons/CrossIcon"
 
 type MediaProp = {
@@ -21,6 +23,7 @@ type MediaProp = {
   isPassUpload?: boolean
   objectFit?: NonNullable<JSX.IntrinsicElements["img"]["style"]>["objectFit"]
   noRender?: boolean
+  poster?: string
   noRenderString?: string
 }
 
@@ -38,9 +41,12 @@ export const Media: FC<MediaProp> = ({
   isPassUpload,
   objectFit = "cover",
   noRender,
+  poster,
   noRenderString
 }) => {
   const fitContent = "fit-content"
+  const { ref } = useVideoPlayer()
+
   const media: Partial<{ [key in ContentDtoContentTypeEnum]: JSX.Element }> = {
     video: (
       <>
@@ -55,12 +61,12 @@ export const Media: FC<MediaProp> = ({
             </span>
           </div>
         ) : (
-          <video
-            className="select-none"
-            controls
-            controlsList="nodownload"
+          <VideoPlayer
+            autoplay={false}
+            className="relative z-20 inline-block h-auto max-h-full max-w-full object-contain"
+            poster={poster}
+            ref={ref}
             src={src}
-            style={{ width: fitContent, height: contentHeight }}
           />
         )}
         {onExpand && (

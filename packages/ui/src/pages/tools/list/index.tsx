@@ -18,10 +18,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { CreateNewListModal } from "src/components/molecules/list/CreateNewListModal"
 import { ListCached } from "src/components/organisms/creator-tools/lists/ListCached"
-import {
-  SortDropdown,
-  SortOption
-} from "src/components/organisms/creator-tools/lists/SortDropdown"
+import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { errorMessage } from "src/helpers/error"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 

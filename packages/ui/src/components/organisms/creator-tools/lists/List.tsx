@@ -20,28 +20,29 @@ interface ListProps extends ListCachedProps {
 
 const ListUnmemo: FC<ListProps> = ({ list, removable, update }) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false)
+  const { deletedAt, listId, name, count, type } = list
   return (
     <li
       className={classNames(
-        list.deletedAt && "hidden",
+        deletedAt && "hidden",
         "flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20"
       )}
     >
       <Link
         className="flex-1"
-        href={`/tools/list/list-members/${list.listId}`}
-        key={list.listId}
+        href={`/tools/list/list-members/${listId}`}
+        key={listId}
       >
         <div className="flex flex-1 flex-col gap-[10px]">
           <h1 className="whitespace-pre-wrap text-xl font-bold">
-            {formatText(list.name || list.listId)}
+            {formatText(name || listId)}
           </h1>
           <span className="text-base font-bold text-gray-500">
-            &nbsp; {list.count} members
+            &nbsp; {count} members
           </span>
         </div>
       </Link>
-      {list.type === ListDtoTypeEnum.Normal ? (
+      {type === ListDtoTypeEnum.Normal ? (
         <Button
           className="flex h-[45px] w-[45px] items-center justify-center !rounded-[50%] bg-[#fffeff26]"
           onClick={() => setDeleteModalOpen(true)}
@@ -67,7 +68,7 @@ const ListUnmemo: FC<ListProps> = ({ list, removable, update }) => {
             if (removable) {
               const api = new ListApi()
               await api
-                .deleteList({ listId: list.listId })
+                .deleteList({ listId: listId })
                 .catch((error) => toast.error(error))
               update({ deletedAt: new Date() })
               toast.success("A list was deleted")

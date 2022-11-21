@@ -45,6 +45,12 @@ export interface GetPassHoldersRequestDto {
     order: GetPassHoldersRequestDtoOrderEnum;
     /**
      * 
+     * @type {number}
+     * @memberof GetPassHoldersRequestDto
+     */
+    spent?: number | null;
+    /**
+     * 
      * @type {string}
      * @memberof GetPassHoldersRequestDto
      */
@@ -78,7 +84,7 @@ export interface GetPassHoldersRequestDto {
      * @type {boolean}
      * @memberof GetPassHoldersRequestDto
      */
-    activeOnly: boolean;
+    active?: boolean;
 }
 
 
@@ -98,8 +104,7 @@ export const GetPassHoldersRequestDtoOrderTypeEnum = {
     Username: 'username',
     DisplayName: 'display name',
     CreatedAt: 'created at',
-    Spent: 'spent',
-    Metadata: 'metadata'
+    Spent: 'spent'
 } as const;
 export type GetPassHoldersRequestDtoOrderTypeEnum = typeof GetPassHoldersRequestDtoOrderTypeEnum[keyof typeof GetPassHoldersRequestDtoOrderTypeEnum];
 
@@ -111,7 +116,6 @@ export function instanceOfGetPassHoldersRequestDto(value: object): boolean {
     let isInstance = true;
     isInstance = isInstance && "order" in value;
     isInstance = isInstance && "orderType" in value;
-    isInstance = isInstance && "activeOnly" in value;
 
     return isInstance;
 }
@@ -130,12 +134,13 @@ export function GetPassHoldersRequestDtoFromJSONTyped(json: any, ignoreDiscrimin
         'lastId': !exists(json, 'lastId') ? undefined : json['lastId'],
         'search': !exists(json, 'search') ? undefined : json['search'],
         'order': json['order'],
+        'spent': !exists(json, 'spent') ? undefined : json['spent'],
         'holderId': !exists(json, 'holderId') ? undefined : json['holderId'],
         'passId': !exists(json, 'passId') ? undefined : json['passId'],
         'username': !exists(json, 'username') ? undefined : json['username'],
         'displayName': !exists(json, 'displayName') ? undefined : json['displayName'],
         'orderType': json['orderType'],
-        'activeOnly': json['activeOnly'],
+        'active': !exists(json, 'active') ? undefined : json['active'],
     };
 }
 
@@ -152,12 +157,13 @@ export function GetPassHoldersRequestDtoToJSON(value?: GetPassHoldersRequestDto 
         'lastId': value.lastId,
         'search': value.search,
         'order': value.order,
+        'spent': value.spent,
         'holderId': value.holderId,
         'passId': value.passId,
         'username': value.username,
         'displayName': value.displayName,
         'orderType': value.orderType,
-        'activeOnly': value.activeOnly,
+        'active': value.active,
     };
 }
 

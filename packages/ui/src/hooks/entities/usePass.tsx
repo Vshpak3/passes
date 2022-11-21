@@ -8,7 +8,7 @@ const api = new PassApi()
 export type PassWithStatusDto = PassDto & { paying?: boolean }
 
 export const usePass = (passId: string) => {
-  const { data: pass } = useSWR<PassWithStatusDto>(
+  const { data: pass, mutate } = useSWR<PassWithStatusDto>(
     passId ? [CACHE_KEY_PASS, passId] : null,
     async () => {
       return {
@@ -42,6 +42,7 @@ export const usePass = (passId: string) => {
   return {
     pass,
     update: mutateManual,
-    checkPurchasingPass
+    checkPurchasingPass,
+    mutate
   }
 }
