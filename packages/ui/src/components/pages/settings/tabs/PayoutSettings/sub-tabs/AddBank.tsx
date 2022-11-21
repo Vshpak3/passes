@@ -6,16 +6,19 @@ import iso3311a2 from "iso-3166-1-alpha-2"
 import InfoIcon from "public/icons/info-icon.svg"
 import { memo } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "react-toastify"
 import { v4 } from "uuid"
 import { object, string } from "yup"
 
+import { Button } from "src/components/atoms/button/Button"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
 import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
-import { COUNTRIES, US_STATES } from "src/helpers/countries"
+import { CANADA_DISTRICTS, COUNTRIES, US_STATES } from "src/helpers/countries"
 import { errorMessage } from "src/helpers/error"
+import { sleep } from "src/helpers/sleep"
 
 enum BankTypeEnum {
   US = "us",
@@ -24,8 +27,8 @@ enum BankTypeEnum {
 }
 
 interface BankForm {
-  "account-number": string // eslint-disable-line sonarjs/no-duplicate-string
-  "routing-number": string // eslint-disable-line sonarjs/no-duplicate-string
+  "account-number": string
+  "routing-number": string
   iban: string
   name: string
   city: string
@@ -36,45 +39,39 @@ interface BankForm {
   "postal-code": string
   "bank-name": string
   "bank-city": string
-  // eslint-disable-next-line sonarjs/no-duplicate-string
+
   "bank-country": string
   "bank-type": string
 }
 
-const bankForm = object().shape(
-  {
-    "account-number": string().when("bank-country", {
-      is: (country: string) =>
-        country === BankTypeEnum.US || country === BankTypeEnum.NON_IBAN,
-      then: string().required("Account Number is required")
-    }),
-    "routing-number": string().when("iban", {
-      is: (iban: string) => !iban || iban.length === 0,
-      then: string().required("Routing Number is required")
-    }),
-    iban: string().when("routing-number", {
-      is: (routingNumber: string) =>
-        !routingNumber || routingNumber.length === 0,
-      then: string().required("IBAN is required")
-    }),
-    name: string().required("Name is required"),
-    city: string().required("City is required"),
-    country: string(),
-    address1: string().required("Address is required"),
-    address2: string(),
-    district: string().required("State is required"),
-    "postal-code": string()
-      .required("Postal code is required")
-      .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
-    "bank-name": string(),
-    "bank-city": string(),
-    "bank-country": string().required("Country is required")
-  },
-  [
-    ["iban", "routing-number"],
-    ["account-number", "bank-country"]
-  ]
-)
+const bankForm = object().shape({
+  "account-number": string().when("bank-type", {
+    is: (type: BankTypeEnum) =>
+      type === BankTypeEnum.US || type === BankTypeEnum.NON_IBAN,
+    then: string().required("Account Number is required")
+  }),
+  "routing-number": string().when("bank-type", {
+    is: (type: BankTypeEnum) =>
+      type === BankTypeEnum.US || type === BankTypeEnum.NON_IBAN,
+    then: string().required("Routing Number is required")
+  }),
+  iban: string().when("bank-type", {
+    is: (type: BankTypeEnum) => type === BankTypeEnum.IBAN,
+    then: string().required("IBAN is required")
+  }),
+  name: string().required("Name is required"),
+  city: string().required("City is required"),
+  country: string().required(),
+  address1: string().required("Address is required"),
+  address2: string(),
+  district: string().required(),
+  "postal-code": string()
+    .required("Postal code is required")
+    .matches(/^\d{5}$/, "Post code must be a 5 digit number"),
+  "bank-name": string().required(),
+  "bank-city": string().required(),
+  "bank-country": string().required("Country is required")
+})
 
 const AddBank = () => {
   const idempotencyKey = v4()
@@ -85,9 +82,13 @@ const AddBank = () => {
     register,
     watch,
     control,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm<BankForm>({
-    defaultValues: { country: COUNTRIES[0], "bank-country": COUNTRIES[0] },
+    defaultValues: {
+      country: COUNTRIES[0],
+      "bank-country": COUNTRIES[0],
+      "bank-type": BankTypeEnum.US
+    },
     resolver: yupResolver(bankForm)
   })
   const countrySelected = watch("country")
@@ -124,6 +125,8 @@ const AddBank = () => {
 
       const paymentApi = new PaymentApi()
       await paymentApi.createCircleBank({ circleCreateBankRequestDto: payload })
+      toast.success("Bank added succesfully")
+      await sleep("3 second") // waiting for circle
       addOrPopStackHandler(SubTabsEnum.PayoutSettings)
     } catch (error: unknown) {
       errorMessage(error, true)
@@ -138,7 +141,7 @@ const AddBank = () => {
         </span>
         <SelectInput
           control={control}
-          defaultValue={bankType}
+          defaultValue="US Bank"
           errors={errors}
           name="bank-type"
           placeholder="Bank Type"
@@ -263,14 +266,17 @@ const AddBank = () => {
           type="text"
         />
         <div className="flex gap-4">
-          {countrySelected === COUNTRIES[0] ? (
+          {countrySelected === COUNTRIES[0] ||
+          countrySelected === COUNTRIES[1] ? (
             <SelectInput
               className="mt-4"
               control={control}
               errors={errors}
               name="district"
               placeholder="State"
-              selectOptions={US_STATES}
+              selectOptions={
+                countrySelected === COUNTRIES[0] ? US_STATES : CANADA_DISTRICTS
+              }
               showOnTop
             />
           ) : (
@@ -302,12 +308,13 @@ const AddBank = () => {
           />
         </div>
       </div>
-      <button
-        className="mt-4 mb-8 flex h-[44px] w-full shrink-0 items-center justify-center gap-2 rounded-full border border-passes-pink-100 bg-passes-pink-100 px-2 text-white"
+      <Button
+        className="mt-4 mb-8 w-full"
+        disabled={isSubmitting}
         onClick={handleSubmit(onSubmit)}
       >
         <span className="text-[16px] font-[500]">Confirm and Continue</span>
-      </button>
+      </Button>
     </Tab>
   )
 }

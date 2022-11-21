@@ -1,6 +1,7 @@
-// From iso3311a2.getCountries() but with "United States" first.
+// From iso3311a2.getCountries() but with "United States" first and "Canada" second.
 export const COUNTRIES = [
   "United States",
+  "Canada",
   "Afghanistan",
   "Åland Islands",
   "Albania",
@@ -40,7 +41,6 @@ export const COUNTRIES = [
   "Burundi",
   "Cambodia",
   "Cameroon",
-  "Canada",
   "Cape Verde",
   "Cayman Islands",
   "Central African Republic",
@@ -302,4 +302,19 @@ export const US_STATES = [
   "WV",
   "WI",
   "WY"
+]
+export const CANADA_DISTRICTS = [
+  "AB",
+  "BC",
+  "MB",
+  "NB",
+  "NL",
+  "NT",
+  "NS",
+  "NU",
+  "ON",
+  "PE",
+  "QC",
+  "SK",
+  "YT"
 ]
