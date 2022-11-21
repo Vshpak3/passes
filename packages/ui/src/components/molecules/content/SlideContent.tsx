@@ -55,7 +55,7 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
       case ContentDtoContentTypeEnum.Image:
         media = (
           <>
-            <button onClick={onImgClickHandler}>
+            <button className="h-full w-full" onClick={onImgClickHandler}>
               <SlideImage content={content} ref={ref} />
             </button>
             {openModal && (
