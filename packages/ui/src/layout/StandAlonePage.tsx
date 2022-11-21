@@ -15,7 +15,7 @@ export const StandAlonePage: FC<
         <main className="col-span-12 flex h-full w-full flex-col lg:col-span-12">
           <div className="m-auto flex flex-col justify-center text-center lg:my-10">
             <div className={classNames(className, "relative")}>
-              <div className="modal-gradient absolute h-screen w-full max-w-full opacity-50" />
+              <div className="modal-gradient absolute h-screen w-full max-w-full opacity-50 blur-[125px]" />
               <div className="relative flex w-full min-w-min max-w-full flex-col justify-center">
                 <div className="flex w-full max-w-full flex-col items-center justify-center rounded-lg bg-passes-black/[0.6] pb-16">
                   <div className="flex w-full max-w-full flex-row justify-center pb-4 pt-6 lg:pt-12">

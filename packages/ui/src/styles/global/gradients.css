@@ -6,8 +6,6 @@
     #8400b9 360deg
   );
   opacity: 0.6;
-  filter: blur(125px);
-  transform: rotate(-90deg);
 }
 
 .background-gradient {
