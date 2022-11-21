@@ -1,6 +1,6 @@
 import classNames from "classnames"
 import Hls from "hls.js"
-import { forwardRef, useEffect } from "react"
+import { forwardRef, useEffect, useState } from "react"
 
 interface VideoPlayerProps {
   src: string
@@ -46,12 +46,18 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       }
     }, [src, ref])
 
+    const [showControls, setShowControls] = useState<boolean>(false)
+
     return (
       <video
         autoPlay={autoplay}
         className={classNames(className)}
-        controls
+        controls={showControls}
         controlsList="nodownload"
+        onBlur={() => setShowControls(false)}
+        onFocus={() => setShowControls(true)}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}

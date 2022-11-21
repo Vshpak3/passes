@@ -345,7 +345,7 @@ export class PassService {
     return new MintPassResponseDto(true)
   }
 
-  async getPass(passId: string): Promise<PassDto> {
+  async getPass(passId: string, userId?: string): Promise<PassDto> {
     const pass = await this.dbReader<PassEntity>(PassEntity.table)
       .innerJoin(
         `${UserEntity.table}`,
@@ -364,7 +364,7 @@ export class PassService {
       throw new NotFoundException(PASS_NOT_EXIST)
     }
 
-    return new PassDto(pass)
+    return new PassDto(pass, userId === pass.creator_id)
   }
 
   async getPassHoldings(

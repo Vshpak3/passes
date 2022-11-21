@@ -84,9 +84,13 @@ export class PassController {
   })
   @Post('find/pass')
   async getPass(
+    @Req() req: RequestWithUser,
     @Body() getPassRequestDto: GetPassRequestDto,
   ): Promise<GetPassResponseDto> {
-    return await this.passService.getPass(getPassRequestDto.passId)
+    return await this.passService.getPass(
+      getPassRequestDto.passId,
+      req.user?.id,
+    )
   }
 
   @ApiEndpoint({
