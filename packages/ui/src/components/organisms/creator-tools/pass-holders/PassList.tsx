@@ -12,7 +12,7 @@ const PassListUnmemo: FC<PassListProps> = ({ pass }) => {
     <li className="flex cursor-pointer flex-row items-center justify-between border-b-2 border-gray-500 px-7 py-5 transition-all hover:bg-white/20">
       <Link
         className="flex-1"
-        href={`/tools/pass-holders/${passId}`}
+        href={`/tools/pass-holder/${passId}`}
         key={passId}
       >
         <div className="flex flex-1 flex-col gap-[10px]">
@@ -20,7 +20,7 @@ const PassListUnmemo: FC<PassListProps> = ({ pass }) => {
             {formatText(title || passId)}
           </h1>
           <span className="text-base font-bold text-gray-500">
-            &nbsp; {amountMinted} members
+            &nbsp; {amountMinted} Passes
           </span>
         </div>
       </Link>

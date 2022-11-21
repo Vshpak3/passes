@@ -11,7 +11,7 @@ const PassHoldersList: NextPage = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (router.query?.list_id) {
+    if (router.query?.pass_id) {
       setPassId(queryParam(router.query.pass_id))
     }
   }, [router])
