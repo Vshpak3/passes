@@ -59,6 +59,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         onFocus={() => setShowControls(true)}
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
+        playsInline={autoplay}
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}

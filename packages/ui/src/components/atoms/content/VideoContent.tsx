@@ -1,4 +1,5 @@
 import classNames from "classnames"
+import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import { CSSProperties, memo, useEffect } from "react"
 
 import { ContentService } from "src/helpers/content"
@@ -19,7 +20,7 @@ const VideoContentUnmemo = ({
   autoplay,
   style
 }: VideoContentProps) => {
-  const { ref, pause } = useVideoPlayer()
+  const { ref, pause, isPlaying, play } = useVideoPlayer()
   const videoThumbnail = contentFile.content
     ? ContentService.userContentThumbnailPath(contentFile.content)
     : undefined
@@ -54,6 +55,14 @@ const VideoContentUnmemo = ({
           style={style}
         />
       </div>
+      {!isPlaying ? (
+        <div
+          className="absolute left-[50%] z-50 translate-x-[-50%] md:hidden"
+          onClick={play}
+        >
+          <PlayIcon />
+        </div>
+      ) : null}
     </>
   )
 }
