@@ -6,6 +6,7 @@ import TimeAgo from "react-timeago"
 
 import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
+import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface ChannelListItemProps {
@@ -92,6 +93,9 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
           "absolute right-4 bottom-1 self-end text-[11px] leading-[17px]"
         )}
         date={channel?.recent ? channel.recent : ""}
+        formatter={(value, unit, suffix) =>
+          getShortTimeStamp(value, unit, suffix)
+        }
         key={channel.channelId}
         minPeriod={30}
       />

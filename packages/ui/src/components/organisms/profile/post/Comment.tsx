@@ -16,6 +16,7 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
+import { getShortTimeStamp } from "src/helpers/dates"
 import { useUpdateComment } from "src/hooks/profile/useUpdateComment"
 import { CommentCachedProps } from "./CommentCached"
 
@@ -106,6 +107,9 @@ export const Comment: FC<CommentProps> = ({
                   <TimeAgo
                     className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                     date={comment.createdAt}
+                    formatter={(value, unit, suffix) =>
+                      getShortTimeStamp(value, unit, suffix)
+                    }
                     key={comment.commentId}
                     live={false}
                   />

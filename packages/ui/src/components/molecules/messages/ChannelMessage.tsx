@@ -6,6 +6,7 @@ import TimeAgo from "react-timeago"
 
 import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
+import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyMessageModal } from "src/hooks/context/useBuyMessageModal"
 import { DollarSymbol } from "src/icons/DollarSymbol"
@@ -155,6 +156,9 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                 <TimeAgo
                   className="flex text-[11px] font-medium leading-[17px] text-white/30"
                   date={sentAt ?? ""}
+                  formatter={(value, unit, suffix) =>
+                    getShortTimeStamp(value, unit, suffix)
+                  }
                   key={messageId}
                   minPeriod={30}
                 />

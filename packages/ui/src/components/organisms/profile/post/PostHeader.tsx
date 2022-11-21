@@ -9,6 +9,7 @@ import {
   Dropdown,
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
+import { getShortTimeStamp } from "src/helpers/dates"
 
 interface PostHeaderProps
   extends Pick<PostDto, "createdAt" | "userId" | "username" | "displayName"> {
@@ -48,6 +49,9 @@ export const PostHeader: FC<PostHeaderProps> = ({
           <TimeAgo
             className="text-gray-300/60"
             date={createdAt}
+            formatter={(value, unit, suffix) =>
+              getShortTimeStamp(value, unit, suffix)
+            }
             key={id}
             minPeriod={30}
           />

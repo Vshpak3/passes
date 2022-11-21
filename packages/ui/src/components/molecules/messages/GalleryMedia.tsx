@@ -9,6 +9,7 @@ import { VideoContent } from "src/components/atoms/content/VideoContent"
 import { UnlockText } from "src/components/organisms/UnlockText"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
+import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
 interface GalleryMediaProps {
@@ -67,6 +68,9 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
             <TimeAgo
               className="uppercase text-gray-300/60"
               date={createdAt ? createdAt : ""} // TODO: post.date}
+              formatter={(value, unit, suffix) =>
+                getShortTimeStamp(value, unit, suffix)
+              }
               minPeriod={30}
             />
           </span>
