@@ -25,7 +25,7 @@ const VideoContentUnmemo = ({
     }
   }, [isActive, pause])
   return (
-    <div className="relative h-full cursor-pointer overflow-hidden">
+    <>
       <div
         className={classNames(
           "absolute inset-0 inset-x-4 z-10 h-auto bg-cover bg-center [filter:blur(10px)opacity(80%)]"
@@ -49,7 +49,7 @@ const VideoContentUnmemo = ({
           }
         />
       </div>
-    </div>
+    </>
   )
 }
 
