@@ -2,13 +2,13 @@
 
 import { FC, SVGProps } from "react"
 
-interface CrossProps extends SVGProps<SVGSVGElement> {
+interface CrossIconProps extends SVGProps<SVGSVGElement> {
   width?: number
   height?: number
   alternate?: boolean
 }
 
-export const Cross: FC<CrossProps> = ({
+export const CrossIcon: FC<CrossIconProps> = ({
   alternate = false,
   width = 15,
   height = 15,

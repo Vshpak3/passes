@@ -1,10 +1,11 @@
 import { ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
+import ExpandIcon from "public/icons/expand-03.svg"
 import DeleteIcon from "public/icons/media-delete-icon.svg"
 import PlayIcon from "public/icons/media-play-circle-icon.svg"
 import { FC, MouseEventHandler } from "react"
 
-import { Cross } from "src/icons/CrossIcon"
+import { CrossIcon } from "src/icons/CrossIcon"
 
 type MediaProp = {
   src: string
@@ -13,6 +14,7 @@ type MediaProp = {
   iconClassName?: string
   onRemove?: MouseEventHandler
   onSelect?: MouseEventHandler
+  onExpand?: MouseEventHandler
   preview?: boolean
   contentHeight?: number
   contentWidth?: number
@@ -29,6 +31,7 @@ export const Media: FC<MediaProp> = ({
   iconClassName,
   onRemove,
   onSelect,
+  onExpand,
   preview,
   contentHeight,
   contentWidth,
@@ -60,6 +63,11 @@ export const Media: FC<MediaProp> = ({
             style={{ width: fitContent, height: contentHeight }}
           />
         )}
+        {onExpand && (
+          <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">
+            <ExpandIcon classname="h-full w-full" onClick={onExpand} />
+          </div>
+        )}
         {!preview && (
           <div
             className={classNames(
@@ -86,6 +94,11 @@ export const Media: FC<MediaProp> = ({
             maxWidth: contentWidth || fitContent
           }}
         />
+        {onExpand && (
+          <div className="absolute top-[5px] right-[55px] z-[100] h-[24px] w-[24px] cursor-pointer mix-blend-difference md:right-[140px]">
+            <ExpandIcon classname="h-full w-full" onClick={onExpand} />
+          </div>
+        )}
         {!preview && (
           <div
             className={classNames(
@@ -97,7 +110,7 @@ export const Media: FC<MediaProp> = ({
             onClick={onRemove}
           >
             {isPassUpload ? (
-              <Cross className="h-full w-full" />
+              <CrossIcon className="h-full w-full" />
             ) : (
               <DeleteIcon className="h-full w-full" />
             )}
@@ -119,7 +132,7 @@ export const Media: FC<MediaProp> = ({
             className="relative top-1 left-1 flex h-8 w-8 cursor-pointer items-center justify-center rounded-[50%] bg-[rgba(0,0,0,0.75)] p-2 text-white"
             onClick={onRemove}
           >
-            <Cross className="h-full w-full" />
+            <CrossIcon className="h-full w-full" />
           </div>
         )}
       </>

@@ -1,7 +1,7 @@
 import { format } from "date-fns"
 import { FC } from "react"
 
-import { Cross } from "src/icons/CrossIcon"
+import { CrossIcon } from "src/icons/CrossIcon"
 
 interface ScheduleAlertProps {
   scheduledPostTime: Date | null
@@ -20,7 +20,7 @@ export const ScheduleAlert: FC<ScheduleAlertProps> = ({
           format(scheduledPostTime, "EEEE, LLLL do, yyyy 'at' hh:mm a")}
       </div>
       <div className="cursor-pointer" onClick={onRemoveScheduledPostTime}>
-        <Cross />
+        <CrossIcon />
       </div>
     </div>
   )
