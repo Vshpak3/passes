@@ -61,7 +61,7 @@ const Username: FC = () => {
           <div className="relative">
             <span
               className={classNames(
-                "absolute top-1/2  right-3 -translate-y-1/2",
+                "absolute top-1/2  left-3 -translate-y-1/2",
                 errors.username && "-bottom-[7px]"
               )}
             >
