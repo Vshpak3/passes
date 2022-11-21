@@ -43,7 +43,7 @@ const RenewPassModal: FC<RenewPassModalProps> = ({
 
   return (
     <Dialog
-      className="flex w-full flex-col items-center justify-center border border-white/10 bg-passes-black px-6 py-5 transition-all md:w-[80%] md:rounded-[15px] lg:max-w-[30%]"
+      className="flex w-[600px] max-w-full flex-col items-center justify-center rounded-[5px] border border-white/10 bg-passes-black px-6 py-5 transition-all"
       onClose={() => setOpen(false)}
       open={isOpen}
     >
