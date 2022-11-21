@@ -24,11 +24,11 @@ import PostsSettings from "src/components/pages/settings/tabs/PrivacySafetySetti
 import ProfileSettings from "src/components/pages/settings/tabs/PrivacySafetySettings/sub-tabs/ProfileSettings"
 import WalletSettings from "src/components/pages/settings/tabs/WalletSettings"
 import {
+  navigation,
+  navToSubTab,
   pathToSubTab,
-  SubTabsEnum,
-  subTabToTab,
-  tabs,
-  tabToSubTab
+  subTabs,
+  SubTabsEnum
 } from "src/config/settings"
 import {
   SettingsContextProps,
@@ -94,14 +94,14 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
       >
         <div className="mx-auto h-full w-full border-passes-dark-200 pt-2 md:border-r">
           <ul className="mt-6 -mr-px">
-            {tabs
+            {navigation
               .filter(({ creatorOnly }) => user?.isCreator || !creatorOnly)
               .map(({ name, id }) => (
                 <li
                   className={classNames(
                     "rounded-l-[4px] p-2.5 pr-[13px]",
                     subTabsStack.length &&
-                      id === subTabToTab[subTabsStack[subTabsStack.length - 1]]
+                      id === subTabs[subTabsStack[subTabsStack.length - 1]].nav
                       ? "md:border-r md:border-passes-primary-color md:bg-passes-primary-color/25"
                       : "border-transparent"
                   )}
@@ -109,7 +109,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
                 >
                   <button
                     className="text-label flex w-full items-center justify-between"
-                    onClick={() => navToActiveTab(tabToSubTab[id])}
+                    onClick={() => navToActiveTab(navToSubTab[id])}
                   >
                     <span>{name}</span>
                     <ChevronRightIcon />

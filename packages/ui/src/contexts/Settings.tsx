@@ -10,7 +10,7 @@ import React, {
   useState
 } from "react"
 
-import { SubTabsEnum, subTabToPath } from "src/config/settings"
+import { subTabs, SubTabsEnum } from "src/config/settings"
 
 export interface SettingsContextProps {
   addOrPopStackHandler: (tab: SubTabsEnum) => void
@@ -39,7 +39,7 @@ export const SettingsProvider: FC<PropsWithChildren> = ({ children }) => {
         path.join(
           "/settings",
           secondaryTabStack.length
-            ? subTabToPath[secondaryTabStack[secondaryTabStack.length - 1]]
+            ? subTabs[secondaryTabStack[secondaryTabStack.length - 1]].path
             : ""
         ),
         undefined,

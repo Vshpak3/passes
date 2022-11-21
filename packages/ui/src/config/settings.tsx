@@ -1,4 +1,4 @@
-enum TabsEnum {
+enum NavigationEnum {
   "AccountSettings",
   "ChatSettings",
   "NotificationEmailSettings",
@@ -8,48 +8,42 @@ enum TabsEnum {
   "PayoutSettings"
 }
 
-export const tabs = [
+export const navigation = [
   {
     name: "Account",
-    id: TabsEnum.AccountSettings,
+    id: NavigationEnum.AccountSettings,
     creatorOnly: false
   },
-  { name: "Chat", id: TabsEnum.ChatSettings, creatorOnly: true },
+  { name: "Chat", id: NavigationEnum.ChatSettings, creatorOnly: true },
   {
     name: "Notifications & Emails",
-    id: TabsEnum.NotificationEmailSettings,
+    id: NavigationEnum.NotificationEmailSettings,
     creatorOnly: false
   },
   {
     name: "Privacy & Safety",
-    id: TabsEnum.PrivacySafetySettings,
+    id: NavigationEnum.PrivacySafetySettings,
     creatorOnly: true
   },
   {
     name: "Payment",
-    id: TabsEnum.PaymentSettings,
+    id: NavigationEnum.PaymentSettings,
     creatorOnly: false
   },
   {
     name: "Wallet",
-    id: TabsEnum.WalletSettings,
+    id: NavigationEnum.WalletSettings,
     creatorOnly: false
   },
   {
     name: "Payout",
-    id: TabsEnum.PayoutSettings,
+    id: NavigationEnum.PayoutSettings,
     creatorOnly: true
   }
 ]
 
-export enum SubTabsEnum {
-  // Navigation
-  "AccountSettings",
-  "ChatSettings",
-  "NotificationEmailSettings",
-  "PrivacySafetySettings",
-
-  // Accounts
+enum _SubTabsEnum {
+  // Account
   "AccountInformation",
   "ChangePassword",
   "DeactivateAccount",
@@ -69,94 +63,122 @@ export enum SubTabsEnum {
   "BlockedRestrictedAccounts",
 
   // Payment
-  "PaymentSettings",
-  "WalletSettings",
-  "PayoutSettings",
   "AddBank",
   "AddCard",
   "PaymentHistory"
 }
 
-export const subTabToTab: Record<SubTabsEnum, TabsEnum> = {
-  // Navigation
-  [SubTabsEnum.AccountSettings]: TabsEnum.AccountSettings,
-  [SubTabsEnum.ChatSettings]: TabsEnum.ChatSettings,
-  [SubTabsEnum.NotificationEmailSettings]: TabsEnum.NotificationEmailSettings,
-  [SubTabsEnum.PrivacySafetySettings]: TabsEnum.PrivacySafetySettings,
+// All primary tabs are also subtabs
+export type SubTabsEnum = NavigationEnum | _SubTabsEnum
+export const SubTabsEnum = { ...NavigationEnum, ..._SubTabsEnum }
 
+export const subTabs: Record<
+  SubTabsEnum,
+  { path: string; nav: NavigationEnum }
+> = {
   // Accounts
-  [SubTabsEnum.AccountInformation]: TabsEnum.AccountSettings,
-  [SubTabsEnum.ChangePassword]: TabsEnum.AccountSettings,
-  [SubTabsEnum.DeactivateAccount]: TabsEnum.AccountSettings,
-  [SubTabsEnum.ProfilePicture]: TabsEnum.AccountSettings,
-  [SubTabsEnum.DisplayName]: TabsEnum.AccountSettings,
-  [SubTabsEnum.Username]: TabsEnum.AccountSettings,
+  [SubTabsEnum.AccountSettings]: {
+    path: "account",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.AccountInformation]: {
+    path: "account/information",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.ChangePassword]: {
+    path: "account/password",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.DeactivateAccount]: {
+    path: "account/deactivate",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.ProfilePicture]: {
+    path: "account/picture",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.DisplayName]: {
+    path: "account/display",
+    nav: NavigationEnum.AccountSettings
+  },
+  [SubTabsEnum.Username]: {
+    path: "account/username",
+    nav: NavigationEnum.AccountSettings
+  },
 
   // Chat
-  [SubTabsEnum.WelcomeMessage]: TabsEnum.ChatSettings,
+  [SubTabsEnum.ChatSettings]: {
+    path: "chat",
+    nav: NavigationEnum.ChatSettings
+  },
+  [SubTabsEnum.WelcomeMessage]: {
+    path: "chat/welcome-message",
+    nav: NavigationEnum.ChatSettings
+  },
 
   // Notification
-  [SubTabsEnum.EmailNotifications]: TabsEnum.NotificationEmailSettings,
+  [SubTabsEnum.NotificationEmailSettings]: {
+    path: "notifications",
+    nav: NavigationEnum.NotificationEmailSettings
+  },
+  [SubTabsEnum.EmailNotifications]: {
+    path: "notifications/email",
+    nav: NavigationEnum.NotificationEmailSettings
+  },
 
   // PrivacySafety
-  [SubTabsEnum.ProfileSettings]: TabsEnum.PrivacySafetySettings,
-  [SubTabsEnum.PostsSettings]: TabsEnum.PrivacySafetySettings,
-  [SubTabsEnum.BlockedRestrictedAccounts]: TabsEnum.PrivacySafetySettings,
+  [SubTabsEnum.PrivacySafetySettings]: {
+    path: "privacy",
+    nav: NavigationEnum.PrivacySafetySettings
+  },
+  [SubTabsEnum.ProfileSettings]: {
+    path: "privacy/profile",
+    nav: NavigationEnum.PrivacySafetySettings
+  },
+  [SubTabsEnum.PostsSettings]: {
+    path: "privacy/posts",
+    nav: NavigationEnum.PrivacySafetySettings
+  },
+  [SubTabsEnum.BlockedRestrictedAccounts]: {
+    path: "privacy/blocked",
+    nav: NavigationEnum.PrivacySafetySettings
+  },
 
   // Payment
-  [SubTabsEnum.PaymentSettings]: TabsEnum.PaymentSettings,
-  [SubTabsEnum.WalletSettings]: TabsEnum.WalletSettings,
-  [SubTabsEnum.PayoutSettings]: TabsEnum.PayoutSettings,
-  [SubTabsEnum.AddBank]: TabsEnum.PayoutSettings,
-  [SubTabsEnum.AddCard]: TabsEnum.PaymentSettings,
-  [SubTabsEnum.PaymentHistory]: TabsEnum.PaymentSettings
+  [SubTabsEnum.PaymentSettings]: {
+    path: "payment",
+    nav: NavigationEnum.PaymentSettings
+  },
+  [SubTabsEnum.WalletSettings]: {
+    path: "wallet",
+    nav: NavigationEnum.WalletSettings
+  },
+  [SubTabsEnum.PayoutSettings]: {
+    path: "payout",
+    nav: NavigationEnum.PayoutSettings
+  },
+  [SubTabsEnum.AddBank]: {
+    path: "payout/bank",
+    nav: NavigationEnum.PayoutSettings
+  },
+  [SubTabsEnum.AddCard]: {
+    path: "payment/card",
+    nav: NavigationEnum.PaymentSettings
+  },
+  [SubTabsEnum.PaymentHistory]: {
+    path: "payment/history",
+    nav: NavigationEnum.PaymentSettings
+  }
 }
 
-export const tabToSubTab: Record<TabsEnum, SubTabsEnum> = {
-  [TabsEnum.AccountSettings]: SubTabsEnum.AccountSettings,
-  [TabsEnum.ChatSettings]: SubTabsEnum.ChatSettings,
-  [TabsEnum.NotificationEmailSettings]: SubTabsEnum.NotificationEmailSettings,
-  [TabsEnum.PrivacySafetySettings]: SubTabsEnum.PrivacySafetySettings,
-  [TabsEnum.PaymentSettings]: SubTabsEnum.PaymentSettings,
-  [TabsEnum.WalletSettings]: SubTabsEnum.WalletSettings,
-  [TabsEnum.PayoutSettings]: SubTabsEnum.PayoutSettings
-}
-
-export const subTabToPath: Record<SubTabsEnum, string> = {
-  // Navigation
-  [SubTabsEnum.AccountSettings]: "account",
-  [SubTabsEnum.ChatSettings]: "chat",
-  [SubTabsEnum.NotificationEmailSettings]: "notifications",
-  [SubTabsEnum.PrivacySafetySettings]: "privacy",
-
-  // Accounts
-  [SubTabsEnum.AccountInformation]: "account/information",
-  [SubTabsEnum.ChangePassword]: "account/password",
-  [SubTabsEnum.DeactivateAccount]: "account/deactivate",
-  [SubTabsEnum.ProfilePicture]: "account/picture",
-  [SubTabsEnum.DisplayName]: "account/display",
-  [SubTabsEnum.Username]: "account/username",
-
-  // Chat
-  [SubTabsEnum.WelcomeMessage]: "chat/welcome-message",
-
-  // Notification
-  [SubTabsEnum.EmailNotifications]: "notifications/email",
-
-  // PrivacySafety
-  [SubTabsEnum.ProfileSettings]: "privacy/profile",
-  [SubTabsEnum.PostsSettings]: "privacy/posts",
-  [SubTabsEnum.BlockedRestrictedAccounts]: "privacy/blocked",
-
-  // Payment
-  [SubTabsEnum.PaymentSettings]: "payment",
-  [SubTabsEnum.WalletSettings]: "wallet",
-  [SubTabsEnum.PayoutSettings]: "payout",
-  [SubTabsEnum.AddBank]: "payout/bank",
-  [SubTabsEnum.AddCard]: "payment/card",
-  [SubTabsEnum.PaymentHistory]: "payment/history"
-}
+export const navToSubTab: Record<number, SubTabsEnum> = Object.fromEntries(
+  Object.keys(NavigationEnum)
+    .filter((x) => isNaN(parseInt(x)))
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    .map((key) => [NavigationEnum[key], SubTabsEnum[key]])
+)
 
 export const pathToSubTab: Record<string, SubTabsEnum> = Object.fromEntries(
-  Object.entries(subTabToPath).map(([k, v]) => [v, parseInt(k) as SubTabsEnum])
+  Object.entries(subTabs).map(([k, v]) => [v.path, parseInt(k) as SubTabsEnum])
 )
