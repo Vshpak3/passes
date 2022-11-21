@@ -107,9 +107,7 @@ export const Comment: FC<CommentProps> = ({
                   <TimeAgo
                     className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                     date={comment.createdAt}
-                    formatter={(value, unit, suffix) =>
-                      getShortTimeStamp(value, unit, suffix)
-                    }
+                    formatter={getShortTimeStamp}
                     key={comment.commentId}
                     live={false}
                   />

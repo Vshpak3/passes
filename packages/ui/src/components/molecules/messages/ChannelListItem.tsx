@@ -93,9 +93,7 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
           "absolute right-4 bottom-1 self-end text-[11px] leading-[17px]"
         )}
         date={channel?.recent ? channel.recent : ""}
-        formatter={(value, unit, suffix) =>
-          getShortTimeStamp(value, unit, suffix)
-        }
+        formatter={getShortTimeStamp}
         key={channel.channelId}
         minPeriod={30}
       />

@@ -49,9 +49,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
           <TimeAgo
             className="text-gray-300/60"
             date={createdAt}
-            formatter={(value, unit, suffix) =>
-              getShortTimeStamp(value, unit, suffix)
-            }
+            formatter={getShortTimeStamp}
             key={id}
             minPeriod={30}
           />

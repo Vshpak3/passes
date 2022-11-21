@@ -68,9 +68,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
             <TimeAgo
               className="uppercase text-gray-300/60"
               date={createdAt ? createdAt : ""} // TODO: post.date}
-              formatter={(value, unit, suffix) =>
-                getShortTimeStamp(value, unit, suffix)
-              }
+              formatter={getShortTimeStamp}
               minPeriod={30}
             />
           </span>

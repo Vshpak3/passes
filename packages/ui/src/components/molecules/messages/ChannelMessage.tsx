@@ -156,9 +156,7 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
                 <TimeAgo
                   className="flex text-[11px] font-medium leading-[17px] text-white/30"
                   date={sentAt ?? ""}
-                  formatter={(value, unit, suffix) =>
-                    getShortTimeStamp(value, unit, suffix)
-                  }
+                  formatter={getShortTimeStamp}
                   key={messageId}
                   minPeriod={30}
                 />

@@ -1,6 +1,8 @@
 import { addYears, eachYearOfInterval, getYear } from "date-fns"
 import { Suffix, Unit } from "react-timeago"
 
+import { plural } from "./plural"
+
 export const getExpirationYears = () => {
   const interval = eachYearOfInterval({
     start: new Date(),
@@ -15,16 +17,13 @@ export const getShortTimeStamp = (
   unit: Unit,
   suffix: Suffix
 ) => {
-  if (unit === "second") {
-    return value + "" + "s" + "" + " " + suffix
-  }
-  if (unit === "minute") {
-    return value + "" + "m" + "" + " " + suffix
-  }
-  if (unit === "hour") {
-    return value + "" + "h" + "" + " " + suffix
-  }
-  if (unit === "day") {
-    return value + "" + "d" + "" + " " + suffix
+  switch (unit) {
+    case "second":
+    case "minute":
+    case "hour":
+    case "day":
+      return `${value}${unit.charAt(0)} ${suffix}`
+    default:
+      return `${plural(unit, value)} ${suffix}`
   }
 }
