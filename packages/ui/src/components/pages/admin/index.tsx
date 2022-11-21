@@ -1,11 +1,8 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable react/jsx-no-useless-fragment */
-
 import { AdminApi } from "@passes/api-client"
-import classNames from "classnames"
-import _ from "lodash"
+import _, { includes } from "lodash"
 import { useRouter } from "next/router"
-import ChevronRightIcon from "public/icons/chevron-right-icon.svg"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
 import { string } from "yup"
@@ -13,7 +10,7 @@ import { string } from "yup"
 import { AdminTabProps, AdminTabs, AdminTabsEnum } from "src/config/admin"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
-import { SettingsSearchBar } from "./SettingsSearchBar"
+import { AdminSidebar } from "./AdminSidebar"
 import { AdminUserPage } from "./tabs/AdminUser"
 import { UpdatedCovetedMember } from "./tabs/UpdateCovetedMember"
 import { ViewCovetedMembers } from "./tabs/ViewCovetedMembers"
@@ -43,14 +40,16 @@ export const Admin = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
   const [ready, setReady] = useState(false)
-  const [activeTab, setActiveTab] = useState<AdminTabsEnum>(
-    AdminTabsEnum.ImpersonateUser
-  )
+  const [activeTab, setActiveTab] = useState<AdminTabsEnum | undefined>()
   const [tabs, setTabs] = useState<Array<AdminTabProps>>(AdminTabs)
   const [searchText, setSearchText] = useState<string>("")
 
   const handleSettingsSearch = useCallback(() => {
-    setTabs(_.filter(AdminTabs, (tab) => tab.name.includes(searchText)))
+    setTabs(
+      _.filter(AdminTabs, (tab) =>
+        includes(tab.name.toLowerCase(), searchText.toLowerCase())
+      )
+    )
   }, [searchText])
 
   useEffect(() => {
@@ -61,6 +60,7 @@ export const Admin = () => {
     if (!router.isReady || loading) {
       return
     }
+    setReady(true)
     if (!user || !user.email.endsWith(ADMIN_EMAIL)) {
       router.push("/home")
     } else {
@@ -68,9 +68,14 @@ export const Admin = () => {
     }
   }, [loading, router, user])
 
-  const handleNavItemClick = (id: AdminTabsEnum) => {
-    setActiveTab(id)
-  }
+  useEffect(() => {
+    const tab = window.location.hash.slice(1)
+    if (tab) {
+      setActiveTab(tab as AdminTabsEnum)
+    } else {
+      setActiveTab(AdminTabsEnum.ImpersonateUser)
+    }
+  }, [router])
 
   const impersonateUser = async (values: AdminFormSchema) => {
     try {
@@ -78,10 +83,8 @@ export const Admin = () => {
       const res = await api.impersonateUser({
         impersonateUserRequestDto: { ...values }
       })
-
       setAccessToken(res.accessToken)
       refreshUser()
-
       router.push("/home")
     } catch (error: unknown) {
       errorMessage(error, true)
@@ -238,30 +241,11 @@ export const Admin = () => {
             <span className="text-xl font-bold">Admin</span>
           </div>
           <div className=" flex flex-1 flex-row border-t-[1px] border-passes-dark-200">
-            <div className="h-full overflow-y-auto overflow-x-hidden border-passes-dark-200 md:block md:min-w-[400px] md:border-r">
-              <SettingsSearchBar setValue={setSearchText} value={searchText} />
-              <div className="mx-auto h-full w-full ">
-                <ul className="">
-                  {tabs.map(({ name, id }) => (
-                    <li
-                      className={classNames(
-                        "rounded-l-[4px] p-2.5 pr-[13px]",
-                        id === activeTab
-                          ? "md:border-r md:border-passes-primary-color md:bg-passes-primary-color/25"
-                          : "border-transparent"
-                      )}
-                      key={id}
-                      onClick={() => handleNavItemClick(id)}
-                    >
-                      <button className="text-label flex w-full items-center justify-between">
-                        <span className="capitalize">{name}</span>
-                        <ChevronRightIcon />
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            <AdminSidebar
+              searchText={searchText}
+              setSearchText={setSearchText}
+              tabs={tabs}
+            />
             {renderTab()}
           </div>
         </div>
