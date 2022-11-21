@@ -265,7 +265,7 @@ export const EditProfile: FC<EditProfileProps> = ({
           cropWidth={400}
           imgData={profileImage}
           inputUI={
-            <div className="relative z-20 flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer select-none items-center justify-center rounded-full">
+            <div className="relative z-20 flex max-h-[138px] min-h-[138px] min-w-[138px] max-w-[138px] cursor-pointer select-none items-center justify-center rounded-full bg-black">
               <CameraIcon
                 className={classNames("absolute z-30", {
                   hidden: !!profileImage?.length

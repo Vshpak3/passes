@@ -81,9 +81,10 @@ export const TextAreaInput: FC<TextAreaInputProps> = ({
         {...reg}
         {...rest}
         className={classNames(
-          errors[name] ? "border-red-500" : "",
           "block w-full appearance-none placeholder-[#FFFFFF]/50",
-          className || ""
+          "focus:border-passes-pink-100/80 focus:outline-none focus:ring-passes-pink-100/80",
+          errors[name] ? "border-red-500" : "",
+          className
         )}
       />
     </>
