@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import { Fade } from "src/components/atoms/animations/Fade"
 import { GradientBorderTile } from "src/components/atoms/signup/GradientBorderTile"
 import { LoginNFT } from "src/components/atoms/signup/LoginNFT"
 import { LoginTile } from "src/components/atoms/signup/LoginTile"
@@ -90,23 +91,27 @@ export const SignupTiles = () => {
         if (filename.endsWith("png") && username) {
           return (
             <GradientBorderTile key={filename}>
-              <LoginTile
-                filename={filename}
-                hidden={loadCount !== tiles.length}
-                name={name}
-                setLoaded={() => setLoadCount((c) => c + 1)}
-                username={username}
-              />
+              <Fade show={loadCount >= tiles.length}>
+                <LoginTile
+                  filename={filename}
+                  hidden={loadCount !== tiles.length}
+                  name={name}
+                  setLoaded={() => setLoadCount((c) => c + 1)}
+                  username={username}
+                />
+              </Fade>
             </GradientBorderTile>
           )
         } else if (filename.endsWith("webm")) {
           return (
             <GradientBorderTile key={filename}>
-              <LoginNFT
-                filename={filename}
-                hidden={loadCount !== tiles.length}
-                setLoaded={() => setLoadCount((c) => c + 1)}
-              />
+              <Fade show={loadCount >= tiles.length}>
+                <LoginNFT
+                  filename={filename}
+                  hidden={loadCount !== tiles.length}
+                  setLoaded={() => setLoadCount((c) => c + 1)}
+                />
+              </Fade>
             </GradientBorderTile>
           )
         } else {

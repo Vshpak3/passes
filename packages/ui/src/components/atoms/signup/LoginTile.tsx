@@ -19,7 +19,7 @@ export const LoginTile: FC<LoginTileProps> = ({
   setLoaded
 }) => {
   // We need this hack since the browser optimizes if we set hidden directly
-  // and does not load the iamge
+  // and does not load the image
   const [hidden, setHidden] = useState(false)
   useEffect(() => {
     setHidden(_hidden)
