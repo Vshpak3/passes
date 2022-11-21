@@ -17,9 +17,9 @@ export const CookieBanner: FC<CookieBannerProps> = ({
   onReject
 }) => {
   return (
-    <div className="fixed bottom-0 left-0 z-[100] w-full lg:bottom-8">
+    <div className="fixed bottom-5 left-0 z-[100] w-full lg:bottom-8">
       <div
-        className="relative mx-auto flex h-44
+        className="relative mx-auto flex min-h-[180px]
        w-full flex-col items-start gap-5 bg-[#191A1F] py-6 px-4 lg:h-32 lg:max-w-[1000px] lg:flex-row lg:items-center lg:rounded-lg lg:px-8"
       >
         <Text className="text-passes-gray-100 lg:flex-1">
