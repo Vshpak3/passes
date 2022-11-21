@@ -42,7 +42,16 @@ export const navigation = [
   }
 ]
 
-enum _SubTabsEnum {
+export enum SubTabsEnum {
+  // Copy of NavigationEnum
+  "AccountSettings",
+  "ChatSettings",
+  "NotificationEmailSettings",
+  "PrivacySafetySettings",
+  "PaymentSettings",
+  "WalletSettings",
+  "PayoutSettings",
+
   // Account
   "AccountInformation",
   "ChangePassword",
@@ -67,10 +76,6 @@ enum _SubTabsEnum {
   "AddCard",
   "PaymentHistory"
 }
-
-// All primary tabs are also subtabs
-export type SubTabsEnum = NavigationEnum | _SubTabsEnum
-export const SubTabsEnum = { ...NavigationEnum, ..._SubTabsEnum }
 
 export const subTabs: Record<
   SubTabsEnum,
@@ -171,13 +176,14 @@ export const subTabs: Record<
   }
 }
 
-export const navToSubTab: Record<number, SubTabsEnum> = Object.fromEntries(
-  Object.keys(NavigationEnum)
-    .filter((x) => isNaN(parseInt(x)))
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    .map((key) => [NavigationEnum[key], SubTabsEnum[key]])
-)
+export const navToSubTab: Record<NavigationEnum, SubTabsEnum> =
+  Object.fromEntries(
+    Object.keys(NavigationEnum)
+      .filter((x) => isNaN(parseInt(x)))
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .map((key) => [NavigationEnum[key], SubTabsEnum[key]])
+  )
 
 export const pathToSubTab: Record<string, SubTabsEnum> = Object.fromEntries(
   Object.entries(subTabs).map(([k, v]) => [v.path, parseInt(k) as SubTabsEnum])

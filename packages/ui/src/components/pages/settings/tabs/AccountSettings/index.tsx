@@ -11,7 +11,7 @@ const subTabs = [
   {
     name: "Account information",
     subText:
-      "See your account information like your phone number and email address.",
+      "See your account information like your username and email address.",
     id: SubTabsEnum.AccountInformation,
     Icon: UserIcon
   },
