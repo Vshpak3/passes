@@ -3,6 +3,7 @@ import React, { memo, useState } from "react"
 import { Button } from "src/components/atoms/button/Button"
 import { ConfirmationDialog } from "src/components/organisms/ConfirmationDialog"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 
 const DeactivateAccount = () => {
   const [showDeactivateConfirmationModal, setShowDeactivateConfirmationModal] =
@@ -17,6 +18,7 @@ const DeactivateAccount = () => {
   return (
     <>
       <Tab
+        defaultSubTab={SubTabsEnum.AccountInformation}
         description="Find out how you can deactivate your account."
         title="Deactivate Your Account"
       />

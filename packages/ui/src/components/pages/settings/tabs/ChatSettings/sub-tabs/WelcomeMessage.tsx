@@ -5,12 +5,13 @@ import { toast } from "react-toastify"
 
 import { InputMessageTool } from "src/components/molecules/messages/mass-dm/InputMessageTool"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { useWelcomeMessage } from "src/hooks/settings/useWelcomeMessage"
 import { ContentFilesFromBare } from "src/hooks/useMedia"
 
 const WelcomeMessage = () => {
-  const { popTabFromStackHandler } = useSettings() as SettingsContextProps
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
 
   const { createWelcomeMessage, isLoading, welcomeMessage } =
     useWelcomeMessage()
@@ -18,10 +19,10 @@ const WelcomeMessage = () => {
   const saveWelcomeMessageHandler = useCallback(
     async (welcomeMessageData: CreateWelcomeMessageRequestDto) => {
       await createWelcomeMessage(welcomeMessageData)
-      popTabFromStackHandler()
+      addOrPopStackHandler(SubTabsEnum.ChatSettings)
       toast.success("Successfully added welcome message")
     },
-    [createWelcomeMessage, popTabFromStackHandler]
+    [createWelcomeMessage, addOrPopStackHandler]
   )
 
   const fetch = useCallback(
@@ -37,7 +38,10 @@ const WelcomeMessage = () => {
 
   return (
     <>
-      <Tab title="Edit Welcome Message" />
+      <Tab
+        defaultSubTab={SubTabsEnum.ChatSettings}
+        title="Edit Welcome Message"
+      />
       <div className={classNames(isLoading && "hidden")}>
         <InputMessageTool
           clear={() => null}

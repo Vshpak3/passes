@@ -17,6 +17,7 @@ import {
 import { PayinCached } from "src/components/molecules/payment/PayinCached"
 import { MonthYearPicker } from "src/components/molecules/scheduler/MonthYearPicker"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { getStartEnd } from "src/helpers/monthYear"
 import { useOnClickOutside } from "src/hooks/useOnClickOutside"
 
@@ -57,7 +58,10 @@ const PaymentHistory = () => {
   }, [startDate, endDate])
   return (
     <>
-      <Tab title="Payment History" />
+      <Tab
+        defaultSubTab={SubTabsEnum.PaymentSettings}
+        title="Payment History"
+      />
       <button
         aria-describedby={monthYearPopperId}
         className="my-4"

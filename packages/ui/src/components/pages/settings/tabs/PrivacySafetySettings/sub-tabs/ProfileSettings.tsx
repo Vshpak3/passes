@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
@@ -44,6 +45,7 @@ const ProfileSettings = () => {
 
   return (
     <Tab
+      defaultSubTab={SubTabsEnum.PrivacySafetySettings}
       description="Manage what information you and your fans see and share on Passes."
       title="Profile"
     >

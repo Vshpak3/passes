@@ -6,6 +6,7 @@ import { toast } from "react-toastify"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { errorMessage } from "src/helpers/error"
 import { useNotificationSettings } from "src/hooks/settings/useNotificationSettings"
 
@@ -63,6 +64,7 @@ const EmailNotifications = () => {
 
   return (
     <Tab
+      defaultSubTab={SubTabsEnum.NotificationEmailSettings}
       description="Select your preferences for receiving emails."
       title="Email Settings"
     >

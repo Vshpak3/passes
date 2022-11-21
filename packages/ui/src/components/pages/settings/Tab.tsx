@@ -1,6 +1,7 @@
 import ArrowRightIcon from "public/icons/arrow-right.svg"
 import { FC, PropsWithChildren } from "react"
 
+import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { formatText } from "src/helpers/formatters"
 
@@ -9,6 +10,7 @@ interface TabProps {
   description?: string
   isRootTab?: boolean
   TitleBtn?: React.ReactNode
+  defaultSubTab?: SubTabsEnum
 }
 
 export const Tab: FC<PropsWithChildren<TabProps>> = ({
@@ -16,7 +18,8 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
   description,
   children,
   isRootTab = false,
-  TitleBtn
+  TitleBtn,
+  defaultSubTab
 }) => {
   const { popTabFromStackHandler, navFromActiveTab } =
     useSettings() as SettingsContextProps
@@ -34,7 +37,10 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
                 <ArrowRightIcon />
               </button>
             ) : (
-              <button className="mr-4" onClick={popTabFromStackHandler}>
+              <button
+                className="mr-4"
+                onClick={() => popTabFromStackHandler(defaultSubTab)}
+              >
                 <ArrowRightIcon />
               </button>
             )}

@@ -57,6 +57,12 @@ export const pathToTab: Record<string, TabsEnum> = Object.fromEntries(
 )
 
 export enum SubTabsEnum {
+  // Navigation
+  "AccountSettings",
+  "ChatSettings",
+  "NotificationEmailSettings",
+  "PrivacySafetySettings",
+
   // Accounts
   "AccountInformation",
   "ChangePassword",
@@ -85,33 +91,84 @@ export enum SubTabsEnum {
   "PaymentHistory"
 }
 
-export const subTabToPath: Record<SubTabsEnum, string> = {
+export const subTabToTab: Record<SubTabsEnum, TabsEnum> = {
+  // Navigation
+  [SubTabsEnum.AccountSettings]: TabsEnum.AccountSettings,
+  [SubTabsEnum.ChatSettings]: TabsEnum.ChatSettings,
+  [SubTabsEnum.NotificationEmailSettings]: TabsEnum.NotificationEmailSettings,
+  [SubTabsEnum.PrivacySafetySettings]: TabsEnum.PrivacySafetySettings,
+
   // Accounts
-  [SubTabsEnum.AccountInformation]: "information",
-  [SubTabsEnum.ChangePassword]: "password",
-  [SubTabsEnum.DeactivateAccount]: "deactivate",
-  [SubTabsEnum.ProfilePicture]: "picture",
-  [SubTabsEnum.DisplayName]: "display",
-  [SubTabsEnum.Username]: "username",
+  [SubTabsEnum.AccountInformation]: TabsEnum.AccountSettings,
+  [SubTabsEnum.ChangePassword]: TabsEnum.AccountSettings,
+  [SubTabsEnum.DeactivateAccount]: TabsEnum.AccountSettings,
+  [SubTabsEnum.ProfilePicture]: TabsEnum.AccountSettings,
+  [SubTabsEnum.DisplayName]: TabsEnum.AccountSettings,
+  [SubTabsEnum.Username]: TabsEnum.AccountSettings,
 
   // Chat
-  [SubTabsEnum.WelcomeMessage]: "welcome-message",
+  [SubTabsEnum.WelcomeMessage]: TabsEnum.ChatSettings,
 
   // Notification
-  [SubTabsEnum.EmailNotifications]: "email",
+  [SubTabsEnum.EmailNotifications]: TabsEnum.NotificationEmailSettings,
 
   // PrivacySafety
-  [SubTabsEnum.ProfileSettings]: "profile",
-  [SubTabsEnum.PostsSettings]: "posts",
-  [SubTabsEnum.BlockedRestrictedAccounts]: "blocked",
+  [SubTabsEnum.ProfileSettings]: TabsEnum.PrivacySafetySettings,
+  [SubTabsEnum.PostsSettings]: TabsEnum.PrivacySafetySettings,
+  [SubTabsEnum.BlockedRestrictedAccounts]: TabsEnum.PrivacySafetySettings,
+
+  // Payment
+  [SubTabsEnum.PaymentSettings]: TabsEnum.PaymentSettings,
+  [SubTabsEnum.WalletSettings]: TabsEnum.WalletSettings,
+  [SubTabsEnum.PayoutSettings]: TabsEnum.PayoutSettings,
+  [SubTabsEnum.AddBank]: TabsEnum.PayoutSettings,
+  [SubTabsEnum.AddCard]: TabsEnum.PaymentSettings,
+  [SubTabsEnum.PaymentHistory]: TabsEnum.PaymentSettings
+}
+
+export const tabToSubTab: Record<TabsEnum, SubTabsEnum> = {
+  [TabsEnum.AccountSettings]: SubTabsEnum.AccountSettings,
+  [TabsEnum.ChatSettings]: SubTabsEnum.ChatSettings,
+  [TabsEnum.NotificationEmailSettings]: SubTabsEnum.NotificationEmailSettings,
+  [TabsEnum.PrivacySafetySettings]: SubTabsEnum.PrivacySafetySettings,
+  [TabsEnum.PaymentSettings]: SubTabsEnum.PaymentSettings,
+  [TabsEnum.WalletSettings]: SubTabsEnum.WalletSettings,
+  [TabsEnum.PayoutSettings]: SubTabsEnum.PayoutSettings
+}
+
+export const subTabToPath: Record<SubTabsEnum, string> = {
+  // Navigation
+  [SubTabsEnum.AccountSettings]: "account",
+  [SubTabsEnum.ChatSettings]: "chat",
+  [SubTabsEnum.NotificationEmailSettings]: "notifications",
+  [SubTabsEnum.PrivacySafetySettings]: "privacy",
+
+  // Accounts
+  [SubTabsEnum.AccountInformation]: "account/information",
+  [SubTabsEnum.ChangePassword]: "account/password",
+  [SubTabsEnum.DeactivateAccount]: "account/deactivate",
+  [SubTabsEnum.ProfilePicture]: "account/picture",
+  [SubTabsEnum.DisplayName]: "account/display",
+  [SubTabsEnum.Username]: "account/username",
+
+  // Chat
+  [SubTabsEnum.WelcomeMessage]: "chat/welcome-message",
+
+  // Notification
+  [SubTabsEnum.EmailNotifications]: "notifications/email",
+
+  // PrivacySafety
+  [SubTabsEnum.ProfileSettings]: "privacy/profile",
+  [SubTabsEnum.PostsSettings]: "privacy/posts",
+  [SubTabsEnum.BlockedRestrictedAccounts]: "privacy/blocked",
 
   // Payment
   [SubTabsEnum.PaymentSettings]: "payment",
   [SubTabsEnum.WalletSettings]: "wallet",
   [SubTabsEnum.PayoutSettings]: "payout",
-  [SubTabsEnum.AddBank]: "bank",
-  [SubTabsEnum.AddCard]: "card",
-  [SubTabsEnum.PaymentHistory]: "history"
+  [SubTabsEnum.AddBank]: "payout/bank",
+  [SubTabsEnum.AddCard]: "payment/card",
+  [SubTabsEnum.PaymentHistory]: "payment/history"
 }
 
 export const pathToSubTab: Record<string, SubTabsEnum> = Object.fromEntries(

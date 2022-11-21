@@ -25,10 +25,10 @@ import ProfileSettings from "src/components/pages/settings/tabs/PrivacySafetySet
 import WalletSettings from "src/components/pages/settings/tabs/WalletSettings"
 import {
   pathToSubTab,
-  pathToTab,
   SubTabsEnum,
+  subTabToTab,
   tabs,
-  TabsEnum
+  tabToSubTab
 } from "src/config/settings"
 import {
   SettingsContextProps,
@@ -46,8 +46,6 @@ export interface SettingsPageProps {
 export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
   const { user } = useUser()
   const {
-    activeTab,
-    setActiveTab,
     subTabsStack,
     setSubTabsStack,
     showSettingsTab,
@@ -61,11 +59,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
       return
     }
 
-    const tab = pathToTab[settingsPath[0]]
-    const subTabs =
-      settingsPath.slice(1, settingsPath.length)?.map((t) => pathToSubTab[t]) ||
-      []
-    setActiveTab(tab || 0)
+    const subTabs = [pathToSubTab[settingsPath.join("/")]]
     setSubTabsStack(subTabs)
     // If mobile viewport, ensure that the actual tab content is shown,
     // not the parent tabs. ie. show the <AccountSettings />
@@ -75,14 +69,14 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
     }
     // Leave out settingsPath
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setActiveTab, setSubTabsStack, isMobile])
+  }, [setSubTabsStack, isMobile])
 
   // If on desktop, set AccountSettings to active by default
   useEffect(() => {
-    if (!settingsPath && !isMobile && !activeTab) {
-      setActiveTab(TabsEnum.AccountSettings)
+    if (!settingsPath && !isMobile && subTabsStack.length === 0) {
+      setSubTabsStack([SubTabsEnum.AccountSettings])
     }
-  }, [settingsPath, isMobile, activeTab, setActiveTab])
+  }, [isMobile, setSubTabsStack, settingsPath, subTabsStack.length])
 
   if (isMobile === undefined) {
     return null
@@ -106,7 +100,8 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
                 <li
                   className={classNames(
                     "rounded-l-[4px] p-2.5 pr-[13px]",
-                    id === activeTab
+                    subTabsStack.length &&
+                      id === subTabToTab[subTabsStack[subTabsStack.length - 1]]
                       ? "md:border-r md:border-passes-primary-color md:bg-passes-primary-color/25"
                       : "border-transparent"
                   )}
@@ -114,7 +109,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
                 >
                   <button
                     className="text-label flex w-full items-center justify-between"
-                    onClick={() => navToActiveTab(id)}
+                    onClick={() => navToActiveTab(tabToSubTab[id])}
                   >
                     <span>{name}</span>
                     <ChevronRightIcon />
@@ -131,9 +126,7 @@ export const SettingsPage: FC<SettingsPageProps> = ({ settingsPath }) => {
           { hidden: !showSettingsTab }
         )}
       >
-        {subTabsStack.length > 0
-          ? renderSubTab(subTabsStack.slice(-1)[0])
-          : renderTab(activeTab)}
+        {subTabsStack.length > 0 && renderSubTab(subTabsStack.slice(-1)[0])}
       </div>
     </div>
   )
@@ -148,37 +141,28 @@ export const SettingsWrapper: FC<SettingsPageProps> = ({ settingsPath }) => {
   )
 }
 
-const renderTab = (tab: TabsEnum) => {
-  switch (tab) {
-    case TabsEnum.AccountSettings:
-      return <AccountSettings />
-    case TabsEnum.ChatSettings:
-      return <ChatSettings />
-    case TabsEnum.NotificationEmailSettings:
-      return <NotificationEmailSettings />
-    case TabsEnum.PrivacySafetySettings:
-      return <PrivacySafetySettings />
-    case TabsEnum.PaymentSettings:
-      return <PaymentSettings />
-    case TabsEnum.WalletSettings:
-      return <WalletSettings />
-    case TabsEnum.PayoutSettings:
-      return <PayoutSettings />
-  }
-}
-
 const renderSubTab = (tab: SubTabsEnum) => {
   switch (tab) {
+    case SubTabsEnum.AccountSettings:
+      return <AccountSettings />
+    case SubTabsEnum.ChatSettings:
+      return <ChatSettings />
+    case SubTabsEnum.NotificationEmailSettings:
+      return <NotificationEmailSettings />
+    case SubTabsEnum.PrivacySafetySettings:
+      return <PrivacySafetySettings />
+    case SubTabsEnum.PaymentSettings:
+      return <PaymentSettings />
+    case SubTabsEnum.WalletSettings:
+      return <WalletSettings />
+    case SubTabsEnum.PayoutSettings:
+      return <PayoutSettings />
     case SubTabsEnum.AccountInformation:
       return <AccountInformation />
     case SubTabsEnum.ChangePassword:
       return <ChangePassword />
     case SubTabsEnum.DeactivateAccount:
       return <DeactivateAccount />
-    case SubTabsEnum.PaymentSettings:
-      return <PaymentSettings />
-    case SubTabsEnum.WalletSettings:
-      return <WalletSettings />
     case SubTabsEnum.ProfilePicture:
       return <ProfilePicture />
     case SubTabsEnum.DisplayName:

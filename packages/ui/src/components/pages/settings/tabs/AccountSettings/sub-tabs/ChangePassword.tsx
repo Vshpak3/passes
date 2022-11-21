@@ -9,6 +9,7 @@ import { object, SchemaOf, string } from "yup"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { PasswordInput } from "src/components/atoms/input/PasswordInput"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { errorMessage } from "src/helpers/error"
 import { passwordSchema } from "src/helpers/validation/password"
 
@@ -63,6 +64,7 @@ const ChangePassword = () => {
   return (
     <>
       <Tab
+        defaultSubTab={SubTabsEnum.AccountInformation}
         description="Change your password at any time."
         title="Change Password"
       />

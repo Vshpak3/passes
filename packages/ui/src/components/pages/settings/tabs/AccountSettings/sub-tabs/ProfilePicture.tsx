@@ -7,6 +7,7 @@ import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { FileInput } from "src/components/atoms/input/FileInput"
 import { ImageCropDialog } from "src/components/organisms/ImageCropDialog"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { ContentService } from "src/helpers/content"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
@@ -60,7 +61,11 @@ const ProfilePicture: FC = () => {
   }
 
   return (
-    <Tab description="Change your profile picture." title="Profile Picture">
+    <Tab
+      defaultSubTab={SubTabsEnum.AccountInformation}
+      description="Change your profile picture."
+      title="Profile Picture"
+    >
       <form
         className="mt-6 flex items-center space-x-[30px]"
         onSubmit={handleSubmit(onSaveProfile)}

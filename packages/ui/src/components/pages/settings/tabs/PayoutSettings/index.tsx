@@ -9,15 +9,14 @@ import { memo } from "react"
 
 import { Button } from "src/components/atoms/button/Button"
 import { Tab } from "src/components/pages/settings/Tab"
-import { SubTabsEnum, TabsEnum } from "src/config/settings"
+import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
 import { copyWalletToClipboard, formatWalletAddress } from "src/helpers/wallets"
 import { usePayoutMethod } from "src/hooks/usePayoutMethod"
 import { BankIcon } from "src/icons/BankIcon"
 
 const PayoutSettings = () => {
-  const { navToActiveTab, addOrPopStackHandler } =
-    useSettings() as SettingsContextProps
+  const { addOrPopStackHandler } = useSettings() as SettingsContextProps
   const {
     banks,
     defaultBank,
@@ -108,7 +107,7 @@ const PayoutSettings = () => {
           <Button
             className="w-auto"
             icon={<Wallet />}
-            onClick={() => navToActiveTab(TabsEnum.WalletSettings)}
+            onClick={() => addOrPopStackHandler(SubTabsEnum.WalletSettings)}
           >
             Manage Wallets
           </Button>

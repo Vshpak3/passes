@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { useCreatorSettings } from "src/hooks/settings/useCreatorSettings"
 
 const defaultValues = {
@@ -45,7 +46,7 @@ const PostsSettings = () => {
   }, [creatorSettings, isLoading, reset])
 
   return (
-    <Tab title="Posts">
+    <Tab defaultSubTab={SubTabsEnum.PrivacySafetySettings} title="Posts">
       <form className="mt-[22px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="mt-[32px] space-y-[32px]">
           <label className="flex cursor-pointer items-center justify-between">

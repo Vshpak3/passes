@@ -8,6 +8,7 @@ import { object, SchemaOf } from "yup"
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 import { errorMessage } from "src/helpers/error"
 import { usernameSchema } from "src/helpers/validation/username"
 import { useUser } from "src/hooks/useUser"
@@ -51,7 +52,7 @@ const Username: FC = () => {
   }
 
   return (
-    <Tab title="Change Username">
+    <Tab defaultSubTab={SubTabsEnum.AccountInformation} title="Change Username">
       <form className="mt-6" onSubmit={handleSubmit(onSaveUserName)}>
         <label>
           <span className="font-medium tracking-[-0.13px] text-gray-300/60">

@@ -12,6 +12,7 @@ const AccountInformation = () => {
 
   return (
     <Tab
+      defaultSubTab={SubTabsEnum.AccountSettings}
       description="See your account information like your phone number and email address."
       title="Account Information"
     >

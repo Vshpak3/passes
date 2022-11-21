@@ -14,6 +14,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { BlockedUser } from "src/components/molecules/privacy/BlockedUser"
 import { Tab } from "src/components/pages/settings/Tab"
+import { SubTabsEnum } from "src/config/settings"
 
 const fetchProps = {
   orderType: SearchFollowingResponseDtoOrderTypeEnum.CreatedAt,
@@ -22,6 +23,7 @@ const fetchProps = {
 const BlockedRestrictedAccounts = () => {
   return (
     <Tab
+      defaultSubTab={SubTabsEnum.PrivacySafetySettings}
       description="When you block someone, that person won’t be able to follow or message you, and you won’t see notifications from them."
       title="Blocked & Restricted Accounts"
     >

@@ -18,7 +18,7 @@ const AddCard: FC<AddCardProps> = ({ callback }) => {
 
   return (
     <>
-      <Tab title="Add Card" />
+      <Tab defaultSubTab={SubTabsEnum.PaymentSettings} title="Add Card" />
       <NewCard
         callback={
           callback ?? (() => addOrPopStackHandler(SubTabsEnum.PaymentSettings))
