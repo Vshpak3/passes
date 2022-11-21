@@ -30,8 +30,18 @@
 .swiper-pagination-bullets.swiper-pagination-horizontal,
 .swiper-pagination-custom,
 .swiper-pagination-fraction {
-  width: auto;
-  left: 50%;
-  transform: translateX(-50%);
-  -webkit-transform: translateX(-50%);
+  top: 17px;
+  height: 33px;
+  background: rgba(0, 0, 0, 0.55);
+  padding-top: 5px;
+  border-radius: 24px;
+}
+
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+  width: 60px !important;
+  left: auto !important;
+  right: 17px;
 }
