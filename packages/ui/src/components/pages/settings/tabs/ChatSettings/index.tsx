@@ -5,7 +5,7 @@ import {
   MIN_TIP_MESSAGE_PRICE
 } from "@passes/shared-constants"
 import classNames from "classnames"
-import { memo, useCallback, useEffect } from "react"
+import { memo, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { boolean, mixed, number, object, SchemaOf } from "yup"
 
