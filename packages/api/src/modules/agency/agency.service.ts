@@ -65,7 +65,7 @@ export class AgencyService {
         )
         .leftJoin(
           UserEntity.table,
-          `${CreatorAgencyEntity.table}.creator_ud`,
+          `${CreatorAgencyEntity.table}.creator_id`,
           `${UserEntity.table}.id`,
         )
         .where(`${CreatorAgencyEntity.table}.agency_id`, agencyId)
