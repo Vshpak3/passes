@@ -6,7 +6,7 @@ import { PostService } from '../../modules/post/post.service'
 import { sleep } from '../../util/sleep.util'
 import { BatchTask } from '../batch.interface'
 
-const CHECK_PROCESSED_UNTIL = ms('24 hours') // Temporary
+const CHECK_PROCESSED_UNTIL = ms('72 hours') // Temporary
 const FAILED_TIMEOUT = ms('1 hour')
 
 const RUNTIME = ms('3 minutes')
