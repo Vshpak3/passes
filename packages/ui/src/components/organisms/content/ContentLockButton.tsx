@@ -32,10 +32,10 @@ export const ContentLockButton: FC<ContentLockButtonProps> = ({
       <Button
         className="flex w-full rounded-[4px] border-2 border-passes-primary-color/50 bg-passes-pink-100/25 py-2 text-center text-base font-medium text-passes-primary-color shadow-sm"
         disabled={paying}
+        icon={<Icon className="flex h-6 w-6" />}
         onClick={openBuyModal}
         variant={ButtonVariant.NONE}
       >
-        <Icon className="mr-2 flex h-6 w-6" />
         {paid ? (
           "Post unlocked!"
         ) : paying ? (

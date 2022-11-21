@@ -2,10 +2,11 @@ import classNames from "classnames"
 import UnlockLockIcon from "public/icons/profile-unlock-lock-icon.svg"
 import { FC } from "react"
 
+import { Button } from "./Button"
+
 interface ContentUnlockButtonProps {
   name: string
   onClick: () => void
-  value?: string
   className?: string
   isDisabled?: boolean
 }
@@ -13,20 +14,18 @@ interface ContentUnlockButtonProps {
 export const ContentUnlockButton: FC<ContentUnlockButtonProps> = ({
   name,
   onClick,
-  value,
   className = "",
   isDisabled = false
 }) => (
-  <button
+  <Button
     className={classNames(
       className,
       "flex w-full items-center justify-center gap-[10px] rounded-[5px] border-none bg-passes-pink-100 py-[9px] text-base font-medium text-white shadow-sm"
     )}
     disabled={isDisabled}
+    icon={<UnlockLockIcon className="flex h-6 w-6" />}
     onClick={onClick}
-    value={value}
   >
-    <UnlockLockIcon className="flex h-6 w-6" />
     {name}
-  </button>
+  </Button>
 )

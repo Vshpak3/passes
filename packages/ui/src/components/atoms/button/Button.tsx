@@ -91,11 +91,11 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       {...restOfProps}
     >
       <Text
-        className="flex items-center space-x-2"
+        className="passes-break flex flex-row flex-wrap items-center justify-center gap-2 space-x-2 whitespace-pre-wrap"
         fontSize={fontSize}
         style={{ lineHeight: 1 }}
       >
-        {Boolean(icon) && <span className="mr-2">{icon}</span>}
+        {Boolean(icon) && icon}
         {/* {icon} */}
         {children}
       </Text>

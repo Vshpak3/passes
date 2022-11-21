@@ -32,7 +32,7 @@ export const LockedMedia: FC<LockedMediaProps> = ({
     <div
       className={classNames(
         messagesView && fixedHeight
-          ? "max-h-[400px]"
+          ? "max-h-[400px] min-h-[250px]"
           : fixedHeight
           ? "max-h-[55vh] sm:max-h-[75vh]"
           : "",

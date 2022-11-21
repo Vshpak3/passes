@@ -72,7 +72,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
             </SwiperSlide>
           ) : null
         })}
-        {!hasAccess && openBuyModal && (
+        {!!hasAccess && openBuyModal && (
           <SwiperSlide>
             <LockedMedia
               contents={contents}
@@ -86,7 +86,7 @@ export const ContentCarousel: FC<ContentCarouselProps> = ({
           </SwiperSlide>
         )}
       </Swiper>
-      {!!price && !isOwner && (
+      {!price && !!isOwner && (
         <ContentLockButton
           contents={contents}
           openBuyModal={openBuyModal}

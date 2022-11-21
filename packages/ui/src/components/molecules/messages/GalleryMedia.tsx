@@ -136,7 +136,6 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
                   className="max-w-[200px] gap-1 py-2 text-[14px]"
                   name={`Unlock For ${formatCurrency(price ?? 100)}`}
                   onClick={() => setOpenBuyPostModal(true)}
-                  value={purchased.toString()}
                 />
                 {/* TODO: Replace with BuyMessageButton and BuyMessageModal from Destructure Priced Message PR */}
                 <span className="flex items-center justify-center px-2 pt-4 text-white">
