@@ -46,7 +46,14 @@ import { UserEntity } from '../user/entities/user.entity'
 import { WalletEntity } from '../wallet/entities/wallet.entity'
 import { ChainEnum } from '../wallet/enum/chain.enum'
 import { WalletNotFoundError } from '../wallet/error/wallet.error'
-import { CreateNftPassPayinCallbackInput } from './callback.types'
+import {
+  CreateNftPassPayinCallbackInput,
+  CreateNftPassPayinCallbackOutput,
+  PurchaseMessageCallbackInput,
+  PurchasePostCallbackInput,
+  RenewNftPassPayinCallbackOutput,
+  TippedMessagePayinCallbackOutput,
+} from './callback.types'
 import { CircleConnector } from './circle'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
@@ -835,6 +842,7 @@ export class PaymentService {
           .insert({
             circle_id: chargebackDto.id,
             circle_payment_id: payment.id,
+            full_content: JSON.stringify(chargebackDto),
           })
           .onConflict(['circle_id'])
           .ignore()
@@ -2512,7 +2520,7 @@ export class PaymentService {
           disputed: null,
         })) === 1
     if (updated) {
-      const payin = await this.dbReader<CircleChargebackEntity>(
+      const payin: PayinEntity = await this.dbReader<CircleChargebackEntity>(
         CircleChargebackEntity.table,
       )
         .join(
@@ -2536,61 +2544,88 @@ export class PaymentService {
           `${CreatorShareEntity.table}.creator_id`,
         )
         .where(`${CircleChargebackEntity.table}.id`, chargebackId)
-        .select(
-          `${PayinEntity.table}.*`,
-          `${CreatorShareEntity.table}.amount as creator_amount`,
-          `${CreatorShareEntity.table}.creator_id`,
-          `${CreatorAgencyEntity.table}.rate`,
-        )
+        .select(`${PayinEntity.table}.*`)
         .first()
+
       if (!payin) {
         throw new InternalServerErrorException('cant find payin to chargeback')
       }
-      const payinInput = JSON.parse(payin.callback_input_json)
-      const payinOutput = JSON.parse(payin.callback_output_json)
+      const payinInput = payin.callback_input_json
+      const payinOutput = payin.callback_output_json
       // TODO: revoke post access for subscriptions
       switch (payin.callback) {
         case PayinCallbackEnum.TIPPED_MESSAGE:
-          await this.messagesService.revertMessage(payinInput.tippedMessageId)
+          await this.messagesService.revertMessage(
+            (payinOutput as TippedMessagePayinCallbackOutput).messageId,
+          )
           break
         case PayinCallbackEnum.CREATE_NFT_LIFETIME_PASS:
         case PayinCallbackEnum.CREATE_NFT_SUBSCRIPTION_PASS:
         case PayinCallbackEnum.RENEW_NFT_PASS:
-          await this.passService.revertPassHolder(payinOutput.passHolderId)
+          await this.passService.revertPassHolder(
+            (
+              payinOutput as
+                | RenewNftPassPayinCallbackOutput
+                | CreateNftPassPayinCallbackOutput
+            ).passHolderId,
+          )
           break
         case PayinCallbackEnum.PURCHASE_POST:
           await this.postService.revertPostPurchase(
-            payinInput.postId,
+            (payinInput as PurchasePostCallbackInput).postId,
             payin.id,
             payin.amount,
           )
           break
         case PayinCallbackEnum.PURCHASE_DM:
           await this.messagesService.revertMessagePurchase(
-            payinInput.messageId,
-            payinInput.paidMessageId,
+            (payinInput as PurchaseMessageCallbackInput).messageId,
+            (payinInput as PurchaseMessageCallbackInput).paidMessageId,
             payin.amount,
           )
           break
         case PayinCallbackEnum.TIP_POST:
           await this.postService.deleteTip(
             payin.user_id,
-            payinInput.postId,
-            payinInput.amount,
+            (payinInput as PurchasePostCallbackInput).postId,
+            payin.amount,
           )
           break
       }
 
-      const rate = payin.rate ?? 0
-      await this.creatorStatsService.handleChargebackSuccess(
-        chargebackId,
-        payin.user_id,
-        payin.creator_id,
-        {
-          [EarningCategoryEnum.NET]: -(payin.creator_amount * (1 - rate)),
-          [EarningCategoryEnum.GROSS]: -payin.amount,
-          [EarningCategoryEnum.AGENCY]: -(payin.creator_amount * rate),
-        },
+      const shares = await this.dbWriter<CreatorShareEntity>(
+        CreatorShareEntity.table,
+      )
+        .leftJoin(
+          CreatorAgencyEntity.table,
+          `${CreatorAgencyEntity.table}.creator_id`,
+          `${CreatorShareEntity.table}.creator_id`,
+        )
+        .where(`${CreatorShareEntity.table}.payin_id`, payin.id)
+        .select(
+          `${CreatorShareEntity.table}.amount as creator_amount`,
+          `${CreatorShareEntity.table}.creator_id`,
+          `${CreatorAgencyEntity.table}.rate`,
+        )
+
+      rejectIfAny(
+        await Promise.allSettled(
+          shares.map(async (share) => {
+            const { creator_amount, creator_id } = share
+            let { rate } = share
+            rate = rate ?? 0
+            await this.creatorStatsService.handleChargebackSuccess(
+              chargebackId,
+              payin.user_id,
+              creator_id,
+              {
+                [EarningCategoryEnum.NET]: -(creator_amount * (1 - rate)),
+                [EarningCategoryEnum.GROSS]: -payin.amount,
+                [EarningCategoryEnum.AGENCY]: -(creator_amount * rate),
+              },
+            )
+          }),
+        ),
       )
     }
   }
