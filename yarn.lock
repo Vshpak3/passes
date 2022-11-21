@@ -4495,31 +4495,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ndhoule/each@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@ndhoule/each@npm:2.0.1"
-  dependencies:
-    "@ndhoule/keys": ^2.0.0
-  checksum: f2aa44fb4248b2939b038c6cdbfb442f29cebb181f6058081b9af402c8c6e1e82a26fd9d89c2a2fc72be98b934902ecdf260bcfff171fa48aea4261a26a0e0c7
-  languageName: node
-  linkType: hard
-
-"@ndhoule/keys@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@ndhoule/keys@npm:2.0.0"
-  checksum: f77be060eb706a072e9c41d8939dcbd7bf27ead2f113a75fd9718b3c6a623540f324f7200e474418feb6277f1b99952b67667129bd66a39fdf93531980066488
-  languageName: node
-  linkType: hard
-
-"@ndhoule/map@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "@ndhoule/map@npm:2.0.1"
-  dependencies:
-    "@ndhoule/each": ^2.0.1
-  checksum: b3bffd71babe9b9cdb882bd89d7785bb36d6063d44757aa7ed726a15a5d3c2ecb5198dbcda43a63d4585b4dfed96e2bd75b7b54bc1b5e44c58945118a2304d5c
-  languageName: node
-  linkType: hard
-
 "@nestjs-modules/ioredis@npm:1.0.1":
   version: 1.0.1
   resolution: "@nestjs-modules/ioredis@npm:1.0.1"
@@ -5198,7 +5173,6 @@ __metadata:
     "@passes/api-client": "workspace:*"
     "@passes/shared-constants": "workspace:*"
     "@radix-ui/colors": 0.1.8
-    "@segment/snippet": 4.15.3
     "@solana/spl-token": 0.3.6
     "@solana/web3.js": 1.66.2
     "@svgr/webpack": 6.5.1
@@ -5362,15 +5336,6 @@ __metadata:
     zen-observable:
       optional: true
   checksum: 8ec6d43370f419975295f306699f87989dd64a099a29cf62ddacbbbe32df634f87451504d340e15321e74b0a3ca8a9b447736472f792102e234faa207395e6c9
-  languageName: node
-  linkType: hard
-
-"@segment/snippet@npm:4.15.3":
-  version: 4.15.3
-  resolution: "@segment/snippet@npm:4.15.3"
-  dependencies:
-    "@ndhoule/map": ^2.0.1
-  checksum: 5ec2f50d0f00226624cb6b0724f69ff2746b2f4b914e9e72fa6f62ea1017bfe641f4302a4e174f3a9a8a38ecb65cf9215fe9dc488fcd4cb31e06a9fec7fec695
   languageName: node
   linkType: hard
 

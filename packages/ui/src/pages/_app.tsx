@@ -12,7 +12,6 @@ import { NextPage } from "next"
 import { AppProps } from "next/app"
 import dynamic from "next/dynamic"
 import Router from "next/router"
-import Script from "next/script"
 import { ThemeProvider as NextThemeProvider } from "next-themes"
 import nprogress from "nprogress"
 import { Provider, ReactElement, useEffect, useState } from "react"
@@ -27,7 +26,6 @@ import { CookieBanner } from "src/components/organisms/CookieBanner"
 import { BuyMessageModal } from "src/components/organisms/payment/BuyMessageModal"
 import TippedMessageModal from "src/components/organisms/payment/TippedMessageModal"
 import { ReportModalData } from "src/components/organisms/ReportModal"
-import { SegmentConfig } from "src/config/app/segment"
 import { GlobalSWRConfig } from "src/config/app/swr"
 import { AppProviders } from "src/contexts/AppProviders"
 import { BlockModalContext } from "src/contexts/BlockModal"
@@ -286,10 +284,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     <>
       <NextThemeProvider attribute="class" disableTransitionOnChange>
         <DefaultHead />
-        <Script
-          dangerouslySetInnerHTML={{ __html: SegmentConfig }}
-          id="segmentScript"
-        />
         <SWRConfig value={GlobalSWRConfig}>
           <DndProvider backend={HTML5Backend}>
             <SubApp
