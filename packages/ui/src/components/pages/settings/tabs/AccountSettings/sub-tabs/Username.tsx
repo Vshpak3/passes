@@ -10,6 +10,7 @@ import { Input } from "src/components/atoms/input/GeneralInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { errorMessage } from "src/helpers/error"
+import { checkUsername } from "src/helpers/username"
 import { usernameSchema } from "src/helpers/validation/username"
 import { useUser } from "src/hooks/useUser"
 
@@ -41,8 +42,9 @@ const Username: FC = () => {
     }
   }, [setValue, user])
 
-  const onSaveUserName = async ({ username }: UsernameFormProps) => {
+  const onSubmit = async ({ username }: UsernameFormProps) => {
     try {
+      await checkUsername(username)
       await updateUsername(username)
       toast.success("Username has been changed successfully.")
     } catch (error) {
@@ -53,7 +55,7 @@ const Username: FC = () => {
 
   return (
     <Tab defaultSubTab={SubTabsEnum.AccountInformation} title="Change Username">
-      <form className="mt-6" onSubmit={handleSubmit(onSaveUserName)}>
+      <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
         <label>
           <span className="font-medium tracking-[-0.13px] text-gray-300/60">
             Username
