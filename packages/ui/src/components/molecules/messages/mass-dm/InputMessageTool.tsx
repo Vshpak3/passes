@@ -245,7 +245,8 @@ const InputMessageToolUnmemo: FC<InputMessageToolProps> = ({
                   )}
                 </MediaSelector>
                 <Button
-                  className="rounded-[5px] py-[15px] px-[20px]"
+                  big
+                  className="w-[120px] !px-0 md:w-[150px]"
                   disabled={isSubmitting}
                   fontSize={16}
                   type={ButtonTypeEnum.SUBMIT}

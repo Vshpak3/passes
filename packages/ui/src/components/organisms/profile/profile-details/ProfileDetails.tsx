@@ -76,7 +76,7 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
                 <>
                   {!!profile?.isCreator && (
                     <FollowButton
-                      className="m-auto mt-3 h-[36px] w-[98px]"
+                      className="m-auto mt-3 h-[36px] w-[98px] !px-0"
                       creatorId={profileUserId}
                     />
                   )}
@@ -134,7 +134,7 @@ export const ProfileDetails: FC<ProfileDetailsProps> = ({
             <>
               {!!profile?.isCreator && (
                 <FollowButton
-                  className="mb-2 h-[25px] w-[80px]"
+                  className="mb-2 h-[25px] w-[80px] !px-0"
                   creatorId={profileUserId}
                 />
               )}

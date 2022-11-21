@@ -389,7 +389,7 @@ export const InputMessage: FC<InputMessageProps> = ({
                 >
                   <Button
                     big
-                    className="w-[120px] md:w-[150px]"
+                    className="w-[120px] !px-0 md:w-[150px]"
                     disabled={
                       isNaN(tip) ||
                       !!blocked ||
