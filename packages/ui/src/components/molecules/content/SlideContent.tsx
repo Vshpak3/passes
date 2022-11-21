@@ -92,7 +92,9 @@ export const SlideContent = forwardRef<HTMLImageElement, SlideContentProps>(
         )}
       >
         <div className="relative h-full max-h-[1200px] cursor-pointer">
-          <div className="relative h-full overflow-hidden">{media}</div>
+          <div className="relative flex h-full  items-center justify-center overflow-hidden">
+            {media}
+          </div>
         </div>
       </div>
     )

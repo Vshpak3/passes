@@ -27,7 +27,7 @@ export const SlideImage = forwardRef<HTMLImageElement, SlideImageProps>(
 
         <img
           alt=""
-          className="relative z-20 inline-block h-auto max-h-full max-w-full object-contain"
+          className="relative z-20 inline-block h-auto max-h-full w-[10000px] max-w-full object-contain"
           key={content.contentId}
           onLoad={() => setLoaded(true)}
           ref={ref}
