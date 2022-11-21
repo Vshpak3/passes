@@ -6,6 +6,8 @@
     #8400b9 360deg
   );
   opacity: 0.6;
+  /* force the browser use GPU acceleration for the blur effect instead of the CPU. */
+  transform: translate3d(0, 0, 0);
 }
 
 .background-gradient {
