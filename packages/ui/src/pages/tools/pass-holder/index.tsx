@@ -17,6 +17,7 @@ import {
 } from "src/components/atoms/InfiniteScroll"
 import { PassListCached } from "src/components/organisms/creator-tools/pass-holders/PassListCached"
 import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
+import { useUser } from "src/hooks/useUser"
 import { WithNormalPageLayout } from "src/layout/WithNormalPageLayout"
 
 const DEBOUNCE_TIMEOUT = 500
@@ -26,7 +27,7 @@ const PassHoldersLists: NextPage = () => {
   const [orderType, setOrderType] = useState<OrderType>(OrderType.CreatedAt)
   const [order, setOrder] = useState<Order>(Order.Desc)
   const [search, setSearch] = useState<string>("")
-
+  const { user } = useUser()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleChangeSearch = useCallback(
     debounce((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +41,10 @@ const PassHoldersLists: NextPage = () => {
     return {
       order,
       orderType,
-      search
+      search,
+      creatorId: user?.userId
     }
-  }, [order, orderType, search])
+  }, [order, orderType, search, user?.userId])
 
   const onSortSelect = async ({
     orderType,
@@ -102,15 +104,17 @@ const PassHoldersLists: NextPage = () => {
             />
           </div>
         </li>
-        <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
-          KeyedComponent={keyedComponent}
-          fetch={async (req: GetPassesRequestDto) => {
-            return await api.getCreatorPasses({ getPassesRequestDto: req })
-          }}
-          fetchProps={fetchProps}
-          keySelector="passId"
-          keyValue="/pages/passes"
-        />
+        {!!user?.userId && (
+          <InfiniteScrollPagination<PassDto, GetPassesResponseDto>
+            KeyedComponent={keyedComponent}
+            fetch={async (req: GetPassesRequestDto) => {
+              return await api.getCreatorPasses({ getPassesRequestDto: req })
+            }}
+            fetchProps={fetchProps}
+            keySelector="passId"
+            keyValue="/pages/passes"
+          />
+        )}
       </ul>
     </div>
   )
