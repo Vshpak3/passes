@@ -46,6 +46,7 @@ import {
 import { useLocalStorage } from "src/hooks/storage/useLocalStorage"
 import { useMessageToDevelopers } from "src/hooks/useMessageToDevelopers"
 import { useTokenRefresh } from "src/hooks/useTokenRefresh"
+import { usePaymentWebhook } from "src/hooks/webhooks/usePaymentWebhook"
 import { gradients } from "src/layout/_gradients"
 
 const BlockModal = dynamic(
@@ -132,6 +133,7 @@ const SubApp = ({ Component, pageProps, getLayout }: SubAppProps) => {
 
   const { hasRefreshed, router, user } = useTokenRefresh()
   const { setPayin, complete, reset } = useThreeDS()
+  usePaymentWebhook()
 
   useEffect(() => {
     if (
