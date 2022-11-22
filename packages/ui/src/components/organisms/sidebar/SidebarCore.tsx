@@ -23,7 +23,7 @@ export const SidebarCore: FC<SidebarProps> = ({ navigation, active }) => {
   const { isTablet } = useWindowSize()
 
   return (
-    <div className="flex h-full w-full flex-1 flex-col bg-passes-black lg:px-0">
+    <div className="flex h-full w-full flex-1 flex-col overflow-x-auto bg-passes-black lg:px-0">
       <div className="safe-h-screen min-safe-h-screen max-safe-h-screen flex flex-1 flex-col items-end justify-between py-6 pr-6 lg:pr-8">
         <div className="flex h-full min-w-[152px] flex-col justify-between">
           <div>
