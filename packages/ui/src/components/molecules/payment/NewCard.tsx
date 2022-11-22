@@ -197,14 +197,14 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
         register={register}
         type="text"
       />
-      <div className="mt-4 flex flex-row gap-4">
+      <div className="mt-2 flex flex-row gap-4">
         <div className="flex flex-col">
-          <span className="text-[16px] font-[500] text-[#767676]">Month</span>
           <NativeSelect
             autoComplete="cc-exp-month"
             className="mt-2 w-[100px]"
             errors={errors}
             name="cc-exp-month"
+            placeholder="Month"
             register={register}
             selectOptions={Array.from(Array(12).keys()).map((key) =>
               String(key + 1)
@@ -212,25 +212,24 @@ const NewCardUnmemo: FC<NewCardProps> = ({ callback, isEmbedded = false }) => {
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-[16px] font-[500] text-[#767676]">Year</span>
           <NativeSelect
             autoComplete="cc-exp-year"
             className="mt-2 w-[100px]"
             errors={errors}
             name="cc-exp-year"
+            placeholder="Year"
             register={register}
             selectOptions={years}
           />
         </div>
         <div className="mb-4 flex flex-col">
-          <span className="text-[16px] font-[500] text-[#767676]">CVV</span>
           <NumberInput
             autoComplete="cc-csc"
             className="mt-2 min-h-[50px] w-[71px] border-passes-dark-100"
             errors={errors}
             maxInput={999}
             name="cc-csc"
-            placeholder=""
+            placeholder="CVV"
             register={register}
             type="integer"
           />
