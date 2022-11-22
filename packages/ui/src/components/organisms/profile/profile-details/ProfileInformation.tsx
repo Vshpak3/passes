@@ -16,7 +16,7 @@ export const ProfileInformation: FC = () => {
       <div className="ml-[90px] flex w-[calc(100%-200px)] flex-col items-center justify-around truncate md:ml-0 md:w-[85%]">
         <NameDisplay
           displayName={profile?.displayName ?? ""}
-          displayNameClassName="text-[16px] font-medium leading-9 text-white md:text-[32px]"
+          displayNameClassName="text-[16px] font-medium md:leading-9 mt-2 md:mt-0 text-white md:text-[32px]"
           horizontal={false}
           isCreator={!!profile?.isCreator}
           username={profileUsername ?? ""}

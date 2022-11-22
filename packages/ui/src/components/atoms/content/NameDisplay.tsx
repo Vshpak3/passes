@@ -50,14 +50,14 @@ export const NameDisplay: FC<NameDisplayProps> = ({
     <div className="flex w-full flex-col items-center justify-start truncate">
       <div
         className={classNames(
-          "flex w-full flex-row gap-x-[4px] truncate",
+          "flex w-full flex-row truncate md:gap-x-[4px]",
           displayNameClassName
         )}
       >
-        <div className="mb-1 flex truncate">
+        <div className="flex truncate md:mb-1">
           <div className="truncate">{displayName}</div>
           {isCreator && (
-            <span className="ml-2 flex max-h-[18px] min-h-[18px] min-w-[18px] max-w-[18px] flex-col justify-center">
+            <span className="ml-1 flex max-h-[18px] min-h-[18px] min-w-[18px] max-w-[18px] flex-col items-center justify-center">
               <CheckVerified />
             </span>
           )}
