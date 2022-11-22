@@ -11,7 +11,7 @@ export const usePaymentWebhook = () => {
         const { notification } = data
         // eslint-disable-next-line sonarjs/no-small-switch
         switch (notification) {
-          case "failed_payment":
+          case "failed":
             toast.error(
               "Your card payment was declined, please check with your bank"
             )
