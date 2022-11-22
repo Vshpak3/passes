@@ -14,11 +14,11 @@ export const Chargebacks = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-    // watch
+    formState: { errors, isSubmitting },
+    watch
   } = useForm<{ secret: string }>()
   const [chargebacks, setChargebacks] = useState<ChargebackDto[]>([])
-  // const secret = watch("secret")
+  const secret = watch("secret")
   const getCovetedMembers = async (values: { secret: string }) => {
     try {
       const api = new AdminApi()
@@ -61,7 +61,13 @@ export const Chargebacks = () => {
           chargeback.fullContent = JSON.parse(
             chargeback.fullContent as unknown as string
           )
-          return <Chargeback chargeback={chargeback} key={chargeback.payinId} />
+          return (
+            <Chargeback
+              chargeback={chargeback}
+              key={chargeback.payinId}
+              secret={secret}
+            />
+          )
         })}
       </div>
     </div>
