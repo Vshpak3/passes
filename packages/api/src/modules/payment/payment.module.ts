@@ -7,6 +7,7 @@ import { EmailModule } from '../email/email.module'
 import { EthModule } from '../eth/eth.module'
 import { RedisLockModule } from '../redis-lock/redis-lock.module'
 import { PaymentController } from './payment.controller'
+import { PaymentGateway } from './payment.gateway'
 import { PaymentService } from './payment.service'
 
 @Module({
@@ -19,7 +20,7 @@ import { PaymentService } from './payment.service'
     EmailModule,
   ],
   controllers: [PaymentController],
-  providers: [PaymentService],
+  providers: [PaymentService, PaymentGateway],
   exports: [PaymentService],
 })
 export class PaymentModule {

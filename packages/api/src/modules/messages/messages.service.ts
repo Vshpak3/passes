@@ -853,7 +853,7 @@ export class MessagesService {
     userId: string,
     text: string,
     channelId: string,
-    recieverId: string,
+    receiverId: string,
     tipAmount: number,
     pending: boolean,
     contents: string,
@@ -886,7 +886,7 @@ export class MessagesService {
       await this.updateStatus(userId, channelId, text)
     }
     if (read) {
-      await this.read(userId, channelId, recieverId)
+      await this.read(userId, channelId, receiverId)
     }
     await this.redisService.publish(
       'message',
@@ -894,7 +894,7 @@ export class MessagesService {
         new MessageNotificationDto(
           data,
           this.getContents(data),
-          recieverId,
+          receiverId,
           pending
             ? MessageNotificationEnum.PENDING
             : MessageNotificationEnum.MESSAGE,

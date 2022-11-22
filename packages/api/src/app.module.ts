@@ -58,6 +58,8 @@ import { isEnv } from './util/env'
     RedisModule.forRootAsync(redisOptions, 'post_publisher'),
     RedisModule.forRootAsync(redisOptions, 'pass_subscriber'),
     RedisModule.forRootAsync(redisOptions, 'pass_publisher'),
+    RedisModule.forRootAsync(redisOptions, 'payment_subscriber'),
+    RedisModule.forRootAsync(redisOptions, 'payment_publisher'),
     SentryModule.forRootAsync(sentryOptions),
     WinstonModule.forRootAsync(loggingOptions),
     AdminModule,

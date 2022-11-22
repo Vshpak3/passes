@@ -3,16 +3,16 @@ import { WebSocketGateway } from '@nestjs/websockets'
 import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 
 import { GatewayBase } from '../../util/gateway.base'
-import { PassHolderNotificationDto } from './dto/pass-notification.dto'
+import { PaymentNotificationDto } from './dto/payment-notification.dto'
 
 @WebSocketGateway({
-  namespace: '/api/pass/gateway',
-  path: '/api/pass/gateway',
+  namespace: '/api/payment/gateway',
+  path: '/api/payment/gateway',
 })
-export class PassGateway extends GatewayBase {
+export class PaymentGateway extends GatewayBase {
   constructor(
     private readonly configService: ConfigService,
-    @InjectRedis('pass_subscriber') private readonly redisService: Redis,
+    @InjectRedis('payment_subscriber') private readonly redisService: Redis,
   ) {
     super()
     this.secret = configService.get<string>('jwt.authSecret') as string
@@ -24,12 +24,12 @@ export class PassGateway extends GatewayBase {
       this.redisService.subscribe &&
       this.redisService.on
     ) {
-      await this.redisService.subscribe('pass')
+      await this.redisService.subscribe('payment')
       await this.redisService.on(
         'message',
-        (_event: string, dataStr: string) => {
-          const passHolder: PassHolderNotificationDto = JSON.parse(dataStr)
-          this.send(passHolder.receiverId, 'pass', passHolder)
+        (_channel: string, dataStr: string) => {
+          const payment: PaymentNotificationDto = JSON.parse(dataStr)
+          this.send(payment.receiverId, 'payment', payment)
         },
       )
     }

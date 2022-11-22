@@ -6,7 +6,7 @@ import { PassHolderDto } from './pass-holder.dto'
 
 export class PassHolderNotificationDto extends PassHolderDto {
   @DtoProperty({ type: 'uuid' })
-  recieverId: string
+  receiverId: string
 
   @DtoProperty({ custom_type: PassNotificationEnum })
   notification: PassNotificationEnum
@@ -23,7 +23,7 @@ export class PassHolderNotificationDto extends PassHolderDto {
     notification: PassNotificationEnum,
   ) {
     super(passHolder)
-    this.recieverId = passHolder?.holder_id ?? ''
+    this.receiverId = passHolder?.holder_id ?? ''
     this.notification = notification
   }
 }

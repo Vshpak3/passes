@@ -30,7 +30,7 @@ export class MessagesGateway extends GatewayBase {
         (_event: string, dataStr: string) => {
           const message: MessageNotificationDto = JSON.parse(dataStr)
           if (!message.pending) {
-            this.send(message.recieverId, 'message', message)
+            this.send(message.receiverId, 'message', message)
           }
           if (message.senderId) {
             this.send(message.senderId, 'message', message)

@@ -866,7 +866,7 @@ export class PassService {
 
   async publishBuyingPass(userId: string, passId: string) {
     const notification: PassHolderNotificationDto = {
-      recieverId: userId,
+      receiverId: userId,
       passId: passId,
       notification: PassNotificationEnum.PAYING,
     } as PassHolderNotificationDto
@@ -875,7 +875,7 @@ export class PassService {
 
   async publishFailedBuyingPass(userId: string, passId: string) {
     const notification: PassHolderNotificationDto = {
-      recieverId: userId,
+      receiverId: userId,
       passId: passId,
       notification: PassNotificationEnum.FAILED_PAYMENT,
     } as PassHolderNotificationDto

@@ -28,6 +28,8 @@ describe('App e2e', () => {
     getRedisConnectionToken('post_publisher'),
     getRedisConnectionToken('pass_subscriber'),
     getRedisConnectionToken('pass_publisher'),
+    getRedisConnectionToken('payment_subscriber'),
+    getRedisConnectionToken('payment_publisher'),
   ]
 
   beforeAll(async () => {

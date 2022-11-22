@@ -6,7 +6,7 @@ import { MessageDto } from './message.dto'
 
 export class MessageNotificationDto extends MessageDto {
   @DtoProperty({ type: 'uuid' })
-  recieverId: string
+  receiverId: string
 
   @DtoProperty({ custom_type: MessageNotificationEnum })
   notification: MessageNotificationEnum
@@ -18,7 +18,7 @@ export class MessageNotificationDto extends MessageDto {
     notification: MessageNotificationEnum,
   ) {
     super(message, contents)
-    this.recieverId = receiverId
+    this.receiverId = receiverId
     this.notification = notification
   }
 }

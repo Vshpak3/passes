@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { ModuleRef } from '@nestjs/core'
+import { InjectRedis, Redis } from '@nestjs-modules/ioredis'
 import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry'
 import ms from 'ms'
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston'
@@ -88,6 +89,7 @@ import {
 } from './dto/payin-entry/payin-entry.dto'
 import { PhantomCircleUSDCEntryResponseDto } from './dto/payin-entry/phantom-circle-usdc.payin-entry.dto'
 import { PayinMethodDto } from './dto/payin-method.dto'
+import { PaymentNotificationDto } from './dto/payment-notification.dto'
 import { PayoutDto } from './dto/payout.dto'
 import { PayoutMethodDto } from './dto/payout-method.dto'
 import {
@@ -122,6 +124,7 @@ import {
   PayinStatusEnum,
 } from './enum/payin.status.enum'
 import { PayinMethodEnum } from './enum/payin-method.enum'
+import { PaymentNotificationEnum } from './enum/payment.notification.enum'
 import { PayoutStatusEnum } from './enum/payout.status.enum'
 import { PayoutMethodEnum } from './enum/payout-method.enum'
 import { SubscriptionStatusEnum } from './enum/subscription.status.enum'
@@ -206,6 +209,8 @@ export class PaymentService {
     protected readonly lockService: RedisLockService,
     private readonly ethService: EthService,
     @InjectSentry() readonly sentry: SentryService,
+
+    @InjectRedis('payment_publisher') private readonly redisService: Redis,
   ) {
     this.circleConnector = new CircleConnector(this.configService)
     this.circleMasterWallet = this.configService.get(
@@ -917,6 +922,12 @@ export class PaymentService {
         await this.completePayin(payin.id, payin.user_id)
         break
       case CirclePaymentStatusEnum.FAILED:
+        // eslint-disable-next-line no-case-declarations
+        const notification: PaymentNotificationDto = {
+          receiverId: payin.user_id as string,
+          notification: PaymentNotificationEnum.FAILED_PAYMENT,
+        }
+        await this.redisService.publish('payment', JSON.stringify(notification))
         await this.failPayin(payin.id, payin.user_id)
         break
       case CirclePaymentStatusEnum.ACTION_REQUIRED:

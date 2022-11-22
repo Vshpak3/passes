@@ -29,7 +29,7 @@ export class PostGateway extends GatewayBase {
         'message',
         (_channel: string, dataStr: string) => {
           const post: PostNotificationDto = JSON.parse(dataStr)
-          this.send(post.recieverId, 'post', post)
+          this.send(post.receiverId, 'post', post)
         },
       )
     }

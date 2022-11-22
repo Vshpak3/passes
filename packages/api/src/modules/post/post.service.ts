@@ -494,7 +494,7 @@ export class PostService {
       postId,
       paying: true,
       notification: PostNotificationEnum.PAYING,
-      recieverId: userId,
+      receiverId: userId,
     }
     await this.redisService.publish('post', JSON.stringify(notification))
   }
@@ -514,7 +514,7 @@ export class PostService {
         postId,
         paying: false,
         notification: PostNotificationEnum.FAILED_PAYMENT,
-        recieverId: userId,
+        receiverId: userId,
       }
       await this.redisService.publish('post', JSON.stringify(notification))
     }
@@ -572,7 +572,7 @@ export class PostService {
       paying: false,
       paidAt: paidAt,
       notification: PostNotificationEnum.PAID,
-      recieverId: userId,
+      receiverId: userId,
       contents: this.contentService.getContentDtosFromBare(
         contents,
         true,
@@ -641,7 +641,7 @@ export class PostService {
       const notification: PostNotificationDto = {
         postId,
         notification: PostNotificationEnum.TIP,
-        recieverId: userId,
+        receiverId: userId,
         yourTips: yourTips.amount,
       }
       await this.redisService.publish('post', JSON.stringify(notification))
@@ -954,7 +954,7 @@ export class PostService {
         postId,
         contentProcessed: true,
         notification: PostNotificationEnum.PROCESSED,
-        recieverId: post.user_id,
+        receiverId: post.user_id,
         contents,
       }
       await this.redisService.publish('post', JSON.stringify(notification))

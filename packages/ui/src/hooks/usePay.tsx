@@ -90,7 +90,7 @@ export const usePay = (
           return false
         } else {
           toast.success(
-            "We have recieved your card payment. Please wait as we process it!"
+            "We have received your card payment. Please wait as we process it!"
           )
         }
       } catch (error: unknown) {

@@ -31,7 +31,7 @@ export class ChannelMemberDto extends ChannelDto {
 
   @Min(0)
   @DtoProperty({ type: 'currency' })
-  tipRecieved: number
+  tipReceived: number
 
   @DtoProperty({ type: 'date', nullable: true })
   readAt: Date | null
@@ -73,7 +73,7 @@ export class ChannelMemberDto extends ChannelDto {
       this.userId = channelMember.user_id
       this.unlimitedMessages = channelMember.unlimited_messages
       this.tipSent = channelMember.tip_sent
-      this.tipRecieved = channelMember.tip_received
+      this.tipReceived = channelMember.tip_received
       this.unreadTip = channelMember.unread_tip
       this.otherUserId = channelMember.other_user_id
       this.readAt = channelMember.read_at

@@ -8,7 +8,7 @@ import { PostDto } from './post.dto'
 
 export class PostNotificationDto extends PartialType(PostDto) {
   @DtoProperty({ type: 'uuid' })
-  recieverId: string
+  receiverId: string
 
   @DtoProperty({ custom_type: PostNotificationEnum })
   notification: PostNotificationEnum
@@ -29,7 +29,7 @@ export class PostNotificationDto extends PartialType(PostDto) {
     notification: PostNotificationEnum,
   ) {
     super(post, isOwner, contents)
-    this.recieverId = receiverId
+    this.receiverId = receiverId
     this.notification = notification
   }
 }
