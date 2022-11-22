@@ -1,6 +1,5 @@
 import { PostDto } from "@passes/api-client"
 import { useCallback, useEffect, useState } from "react"
-import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 import { useSWRConfig } from "swr"
 
@@ -80,14 +79,6 @@ export const usePostWebhook = () => {
         const post = data as PostDto & { notification: string }
         if (data.paidAt) {
           data.paidAt = new Date(data.paidAt)
-        }
-        // eslint-disable-next-line sonarjs/no-small-switch
-        switch (post.notification) {
-          case "failed_payment":
-            if (!toast.isActive) {
-              toast.error("Payment for post failed")
-            }
-            break
         }
         mutateManual(post, post.postId)
       })

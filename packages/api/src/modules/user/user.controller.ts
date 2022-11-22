@@ -124,7 +124,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: SearchCreatorResponseDto,
     responseDesc: 'A list of creators was returned',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Post('creator/search')
   async searchCreator(
@@ -188,7 +188,7 @@ export class UserController {
     responseStatus: HttpStatus.OK,
     responseType: String,
     responseDesc: 'User id retrieved',
-    role: RoleEnum.GENERAL,
+    role: RoleEnum.NO_AUTH,
   })
   @Get('user-id/:userId')
   async getUsernameFromId(@Param('userId') userId: string): Promise<string> {

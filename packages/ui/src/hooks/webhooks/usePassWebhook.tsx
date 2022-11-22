@@ -85,7 +85,6 @@ export const usePassWebhook = () => {
             break
           case "failed_payment":
             update.paying = false
-            toast.error("Membership purchase failed")
             break
           case "paid":
             update.paying = false

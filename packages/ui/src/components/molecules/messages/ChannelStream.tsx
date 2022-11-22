@@ -9,7 +9,6 @@ import {
   useLayoutEffect,
   useState
 } from "react"
-import { toast } from "react-toastify"
 import { io, Socket } from "socket.io-client"
 
 import { FreeMessagesLeftContainer } from "src/components/molecules/direct-messages/FreeMessagesLeftContainer"
@@ -138,11 +137,6 @@ export const ChannelStream: FC<ChannelStreamProps> = ({
                 ...pendingMessages
               ])
               break
-            case "failed_payment":
-              if (!toast.isActive) {
-                toast.error("Payment for message failed")
-              }
-            // falls through
             case "paying":
             case "paid":
             case "processed":
