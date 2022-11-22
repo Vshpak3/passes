@@ -1,12 +1,6 @@
 import classNames from "classnames"
 import Hls from "hls.js"
-import {
-  CSSProperties,
-  Dispatch,
-  forwardRef,
-  SetStateAction,
-  useEffect
-} from "react"
+import { CSSProperties, forwardRef, useEffect, useState } from "react"
 
 interface VideoPlayerProps {
   src: string
@@ -14,23 +8,10 @@ interface VideoPlayerProps {
   className?: string
   poster?: string
   style?: CSSProperties
-  showControls: boolean
-  setShowControls: Dispatch<SetStateAction<boolean>>
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  (
-    {
-      src,
-      autoplay = false,
-      className = "",
-      poster = "",
-      style,
-      showControls,
-      setShowControls
-    },
-    ref
-  ) => {
+  ({ src, autoplay = false, className = "", poster = "", style }, ref) => {
     useEffect(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -66,6 +47,8 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       }
     }, [src, ref])
 
+    const [showControls, setShowControls] = useState<boolean>(false)
+
     return (
       <video
         autoPlay={autoplay}
@@ -76,9 +59,6 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         onFocus={() => setShowControls(true)}
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
-        onPause={() => setShowControls(true)}
-        onPlay={() => setShowControls(false)}
-        playsInline={autoplay}
         poster={poster}
         preload={autoplay ? "auto" : "none"}
         ref={ref}

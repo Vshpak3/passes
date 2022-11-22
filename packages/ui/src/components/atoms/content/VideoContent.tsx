@@ -1,6 +1,5 @@
 import classNames from "classnames"
-import PlayIcon from "public/icons/media-play-circle-icon.svg"
-import { CSSProperties, memo, useEffect, useState } from "react"
+import { CSSProperties, memo, useEffect } from "react"
 
 import { ContentService } from "src/helpers/content"
 import { ContentFile } from "src/hooks/useMedia"
@@ -12,17 +11,15 @@ interface VideoContentProps {
   isActive: boolean
   autoplay?: boolean
   style?: CSSProperties
-  hidePlayButton?: boolean
 }
 
 const VideoContentUnmemo = ({
   contentFile,
   isActive,
   autoplay,
-  style,
-  hidePlayButton
+  style
 }: VideoContentProps) => {
-  const { ref, pause, isPlaying, play } = useVideoPlayer()
+  const { ref, pause } = useVideoPlayer()
   const videoThumbnail = contentFile.content
     ? ContentService.userContentThumbnailPath(contentFile.content)
     : undefined
@@ -31,7 +28,6 @@ const VideoContentUnmemo = ({
       pause()
     }
   }, [isActive, pause])
-  const [showControls, setShowControls] = useState<boolean>(false)
   return (
     <>
       <div
@@ -48,8 +44,6 @@ const VideoContentUnmemo = ({
           className="relative z-20 inline-block h-auto max-h-full max-w-full object-contain"
           poster={videoThumbnail}
           ref={ref}
-          setShowControls={setShowControls}
-          showControls={showControls}
           src={
             contentFile.content
               ? ContentService.userContentMediaPath(contentFile.content)
@@ -60,14 +54,6 @@ const VideoContentUnmemo = ({
           style={style}
         />
       </div>
-      {!hidePlayButton && !showControls && !isPlaying ? (
-        <div
-          className="absolute left-[50%] z-50 translate-x-[-50%] md:hidden"
-          onClick={play}
-        >
-          <PlayIcon />
-        </div>
-      ) : null}
     </>
   )
 }

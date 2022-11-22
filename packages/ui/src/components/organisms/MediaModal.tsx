@@ -58,7 +58,6 @@ export const MediaModal: FC<ModalProps> = ({
           contentFile={contentFile}
           contentHeight={height}
           contentWidth={width}
-          hidePlayButton
           objectFit="contain"
           preview
         />
