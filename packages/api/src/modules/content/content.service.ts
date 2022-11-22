@@ -219,7 +219,8 @@ export class ContentService {
       .whereNull('deleted_at')
       .andWhere({
         user_id: userId,
-        processed: true,
+        // Skip failed content
+        failed: false,
       })
       .select('*')
     switch (category) {

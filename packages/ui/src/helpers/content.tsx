@@ -30,7 +30,7 @@ enum ContentSizeEnum {
 
 const contentTypeToFormat = {
   [ContentDtoContentTypeEnum.Image]: "jpeg",
-  [ContentDtoContentTypeEnum.Video]: "m3u8",
+  [ContentDtoContentTypeEnum.Video]: isDev ? "mp4" : "m3u8",
   [ContentDtoContentTypeEnum.Gif]: "mp4",
   [ContentDtoContentTypeEnum.Audio]: "mp3"
 }
@@ -94,7 +94,6 @@ export class ContentService {
     if (content.signedUrl) {
       return content.signedUrl
     }
-
     let fileName = ""
     switch (content.contentType) {
       case ContentDtoContentTypeEnum.Image:

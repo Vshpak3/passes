@@ -51,7 +51,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       // Check if the src is a standalone mp4 or if there is native browser
       // HLS support. If not then check if HLS.js is supported.
       if (
-        src.includes("-standalone.mp4") ||
+        src.includes(".mp4") ||
         video.canPlayType("application/vnd.apple.mpegurl")
       ) {
         video.src = src

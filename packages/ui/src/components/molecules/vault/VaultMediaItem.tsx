@@ -15,9 +15,10 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   isMaxFileCountSelected,
   handleClickOnItem
 }) => {
-  const isSelected = !!selectedItems.filter(
-    (c) => c.contentId === content.contentId
-  ).length
+  const { contentId, contentType, createdAt, deletedAt, processed } = content
+
+  const isSelected = !!selectedItems.filter((c) => c.contentId === contentId)
+    .length
 
   const handleSelectItem = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
@@ -31,9 +32,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
 
   const handleRemoveItem = (event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    setSelectedItems(
-      selectedItems.filter((c) => c.contentId !== content.contentId)
-    )
+    setSelectedItems(selectedItems.filter((c) => c.contentId !== contentId))
   }
 
   const handleClick = () => {
@@ -43,9 +42,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
   const onSelectItem = isSelected ? handleRemoveItem : handleSelectItem
 
   return (
-    <div
-      className={classNames(content.deletedAt && "hidden", "group mb-[20px]")}
-    >
+    <div className={classNames(deletedAt && "hidden", "group mb-[20px]")}>
       <div
         className={classNames(
           selectedItems.length > 0 && !isSelected
@@ -58,11 +55,13 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         )}
         onClick={handleClick}
       >
-        {content.contentType === "video" ? (
+        {!processed ? (
+          <div className="pt-4 pb-9 text-center">Content is processing</div>
+        ) : contentType === "video" ? (
           <div className="relative flex items-center justify-center">
             <img
-              alt="Can't find media"
-              className="object-cover"
+              alt="Media is missing"
+              className="object-cover text-center"
               height={300}
               src={ContentService.userContentThumbnailPath(content)}
               width={300}
@@ -73,8 +72,8 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
           </div>
         ) : (
           <img
-            alt="Can't find media"
-            className="object-cover"
+            alt="Media is missing"
+            className="object-cover text-center"
             height={300}
             src={ContentService.userContentThumbnailPath(content)}
             width={300}
@@ -84,7 +83,7 @@ export const VaultMediaItem: FC<VaultMediaItemProps> = ({
         <div className="m-[10px] flex justify-end" onClick={onSelectItem}>
           <div className="h-[23px] w-[50px] rounded-md bg-transparent">
             <div className="text-center text-[12px] font-medium uppercase text-white opacity-50">
-              {format(content.createdAt || new Date(), "LLL dd")}
+              {format(createdAt || new Date(), "LLL dd")}
             </div>
           </div>
           <div
