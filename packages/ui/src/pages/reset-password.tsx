@@ -90,10 +90,10 @@ const ResetPassword = () => {
       </Text>
       {passwordReset ? (
         <>
-          <Text className="flex flex-wrap py-2 text-center text-[#b3bee7] opacity-[0.75]">
+          <Text className="flex flex-wrap py-2 text-center text-passes-gray-100">
             Success! Your password has been changed.
           </Text>
-          <Text className="flex flex-wrap py-2 text-center text-[#b3bee7] opacity-[0.75]">
+          <Text className="flex flex-wrap py-2 text-center text-passes-gray-100">
             We will automatically log you in. Alternatively, click here to log
             in.
           </Text>
@@ -109,7 +109,7 @@ const ResetPassword = () => {
         </>
       ) : (
         <>
-          <Text className="flex flex-wrap pb-4 text-center text-[#b3bee7] opacity-[0.75]">
+          <Text className="flex flex-wrap pb-4 text-center text-passes-gray-100">
             Please enter your new password and confirm it.
           </Text>
           <form
@@ -117,9 +117,7 @@ const ResetPassword = () => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col items-start">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
-                Password
-              </Text>
+              <Text className="mb-1 text-passes-gray-100">Password</Text>
               <PasswordInput
                 autoComplete="new-password"
                 className="w-[360px]"
@@ -132,7 +130,7 @@ const ResetPassword = () => {
             </div>
 
             <div className="flex flex-col items-start">
-              <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
+              <Text className="mb-1 text-passes-gray-100">
                 Confirm Password
               </Text>
               <PasswordInput

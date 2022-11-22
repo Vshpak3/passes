@@ -26,9 +26,8 @@
   color: #aaaaaa !important;
 }
 
-.rdrMonthPicker,
-.rdrYearPicker,
-select {
+.rdrMonthPicker select,
+.rdrYearPicker select {
   color: #fff !important;
 }
 

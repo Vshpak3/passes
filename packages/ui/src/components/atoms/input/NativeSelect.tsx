@@ -55,7 +55,6 @@ export const NativeSelect: FC<NativeSelectProps> = ({
           onCustomChange(event.currentTarget.value)
       }
     : register(name, options)
-  const emptyOption = { value: "", label: "" }
 
   return (
     <div className="relative">
@@ -69,25 +68,27 @@ export const NativeSelect: FC<NativeSelectProps> = ({
           errors?.[name] ? "border-red-500" : "border-passes-dark-100",
           hasError && "border-red-500",
           transparent ? "bg-transparent" : "bg-black",
-          "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border bg-passes-black px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80"
+          "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80"
         )}
         name={name}
-        placeholder={placeholder}
         {...control}
+        defaultValue={placeholder}
       >
-        {[emptyOption, ...selectOptions]?.map((option) =>
-          option ? (
-            <option
-              className="block cursor-pointer p-2 py-1 px-4"
-              key={typeof option === "string" ? option : option.value}
-              value={typeof option === "string" ? option : option.value}
-            >
-              {typeof option === "string" ? option : option.label}
-            </option>
-          ) : (
-            <option disabled />
-          )
-        )}
+        {[placeholder, ...selectOptions]?.map((option, index) => (
+          <option
+            className="block cursor-pointer p-2 py-1 px-4 text-passes-primary-color invalid:text-gray-400 disabled:text-gray-400"
+            disabled={index === 0 || !option}
+            hidden={index === 0}
+            key={
+              typeof option === "string"
+                ? `${option}-${index}`
+                : `${option.value}-${index}`
+            }
+            value={typeof option === "string" ? option : option.value}
+          >
+            {typeof option === "string" ? option : option.label}
+          </option>
+        ))}
       </select>
       {Boolean(errors?.[name]) && (
         <span className="text-xs text-red-500">{errors[name].message}</span>

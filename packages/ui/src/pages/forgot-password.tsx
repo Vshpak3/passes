@@ -67,12 +67,12 @@ const ForgotPassword = () => {
         Forgot Password
       </Text>
       {emailSent ? (
-        <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
+        <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-passes-gray-100">
           Check your email for a link to reset your password. If it doesn’t
           appear within a few minutes, check your spam folder.
         </Text>
       ) : (
-        <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-[#b3bee7] opacity-[0.75]">
+        <Text className="-mt-8 flex w-[360px] flex-wrap text-center text-passes-gray-100">
           Enter your email address and we will send you a link to reset your
           password.
         </Text>
@@ -82,8 +82,7 @@ const ForgotPassword = () => {
           className="flex flex-col gap-y-3"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="flex flex-col">
-            <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">Email</Text>
+          <div className="mt-4 flex flex-col">
             <Input
               autoComplete="email"
               className="w-[360px]"
@@ -114,4 +113,4 @@ const ForgotPassword = () => {
 
 export default WithStandAlonePageLayout(memo(ForgotPassword), {
   className: "h-[30vh] w-[100vw] max-w-[750px] my-[15vh]"
-}) // no WithLoginPageLayout
+})
