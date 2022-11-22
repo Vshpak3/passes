@@ -1,6 +1,8 @@
 import { PassApi, PassDto } from "@passes/api-client"
 import useSWR, { useSWRConfig } from "swr"
 
+import { useUser } from "src/hooks/useUser"
+
 export const CACHE_KEY_PASS = "/pass"
 
 const api = new PassApi()
@@ -8,6 +10,7 @@ const api = new PassApi()
 export type PassWithStatusDto = PassDto & { paying?: boolean }
 
 export const usePass = (passId: string) => {
+  const { user } = useUser()
   const { data: pass, mutate } = useSWR<PassWithStatusDto>(
     passId ? [CACHE_KEY_PASS, passId] : null,
     async () => {
@@ -33,10 +36,13 @@ export const usePass = (passId: string) => {
     })
 
   const checkPurchasingPass = async () => {
-    mutateManual({
-      paying: (await api.checkPurchasingPass({ getPassRequestDto: { passId } }))
-        .value
-    })
+    if (user) {
+      mutateManual({
+        paying: (
+          await api.checkPurchasingPass({ getPassRequestDto: { passId } })
+        ).value
+      })
+    }
   }
 
   return {
