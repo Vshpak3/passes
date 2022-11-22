@@ -56,7 +56,9 @@ export const Chargebacks = () => {
         </div>
         <div className="flex flex-col items-center">
           {chargebacks.map((chargeback) => {
-            chargeback.fullContent = JSON.parse(chargeback.fullContent)
+            chargeback.fullContent = JSON.parse(
+              chargeback.fullContent as unknown as string
+            )
             return (
               <div
                 className="passes-break flex flex-row items-center justify-between whitespace-pre-wrap"
