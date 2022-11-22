@@ -60,7 +60,7 @@ const metaTags = (router: NextRouter) => [
     property: "twitter:image"
   },
   {
-    content: "Passes wordmark",
+    content: "Passes",
     key: "twitter-image-alt",
     property: "twitter:image:alt"
   },
@@ -102,7 +102,7 @@ const metaTags = (router: NextRouter) => [
     property: "og:image"
   },
   {
-    content: "Passes wordmark",
+    content: "Passes",
     key: "og-image-alt",
     property: "og:image:alt"
   },

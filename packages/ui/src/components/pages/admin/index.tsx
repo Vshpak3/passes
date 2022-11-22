@@ -1,7 +1,4 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable react/jsx-no-useless-fragment */
 import { AdminApi } from "@passes/api-client"
-import _, { includes } from "lodash"
 import { useRouter } from "next/router"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "react-toastify"
@@ -23,6 +20,7 @@ export interface AdminFormSchema {
   userId?: string
   username?: string
 }
+
 export const adminFormBase = {
   secret: string().required("The secret is required"),
   userId: string().when("username", {
@@ -45,10 +43,22 @@ export const Admin = () => {
   const [tabs, setTabs] = useState<Array<AdminTabProps>>(AdminTabs)
   const [searchText, setSearchText] = useState<string>("")
 
+  const fuzzySearch = (text: string, query: string) => {
+    text = text.toLowerCase()
+    query = query.toLowerCase()
+    let n = -1
+    for (let i = 0; i < query.length; i++) {
+      if ((n = text.indexOf(query.charAt(i), n + 1)) === -1) {
+        return false
+      }
+    }
+    return true
+  }
+
   const handleSettingsSearch = useCallback(() => {
     setTabs(
-      _.filter(AdminTabs, (tab) =>
-        includes(tab.name.toLowerCase(), searchText.toLowerCase())
+      AdminTabs.filter((tab) =>
+        fuzzySearch(tab.name.toLowerCase(), searchText.toLowerCase())
       )
     )
   }, [searchText])
@@ -72,8 +82,6 @@ export const Admin = () => {
     const tab = window.location.hash.slice(1)
     if (tab) {
       setActiveTab(tab as AdminTabsEnum)
-    } else {
-      setActiveTab(AdminTabsEnum.ImpersonateUser)
     }
   }, [router])
 
@@ -230,7 +238,11 @@ export const Admin = () => {
       case AdminTabsEnum.Chargebacks:
         return <Chargebacks />
       default: {
-        return <></>
+        return (
+          <div className="ml-28 mt-20 text-lg font-medium">
+            Select a tab to begin
+          </div>
+        )
       }
     }
   }
