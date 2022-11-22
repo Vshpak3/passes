@@ -17,7 +17,6 @@ import { PassHolderEntity } from '../pass/entities/pass-holder.entity'
 import { UserExternalPassEntity } from '../pass/entities/user-external-pass.entity'
 import { PassTypeEnum } from '../pass/enum/pass.enum'
 import { PassService } from '../pass/pass.service'
-import { CircleChargebackEntity } from '../payment/entities/circle-chargeback.entity'
 import { CreatorFeeEntity } from '../payment/entities/creator-fee.entity'
 import { PaymentService } from '../payment/payment.service'
 import { ProfileService } from '../profile/profile.service'
@@ -285,11 +284,7 @@ export class AdminService {
   }
 
   async getChargebacks() {
-    return await this.dbReader<CircleChargebackEntity>(
-      CircleChargebackEntity.table,
-    )
-      .whereNull('disputed')
-      .select('*')
+    return await this.paymentService.getChargebacks()
   }
 
   async updateChargeback(

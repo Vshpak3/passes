@@ -37,6 +37,7 @@ models/AuthWalletResponseDto.ts
 models/BillingDetailsDto.ts
 models/BooleanResponseDto.ts
 models/ChannelMemberDto.ts
+models/ChargebackDto.ts
 models/CircleBankAddressDto.ts
 models/CircleBankDto.ts
 models/CircleCardDto.ts
@@ -93,6 +94,7 @@ models/GetChannelRequestDto.ts
 models/GetChannelResponseDto.ts
 models/GetChannelsRequestDto.ts
 models/GetChannelsResponseDto.ts
+models/GetChargebacksResponseDto.ts
 models/GetCircleBanksResponseDto.ts
 models/GetCircleCardResponseDto.ts
 models/GetCircleCardsResponseDto.ts

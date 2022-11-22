@@ -12,6 +12,7 @@ import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
 import { AdminSidebar } from "./AdminSidebar"
 import { AdminUserPage } from "./tabs/AdminUser"
+import { Chargebacks } from "./tabs/Chargebacks"
 import { UpdatedCovetedMember } from "./tabs/UpdateCovetedMember"
 import { ViewCovetedMembers } from "./tabs/ViewCovetedMembers"
 
@@ -226,6 +227,8 @@ export const Admin = () => {
         return <UpdatedCovetedMember />
       case AdminTabsEnum.ViewCovetedMember:
         return <ViewCovetedMembers />
+      case AdminTabsEnum.Chargebacks:
+        return <Chargebacks />
       default: {
         return <></>
       }

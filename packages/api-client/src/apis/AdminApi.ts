@@ -24,6 +24,7 @@ import type {
   CreatePassResponseDto,
   DeleteExternalPassAddressRequestDto,
   GetAgencyMembersResponseDto,
+  GetChargebacksResponseDto,
   GetCreatorFeeRequestDto,
   GetCreatorFeeResponseDto,
   ImpersonateUserRequestDto,
@@ -52,6 +53,8 @@ import {
     DeleteExternalPassAddressRequestDtoToJSON,
     GetAgencyMembersResponseDtoFromJSON,
     GetAgencyMembersResponseDtoToJSON,
+    GetChargebacksResponseDtoFromJSON,
+    GetChargebacksResponseDtoToJSON,
     GetCreatorFeeRequestDtoFromJSON,
     GetCreatorFeeRequestDtoToJSON,
     GetCreatorFeeResponseDtoFromJSON,
@@ -551,7 +554,7 @@ export class AdminApi extends runtime.BaseAPI {
     /**
      * Get unprocessed chargebacks
      */
-    async getUnprocessChargebacksRaw(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<void>> {
+    async getUnprocessChargebacksRaw(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetChargebacksResponseDto>> {
         if (requestParameters.adminDto === null || requestParameters.adminDto === undefined) {
             throw new runtime.RequiredError('adminDto','Required parameter requestParameters.adminDto was null or undefined when calling getUnprocessChargebacks.');
         }
@@ -576,14 +579,15 @@ export class AdminApi extends runtime.BaseAPI {
             body: AdminDtoToJSON(requestParameters.adminDto),
         }, initOverrides);
 
-        return new runtime.VoidApiResponse(response);
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetChargebacksResponseDtoFromJSON(jsonValue));
     }
 
     /**
      * Get unprocessed chargebacks
      */
-    async getUnprocessChargebacks(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<void> {
-        await this.getUnprocessChargebacksRaw(requestParameters, initOverrides);
+    async getUnprocessChargebacks(requestParameters: GetUnprocessChargebacksRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetChargebacksResponseDto> {
+        const response = await this.getUnprocessChargebacksRaw(requestParameters, initOverrides);
+        return await response.value();
     }
 
     /**

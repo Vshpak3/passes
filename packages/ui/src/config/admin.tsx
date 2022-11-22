@@ -7,7 +7,8 @@ export enum AdminTabsEnum {
   MakeSuggested = "make-suggested",
   RemoveSuggested = "remove-suggested",
   UpdateCovetedMember = "update-coveted-member",
-  ViewCovetedMember = "view-coveted-members"
+  ViewCovetedMember = "view-coveted-members",
+  Chargebacks = "chargebacks"
 }
 
 export interface AdminTabProps {
@@ -48,5 +49,9 @@ export const AdminTabs: Array<AdminTabProps> = [
   {
     id: AdminTabsEnum.UpdateCovetedMember,
     name: "Update Coveted Member (Creators)"
+  },
+  {
+    id: AdminTabsEnum.Chargebacks,
+    name: "Manage Unprocessed Chargebacks"
   }
 ]

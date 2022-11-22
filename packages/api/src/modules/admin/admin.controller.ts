@@ -17,6 +17,7 @@ import { RoleEnum } from '../auth/core/auth.role'
 import { AccessTokensResponseDto } from '../auth/dto/access-tokens.dto'
 import { JwtGeneralGuard } from '../auth/jwt/general/jwt-general.guard'
 import { CreatePassResponseDto } from '../pass/dto/create-pass.dto'
+import { GetChargebacksResponseDto } from '../payment/dto/get-chargebacks.dto'
 import { AdminGuard } from './admin.guard'
 import { AdminService } from './admin.service'
 import { AddExternalPassAddressRequestDto } from './dto/add-external-pass-addres.dto'
@@ -277,14 +278,18 @@ export class AdminController {
   @ApiEndpoint({
     summary: 'Get unprocessed chargebacks',
     responseStatus: HttpStatus.OK,
-    responseType: undefined,
+    responseType: GetChargebacksResponseDto,
     responseDesc: 'Unprocessed chargebacks were retrieved',
     role: RoleEnum.NO_AUTH,
   })
   @Post('chargeback/unprocessed')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getUnprocessChargebacks(@Body() _body: AdminDto): Promise<any[]> {
-    return await this.adminService.getChargebacks()
+  async getUnprocessChargebacks(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() _body: AdminDto,
+  ): Promise<GetChargebacksResponseDto> {
+    return new GetChargebacksResponseDto(
+      await this.adminService.getChargebacks(),
+    )
   }
 
   @ApiEndpoint({

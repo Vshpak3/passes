@@ -55,6 +55,7 @@ import {
   TippedMessagePayinCallbackOutput,
 } from './callback.types'
 import { CircleConnector } from './circle'
+import { ChargebackDto } from './dto/chargeback.dto'
 import { CircleBankDto } from './dto/circle/circle-bank.dto'
 import { CircleCardDto } from './dto/circle/circle-card.dto'
 import { CircleChargebackDto } from './dto/circle/circle-chargeback.dto'
@@ -2628,5 +2629,36 @@ export class PaymentService {
         ),
       )
     }
+  }
+
+  async getChargebacks() {
+    return (
+      await this.dbReader<CircleChargebackEntity>(CircleChargebackEntity.table)
+        .join(
+          CirclePaymentEntity.table,
+          `${CircleChargebackEntity.table}.circle_payment_id`,
+          `${CirclePaymentEntity.table}.id`,
+        )
+        .join(
+          PayinEntity.table,
+          `${CirclePaymentEntity.table}.payin_id`,
+          `${PayinEntity.table}.id`,
+        )
+        .join(
+          UserEntity.table,
+          `${PayinEntity.table}.user_id`,
+          `${UserEntity.table}.id`,
+        )
+        .whereNull('disputed')
+        .select(
+          `${CircleChargebackEntity.table}.full_content`,
+          `${CircleChargebackEntity.table}.circle_payment_id`,
+          `${UserEntity.table}.username`,
+          `${UserEntity.table}.display_name`,
+          `${UserEntity.table}.email`,
+          `${UserEntity.table}.legal_full_name`,
+          `${PayinEntity.table}.*`,
+        )
+    ).map((chargeback) => new ChargebackDto(chargeback))
   }
 }
