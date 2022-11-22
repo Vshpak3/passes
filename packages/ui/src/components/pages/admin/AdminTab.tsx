@@ -7,18 +7,18 @@ import { Text } from "src/components/atoms/Text"
 import { formatText } from "src/helpers/formatters"
 import { useWindowSize } from "src/hooks/useWindowSizeHook"
 
-interface TabProps {
+interface AdminTabProps {
   title: string
   onSubmit: FormEventHandler<HTMLFormElement>
-  isSubmitting: boolean
+  disableButton: boolean
   label: string
 }
 
-export const Tab: FC<PropsWithChildren<TabProps>> = ({
+export const AdminTab: FC<PropsWithChildren<AdminTabProps>> = ({
   title,
   onSubmit,
   children,
-  isSubmitting,
+  disableButton,
   label = "Submit"
 }) => {
   const router = useRouter()
@@ -48,7 +48,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
           onSubmit={onSubmit}
         >
           {children}
-          <Button disabled={isSubmitting} type={ButtonTypeEnum.SUBMIT}>
+          <Button disabled={disableButton} type={ButtonTypeEnum.SUBMIT}>
             <Text className="font-medium" fontSize={16}>
               {label}
             </Text>

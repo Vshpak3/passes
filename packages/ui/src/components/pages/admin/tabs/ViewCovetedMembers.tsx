@@ -7,14 +7,14 @@ import { toast } from "react-toastify"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
-import { Tab } from "src/components/pages/admin/AdminTab"
+import { AdminTab } from "src/components/pages/admin/AdminTab"
 import { errorMessage } from "src/helpers/error"
 
 export const ViewCovetedMembers = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    formState: { errors, isDirty, isSubmitting }
   } = useForm<{ secret: string }>()
   const [members, setMembers] = useState<AgencyMemberDto[]>([])
 
@@ -35,8 +35,8 @@ export const ViewCovetedMembers = () => {
   }
   return (
     <div className="flex w-full flex-col">
-      <Tab
-        isSubmitting={isSubmitting}
+      <AdminTab
+        disableButton={!isDirty || isSubmitting}
         label="View"
         onSubmit={handleSubmit(getCovetedMembers)}
         title="View Coveted Members"
@@ -54,7 +54,7 @@ export const ViewCovetedMembers = () => {
             type="text"
           />
         </div>
-      </Tab>
+      </AdminTab>
       <div className="flex flex-col items-center">
         {members.map((member) => {
           return (

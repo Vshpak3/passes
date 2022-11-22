@@ -7,14 +7,14 @@ import { toast } from "react-toastify"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
 import { Chargeback } from "src/components/organisms/admin/Chargeback"
-import { Tab } from "src/components/pages/admin/AdminTab"
+import { AdminTab } from "src/components/pages/admin/AdminTab"
 import { errorMessage } from "src/helpers/error"
 
 export const Chargebacks = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     watch
   } = useForm<{ secret: string }>()
   const [chargebacks, setChargebacks] = useState<ChargebackDto[]>([])
@@ -36,8 +36,8 @@ export const Chargebacks = () => {
   }
   return (
     <div className="flex w-full flex-col items-center justify-start">
-      <Tab
-        isSubmitting={isSubmitting}
+      <AdminTab
+        disableButton={!isDirty || isSubmitting}
         label="View"
         onSubmit={handleSubmit(getCovetedMembers)}
         title="Manage Unprocessed Chargebacks"
@@ -55,7 +55,7 @@ export const Chargebacks = () => {
             type="text"
           />
         </div>
-      </Tab>
+      </AdminTab>
       <div className="flex flex-col items-center">
         {chargebacks.map((chargeback) => {
           chargeback.fullContent = JSON.parse(

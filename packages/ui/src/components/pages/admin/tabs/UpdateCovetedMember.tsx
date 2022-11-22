@@ -8,7 +8,7 @@ import { object, string } from "yup"
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { NumberInput } from "src/components/atoms/input/NumberInput"
 import { Text } from "src/components/atoms/Text"
-import { Tab } from "src/components/pages/admin/AdminTab"
+import { AdminTab } from "src/components/pages/admin/AdminTab"
 import { errorMessage } from "src/helpers/error"
 import { dirtyValues } from "src/helpers/form"
 import { adminFormBase, AdminFormSchema } from ".."
@@ -43,7 +43,7 @@ export const UpdatedCovetedMember = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields, isSubmitting }
+    formState: { errors, dirtyFields, isDirty, isSubmitting }
   } = useForm<UpdateCovetedMemberSchema>({
     resolver: yupResolver(adminFormSchema)
   })
@@ -61,8 +61,8 @@ export const UpdatedCovetedMember = () => {
     }
   }
   return (
-    <Tab
-      isSubmitting={isSubmitting}
+    <AdminTab
+      disableButton={!isDirty || isSubmitting}
       label="Update"
       onSubmit={handleSubmit(updateCovetedMember)}
       title="Update Coveted Member"
@@ -111,6 +111,6 @@ export const UpdatedCovetedMember = () => {
           type="float"
         />
       </div>
-    </Tab>
+    </AdminTab>
   )
 }

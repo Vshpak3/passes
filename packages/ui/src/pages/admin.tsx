@@ -14,5 +14,6 @@ const AdminPage = () => {
 
 export default WithNormalPageLayout(AdminPage, {
   header: false,
-  sidebar: false
+  sidebar: false,
+  noScroll: true
 })

@@ -7,6 +7,7 @@ import { string } from "yup"
 import { AdminTabProps, AdminTabs, AdminTabsEnum } from "src/config/admin"
 import { errorMessage } from "src/helpers/error"
 import { useUser } from "src/hooks/useUser"
+import { useWindowSize } from "src/hooks/useWindowSizeHook"
 import { AdminSidebar } from "./AdminSidebar"
 import { AdminUserPage } from "./tabs/AdminUser"
 import { Chargebacks } from "./tabs/Chargebacks"
@@ -38,6 +39,8 @@ export const adminFormBase = {
 export const Admin = () => {
   const { loading, user, setAccessToken, mutate: refreshUser } = useUser()
   const router = useRouter()
+  const { isTablet } = useWindowSize()
+
   const [ready, setReady] = useState(false)
   const [activeTab, setActiveTab] = useState<AdminTabsEnum | undefined>()
   const [tabs, setTabs] = useState<Array<AdminTabProps>>(AdminTabs)
@@ -79,10 +82,7 @@ export const Admin = () => {
   }, [loading, router, user])
 
   useEffect(() => {
-    const tab = window.location.hash.slice(1)
-    if (tab) {
-      setActiveTab(tab as AdminTabsEnum)
-    }
+    setActiveTab(window.location.hash.slice(1) as AdminTabsEnum)
   }, [router])
 
   const impersonateUser = async (values: AdminFormSchema) => {
@@ -251,15 +251,17 @@ export const Admin = () => {
     <>
       {ready && (
         <div className="flex h-screen w-full flex-col overflow-hidden">
-          <div className="flex w-full items-center justify-between px-8 py-4">
+          <div className="flex w-full justify-between px-8 py-4">
             <span className="text-xl font-bold">Admin</span>
           </div>
-          <div className=" flex flex-1 flex-row border-t-[1px] border-passes-dark-200">
-            <AdminSidebar
-              searchText={searchText}
-              setSearchText={setSearchText}
-              tabs={tabs}
-            />
+          <div className="flex flex-1 flex-row border-t-[1px] border-passes-dark-200">
+            {(!isTablet || !activeTab) && (
+              <AdminSidebar
+                searchText={searchText}
+                setSearchText={setSearchText}
+                tabs={tabs}
+              />
+            )}
             {renderTab()}
           </div>
         </div>

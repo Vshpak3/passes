@@ -5,7 +5,7 @@ import { object } from "yup"
 
 import { Input } from "src/components/atoms/input/GeneralInput"
 import { Text } from "src/components/atoms/Text"
-import { Tab } from "src/components/pages/admin/AdminTab"
+import { AdminTab } from "src/components/pages/admin/AdminTab"
 import { dirtyValues } from "src/helpers/form"
 import { adminFormBase, AdminFormSchema } from ".."
 
@@ -29,7 +29,7 @@ export const AdminUserPage = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields, isSubmitting }
+    formState: { errors, dirtyFields, isDirty, isSubmitting }
   } = useForm<AdminFormSchema>({
     resolver: yupResolver(adminFormSchema)
   })
@@ -40,8 +40,8 @@ export const AdminUserPage = ({
   }
 
   return (
-    <Tab
-      isSubmitting={isSubmitting}
+    <AdminTab
+      disableButton={!isDirty || isSubmitting}
       label={label}
       onSubmit={handleSubmit(onSubmit)}
       title={title}
@@ -80,6 +80,6 @@ export const AdminUserPage = ({
           type="text"
         />
       </div>
-    </Tab>
+    </AdminTab>
   )
 }
