@@ -204,7 +204,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[90vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-4 backdrop-blur-[100px] transition-all md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-[80vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-4 backdrop-blur-[100px] transition-all sm:h-[90vh] md:max-w-[544px] md:rounded-[15px]"
       onClose={() => setEditProfileModalOpen(false)}
       open
       title={
