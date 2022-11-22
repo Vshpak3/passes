@@ -328,25 +328,19 @@ export class ContentService {
     if (contentIds.length === 0) {
       return { contentsBare: [], isProcessed: true }
     }
-    const filteredContent = await this.dbReader<ContentEntity>(
-      ContentEntity.table,
-    )
+    const contents = await this.dbReader<ContentEntity>(ContentEntity.table)
       .whereIn('id', contentIds)
       .andWhere({ user_id: userId })
       .select('id', 'content_type', 'processed')
-    const contents: Record<string, ContentTypeEnum> = {}
 
-    filteredContent.forEach(
-      (content) => (contents[content.id] = content.content_type),
-    )
-    const notProcessed = filteredContent.some((content) => !content.processed)
+    const isProcessed = contents.every((content) => !!content.processed)
     const contentBares = contentIds.map((contentId) => {
       if (!contents[contentId]) {
-        throw new NoContentError('cant find content for user')
+        throw new NoContentError(`Missing content for user: ${contentId}`)
       }
-      return new ContentBareDto(contentId, contents[contentId])
+      return new ContentBareDto(contentId, contents[contentId].content_type)
     })
-    return { contentsBare: contentBares, isProcessed: !notProcessed }
+    return { contentsBare: contentBares, isProcessed }
   }
 
   /*******************************************/
