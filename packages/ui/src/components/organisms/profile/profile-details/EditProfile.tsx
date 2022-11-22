@@ -204,7 +204,7 @@ export const EditProfile: FC<EditProfileProps> = ({
 
   return (
     <Dialog
-      className="flex h-[80vh] w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-4 backdrop-blur-[100px] transition-all sm:h-[90vh] md:max-w-[544px] md:rounded-[15px]"
+      className="flex h-screen w-screen flex-col items-start justify-start overflow-y-scroll border border-white/10 bg-passes-black px-[29px] pt-4 backdrop-blur-[100px] transition-all sm:h-[90vh] md:max-w-[544px] md:rounded-[15px]"
       onClose={() => setEditProfileModalOpen(false)}
       open
       title={
@@ -311,12 +311,12 @@ export const EditProfile: FC<EditProfileProps> = ({
             <span className="flex items-center justify-start text-[18px] font-bold leading-[25px] text-white">
               Social Media Usernames
             </span>
-            <div className="mt-3 grid w-full grid-cols-6 gap-3 pb-2">
+            <div className="mt-3 grid w-full grid-cols-6 gap-3">
               {Object.entries(socialMediaForm).map(renderInput)}
             </div>
           </div>
         </div>
-        <div className="flex w-full cursor-pointer self-center py-4">
+        <div className="flex w-full cursor-pointer self-center pt-2 pb-6">
           <Button
             className="flex w-full items-center justify-center self-center text-center"
             disabled={isSubmitting}
