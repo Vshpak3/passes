@@ -7,10 +7,11 @@ interface VideoPlayerProps {
   className?: string
   poster?: string
   style?: CSSProperties
+  autoplay?: boolean
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  ({ src, className = "", poster = "", style }, ref) => {
+  ({ src, className = "", poster = "", style, autoplay = false }, ref) => {
     const hls = useMemo(
       () =>
         new Hls({
@@ -28,12 +29,12 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
     // Triggers when the first onPlay event fires. Ensures we only start loading
     // the video once. This is necessary since we configure autoStartLoad = false
     // so we must manually call hls.startLoad() to start loading the fragments.
+    const [initialized, setInitialized] = useState(false)
     const onPlay = () => {
       if (!initialized) {
         hls.startLoad()
       }
     }
-    const [initialized, setInitialized] = useState(false)
 
     useEffect(() => {
       if (initialized) {
@@ -73,7 +74,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
     return (
       <video
-        autoPlay={false}
+        autoPlay={autoplay}
         className={classNames(className)}
         controls={showControls}
         controlsList="nodownload"
