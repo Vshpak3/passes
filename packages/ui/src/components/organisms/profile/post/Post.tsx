@@ -98,8 +98,8 @@ const PostUnmemo: FC<PostProps> = ({
           toast.error(`Can only pin a max of ${MAX_PINNED_POST} posts`)
           return
         }
-        await pinPost(post)
         update({ pinnedAt: new Date() })
+        await pinPost(post)
         toast.success("The post has been pinned")
       }
     ),
@@ -107,8 +107,8 @@ const PostUnmemo: FC<PostProps> = ({
       "Unpin",
       post.isOwner && isPinned && contentProcessed && !!unpinPost,
       async () => {
-        await unpinPost(post)
         update({ pinnedAt: null })
+        await unpinPost(post)
         toast.success("The post has been unpinned")
       }
     ),

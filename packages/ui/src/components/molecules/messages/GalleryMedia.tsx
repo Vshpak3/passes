@@ -2,14 +2,13 @@ import { ContentDto, ContentDtoContentTypeEnum } from "@passes/api-client"
 import classNames from "classnames"
 import CostIcon from "public/icons/post-cost-icon.svg"
 import { FC, useEffect, useRef, useState } from "react"
-import TimeAgo from "react-timeago"
 
 import { ContentUnlockButton } from "src/components/atoms/button/ContentUnlockButton"
 import { VideoContent } from "src/components/atoms/content/VideoContent"
+import { Time } from "src/components/atoms/Time"
 import { UnlockText } from "src/components/organisms/UnlockText"
 import { ContentService } from "src/helpers/content"
 import { contentTypeCounter } from "src/helpers/contentTypeCounter"
-import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 
 interface GalleryMediaProps {
@@ -65,12 +64,7 @@ export const GalleryMedia: FC<GalleryMediaProps> = ({
         </div>
         <div className="flex items-center">
           <span className="text-[11px] font-medium uppercase leading-[12px] tracking-[1px] text-white opacity-50">
-            <TimeAgo
-              className="uppercase text-gray-300/60"
-              date={createdAt ? createdAt : ""} // TODO: post.date}
-              formatter={getShortTimeStamp}
-              minPeriod={30}
-            />
+            <Time className="uppercase text-gray-300/60" date={createdAt} />
           </span>
         </div>
       </div>

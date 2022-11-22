@@ -1,12 +1,10 @@
 import { ChannelMemberDto, MessageDto } from "@passes/api-client"
 import classNames from "classnames"
-import { isAfter, subDays } from "date-fns"
 import { FC, memo } from "react"
-import TimeAgo from "react-timeago"
 
+import { Time } from "src/components/atoms/Time"
 import { MediaContent } from "src/components/molecules/content/MediaContent"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
-import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency, formatText } from "src/helpers/formatters"
 import { useBuyMessageModal } from "src/hooks/context/useBuyMessageModal"
 import { DollarSymbol } from "src/icons/DollarSymbol"
@@ -151,21 +149,12 @@ const ChannelMessageUnmemo: FC<ChannelMessageProps> = ({
               Pending...
             </span>
           ) : (
-            <>
-              {isAfter(sentAt, subDays(new Date(), 1)) ? (
-                <TimeAgo
-                  className="flex text-[11px] font-medium leading-[17px] text-white/30"
-                  date={sentAt ?? ""}
-                  formatter={getShortTimeStamp}
-                  key={messageId}
-                  minPeriod={30}
-                />
-              ) : (
-                <span className="flex text-[11px] font-medium leading-[17px] text-white/30">
-                  {sentAt?.toLocaleDateString()}
-                </span>
-              )}
-            </>
+            <Time
+              buffer={1}
+              className="flex text-[11px] font-medium leading-[17px] text-white/30"
+              date={sentAt}
+              key={messageId}
+            />
           )}
         </div>
       </div>

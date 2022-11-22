@@ -22,6 +22,7 @@ export const getShortTimeStamp = (
     case "minute":
     case "hour":
     case "day":
+    case "week":
       return `${value}${unit.charAt(0)} ${suffix}`
     default:
       return `${plural(unit, value)} ${suffix}`

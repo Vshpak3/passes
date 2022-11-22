@@ -2,11 +2,10 @@ import { MessagesApi } from "@passes/api-client"
 import { ChannelMemberDto } from "@passes/api-client/models"
 import classNames from "classnames"
 import { FC, memo } from "react"
-import TimeAgo from "react-timeago"
 
 import { NameDisplay } from "src/components/atoms/content/NameDisplay"
+import { Time } from "src/components/atoms/Time"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
-import { getShortTimeStamp } from "src/helpers/dates"
 import { formatCurrency } from "src/helpers/formatters"
 
 interface ChannelListItemProps {
@@ -85,17 +84,16 @@ const ChannelListItemUnmemo: FC<ChannelListItemProps> = ({
           </span>
         )}
       </div>
-      <TimeAgo
+      <Time
+        buffer={1}
         className={classNames(
           channel.unread
             ? "font-bold text-white/60"
             : "font-medium text-white/30",
           "absolute right-4 bottom-1 self-end text-[11px] leading-[17px]"
         )}
-        date={channel?.recent ? channel.recent : ""}
-        formatter={getShortTimeStamp}
+        date={channel?.recent}
         key={channel.channelId}
-        minPeriod={30}
       />
     </div>
   )

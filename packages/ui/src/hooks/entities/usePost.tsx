@@ -1,5 +1,5 @@
 import { EditPostRequestDto, PostApi, PostDto } from "@passes/api-client"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import { toast } from "react-toastify"
 import useSWR, { useSWRConfig } from "swr"
 
@@ -23,13 +23,16 @@ export const usePost = (postId: string) => {
   })
 
   const { mutate: _mutateManual } = useSWRConfig()
-  const mutateManual = (update: Partial<PostDto>) =>
-    _mutateManual([CACHE_KEY_POST, postId], update, {
-      populateCache: (update: Partial<PostDto>, original: PostDto) => {
-        return { ...original, ...update }
-      },
-      revalidate: false
-    })
+  const mutateManual = useCallback(
+    (update: Partial<PostDto>) =>
+      _mutateManual([CACHE_KEY_POST, postId], update, {
+        populateCache: (update: Partial<PostDto>, original: PostDto) => {
+          return { ...original, ...update }
+        },
+        revalidate: false
+      }),
+    [_mutateManual, postId]
+  )
 
   const editPost = async (editPost: EditPostRequestDto) => {
     try {

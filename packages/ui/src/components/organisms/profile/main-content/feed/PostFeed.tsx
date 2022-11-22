@@ -67,7 +67,12 @@ const PostFeedUnmemo: FC<PostFeedProps> = ({ profileUserId, ownsProfile }) => {
           {ownsProfile && <NewPosts />}
           {!postCategoryId &&
             pinnedPosts.map((post) => (
-              <PostCached isPinned key={post.postId} post={post} />
+              <PostCached
+                isPinned
+                key={post.postId}
+                post={post}
+                toUpdate={false}
+              />
             ))}
         </InfiniteScrollPagination>
       </div>

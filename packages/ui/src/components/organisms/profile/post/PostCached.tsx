@@ -1,5 +1,5 @@
 import { PostDto } from "@passes/api-client"
-import { FC, useEffect } from "react"
+import { FC, memo, useEffect } from "react"
 
 import { usePost } from "src/hooks/entities/usePost"
 import { Post } from "./Post"
@@ -15,18 +15,19 @@ export interface PostCachedProps {
   toUpdate?: boolean
 }
 
-export const PostCached: FC<PostCachedProps> = ({
+const PostCachedUnmemo: FC<PostCachedProps> = ({
   post,
   toUpdate = true,
   ...res
 }: PostCachedProps) => {
   const { post: cachedPost, update } = usePost(post.postId)
   useEffect(() => {
-    if (toUpdate) {
+    if (!cachedPost && toUpdate) {
       update(post)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [post])
+  }, [post, cachedPost, update, toUpdate])
 
   return <Post post={cachedPost ?? post} {...res} update={update} />
 }
+
+export const PostCached = memo(PostCachedUnmemo)

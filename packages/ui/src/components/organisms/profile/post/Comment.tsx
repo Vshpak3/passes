@@ -1,11 +1,11 @@
 import { CommentDto } from "@passes/api-client"
 import Link from "next/link"
 import { FC, useState } from "react"
-import TimeAgo from "react-timeago"
 
 import { NameDisplay } from "src/components/atoms/content/NameDisplay"
 import { FormattedText } from "src/components/atoms/FormattedText"
 import { Text } from "src/components/atoms/Text"
+import { Time } from "src/components/atoms/Time"
 import {
   Dropdown,
   DropdownOption
@@ -16,7 +16,6 @@ import {
   DropDownReport
 } from "src/components/organisms/profile/drop-down/DropdownOptions"
 import { ProfileImage } from "src/components/organisms/profile/profile-details/ProfileImage"
-import { getShortTimeStamp } from "src/helpers/dates"
 import { useUpdateComment } from "src/hooks/profile/useUpdateComment"
 import { CommentCachedProps } from "./CommentCached"
 
@@ -104,10 +103,9 @@ export const Comment: FC<CommentProps> = ({
 
               <div className="flex shrink-0 flex-row items-center justify-end gap-x-2">
                 <div className="flex items-center">
-                  <TimeAgo
+                  <Time
                     className="mt-[2px] shrink-0 text-[12px] text-gray-300/60"
                     date={comment.createdAt}
-                    formatter={getShortTimeStamp}
                     key={comment.commentId}
                     live={false}
                   />

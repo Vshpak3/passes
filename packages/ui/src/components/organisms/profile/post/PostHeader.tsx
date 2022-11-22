@@ -2,14 +2,13 @@ import { PostDto } from "@passes/api-client"
 import PinIcon from "public/icons/new-pin-icon.svg"
 import SingleDot from "public/icons/single-dot.svg"
 import { FC } from "react"
-import TimeAgo from "react-timeago"
 
+import { Time } from "src/components/atoms/Time"
 import { ProfileWidget } from "src/components/molecules/ProfileWidget"
 import {
   Dropdown,
   DropdownOption
 } from "src/components/organisms/profile/drop-down/Dropdown"
-import { getShortTimeStamp } from "src/helpers/dates"
 
 interface PostHeaderProps
   extends Pick<PostDto, "createdAt" | "userId" | "username" | "displayName"> {
@@ -46,13 +45,7 @@ export const PostHeader: FC<PostHeaderProps> = ({
           </>
         )}
         <div className="flex items-center text-[10px] font-medium tracking-[1px] text-white/50 md:text-[12px]">
-          <TimeAgo
-            className="text-gray-300/60"
-            date={createdAt}
-            formatter={getShortTimeStamp}
-            key={id}
-            minPeriod={30}
-          />
+          <Time className="text-gray-300/60" date={createdAt} key={id} />
         </div>
         <SingleDot className="flex items-center" />
         <div className="mt-[5px] flex items-center">
