@@ -1,7 +1,9 @@
-// From iso3311a2.getCountries() but with "United States" first and "Canada" second.
+// From iso3311a2.getCountries() but with "United States" first, "Canada" second,
+// and an empty string following them (adds extra disabled option for selects).
 export const COUNTRIES = [
   "United States",
   "Canada",
+  "",
   "Afghanistan",
   "Åland Islands",
   "Albania",

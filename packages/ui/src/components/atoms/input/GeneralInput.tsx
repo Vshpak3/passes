@@ -88,9 +88,9 @@ export const Input: FC<InputProps> = ({
         {...register(name)}
         {...(disableInputCorrects
           ? {
-              autocorrect: "off",
-              autocapitalize: "off",
-              spellcheck: "false"
+              autoCorrect: "off",
+              autoCapitalize: "off",
+              spellCheck: "false"
             }
           : {})}
         {...rest}

@@ -61,17 +61,18 @@ const VerifyEmailPage = () => {
         async () => undefined,
         async (token) => {
           // Route manually so we can show the confirmation screen before routing
-          await sleep("4 seconds")
+          await sleep("1 seconds")
+          setIsLoading(false)
+          await sleep("2 seconds")
           authRouter(safePush, token)
         }
       )
     } catch (error: unknown) {
       console.error(error)
+      setIsLoading(false)
       setError(
         "Error occurred verifying your email address. The link is wrong or has been expired."
       )
-    } finally {
-      setIsLoading(false)
     }
   }
 

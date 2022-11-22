@@ -16,7 +16,7 @@ type SelectOption = {
   label: string | JSX.Element
 }
 
-type FormSelectOption = string | SelectOption
+type FormSelectOption = string | SelectOption | null
 type FormSelectOptions = Array<FormSelectOption>
 
 type NativeSelectProps = {
@@ -75,15 +75,19 @@ export const NativeSelect: FC<NativeSelectProps> = ({
         placeholder={placeholder}
         {...control}
       >
-        {[emptyOption, ...selectOptions]?.map((option) => (
-          <option
-            className="block cursor-pointer p-2 py-1 px-4"
-            key={typeof option === "string" ? option : option.value}
-            value={typeof option === "string" ? option : option.value}
-          >
-            {typeof option === "string" ? option : option.label}
-          </option>
-        ))}
+        {[emptyOption, ...selectOptions]?.map((option) =>
+          option ? (
+            <option
+              className="block cursor-pointer p-2 py-1 px-4"
+              key={typeof option === "string" ? option : option.value}
+              value={typeof option === "string" ? option : option.value}
+            >
+              {typeof option === "string" ? option : option.label}
+            </option>
+          ) : (
+            <option disabled />
+          )
+        )}
       </select>
       {Boolean(errors?.[name]) && (
         <span className="text-xs text-red-500">{errors[name].message}</span>
