@@ -2653,6 +2653,7 @@ export class PaymentService {
         .select(
           `${CircleChargebackEntity.table}.full_content`,
           `${CircleChargebackEntity.table}.circle_payment_id`,
+          `${CircleChargebackEntity.table}.id as chargeback_id`,
           `${UserEntity.table}.username`,
           `${UserEntity.table}.display_name`,
           `${UserEntity.table}.email`,

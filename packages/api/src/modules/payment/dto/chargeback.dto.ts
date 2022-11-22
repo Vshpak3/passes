@@ -72,8 +72,15 @@ export class ChargebackDto extends PickType(UserDto, [
   @DtoProperty({ type: 'string', nullable: true })
   redirectUrl: string | null
 
+  @DtoProperty({ type: 'uuid' })
+  chargebackId: string
+
   constructor(
-    payin: (PayinEntity & CircleChargebackEntity & UserEntity) | undefined,
+    payin:
+      | (PayinEntity &
+          CircleChargebackEntity &
+          UserEntity & { chargeback_id: string })
+      | undefined,
   ) {
     super()
     if (payin) {
@@ -101,6 +108,7 @@ export class ChargebackDto extends PickType(UserDto, [
       this.fullContent = payin.full_content
 
       this.circlePaymentId = payin.circle_payment_id
+      this.chargebackId = payin.chargeback_id
     }
   }
 }

@@ -27,7 +27,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
   }
   const { isTablet } = useWindowSize()
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex w-full flex-col">
       <div className="border-b border-passes-dark-200 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -42,7 +42,7 @@ export const Tab: FC<PropsWithChildren<TabProps>> = ({
           </div>
         </div>
       </div>
-      <div className="flex w-full justify-center overflow-x-scroll md:h-[calc(100vh-156px)]">
+      <div className="flex w-full justify-center overflow-x-auto">
         <form
           className="flex w-full flex-col gap-y-5 p-8 md:w-[600px]"
           onSubmit={onSubmit}

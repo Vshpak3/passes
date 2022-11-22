@@ -140,6 +140,12 @@ export interface ChargebackDto {
      * @memberof ChargebackDto
      */
     redirectUrl: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChargebackDto
+     */
+    chargebackId: string;
 }
 
 
@@ -206,6 +212,7 @@ export function instanceOfChargebackDto(value: object): boolean {
     isInstance = isInstance && "fullContent" in value;
     isInstance = isInstance && "target" in value;
     isInstance = isInstance && "redirectUrl" in value;
+    isInstance = isInstance && "chargebackId" in value;
 
     return isInstance;
 }
@@ -239,6 +246,7 @@ export function ChargebackDtoFromJSONTyped(json: any, ignoreDiscriminator: boole
         'fullContent': json['fullContent'],
         'target': json['target'],
         'redirectUrl': json['redirectUrl'],
+        'chargebackId': json['chargebackId'],
     };
 }
 
@@ -270,6 +278,7 @@ export function ChargebackDtoToJSON(value?: ChargebackDto | null): any {
         'fullContent': value.fullContent,
         'target': value.target,
         'redirectUrl': value.redirectUrl,
+        'chargebackId': value.chargebackId,
     };
 }
 
