@@ -1,37 +1,16 @@
 import classNames from "classnames"
 import Hls from "hls.js"
-import {
-  CSSProperties,
-  Dispatch,
-  forwardRef,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState
-} from "react"
-import { CSSProperties, forwardRef, useEffect, useState } from "react"
+import { CSSProperties, forwardRef, useEffect, useMemo, useState } from "react"
 
 interface VideoPlayerProps {
   src: string
-  autoplay?: boolean
   className?: string
   poster?: string
   style?: CSSProperties
 }
 
 export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  (
-    {
-      src,
-      autoplay = false,
-      className = "",
-      poster = "",
-      style,
-      showControls,
-      setShowControls
-    },
-    ref
-  ) => {
+  ({ src, className = "", poster = "", style }, ref) => {
     const hls = useMemo(
       () =>
         new Hls({
@@ -46,10 +25,21 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       []
     )
 
+    // Triggers when the first onPlay event fires. Ensures we only start loading
+    // the video once. This is necessary since we configure autoStartLoad = false
+    // so we must manually call hls.startLoad() to start loading the fragments.
+    const onPlay = () => {
+      if (!initialized) {
+        hls.startLoad()
+      }
+    }
+    const [initialized, setInitialized] = useState(false)
+
     useEffect(() => {
       if (initialized) {
         return
       }
+
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const video = ref?.current
@@ -57,21 +47,18 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
         return
       }
 
-      // Support for standalone mp4s as opposed to HLS
-      if (src.includes("-standalone.mp4")) {
-        video.src = src
-        setInitialized(true)
-        return
-      }
-
-      // Check for native browser HLS support and if not then check if HLS.js is supported
-      if (video.canPlayType("application/vnd.apple.mpegurl")) {
+      // Check if the src is a standalone mp4 or if there is native browser
+      // HLS support. If not then check if HLS.js is supported.
+      if (
+        src.includes("-standalone.mp4") ||
+        video.canPlayType("application/vnd.apple.mpegurl")
+      ) {
         video.src = src
         setInitialized(true)
       } else if (Hls.isSupported()) {
         hls.loadSource(src)
         hls.attachMedia(video)
-        // sets initialized = true the first time a media segment is appended to the buffer
+        // Sets initialized = true the first time a media segment is appended to the buffer
         hls.on(Hls.Events.BUFFER_APPENDED, () => {
           if (!initialized) {
             setInitialized(true)
@@ -86,19 +73,15 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
 
     return (
       <video
-        autoPlay={autoplay}
+        autoPlay={false}
         className={classNames(className)}
         controls={showControls}
         controlsList="nodownload"
         onBlur={() => setShowControls(false)}
         onFocus={() => setShowControls(true)}
-        onPlay={() => {
-          if (!initialized) {
-            hls.startLoad()
-          }
-        }}
+        onPlay={onPlay}
         poster={poster}
-        preload={autoplay ? "auto" : "none"}
+        preload="none"
         ref={ref}
         style={style}
       />
