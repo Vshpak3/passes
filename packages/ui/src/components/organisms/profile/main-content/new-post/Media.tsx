@@ -24,6 +24,7 @@ type MediaProp = {
   noRender?: boolean
   noRenderString?: string
   contentFile: ContentFile
+  hidePlayButton?: boolean
 }
 
 export const Media: FC<MediaProp> = ({
@@ -39,7 +40,8 @@ export const Media: FC<MediaProp> = ({
   objectFit = "cover",
   noRender,
   noRenderString,
-  contentFile
+  contentFile,
+  hidePlayButton
 }) => {
   const fitContent = "fit-content"
   const { file, content } = contentFile
@@ -78,6 +80,7 @@ export const Media: FC<MediaProp> = ({
           <VideoContent
             autoplay={false}
             contentFile={contentFile}
+            hidePlayButton={hidePlayButton}
             isActive
             style={{
               objectFit,
