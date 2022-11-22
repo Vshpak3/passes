@@ -70,8 +70,7 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       }
     }, [src, ref, hls, initialized])
 
-    const [showControls, setShowControls] = useState<boolean>(false)
-
+    const [showControls, setShowControls] = useState<boolean>(true)
     return (
       <video
         autoPlay={autoplay}
