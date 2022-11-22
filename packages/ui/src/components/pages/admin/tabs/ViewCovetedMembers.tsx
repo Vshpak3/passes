@@ -62,7 +62,7 @@ export const ViewCovetedMembers = () => {
               className="flex flex-row items-center justify-between"
               key={member.userId}
             >
-              <ProfileWidget user={member} />
+              <ProfileWidget linked={false} user={member} />
               <div>rate: {member.rate}</div>
             </div>
           )

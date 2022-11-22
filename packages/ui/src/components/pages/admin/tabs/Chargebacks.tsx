@@ -28,7 +28,7 @@ export const Chargebacks = () => {
           })
         ).data
       )
-      toast.success("Coveted members retrieved")
+      toast.success("Chargebacks retrieved")
     } catch (error: unknown) {
       errorMessage(error, true)
     }
@@ -39,7 +39,7 @@ export const Chargebacks = () => {
         isSubmitting={isSubmitting}
         label="View"
         onSubmit={handleSubmit(getCovetedMembers)}
-        title="View Coveted Members"
+        title="Manage Unprocessed Chargebacks"
       >
         <div className="flex w-full flex-col">
           <Text className="mb-1 text-[#b3bee7] opacity-[0.75]">
@@ -54,19 +54,20 @@ export const Chargebacks = () => {
             type="text"
           />
         </div>
+        <div className="flex flex-col items-center">
+          {chargebacks.map((chargeback) => {
+            chargeback.fullContent = JSON.parse(chargeback.fullContent)
+            return (
+              <div
+                className="passes-break flex flex-row items-center justify-between whitespace-pre-wrap"
+                key={chargeback.userId}
+              >
+                <div>{JSON.stringify(chargeback, null, 4)}</div>
+              </div>
+            )
+          })}
+        </div>
       </Tab>
-      <div className="flex flex-col items-center">
-        {chargebacks.map((chargeback) => {
-          return (
-            <div
-              className="passes-break flex flex-row items-center justify-between whitespace-pre-wrap"
-              key={chargeback.userId}
-            >
-              <div>{JSON.stringify(chargeback, null, 4)}</div>
-            </div>
-          )
-        })}
-      </div>
     </div>
   )
 }
