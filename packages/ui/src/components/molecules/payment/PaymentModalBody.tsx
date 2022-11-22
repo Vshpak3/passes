@@ -7,7 +7,7 @@ import PhantomIcon from "public/icons/phantom-icon.svg"
 import { Dispatch, FC, SetStateAction, useEffect, useMemo } from "react"
 import { useForm } from "react-hook-form"
 
-import { Select } from "src/components/atoms/input/Select"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import {
   deserializePayinMethod,
   MetaMaskSelectOptions,
@@ -124,7 +124,7 @@ export const PaymentModalBody: FC<PaymentModalBodyProps> = ({
   return (
     <form className="mb-4">
       <div className="mb-2">Payment Method</div>
-      <Select
+      <CustomSelect
         changeOnDefault
         className="my-4"
         defaultValue={defaultSelected}

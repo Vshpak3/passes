@@ -1,15 +1,14 @@
 import { Listbox, Transition } from "@headlessui/react"
 import classNames from "classnames"
 import { FC, Fragment, useCallback, useEffect, useState } from "react"
+import { Controller } from "react-hook-form"
 
 import {
-  FormAutoComplete,
   FormErrors,
   FormLabel,
   FormName,
   FormOptions,
-  FormPlaceholder,
-  FormRegister
+  FormPlaceholder
 } from "src/components/atoms/input/InputTypes"
 import { Label } from "src/components/atoms/Label"
 import { ChevronDown } from "src/icons/ChevronDown"
@@ -22,12 +21,10 @@ export type SelectOption = {
 type FormSelectOption = string | SelectOption
 type FormSelectOptions = Array<FormSelectOption>
 
-export type SelectProps = {
+type SelectProps = {
   label?: FormLabel
   name: FormName
-  autoComplete?: FormAutoComplete | "off"
   options?: FormOptions
-  register?: FormRegister
   errors?: FormErrors
   value?: string
   defaultValue?: FormSelectOption
@@ -42,13 +39,9 @@ export type SelectProps = {
   transparent?: boolean
 }
 
-export const Select: FC<SelectProps> = ({
+const Select: FC<SelectProps> = ({
   name,
   label,
-  // TODO: MAKE THIS WORK
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  autoComplete = "off",
-  register,
   errors = {},
   options,
   selectOptions,
@@ -86,13 +79,7 @@ export const Select: FC<SelectProps> = ({
       {!!label && (
         <Label errors={errors} label={label} name={name} options={options} />
       )}
-      <Listbox
-        {...(register?.(name, options) ?? {})}
-        as="div"
-        defaultValue={defaultValue}
-        onChange={onCustomChange}
-        {...rest}
-      >
+      <Listbox defaultValue={defaultValue} onChange={onCustomChange} {...rest}>
         <Listbox.Button
           className={classNames(
             "my-1 flex min-h-[50px] w-full appearance-none items-center justify-between rounded-md border px-4 py-3 text-left text-sm invalid:text-gray-400 focus:border-passes-pink-100/80 focus:ring-passes-pink-100/80",
@@ -140,5 +127,32 @@ export const Select: FC<SelectProps> = ({
         <span className="text-xs text-red-500">{errors[name].message}</span>
       )}
     </div>
+  )
+}
+
+interface CustomSelectProps extends SelectProps {
+  control?: any // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
+// eslint-disable-next-line react/no-multi-comp
+export const CustomSelect = ({
+  control = undefined,
+  name,
+  ...restOfProps
+}: CustomSelectProps) => {
+  return (
+    <>
+      {control ? (
+        <Controller
+          control={control}
+          name={name}
+          render={({ field: { onChange } }) => (
+            <Select name={name} onChange={onChange} {...restOfProps} />
+          )}
+        />
+      ) : (
+        <Select name={name} {...restOfProps} />
+      )}
+    </>
   )
 }

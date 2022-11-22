@@ -16,7 +16,7 @@ type SelectOption = {
   label: string | JSX.Element
 }
 
-type FormSelectOption = string | SelectOption | null
+type FormSelectOption = string | SelectOption
 type FormSelectOptions = Array<FormSelectOption>
 
 type NativeSelectProps = {

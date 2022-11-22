@@ -16,7 +16,7 @@ import {
   ComponentArg,
   InfiniteScrollPagination
 } from "src/components/atoms/InfiniteScroll"
-import { Select } from "src/components/atoms/input/Select"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import { SortDropdown, SortOption } from "src/components/organisms/SortDropdown"
 import { formatText } from "src/helpers/formatters"
 import { usePass } from "src/hooks/entities/usePass"
@@ -39,7 +39,7 @@ export const PassHolders: FC<PassHoldersProps> = ({ passId }) => {
 
   const { pass, mutate } = usePass(passId)
 
-  const { register, watch, setValue } = useForm<{ active?: boolean }>({
+  const { watch, control } = useForm<{ active?: boolean }>({
     defaultValues: { active: undefined }
   })
 
@@ -109,12 +109,11 @@ export const PassHolders: FC<PassHoldersProps> = ({ passId }) => {
                 type="text"
               />
             </span>
-            <Select
+            <CustomSelect
               className="min-w-[100px] border-gray-500"
+              control={control}
               defaultValue="None"
               name="active"
-              onChange={(value) => setValue("active", value)}
-              register={register}
               selectOptions={[
                 {
                   value: undefined,

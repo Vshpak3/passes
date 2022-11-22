@@ -14,8 +14,8 @@ import {
 } from "src/components/atoms/button/Button"
 import { DownloadW9FormButton } from "src/components/atoms/DownloadW9FormButton"
 import { Checkbox } from "src/components/atoms/input/Checkbox"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { UploadW9FormButton } from "src/components/atoms/UploadW9FormButton"
 import { errorMessage } from "src/helpers/error"
 
@@ -194,7 +194,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
               <div className="text-[#b3bee7] opacity-[0.75]">
                 Type of Bank Account
               </div>
-              <SelectInput
+              <CustomSelect
                 className="w-full border-[#34343ACC] bg-black text-white"
                 control={control}
                 errors={errors}
@@ -205,7 +205,7 @@ export const PaymentForm: FC<PaymentFormProps> = ({ onFinishPaymentForm }) => {
             </div>
             <div className="flex flex-col gap-[6px]">
               <div className="text-[#b3bee7] opacity-[0.75]">Country</div>
-              <SelectInput
+              <CustomSelect
                 className="w-full border-[#34343ACC] bg-black text-white"
                 control={control}
                 errors={errors.bankAddress?.country}

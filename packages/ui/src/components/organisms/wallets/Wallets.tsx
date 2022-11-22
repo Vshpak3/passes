@@ -13,8 +13,8 @@ import { toast } from "react-toastify"
 import { object, string } from "yup"
 
 import { Button, ButtonTypeEnum } from "src/components/atoms/button/Button"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import { Input } from "src/components/atoms/input/GeneralInput"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { DeleteConfirmationModal } from "src/components/molecules/DeleteConfirmationModal"
 import { Dialog } from "src/components/organisms/Dialog"
 import { errorMessage } from "src/helpers/error"
@@ -201,7 +201,7 @@ export const Wallets = () => {
                 />
               </div>
               <div className="basis-1/5">
-                <SelectInput
+                <CustomSelect
                   className="mr-3 mt-0 w-[80px] bg-[#18090E]"
                   control={control}
                   defaultValue="SOL"

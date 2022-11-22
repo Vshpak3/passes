@@ -11,8 +11,8 @@ import { v4 } from "uuid"
 import { object, string } from "yup"
 
 import { Button } from "src/components/atoms/button/Button"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import { EIcon, Input } from "src/components/atoms/input/GeneralInput"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
 import { Tab } from "src/components/pages/settings/Tab"
 import { SubTabsEnum } from "src/config/settings"
 import { SettingsContextProps, useSettings } from "src/contexts/Settings"
@@ -139,7 +139,7 @@ const AddBank = () => {
         <span className="mt-3 mb-2 block text-[16px] font-[500] text-white">
           Type of Bank Account
         </span>
-        <SelectInput
+        <CustomSelect
           control={control}
           defaultValue="US Bank"
           errors={errors}
@@ -211,7 +211,7 @@ const AddBank = () => {
         register={register}
         type="text"
       />
-      <SelectInput
+      <CustomSelect
         className="mt-4"
         control={control}
         errors={errors}
@@ -249,7 +249,7 @@ const AddBank = () => {
           register={register}
           type="text"
         />
-        <SelectInput
+        <CustomSelect
           className="mt-4"
           control={control}
           errors={errors}
@@ -268,7 +268,7 @@ const AddBank = () => {
         <div className="flex gap-4">
           {countrySelected === COUNTRIES[0] ||
           countrySelected === COUNTRIES[1] ? (
-            <SelectInput
+            <CustomSelect
               className="mt-4"
               control={control}
               errors={errors}

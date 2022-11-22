@@ -7,7 +7,7 @@ import { FC, useEffect } from "react"
 import { useForm } from "react-hook-form"
 
 import { Button } from "src/components/atoms/button/Button"
-import { SelectInput } from "src/components/atoms/input/SelectInput"
+import { CustomSelect } from "src/components/atoms/input/CustomSelect"
 import {
   deserializePayinMethod,
   MetaMaskSelectOptions,
@@ -63,7 +63,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </span>
         </div>
         <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
-          <SelectInput
+          <CustomSelect
             className="my-4 bg-[#18090E] md:w-[145px]"
             control={control}
             defaultValue={MetaMaskSelectOptions[0]}
@@ -101,7 +101,7 @@ export const PaymentSettingsCrypto: FC<PaymentSettingsCryptoProps> = ({
           </div>
         </div>
         <div className="mt-2 basis-full md:ml-4 md:mt-0 md:basis-1/4">
-          <SelectInput
+          <CustomSelect
             className="my-4 bg-[#18090E] md:w-[145px]"
             control={control}
             defaultValue={PhantomSelectOptions[0]}
